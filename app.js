@@ -227,7 +227,7 @@ function blobRender(body, dt, time) {
     context.restore();
   }
   const marker = powerMarkers(game).find(marker => marker.target === body.id);
-  if(!isSeed) {context.save();context.fillStyle='#e9ffed';context.font='16px Fredoka, sans-serif';context.textAlign='center';context.textBaseline='middle';context.fillText(JELLY_ROLES[jellyRole(body.id)].mark,body.x,body.y+(marker?body.radius*.68:0));context.restore();}
+  if(!isSeed) {context.save();context.fillStyle='#e9ffed';context.font=`${marker?18:26}px Fredoka, sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(JELLY_ROLES[jellyRole(body.id)].mark,body.x,body.y+(marker?body.radius*.68:0));context.restore();}
   if (marker) {
     const p = POWERS[marker.kind], icon = powerIcons[marker.kind], size = Math.min(52, body.radius * 1.25);
     context.save(); context.shadowColor = p.color; context.shadowBlur = isGentle ? 0 : 12;
@@ -344,7 +344,7 @@ function uiRender() {
   $('objective-status').textContent=game.objective.enabled?`${game.objective.earned?'Complete · next: ':''}${OBJECTIVES[(game.objective.index+(game.isFlying&&game.objective.earned?1:0))%3]} · +200 · ${game.objective.completed} completed`:'Optional goals · enable between plucks for a little direction.';
   $('palette').value=audio.music.palette;
   const shot=game.lastShot;
-  $('shot-result').textContent=game.isFlying?`${game.chain.length} unique notes · ${game.banks} banks · ${game.power.used} powers`:shot?`${shot.bloom?'Bloom!':shot.notes===4?'One jelly short of a bloom.':`${shot.notes} of 5 notes toward a bloom.`} +${shot.points} · ${shot.banks} banks · ${shot.powers} powers${shot.objective?' · Objective complete':''}`:'Aim for a wall bank. The dotted guide shows your first rebound; drifting jellies can change the path.';
+  $('shot-result').textContent=game.isFlying?`${game.chain.length} unique notes · ${game.banks} banks · ${game.power.used} powers`:shot?`${shot.bloom?'Bloom!':shot.notes===4?'One jelly short of a bloom.':`${shot.notes} of 5 notes toward a bloom.`}${shot.points===null?' · Resumed shot':` +${shot.points}`} · ${shot.banks} banks · ${shot.powers} powers${shot.objective?' · Objective complete':''}`:'Aim for a wall bank. The dotted guide shows your first rebound; drifting jellies can change the path.';
   const song = musicProgress(audio.music);
   $('song-stage').textContent = `${song.name}${audio.isMusicPlaying && !audio.isMuted && !audio.isPaused && audio.ambience ? audio.stage < song.stage ? ' · joining on the next bar' : audio.section !== song.name ? ` · ${audio.section}` : '' : ''}`;
   $('song-next').textContent = song.next;

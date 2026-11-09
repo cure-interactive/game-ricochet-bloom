@@ -23,7 +23,7 @@ export const POWERS = Object.freeze({
   spring: { name: 'Spring', symbol: '∧', color: '#f6c0ff', description: 'Elastic walls launch your seeds back into the pool for five seconds.' },
   orbit: { name: 'Orbit', symbol: '◉', color: '#ffdc9a', description: 'Gather up to two untouched jellies as satellites, then fling them outward after three seconds.' },
   rewind: { name: 'Rewind', symbol: '≪', color: '#b7b9ff', description: 'At the end of this flight, retrace its recent path for a quick encore. Moving jellies can become new notes.' },
-  pulse: { name: 'Pulse', symbol: '◴', color: '#ffadc7', description: 'Release three strong pressure waves, one on each beat of the song.' },
+  pulse: { name: 'Pulse', symbol: '◴', color: '#ffadc7', description: 'Release three strong pressure waves, one beat apart at the song tempo.' },
   drunk: { name: 'Drunk', symbol: '∿', color: '#ffacd8', description: 'Swerve side to side for four seconds without losing speed. Split seeds get tipsy too.' }
 });
 const powerKinds = Object.keys(POWERS);
@@ -432,7 +432,7 @@ export function physicsStep(state) {
     state.power.capacity = successful ? Math.min(3, previousCapacity + 1) : 1;
     state.power.markers = [];
     effectClear(state, events); state.isFlying = false; seed.vx *= .08; seed.vy *= .08; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0);
-    state.lastShot={notes:state.chain.length,banks:state.banks,points:state.score-state.shotStart,powers:state.power.used,bloom:successful,objective:state.objective.earned};
+    state.lastShot={notes:state.chain.length,banks:state.banks,points:state.shotStart===null?null:state.score-state.shotStart,powers:state.power.used,bloom:successful,objective:state.objective.earned};
     if(state.objective.earned)state.objective.index++;
     events.push({ type: 'power-streak', successful, capacity: state.power.capacity, previousCapacity });
     events.push({ type: gameWon(state) ? 'win' : state.isOver ? 'over' : 'rest', chain: state.chain.length });
@@ -532,12 +532,12 @@ export function saveValidate(input) {
   if(input.version>=14 && !routeValid(input.flightPath)) return null;
   if(input.version>=15) {
     const o=input.objective;
-    if(!o||typeof o.enabled!=='boolean'||typeof o.earned!=='boolean'||!Number.isSafeInteger(o.index)||o.index<0||!Number.isSafeInteger(o.completed)||o.completed<0||!Number.isSafeInteger(input.shotStart)||input.shotStart<0||input.shotStart>input.score)return null;
+    if(!o||typeof o.enabled!=='boolean'||typeof o.earned!=='boolean'||!Number.isSafeInteger(o.index)||o.index<0||!Number.isSafeInteger(o.completed)||o.completed<0||(input.shotStart!==null&&(!Number.isSafeInteger(input.shotStart)||input.shotStart<0||input.shotStart>input.score)))return null;
     const shot=input.lastShot;
-    if(shot!==null&&(!shot||!Number.isInteger(shot.notes)||shot.notes<0||shot.notes>14||!Number.isSafeInteger(shot.banks)||shot.banks<0||!Number.isSafeInteger(shot.points)||shot.points<0||!Number.isInteger(shot.powers)||shot.powers<0||shot.powers>3||typeof shot.bloom!=='boolean'||typeof shot.objective!=='boolean'))return null;
+    if(shot!==null&&(!shot||!Number.isInteger(shot.notes)||shot.notes<0||shot.notes>14||!Number.isSafeInteger(shot.banks)||shot.banks<0||(shot.points!==null&&(!Number.isSafeInteger(shot.points)||shot.points<0))||!Number.isInteger(shot.powers)||shot.powers<0||shot.powers>3||typeof shot.bloom!=='boolean'||typeof shot.objective!=='boolean'))return null;
   }
   const restored = structuredClone(input);
-  if(input.version<15) {restored.objective=input.objective??{enabled:false,index:0,completed:0,earned:false};restored.shotStart=input.shotStart??input.score;restored.lastShot=input.lastShot??null;}
+  if(input.version<15) {restored.objective=input.objective??{enabled:false,index:0,completed:0,earned:false};restored.shotStart=input.shotStart??(input.isFlying?null:input.score);restored.lastShot=input.lastShot??null;}
   if(input.version<14 && !routeValid(input.flightPath)) restored.flightPath=[];
   if (input.version < 9) {
     restored.version = RULE.version; restored.effects = input.version >= 6 && input.effect.kind ? [structuredClone(input.effect)] : []; delete restored.effect; restored.power = input.version >= 5 ? structuredClone(input.power) : powerCreate(input.seed);
