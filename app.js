@@ -32,7 +32,7 @@ for (const [kind, p] of Object.entries(POWERS)) {
 $('power-guide-title').textContent = `Meet all ${Object.keys(POWERS).length} powers`;
 $('play-location').textContent = location.protocol === 'https:' ? '● ONLINE PLAY' : '● LOCAL PLAY';
 
-audio.settingsSet(Number.isFinite(preferences.volume) ? Math.max(0, Math.min(1, preferences.volume)) : .45, preferences.muted === true);
+audio.settingsSet(Number.isFinite(preferences.volume) ? Math.max(0, Math.min(1, preferences.volume)) : audio.volume, preferences.muted === true);
 audio.ambienceSet(preferences.ambience);
 function save() {
   if (game.mode === 'challenge') best = Math.max(best, game.score);

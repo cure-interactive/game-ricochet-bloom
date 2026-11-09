@@ -12,7 +12,7 @@ export const POWERS = Object.freeze({
   magnet: { name: 'Magnet', symbol: '∩', color: '#ffb3cd', description: 'Draw unhit jellies toward your moving seed for 2.4 seconds.' },
   lightning: { name: 'Lightning', symbol: 'ϟ', color: '#b9dfff', description: 'Strike three different jellies in quick succession and knock them away.' },
   impact: { name: 'Impact', symbol: '»', color: '#ffe39e', description: 'Give your seed much stronger pushes for the rest of this pluck.' },
-  tether: { name: 'Tether', symbol: '△', color: '#b4f6d2', description: 'Link three jellies with stretchy musical threads for four seconds.' },
+  tether: { name: 'Tether', symbol: '△', color: '#b4f6d2', description: 'Link three jellies with stretchy musical threads. The group drifts toward your moving seed for four seconds.' },
   split: { name: 'Split', symbol: '⋔', color: '#c9c0ff', description: 'Fan into three little seeds for three seconds. All three collect powers; every jelly still scores once.' },
   bubble: { name: 'Bubble', symbol: '◯', color: '#aaeaff', description: 'Overlap jellies with a big soft bubble. Push gently at its edge and strongly toward its center; touches still play notes.' },
   portal: { name: 'Portal', symbol: '◌', color: '#b4ffe7', description: 'Open two gates across the pool. Pass through either and keep your speed.' },
@@ -167,6 +167,15 @@ function effectStep(state, events) {
   }
   if (effect.kind === 'bubble') seed.radius = Math.min(42, seed.radius + 140 * RULE.step);
   if (effect.kind === 'tether') {
+    // Each member receives one gentle pull, independent of how many links it has.
+    for (const id of new Set(effect.links.flatMap(link => [link.a, link.b]))) {
+      const body = state.bodies[id], dx = seed.x - body.x, dy = seed.y - body.y, distance = Math.hypot(dx, dy);
+      const proximity = Math.min(1, Math.max(0, distance - seed.radius - body.radius) / 180);
+      if (distance > .001) {
+        const pull = 240 * proximity * proximity * (3 - 2 * proximity) * RULE.step;
+        body.vx += dx / distance * pull; body.vy += dy / distance * pull; velocityLimit(body);
+      }
+    }
     for (const link of effect.links) {
       const a = state.bodies[link.a], b = state.bodies[link.b], dx = b.x - a.x, dy = b.y - a.y;
       const distance = Math.hypot(dx, dy), nx = distance > .001 ? dx / distance : 1, ny = distance > .001 ? dy / distance : 0;

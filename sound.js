@@ -5,7 +5,7 @@ import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish,
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export class PoolSound {
-  constructor() { this.media = new PoolMedia(); this.context = null; this.volume = .45; this.ambience = .65; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.replyUntil = 0; }
+  constructor() { this.media = new PoolMedia(); this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.replyUntil = 0; }
   get bloomCount() { return this.music.blooms; }
   get harmony() { const chord = this.activeChord ?? this.music.history.at(-1)?.chord; return chord === undefined || chord === null ? null : CHORDS[chord]; }
   musicSave() { return musicCreate(this.music, this.bloomCount); }
@@ -70,7 +70,7 @@ export class PoolSound {
     }
   }
   musicStart() { this.isMusicPlaying = true; this.musicUpdate(); }
-  ambienceSet(value) { this.ambience = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : .65; if (!this.ambience) this.phraseClear(); this.mixUpdate(); }
+  ambienceSet(value) { this.ambience = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 1; if (!this.ambience) this.phraseClear(); this.mixUpdate(); }
   mixUpdate() {
     this.media.update(!!this.context && this.context.state === 'running' && this.isMusicPlaying && !this.isMuted && !this.isPaused && this.volume > 0 && this.ambience > 0);
     if (!this.musicOutput) return;
