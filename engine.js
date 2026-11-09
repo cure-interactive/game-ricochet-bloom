@@ -16,7 +16,7 @@ export const POWERS = Object.freeze({
   split: { name: 'Split', symbol: '⋔', color: '#c9c0ff', description: 'Fan into three little seeds for three seconds. All three collect powers; every jelly still scores once.' },
   bubble: { name: 'Bubble', symbol: '◯', color: '#aaeaff', description: 'Overlap jellies with a big soft bubble. Push gently at its edge and strongly toward its center; touches still play notes.' },
   portal: { name: 'Portal', symbol: '◌', color: '#b4ffe7', description: 'Open two gates across the pool. Pass through either and keep your speed.' },
-  echo: { name: 'Echo', symbol: '◔', color: '#c7d1ff', description: 'A ghost trails half a second behind. Jellies nudge it off course; it springs back to your path and shares your chain.' },
+  echo: { name: 'Echo', symbol: '◔', color: '#c7d1ff', description: 'A ghost trails half a second behind, gently seeking nearby unhit jellies. It shares your chain and springs back toward your path.' },
   slingshot: { name: 'Slingshot', symbol: '➹', color: '#ffc99f', description: 'Orbit the marked jelly briefly, then launch toward an untouched jelly.' },
   relay: { name: 'Relay', symbol: '⌁', color: '#ffe6a3', description: 'The next three scored jellies each wake one untouched jelly by bumping it.' },
   wake: { name: 'Wake', symbol: '≋', color: '#89f4ef', description: 'Leave a flowing current for five seconds. Crossing jellies are swept along your trail.' },
@@ -129,10 +129,23 @@ function effectStep(state, events) {
     if (jumped) events.push({ type: 'echo-jump', x: point.x, y: point.y });
     const vx = effect.isReady && !jumped ? (point.x - follow.x) / RULE.step : 0;
     const vy = effect.isReady && !jumped ? (point.y - follow.y) / RULE.step : 0;
+    // Bias the existing spring, never teleport or detach from the delayed route.
+    // Nearby unhit surfaces compete by distance; targets behind the path are left behind.
+    let seekX = 0, seekY = 0, nearest = RULE.echoLeash;
+    if (effect.isReady && !jumped) for (const body of state.bodies.slice(1)) {
+      if (state.chain.includes(body.id)) continue;
+      const dx = body.x - point.x, dy = body.y - point.y, distance = Math.hypot(dx, dy);
+      const gap = Math.max(0, distance - body.radius - point.radius);
+      if (gap >= nearest || distance < .001 || dx * vx + dy * vy < -body.radius * Math.hypot(vx, vy)) continue;
+      nearest = gap;
+      const proximity = 1 - gap / RULE.echoLeash;
+      const reach = Math.min(distance, RULE.echoLeash * .75) * proximity * proximity * (3 - 2 * proximity);
+      seekX = dx / distance * reach; seekY = dy / distance * reach;
+    }
     for (const [axis, velocity, speed] of [['x', 'vx', vx], ['y', 'vy', vy]]) {
       const offset = effect.isReady && !jumped ? ghost[axis] - follow[axis] : 0;
       const relative = effect.isReady && !jumped ? ghost[velocity] - follow[velocity] : 0;
-      const spring = relative + (-100 * offset - 14 * relative) * RULE.step;
+      const spring = relative + (100 * ((axis === 'x' ? seekX : seekY) - offset) - 14 * relative) * RULE.step;
       ghost[axis] = point[axis] + offset + spring * RULE.step;
       ghost[velocity] = speed + spring;
     }
