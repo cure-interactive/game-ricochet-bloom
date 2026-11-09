@@ -176,7 +176,7 @@ function frostRender(body, points, skin, frost) {
   context.restore();
 }
 function blobRender(body, dt, time) {
-  const membrane = membraneGet(body), isSeed = body.id <= 0, hue = isSeed ? body.id === -3 ? POWERS.echo.color : body.id < 0 ? POWERS.split.color : effectGet(game, 'bubble') ? POWERS.bubble.color : '#f1f9d7' : COLORS[body.tone], radius = body.radius;
+  const membrane = membraneGet(body), isSeed = body.id <= 0, isBubble = body.id === 0 && !!effectGet(game, 'bubble'), hue = isSeed ? body.id === -3 ? POWERS.echo.color : body.id < 0 ? POWERS.split.color : isBubble ? POWERS.bubble.color : '#f1f9d7' : COLORS[body.tone], radius = body.radius;
   membrane.glow = Math.max(0, membrane.glow - dt * 1.4);
   const playback = audio.playbackLights.get(body.id);
   const replayGlow = playback ? Math.max(0, (playback.until - audio.context.currentTime) / .7) * (isGentle ? .18 : .7) : 0;
@@ -191,7 +191,7 @@ function blobRender(body, dt, time) {
   for (let index = 0; index < points.length; index++) { const a = points[index], b = points[(index + 1) % points.length]; skin.quadraticCurveTo(a.x, a.y, (a.x + b.x) / 2, (a.y + b.y) / 2); }
   skin.closePath();
   const fill = context.createRadialGradient(body.x - radius * .35, body.y - radius * .4, 0, body.x, body.y, radius * 1.1);
-  fill.addColorStop(0, isSeed && !effectGet(game, 'bubble') ? '#ffffed' : hue + 'bb'); fill.addColorStop(.45, hue + (isSeed && !effectGet(game, 'bubble') ? 'ee' : '6c')); fill.addColorStop(1, hue + '20');
+  fill.addColorStop(0, isBubble ? hue + '60' : isSeed ? '#ffffed' : hue + 'bb'); fill.addColorStop(.45, hue + (isBubble ? '28' : isSeed ? 'ee' : '6c')); fill.addColorStop(1, hue + (isBubble ? '08' : '20'));
   context.fillStyle = fill; context.strokeStyle = hue + 'c0'; context.lineWidth = isSeed ? 1.6 : 1.1; context.shadowColor = hue; context.shadowBlur = (isSeed ? 15 : 7) + light * 20; context.fill(skin); context.stroke(skin); context.shadowBlur = 0;
   context.save(); context.clip(skin);
   // Skin highlight follows the deformed upper-left rim instead of floating on a circle.
@@ -205,7 +205,12 @@ function blobRender(body, dt, time) {
     for (let index = 0; index < 5; index++) { const point = points[(index * 5 + body.id) % points.length]; context.beginPath(); context.arc(x + (point.x - body.x) * .45, y + (point.y - body.y) * .4, 1.4, 0, Math.PI * 2); context.fillStyle = hue + 'a0'; context.fill(); }
   }
   if (!isSeed && membrane.frost > .01) frostRender(body, points, skin, membrane.frost);
-  if (body.id === 0 && effectGet(game, 'bubble')) {
+  if (isBubble) {
+    // Keep overlapping jellies visible through the pressure shell and its small core.
+    const coreRadius = effectGet(game, 'split') ? 10 : RULE.seedRadius;
+    const core = context.createRadialGradient(body.x, body.y, 0, body.x, body.y, coreRadius * 1.5);
+    core.addColorStop(0, '#ffffede0'); core.addColorStop(.5, '#ddfff4a0'); core.addColorStop(1, '#aaeaff00');
+    context.fillStyle = core; context.beginPath(); context.arc(body.x, body.y, coreRadius * 1.5, 0, Math.PI * 2); context.fill();
     // Pearly bands follow the existing soft-body outline, including impact flattening.
     const pearl = context.createLinearGradient(body.x - radius, body.y - radius, body.x + radius, body.y + radius);
     for (const [stop, color] of [[0, '#ffe4fd'], [.3, '#c4b2ff'], [.6, '#9ff9ee'], [1, '#fff4c0']]) pearl.addColorStop(stop, color);
