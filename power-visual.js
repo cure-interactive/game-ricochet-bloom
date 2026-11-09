@@ -16,6 +16,42 @@ function curve(c, a, b, bend) {
   const middle = curvePoint(a, b, bend * 2, .5);
   c.beginPath(); c.moveTo(a.x, a.y); c.quadraticCurveTo(middle.x, middle.y, b.x, b.y); c.stroke();
 }
+function springWall(c, cues, gentle, active) {
+  const inset = RULE.inset + 2, right = RULE.width - inset, bottom = RULE.height - inset, radius = 40;
+  // Deform the wall itself along the inward collision normal, never the collider.
+  function edge(x, y, dx, dy, length, nx, ny) {
+    const steps = Math.ceil(length / 8);
+    for (let i = 1; i <= steps; i++) {
+      const along = length * i / steps, px = x + dx * along, py = y + dy * along;
+      let offset = 0;
+      for (const cue of cues) {
+        if (nx * cue.nx + ny * cue.ny <= 0) continue;
+        const distance = Math.abs((px - cue.x) * dx + (py - cue.y) * dy), width = 140;
+        if (distance >= width) continue;
+        const progress = cue.age / cue.duration;
+        const rebound = gentle ? Math.sin(progress * Math.PI) * 8
+          : Math.sin(cue.age * 16) ** 2 * Math.exp(-cue.age * 5) * (1 - progress) * (36 + clamp(cue.speed, 0, 1000) * .06);
+        offset += rebound * Math.cos(distance / width * Math.PI / 2) ** 2;
+      }
+      // Keep the rounded corners anchored and overlapping impacts bounded.
+      const endFade = Math.min(1, along / 60, (length - along) / 60);
+      offset = Math.min(gentle ? 8 : 48, offset) * endFade * endFade * (3 - 2 * endFade);
+      c.lineTo(px + nx * offset, py + ny * offset);
+    }
+  }
+  c.save(); c.strokeStyle = POWERS.spring.color;
+  c.globalAlpha = (gentle ? .3 : .75) * (active ? 1 : Math.max(...cues.map(cue => 1 - cue.age / cue.duration)));
+  c.lineWidth = gentle ? 2 : 3; c.shadowColor = POWERS.spring.color; c.shadowBlur = gentle ? 0 : 10;
+  c.setLineDash([16, 8]); c.beginPath(); c.moveTo(inset + radius, inset);
+  edge(inset + radius, inset, 1, 0, right - inset - radius * 2, 0, 1);
+  c.quadraticCurveTo(right, inset, right, inset + radius);
+  edge(right, inset + radius, 0, 1, bottom - inset - radius * 2, -1, 0);
+  c.quadraticCurveTo(right, bottom, right - radius, bottom);
+  edge(right - radius, bottom, -1, 0, right - inset - radius * 2, 0, -1);
+  c.quadraticCurveTo(inset, bottom, inset, bottom - radius);
+  edge(inset, bottom - radius, 0, -1, bottom - inset - radius * 2, 1, 0);
+  c.quadraticCurveTo(inset, inset, inset + radius, inset); c.closePath(); c.stroke(); c.restore();
+}
 export class PowerVisual {
   constructor() { this.cues = []; }
   clear() { this.cues = []; }
@@ -31,7 +67,7 @@ export class PowerVisual {
     if(event.type==='pulse') this.add({kind:'ripple',color:POWERS.pulse.color,x:event.x,y:event.y,duration:.72});
     if(event.type==='relay') this.add({kind:'branch',x:event.fromX,y:event.fromY,endX:event.x,endY:event.y,color:POWERS.relay.color,duration:.7});
     if(event.type==='orbit-release') this.add({kind:'shock',...event,color:POWERS.orbit.color,duration:.7});
-    if(event.type==='spring') this.add({kind:'spring',...event,color:POWERS.spring.color,duration:.65});
+    if(event.type==='spring') this.add({kind:'spring',...event,color:POWERS.spring.color,duration:.85});
     if (event.type === 'portal') for (const point of [{ x: event.fromX, y: event.fromY }, event]) this.add({ kind: 'endpoint', color: POWERS.portal.color, x: point.x, y: point.y, duration: .7 });
     if (event.type === 'push' || event.type === 'lightning') {
       const color = POWERS[event.type === 'push' ? 'impact' : 'lightning'].color;
@@ -48,14 +84,11 @@ export class PowerVisual {
     // Clip large currents and wakes to the pool, keeping controls and labels clear.
     c.beginPath(); c.roundRect(RULE.inset, RULE.inset, RULE.width - RULE.inset * 2, RULE.height - RULE.inset * 2, 45); c.clip();
     for (const cue of this.cues) {
+      if (cue.kind === 'spring') continue;
       const progress = cue.age / cue.duration, travel = gentle ? .35 : progress;
       c.save(); c.globalAlpha = (1 - progress) * (gentle ? .3 : .65); c.lineWidth = gentle ? 1.4 : 2;
       c.strokeStyle = c.fillStyle = cue.color || POWERS[cue.kind]?.color || POWERS.split.color;
-      if(cue.kind==='spring') {
-        const x=cue.x-cue.nx*14,y=cue.y-cue.ny*14,bulge=Math.sin(progress*Math.PI)*24;
-        c.beginPath();c.moveTo(x-cue.ny*65,y+cue.nx*65);c.quadraticCurveTo(x-cue.nx*bulge,y-cue.ny*bulge,x+cue.ny*65,y-cue.nx*65);c.stroke();
-        arrow(c,x+cue.nx*(30+progress*60),y+cue.ny*(30+progress*60),Math.atan2(cue.ny,cue.nx),12);
-      } else if (['ripple', 'attract'].includes(cue.kind)) {
+      if (['ripple', 'attract'].includes(cue.kind)) {
         const inward = cue.kind === 'attract';
         for (let i = 0; i < (gentle ? 8 : 14); i++) {
           const angle = i * TAU / (gentle ? 8 : 14), radius = 30 + (inward ? 1 - travel : travel) * (RULE.powerRadius - 30);
@@ -137,7 +170,8 @@ export class PowerVisual {
       const p=wake.trail[i];c.strokeStyle=POWERS.wake.color;c.globalAlpha=(1-p.age/1.8)*(gentle?.2:.5);c.lineWidth=2;
       line(c,p.x-p.nx*18,p.y-p.ny*18,p.x+p.nx*12,p.y+p.ny*12);arrow(c,p.x+p.nx*12,p.y+p.ny*12,Math.atan2(p.ny,p.nx),6);
     }
-    if(effectGet(game,'spring')) {c.strokeStyle=POWERS.spring.color;c.globalAlpha=gentle?.25:.6;c.lineWidth=3;c.setLineDash([16,8]);c.beginPath();c.roundRect(32,32,896,576,40);c.stroke();c.setLineDash([]);}
+    const springCues = this.cues.filter(cue => cue.kind === 'spring'), springActive = !!effectGet(game, 'spring');
+    if (springActive || springCues.length) springWall(c, springCues, gentle, springActive);
     const orbit=effectGet(game,'orbit');
     if(orbit) for(const id of orbit.satellites) {const b=game.bodies[id];c.strokeStyle=POWERS.orbit.color;c.globalAlpha=gentle?.3:.65;c.lineWidth=1.5;curve(c,seed,b,25);c.beginPath();c.arc(b.x,b.y,b.radius+5,0,TAU);c.stroke();}
     const rewind=effectGet(game,'rewind');
