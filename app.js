@@ -378,7 +378,7 @@ function uiRender() {
   // Read-only observability for live-browser QA. Never drives gameplay.
   canvas.dataset.gentle = String(isGentle);
   canvas.dataset.jellyDeformation = Math.max(0, ...Array.from(membranes.values(), skin => Math.hypot(...skin.strain))).toFixed(3);
-  Object.assign(canvas.dataset, { physicsTick: String(game.tick), flying: String(game.isFlying), score: String(game.score), seedX: game.bodies[0].x.toFixed(2), seedY: game.bodies[0].y.toFixed(2), chain: String(game.chain.length), audioState: audio.context?.state || 'locked', soundEvents: String(audio.eventCount), notes: String(noteCount), mode: game.mode, harmony: audio.harmony?.name || 'none', songChords: String(audio.music.history.length), songTheme: audio.music.theme.join(','), musicPending: String(audio.musicQueue.length), musicVoices: String(audio.phraseVoices.size), audioVoices: String(audio.voiceCount), harmonyPaused: String(audio.isPaused), musicPassage: String(audio.passage), musicSection: audio.section, musicStage: String(audio.stage), songStage: String(song.stage), songPlucks: String(audio.music.plucks), songBar: String(audio.music.bar), mediaState: audio.media.state, mediaReady: String(audio.media.ready), mediaArtwork: audio.media.artwork?.[0]?.src || '', phraseKept: String(audio.music.kept), phraseSteps: (audio.music.motifs.at(-1)?.steps || []).join(','), hookSteps: (audio.music.hook?.steps || []).join(','), phraseReplayCount: String(audio.playbackCount), phraseReplayIds: [...audio.playbackLights.keys()].join(','), ambience: String(audio.ambience) });
+  Object.assign(canvas.dataset, { physicsTick: String(game.tick), flying: String(game.isFlying), score: String(game.score), seedX: game.bodies[0].x.toFixed(2), seedY: game.bodies[0].y.toFixed(2), chain: String(game.chain.length), audioState: audio.context?.state || 'locked', soundEvents: String(audio.eventCount), notes: String(noteCount), mode: game.mode, harmony: audio.harmony?.name || 'none', songChords: String(audio.music.history.length), songTheme: audio.music.theme.join(','), musicPending: String(audio.musicQueue.length), musicVoices: String(audio.phraseVoices.size), audioVoices: String(audio.voiceCount), harmonyPaused: String(audio.isPaused), musicPassage: String(audio.passage), musicSection: audio.section, musicStage: String(audio.stage), songStage: String(song.stage), songPlucks: String(audio.music.plucks), songBar: String(audio.music.bar), mediaState: audio.media.state, mediaReady: String(audio.media.ready), mediaArtwork: audio.media.artwork?.[0]?.src || '', hookNextBar: String(audio.music.evolution.nextBar), hookPending: String(!!audio.music.evolution.pending), phraseSteps: (audio.music.motifs.at(-1)?.steps || []).join(','), hookSteps: (audio.music.hook?.steps || []).join(','), phraseReplayCount: String(audio.playbackCount), phraseReplayIds: [...audio.playbackLights.keys()].join(','), ambience: String(audio.ambience) });
 }
 function phraseRender() {
   const isLive = game.isFlying, phrase = isLive ? musicPhrasePreview(audio.music) : audio.music.motifs.at(-1), now = audio.context?.currentTime ?? 0;
@@ -386,11 +386,7 @@ function phraseRender() {
   const count = phrase?.tones.length || 0;
   $('phrase-title').textContent = isLive ? `YOUR PHRASE · LIVE · ${count} ${count === 1 ? 'NOTE' : 'NOTES'}` : phrase ? `YOUR LATEST PHRASE · ${count} ${count === 1 ? 'NOTE' : 'NOTES'}` : 'YOUR PHRASE';
   $('phrase-status').textContent = isLive ? !isStarted ? 'Your unfinished phrase is saved. Return to keep playing.' : audio.isPaused ? 'Paused · your growing phrase is saved.' : phrase ? 'Each jelly adds a note. Your phrase is taking shape.' : 'Your new phrase starts with the first jelly.' : !phrase ? 'Pluck through the jellies. Listen for their reply.' : !isStarted ? 'Your phrase is saved. Return to hear it.' : audio.isPaused ? 'Paused · your phrase is saved.' : !isAudible ? 'Phrase saved · turn on sound and ambience to hear it.' : now < audio.replyUntil ? 'The pool is playing your phrase back.' : audio.music.reply ? 'Your phrase joins on the next bar.' : 'Follow the glowing jellies as your melody returns.';
-  $('phrase-keep').disabled = $('phrase-develop').disabled = !phrase || !isStarted || game.isFlying;
-  const currentIsKept = !isLive && audio.music.kept && JSON.stringify(audio.music.hook) === JSON.stringify(phrase);
-  $('phrase-keep').setAttribute('aria-pressed', String(currentIsKept));
-  $('phrase-develop').setAttribute('aria-pressed', String(!audio.music.kept));
-  $('phrase-choice').textContent = audio.music.kept ? currentIsKept ? 'Hook kept. New plucks add answering phrases.' : 'Your earlier hook is kept. Keep this shot to replace it.' : 'Developing · new plucks shape your hook.';
+  $('phrase-choice').textContent=!audio.music.hook?'Hit three different jellies in one pluck to establish your melody.':audio.music.evolution.pending?'Your melody repeats. New notes will join at the next section.':'Your melody repeats and gradually absorbs new ideas.';
   const pattern = $('phrase-pattern'), key = JSON.stringify([isLive, phrase || null]);
   pattern.dataset.live = String(isLive); pattern.dataset.noteCount = String(count);
   if (pattern.dataset.phrase !== key) {
@@ -497,10 +493,6 @@ $('sound').onchange = event => { audio.settingsSet(audio.volume, !event.currentT
 $('ambience').oninput = () => { audio.ambienceSet(Number($('ambience').value) / 100); save(); };
 $('volume').oninput = () => { audio.settingsSet(Number($('volume').value) / 100, audio.isMuted); save(); };
 $('audition').onclick = async () => { if (audio.isMuted) { toast('Check Sound below to listen'); return; } audio.media.describe(game.seed); await audioUnlockAsync(); audio.audition(); };
-for (const [id, keep] of [['phrase-keep', true], ['phrase-develop', false]]) $(id).onclick = () => {
-  if (game.isFlying || !isStarted || !audio.phraseChoose(keep)) return;
-  audioUnlockAsync(); save(); uiRender(); announce(keep ? 'Phrase kept as your hook. New shots add answers.' : 'Your latest phrase is the hook. New shots will develop it.');
-};
 $('motion').onchange = event => { isGentle = event.currentTarget.checked; if (isGentle) { particles = []; trails = []; } controlsRender(); save(); };
 $('stream').onchange = event => { isStream = event.currentTarget.checked; controlsRender(); save(); };
 $('fullscreen').onclick = async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch { toast('Fullscreen is unavailable here'); } };

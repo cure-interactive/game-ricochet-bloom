@@ -1,7 +1,7 @@
 import {instrumentNote,instrumentPercussion} from './instrument.js';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js';
-import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicChoose, musicComposeBar, musicAccent, jellyRole } from './music.js';
+import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, jellyRole } from './music.js';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export class PoolSound {
@@ -84,10 +84,9 @@ export class PoolSound {
     const now = this.context.currentTime;
     if (this.phraseEnd < now - 1) { this.musicQueue = []; this.playbackQueue = []; this.playbackLights.clear(); this.phraseEnd = now + .08; }
     if (this.phraseEnd <= now + .2) {
-      const score = musicComposeBar(this.music, this.music.bar++, this.flow, this.previousPitch), start = Math.max(now + .04, this.phraseEnd);
+      const score = musicNextBar(this.music, this.flow, this.previousPitch), start = Math.max(now + .04, this.phraseEnd);
       if (score.isReply) {
-        this.replyUntil = start + (2 - this.music.reply.part) * score.duration;
-        if (++this.music.reply.part === 2) this.music.reply = null;
+        this.replyUntil = start + score.replyBars * score.duration;
       }
       this.passage = Math.floor(Math.max(0, this.music.bar - 1 - this.music.formStart) / 4) + 1; this.stage = score.stage;
       this.previousPitch = score.nextPitch; this.section = score.section;
@@ -109,7 +108,6 @@ export class PoolSound {
     }
     for (const [id, event] of this.playbackLights) if (event.until <= now) this.playbackLights.delete(id);
   }
-  phraseChoose(keep) { return musicChoose(this.music, keep); }
   musicVoice(event) { instrumentNote(this,event); }
   musicPercussion(event) { instrumentPercussion(this,event); }
   pauseSet(value) { this.isPaused = value; if (value) this.phraseClear(); this.mixUpdate(); }

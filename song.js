@@ -1,10 +1,10 @@
-import {musicCreate,musicFinish,musicComposeBar,BAR_SECONDS} from './music.js';
+import {musicCreate,musicFinish,musicNextBar,BAR_SECONDS} from './music.js';
 import {instrumentNote} from './instrument.js';
 export const SONG_STORAGE='ricochet-bloom-songs-v1', SONG_LIMIT=24;
 export function songLibraryRead(value) {
   if(!value||value.version!==1||!Array.isArray(value.songs))return {version:1,songs:[]};
   const ids=new Set();
-  return {version:1,songs:value.songs.slice(0,SONG_LIMIT).filter(s=>s&&typeof s.id==='string'&&s.id.length<=80&&typeof s.name==='string'&&s.name.trim()&&s.name.length<=60&&Number.isSafeInteger(s.created)&&s.created>=0&&s.music?.version===3&&Number.isSafeInteger(s.music.blooms)&&s.music.blooms>=0&&Number.isSafeInteger(s.music.plucks)&&s.music.plucks>=0&&!ids.has(s.id)&&ids.add(s.id)).map(s=>({id:s.id,name:s.name,created:s.created,music:musicCreate(s.music,s.music.blooms,s.music.plucks)}))};
+  return {version:1,songs:value.songs.slice(0,SONG_LIMIT).filter(s=>s&&typeof s.id==='string'&&s.id.length<=80&&typeof s.name==='string'&&s.name.trim()&&s.name.length<=60&&Number.isSafeInteger(s.created)&&s.created>=0&&[3,4].includes(s.music?.version)&&Number.isSafeInteger(s.music.blooms)&&s.music.blooms>=0&&Number.isSafeInteger(s.music.plucks)&&s.music.plucks>=0&&!ids.has(s.id)&&ids.add(s.id)).map(s=>({id:s.id,name:s.name,created:s.created,music:musicCreate(s.music,s.music.blooms,s.music.plucks)}))};
 }
 export function songSnapshot(music) {const copy=musicCreate(music,music.blooms,music.plucks);if(copy.strikes.length)musicFinish(copy);return copy;}
 export function wavEncode(buffer) {
@@ -25,7 +25,7 @@ export async function songRender(music) {
   const noise=context.createBuffer(1,Math.ceil(context.sampleRate*.15),context.sampleRate);let seed=8128;
   for(let i=0;i<noise.length;i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;noise.getChannelData(0)[i]=seed/2147483648-1;}
   const copy=songSnapshot(music),rack={context,musicInput:input,music:copy,percussionNoise:noise,phraseVoices:new Set(),voiceCount:0,voiceLimit:Infinity,playbackQueue:[]};let previous=67;
-  for(let bar=0;bar<8;bar++) {const score=musicComposeBar(copy,copy.bar,.35,previous);previous=score.nextPitch;for(const event of score.events)if(event.role)instrumentNote(rack,{...event,at:event.at+bar*BAR_SECONDS});copy.bar++;if(copy.reply){if(copy.reply.part===0)copy.reply.part=1;else copy.reply=null;}}
+  for(let bar=0;bar<8;bar++) {const score=musicNextBar(copy,.35,previous);previous=score.nextPitch;for(const event of score.events)if(event.role)instrumentNote(rack,{...event,at:event.at+bar*BAR_SECONDS});}
   const rendered=await context.startRendering();let peak=0;
   for(let c=0;c<rendered.numberOfChannels;c++)for(const sample of rendered.getChannelData(c))peak=Math.max(peak,Math.abs(sample));
   // A quiet pool still makes a listenable keepsake; retain dynamics and headroom.
