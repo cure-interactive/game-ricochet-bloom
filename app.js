@@ -1,3 +1,4 @@
+import {poolView} from './view.js';
 import {songLibrarySetup} from './song-ui.js';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, seedBodies, POWERS, OBJECTIVES, aimPreview } from './engine.js';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js';
@@ -10,7 +11,7 @@ let store = poolStoreRead(null), storageIsAvailable = true;
 try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localStorage.getItem(LEGACY_STORAGE) ?? 'null')); } catch { storageIsAvailable = false; }
 let preferences = store.preferences, best = store.best, saved = store.pools[store.activeMode]?.game, savedMusic = store.pools[store.activeMode]?.music;
 let game = saved || gameCreate(new URL(location.href).searchParams.get('seed')?.slice(0, 32) || 'LAGOON', store.activeMode);
-let carrySong = false;
+let carrySong = false, portraitView = false;
 const modeName = mode => mode === 'free' ? 'Free play' : 'Challenge';
 
 audio.musicRestore(savedMusic, game.blooms, game.launches);
@@ -120,30 +121,31 @@ function particleBurst(x, y, color, count) {
   if (particles.length > 350) particles.splice(0, particles.length - 350);
 }
 // Transient score feedback uses the exact event award, including bank bonuses.
-function scorePopupRender(dt, scale) {
+function scorePopupRender(dt, view, ratio) {
   scorePopups = scorePopups.filter(popup => { popup.age += dt; return popup.age < 1.8; });
   const occupied = [];
-  context.save(); context.textAlign = 'center'; context.textBaseline = 'middle'; context.lineJoin = 'round';
+  context.save(); context.setTransform(ratio,0,0,ratio,0,0);context.textAlign = 'center'; context.textBaseline = 'middle'; context.lineJoin = 'round';
   for (const popup of scorePopups) {
-    const size = (popup.isBloom ? 24 : 18) / scale, text = `+${popup.points.toLocaleString('en-US')}`;
+    const size = popup.isBloom ? 24 : 18, text = `+${popup.points.toLocaleString('en-US')}`;
     context.font = `700 ${size}px system-ui, sans-serif`;
-    const halfWidth = context.measureText(text).width / 2 + 6 / scale;
-    const x = Math.max(RULE.inset + halfWidth, Math.min(RULE.width - RULE.inset - halfWidth, popup.x));
-    const rise = (isGentle ? 10 : 46) * (1 - Math.pow(1 - popup.age / 1.8, 2)) / scale;
-    let y = Math.max(88 + size, Math.min(RULE.height - 48 - size, popup.y - 12 / scale - rise));
+    const halfWidth = context.measureText(text).width / 2 + 6;
+    const point=view.screen(popup.x,popup.y);
+    const x = Math.max(halfWidth+4, Math.min(view.rect.width-halfWidth-4,point.x));
+    const rise = (isGentle ? 10 : 46) * (1 - Math.pow(1 - popup.age / 1.8, 2));
+    let y = Math.max(size, Math.min(view.rect.height-size,point.y-12-rise));
     // Separate simultaneous hit and bloom awards, including dense Split/Echo hits.
     for (const other of occupied) if (Math.abs(x - other.x) < halfWidth + other.halfWidth && Math.abs(y - other.y) < size * 1.25) y = other.y + size * 1.3;
-    if (y > RULE.height - 48 - size) y = Math.max(88 + size, popup.y - rise - size * 2);
+    if (y > view.rect.height-size) y = Math.max(size,point.y-rise-size*2);
     occupied.push({ x, y, halfWidth });
     context.globalAlpha = Math.pow(Math.max(0, 1 - popup.age / 1.8), 1.2);
-    context.lineWidth = 4 / scale; context.strokeStyle = '#0b1325'; context.strokeText(text, x, y);
+    context.lineWidth = 4; context.strokeStyle = '#0b1325'; context.strokeText(text, x, y);
     context.fillStyle = popup.color; context.fillText(text, x, y);
   }
   context.restore();
   canvas.dataset.scorePopups = scorePopups.map(popup => `+${popup.points}`).join(',');
   canvas.dataset.scorePopupOpacity = scorePopups.map(popup => Math.pow(Math.max(0, 1 - popup.age / 1.8), 1.2).toFixed(3)).join(',');
 }
-function geometry() { const rect = canvas.getBoundingClientRect(), scale = rect.width / RULE.width; return { rect, scale, offset: (rect.height / scale - RULE.height) / 2 }; }
+function geometry() { const rect=canvas.getBoundingClientRect(); return {rect,...poolView(rect.width,rect.height,RULE.width,RULE.height)}; }
 function resize() { const { rect } = geometry(), ratio = Math.min(2, devicePixelRatio || 1); canvas.width = Math.round(rect.width * ratio); canvas.height = Math.round(rect.height * ratio); }
 new ResizeObserver(resize).observe(canvas);
 // Frost is attached to the actual membrane and clipped inside its surface.
@@ -227,12 +229,12 @@ function blobRender(body, dt, time) {
     context.restore();
   }
   const marker = powerMarkers(game).find(marker => marker.target === body.id);
-  if(!isSeed) {context.save();context.fillStyle='#e9ffed';context.font=`${marker?18:26}px Fredoka, sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(JELLY_ROLES[jellyRole(body.id)].mark,body.x,body.y+(marker?body.radius*.68:0));context.restore();}
+  if(!isSeed) {context.save();context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);context.fillStyle='#e9ffed';context.font=`${marker?18:26}px Fredoka, sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(JELLY_ROLES[jellyRole(body.id)].mark,0,marker?body.radius*.68:0);context.restore();}
   if (marker) {
     const p = POWERS[marker.kind], icon = powerIcons[marker.kind], size = Math.min(52, body.radius * 1.25);
-    context.save(); context.shadowColor = p.color; context.shadowBlur = isGentle ? 0 : 12;
-    if (icon.complete && icon.naturalWidth) context.drawImage(icon, body.x - size / 2, body.y - size / 2, size, size);
-    else { context.fillStyle = '#f3fff5'; context.font = '32px Arial'; context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillText(p.symbol, body.x, body.y); }
+    context.save(); context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);context.shadowColor = p.color; context.shadowBlur = isGentle ? 0 : 12;
+    if (icon.complete && icon.naturalWidth) context.drawImage(icon, -size / 2, -size / 2, size, size);
+    else { context.fillStyle = '#f3fff5'; context.font = '32px Arial'; context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillText(p.symbol, 0, 0); }
     context.restore();
   }
   if (!isSeed && game.chain.includes(body.id)) { context.strokeStyle = hue + '88'; context.lineWidth = 1; context.beginPath(); for (const [index, point] of points.entries()) { const x = body.x + (point.x - body.x) * 1.1, y = body.y + (point.y - body.y) * 1.1; if (!index) context.moveTo(x, y); else context.lineTo(x, y); } context.closePath(); context.stroke(); }
@@ -245,8 +247,8 @@ function render(now) {
   else accumulator = 0;
   const visualDelta = isPaused || document.hidden || document.querySelector('dialog[open]') ? 0 : elapsed;
   const time = isStarted ? game.tick * RULE.step : now / 1000;
-  const { rect, scale, offset } = geometry(), ratio = canvas.width / rect.width;
-  context.setTransform(1, 0, 0, 1, 0, 0); context.clearRect(0, 0, canvas.width, canvas.height); context.setTransform(scale * ratio, 0, 0, scale * ratio, 0, offset * scale * ratio);
+  const view=geometry(), {rect,scale}=view, ratio=canvas.width/rect.width; portraitView=view.portrait;
+  context.setTransform(1, 0, 0, 1, 0, 0); context.clearRect(0, 0, canvas.width, canvas.height); context.setTransform(...view.matrix.map(value=>value*ratio));
   // Slow luminous currents, not a grid.
   context.lineWidth = 1;
   for (let ring = 0; ring < 6; ring++) { context.beginPath(); context.ellipse(480 + Math.sin(time * .12 + ring) * 12, 320, 140 + ring * 72, 90 + ring * 50, -.3, 0, Math.PI * 2); context.strokeStyle = '#77b2e0' + (ring % 2 ? '0a' : '10'); context.stroke(); }
@@ -324,7 +326,7 @@ function render(now) {
   if (!isGentle) for (const ring of rings.filter(ring => !ring.kind)) { context.globalAlpha = Math.min(.5, ring.life * .5); context.strokeStyle = ring.color; context.lineWidth = ring.bloom ? 2 : 1; context.beginPath(); context.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2); context.stroke(); context.globalAlpha = 1; }
   particles = particles.filter(particle => particle.life > 0);
   for (const particle of particles) { particle.life -= visualDelta; particle.x += particle.vx * visualDelta; particle.y += particle.vy * visualDelta; context.globalAlpha = Math.min(.8, Math.max(0, particle.life)); context.fillStyle = particle.color; context.beginPath(); context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2); context.fill(); } context.globalAlpha = 1;
-  scorePopupRender(visualDelta, scale);
+  scorePopupRender(visualDelta, view, ratio);
   if (game.tick - lastUITick >= 12 || frameCount++ % 20 === 0) { uiRender(); lastUITick = game.tick; }
   requestAnimationFrame(render);
 }
@@ -345,6 +347,7 @@ function uiRender() {
   $('palette').value=audio.music.palette;
   const shot=game.lastShot;
   $('shot-result').textContent=game.isFlying?`${game.chain.length} unique notes · ${game.banks} banks · ${game.power.used} powers`:shot?`${shot.bloom?'Bloom!':shot.notes===4?'One jelly short of a bloom.':`${shot.notes} of 5 notes toward a bloom.`}${shot.points===null?' · Resumed shot':` +${shot.points}`} · ${shot.banks} banks · ${shot.powers} powers${shot.objective?' · Objective complete':''}`:'Aim for a wall bank. The dotted guide shows your first rebound; drifting jellies can change the path.';
+  $('edge-idle').textContent=$('shot-result').textContent;
   const song = musicProgress(audio.music);
   $('song-stage').textContent = `${song.name}${audio.isMusicPlaying && !audio.isMuted && !audio.isPaused && audio.ambience ? audio.stage < song.stage ? ' · joining on the next bar' : audio.section !== song.name ? ` · ${audio.section}` : '' : ''}`;
   $('song-next').textContent = song.next;
@@ -402,7 +405,7 @@ function phraseRender() {
   const activeStep = isLive ? phrase && lastStrike && game.tick - lastStrike.tick < 42 ? phrase.steps.at(-1) : -1 : isAudible && audio.lastPlayback?.reply && now - audio.lastPlayback.at < .35 ? audio.lastPlayback.step : -1;
   for (const [step, item] of [...pattern.children].entries()) item.classList.toggle('active', step === activeStep);
 }
-function controlsRender() { $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').textContent = audio.isMuted ? 'Sound is off. Check Sound below to listen.' : '♪ Sound on. Headphones make it lovelier.'; $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('motion').checked = isGentle; $('stream').checked = isStream; document.body.classList.toggle('motion-reduced', isGentle); document.body.classList.toggle('stream-mode', isStream); }
+function controlsRender() { $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').textContent = audio.isMuted ? 'Sound is off. Enable Sound to listen.' : '♪ Sound on. Headphones make it lovelier.'; $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('motion').checked = isGentle; $('stream').checked = isStream; document.body.classList.toggle('motion-reduced', isGentle); document.body.classList.toggle('stream-mode', isStream); }
 function shoot() { if (!isStarted || isPaused || document.querySelector('dialog[open]')) return; audioUnlockAsync(); if (launch(game, angle, power)) { audio.eventPlay({ type: 'launch', x: game.bodies[0].x }); save(); uiRender(); } }
 function pauseSet(value) { if (!isStarted || game.isOver) return; isPaused = value; audio.pauseSet(value); dragCancel(); $('pause-overlay').hidden = !value; save(); uiRender(); if (!value) { audioUnlockAsync(); canvas.focus({ preventScroll: true }); } }
 function start() { audio.media.describe(game.seed); isStarted = true; isPaused = false; $('welcome').hidden = true; $('pause-overlay').hidden = true; if (audio.bloomCount !== game.blooms) audio.harmonySet(game.blooms); audio.pauseSet(false); audio.musicStart(); audioUnlockAsync(); save(); uiRender(); canvas.focus({ preventScroll: true }); }
@@ -440,7 +443,7 @@ function carryToFree() {
   save(); const next = structuredClone(game), music = audio.musicSave();
   if (continueFree(next)) loadPool(next, music);
 }
-function pointerWorld(event) { const { rect, scale, offset } = geometry(); return { x: (event.clientX - rect.left) / scale, y: (event.clientY - rect.top) / scale - offset }; }
+function pointerWorld(event) { const view=geometry();return view.world(event.clientX-view.rect.left,event.clientY-view.rect.top); }
 function dragUpdate(event) { if (!drag || drag.id !== event.pointerId) return; const point = pointerWorld(event), dx = drag.x - point.x, dy = drag.y - point.y, distance = Math.hypot(dx, dy); if (distance > 3) { angle = Math.atan2(dy, dx); power = Math.min(1, distance / 150); drag.distance = distance; $('power').value = power * 100; } }
 function dragCancel(event) {
   if (!drag || event?.pointerId !== undefined && drag.id !== event.pointerId) return;
@@ -470,7 +473,7 @@ canvas.addEventListener('pointercancel', dragCancel);
 canvas.addEventListener('lostpointercapture', dragCancel);
 window.addEventListener('blur', () => dragCancel());
 // Safari fallback: touchmove remains targeted at this canvas even outside its bounds.
-// Keep the listener local and explicitly non-passive so the rest of the page scrolls.
+// Keep the listener local and explicitly non-passive so dialogs retain their own scrolling.
 canvas.addEventListener('touchmove', event => { if (event.cancelable) event.preventDefault(); }, { passive: false });
 window.addEventListener('keydown', event => {
   if (event.target.matches('input,select,textarea') || document.querySelector('dialog[open]')) return;
@@ -492,11 +495,11 @@ $('palette').onchange=event=>{audio.music.palette=event.currentTarget.value;save
 $('sound').onchange = event => { audio.settingsSet(audio.volume, !event.currentTarget.checked); audioUnlockAsync(); controlsRender(); save(); };
 $('ambience').oninput = () => { audio.ambienceSet(Number($('ambience').value) / 100); save(); };
 $('volume').oninput = () => { audio.settingsSet(Number($('volume').value) / 100, audio.isMuted); save(); };
-$('audition').onclick = async () => { if (audio.isMuted) { toast('Check Sound below to listen'); return; } audio.media.describe(game.seed); await audioUnlockAsync(); audio.audition(); };
+$('audition').onclick = async () => { if (audio.isMuted) { toast('Enable Sound to listen'); return; } audio.media.describe(game.seed); await audioUnlockAsync(); audio.audition(); };
 $('motion').onchange = event => { isGentle = event.currentTarget.checked; if (isGentle) { particles = []; trails = []; } controlsRender(); save(); };
 $('stream').onchange = event => { isStream = event.currentTarget.checked; controlsRender(); save(); };
 $('fullscreen').onclick = async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch { toast('Fullscreen is unavailable here'); } };
-$('help-open').onclick = () => $('help-dialog').showModal();
+for(const name of ['settings','powers','music','help']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
 $('restart').onclick = () => dialogOpen(); $('mode-open').onclick = modeOpen; $('retry').onclick = () => dialogOpen();
 for (const mode of ['challenge', 'free']) $(`choose-${mode}`).onclick = () => switchMode(mode);
 $('seed-form').onsubmit = event => { event.preventDefault(); const seed = $('seed-input').value.trim(); if (!seed) return; $('new-dialog').close(); if (carrySong) carryToFree(); else newPool(seed, game.mode); };
