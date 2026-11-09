@@ -1,6 +1,6 @@
 import {poolView} from './view.js';
 import {songLibrarySetup} from './song-ui.js';
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, seedBodies, POWERS, OBJECTIVES, aimPreview } from './engine.js';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, aimPreview } from './engine.js';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js';
 import { PoolSound } from './sound.js';
 import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js';
@@ -177,6 +177,7 @@ function frostRender(body, points, skin, frost) {
 }
 function blobRender(body, dt, time) {
   const membrane = membraneGet(body), isSeed = body.id <= 0, isBubble = body.id === 0 && !!effectGet(game, 'bubble'), hue = isSeed ? body.id === -3 ? POWERS.echo.color : body.id < 0 ? POWERS.split.color : isBubble ? POWERS.bubble.color : '#f1f9d7' : COLORS[body.tone], radius = body.radius;
+  const isPermeable = !isSeed && frozenHit(game, body.id);
   membrane.glow = Math.max(0, membrane.glow - dt * 1.4);
   const playback = audio.playbackLights.get(body.id);
   const replayGlow = playback ? Math.max(0, (playback.until - audio.context.currentTime) / .7) * (isGentle ? .18 : .7) : 0;
@@ -184,25 +185,25 @@ function blobRender(body, dt, time) {
   jellyStep(membrane, body, dt, isGentle, isGentle ? undefined : jellyFlow(body, game.bodies), !isSeed && !!effectGet(game, 'stasis')?.targets.includes(body.id));
   const points = jellyOutline(membrane, body).map(point => ({ x: Math.max(RULE.inset, Math.min(RULE.width - RULE.inset, point.x)), y: Math.max(RULE.inset, Math.min(RULE.height - RULE.inset, point.y)) }));
   const glow = context.createRadialGradient(body.x, body.y, radius * .3, body.x, body.y, radius * 2.8);
-  glow.addColorStop(0, hue + (light > .2 ? '70' : isSeed ? '40' : '33')); glow.addColorStop(1, hue + '00');
+  glow.addColorStop(0, hue + (isPermeable ? '0c' : light > .2 ? '70' : isSeed ? '40' : '33')); glow.addColorStop(1, hue + '00');
   context.fillStyle = glow; context.beginPath(); context.arc(body.x, body.y, radius * 2.8, 0, Math.PI * 2); context.fill();
   const skin = new Path2D();
   const first = points[0], last = points.at(-1); skin.moveTo((first.x + last.x) / 2, (first.y + last.y) / 2);
   for (let index = 0; index < points.length; index++) { const a = points[index], b = points[(index + 1) % points.length]; skin.quadraticCurveTo(a.x, a.y, (a.x + b.x) / 2, (a.y + b.y) / 2); }
   skin.closePath();
   const fill = context.createRadialGradient(body.x - radius * .35, body.y - radius * .4, 0, body.x, body.y, radius * 1.1);
-  fill.addColorStop(0, isBubble ? hue + '60' : isSeed ? '#ffffed' : hue + 'bb'); fill.addColorStop(.45, hue + (isBubble ? '28' : isSeed ? 'ee' : '6c')); fill.addColorStop(1, hue + (isBubble ? '08' : '20'));
-  context.fillStyle = fill; context.strokeStyle = hue + 'c0'; context.lineWidth = isSeed ? 1.6 : 1.1; context.shadowColor = hue; context.shadowBlur = (isSeed ? 15 : 7) + light * 20; context.fill(skin); context.stroke(skin); context.shadowBlur = 0;
+  fill.addColorStop(0, isPermeable ? hue + '18' : isBubble ? hue + '60' : isSeed ? '#ffffed' : hue + 'bb'); fill.addColorStop(.45, hue + (isPermeable ? '0a' : isBubble ? '28' : isSeed ? 'ee' : '6c')); fill.addColorStop(1, hue + (isPermeable ? '02' : isBubble ? '08' : '20'));
+  context.fillStyle = fill; context.strokeStyle = hue + (isPermeable ? '48' : 'c0'); context.lineWidth = isSeed ? 1.6 : 1.1; context.shadowColor = hue; context.shadowBlur = isPermeable ? 2 : (isSeed ? 15 : 7) + light * 20; context.fill(skin); context.stroke(skin); context.shadowBlur = 0;
   context.save(); context.clip(skin);
   // Skin highlight follows the deformed upper-left rim instead of floating on a circle.
   context.beginPath();
   for (let index = 14; index <= 20; index++) { const point = points[index], x = body.x + (point.x - body.x) * .79, y = body.y + (point.y - body.y) * .79; if (index === 14) context.moveTo(x, y); else context.lineTo(x, y); }
-  context.strokeStyle = '#ffffff70'; context.lineWidth = radius * .08; context.lineCap = 'round'; context.lineJoin = 'round'; context.stroke();
+  context.strokeStyle = isPermeable ? '#ffffff25' : '#ffffff70'; context.lineWidth = radius * .08; context.lineCap = 'round'; context.lineJoin = 'round'; context.stroke();
   if (!isSeed) {
     // A pearly nucleus and drifting flecks make each jelly feel inhabited.
     const x = body.x + membrane.core[0], y = body.y + radius * .1 + membrane.core[1];
-    const nucleus = context.createRadialGradient(x, y, 0, x, y, radius * .34); nucleus.addColorStop(0, hue + 'd0'); nucleus.addColorStop(1, hue + '00'); context.fillStyle = nucleus; context.beginPath(); context.arc(x, y, radius * .34, 0, Math.PI * 2); context.fill();
-    for (let index = 0; index < 5; index++) { const point = points[(index * 5 + body.id) % points.length]; context.beginPath(); context.arc(x + (point.x - body.x) * .45, y + (point.y - body.y) * .4, 1.4, 0, Math.PI * 2); context.fillStyle = hue + 'a0'; context.fill(); }
+    const nucleus = context.createRadialGradient(x, y, 0, x, y, radius * .34); nucleus.addColorStop(0, hue + (isPermeable ? '20' : 'd0')); nucleus.addColorStop(1, hue + '00'); context.fillStyle = nucleus; context.beginPath(); context.arc(x, y, radius * .34, 0, Math.PI * 2); context.fill();
+    for (let index = 0; index < 5; index++) { const point = points[(index * 5 + body.id) % points.length]; context.beginPath(); context.arc(x + (point.x - body.x) * .45, y + (point.y - body.y) * .4, 1.4, 0, Math.PI * 2); context.fillStyle = hue + (isPermeable ? '25' : 'a0'); context.fill(); }
   }
   if (!isSeed && membrane.frost > .01) frostRender(body, points, skin, membrane.frost);
   if (isBubble) {
@@ -234,7 +235,7 @@ function blobRender(body, dt, time) {
     context.restore();
   }
   const marker = powerMarkers(game).find(marker => marker.target === body.id);
-  if(!isSeed) {context.save();context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);context.fillStyle='#e9ffed';context.font=`${marker?18:26}px Fredoka, sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(JELLY_ROLES[jellyRole(body.id)].mark,0,marker?body.radius*.68:0);context.restore();}
+  if(!isSeed) {context.save();if(isPermeable)context.globalAlpha=.35;context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);context.fillStyle='#e9ffed';context.font=`${marker?18:26}px Fredoka, sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(JELLY_ROLES[jellyRole(body.id)].mark,0,marker?body.radius*.68:0);context.restore();}
   if (marker) {
     const p = POWERS[marker.kind], icon = powerIcons[marker.kind], size = Math.min(52, body.radius * 1.25);
     context.save(); context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);context.shadowColor = p.color; context.shadowBlur = isGentle ? 0 : 12;
@@ -242,7 +243,7 @@ function blobRender(body, dt, time) {
     else { context.fillStyle = '#f3fff5'; context.font = '32px Arial'; context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillText(p.symbol, 0, 0); }
     context.restore();
   }
-  if (!isSeed && game.chain.includes(body.id)) { context.strokeStyle = hue + '88'; context.lineWidth = 1; context.beginPath(); for (const [index, point] of points.entries()) { const x = body.x + (point.x - body.x) * 1.1, y = body.y + (point.y - body.y) * 1.1; if (!index) context.moveTo(x, y); else context.lineTo(x, y); } context.closePath(); context.stroke(); }
+  if (!isSeed && game.chain.includes(body.id)) { context.strokeStyle = hue + (isPermeable ? '28' : '88'); context.lineWidth = 1; context.beginPath(); for (const [index, point] of points.entries()) { const x = body.x + (point.x - body.x) * 1.1, y = body.y + (point.y - body.y) * 1.1; if (!index) context.moveTo(x, y); else context.lineTo(x, y); } context.closePath(); context.stroke(); }
 }
 function render(now) {
   audio.musicUpdate(game.bodies.reduce((sum, body) => sum + Math.hypot(body.vx, body.vy), 0) / (game.bodies.length * 100));
@@ -372,6 +373,7 @@ function uiRender() {
     if (slot.innerHTML !== content) slot.innerHTML = content;
   }
   $('power-progress').textContent = game.isFlying ? `${used} / ${allowance} powers used · bloom to ${allowance === 3 ? 'keep all three' : `earn ${allowance + 1} next pluck`}` : `${allowance} ${allowance === 1 ? 'power' : 'powers'} this pluck · ${allowance === 3 ? 'bloom to keep all three' : `bloom to earn ${allowance + 1} next pluck`}. No bloom resets to 1.`;
+  canvas.dataset.frozenHit = game.chain.filter(id => frozenHit(game, id)).join(',');
   canvas.dataset.stasisTargets = (effectGet(game, 'stasis')?.targets || []).join(','); canvas.dataset.stasisSpeed = String(Math.max(0, ...(effectGet(game, 'stasis')?.targets || []).map(id => Math.hypot(game.bodies[id].vx, game.bodies[id].vy))));
   canvas.dataset.seedCount = String(seedBodies(game).length); canvas.dataset.seedRadius = game.bodies[0].radius.toFixed(1);
   const power = game.power, first = markers[0], kind = first?.kind || power.offer, p = POWERS[kind], available = powerAvailable(game);

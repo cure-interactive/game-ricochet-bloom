@@ -6,7 +6,7 @@ export const POWERS = Object.freeze({
   ripple: { name: 'Ripple', symbol: '◎', color: '#9ff5df', description: 'Push nearby jellies outward.' },
   attract: { name: 'Attract', symbol: '✦', color: '#ffb5de', description: 'Pull nearby jellies together.' },
   vortex: { name: 'Vortex', symbol: '↻', color: '#c4b6ff', description: 'Send nearby jellies swirling.' },
-  stasis: { name: 'Stasis', symbol: '❄', color: '#a4e8ff', description: 'Keep nearby jellies and any you hit slow for this pluck. Your seed keeps its bounce.' },
+  stasis: { name: 'Stasis', symbol: '❄', color: '#a4e8ff', description: 'Freeze jellies for this pluck. After a hit they turn translucent: pass through their soft outward pressure without losing speed.' },
   comet: { name: 'Comet', symbol: '☄', color: '#ffd293', description: 'Launch at comet speed and keep your momentum through bounces for this pluck.' },
   swap: { name: 'Swap', symbol: '⇄', color: '#f3b3ff', description: 'Exchange places with the farthest jelly and keep moving.' },
   magnet: { name: 'Magnet', symbol: '∩', color: '#ffb3cd', description: 'Draw unhit jellies toward your moving seed for 2.4 seconds.' },
@@ -55,6 +55,7 @@ function powerTargetNext(state) {
   power.target = candidates.length ? candidates[seedHash(state.seed + ':' + power.claims) % candidates.length].id : (power.target + seedHash(state.seed + ':' + power.claims) % 13) % 14 + 1;
 }
 export function effectGet(state, kind) { return state.effects.find(effect => effect.kind === kind); }
+export function frozenHit(state, id) { return state.isFlying && state.chain.includes(id) && !!effectGet(state, 'stasis')?.targets.includes(id); }
 export function seedBodies(state) { return [state.bodies[0], ...(effectGet(state, 'split')?.shards || []), ...(effectGet(state, 'echo')?.isReady ? [effectGet(state, 'echo').ghost] : [])]; }
 function effectClear(state, events = [], kind = null) {
   const split = effectGet(state, 'split');
@@ -282,9 +283,22 @@ export function physicsStep(state) {
     const marker = a.id <= 0 && a.id >= -2 && state.isFlying ? state.power.markers.find(marker => marker.target === b.id) : null;
     const isFrozenContact = a.id <= 0 && a.id >= -2 && state.isFlying && (effectGet(state, 'stasis') || marker?.kind === 'stasis');
     const nx = distance > .0001 ? dx / distance : 1, ny = distance > .0001 ? dy / distance : 0;
+    const isPermeable = a.id <= 0 && frozenHit(state, b.id);
+    if (isPermeable && pass === 0) {
+      const depth = 1 - distance / target, pressure = 2200 * depth * depth * (3 - 2 * depth) * dt;
+      const incomingX = a.vx, incomingY = a.vy, incomingSpeed = Math.hypot(incomingX, incomingY);
+      a.vx -= nx * pressure; a.vy -= ny * pressure;
+      const speed = Math.hypot(a.vx, a.vy);
+      // Pressure bends the shot without letting an opposing field stall it.
+      if (speed < incomingSpeed) {
+        if (speed > .0001) { a.vx *= incomingSpeed / speed; a.vy *= incomingSpeed / speed; }
+        else { a.vx = incomingX; a.vy = incomingY; }
+      }
+      velocityLimit(a);
+    }
     const isBubble = a.id === 0 && state.isFlying && !!effectGet(state, 'bubble');
     const coreRadius = isBubble ? effectGet(state, 'split') ? 10 : RULE.seedRadius : a.radius;
-    const solidTarget = coreRadius + b.radius;
+    const solidTarget = isPermeable ? 0 : coreRadius + b.radius;
     // The translucent shell overlaps freely; only the small seed core ricochets.
     // Apply continuous pressure once per step, not once per solver pass.
     if (isBubble && pass === 0 && a.radius > coreRadius) {
