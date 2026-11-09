@@ -152,6 +152,11 @@ export class PoolSound {
       this.tone(pitch, pitch / 2, .2, .045, pan, 0, 'sine', true);
       this.tone(exit / 2, exit, .3, .055, pan, .1, 'sine', true);
     }
+    if (event.type === 'wrap') {
+      const pitch = this.notePitch(3), gain = event.id < 0 ? .02 : .035;
+      this.tone(pitch, pitch / 2, .14, gain, event.fromX / 480 - 1, 0, 'sine', true);
+      this.tone(pitch / 2, pitch, .22, gain, pan, .06, 'sine', true);
+    }
     if (event.type === 'slingshot') { const pitch = this.notePitch(3); this.tone(pitch / 2, pitch, .25, .06, pan, 0, 'triangle', true); }
     if (event.type === 'reunite') { const pitch = this.notePitch(0); this.tone(pitch * 2, pitch, .24, .045, pan, 0, 'sine', true); }
     if(event.type==='spring') {const pitch=this.notePitch(0);this.tone(pitch*.65,pitch,.28,.09,pan,0,'sine',true);}

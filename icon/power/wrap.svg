@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="#8cefff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+  <title>Wrap</title>
+  <path d="M10 7v10m0 14v10M38 7v10m0 14v10" opacity=".65"/>
+  <path d="M18 24H3m5-5-5 5 5 5M45 24H30m5-5-5 5 5 5"/>
+  <path d="M16 10c5-4 11-4 16 0" stroke-dasharray="1 5" opacity=".65"/>
+  <circle cx="23" cy="24" r="2.5" fill="#e7fcff" stroke="none"/>
+</svg>

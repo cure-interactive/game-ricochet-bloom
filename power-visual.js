@@ -68,6 +68,10 @@ export class PowerVisual {
     if(event.type==='relay') this.add({kind:'branch',x:event.fromX,y:event.fromY,endX:event.x,endY:event.y,color:POWERS.relay.color,duration:.7});
     if(event.type==='orbit-release') this.add({kind:'shock',...event,color:POWERS.orbit.color,duration:.7});
     if(event.type==='spring') this.add({kind:'spring',...event,color:POWERS.spring.color,duration:.85});
+    if (event.type === 'wrap') {
+      this.add({ kind: 'wrap', x: event.fromX, y: event.fromY, nx: -event.nx, ny: -event.ny, color: POWERS.wrap.color, duration: .55 });
+      this.add({ kind: 'wrap', x: event.x, y: event.y, nx: -event.nx, ny: -event.ny, color: POWERS.wrap.color, duration: .55 });
+    }
     if (event.type === 'portal') for (const point of [{ x: event.fromX, y: event.fromY }, event]) this.add({ kind: 'endpoint', color: POWERS.portal.color, x: point.x, y: point.y, duration: .7 });
     if (event.type === 'push' || event.type === 'lightning') {
       const color = POWERS[event.type === 'push' ? 'impact' : 'lightning'].color;
@@ -88,7 +92,11 @@ export class PowerVisual {
       const progress = cue.age / cue.duration, travel = gentle ? .35 : progress;
       c.save(); c.globalAlpha = (1 - progress) * (gentle ? .3 : .65); c.lineWidth = gentle ? 1.4 : 2;
       c.strokeStyle = c.fillStyle = cue.color || POWERS[cue.kind]?.color || POWERS.split.color;
-      if (['ripple', 'attract'].includes(cue.kind)) {
+      if (cue.kind === 'wrap') {
+        const angle = Math.atan2(cue.ny, cue.nx), radius = 12 + travel * 28;
+        c.beginPath(); c.ellipse(cue.x, cue.y, radius * .5, radius, angle, 0, TAU); c.stroke();
+        arrow(c, cue.x + Math.cos(angle) * travel * 42, cue.y + Math.sin(angle) * travel * 42, angle, gentle ? 6 : 10);
+      } else if (['ripple', 'attract'].includes(cue.kind)) {
         const inward = cue.kind === 'attract';
         for (let i = 0; i < (gentle ? 8 : 14); i++) {
           const angle = i * TAU / (gentle ? 8 : 14), radius = 30 + (inward ? 1 - travel : travel) * (RULE.powerRadius - 30);
@@ -170,8 +178,19 @@ export class PowerVisual {
       const p=wake.trail[i];c.strokeStyle=POWERS.wake.color;c.globalAlpha=(1-p.age/1.8)*(gentle?.2:.5);c.lineWidth=2;
       line(c,p.x-p.nx*18,p.y-p.ny*18,p.x+p.nx*12,p.y+p.ny*12);arrow(c,p.x+p.nx*12,p.y+p.ny*12,Math.atan2(p.ny,p.nx),6);
     }
-    const springCues = this.cues.filter(cue => cue.kind === 'spring'), springActive = !!effectGet(game, 'spring');
+    const wrap = effectGet(game, 'wrap');
+    const springCues = this.cues.filter(cue => cue.kind === 'spring'), springActive = !!effectGet(game, 'spring') && !wrap;
     if (springActive || springCues.length) springWall(c, springCues, gentle, springActive);
+    if (wrap) {
+      const fade = Math.min(1, wrap.seconds / .5), inset = RULE.inset + 6;
+      c.strokeStyle = POWERS.wrap.color; c.globalAlpha = (gentle ? .25 : .5) * fade; c.lineWidth = 2;
+      c.setLineDash([4, 16]); c.beginPath(); c.roundRect(inset, inset, RULE.width - inset * 2, RULE.height - inset * 2, 40); c.stroke(); c.setLineDash([]);
+      for (const [x, y, nx, ny] of [[inset, RULE.height / 2, -1, 0], [RULE.width - inset, RULE.height / 2, 1, 0], [RULE.width / 2, inset, 0, -1], [RULE.width / 2, RULE.height - inset, 0, 1]]) {
+        const travel = gentle ? 12 : 8 + ((5 - wrap.seconds) * 24) % 20;
+        c.globalAlpha = (gentle ? .45 : .85) * fade;
+        for (let i = 0; i < 2; i++) arrow(c, x - nx * (travel + i * 12), y - ny * (travel + i * 12), Math.atan2(ny, nx), 8);
+      }
+    }
     const orbit=effectGet(game,'orbit');
     if(orbit) for(const id of orbit.satellites) {const b=game.bodies[id];c.strokeStyle=POWERS.orbit.color;c.globalAlpha=gentle?.3:.65;c.lineWidth=1.5;curve(c,seed,b,25);c.beginPath();c.arc(b.x,b.y,b.radius+5,0,TAU);c.stroke();}
     const rewind=effectGet(game,'rewind');
