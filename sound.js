@@ -1,6 +1,7 @@
+import {instrumentNote,instrumentPercussion} from './instrument.js';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js';
-import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicChoose, musicComposeBar } from './music.js';
+import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicChoose, musicComposeBar, musicAccent, jellyRole } from './music.js';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export class PoolSound {
@@ -109,44 +110,8 @@ export class PoolSound {
     for (const [id, event] of this.playbackLights) if (event.until <= now) this.playbackLights.delete(id);
   }
   phraseChoose(keep) { return musicChoose(this.music, keep); }
-  musicVoice(event) {
-    if (['kick', 'rim', 'shaker'].includes(event.role)) { this.musicPercussion(event); return; }
-    const isLead = event.role === 'lead';
-    const partials = isLead ? [[1, 1, 1], [2, .28, .55], [3, .08, .3]] : [[1, 1, 1], [2, .13, .45]];
-    if (this.phraseVoices.size + partials.length > 30 || this.voiceCount + partials.length > 38) return;
-    const context = this.context, start = Math.max(context.currentTime, event.at), pitch = frequency(event.midi);
-    // Piano-like decay: upper partials disappear faster than the body of the note.
-    // A soft hammer attack and short release avoid both clicks and organ-like sustain.
-    for (const [multiple, strength, decay] of partials) {
-      const oscillator = context.createOscillator(), gain = context.createGain(), stereo = context.createStereoPanner();
-      oscillator.type = event.role === 'accompaniment' ? 'triangle' : 'sine'; oscillator.frequency.value = pitch * multiple;
-      const duration = event.duration * decay, peak = event.level * strength;
-      gain.gain.setValueAtTime(.0001, start);
-      gain.gain.linearRampToValueAtTime(peak, start + event.attack);
-      gain.gain.exponentialRampToValueAtTime(peak * .22, start + Math.max(event.attack + .02, duration * .35));
-      gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
-      stereo.pan.setValueAtTime(event.pan, start);
-      oscillator.connect(gain); gain.connect(stereo); stereo.connect(this.musicInput);
-      const voice = { oscillator, gain, start }; this.phraseVoices.add(voice); this.voiceCount++;
-      oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); stereo.disconnect(); this.phraseVoices.delete(voice); this.voiceCount--; };
-      oscillator.start(start); oscillator.stop(start + duration + .03);
-    }
-    if (event.sourceId > 0) { this.playbackQueue.push({ at: start, sourceId: event.sourceId, step: event.step, phraseIndex: event.phraseIndex, reply: !!event.reply }); this.playbackQueue.sort((a, b) => a.at - b.at); }
-  }
-
-  musicPercussion(event) {
-    if (this.phraseVoices.size >= 30 || this.voiceCount >= 38) return;
-    const context = this.context, start = Math.max(context.currentTime, event.at), gain = context.createGain(), stereo = context.createStereoPanner();
-    const oscillator = event.role === 'shaker' ? context.createBufferSource() : context.createOscillator();
-    const filter = context.createBiquadFilter();
-    if (event.role === 'shaker') { oscillator.buffer = this.percussionNoise; filter.type = 'highpass'; filter.frequency.value = 1400; }
-    else { oscillator.type = event.role === 'kick' ? 'sine' : 'triangle'; oscillator.frequency.setValueAtTime(event.role === 'kick' ? 125 : 900, start); oscillator.frequency.exponentialRampToValueAtTime(event.role === 'kick' ? 48 : 600, start + event.duration); filter.type = 'lowpass'; filter.frequency.value = event.role === 'kick' ? 240 : 1800; }
-    gain.gain.setValueAtTime(.0001, start); gain.gain.linearRampToValueAtTime(event.level, start + .005); gain.gain.exponentialRampToValueAtTime(.0001, start + event.duration);
-    stereo.pan.value = event.pan; oscillator.connect(filter); filter.connect(gain); gain.connect(stereo); stereo.connect(this.musicInput);
-    const voice = { oscillator, gain, start }; this.phraseVoices.add(voice); this.voiceCount++;
-    oscillator.onended = () => { oscillator.disconnect(); filter.disconnect(); gain.disconnect(); stereo.disconnect(); this.phraseVoices.delete(voice); this.voiceCount--; };
-    oscillator.start(start); oscillator.stop(start + event.duration + .01);
-  }
+  musicVoice(event) { instrumentNote(this,event); }
+  musicPercussion(event) { instrumentPercussion(this,event); }
   pauseSet(value) { this.isPaused = value; if (value) this.phraseClear(); this.mixUpdate(); }
   notePitch(tone) { return this.harmony ? frequency(this.harmony.notes[tone % 5]) : SCALE[tone % 5]; }
   settingsSet(volume, isMuted) { this.volume = volume; this.isMuted = isMuted; if (isMuted) this.phraseClear(); if (this.master) this.master.gain.setTargetAtTime(isMuted ? 0 : volume * .48, this.context.currentTime, .03); this.mixUpdate(); }
@@ -163,14 +128,15 @@ export class PoolSound {
   eventPlay(event) {
     if (event.type === 'launch') musicLaunch(this.music);
     if (['rest', 'win', 'over'].includes(event.type)) musicFinish(this.music);
-    if (event.type === 'note') musicStrike(this.music, event.tone, event.tick, event.chain, event.id, (this.harmony?.notes[event.tone % 5] ?? [60, 62, 64, 67, 69][event.tone % 5]) + (event.chain > 3 ? 12 : 0));
-    if (event.type === 'bloom') musicBloom(this.music);
+    if (event.type === 'note') musicStrike(this.music, event.tone, event.tick, event.chain, event.id, (this.harmony?.notes[event.tone % 5] ?? [60, 62, 64, 67, 69][event.tone % 5]) + (event.chain > 3 ? 12 : 0), event.speed);
+    if (event.type === 'bloom') {musicBloom(this.music);if(event.banks>0)musicAccent(this.music);}
+    if(event.type==='objective')musicAccent(this.music);
     if (!this.context || this.isMuted) return;
     this.eventCount++; const pan = ((event.x ?? 480) / 960 - .5) * 1.5;
     if (event.type === 'launch') { this.tone(130, 520, .13, .25, pan); this.tone(65, 38, .18, .25, pan); }
     if (event.type === 'wall') this.tone(190 + Math.min(300, event.speed), 85, .16, .1, pan);
     if (event.type === 'impact') this.tone(event.bubble ? 120 : 100 + Math.min(200, event.speed), event.bubble ? 42 : 55, event.bubble ? .18 : .095, Math.min(.15, event.speed / 2500), pan);
-    if (event.type === 'note') { const gain = event.seedId < 0 ? .65 : 1; const pitch = this.notePitch(event.tone) * (event.chain > 3 ? 2 : 1); this.tone(pitch * 2.2, pitch, .075, .23 * gain, pan); this.tone(pitch, pitch * .998, .65, .24 * gain, pan, .025, 'sine', true); this.tone(pitch * 2, pitch * 2, .32, .055 * gain, pan, .03, 'triangle', true); }
+    if (event.type === 'note') { const gain = event.seedId < 0 ? .65 : 1; const pitch = this.notePitch(event.tone) * (jellyRole(event.id)==='bass'?.5:event.chain>3?2:1); this.tone(pitch * 2.2, pitch, .075, .23 * gain, pan); this.tone(pitch, pitch * .998, .65, .24 * gain, pan, .025, 'sine', true); this.tone(pitch * 2, pitch * 2, .32, .055 * gain, pan, .03, 'triangle', true); }
     if (event.type === 'note' || event.type === 'launch') { this.duckUntil = this.context.currentTime + .8; this.mixUpdate(); }
     if (event.type === 'power') {
       const degrees = ({ ripple: [0, 2, 3], attract: [3, 2, 0], vortex: [0, 3, 2, 3], stasis: [3, 0], comet: [0, 2, 3, 5], swap: [0, 3, 0, 2], magnet: [5, 3, 2, 0], lightning: [], impact: [0, 0, 3], tether: [0, 2, 0], split: [0, 3, 5], bubble: [0, 3, 2], portal: [0, 5], echo: [3, 0, 3], slingshot: [0, 2], drunk: [0, 3, 2, 5, 3] })[event.kind] || [0, 2, 3];
@@ -190,6 +156,10 @@ export class PoolSound {
     }
     if (event.type === 'slingshot') { const pitch = this.notePitch(3); this.tone(pitch / 2, pitch, .25, .06, pan, 0, 'triangle', true); }
     if (event.type === 'reunite') { const pitch = this.notePitch(0); this.tone(pitch * 2, pitch, .24, .045, pan, 0, 'sine', true); }
+    if(event.type==='spring') {const pitch=this.notePitch(0);this.tone(pitch*.65,pitch,.28,.09,pan,0,'sine',true);}
+    if(event.type==='pulse') {const pitch=this.notePitch([0,2,3][event.beat]);this.tone(pitch/2,pitch/2,.4,.1,pan,0,'sine',true);}
+    if(event.type==='relay') {const pitch=this.notePitch(2);this.tone(pitch*2,pitch*2,.35,.045,pan,0,'triangle',true);}
+    if(event.type==='orbit-release'||event.type==='rewind') {const pitch=this.notePitch(3);this.tone(pitch*2,pitch,.3,.05,pan,0,'sine',true);}
     if (event.type === 'push') this.tone(100, 45, .12, .09, pan);
     if (event.type === 'win') { [this.notePitch(0), this.notePitch(2), this.notePitch(3), this.notePitch(0) * 2].forEach((pitch, index) => this.tone(pitch, pitch, 1.2, .12, 0, index * .22, 'sine', true)); }
     if (event.type === 'over') [523.25, 392, 329.63, 261.63].forEach((pitch, index) => this.tone(pitch, pitch, .75, .15, 0, index * .12, 'sine', true));

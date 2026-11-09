@@ -5,6 +5,10 @@ export const CHORDS = [
   { name: 'Fmaj9', notes: [53, 55, 57, 60, 64] },
   { name: 'G6/9', notes: [55, 57, 59, 62, 64] }
 ];
+export const JELLY_ROLES = Object.freeze({melody:{name:'Melody',mark:'♪'},bass:{name:'Bass',mark:'≋'},rhythm:{name:'Rhythm',mark:'⋮'}});
+export const jellyRole = id => ['melody','bass','rhythm'][Math.max(0,id-1)%3];
+export const PALETTES = Object.freeze({glass:'Glass',velvet:'Velvet',wood:'Wood'});
+export function musicAccent(music) { if(music.bar >= music.accentUntil) { music.accentStart=Math.ceil(music.bar/4)*4;music.accentUntil=music.accentStart+8; } }
 export const BEAT_SECONDS = .75, BAR_SECONDS = 3, PASSAGE_SECONDS = 12;
 const tonesValid = (tones, min, max) => Array.isArray(tones) && tones.length >= min && tones.length <= max && tones.every(tone => Number.isInteger(tone) && tone >= 0 && tone < 5);
 const countValid = value => Number.isSafeInteger(value) && value >= 0;
@@ -21,7 +25,7 @@ function legacyPhrase(value) {
   return { tones: [...value.tones], rhythm: value.rhythm, steps: value.tones.map((_, i) => timing[i % 4] + Math.floor(i / 4) * 8), ids: value.tones.map(() => 0), pitches: value.tones.map(tone => PENTATONIC[tone]) };
 }
 export function musicCreate(input = null, blooms = 0, plucks = null) {
-  const empty = { version: 3, blooms, plucks: countValid(plucks) ? plucks : 0, theme: [], history: [], strikes: [], motifs: [], bar: 0, formStart: 0, hook: null, kept: false, reply: null };
+  const empty = { version: 3, blooms, plucks: countValid(plucks) ? plucks : 0, theme: [], history: [], strikes: [], motifs: [], bar: 0, formStart: 0, hook: null, kept: false, reply: null, parts:{melody:null,bass:null,rhythm:null}, intensity:{}, palette:'glass', accentStart:-1, accentUntil:0 };
   if (!input || ![1, 2, 3].includes(input.version) || input.blooms !== blooms || !tonesValid(input.theme, 0, 4) || !Array.isArray(input.history) || input.history.length > Math.min(4, blooms) || !Array.isArray(input.strikes) || input.strikes.length > (input.version === 3 ? 14 : 8)) return empty;
   if (input.history.length && input.theme.length !== 4) return empty;
   const valid = input.version === 3 ? phraseValid : value => motifValid(value) && value.tones.length <= 8;
@@ -29,8 +33,13 @@ export function musicCreate(input = null, blooms = 0, plucks = null) {
   if (!input.strikes.every((hit, i) => hit && tonesValid([hit.tone], 1, 1) && countValid(hit.tick) && (!i || hit.tick >= input.strikes[i - 1].tick) && (input.version !== 3 || (idValid(hit.id) && pitchValid(hit.midi))))) return empty;
   if (input.version >= 2 && (!countValid(input.plucks) || !countValid(input.bar) || !countValid(input.formStart) || input.formStart > input.bar || (plucks !== null && input.plucks !== plucks) || !Array.isArray(input.motifs) || input.motifs.length > 4 || !input.motifs.every(valid))) return empty;
   if (input.version === 3 && (typeof input.kept !== 'boolean' || (input.hook !== null && !phraseValid(input.hook)) || (input.kept && !input.hook) || (input.reply !== null && (!input.reply || !phraseValid(input.reply.phrase) || ![0, 1].includes(input.reply.part))))) return empty;
+  const parts=Object.fromEntries(Object.keys(JELLY_ROLES).map(role=>[role,phraseValid(input.parts?.[role])?phraseCopy(input.parts[role]):null]));
+  const intensity=Object.fromEntries(Object.entries(input.intensity||{}).filter(([id,v])=>idValid(Number(id))&&Number.isFinite(v)&&v>=0&&v<=1));
+  const palette=Object.hasOwn(PALETTES,input.palette)?input.palette:'glass';
+  const accentStart=Number.isInteger(input.accentStart)&&input.accentStart>=-1&&input.accentStart<=input.bar+4?input.accentStart:-1;
+  const accentUntil=countValid(input.accentUntil)&&input.accentUntil<=input.bar+12?input.accentUntil:0;
   const copy = value => input.version === 3 ? phraseCopy(value) : legacyPhrase(value);
-  return { ...empty, plucks: plucks ?? (input.version >= 2 ? input.plucks : blooms), theme: [...input.theme], history: input.history.map(value => ({ ...copy(value), chord: value.chord })), strikes: input.strikes.map(hit => ({ tone: hit.tone, tick: hit.tick, id: hit.id ?? 0, midi: hit.midi ?? PENTATONIC[hit.tone] })), motifs: (input.version >= 2 ? input.motifs : input.history).map(copy), bar: input.version >= 2 ? input.bar : 0, formStart: input.version >= 2 ? input.formStart : 0, hook: input.version === 3 && input.hook ? copy(input.hook) : null, kept: input.version === 3 ? input.kept : false, reply: input.version === 3 && input.reply ? { phrase: copy(input.reply.phrase), part: input.reply.part } : null };
+  return { ...empty, parts, intensity, palette, accentStart, accentUntil, plucks: plucks ?? (input.version >= 2 ? input.plucks : blooms), theme: [...input.theme], history: input.history.map(value => ({ ...copy(value), chord: value.chord })), strikes: input.strikes.map(hit => ({ tone: hit.tone, tick: hit.tick, id: hit.id ?? 0, midi: hit.midi ?? PENTATONIC[hit.tone] })), motifs: (input.version >= 2 ? input.motifs : input.history).map(copy), bar: input.version >= 2 ? input.bar : 0, formStart: input.version >= 2 ? input.formStart : 0, hook: input.version === 3 && input.hook ? copy(input.hook) : null, kept: input.version === 3 ? input.kept : false, reply: input.version === 3 && input.reply ? { phrase: copy(input.reply.phrase), part: input.reply.part } : null };
 }
 function capture(music) {
   const hits = music.strikes.length ? music.strikes : [0, 2, 3, 1].map((tone, i) => ({ tone, tick: i * 90, id: 0, midi: PENTATONIC[tone] }));
@@ -54,15 +63,21 @@ function hookSet(music, phrase) {
   music.theme = Array.from({ length: 4 }, (_, i) => phrase.tones[i % phrase.tones.length]);
 }
 export function musicLaunch(music) { music.plucks++; music.strikes = []; }
-export function musicStrike(music, tone, tick, chain, id = 0, midi = PENTATONIC[tone]) {
+export function musicStrike(music, tone, tick, chain, id = 0, midi = PENTATONIC[tone], speed = 400) {
   if (chain === 1) music.strikes = [];
   if (!tonesValid([tone], 1, 1) || music.strikes.length >= 14) return;
+  music.intensity[id]=Math.max(0,Math.min(1,(Number.isFinite(speed)?speed:400)/1000));
   music.strikes.push({ tone, tick: Math.max(music.strikes.at(-1)?.tick ?? 0, countValid(tick) ? tick : 0), id: idValid(id) ? id : 0, midi: pitchValid(midi) ? midi : PENTATONIC[tone] });
 }
 export function musicFinish(music) {
   if (music.strikes.length) {
     const motif = capture(music); music.motifs.push(motif); music.motifs = music.motifs.slice(-4);
     if (!music.kept || !music.hook) hookSet(music, motif);
+    for(const role of Object.keys(JELLY_ROLES)) {
+      if(role==='melody'&&music.kept)continue;
+      const hits=music.strikes.filter(hit=>hit.id>0&&jellyRole(hit.id)===role);
+      if(hits.length)music.parts[role]=capture({...music,strikes:hits});
+    }
     music.reply = { phrase: phraseCopy(motif), part: 0 };
   }
   music.strikes = [];
@@ -134,7 +149,7 @@ export function musicCompose(music, passage = 0, flow = 0, previous = 67) {
     if (stage >= 3 && !breakdown) add(at + 1.5, BASS[chord] + (chorus && bar % 2 ? 7 : 0), .9, .026, 'bass', -.12);
     for (const beat of breakdown ? [2] : chorus ? [.5, 2, 3.5] : [1, 3]) add(at + beat * BEAT_SECONDS, VOICINGS[chord][(bar + Math.floor(beat) + cycle) % 3], 1.15, .022 * density + motion * .003, 'accompaniment', -.3);
     if (music.hook) {
-      const phrase = bar < 2 || chorus ? music.hook : (music.motifs[(passage + cycle) % music.motifs.length] || music.hook);
+      const phrase = !music.kept && music.parts?.melody ? music.parts.melody : bar < 2 || chorus ? music.hook : (music.motifs[(passage + cycle) % music.motifs.length] || music.hook);
       const part = bar % 2;
       for (const [i, step] of phrase.steps.entries()) {
         if (Math.floor(step / 8) !== part || (breakdown && i % 2)) continue;
@@ -184,5 +199,23 @@ export function musicComposeBar(music, bar = music.bar, flow = 0, previous = 67)
       events.push({ at: (step % 8) * .375, midi: phrase.pitches[i], duration: Math.min(1.6, ((phrase.steps[i + 1] ?? 16) - step) * .375 + .12), level: score.stage < 2 ? .045 : .08, role: 'lead', pan: .1, attack: .025, sourceId: phrase.ids[i], step, phraseIndex: i, reply: true });
     }
   }
-  return { ...score, events: events.sort((a, b) => a.at - b.at), duration: BAR_SECONDS, isReply: !!music.reply, nextPitch: events.filter(event => event.role === 'lead').at(-1)?.midi ?? previous };
+  const chord=events.find(event=>event.chord!==undefined)?.chord??0;
+  for(const role of ['bass','rhythm']) {
+    const phrase=music.parts?.[role];if(!phrase||score.stage<(role==='bass'?2:3))continue;
+    const kinds=role==='bass'?['bass']:['kick','rim','shaker']; events=events.filter(e=>!kinds.includes(e.role));
+    for(const [i,step] of phrase.steps.entries()) if(Math.floor(step/8)===bar%2) {
+      events.push({at:(step%8)*.375,midi:role==='bass'?chordPitch(chord,phrase.pitches[i]-24,36,55):0,duration:role==='bass'?.8:.12,level:role==='bass'?.042:.032,role:role==='bass'?'bass':i%2?'rim':'kick',pan:role==='bass'?-.12:.12,attack:.025,sourceId:phrase.ids[i],step});
+    }
+  }
+  const accent=music.accentStart>=0?bar-music.accentStart:-1;
+  let section=score.section;
+  if(accent===0) {section='Earned fill';for(let i=0;i<3;i++)events.push({at:1.875+i*.375,midi:0,duration:.10,level:.025,role:'rim',pan:(i-1)*.2,attack:.005});}
+  if(accent===1) {section='Breathing room';events=events.filter(e=>!['accompaniment','shaker','answer'].includes(e.role)).map(e=>e.level?{...e,level:e.level*.7}:e);}
+  if(accent===2) {section='Return';events.push({at:0,midi:chordPitch(chord,72),duration:1.2,level:.045,role:'answer',pan:0,attack:.05});}
+  events=events.map(e=>{
+    if(!e.level)return e;
+    const force=music.intensity?.[e.sourceId]??.45, ending=e.at>2.2?.83:1;
+    return {...e,level:e.level*(.78+force*.38)*ending,attack:Math.max(.006,(e.attack??.025)*(1.3-force*.65)),duration:e.duration*(.94+force*.12),brightness:.7+force*.6,palette:music.palette};
+  });
+  return { ...score, section, events: events.sort((a, b) => a.at - b.at), duration: BAR_SECONDS, isReply: !!music.reply, nextPitch: events.filter(event => event.role === 'lead').at(-1)?.midi ?? previous };
 }

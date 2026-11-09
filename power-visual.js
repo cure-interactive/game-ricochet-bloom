@@ -28,6 +28,10 @@ export class PowerVisual {
       if (event.kind === 'swap') for (const point of [{ x: event.x, y: event.y }, { x: event.exitX, y: event.exitY }]) this.add({ kind: 'endpoint', color: POWERS.swap.color, ...point, duration: .85 });
       if (event.kind === 'split') for (const shard of effectGet(game, 'split')?.shards || []) this.add({ kind: 'branch', x: seed.x, y: seed.y, endX: shard.x + shard.vx * .12, endY: shard.y + shard.vy * .12, duration: .65 });
     }
+    if(event.type==='pulse') this.add({kind:'ripple',color:POWERS.pulse.color,x:event.x,y:event.y,duration:.72});
+    if(event.type==='relay') this.add({kind:'branch',x:event.fromX,y:event.fromY,endX:event.x,endY:event.y,color:POWERS.relay.color,duration:.7});
+    if(event.type==='orbit-release') this.add({kind:'shock',...event,color:POWERS.orbit.color,duration:.7});
+    if(event.type==='spring') this.add({kind:'spring',...event,color:POWERS.spring.color,duration:.65});
     if (event.type === 'portal') for (const point of [{ x: event.fromX, y: event.fromY }, event]) this.add({ kind: 'endpoint', color: POWERS.portal.color, x: point.x, y: point.y, duration: .7 });
     if (event.type === 'push' || event.type === 'lightning') {
       const color = POWERS[event.type === 'push' ? 'impact' : 'lightning'].color;
@@ -47,7 +51,11 @@ export class PowerVisual {
       const progress = cue.age / cue.duration, travel = gentle ? .35 : progress;
       c.save(); c.globalAlpha = (1 - progress) * (gentle ? .3 : .65); c.lineWidth = gentle ? 1.4 : 2;
       c.strokeStyle = c.fillStyle = cue.color || POWERS[cue.kind]?.color || POWERS.split.color;
-      if (['ripple', 'attract'].includes(cue.kind)) {
+      if(cue.kind==='spring') {
+        const x=cue.x-cue.nx*14,y=cue.y-cue.ny*14,bulge=Math.sin(progress*Math.PI)*24;
+        c.beginPath();c.moveTo(x-cue.ny*65,y+cue.nx*65);c.quadraticCurveTo(x-cue.nx*bulge,y-cue.ny*bulge,x+cue.ny*65,y-cue.nx*65);c.stroke();
+        arrow(c,x+cue.nx*(30+progress*60),y+cue.ny*(30+progress*60),Math.atan2(cue.ny,cue.nx),12);
+      } else if (['ripple', 'attract'].includes(cue.kind)) {
         const inward = cue.kind === 'attract';
         for (let i = 0; i < (gentle ? 8 : 14); i++) {
           const angle = i * TAU / (gentle ? 8 : 14), radius = 30 + (inward ? 1 - travel : travel) * (RULE.powerRadius - 30);
@@ -119,6 +127,26 @@ export class PowerVisual {
         }
       }
     }
+    const relay=effectGet(game,'relay');
+    if(relay) for(const id of relay.armed.filter(id=>!relay.spent.includes(id))) {
+      const b=game.bodies[id];c.strokeStyle=POWERS.relay.color;c.globalAlpha=gentle?.4:.75;c.lineWidth=2;
+      c.setLineDash([5,7]);c.beginPath();c.arc(b.x,b.y,b.radius+9,0,TAU);c.stroke();c.setLineDash([]);
+    }
+    const wake=effectGet(game,'wake');
+    if(wake) for(let i=0;i<wake.trail.length;i+=gentle?9:4) {
+      const p=wake.trail[i];c.strokeStyle=POWERS.wake.color;c.globalAlpha=(1-p.age/1.8)*(gentle?.2:.5);c.lineWidth=2;
+      line(c,p.x-p.nx*18,p.y-p.ny*18,p.x+p.nx*12,p.y+p.ny*12);arrow(c,p.x+p.nx*12,p.y+p.ny*12,Math.atan2(p.ny,p.nx),6);
+    }
+    if(effectGet(game,'spring')) {c.strokeStyle=POWERS.spring.color;c.globalAlpha=gentle?.25:.6;c.lineWidth=3;c.setLineDash([16,8]);c.beginPath();c.roundRect(32,32,896,576,40);c.stroke();c.setLineDash([]);}
+    const orbit=effectGet(game,'orbit');
+    if(orbit) for(const id of orbit.satellites) {const b=game.bodies[id];c.strokeStyle=POWERS.orbit.color;c.globalAlpha=gentle?.3:.65;c.lineWidth=1.5;curve(c,seed,b,25);c.beginPath();c.arc(b.x,b.y,b.radius+5,0,TAU);c.stroke();}
+    const rewind=effectGet(game,'rewind');
+    if(rewind) {const path=rewind.returning?rewind.route:game.flightPath;c.strokeStyle=POWERS.rewind.color;c.globalAlpha=gentle?.22:.5;c.lineWidth=2;c.setLineDash([4,8]);c.beginPath();let prev;
+      for(let i=0;i<path.length;i+=3) {const p=path[i];if(!prev||Math.hypot(p.x-prev.x,p.y-prev.y)>100)c.moveTo(p.x,p.y);else c.lineTo(p.x,p.y);prev=p;} c.stroke();c.setLineDash([]);
+      if(rewind.returning) {c.globalAlpha=.8;arrow(c,seed.x,seed.y,Math.atan2(seed.vy,seed.vx),18);}
+    }
+    const pulse=effectGet(game,'pulse');
+    if(pulse) {c.strokeStyle=POWERS.pulse.color;c.globalAlpha=gentle?.35:.7;for(let i=0;i<pulse.remaining;i++){c.beginPath();c.arc(seed.x,seed.y,seed.radius+10+i*7,-Math.PI*.8,Math.PI*.8);c.stroke();}}
     if (effectGet(game, 'comet')) {
       const speed = Math.max(1, Math.hypot(seed.vx, seed.vy)), nx = seed.vx / speed, ny = seed.vy / speed;
       const length = gentle ? 32 : Math.min(115, speed * .12), width = seed.radius * .7;

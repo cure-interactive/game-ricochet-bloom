@@ -6,7 +6,7 @@
 
 ![Ricochet Bloom cover](artwork/pool-512.png)
 
-Drag backward and release to pluck a luminous seed through drifting jellies. Five different jelly touches form a bloom. Make three blooms before your twelve plucks run out, or choose Free play to keep shaping the music. Successful plucks unlock up to three contact powers per shot; sixteen powers change how the pool moves.
+Drag backward and release to pluck a luminous seed through drifting jellies. Five different jelly touches form a bloom. Make three blooms before your twelve plucks run out, or choose Free play to keep shaping the music. Successful plucks unlock up to three contact powers per shot; twenty-two powers change how the pool moves.
 
 Your plucks supply melodic ideas and your bloom chords build the accompaniment into a song. Headphones are recommended. Sound starts after you enter the pool; volume and ambience have separate controls. Gentle visuals is optional.
 
@@ -20,4 +20,10 @@ This repository is the static playable edition, published with Git Repository Pu
 
 Original procedural light, artwork, physics, and synthesized sound by Cure Interactive. Fredoka is bundled unmodified under the [SIL Open Font License](font/fredoka/OFL.txt). No external audio recordings, analytics, or advertising are used.
 
-Copyright © 2026 Cure Interactive. All rights reserved except separately licensed font assets.
+Copyright Â© 2026 Cure Interactive. All rights reserved except separately licensed font assets.
+
+### Shape and keep your music
+
+Jellies are marked for melody (♪), bass (≋), and rhythm (⋮). Actual contacts develop separate memories as the song layers unlock. Glass, Velvet, and Wood palettes change the shared instruments; impact strength changes articulation. Banked blooms and optional bonus objectives earn occasional phrase-boundary fills, breathing room, and returns. Bonus objectives rotate through a banked bloom, seven unique hits, and a bank with two powers, awarding 200 points once per pluck. The aim guide previews the first wall rebound and stops at the next wall; moving jellies can change the actual path. Shot feedback reports notes, banks, powers and points.
+
+Song library saves up to 24 named favorites independently of the current pool, in this browser only. Select a favorite to rename it or prepare a 26-second stereo WAV highlight using the same composer and instruments. Playback does not replace your pool. Download WAV works independently of native file sharing; Share audio appears only when the browser supports it and opens its own share sheet. Clearing browser storage removes favorites, so export keepsakes first. Live ambience continues evolving; the finite highlight is only an export.

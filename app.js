@@ -1,7 +1,8 @@
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, seedBodies, POWERS } from './engine.js';
+import {songLibrarySetup} from './song-ui.js';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, seedBodies, POWERS, OBJECTIVES, aimPreview } from './engine.js';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js';
 import { PoolSound } from './sound.js';
-import { musicProgress, musicPhrasePreview } from './music.js';
+import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js';
 import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js';
 import { PowerVisual } from './power-visual.js';
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
@@ -58,6 +59,7 @@ function eventHandle(event) {
   }
   if (event.type === 'impact') { membraneHit(event.a, event.nx, event.ny, event.speed); membraneHit(event.b, -event.nx, -event.ny, event.speed); }
   if (event.type === 'wall') membraneHit(event.id, -event.nx, -event.ny, event.speed);
+  if(event.type==='objective') {toast('Objective complete · +200 · a musical lift is on its way.');save();}
   if (event.type === 'note') {
     noteCount++; membraneGet(game.bodies[event.id]).glow = 1;
     const previous = game.chain.length > 1 ? game.bodies[game.chain.at(-2)] : game.bodies[0];
@@ -225,6 +227,7 @@ function blobRender(body, dt, time) {
     context.restore();
   }
   const marker = powerMarkers(game).find(marker => marker.target === body.id);
+  if(!isSeed) {context.save();context.fillStyle='#e9ffed';context.font='16px Fredoka, sans-serif';context.textAlign='center';context.textBaseline='middle';context.fillText(JELLY_ROLES[jellyRole(body.id)].mark,body.x,body.y+(marker?body.radius*.68:0));context.restore();}
   if (marker) {
     const p = POWERS[marker.kind], icon = powerIcons[marker.kind], size = Math.min(52, body.radius * 1.25);
     context.save(); context.shadowColor = p.color; context.shadowBlur = isGentle ? 0 : 12;
@@ -304,9 +307,9 @@ function render(now) {
   for (const body of game.bodies.slice(1)) blobRender(body, visualDelta, time);
   for (const body of seeds) { context.save(); if (body.id === -3) context.globalAlpha = .42; blobRender(body, visualDelta, time); context.restore(); }
   if (!game.isFlying && isStarted && !isPaused && !game.isOver) {
-    const length = 65 + power * 75, x = seed.x + Math.cos(angle) * length, y = seed.y + Math.sin(angle) * length;
-    context.save(); context.strokeStyle = '#e4ffcb88'; context.lineWidth = 1.5; context.setLineDash([2, 7]); context.beginPath(); context.moveTo(seed.x, seed.y); context.lineTo(x, y); context.stroke(); context.restore();
-    context.strokeStyle = '#e8fcdba0'; context.lineWidth = 1.5; context.beginPath(); context.moveTo(x - Math.cos(angle - .5) * 9, y - Math.sin(angle - .5) * 9); context.lineTo(x, y); context.lineTo(x - Math.cos(angle + .5) * 9, y - Math.sin(angle + .5) * 9); context.stroke();
+    const path=aimPreview(game,angle,power);
+    context.save();context.strokeStyle='#e4ffcb88';context.lineWidth=1.5;context.setLineDash([3,8]);context.beginPath();path.forEach((p,i)=>i?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y));context.stroke();context.setLineDash([]);
+    if(path.length===3){context.beginPath();context.arc(path[1].x,path[1].y,5,0,Math.PI*2);context.stroke();}context.restore();
     context.strokeStyle = '#dbf8c833'; context.lineWidth = 1; context.beginPath(); context.arc(seed.x, seed.y, 26 + (isGentle ? 0 : Math.sin(time * 2) * 2), 0, Math.PI * 2); context.stroke();
     if (drag) { context.beginPath(); context.moveTo(seed.x, seed.y); context.lineTo(seed.x - Math.cos(angle) * power * 100, seed.y - Math.sin(angle) * power * 100); context.strokeStyle = '#d8f5caaa'; context.lineWidth = 2; context.stroke(); }
   }
@@ -337,6 +340,11 @@ function uiRender() {
   $('state-label').textContent = isPaused ? 'A QUIET MOMENT.' : game.isOver ? 'EVERY POOL HAS ITS OWN SONG.' : !isStarted ? 'YOUR NEXT LITTLE OBSESSION.' : game.isFlying ? `FOLLOW THE LIGHT · ${Math.max(0, Math.ceil(RULE.flightSeconds - game.flightAge))}s` : 'PULL BACK. LET GO. LISTEN.';
   $('goal-label').textContent = game.mode === 'free' ? 'FREE PLAY · Let the pool sing' : gameWon(game) ? 'YOU WON · Three blooms complete' : `MAKE ${RULE.goalBlooms} BLOOMS TO WIN · ${Math.min(game.blooms, RULE.goalBlooms)} / ${RULE.goalBlooms}`;
   $('goal-progress').hidden = game.mode === 'free'; $('goal-progress').max = RULE.goalBlooms; $('goal-progress').value = Math.min(game.blooms, RULE.goalBlooms);
+  $('objectives').checked=game.objective.enabled;$('objectives').disabled=game.isFlying;
+  $('objective-status').textContent=game.objective.enabled?`${game.objective.earned?'Complete · next: ':''}${OBJECTIVES[(game.objective.index+(game.isFlying&&game.objective.earned?1:0))%3]} · +200 · ${game.objective.completed} completed`:'Optional goals · enable between plucks for a little direction.';
+  $('palette').value=audio.music.palette;
+  const shot=game.lastShot;
+  $('shot-result').textContent=game.isFlying?`${game.chain.length} unique notes · ${game.banks} banks · ${game.power.used} powers`:shot?`${shot.bloom?'Bloom!':shot.notes===4?'One jelly short of a bloom.':`${shot.notes} of 5 notes toward a bloom.`} +${shot.points} · ${shot.banks} banks · ${shot.powers} powers${shot.objective?' · Objective complete':''}`:'Aim for a wall bank. The dotted guide shows your first rebound; drifting jellies can change the path.';
   const song = musicProgress(audio.music);
   $('song-stage').textContent = `${song.name}${audio.isMusicPlaying && !audio.isMuted && !audio.isPaused && audio.ambience ? audio.stage < song.stage ? ' · joining on the next bar' : audio.section !== song.name ? ` · ${audio.section}` : '' : ''}`;
   $('song-next').textContent = song.next;
@@ -483,6 +491,8 @@ window.addEventListener('keydown', event => {
 $('continue-free').onclick = () => { if (store.pools.free) dialogOpen(true); else carryToFree(); };
 $('start').onclick = start; $('shoot').onclick = shoot; $('pause').onclick = () => pauseSet(!isPaused); $('resume').onclick = () => pauseSet(false);
 $('aim-left').onclick = () => { angle -= .14; }; $('aim-right').onclick = () => { angle += .14; }; $('power').oninput = () => { power = Number($('power').value) / 100; };
+$('objectives').onchange=event=>{if(!game.isFlying){game.objective.enabled=event.currentTarget.checked;save();uiRender();}};
+$('palette').onchange=event=>{audio.music.palette=event.currentTarget.value;save();};
 $('sound').onchange = event => { audio.settingsSet(audio.volume, !event.currentTarget.checked); audioUnlockAsync(); controlsRender(); save(); };
 $('ambience').oninput = () => { audio.ambienceSet(Number($('ambience').value) / 100); save(); };
 $('volume').oninput = () => { audio.settingsSet(Number($('volume').value) / 100, audio.isMuted); save(); };
@@ -511,6 +521,7 @@ audio.media.actions(() => {
   else if (!game.isOver) pauseSet(false);
   else { audio.pauseSet(false); audioUnlockAsync(); }
 }, () => { audio.pauseSet(true); if (isStarted && !game.isOver) pauseSet(true); });
+songLibrarySetup(()=>({name:`${game.seed} · ${game.blooms} blooms`,music:audio.musicSave()}),()=>{dragCancel();save();audio.pauseSet(true);},()=>audio.pauseSet(isPaused||!isStarted));
 controlsRender(); uiRender(); requestAnimationFrame(render);
 if (['127.0.0.1', 'localhost', '[::1]'].includes(location.hostname)) {
   fetch('/api/status').then(response => response.ok ? response.json() : null).then(status => {
