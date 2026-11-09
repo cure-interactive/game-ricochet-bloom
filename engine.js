@@ -23,7 +23,7 @@ export const POWERS = Object.freeze({
   spring: { name: 'Spring', symbol: '∧', color: '#f6c0ff', description: 'Elastic walls launch your seeds back into the pool for five seconds.' },
   orbit: { name: 'Orbit', symbol: '◉', color: '#ffdc9a', description: 'Gather up to two untouched jellies as satellites, then fling them outward after three seconds.' },
   rewind: { name: 'Rewind', symbol: '≪', color: '#b7b9ff', description: 'At the end of this flight, retrace its recent path for a quick encore. Moving jellies can become new notes.' },
-  pulse: { name: 'Pulse', symbol: '◴', color: '#ffadc7', description: 'Release three strong pressure waves, one beat apart at the song tempo.' },
+  pulse: { name: 'Pulse', symbol: '◴', color: '#ffadc7', description: 'Erupt at three random spots across the pool, pushing jellies away one beat at a time.' },
   drunk: { name: 'Drunk', symbol: '∿', color: '#ffacd8', description: 'Swerve side to side for four seconds without losing speed. Split seeds get tipsy too.' }
 });
 const powerKinds = Object.keys(POWERS);
@@ -96,12 +96,14 @@ function effectStep(state, events) {
     }
   }
   if (effect.kind === 'pulse' && effect.seconds <= effect.next) {
-    const beat = 3 - effect.remaining;
+    const beat = 3 - effect.remaining, margin = RULE.inset + 60;
+    // Saved RNG keeps each new wave unpredictable in play and exact on resume.
+    const x=margin+random(state)*(RULE.width-2*margin),y=margin+random(state)*(RULE.height-2*margin);
     for (const body of state.bodies.slice(1)) {
-      const dx=body.x-seed.x,dy=body.y-seed.y,d=Math.max(1,Math.hypot(dx,dy));
+      const dx=body.x-x,dy=body.y-y,d=Math.max(1,Math.hypot(dx,dy));
       if(d<460) { const impulse=720*(1-d/600); body.vx+=dx/d*impulse;body.vy+=dy/d*impulse;velocityLimit(body); }
     }
-    events.push({type:'pulse',x:seed.x,y:seed.y,beat}); effect.remaining--; effect.next=Math.max(0,effect.next-.75);
+    events.push({type:'pulse',x,y,beat}); effect.remaining--; effect.next=Math.max(0,effect.next-.75);
     if (!effect.remaining) effect.seconds=0;
   }
   if (effect.kind === 'rewind' && effect.returning) {

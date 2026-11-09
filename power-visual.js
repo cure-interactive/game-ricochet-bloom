@@ -145,8 +145,6 @@ export class PowerVisual {
       for(let i=0;i<path.length;i+=3) {const p=path[i];if(!prev||Math.hypot(p.x-prev.x,p.y-prev.y)>100)c.moveTo(p.x,p.y);else c.lineTo(p.x,p.y);prev=p;} c.stroke();c.setLineDash([]);
       if(rewind.returning) {c.globalAlpha=.8;arrow(c,seed.x,seed.y,Math.atan2(seed.vy,seed.vx),18);}
     }
-    const pulse=effectGet(game,'pulse');
-    if(pulse) {c.strokeStyle=POWERS.pulse.color;c.globalAlpha=gentle?.35:.7;for(let i=0;i<pulse.remaining;i++){c.beginPath();c.arc(seed.x,seed.y,seed.radius+10+i*7,-Math.PI*.8,Math.PI*.8);c.stroke();}}
     if (effectGet(game, 'comet')) {
       const speed = Math.max(1, Math.hypot(seed.vx, seed.vy)), nx = seed.vx / speed, ny = seed.vy / speed;
       const length = gentle ? 32 : Math.min(115, speed * .12), width = seed.radius * .7;
