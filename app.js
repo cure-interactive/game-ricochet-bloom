@@ -1,6 +1,6 @@
 import {poolView} from './view.js';
 import {songLibrarySetup} from './song-ui.js';
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, aimPreview } from './engine.js';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview } from './engine.js';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js';
 import { PoolSound } from './sound.js';
 import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js';
@@ -341,6 +341,29 @@ function render(now) {
   if (game.tick - lastUITick >= 12 || frameCount++ % 20 === 0) { uiRender(); lastUITick = game.tick; }
   requestAnimationFrame(render);
 }
+function bonusRender() {
+  const bonus=objectiveProgress(game);
+  const progress=bonus.steps.map(step=>`${step.value}/${step.target} ${step.label}`).join(' · ');
+  const status=bonus.complete?'Complete! Next target after this pluck.':progress;
+  $('bonus-title').textContent=bonus.title;
+  $('bonus-status').textContent=status;
+  $('bonus-reward').textContent=bonus.complete?'✓ +200':'+200';
+  $('bonus-open').classList.toggle('is-complete',bonus.complete);
+  $('bonus-open').setAttribute('aria-label',`Bonus objective: ${bonus.title}. ${status} ${bonus.complete?'Earned':'Reward'} ${bonus.reward} points. View details.`);
+  $('bonus-fill').style.width=`${bonus.progress*100}%`;
+  $('bonus-dialog-title').textContent=bonus.title;
+  $('bonus-description').textContent=bonus.description;
+  $('bonus-tip').textContent=bonus.tip;
+  $('bonus-count').textContent=`${game.objective.completed} completed`;
+  $('bonus-prize').textContent=bonus.complete?'✓ +200 earned':'+200 resonance';
+  $('bonus-next').textContent=OBJECTIVES[(bonus.index+1)%OBJECTIVES.length].title;
+  $('bonus-steps').replaceChildren(...bonus.steps.map(step=>{
+    const row=document.createElement('div'),label=document.createElement('span'),meter=document.createElement('progress');
+    label.textContent=`${step.value===step.target?'✓ ':''}${step.value} / ${step.target} ${step.label}`;
+    meter.max=step.target;meter.value=step.value;meter.setAttribute('aria-label',step.label);
+    row.append(label,meter);return row;
+  }));
+}
 function uiRender() {
   if (game.mode === 'challenge') best = Math.max(best, game.score);
   $('score').textContent = game.score.toLocaleString('en-US'); $('best').textContent = best.toLocaleString('en-US');
@@ -353,8 +376,7 @@ function uiRender() {
   $('state-label').textContent = isPaused ? 'A QUIET MOMENT.' : game.isOver ? 'EVERY POOL HAS ITS OWN SONG.' : !isStarted ? 'YOUR NEXT LITTLE OBSESSION.' : game.isFlying ? `FOLLOW THE LIGHT · ${Math.max(0, Math.ceil(RULE.flightSeconds - game.flightAge))}s` : 'PULL BACK. LET GO. LISTEN.';
   $('goal-label').textContent = game.mode === 'free' ? 'FREE PLAY · Let the pool sing' : gameWon(game) ? 'YOU WON · Three blooms complete' : `MAKE ${RULE.goalBlooms} BLOOMS TO WIN · ${Math.min(game.blooms, RULE.goalBlooms)} / ${RULE.goalBlooms}`;
   $('goal-progress').hidden = game.mode === 'free'; $('goal-progress').max = RULE.goalBlooms; $('goal-progress').value = Math.min(game.blooms, RULE.goalBlooms);
-  $('objectives').checked=game.objective.enabled;$('objectives').disabled=game.isFlying;
-  $('objective-status').textContent=game.objective.enabled?`${game.objective.earned?'Complete · next: ':''}${OBJECTIVES[(game.objective.index+(game.isFlying&&game.objective.earned?1:0))%3]} · +200 · ${game.objective.completed} completed`:'Optional goals · enable between plucks for a little direction.';
+  bonusRender();
   $('palette').value=audio.music.palette;
   const shot=game.lastShot;
   $('shot-result').textContent=game.isFlying?`${game.chain.length} unique notes · ${game.banks} banks · ${game.power.used} powers`:shot?`${shot.bloom?'Bloom!':shot.notes===4?'One jelly short of a bloom.':`${shot.notes} of 5 notes toward a bloom.`}${shot.points===null?' · Resumed shot':` +${shot.points}`} · ${shot.banks} banks · ${shot.powers} powers${shot.objective?' · Objective complete':''}`:'Aim for a wall bank. The dotted guide shows your first rebound; drifting jellies can change the path.';
@@ -502,7 +524,6 @@ window.addEventListener('keydown', event => {
 $('continue-free').onclick = () => { if (store.pools.free) dialogOpen(true); else carryToFree(); };
 $('start').onclick = start; $('shoot').onclick = shoot; $('pause').onclick = () => pauseSet(!isPaused); $('resume').onclick = () => pauseSet(false);
 $('aim-left').onclick = () => { angle -= .14; }; $('aim-right').onclick = () => { angle += .14; }; $('power').oninput = () => { power = Number($('power').value) / 100; };
-$('objectives').onchange=event=>{if(!game.isFlying){game.objective.enabled=event.currentTarget.checked;save();uiRender();}};
 $('palette').onchange=event=>{audio.music.palette=event.currentTarget.value;save();};
 $('sound').onchange = event => { audio.settingsSet(audio.volume, !event.currentTarget.checked); audioUnlockAsync(); controlsRender(); save(); };
 $('ambience').oninput = () => { audio.ambienceSet(Number($('ambience').value) / 100); save(); };
@@ -511,7 +532,7 @@ $('audition').onclick = async () => { if (audio.isMuted) { toast('Enable Sound t
 $('motion').onchange = event => { isGentle = event.currentTarget.checked; if (isGentle) { particles = []; trails = []; } controlsRender(); save(); };
 $('stream').onchange = event => { isStream = event.currentTarget.checked; controlsRender(); save(); };
 $('fullscreen').onclick = async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch { toast('Fullscreen is unavailable here'); } };
-for(const name of ['settings','powers','music','help']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
+for(const name of ['settings','powers','music','help','bonus']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
 $('restart').onclick = () => dialogOpen(); $('mode-open').onclick = modeOpen; $('retry').onclick = () => dialogOpen();
 for (const mode of ['challenge', 'free']) $(`choose-${mode}`).onclick = () => switchMode(mode);
 $('seed-form').onsubmit = event => { event.preventDefault(); const seed = $('seed-input').value.trim(); if (!seed) return; $('new-dialog').close(); if (carrySong) carryToFree(); else newPool(seed, game.mode); };

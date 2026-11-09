@@ -213,7 +213,7 @@ function effectStep(state, events) {
 }
 function random(state) { let value = state.rng; value ^= value << 13; value ^= value >>> 17; value ^= value << 5; state.rng = value >>> 0; return state.rng / 4294967296; }
 export function gameCreate(seed = 'LAGOON', mode = 'challenge') {
-  const state = { version: RULE.version, seed: String(seed).slice(0, 32), mode, rng: seedHash(seed), tick: 0, score: 0, plucks: RULE.plucks, launches: 0, blooms: 0, bestChain: 0, chain: [], banks: 0, flightAge: 0, isFlying: false, isOver: false, power: powerCreate(seed), effects: [], flightPath: [], objective:{enabled:false,index:0,completed:0,earned:false}, shotStart:0, lastShot:null, bodies: [{ id: 0, x: 480, y: 550, vx: 0, vy: 0, radius: RULE.seedRadius, tone: 0, cooldown: 0 }] };
+  const state = { version: RULE.version, seed: String(seed).slice(0, 32), mode, rng: seedHash(seed), tick: 0, score: 0, plucks: RULE.plucks, launches: 0, blooms: 0, bestChain: 0, chain: [], banks: 0, flightAge: 0, isFlying: false, isOver: false, power: powerCreate(seed), effects: [], flightPath: [], objective:{enabled:true,index:0,completed:0,earned:false}, shotStart:0, lastShot:null, bodies: [{ id: 0, x: 480, y: 550, vx: 0, vy: 0, radius: RULE.seedRadius, tone: 0, cooldown: 0 }] };
   for (let index = 0; index < 14; index++) {
     const angle = index * 2.399963, ring = index < 5 ? 125 : 270;
     const radius = 34 + random(state) * 18;
@@ -448,8 +448,8 @@ export function physicsStep(state) {
       }
     }
   }
-  if(state.isFlying && state.objective?.enabled && !state.objective.earned) {
-    const goal=state.objective.index%3,achieved=goal===0?state.chain.length>=5&&state.banks>0:goal===1?state.chain.length>=7:state.banks>0&&state.power.used>=2;
+  if(state.isFlying && !state.objective.earned) {
+    const goal=state.objective.index%OBJECTIVES.length,achieved=objectiveProgress(state).progress===1;
     if(achieved) {state.objective.earned=true;state.objective.completed++;state.score+=200;events.push({type:'objective',index:goal,points:200,x:seed.x,y:seed.y});}
   }
   // Apply after every collision, bloom and power impulse so impacts cannot cancel Stasis.
@@ -599,7 +599,9 @@ export function saveValidate(input) {
     if(shot!==null&&(!shot||!Number.isInteger(shot.notes)||shot.notes<0||shot.notes>14||!Number.isSafeInteger(shot.banks)||shot.banks<0||(shot.points!==null&&(!Number.isSafeInteger(shot.points)||shot.points<0))||!Number.isInteger(shot.powers)||shot.powers<0||shot.powers>3||typeof shot.bloom!=='boolean'||typeof shot.objective!=='boolean'))return null;
   }
   const restored = structuredClone(input);
-  if(input.version<15) {restored.objective=input.objective??{enabled:false,index:0,completed:0,earned:false};restored.shotStart=input.shotStart??(input.isFlying?null:input.score);restored.lastShot=input.lastShot??null;}
+  if(input.version<15) {restored.objective??={enabled:true,index:0,completed:0,earned:false};restored.shotStart=input.shotStart??(input.isFlying?null:input.score);restored.lastShot=input.lastShot??null;}
+  // Retain the legacy field for save compatibility; objectives are now a permanent rule.
+  restored.objective.enabled=true;
   if(input.version<14 && !routeValid(input.flightPath)) restored.flightPath=[];
   if (input.version < 9) {
     restored.version = RULE.version; restored.effects = input.version >= 6 && input.effect.kind ? [structuredClone(input.effect)] : []; delete restored.effect; restored.power = input.version >= 5 ? structuredClone(input.power) : powerCreate(input.seed);
@@ -627,7 +629,18 @@ export function saveValidate(input) {
   return restored;
 }
 
-export const OBJECTIVES=['Bloom after a wall bounce','Hit seven different jellies in one pluck','Bank and collect two powers in one pluck'];
+export const OBJECTIVES=Object.freeze([
+  {title:'Bank a bloom',description:'Touch five different jellies and bounce off a wall in one pluck.',targets:{notes:5,banks:1},tip:'Aim toward a wall with jellies along the rebound path.'},
+  {title:'Seven-note run',description:'Touch seven different jellies in one pluck.',targets:{notes:7},tip:'Every new jelly counts, including contacts made by your powers.'},
+  {title:'Power play',description:'Collect two powers and bounce off a wall in one pluck.',targets:{powers:2,banks:1},tip:'Build a bloom streak to begin a pluck with two or three power jellies.'}
+]);
+export function objectiveProgress(state) {
+  const index=state.objective.index%OBJECTIVES.length,definition=OBJECTIVES[index];
+  const values={notes:state.chain.length,banks:state.banks,powers:state.power.used};
+  const labels={notes:'jellies',banks:'wall bounce',powers:'powers'};
+  const steps=Object.entries(definition.targets).map(([key,target])=>({key,label:labels[key],target,value:state.isFlying?Math.min(values[key],target):0}));
+  return {...definition,index,steps,progress:steps.reduce((sum,step)=>sum+step.value/step.target,0)/steps.length,complete:state.isFlying&&state.objective.earned,reward:200};
+}
 export function aimPreview(state,angle,power=.7) {
   const seed=state.bodies[0],dx=Math.cos(angle),dy=Math.sin(angle),edge=RULE.inset+seed.radius;
   const tx=Math.abs(dx)<1e-8?Infinity:((dx>0?RULE.width-edge:edge)-seed.x)/dx;
