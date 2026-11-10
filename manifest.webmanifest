@@ -9,13 +9,13 @@
   "theme_color": "#080e1c",
   "icons": [
     {
-      "src": "./icon/app-192.png?v=cover-art",
+      "src": "./icon/app-192.png?v=4db1088c785fc16e57b73ab25b01dd4a9e3992a02362d51f2af5a59736ebe725",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "./icon/app-512.png?v=cover-art",
+      "src": "./icon/app-512.png?v=dcb9516c1fa1dc4a639a610fcbdae05cd82136f6686ce95d97330b41f3a44b3d",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

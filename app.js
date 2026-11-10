@@ -1,12 +1,13 @@
-import {buttonLabel,iconHTML,iconNode} from './ui-icon.js';
-import {poolView} from './view.js';
-import {songLibrarySetup} from './song-ui.js';
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview } from './engine.js';
-import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js';
-import { PoolSound } from './sound.js';
-import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js';
-import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js';
-import { PowerVisual } from './power-visual.js';
+import {assetURL} from './asset.js?v=560eaf774b30dc5024687486b7a1369aab59ab8245ea800ec4719f1b11df3f6a';
+import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
+import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
+import {songLibrarySetup} from './song-ui.js?v=182dd8e70b3402b1bebadb1f051130305849210c8063d464daf43f82b43d7bfe';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview } from './engine.js?v=ae6325c0c0c22a1e8773e8bb30d098c6a7fd8b05dee855dba7fea891d372ca99';
+import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=2d22d84484793b17a476a2e8eb112741327864b20840c9367a834afeaa66d440';
+import { PoolSound } from './sound.js?v=0ae20d768d4863fb00e3e9b5d660ea6104d4dda670e9d10d493dca5244fa57a0';
+import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=fad403a835d0d8ee8c0225bac2ae2fbdeba40bd62f9d7f2598ce6337176b9a84';
+import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
+import { PowerVisual } from './power-visual.js?v=aaf3d324c4543e14f52bde8c56213c9de46d27d45146efecdcab98b650df8076';
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
 let store = poolStoreRead(null), storageIsAvailable = true;
 try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localStorage.getItem(LEGACY_STORAGE) ?? 'null')); } catch { storageIsAvailable = false; }
@@ -22,7 +23,7 @@ let trails = [], particles = [], rings = [], connections = [], bolts = [], reuni
 const membranes = new Map();
 const powerVisual = new PowerVisual();
 const powerIcons = Object.fromEntries(Object.keys(POWERS).map(kind => {
-  const icon = new Image(); icon.src = new URL(`./icon/power/${kind}.svg`, import.meta.url).href; return [kind, icon];
+  const icon = new Image(); icon.src = new URL(assetURL(`./icon/power/${kind}.svg`), import.meta.url).href; return [kind, icon];
 }));
 for (const [kind, p] of Object.entries(POWERS)) {
   const card = document.createElement('div'); card.className = 'power-card'; card.style.setProperty('--power-color', p.color);
@@ -397,7 +398,7 @@ function uiRender() {
     slot.dataset.state = status;
     const marker = markers[index - used], name = marker ? POWERS[marker.kind].name : '';
     const label = status === 'ready' ? `${name} · Ready` : status === 'used' ? 'Used' : 'Locked';
-    const content = `${status === 'ready' ? `<img src="./icon/power/${marker.kind}.svg" alt="" width="24" height="24">` : iconHTML(status==='used'?'check':'lock')}<span>${label}</span>`;
+    const content = `${status === 'ready' ? `<img src="${assetURL(`./icon/power/${marker.kind}.svg`)}" alt="" width="24" height="24">` : iconHTML(status==='used'?'check':'lock')}<span>${label}</span>`;
     if (slot.innerHTML !== content) slot.innerHTML = content;
   }
   $('power-progress').textContent = game.isFlying ? `${used} / ${allowance} powers used · bloom to ${allowance === 3 ? 'keep all three' : `earn ${allowance + 1} next pluck`}` : `${allowance} ${allowance === 1 ? 'power' : 'powers'} this pluck · ${allowance === 3 ? 'bloom to keep all three' : `bloom to earn ${allowance + 1} next pluck`}. No bloom resets to 1.`;

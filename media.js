@@ -1,3 +1,4 @@
+import {assetURL} from './asset.js?v=560eaf774b30dc5024687486b7a1369aab59ab8245ea800ec4719f1b11df3f6a';
 // OS media presentation for the live synthesizer. The silent media source only
 // supplies the HTMLMediaElement session required by some mobile browsers.
 export function mediaCarrier() {
@@ -13,7 +14,7 @@ export class PoolMedia {
   describe(seed) {
     if (!this.session || !this.env.MediaMetadata || this.key === seed) return;
     try {
-      this.artwork = [512, 256].map(size => ({ src: new URL(`./artwork/pool-${size}.png`, this.env.location.href).href, sizes: `${size}x${size}`, type: 'image/png' }));
+      this.artwork = [512, 256].map(size => ({ src: new URL(assetURL(`./artwork/pool-${size}.png`), this.env.location.href).href, sizes: `${size}x${size}`, type: 'image/png' }));
       this.session.metadata = new this.env.MediaMetadata({ title: `${seed} · Ricochet Bloom`, artist: 'Cure Interactive', album: 'A living light pool', artwork: this.artwork }); this.key = seed;
     } catch { /* Optional metadata must not affect the synthesizer. */ }
   }
