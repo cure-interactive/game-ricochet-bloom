@@ -2,12 +2,12 @@ import {assetURL} from './asset.js?v=560eaf774b30dc5024687486b7a1369aab59ab8245e
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
 import {songLibrarySetup} from './song-ui.js?v=182dd8e70b3402b1bebadb1f051130305849210c8063d464daf43f82b43d7bfe';
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview } from './engine.js?v=ae6325c0c0c22a1e8773e8bb30d098c6a7fd8b05dee855dba7fea891d372ca99';
-import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=2d22d84484793b17a476a2e8eb112741327864b20840c9367a834afeaa66d440';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview } from './engine.js?v=afd1a429412f62fd4281b9c1a898d3a4a3b35954c4c841388c6883cc8ff087f1';
+import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=bb9b4712231013d6f8fa5e3662b68844182207892d355fa595572cd274c9057e';
 import { PoolSound } from './sound.js?v=0ae20d768d4863fb00e3e9b5d660ea6104d4dda670e9d10d493dca5244fa57a0';
 import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=fad403a835d0d8ee8c0225bac2ae2fbdeba40bd62f9d7f2598ce6337176b9a84';
 import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
-import { PowerVisual } from './power-visual.js?v=aaf3d324c4543e14f52bde8c56213c9de46d27d45146efecdcab98b650df8076';
+import { PowerVisual } from './power-visual.js?v=05bab7c85481e387353b05dfbaddd86f6fc4006835dafd499190f72a69c6dc1e';
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
 let store = poolStoreRead(null), storageIsAvailable = true;
 try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localStorage.getItem(LEGACY_STORAGE) ?? 'null')); } catch { storageIsAvailable = false; }

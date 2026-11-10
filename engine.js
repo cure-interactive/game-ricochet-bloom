@@ -14,7 +14,7 @@ export const POWERS = Object.freeze({
   impact: { name: 'Impact', symbol: '»', color: '#ffe39e', description: 'Give your seed much stronger pushes for the rest of this pluck.' },
   tether: { name: 'Tether', symbol: '△', color: '#b4f6d2', description: 'Link three jellies with stretchy musical threads. The group drifts toward your moving seed for four seconds.' },
   split: { name: 'Split', symbol: '⋔', color: '#c9c0ff', description: 'Fan into three little seeds for three seconds. All three collect powers; every jelly still scores once.' },
-  bubble: { name: 'Bubble', symbol: '◯', color: '#aaeaff', description: 'Overlap jellies with a big soft bubble. Push gently at its edge and strongly toward its center; touches still play notes.' },
+  bubble: { name: 'Bubble', symbol: '◯', color: '#aaeaff', description: 'Float through jellies without bouncing. Smooth pressure pushes them outward and gently nudges you away, growing stronger with overlap; touches still play notes.' },
   portal: { name: 'Portal', symbol: '◌', color: '#b4ffe7', description: 'Open two gates across the pool. Pass through either and keep your speed.' },
   echo: { name: 'Echo', symbol: '◔', color: '#c7d1ff', description: 'A ghost trails half a second behind, gently seeking nearby unhit jellies. It shares your chain and springs back toward your path.' },
   slingshot: { name: 'Slingshot', symbol: '➹', color: '#ffc99f', description: 'Orbit the marked jelly briefly, then launch toward an untouched jelly.' },
@@ -424,8 +424,9 @@ export function physicsStep(state) {
     const marker = a.id <= 0 && a.id >= -2 && state.isFlying ? state.power.markers.find(marker => marker.target === b.id) : null;
     const isFrozenContact = a.id <= 0 && a.id >= -2 && state.isFlying && (effectGet(state, 'stasis') || marker?.kind === 'stasis');
     const nx = distance > .0001 ? dx / distance : 1, ny = distance > .0001 ? dy / distance : 0;
+    const isBubble = a.id === 0 && state.isFlying && (!!effectGet(state, 'bubble') || marker?.kind === 'bubble');
     const isPermeable = a.id <= 0 && frozenHit(state, b.id);
-    if (isPermeable && pass === 0) {
+    if (isPermeable && !isBubble && pass === 0) {
       const depth = 1 - distance / target, pressure = 2200 * depth * depth * (3 - 2 * depth) * dt;
       const incomingX = a.vx, incomingY = a.vy, incomingSpeed = Math.hypot(incomingX, incomingY);
       a.vx -= nx * pressure; a.vy -= ny * pressure;
@@ -437,15 +438,16 @@ export function physicsStep(state) {
       }
       velocityLimit(a);
     }
-    const isBubble = a.id === 0 && state.isFlying && !!effectGet(state, 'bubble');
-    const coreRadius = isBubble ? effectGet(state, 'split') ? 10 : RULE.seedRadius : a.radius;
-    const solidTarget = isPermeable ? 0 : coreRadius + b.radius;
-    // The translucent shell overlaps freely; only the small seed core ricochets.
+    const solidTarget = isPermeable || isBubble ? 0 : target;
+    // Bubble is soft all the way through: no core reflection or positional separation.
     // Apply continuous pressure once per step, not once per solver pass.
-    if (isBubble && pass === 0 && a.radius > coreRadius) {
-      const depth = Math.min(1, (target - distance) / (a.radius - coreRadius));
+    if (isBubble && pass === 0) {
+      const width = Math.max(RULE.seedRadius, a.radius - (effectGet(state, 'split') ? 10 : RULE.seedRadius));
+      const depth = Math.min(1, (target - distance) / width);
       const pressure = 2400 * depth * depth * (3 - 2 * depth) * dt * (effectGet(state, 'impact') ? 1.8 : 1);
       b.vx += nx * pressure; b.vy += ny * pressure; velocityLimit(b);
+      // A light reaction bends/slows the player gradually instead of ricocheting.
+      a.vx -= nx * pressure * .18; a.vy -= ny * pressure * .18; velocityLimit(a);
     }
     const inverseA = a.id === -3 ? .55 : a.id <= 0 ? 1 : 900 / (a.radius * a.radius), inverseB = 900 / (b.radius * b.radius), inverseSum = inverseA + inverseB;
     const correction = Math.max(0, solidTarget - distance - .01) * .92 / inverseSum;
