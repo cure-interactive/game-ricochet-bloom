@@ -18,7 +18,7 @@ export const POWERS = Object.freeze({
   portal: { name: 'Portal', symbol: '◌', color: '#b4ffe7', description: 'Open two gates across the pool. Pass through either and keep your speed.' },
   echo: { name: 'Echo', symbol: '◔', color: '#c7d1ff', description: 'A ghost trails half a second behind, gently seeking nearby unhit jellies. It shares your chain and springs back toward your path.' },
   slingshot: { name: 'Slingshot', symbol: '➹', color: '#ffc99f', description: 'Orbit the marked jelly briefly, then launch toward an untouched jelly.' },
-  relay: { name: 'Relay', symbol: '⌁', color: '#ffe6a3', description: 'The next three scored jellies each wake one untouched jelly by bumping it.' },
+  relay: { name: 'Relay', symbol: '⌁', color: '#ffe6a3', description: 'The next three scored jellies each relay one bump: wake a new jelly or activate a marked power, refreshing your flight.' },
   wake: { name: 'Wake', symbol: '≋', color: '#89f4ef', description: 'Leave a flowing current for five seconds. Crossing jellies are swept along your trail.' },
   spring: { name: 'Spring', symbol: '∧', color: '#f6c0ff', description: 'Elastic walls launch your seeds back into the pool for five seconds.' },
   orbit: { name: 'Orbit', symbol: '◉', color: '#ffdc9a', description: 'Gather up to two untouched jellies as satellites, then fling them outward after three seconds.' },
@@ -248,6 +248,90 @@ function scoreContact(state, body, collector, events) {
     for(const jelly of state.bodies.slice(1)) {const d=Math.max(1,Math.hypot(jelly.x-seed.x,jelly.y-seed.y));jelly.vx+=(jelly.x-seed.x)/d*120;jelly.vy+=(jelly.y-seed.y)/d*120;}
   }
 }
+function powerCollect(state, marker, a, b, nx, ny, events) {
+  const dt=RULE.step,seed=state.bodies[0];
+  const kind = marker.kind; state.power.markers = state.power.markers.filter(item => item !== marker); state.power.shot = state.launches; state.power.used++;
+  state.flightAge = 0;
+  // Pluck-long effects follow the renewed flight; short-lived powers keep their own clocks.
+  for (const effect of state.effects) if (['comet', 'impact', 'bubble', 'stasis', 'echo'].includes(effect.kind)) effect.seconds = RULE.flightSeconds;
+  const event = { type: 'power', kind, seedId: a.id, x: b.x, y: b.y };
+  if (['relay','wake','spring','orbit','rewind','pulse','wrap'].includes(kind)) {
+    const effect={kind, seconds:kind==='orbit'?3:kind==='pulse'?2.3:kind==='rewind'?7:5, targets:[]};
+    if(kind==='relay') Object.assign(effect,{armed:[],spent:[],remaining:3});
+    if(kind==='wake') effect.trail=[];
+    if(kind==='orbit') Object.assign(effect,{phase:0,satellites:state.bodies.slice(1).filter(body=>body!==b&&!state.chain.includes(body.id)).sort((a,c)=>Math.hypot(a.x-seed.x,a.y-seed.y)-Math.hypot(c.x-seed.x,c.y-seed.y)||a.id-c.id).slice(0,2).map(body=>body.id)});
+    if(kind==='rewind') Object.assign(effect,{returning:false,route:[]});
+    if(kind==='pulse') { const beat=.75, delay=(beat-(state.tick*RULE.step)%beat)%beat;Object.assign(effect,{seconds:delay+1.5+RULE.step,next:1.5,remaining:3}); }
+    state.effects.push(effect);
+  } else if (kind === 'portal') {
+    const speed = Math.hypot(seed.vx, seed.vy), dx = speed > 1 ? seed.vx / speed : -nx, dy = speed > 1 ? seed.vy / speed : -ny;
+    const entrance = { x: Math.max(100, Math.min(860, seed.x + dx * 70)), y: Math.max(100, Math.min(540, seed.y + dy * 70)) };
+    let exit = { x: RULE.width - entrance.x, y: RULE.height - entrance.y };
+    if (Math.hypot(exit.x - entrance.x, exit.y - entrance.y) < 300) exit = { x: entrance.x < 480 ? 800 : 160, y: entrance.y < 320 ? 500 : 140 };
+    state.effects.push({ kind, seconds: Math.min(5, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], gates: [entrance, exit], cooldown: 0 });
+  } else if (kind === 'echo') {
+    state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [], path: [], ghost: { ...seed, id: -3, radius: 12, cooldown: 0 }, follow: { x: seed.x, y: seed.y, vx: 0, vy: 0 }, isReady: false });
+  } else if (kind === 'slingshot') {
+    const angle = Math.atan2(seed.y - b.y, seed.x - b.x), spin = Math.sign((seed.x - b.x) * seed.vy - (seed.y - b.y) * seed.vx) || 1;
+    state.effects.push({ kind, seconds: Math.min(.85, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], anchor: b.id, angle, spin, radius: b.radius + RULE.seedRadius + 16 });
+  } else if (kind === 'tether') {
+    const nearby = state.bodies.slice(1).filter(body => body !== b).sort((a, c) => Math.hypot(a.x - b.x, a.y - b.y) - Math.hypot(c.x - b.x, c.y - b.y) || a.id - c.id).slice(0, 2);
+    const linked = [b, ...nearby];
+    const links = linked.map((a, index) => { const c = linked[(index + 1) % 3]; return { a: a.id, b: c.id, length: Math.max(a.radius + c.radius + 6, Math.hypot(a.x - c.x, a.y - c.y) * .85), cooldown: index * .15 }; });
+    state.effects.push({ kind, seconds: Math.min(4, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], links });
+  } else if (kind === 'split') {
+    // The fan leaves the contact, so all three seeds have a clear outward launch.
+    const angle = Math.atan2(-ny, -nx), speed = Math.max(650, Math.min(1000, Math.hypot(seed.vx, seed.vy)));
+    if (!effectGet(state, 'bubble')) seed.radius = 10; seed.vx = Math.cos(angle) * speed; seed.vy = Math.sin(angle) * speed;
+    const shards = [-.65, .65].map((offset, index) => ({ ...seed, id: -index - 1, radius: 10, vx: Math.cos(angle + offset) * speed, vy: Math.sin(angle + offset) * speed }));
+    state.effects.push({ kind, seconds: Math.min(3, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], shards });
+  } else if (kind === 'bubble') {
+    state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
+  } else if (kind === 'drunk') {
+    state.effects.push({ kind, seconds: RULE.drunkSeconds, targets: [] });
+  } else if (kind === 'magnet') {
+    state.effects.push({ kind, seconds: 2.4, targets: [] });
+  } else if (kind === 'lightning') {
+    const targets = state.bodies.slice(1).filter(body => body !== b).sort((a, b) =>
+      Number(state.chain.includes(a.id)) - Number(state.chain.includes(b.id)) ||
+      Math.hypot(a.x - seed.x, a.y - seed.y) - Math.hypot(b.x - seed.x, b.y - seed.y) || a.id - b.id).slice(0, 3).map(body => body.id);
+    state.effects.push({ kind, seconds: .09, targets });
+  } else if (kind === 'impact') {
+    state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
+    b.vx += nx * 450; b.vy += ny * 450; velocityLimit(b);
+    events.push({ type: 'push', id: b.id, x: b.x, y: b.y, nx, ny });
+  } else if (kind === 'comet') {
+    state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
+    seed.vx = -nx * 1150; seed.vy = -ny * 1150;
+  } else if (kind === 'stasis') {
+    const targets = state.bodies.slice(1).filter(body => Math.hypot(body.x - b.x, body.y - b.y) < RULE.powerRadius);
+    for (const body of targets) {
+      if (body === b) continue; // Finish the activating collision before applying its slow cap.
+      const falloff = 1 - (Math.hypot(body.x - b.x, body.y - b.y) / RULE.powerRadius) ** 2;
+      body.vx *= 1 - .88 * falloff; body.vy *= 1 - .88 * falloff;
+    }
+    state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: targets.map(body => body.id) });
+  } else if (kind === 'swap') {
+    const destination = state.bodies.slice(1).filter(body => body !== b).reduce((far, body) =>
+      Math.hypot(body.x - seed.x, body.y - seed.y) > Math.hypot(far.x - seed.x, far.y - seed.y) ? body : far);
+    const x = seed.x, y = seed.y;
+    seed.x = destination.x; seed.y = destination.y; destination.x = x; destination.y = y;
+    Object.assign(event, { exitX: seed.x, exitY: seed.y, destination: destination.id });
+  } else for (const body of state.bodies.slice(1)) {
+    if (body === b) continue;
+    const dx = body.x - b.x, dy = body.y - b.y, distance = Math.hypot(dx, dy);
+    if (distance < RULE.powerRadius) {
+      const falloff = 1 - (distance / RULE.powerRadius) ** 2;
+      if (distance > 1) {
+        const impulse = RULE.powerImpulse * falloff, nx = dx / distance, ny = dy / distance;
+        body.vx += (kind === 'vortex' ? -ny : kind === 'attract' ? -nx : nx) * impulse;
+        body.vy += (kind === 'vortex' ? nx : kind === 'attract' ? -ny : ny) * impulse;
+      }
+    }
+  }
+  events.push(event);
+  powerNext(state);
+}
 export function physicsStep(state) {
   if (state.isOver) return [];
   const dt = RULE.step, events = [], seed = state.bodies[0]; state.tick++;
@@ -354,96 +438,20 @@ export function physicsStep(state) {
       }
       if (-relative > 22 && a.cooldown <= 0 && b.cooldown <= 0) { events.push({ type: 'impact', a: a.id, b: b.id, x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, nx, ny, speed: -relative, bubble: a.id === 0 && !!effectGet(state, 'bubble') }); a.cooldown = .08; b.cooldown = .08; }
     }
-    if (marker) {
-      const kind = marker.kind; state.power.markers = state.power.markers.filter(item => item !== marker); state.power.shot = state.launches; state.power.used++;
-      state.flightAge = 0;
-      // Pluck-long effects follow the renewed flight; short-lived powers keep their own clocks.
-      for (const effect of state.effects) if (['comet', 'impact', 'bubble', 'stasis', 'echo'].includes(effect.kind)) effect.seconds = RULE.flightSeconds;
-      const event = { type: 'power', kind, seedId: a.id, x: b.x, y: b.y };
-      if (['relay','wake','spring','orbit','rewind','pulse','wrap'].includes(kind)) {
-        const effect={kind, seconds:kind==='orbit'?3:kind==='pulse'?2.3:kind==='rewind'?7:5, targets:[]};
-        if(kind==='relay') Object.assign(effect,{armed:[],spent:[],remaining:3});
-        if(kind==='wake') effect.trail=[];
-        if(kind==='orbit') Object.assign(effect,{phase:0,satellites:state.bodies.slice(1).filter(body=>body!==b&&!state.chain.includes(body.id)).sort((a,c)=>Math.hypot(a.x-seed.x,a.y-seed.y)-Math.hypot(c.x-seed.x,c.y-seed.y)||a.id-c.id).slice(0,2).map(body=>body.id)});
-        if(kind==='rewind') Object.assign(effect,{returning:false,route:[]});
-        if(kind==='pulse') { const beat=.75, delay=(beat-(state.tick*RULE.step)%beat)%beat;Object.assign(effect,{seconds:delay+1.5+RULE.step,next:1.5,remaining:3}); }
-        state.effects.push(effect);
-      } else if (kind === 'portal') {
-        const speed = Math.hypot(seed.vx, seed.vy), dx = speed > 1 ? seed.vx / speed : -nx, dy = speed > 1 ? seed.vy / speed : -ny;
-        const entrance = { x: Math.max(100, Math.min(860, seed.x + dx * 70)), y: Math.max(100, Math.min(540, seed.y + dy * 70)) };
-        let exit = { x: RULE.width - entrance.x, y: RULE.height - entrance.y };
-        if (Math.hypot(exit.x - entrance.x, exit.y - entrance.y) < 300) exit = { x: entrance.x < 480 ? 800 : 160, y: entrance.y < 320 ? 500 : 140 };
-        state.effects.push({ kind, seconds: Math.min(5, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], gates: [entrance, exit], cooldown: 0 });
-      } else if (kind === 'echo') {
-        state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [], path: [], ghost: { ...seed, id: -3, radius: 12, cooldown: 0 }, follow: { x: seed.x, y: seed.y, vx: 0, vy: 0 }, isReady: false });
-      } else if (kind === 'slingshot') {
-        const angle = Math.atan2(seed.y - b.y, seed.x - b.x), spin = Math.sign((seed.x - b.x) * seed.vy - (seed.y - b.y) * seed.vx) || 1;
-        state.effects.push({ kind, seconds: Math.min(.85, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], anchor: b.id, angle, spin, radius: b.radius + RULE.seedRadius + 16 });
-      } else if (kind === 'tether') {
-        const nearby = state.bodies.slice(1).filter(body => body !== b).sort((a, c) => Math.hypot(a.x - b.x, a.y - b.y) - Math.hypot(c.x - b.x, c.y - b.y) || a.id - c.id).slice(0, 2);
-        const linked = [b, ...nearby];
-        const links = linked.map((a, index) => { const c = linked[(index + 1) % 3]; return { a: a.id, b: c.id, length: Math.max(a.radius + c.radius + 6, Math.hypot(a.x - c.x, a.y - c.y) * .85), cooldown: index * .15 }; });
-        state.effects.push({ kind, seconds: Math.min(4, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], links });
-      } else if (kind === 'split') {
-        // The fan leaves the contact, so all three seeds have a clear outward launch.
-        const angle = Math.atan2(-ny, -nx), speed = Math.max(650, Math.min(1000, Math.hypot(seed.vx, seed.vy)));
-        if (!effectGet(state, 'bubble')) seed.radius = 10; seed.vx = Math.cos(angle) * speed; seed.vy = Math.sin(angle) * speed;
-        const shards = [-.65, .65].map((offset, index) => ({ ...seed, id: -index - 1, radius: 10, vx: Math.cos(angle + offset) * speed, vy: Math.sin(angle + offset) * speed }));
-        state.effects.push({ kind, seconds: Math.min(3, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], shards });
-      } else if (kind === 'bubble') {
-        state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
-      } else if (kind === 'drunk') {
-        state.effects.push({ kind, seconds: RULE.drunkSeconds, targets: [] });
-      } else if (kind === 'magnet') {
-        state.effects.push({ kind, seconds: 2.4, targets: [] });
-      } else if (kind === 'lightning') {
-        const targets = state.bodies.slice(1).filter(body => body !== b).sort((a, b) =>
-          Number(state.chain.includes(a.id)) - Number(state.chain.includes(b.id)) ||
-          Math.hypot(a.x - seed.x, a.y - seed.y) - Math.hypot(b.x - seed.x, b.y - seed.y) || a.id - b.id).slice(0, 3).map(body => body.id);
-        state.effects.push({ kind, seconds: .09, targets });
-      } else if (kind === 'impact') {
-        state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
-        b.vx += nx * 450; b.vy += ny * 450; velocityLimit(b);
-        events.push({ type: 'push', id: b.id, x: b.x, y: b.y, nx, ny });
-      } else if (kind === 'comet') {
-        state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
-        seed.vx = -nx * 1150; seed.vy = -ny * 1150;
-      } else if (kind === 'stasis') {
-        const targets = state.bodies.slice(1).filter(body => Math.hypot(body.x - b.x, body.y - b.y) < RULE.powerRadius);
-        for (const body of targets) {
-          if (body === b) continue; // Finish the activating collision before applying its slow cap.
-          const falloff = 1 - (Math.hypot(body.x - b.x, body.y - b.y) / RULE.powerRadius) ** 2;
-          body.vx *= 1 - .88 * falloff; body.vy *= 1 - .88 * falloff;
-        }
-        state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: targets.map(body => body.id) });
-      } else if (kind === 'swap') {
-        const destination = state.bodies.slice(1).filter(body => body !== b).reduce((far, body) =>
-          Math.hypot(body.x - seed.x, body.y - seed.y) > Math.hypot(far.x - seed.x, far.y - seed.y) ? body : far);
-        const x = seed.x, y = seed.y;
-        seed.x = destination.x; seed.y = destination.y; destination.x = x; destination.y = y;
-        Object.assign(event, { exitX: seed.x, exitY: seed.y, destination: destination.id });
-      } else for (const body of state.bodies.slice(1)) {
-        if (body === b) continue;
-        const dx = body.x - b.x, dy = body.y - b.y, distance = Math.hypot(dx, dy);
-        if (distance < RULE.powerRadius) {
-          const falloff = 1 - (distance / RULE.powerRadius) ** 2;
-          if (distance > 1) {
-            const impulse = RULE.powerImpulse * falloff, nx = dx / distance, ny = dy / distance;
-            body.vx += (kind === 'vortex' ? -ny : kind === 'attract' ? -nx : nx) * impulse;
-            body.vy += (kind === 'vortex' ? nx : kind === 'attract' ? -ny : ny) * impulse;
-          }
-        }
-      }
-      events.push(event);
-      powerNext(state);
-    }
+    if (marker) powerCollect(state,marker,a,b,nx,ny,events);
     const stasis = effectGet(state, 'stasis');
     if (a.id <= 0 && state.isFlying && stasis && !stasis.targets.includes(b.id)) stasis.targets.push(b.id);
     if (a.id <= 0 && state.isFlying) scoreContact(state,b,a,events);
     const relay=effectGet(state,'relay');
-    if (relay && a.id>0 && b.id>0 && relative < -12) {
-      for (const [from,to] of [[a,b],[b,a]]) if(relay.armed.includes(from.id)&&!relay.spent.includes(from.id)&&!state.chain.includes(to.id)) {
-        relay.spent.push(from.id);scoreContact(state,to,from,events);
+    if (state.isFlying && relay && a.id>0 && b.id>0 && relative < -12) {
+      for (const [from,to] of [[a,b],[b,a]]) {
+        if(!relay.armed.includes(from.id)||relay.spent.includes(from.id)) continue;
+        const relayMarker=state.power.markers.find(marker=>marker.target===to.id);
+        if(state.chain.includes(to.id)&&!relayMarker) continue;
+        relay.spent.push(from.id);
+        // The impact collects for the player, with the same marker and flight rules as a seed hit.
+        if(relayMarker) powerCollect(state,relayMarker,seed,to,from===a?nx:-nx,from===a?ny:-ny,events);
+        scoreContact(state,to,from,events);
         events.push({type:'relay',x:to.x,y:to.y,fromX:from.x,fromY:from.y,id:to.id});
       }
     }

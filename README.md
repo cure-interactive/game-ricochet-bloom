@@ -33,3 +33,5 @@ Your plucks automatically shape the song. A three-hit pluck establishes a recurr
 The screen-filling layout keeps play and controls visible without page scrolling. Open Settings, Powers or Music for secondary controls; their panels scroll independently. Add the page to your Home Screen to use its standalone display and bloom icon.
 
 Interface controls use SVG artwork from Cure Interactive Icons, with a small set of original game fallbacks. Settings → Icon credits links to each bundled attribution and full license. See [the icon inventory](icon/ui/INDEX.md).
+
+Relay-armed jellies can activate powers on the jellies they bump. Each Relay jelly has one transfer; power collection uses the shared allowance and refreshes the player flight. A marked jelly that has already scored still activates its power without scoring twice.
