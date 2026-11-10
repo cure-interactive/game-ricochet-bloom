@@ -1,6 +1,6 @@
 import { jellyRole } from './music.js?v=6ec72be4ad2664d5ad3ccad3e38ced59061c476e0fa523cde850ae21caa7b261';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep } from './skill-effect.js?v=d18fe1ae27d9b1552f91df0bc888bd3ce5b3c33360a3511c13c66f795178e541';
-export { skillFlags } from './skill-effect.js?v=d18fe1ae27d9b1552f91df0bc888bd3ce5b3c33360a3511c13c66f795178e541';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep } from './skill-effect.js?v=d4673aac3c0d6c506fce387d0783c34eb384ed12e5a5b8af50993f9e5d0688df';
+export { skillFlags } from './skill-effect.js?v=d4673aac3c0d6c506fce387d0783c34eb384ed12e5a5b8af50993f9e5d0688df';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
 export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 12, settleDrag: 4.8, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
@@ -29,7 +29,7 @@ export const POWERS = Object.freeze({
   pulse: { name: 'Pulse', symbol: '◴', color: '#ffadc7', description: 'Erupt at three random spots across the pool, pushing jellies away one beat at a time.' },
   drunk: { name: 'Drunk', symbol: '∿', color: '#ffacd8', description: 'Swerve side to side for four seconds without losing speed. Split seeds get tipsy too.' },
   wrap: { name: 'Wrap', symbol: '⇥', color: '#8cefff', description: 'Cross any wall and emerge at the opposite edge for five seconds. Keep your direction and momentum; Split seeds wrap too. Replaces wall bounces, including Spring.' },
-  blaster: { name: 'Blaster', symbol: '✧', color: '#fff0a8', description: 'Load three gel shots. Tap while moving to fire automatically at a nearby unhit jelly. Shots push jellies, play notes and give you a little recoil.' },
+  blaster: { name: 'Blaster', symbol: '✧', color: '#fff0a8', description: 'Automatically aim and fire three gel shots after contact, with no further input. Shots push jellies, play notes and give you a little recoil.' },
   homing: { name: 'Homing', symbol: '➶', color: '#c1ffa2', description: 'Curve toward nearby unhit jellies ahead for five seconds. Keep your momentum and seek a new target after each hit. Split seeds home too; green brackets show the target.' }
 });
 const powerKinds = Object.keys(POWERS);
@@ -64,7 +64,8 @@ function powerTargetNext(state) {
 // Optional v2 configuration. Missing configuration preserves legacy power behavior.
 export function blasterTarget(state) {
   const seed=state.bodies[0];
-  const candidates=state.bodies.slice(1).filter(body=>!state.chain.includes(body.id));
+  const pending=new Set((effectGet(state,'blaster')?.shots||[]).map(shot=>shot.target));
+  const candidates=state.bodies.slice(1).filter(body=>!state.chain.includes(body.id)&&!pending.has(body.id));
   candidates.sort((a,b)=>Math.hypot(a.x-seed.x,a.y-seed.y)-Math.hypot(b.x-seed.x,b.y-seed.y)||a.id-b.id);
   const target=candidates[0];if(!target)return null;
   // Predict the intercept; targeting remains deterministic and never changes launch aim.
@@ -75,7 +76,7 @@ export function blasterTarget(state) {
   const time=Math.min(1.2,...roots.filter(t=>t>0));
   return {id:target.id,x:Math.max(35,Math.min(925,target.x+target.vx*time)),y:Math.max(35,Math.min(605,target.y+target.vy*time))};
 }
-export function blasterFire(state) {
+function blasterFire(state) {
   const target=blasterTarget(state);if(!target)return [];
   const {x,y}=target;
   const effect = effectGet(state, 'blaster'), seed = state.bodies[0];
@@ -83,10 +84,10 @@ export function blasterFire(state) {
   const distance = Math.hypot(x-seed.x,y-seed.y);
   if (distance < 1) return [];
   const aim = Math.atan2(y-seed.y,x-seed.x), flags = skillFlags(state,'blaster'), volley = effect.volley++;
-  effect.ammo--; effect.cooldown = .16; effect.hits.push([]);
+  effect.ammo--; effect.cooldown = .45; effect.hits.push([]);
   for (const offset of flags.b ? [-.14,0,.14] : [0]) {
     const a=aim+offset, nx=Math.cos(a),ny=Math.sin(a);
-    effect.shots.push({x:Math.max(35,Math.min(925,seed.x+nx*(seed.radius+7))),y:Math.max(35,Math.min(605,seed.y+ny*(seed.radius+7))),vx:nx*980,vy:ny*980,life:1.6,bounces:flags.a?1:0,volley});
+    effect.shots.push({x:Math.max(35,Math.min(925,seed.x+nx*(seed.radius+7))),y:Math.max(35,Math.min(605,seed.y+ny*(seed.radius+7))),vx:nx*980,vy:ny*980,life:1.6,bounces:flags.a?1:0,volley,target:target.id});
   }
   seed.vx-=Math.cos(aim)*45;seed.vy-=Math.sin(aim)*45;velocityLimit(seed);
   return [{type:'blaster-fire',x:seed.x,y:seed.y,nx:Math.cos(aim),ny:Math.sin(aim),ammo:effect.ammo}];
@@ -114,6 +115,7 @@ function blasterStep(state, events) {
     }
   }
   effect.shots=effect.shots.filter(shot=>shot.life>0);
+  events.push(...blasterFire(state));
 }
 export function effectGet(state, kind) { return state.effects.find(effect => effect.kind === kind); }
 export function frozenHit(state, id) { return state.isFlying && state.chain.includes(id) && !!effectGet(state, 'stasis')?.targets.includes(id); }
@@ -681,8 +683,8 @@ export function saveValidate(input) {
     if (effect.kind && (!input.isFlying || input.power.shot !== input.launches || effect.seconds <= 0)) return null;
     if (!effect.kind && effect.seconds !== 0) return null;
     if(effect.kind==='blaster') {
-      if(!Number.isInteger(effect.ammo)||effect.ammo<0||effect.ammo>5||!Number.isInteger(effect.volley)||effect.volley<0||effect.volley>10||typeof effect.reloaded!=='boolean'||!Number.isFinite(effect.cooldown)||effect.cooldown<0||effect.cooldown>.16||!Array.isArray(effect.hits)||effect.hits.length!==effect.volley||effect.hits.some(ids=>!Array.isArray(ids)||ids.length>14||new Set(ids).size!==ids.length||ids.some(id=>!Number.isInteger(id)||id<1||id>count))||!Array.isArray(effect.shots)||effect.shots.length>30)return null;
-      for(const shot of effect.shots) if(!shot||['x','y','vx','vy','life'].some(k=>!Number.isFinite(shot[k]))||shot.x<30||shot.x>930||shot.y<30||shot.y>610||Math.hypot(shot.vx,shot.vy)>981||shot.life<=0||shot.life>1.6||![0,1].includes(shot.bounces)||!Number.isInteger(shot.volley)||shot.volley<0||shot.volley>=effect.volley)return null;
+      if(!Number.isInteger(effect.ammo)||effect.ammo<0||effect.ammo>5||!Number.isInteger(effect.volley)||effect.volley<0||effect.volley>10||typeof effect.reloaded!=='boolean'||!Number.isFinite(effect.cooldown)||effect.cooldown<0||effect.cooldown>.45||!Array.isArray(effect.hits)||effect.hits.length!==effect.volley||effect.hits.some(ids=>!Array.isArray(ids)||ids.length>14||new Set(ids).size!==ids.length||ids.some(id=>!Number.isInteger(id)||id<1||id>count))||!Array.isArray(effect.shots)||effect.shots.length>30)return null;
+      for(const shot of effect.shots) if(!shot||['x','y','vx','vy','life'].some(k=>!Number.isFinite(shot[k]))||shot.x<30||shot.x>930||shot.y<30||shot.y>610||Math.hypot(shot.vx,shot.vy)>981||shot.life<=0||shot.life>1.6||![0,1].includes(shot.bounces)||!Number.isInteger(shot.volley)||shot.volley<0||shot.volley>=effect.volley||(shot.target!==undefined&&(!Number.isInteger(shot.target)||shot.target<1||shot.target>count)))return null;
     }
     if (effect.kind === 'drunk' && effect.seconds > RULE.drunkSeconds) return null;
     if (effect.kind === 'wrap' && effect.seconds > 5 || effect.kind === 'homing' && effect.seconds > RULE.homingSeconds) return null;

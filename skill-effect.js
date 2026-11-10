@@ -1,4 +1,4 @@
-import { POWER_TREES } from './power-tree.js?v=5b9b9d757691fc9af4ff737a750704704af52db425b7ea2bac25894089f8e387';
+import { POWER_TREES } from './power-tree.js?v=12d9871dec84499b7b5f20a56d5cea7a1a29c7ea9999d4dc5e793f5daaccb1d8';
 
 // Resolved configuration belongs to physics; profile ownership stays outside it.
 export function buildValidate(build) {

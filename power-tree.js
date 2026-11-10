@@ -793,7 +793,7 @@ export const POWER_TREES = {
   "name": "Blaster",
   "family": "Propagation",
   "tier": 1,
-  "current": "Three automatically aimed gel shots on contact. Tap the pool during flight to fire; impacts push jellies and play their notes.",
+  "current": "Contact starts three automatically aimed shots at a steady cadence. Impacts push jellies and play their notes; no player input is needed.",
   "today": [
     "base"
   ],
@@ -802,7 +802,7 @@ export const POWER_TREES = {
   "nodes": [
     {
       "name": "Blaster",
-      "description": "Load three gel shots on contact. Tap while moving to auto-aim and fire. Each jelly scores once per pluck."
+      "description": "Automatically aim and fire three gel shots after contact. No aiming, tapping or firing controls. Each jelly scores once per pluck."
     },
     {
       "name": "Extra magazine",

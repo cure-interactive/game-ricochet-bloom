@@ -1,7 +1,7 @@
-import { catalogueCreate, STARTERS } from './catalogue.js?v=aa050901096f931303aa6d503b3253d402031f95163433b0c8cb1c5dbbe54371';
-import { POWER_TREES } from './power-tree.js?v=5b9b9d757691fc9af4ff737a750704704af52db425b7ea2bac25894089f8e387';
-import { profileCreate, profileValidate, profilePurchase, profileRefund, profileRefundPreview, profileReward, profileCurrencyGrant, loadoutResolve } from './profile.js?v=c703912292f7bab5f657f5c89991fda053a00d41848a6b0f92c3f14a35c56421';
-import { gameCreate, saveValidate } from './engine.js?v=3866c817d261df98d09b8f4b537d91c3b9b0498907e606f8585acde8f0ddd411';
+import { catalogueCreate, STARTERS } from './catalogue.js?v=b65b3f7f09a22d6735e5d632bebcf319d4ce0d1a96ee4e47b07d92e8a1f2128e';
+import { POWER_TREES } from './power-tree.js?v=12d9871dec84499b7b5f20a56d5cea7a1a29c7ea9999d4dc5e793f5daaccb1d8';
+import { profileCreate, profileValidate, profilePurchase, profileRefund, profileRefundPreview, profileReward, profileCurrencyGrant, loadoutResolve } from './profile.js?v=3e6ed663805419769df28478537c5af4b53c09e55f1f17558898fce633811bc5';
+import { gameCreate, saveValidate } from './engine.js?v=c656a83a06079488327a462263909f995e7de70d08ccd6d4707b2f12e6625258';
 import { jellyRole, musicCreate } from './music.js?v=6ec72be4ad2664d5ad3ccad3e38ced59061c476e0fa523cde850ae21caa7b261';
 
 // Shipping capability declaration. The disposable preview never supplies physics flags.

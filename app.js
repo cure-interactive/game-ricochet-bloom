@@ -1,15 +1,15 @@
-import { POWER_TREES } from './power-tree.js?v=5b9b9d757691fc9af4ff737a750704704af52db425b7ea2bac25894089f8e387';
-import { progressionMount } from './progression-ui.js?v=0e71d4807c7032ffda57fa27d2b23f5d4827a3fb857d2ceda71a923c9d7b4d94';
+import { POWER_TREES } from './power-tree.js?v=12d9871dec84499b7b5f20a56d5cea7a1a29c7ea9999d4dc5e793f5daaccb1d8';
+import { progressionMount } from './progression-ui.js?v=c366379036dd18743bcf403180823e4c459d65cffe6b182b186c93b69e4d0117';
 import {assetURL} from './asset.js?v=e72688f45fcfcc2089603f0a550e085481522963bf75007bbdd9a515622da561';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
 import {songLibrarySetup} from './song-ui.js?v=d3ca1dedf9806c4cd4f65e8fa0108eddb1426517831d66472cb1cfeb4ac38177';
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterFire, blasterTarget } from './engine.js?v=3866c817d261df98d09b8f4b537d91c3b9b0498907e606f8585acde8f0ddd411';
-import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=ab94fd4b99086714345dd1c739b5f2b809b69d9d263902eedb53bef6da2d96ab';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=c656a83a06079488327a462263909f995e7de70d08ccd6d4707b2f12e6625258';
+import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=8953f82bfd6bce36837787e483fb693baf2802e31158a42346c1e53fbcb08e4b';
 import { PoolSound } from './sound.js?v=f8861b810d8993392cca65bc24ac1c1f2e60bfcc925b4e1380fc4b6fb91e9f97';
 import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=6ec72be4ad2664d5ad3ccad3e38ced59061c476e0fa523cde850ae21caa7b261';
 import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
-import { PowerVisual } from './power-visual.js?v=12f9b4aeed648cc9a84732c5c579253e4968d99a737d845ed32ec1c184d5d73d';
+import { PowerVisual } from './power-visual.js?v=50e725463fa3bed19eeb9781d7e665ce7588ea3cf7d3364a00da433c705a44c9';
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
 let store = poolStoreRead(null), storageIsAvailable = true;
 try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localStorage.getItem(LEGACY_STORAGE) ?? 'null')); } catch { storageIsAvailable = false; }
@@ -428,10 +428,10 @@ function uiRender() {
   $('power-status').textContent = markers.length > 1 ? `${markers.map(marker => POWERS[marker.kind].name).join(' + ')}. All marked jellies are ready now. Hit them in any order to activate.` : available ? `Hit the marked ${p.name} jelly with your seed. ${description}` : `All ${allowance} ${allowance === 1 ? 'power used' : 'powers used'} this pluck. The next set appears when this pluck ends.`;
   Object.assign(canvas.dataset, { power: available ? 'ready' : 'used', powerKind: kind, powerTarget: String(first?.target || 0), powerMarkers: markers.map(marker => `${marker.kind}:${marker.target}`).join(','), powerOffer: power.offer, powerClaims: String(power.claims), powerUsed: String(used), powerAllowance: String(allowance) });
   const ammo=effectGet(game,'blaster')?.ammo||0;
-  $('shoot').disabled = !isStarted || isPaused || game.isOver || game.isFlying&&!ammo;
-  buttonLabel($('shoot'),game.isFlying&&ammo?`Fire · ${ammo}`:'Pluck',game.isFlying&&ammo?'control-gun':'play');
-  if(ammo) $('shot-result').textContent=`Blaster · ${ammo} shots · tap the pool to fire`;
-  canvas.dataset.ammo=String(ammo);canvas.setAttribute('aria-label',ammo?'Blaster loaded. Tap or press Space to fire. Automatically aims at unhit jellies.':'Living pool. Drag to pluck. Arrow keys aim, up and down change power, Space launches.');
+  $('shoot').disabled = !isStarted || isPaused || game.isOver || game.isFlying;
+  buttonLabel($('shoot'),'Pluck','play');
+  if(ammo) $('shot-result').textContent=`Blaster · automatic · ${ammo} shots remaining`;
+  canvas.dataset.ammo=String(ammo);canvas.setAttribute('aria-label',ammo?'Blaster automatically aims and fires at unhit jellies. No input needed.':'Living pool. Drag to pluck. Arrow keys aim, up and down change power, Space launches.');
   $('pause').disabled = !isStarted || game.isOver; buttonLabel($('pause'),'',isPaused?'play':'pause'); $('pause').setAttribute('aria-label', isPaused ? 'Resume game' : 'Pause game');
   $('over-overlay').hidden = !isStarted || !game.isOver || progression?.context==='run';
   if (game.isOver) { $('end-title').textContent = gameWon(game) ? 'You made it bloom.' : 'One more ripple?'; $('end-label').textContent = gameWon(game) ? 'YOU WON · THREE BLOOMS' : 'OUT OF PLUCKS'; $('end-score').textContent = game.score.toLocaleString('en-US'); $('end-detail').textContent = `${game.blooms} / ${RULE.goalBlooms} blooms · ${game.launches} plucks used${gameWon(game) ? ' · Keep the song going below.' : ' · Reach three blooms to win.'}`; }
@@ -468,8 +468,7 @@ function phraseRender() {
   for (const [step, item] of [...pattern.children].entries()) item.classList.toggle('active', step === activeStep);
 }
 function controlsRender() { $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').replaceChildren(iconNode('music-note'),document.createTextNode(audio.isMuted?'Sound is off. Enable Sound to listen.':'Sound on. Headphones make it lovelier.')); $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('motion').checked = isGentle; $('stream').checked = isStream; document.body.classList.toggle('motion-reduced', isGentle); document.body.classList.toggle('stream-mode', isStream); }
-function fireBlaster() { if(!isStarted||isPaused||document.querySelector('dialog[open]'))return;audioUnlockAsync();blasterFire(game).forEach(eventHandle); }
-function shoot() { if(progression?.blocked)return; if(game.isFlying) {fireBlaster();return;} if (!isStarted || isPaused || document.querySelector('dialog[open]')) return; audioUnlockAsync(); if (launch(game, angle, power)) { audio.eventPlay({ type: 'launch', x: game.bodies[0].x, y: game.bodies[0].y }); save(); uiRender(); } }
+function shoot() { if(progression?.blocked)return; if(game.isFlying) return; if (!isStarted || isPaused || document.querySelector('dialog[open]')) return; audioUnlockAsync(); if (launch(game, angle, power)) { audio.eventPlay({ type: 'launch', x: game.bodies[0].x, y: game.bodies[0].y }); save(); uiRender(); } }
 function pauseSet(value) { if (!isStarted || game.isOver) return; isPaused = value; audio.pauseSet(value); dragCancel(); $('pause-overlay').hidden = !value; save(); uiRender(); if (!value) { audioUnlockAsync(); canvas.focus({ preventScroll: true }); } }
 function start() { audio.media.describe(game.seed); isStarted = true; isPaused = false; $('welcome').hidden = true; $('pause-overlay').hidden = true; if (game.mode!=='song-run' && audio.bloomCount !== game.blooms) audio.harmonySet(game.blooms); audio.pauseSet(false); audio.musicStart(); audioUnlockAsync(); save(); uiRender(); canvas.focus({ preventScroll: true }); }
 function loadPool(nextGame, music = null) {
@@ -520,7 +519,7 @@ canvas.addEventListener('pointerdown', event => {
   // Prevent native focus/selection from moving the page before capture begins.
   event.preventDefault();
   if (drag || !event.isPrimary || !isStarted || isPaused || game.isOver || progression?.blocked) return;
-  if(game.isFlying) {fireBlaster();return;}
+  if(game.isFlying) return;
   canvas.focus({ preventScroll: true });
   drag = { ...pointerWorld(event), id: event.pointerId, distance: 0 };
   canvas.setPointerCapture(event.pointerId); audioUnlockAsync();
