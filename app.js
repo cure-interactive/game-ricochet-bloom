@@ -1,3 +1,4 @@
+import { treeMount } from './tree-ui.js?v=1cd44935e0afc8dce704d4f7f34af1a422ecff63b3c7f2f80cb8bccaca8441c6';
 import {assetURL} from './asset.js?v=560eaf774b30dc5024687486b7a1369aab59ab8245ea800ec4719f1b11df3f6a';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
@@ -566,3 +567,5 @@ if (['127.0.0.1', 'localhost', '[::1]'].includes(location.hostname)) {
     $('shutdown-confirm').onclick = async () => { save(); try { const response = await fetch('/api/shutdown', { method: 'POST', headers: { 'X-Ricochet-Local': 'shutdown' } }); if (!response.ok) throw new Error(); audio.harmonySet(0); document.body.replaceChildren(Object.assign(document.createElement('p'), { textContent: 'Your pool is saved. The local server is shut down; you can close this tab.' })); } catch { toast('Shutdown failed. The server may still be running.'); } };
   }).catch(() => {});
 }
+
+treeMount();
