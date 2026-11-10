@@ -137,7 +137,7 @@ export class PoolSound {
     if (event.type === 'note') { const gain = event.seedId < 0 ? .65 : 1; const pitch = this.notePitch(event.tone) * (jellyRole(event.id)==='bass'?.5:event.chain>3?2:1); this.tone(pitch * 2.2, pitch, .075, .23 * gain, pan); this.tone(pitch, pitch * .998, .65, .24 * gain, pan, .025, 'sine', true); this.tone(pitch * 2, pitch * 2, .32, .055 * gain, pan, .03, 'triangle', true); }
     if (event.type === 'note' || event.type === 'launch') { this.duckUntil = this.context.currentTime + .8; this.mixUpdate(); }
     if (event.type === 'power') {
-      const degrees = ({ ripple: [0, 2, 3], attract: [3, 2, 0], vortex: [0, 3, 2, 3], stasis: [3, 0], comet: [0, 2, 3, 5], swap: [0, 3, 0, 2], magnet: [5, 3, 2, 0], lightning: [], impact: [0, 0, 3], tether: [0, 2, 0], split: [0, 3, 5], bubble: [0, 3, 2], portal: [0, 5], echo: [3, 0, 3], slingshot: [0, 2], drunk: [0, 3, 2, 5, 3] })[event.kind] || [0, 2, 3];
+      const degrees = ({ ripple: [0, 2, 3], attract: [3, 2, 0], vortex: [0, 3, 2, 3], stasis: [3, 0], comet: [0, 2, 3, 5], swap: [0, 3, 0, 2], magnet: [5, 3, 2, 0], lightning: [], impact: [0, 0, 3], tether: [0, 2, 0], split: [0, 3, 5], bubble: [0, 3, 2], portal: [0, 5], echo: [3, 0, 3], slingshot: [0, 2], drunk: [0, 3, 2, 5, 3], homing: [0, 2, 5] })[event.kind] || [0, 2, 3];
       degrees.forEach((degree, index) => { const pitch = this.notePitch(degree); this.tone(pitch, pitch, .65, .075, pan, index * .09, 'sine', true); });
       this.duckUntil = this.context.currentTime + .8; this.mixUpdate();
     }

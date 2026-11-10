@@ -1,5 +1,5 @@
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
-export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 16, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
+export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 17, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
 export function seedHash(seed) { let hash = 2166136261; for (const char of String(seed)) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619); return hash >>> 0 || 1; }
 export const POWERS = Object.freeze({
@@ -25,7 +25,8 @@ export const POWERS = Object.freeze({
   rewind: { name: 'Rewind', symbol: '≪', color: '#b7b9ff', description: 'At the end of this flight, retrace its recent path for a quick encore. Moving jellies can become new notes.' },
   pulse: { name: 'Pulse', symbol: '◴', color: '#ffadc7', description: 'Erupt at three random spots across the pool, pushing jellies away one beat at a time.' },
   drunk: { name: 'Drunk', symbol: '∿', color: '#ffacd8', description: 'Swerve side to side for four seconds without losing speed. Split seeds get tipsy too.' },
-  wrap: { name: 'Wrap', symbol: '⇥', color: '#8cefff', description: 'Cross any wall and emerge at the opposite edge for five seconds. Keep your direction and momentum; Split seeds wrap too. Replaces wall bounces, including Spring.' }
+  wrap: { name: 'Wrap', symbol: '⇥', color: '#8cefff', description: 'Cross any wall and emerge at the opposite edge for five seconds. Keep your direction and momentum; Split seeds wrap too. Replaces wall bounces, including Spring.' },
+  homing: { name: 'Homing', symbol: '➶', color: '#c1ffa2', description: 'Curve toward nearby unhit jellies ahead for five seconds. Keep your momentum and seek a new target after each hit. Split seeds home too; green brackets show the target.' }
 });
 const powerKinds = Object.keys(POWERS);
 function powerCreate(seed) { const hash = seedHash(seed); return { offer: powerKinds[hash % powerKinds.length], target: hash % 14 + 1, shot: 0, claims: 0, used: 0, capacity: 1, markers: [] }; }
@@ -58,6 +59,24 @@ function powerTargetNext(state) {
 export function effectGet(state, kind) { return state.effects.find(effect => effect.kind === kind); }
 export function frozenHit(state, id) { return state.isFlying && state.chain.includes(id) && !!effectGet(state, 'stasis')?.targets.includes(id); }
 export function seedBodies(state) { return [state.bodies[0], ...(effectGet(state, 'split')?.shards || []), ...(effectGet(state, 'echo')?.isReady ? [effectGet(state, 'echo').ghost] : [])]; }
+// Shared by steering and its target cue; selection has no hidden state to save.
+export function homingTarget(state, seed) {
+  if (!state.isFlying || !effectGet(state, 'homing') || seed.id === -3 ||
+      seed.id === 0 && (effectGet(state, 'slingshot') || effectGet(state, 'rewind')?.returning)) return null;
+  const speed = Math.hypot(seed.vx, seed.vy);
+  if (speed < 45) return null;
+  let target = null, best = Infinity;
+  for (const body of state.bodies.slice(1)) {
+    if (state.chain.includes(body.id) || effectGet(state, 'orbit')?.satellites.includes(body.id)) continue;
+    const dx = body.x - seed.x, dy = body.y - seed.y, distance = Math.hypot(dx, dy);
+    if (distance < 1 || distance > RULE.homingReach) continue;
+    const ahead = (dx * seed.vx + dy * seed.vy) / (distance * speed);
+    if (ahead < -.15) continue; // Keep the shot's direction instead of making a U-turn.
+    const cost = distance * (1 + .7 * (1 - ahead));
+    if (cost < best || cost === best && body.id < target.id) { target = body; best = cost; }
+  }
+  return target;
+}
 function effectClear(state, events = [], kind = null) {
   const split = effectGet(state, 'split');
   if (split && (!kind || kind === 'split')) events.push({ type: 'reunite', x: state.bodies[0].x, y: state.bodies[0].y, from: split.shards.map(({ x, y }) => ({ x, y })) });
@@ -112,6 +131,18 @@ function effectStep(state, events) {
     const point=effect.route.pop();
     if(point) { const dx=point.x-seed.x,dy=point.y-seed.y;seed.vx=dx/RULE.step;seed.vy=dy/RULE.step;velocityLimit(seed);seed.x=point.x;seed.y=point.y; }
     if(!effect.route.length) effect.seconds=0;
+  }
+  if (effect.kind === 'homing' && effect.seconds > 0) {
+    for (const body of [seed, ...(effectGet(state, 'split')?.shards || [])]) {
+      const target = homingTarget(state, body);
+      if (!target) continue;
+      const speed = Math.hypot(body.vx, body.vy), heading = Math.atan2(body.vy, body.vx);
+      const lead = Math.min(.25, Math.hypot(target.x - body.x, target.y - body.y) / speed * .4);
+      const aim = Math.atan2(target.y + target.vy * lead - body.y, target.x + target.vx * lead - body.x);
+      const error = Math.atan2(Math.sin(aim - heading), Math.cos(aim - heading));
+      const limit = RULE.homingTurn * RULE.step, turn = Math.max(-limit, Math.min(limit, error));
+      body.vx = Math.cos(heading + turn) * speed; body.vy = Math.sin(heading + turn) * speed;
+    }
   }
   if (effect.kind === 'drunk') {
     // Integrate a bounded heading offset, preserving speed and deterministic saves.
@@ -255,7 +286,7 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
   // Pluck-long effects follow the renewed flight; short-lived powers keep their own clocks.
   for (const effect of state.effects) if (['comet', 'impact', 'bubble', 'stasis', 'echo'].includes(effect.kind)) effect.seconds = RULE.flightSeconds;
   const event = { type: 'power', kind, seedId: a.id, x: b.x, y: b.y };
-  if (['relay','wake','spring','orbit','rewind','pulse','wrap'].includes(kind)) {
+  if (['relay','wake','spring','orbit','rewind','pulse','wrap','homing'].includes(kind)) {
     const effect={kind, seconds:kind==='orbit'?3:kind==='pulse'?2.3:kind==='rewind'?7:5, targets:[]};
     if(kind==='relay') Object.assign(effect,{armed:[],spent:[],remaining:3});
     if(kind==='wake') effect.trail=[];
@@ -509,7 +540,7 @@ export function physicsStep(state) {
   return events;
 }
 export function saveValidate(input) {
-  if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free'].includes(input.mode)) return null;
+  if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free'].includes(input.mode)) return null;
   if (input.version >= 9 && (!Array.isArray(input.effects) || input.effects.length > 3 || input.effect !== undefined || input.effects.some(effect => !effect?.kind) || new Set(input.effects.map(effect => effect.kind)).size !== input.effects.length)) return null;
   const effects = input.version >= 9 ? input.effects : input.version >= 6 ? [input.effect] : [];
   const hasEffect = kind => effects.some(effect => effect?.kind === kind);
@@ -546,11 +577,11 @@ export function saveValidate(input) {
   }
   if (input.version >= 6) {
     for (const effect of effects) {
-    if (!effect || ![null, 'magnet', 'lightning', 'impact', 'comet', ...(input.version >= 7 ? ['tether', 'split', 'bubble'] : []), ...(input.version >= 8 ? ['portal', 'echo', 'slingshot'] : []), ...(input.version >= 10 ? ['stasis'] : []), ...(input.version >= 13 ? ['drunk'] : []), ...(input.version >= 14 ? ['relay','wake','spring','orbit','rewind','pulse'] : []), ...(input.version >= 16 ? ['wrap'] : [])].includes(effect.kind) || !Number.isFinite(effect.seconds) || effect.seconds < 0 || effect.seconds > RULE.flightSeconds || !Array.isArray(effect.targets)) return null;
+    if (!effect || ![null, 'magnet', 'lightning', 'impact', 'comet', ...(input.version >= 7 ? ['tether', 'split', 'bubble'] : []), ...(input.version >= 8 ? ['portal', 'echo', 'slingshot'] : []), ...(input.version >= 10 ? ['stasis'] : []), ...(input.version >= 13 ? ['drunk'] : []), ...(input.version >= 14 ? ['relay','wake','spring','orbit','rewind','pulse'] : []), ...(input.version >= 16 ? ['wrap'] : []), ...(input.version >= 17 ? ['homing'] : [])].includes(effect.kind) || !Number.isFinite(effect.seconds) || effect.seconds < 0 || effect.seconds > RULE.flightSeconds || !Array.isArray(effect.targets)) return null;
     if (effect.kind && (!input.isFlying || input.power.shot !== input.launches || effect.seconds <= 0)) return null;
     if (!effect.kind && effect.seconds !== 0) return null;
     if (effect.kind === 'drunk' && effect.seconds > RULE.drunkSeconds) return null;
-    if (effect.kind === 'wrap' && effect.seconds > 5) return null;
+    if (effect.kind === 'wrap' && effect.seconds > 5 || effect.kind === 'homing' && effect.seconds > RULE.homingSeconds) return null;
     if (effect.kind === 'magnet' && effect.seconds > 2.4 || effect.kind === 'lightning' && effect.seconds > .22) return null;
     if (effect.kind === 'lightning' || effect.kind === 'stasis') {
       if (effect.targets.length < 1 || effect.targets.length > (effect.kind === 'stasis' ? 14 : 3) || new Set(effect.targets).size !== effect.targets.length || effect.targets.some(id => !Number.isInteger(id) || id < 1 || id > 14)) return null;

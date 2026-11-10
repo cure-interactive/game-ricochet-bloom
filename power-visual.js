@@ -1,5 +1,5 @@
 // Presentation only: engine events supply impulses; active effects supply geometry.
-import { RULE, POWERS, effectGet } from './engine.js';
+import { RULE, POWERS, effectGet, homingTarget } from './engine.js';
 const TAU = Math.PI * 2;
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 function line(c, x, y, endX, endY) { c.beginPath(); c.moveTo(x, y); c.lineTo(endX, endY); c.stroke(); }
@@ -144,6 +144,32 @@ export class PowerVisual {
       c.restore();
     }
     const seed = game.bodies[0], phase = gentle ? .5 : time;
+    const homing = effectGet(game, 'homing');
+    if (homing) {
+      const fade = Math.min(1, homing.seconds / .5);
+      c.strokeStyle = c.fillStyle = POWERS.homing.color; c.lineWidth = gentle ? 1.5 : 2;
+      for (const body of [seed, ...(effectGet(game, 'split')?.shards || [])]) {
+        const target = homingTarget(game, body);
+        if (!target) continue;
+        const angle = Math.atan2(body.vy, body.vx), distance = Math.hypot(target.x - body.x, target.y - body.y);
+        const reach = Math.min(90, distance * .45), radius = target.radius + 9;
+        const control = { x: body.x + Math.cos(angle) * reach, y: body.y + Math.sin(angle) * reach };
+        c.globalAlpha = (gentle ? .2 : .32) * fade;
+        c.setLineDash([3, 9]); c.beginPath(); c.moveTo(body.x, body.y);
+        c.quadraticCurveTo(control.x, control.y, target.x, target.y); c.stroke(); c.setLineDash([]);
+        c.globalAlpha = (gentle ? .5 : .8) * fade;
+        for (let i = 0; i < 4; i++) {
+          const start = i * TAU / 4 + .18;
+          c.beginPath(); c.arc(target.x, target.y, radius, start, start + .65); c.stroke();
+        }
+        if (!gentle) {
+          const t = (time * .8 + Math.abs(body.id) * .23) % 1, u = 1 - t;
+          const x = u * u * body.x + 2 * u * t * control.x + t * t * target.x;
+          const y = u * u * body.y + 2 * u * t * control.y + t * t * target.y;
+          dot(c, x, y, 2.2);
+        }
+      }
+    }
     const drunk = effectGet(game, 'drunk');
     if (drunk) {
       const elapsed = RULE.drunkSeconds - drunk.seconds, fade = Math.min(1, drunk.seconds / .6);

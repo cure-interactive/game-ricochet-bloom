@@ -6,7 +6,7 @@
 
 ![Ricochet Bloom cover](artwork/pool-512.png)
 
-Drag backward and release to pluck a luminous seed through drifting jellies. Five different jelly touches form a bloom. Make three blooms before your twelve plucks run out, or choose Free play to keep shaping the music. Successful plucks unlock up to three contact powers per shot; twenty-two powers change how the pool moves.
+Drag backward and release to pluck a luminous seed through drifting jellies. Five different jelly touches form a bloom. Make three blooms before your twelve plucks run out, or choose Free play to keep shaping the music. Successful plucks unlock up to three contact powers per shot; twenty-four powers change how the pool moves.
 
 Your plucks supply melodic ideas and your bloom chords build the accompaniment into a song. Headphones are recommended. Sound starts after you enter the pool; volume and ambience have separate controls. Gentle visuals is optional.
 
@@ -35,3 +35,5 @@ The screen-filling layout keeps play and controls visible without page scrolling
 Interface controls use SVG artwork from Cure Interactive Icons, with a small set of original game fallbacks. Settings → Icon credits links to each bundled attribution and full license. See [the icon inventory](icon/ui/INDEX.md).
 
 Relay-armed jellies can activate powers on the jellies they bump. Each Relay jelly has one transfer; power collection uses the shared allowance and refreshes the player flight. A marked jelly that has already scored still activates its power without scoring twice.
+
+Homing curves your seed and Split seeds toward nearby unhit jellies ahead for five seconds. Green brackets mark the current target; steering preserves speed apart from ordinary water drag.
