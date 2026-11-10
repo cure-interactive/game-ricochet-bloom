@@ -88,14 +88,11 @@
   .tree-workspace>.tree-detail{display:none}.tree-footer{display:none}.tree-mobile-nav{display:flex;gap:6px;padding:4px 8px;background:#0b1628;border-top:1px solid #344b61;flex:none}.tree-mobile-nav button{flex:1;min-height:44px!important;font-size:12px!important;padding:6px!important}.tree-mobile-nav button[aria-pressed=true]{background:#b0efcf!important;color:#102c26!important;border-color:#b0efcf!important}
   #tree-dialog[data-view=map] .tree-controls,#tree-dialog[data-view=run] .tree-workspace{display:none}
   #tree-dialog[data-view=run] .tree-status{order:3}#tree-dialog .tree-mobile-nav{order:4}
-  #tree-open{min-width:40px;padding:8px!important}#tree-open .button-label{font-size:10px}
 }
 
-@media(max-width:480px){header .brand-name{display:none}header{gap:5px!important;padding-left:8px!important;padding-right:8px!important}.pool-navigation{gap:5px}.pool-navigation button{padding:8px!important}#settings-open{padding:8px!important}#tree-open .ui-icon{display:none}}
 
 .tree-root{grid-column:1/-1;text-align:center;font-size:12px;color:#b8e6d2;padding:0 0 16px;border-bottom:1px solid #456379}.tree-root span{display:block;font-size:10px;color:#a1b6ca;margin-top:5px}.tree-map-section{scroll-margin-top:110px}
 
-@media(max-width:360px){header .brand{display:none}header .pool-navigation{margin-left:0}#tree-open{margin-left:auto}}
 
 /* A compact, consistent icon language leaves the map the largest surface. */
 .tree-family-choice button{display:inline-flex;align-items:center;gap:6px}
@@ -129,7 +126,6 @@
  #practice-return span{display:none}#practice-return .ui-icon{display:inline-block}
  .dev-controls{grid-template-columns:1fr}
 }
-@media(max-width:480px){#tree-open .ui-icon{display:inline-block}#tree-open .button-label{display:none}}
 
 .tree-node small .ui-icon{width:11px;height:11px;vertical-align:middle;margin-right:4px}.tree-legend>span{display:inline-flex;align-items:center;gap:5px}.tree-legend .ui-icon{width:13px;height:13px}
 
@@ -172,17 +168,6 @@
 #campaign-dialog .campaign-heading button {font-size:0;width:44px;padding:10px;}
 #campaign-dialog .campaign-heading button .ui-icon {font-size:22px;}
 #campaign-dialog .campaign-tabs button {font-size:.82rem;}
-@media(max-width:760px){#campaign-dialog .campaign-tabs button {font-size:.73rem;padding:6px;}#campaign-dialog .campaign-tabs .ui-icon {width:16px;height:16px;}#campaign-open {font-size:10px;padding:6px;min-height:36px;} .pool-navigation {gap:4px;} }
+@media(max-width:760px){#campaign-dialog .campaign-tabs button {font-size:.73rem;padding:6px;}#campaign-dialog .campaign-tabs .ui-icon {width:16px;height:16px;}}
 
 #campaign-dialog {scrollbar-gutter:auto;}
-
-@media(max-width:480px){
-  header {margin:0;width:100%;gap:4px;}
-  header .pool-navigation {min-width:0;flex:1;gap:4px;}
-  #campaign-open {min-width:56px;padding:6px;font-size:10px;}
-  #mode-open {min-width:0;max-width:106px;flex:1;padding:6px;}
-  #mode-open .button-label {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  #restart {width:36px;min-width:36px;padding:7px;}
-  #restart .button-label {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
-  header>#development-badge {display:none;}
-}

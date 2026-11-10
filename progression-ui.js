@@ -32,7 +32,7 @@ export function progressionMount(host){
   document.body.append(dev);
   const result=document.createElement('dialog');result.id='run-result-dialog';result.setAttribute('aria-labelledby','run-result-title');
   result.innerHTML=`<div class="run-result-icon">${iconHTML('epic')}</div><h2 id="run-result-title"></h2><p id="run-result-copy"></p><div class="dialog-actions">${button('run-listen','Listen to this song','music-note')}${button('run-retry','Retry same setup','reset')}${button('run-next','Tune & continue','network-node-three')}${button('run-leave','Back to other modes','grid')}</div>`;document.body.append(result);
-  const back=document.createElement('button');back.id='practice-return';back.setAttribute('aria-label','Return to campaign');back.className='quiet';back.hidden=true;back.innerHTML=iconHTML('arrow-left')+'<span>Leave practice</span>';document.querySelector('.pool-navigation').append(back);
+  const back=document.createElement('button');back.id='practice-return';back.setAttribute('aria-label','Return to campaign');back.className='quiet';back.hidden=true;back.innerHTML=iconHTML('arrow-left')+'<span>Leave practice</span>';document.querySelector('body>header').append(back);
   function leave(){host.save();if(suspended){state=suspended.state;kind=suspended.kind;suspended=null;shared=null;}context='legacy';practice=null;back.hidden=true;close();host.restoreLegacy();}
   back.onclick=()=>{const listening=practice?.listening;leave();if(listening)campaign.open('collection');else tree.open();};
   function enterRun(){host.save();if(state.phase==='shop'){const r=act({type:'start'});if(!r.ok)return r;}else if(state.phase==='interlude'){const r=act({type:'continue'});if(!r.ok)return r;}context=shared?'challenge':'run';practice=null;back.hidden=true;close();host.play(state.run.game,state.run.music);return {ok:true};}
@@ -58,8 +58,8 @@ export function progressionMount(host){
       state=next;kind='development';return enterRun();}
   });
   const badge=document.createElement('span');badge.id='development-badge';badge.className='development-badge';badge.textContent='TEST';badge.hidden=true;document.querySelector('header').append(badge);
-  const hub=document.createElement('button');hub.id='campaign-open';hub.className='primary';hub.innerHTML=iconHTML('epic')+'<span>Song Run</span>';hub.onclick=()=>{host.save();campaign.open();};document.querySelector('.pool-navigation').prepend(hub);
-  const welcome=document.getElementById('welcome');if(welcome){const b=hub.cloneNode(true);b.id='welcome-campaign';b.onclick=()=>campaign.open();welcome.querySelector('.welcome-content').append(b);}
+  const hub=document.createElement('button');hub.id='campaign-open';hub.className='primary';hub.innerHTML=iconHTML('epic')+'<span>Song Run</span>';hub.onclick=()=>{host.save();campaign.open();};document.getElementById('campaign-slot').append(hub);
+  const welcome=document.getElementById('welcome');if(welcome){const b=hub.cloneNode(true);b.id='welcome-campaign';b.className='quiet';b.onclick=()=>campaign.open();welcome.querySelector('.welcome-content').append(b);}
 
   $('dev-close').onclick=()=>dev.close();
   $('dev-switch').onchange=()=>{leave();kind=kind==='normal'?'development':'normal';loaded=progressionRead(localStorage,kind);state=loaded.state;tree.refresh();devRender();dev.showModal();};
