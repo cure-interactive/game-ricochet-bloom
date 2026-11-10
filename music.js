@@ -1,3 +1,4 @@
+import { trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 // Play supplies the motif and harmony; arrangement supplies a musical journey.
 export const CHORDS = [
   { name: 'C6/9', notes: [60, 62, 64, 67, 69] },
@@ -45,8 +46,10 @@ export function musicCreate(input = null, blooms = 0, plucks = null) {
   const palette=Object.hasOwn(PALETTES,input.palette)?input.palette:'glass';
   const accentStart=Number.isInteger(input.accentStart)&&input.accentStart>=-1&&input.accentStart<=input.bar+4?input.accentStart:-1;
   const accentUntil=countValid(input.accentUntil)&&input.accentUntil<=input.bar+12?input.accentUntil:0;
+  if(input.run!==undefined&&(!input.run||!trackGet(input.run.track)||!Number.isInteger(input.run.section)||input.run.section<0||input.run.section>5||!Number.isInteger(input.run.pending)||input.run.pending<0||input.run.pending>5||typeof input.run.cadenceDone!=='boolean'))return empty;
+  const run=input.run?{run:{...input.run}}:{};
   const copy = value => input.version >= 3 ? phraseCopy(value) : legacyPhrase(value);
-  return { ...empty, evolution, pendingParts, parts, intensity, pans, palette, accentStart, accentUntil, plucks: plucks ?? (input.version >= 2 ? input.plucks : blooms), theme: [...input.theme], history: input.history.map(value => ({ ...copy(value), chord: value.chord })), strikes: input.strikes.map(hit => ({ tone: hit.tone, tick: hit.tick, id: hit.id ?? 0, midi: hit.midi ?? PENTATONIC[hit.tone] })), motifs: (input.version >= 2 ? input.motifs : input.history).map(copy), bar: input.version >= 2 ? input.bar : 0, formStart: input.version >= 2 ? input.formStart : 0, hook: input.version >= 3 && input.hook ? copy(input.hook) : null, reply: input.version >= 3 && input.reply ? { phrase: copy(input.reply.phrase), part: input.reply.part } : null };
+  return { ...empty, ...run, evolution, pendingParts, parts, intensity, pans, palette, accentStart, accentUntil, plucks: plucks ?? (input.version >= 2 ? input.plucks : blooms), theme: [...input.theme], history: input.history.map(value => ({ ...copy(value), chord: value.chord })), strikes: input.strikes.map(hit => ({ tone: hit.tone, tick: hit.tick, id: hit.id ?? 0, midi: hit.midi ?? PENTATONIC[hit.tone] })), motifs: (input.version >= 2 ? input.motifs : input.history).map(copy), bar: input.version >= 2 ? input.bar : 0, formStart: input.version >= 2 ? input.formStart : 0, hook: input.version >= 3 && input.hook ? copy(input.hook) : null, reply: input.version >= 3 && input.reply ? { phrase: copy(input.reply.phrase), part: input.reply.part } : null };
 }
 function capture(music) {
   const hits = music.strikes.length ? music.strikes : [0, 2, 3, 1].map((tone, i) => ({ tone, tick: i * 90, id: 0, midi: PENTATONIC[tone] }));
@@ -110,11 +113,13 @@ function hookDevelop(music) {
 // One clock transition shared by live audio and offline highlights.
 export function musicNextBar(music,flow=0,previous=67) {
   const bar=music.bar;
+  if(music.run){music.run.section=music.run.pending;music.palette=trackGet(music.run.track).palette;}
   if(bar%2===0) {
     for(const role of ['bass','rhythm'])if(music.pendingParts[role]){music.parts[role]=music.pendingParts[role];music.pendingParts[role]=null;}
     if(music.hook&&bar>=music.evolution.nextBar){hookDevelop(music);music.evolution.nextBar=bar+8;}
   }
   const score=musicComposeBar(music,bar,flow,previous);
+  if(music.run?.section===5&&!music.run.cadenceDone)music.run.cadenceDone=true;
   score.replyBars=music.reply?2-music.reply.part:0;
   if(music.reply&&++music.reply.part===2)music.reply=null;
   music.bar++;
@@ -129,7 +134,8 @@ export function musicBloom(music) {
   return chord;
 }
 export function musicProgress(music) {
-  const stage = music.blooms >= 3 ? 4 : music.blooms >= 2 || (music.plucks >= 6 && music.blooms >= 1) ? 3 : music.blooms >= 1 || (music.plucks >= 3 && music.theme.length === 4) ? 2 : music.plucks > 0 ? 1 : 0;
+  let stage = music.blooms >= 3 ? 4 : music.blooms >= 2 || (music.plucks >= 6 && music.blooms >= 1) ? 3 : music.blooms >= 1 || (music.plucks >= 3 && music.theme.length === 4) ? 2 : music.plucks > 0 ? 1 : 0;
+  if(music.run)stage=Math.min(stage,[2,3,3,2,4,4][music.run.section]);
   return { stage, name: ['Quiet pool', 'First ripples', 'Melody', 'Groove', 'Full song'][stage], next: ['Pluck to wake the song', 'A bloom or three plucks grows your melody', 'More plucks and blooms add a groove', 'Three blooms brings the full song', 'Keep plucking to write new variations'][stage] };
 }
 const TRIADS = [[60, 64, 67], [57, 60, 64], [53, 57, 60], [55, 59, 62]];
@@ -244,10 +250,26 @@ export function musicComposeBar(music, bar = music.bar, flow = 0, previous = 67)
   if(accent===0) {section='Earned fill';for(let i=0;i<3;i++)events.push({at:1.875+i*.375,midi:0,duration:.10,level:.025,role:'rim',pan:(i-1)*.2,attack:.005});}
   if(accent===1) {section='Breathing room';events=events.filter(e=>!['accompaniment','shaker','answer'].includes(e.role)).map(e=>e.level?{...e,level:e.level*.7}:e);}
   if(accent===2) {section='Return';events.push({at:0,midi:chordPitch(chord,72),duration:1.2,level:.045,role:'answer',pan:0,attack:.05});}
+  if(music.run){
+    const {track,section:pool,cadenceDone}=music.run;
+    if(pool===3){section='Bridge · breathing room';events=events.filter(e=>!['shaker','answer','rim'].includes(e.role)).map(e=>({...e,level:(e.level||0)*.72}));}
+    if(track==='crosscurrent')events=events.map(e=>e.role==='accompaniment'?{...e,at:Math.min(2.85,e.at+.1875)}:e);
+    if(track==='glasswater')events=events.filter(e=>e.role!=='shaker'&&(e.role!=='accompaniment'||bar%2===0)).map(e=>({...e,duration:Math.min(e.duration,1.2),attack:.012}));
+    if(track==='afterimage'&&bar%2===1)events=events.filter(e=>e.role!=='accompaniment').map(e=>e.role==='lead'?{...e,role:'answer',level:e.level*.7,pan:-(e.pan||0)}:e);
+    if(pool===5&&!cadenceDone){section='Song complete';events=events.filter(e=>!['lead','answer','accompaniment','kick','rim','shaker'].includes(e.role));for(const [i,midi] of [67,64,60].entries())events.push({at:i*.75,midi,duration:1.5,level:.045,role:'lead',pan:0,attack:.04});}
+  }
   events=events.map(e=>{
     if(!e.level)return e;
     const force=music.intensity?.[e.sourceId]??.45, ending=e.at>2.2?.83:1;
     return {...e,pan:e.sourceId>0?music.pans?.[e.sourceId]??0:e.pan,level:e.level*(.78+force*.38)*ending,attack:Math.max(.006,(e.attack??.025)*(1.3-force*.65)),duration:e.duration*(.94+force*.12),brightness:.7+force*.6,palette:music.palette};
   });
   return { ...score, section, phrase: music.reply?.phrase ?? music.hook, events: events.sort((a, b) => a.at - b.at), duration: BAR_SECONDS, isReply: !!music.reply, nextPitch: events.filter(event => event.role === 'lead').at(-1)?.midi ?? previous };
+}
+
+// A requested section enters at the next scheduled bar; the hook and clock survive.
+export function musicRunSection(music,section,track){
+  if(!trackGet(track)||!Number.isInteger(section)||section<0||section>5)throw new TypeError('Invalid musical section');
+  music.run??={track,section:0,pending:0,cadenceDone:false};
+  music.run.track=track;music.run.pending=section;
+  return music;
 }

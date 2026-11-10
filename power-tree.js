@@ -533,7 +533,8 @@ export const POWER_TREES = {
     "tier": 3,
     "current": "The player retraces recent flight positions at the end of the flight, potentially meeting previously untouched moving jellies.",
     "today": [],
-    "uncertain": true,
+    "uncertain": false,
+      "legacyMatch": false,
     "compatible": true,
     "nodes": [
       {

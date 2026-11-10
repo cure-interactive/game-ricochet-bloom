@@ -1,4 +1,4 @@
-import { progressionCreate, progressionValidate } from './run.js?v=95e425ab4f39f5e80330efcc535f5ee782c2e8947942cffcee6cd463178af3c1';
+import { progressionCreate, progressionValidate } from './run.js?v=8421ccc4a690fed8a048cdb8f9828583a0f0ed86cd69000531b66c16d4ff591b';
 export const PROGRESSION_KEY='ricochet-bloom-progression-v1';
 const key=kind=>PROGRESSION_KEY+(kind==='development'?'-development':'');
 export function progressionRead(storage,kind='normal') {
@@ -8,7 +8,7 @@ export function progressionRead(storage,kind='normal') {
 }
 export function progressionWrite(storage,input){
   const kind=input?.profile?.kind,state=progressionValidate(input,kind);if(!state)return {ok:false,reason:'Progress could not be validated. Your previous save is safe.'};
-  try{const name=key(kind),previous=storage.getItem(name);if(previous&&progressionValidate(JSON.parse(previous),kind))storage.setItem(name+'-backup',previous);storage.setItem(name,JSON.stringify(state));return {ok:true,state};}
+  try{const name=key(kind),previous=storage.getItem(name);let validPrevious=false;try{validPrevious=!!previous&&!!progressionValidate(JSON.parse(previous),kind);}catch{}if(validPrevious)storage.setItem(name+'-backup',previous);storage.setItem(name,JSON.stringify(state));return {ok:true,state};}
   catch{return {ok:false,reason:'Saving is unavailable. Free some browser storage before changing progression.'};}
 }
 export function progressionImport(storage,text,kind='normal'){let state;try{state=progressionValidate(JSON.parse(text),kind);}catch{}return state?progressionWrite(storage,state):{ok:false,reason:'This is not a valid '+kind+' progression file.'};}

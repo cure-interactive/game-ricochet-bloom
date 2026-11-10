@@ -1,5 +1,5 @@
 // Presentation only: engine events supply impulses; active effects supply geometry.
-import { RULE, POWERS, effectGet, homingTarget } from './engine.js?v=c656a83a06079488327a462263909f995e7de70d08ccd6d4707b2f12e6625258';
+import { RULE, POWERS, effectGet, homingTarget } from './engine.js?v=56b76ef371ce8d9857fad17229b62f6ad346ac3b95774147bc024b9b3cf4d11e';
 const TAU = Math.PI * 2;
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 function line(c, x, y, endX, endY) { c.beginPath(); c.moveTo(x, y); c.lineTo(endX, endY); c.stroke(); }
@@ -64,6 +64,8 @@ export class PowerVisual {
       if (event.kind === 'swap') for (const point of [{ x: event.x, y: event.y }, { x: event.exitX, y: event.exitY }]) this.add({ kind: 'endpoint', color: POWERS.swap.color, ...point, duration: .85 });
       if (event.kind === 'split') for (const shard of effectGet(game, 'split')?.shards || []) this.add({ kind: 'branch', x: seed.x, y: seed.y, endX: shard.x + shard.vx * .12, endY: shard.y + shard.vy * .12, duration: .65 });
     }
+    if(event.type==='skill-wave')this.add({kind:'ripple',color:'#e4cbff',x:event.x,y:event.y,duration:.75});
+    if(event.type==='teleport')for(const point of [event.from,event])if(point)this.add({kind:'endpoint',color:POWERS.portal.color,x:point.x,y:point.y,duration:.7});
     if(event.type==='pulse') this.add({kind:'ripple',color:POWERS.pulse.color,x:event.x,y:event.y,duration:.72});
     if(event.type==='relay') this.add({kind:'branch',x:event.fromX,y:event.fromY,endX:event.x,endY:event.y,color:POWERS.relay.color,duration:.7});
     if(event.type==='orbit-release') this.add({kind:'shock',...event,color:POWERS.orbit.color,duration:.7});
@@ -87,6 +89,16 @@ export class PowerVisual {
     c.save(); c.lineCap = 'round'; c.lineJoin = 'round';
     // Clip large currents and wakes to the pool, keeping controls and labels clear.
     c.beginPath(); c.roundRect(RULE.inset, RULE.inset, RULE.width - RULE.inset * 2, RULE.height - RULE.inset * 2, 45); c.clip();
+    const skills=game.skillState;
+    if(skills){
+      c.save();c.lineWidth=1.5;c.globalAlpha=gentle?.28:.55;
+      for(const field of [skills.vortex,...skills.eddies].filter(e=>e&&e.seconds>0)){
+        c.strokeStyle='#c4b6ff';const r=field===skills.vortex?85:45;c.beginPath();c.arc(field.x,field.y,r,time*.7,time*.7+Math.PI*1.6);c.stroke();arrow(c,field.x+Math.cos(time*.7)*r,field.y+Math.sin(time*.7)*r,time*.7-Math.PI/2,8);
+      }
+      for(const id of skills.transfer.filter(id=>!skills.transferSpent.includes(id))){const b=game.bodies[id];c.strokeStyle=POWERS.impact.color;c.beginPath();c.arc(b.x,b.y,b.radius+6,0,TAU);c.stroke();}
+      if(skills.charged&&!skills.chargedSpent){const b=game.bodies[skills.charged];c.strokeStyle=POWERS.lightning.color;c.beginPath();c.moveTo(b.x-4,b.y-12);c.lineTo(b.x+4,b.y-1);c.lineTo(b.x-3,b.y+2);c.lineTo(b.x+4,b.y+13);c.stroke();}
+      c.restore();
+    }
     for (const cue of this.cues) {
       if (cue.kind === 'spring') continue;
       const progress = cue.age / cue.duration, travel = gentle ? .35 : progress;

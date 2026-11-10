@@ -1,33 +1,62 @@
-import { catalogueCreate, STARTERS } from './catalogue.js?v=b65b3f7f09a22d6735e5d632bebcf319d4ce0d1a96ee4e47b07d92e8a1f2128e';
-import { POWER_TREES } from './power-tree.js?v=12d9871dec84499b7b5f20a56d5cea7a1a29c7ea9999d4dc5e793f5daaccb1d8';
-import { profileCreate, profileValidate, profilePurchase, profileRefund, profileRefundPreview, profileReward, profileCurrencyGrant, loadoutResolve } from './profile.js?v=3e6ed663805419769df28478537c5af4b53c09e55f1f17558898fce633811bc5';
-import { gameCreate, saveValidate } from './engine.js?v=c656a83a06079488327a462263909f995e7de70d08ccd6d4707b2f12e6625258';
-import { jellyRole, musicCreate } from './music.js?v=6ec72be4ad2664d5ad3ccad3e38ced59061c476e0fa523cde850ae21caa7b261';
+import { buildValidate } from './skill-effect.js?v=495e5208ab85e2d73bf805e158844c6d848b4a0ccfeb2f2d9d50cd589ab4379c';
+import { catalogueCreate, STARTERS } from './catalogue.js?v=29bfa3870f4a1808447f7c1b947f69e5a7dc0cc9131159769f55b5527c4ee113';
+import { POWER_TREES } from './power-tree.js?v=4929fc5eda5a5d405a8ac330c9b14b440804ab62150439a106e28084bb1f9f19';
+import { profileCreate, profileValidate, profilePurchase, profileRefund, profileRefundPreview, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve } from './profile.js?v=d86f3e1dc882dcf034b75db8449706fd9c205f62359e1ca4202ef4df753af1c7';
+import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=56b76ef371ce8d9857fad17229b62f6ad346ac3b95774147bc024b9b3cf4d11e';
+import { jellyRole, musicCreate, musicRunSection } from './music.js?v=d5f4ef876dcc9eebfe90c7514438f77e6ee282c1d0147ad1db027e4f8d02cacd';
 
-// Shipping capability declaration. The disposable preview never supplies physics flags.
+import { TRACKS, trackGet, trackEnvironment } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
+
 export const GAME_CATALOGUE=catalogueCreate(Object.keys(POWER_TREES).flatMap(p=>['base','foundation','a','b','capstone'].map(k=>p+'.'+k)));
 export const POOL_NAMES=['Intro','Verse','Build','Bridge','Finale'];
 export const POPULATIONS=[12,14,16,14,18];
 export const GOALS=['Make one bloom','Bloom + all three musical roles','Make two blooms','Bloom after banking off a wall','Two blooms + all three roles'];
-export function progressionCreate(kind='normal') {return {version:1,profile:profileCreate(kind),powers:[...STARTERS],equipped:['comet.foundation','ripple.foundation'],borrowed:['comet.foundation','ripple.foundation'],phase:'shop',pool:0,attempt:0,relaxed:false,bypass:false,run:null};}
+export const MEDALS={silverBonuses:3,goldBonuses:5,goldLaunches:20};
+const unique=a=>Array.isArray(a)&&new Set(a).size===a.length;
+const integer=n=>Number.isSafeInteger(n)&&n>=0;
+const seedValid=s=>typeof s==='string'&&/^[A-Za-z0-9_-]{1,24}$/.test(s);
+const canonical=x=>JSON.stringify(x,(_,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.keys(v).sort().map(k=>[k,v[k]])):v);
+export function musicValid(m){return m===null||!!m&&m.version===4&&canonical(m)===canonical(musicCreate(m,m.blooms));}
+export function progressionCreate(kind='normal') {
+  return {version:1,profile:profileCreate(kind),powers:[...STARTERS],equipped:['comet.foundation','ripple.foundation'],borrowed:['comet.foundation','ripple.foundation'],phase:'shop',pool:0,attempt:0,relaxed:false,bypass:false,run:null,track:'first-light',route:0,seed:'DAWN-1',records:[],latest:null,retry:null,skin:'original'};
+}
 export const progressionBudget=s=>s.phase==='shop'?2:Math.min(10,2+s.pool*2+(s.phase==='interlude'?2:0));
 export const progressionLoadout=s=>loadoutResolve(s.profile,s,progressionBudget(s),GAME_CATALOGUE,{ignoreBudget:s.bypass});
 export const progressionRefundPreview=(s,id)=>profileRefundPreview(s.profile,id,GAME_CATALOGUE);
+export const unlockedTracks=s=>{const complete=profileSummary(s.profile,GAME_CATALOGUE).completedTracks;return TRACKS.filter((t,i)=>i===0||complete.includes(TRACKS[i-1].id));};
+export function discoveries(s){
+  if(s.phase!=='interlude')return [];
+  return Object.values(GAME_CATALOGUE.nodes).filter(n=>n.kind!=='base'&&s.powers.includes(n.power)&&!s.profile.research[n.id]&&!s.borrowed.includes(n.id)&&(n.kind!=='capstone'||s.pool>=2)).sort((a,b)=>seedHash(s.run.seed+s.pool+a.id)-seedHash(s.run.seed+s.pool+b.id)).slice(0,3).map(n=>n.id);
+}
 function tidy(s){s.borrowed=s.borrowed.filter(id=>!s.profile.research[id]&&s.powers.includes(GAME_CATALOGUE.nodes[id].power));s.equipped=s.equipped.filter(id=>(s.profile.research[id]||s.borrowed.includes(id))&&s.powers.includes(GAME_CATALOGUE.nodes[id].power));while(!progressionLoadout(s).ok&&s.equipped.length)s.equipped.pop();}
+function setupValid(r){return !!r&&seedValid(r.seed)&&!!trackGet(r.track)&&typeof r.relaxed==='boolean'&&unique(r.powers)&&r.powers.length===3&&r.powers.every(p=>!!GAME_CATALOGUE.powers[p])&&unique(r.equipped)&&unique(r.borrowed)&&[...r.equipped,...r.borrowed].every(id=>GAME_CATALOGUE.nodes[id]?.kind!=='base'&&r.powers.includes(GAME_CATALOGUE.nodes[id]?.power));}
+function recordValid(r){return !!r&&typeof r.id==='string'&&/^run-[0-9]+$/.test(r.id)&&(r.outcome==='failure'?r.medal===null:['Bronze','Silver','Gold'].includes(r.medal))&&!!trackGet(r.track)&&seedValid(r.seed)&&['victory','failure'].includes(r.outcome)&&typeof r.relaxed==='boolean'&&integer(r.launches)&&integer(r.score)&&integer(r.bonuses)&&r.bonuses<=5&&integer(r.rules)&&['normal','development'].includes(r.kind)&&musicValid(r.music)&&buildValidate(r.build)&&Array.isArray(r.routes)&&r.routes.every(n=>[0,1].includes(n));}
 export function progressionValidate(input,kind='normal') {
-  if(!input||input.version!==1||!['shop','run','interlude'].includes(input.phase)||!Number.isSafeInteger(input.attempt)||input.attempt<0||!Number.isInteger(input.pool)||input.pool<0||input.pool>4||typeof input.relaxed!=='boolean'||typeof input.bypass!=='boolean'||input.bypass&&kind!=='development')return null;
+  if(!input||input.version!==1||!['shop','run','interlude'].includes(input.phase)||!integer(input.attempt)||!Number.isInteger(input.pool)||input.pool<0||input.pool>4||typeof input.relaxed!=='boolean'||typeof input.bypass!=='boolean'||input.bypass&&kind!=='development')return null;
   const s=structuredClone(input);s.profile=profileValidate(s.profile,GAME_CATALOGUE,kind);if(!s.profile||!progressionLoadout(s).ok)return null;
+  // Compatible addition of campaign fields to the original v2 preview envelope.
+  s.track??='first-light';s.route??=0;s.seed??=`DAWN-${s.attempt||1}`;s.records??=[];s.latest??=null;s.retry??=null;s.skin??='original';
+  if(!trackGet(s.track)||!seedValid(s.seed)||![0,1].includes(s.route)||!Array.isArray(s.records)||s.records.length>500||!s.records.every(recordValid)||!unique(s.records.map(r=>r.id))||s.latest!==null&&!recordValid(s.latest)||s.skin!=='original'&&!trackGet(s.skin))return null;
+  if(s.retry!==null&&!setupValid(s.retry))return null;
   if(s.phase==='shop'){if(s.run!==null||s.pool!==0)return null;}
   else {
-    const r=s.run;if(!r||typeof r.id!=='string'||r.id!==`run-${s.attempt}`||typeof r.seed!=='string'||!Array.isArray(r.roles)||new Set(r.roles).size!==r.roles.length||r.roles.some(x=>!['melody','bass','rhythm'].includes(x))||!Array.isArray(r.activated)||new Set(r.activated).size!==r.activated.length||r.activated.some(x=>!s.powers.includes(x))||typeof r.bankBloom!=='boolean')return null;
-    r.game=saveValidate(r.game);if(!r.game||r.game.mode!=='song-run'||r.game.bodies.length!==POPULATIONS[s.pool]+1||JSON.stringify(r.game.build)!==JSON.stringify(progressionLoadout(s).powers))return null;
-    if(r.music!==null){r.music=musicCreate(r.music,r.music.blooms);}
+    const r=s.run;if(!r||r.id!==`run-${s.attempt}`||!seedValid(r.seed)||!unique(r.roles)||r.roles.some(x=>!['melody','bass','rhythm'].includes(x))||!unique(r.activated)||r.activated.some(x=>!s.powers.includes(x))||typeof r.bankBloom!=='boolean')return null;
+    r.track??=s.track;r.launches??=0;r.score??=0;r.bonuses??=0;r.routes??=[0];r.offers??=[];r.discovered??=false;r.initial??={seed:r.seed,track:s.track,relaxed:s.relaxed,powers:[...s.powers],equipped:[...s.equipped],borrowed:[...s.borrowed]};
+    if(!setupValid(r.initial)||r.track!==s.track||![r.launches,r.score,r.bonuses].every(integer)||r.bonuses>5||!unique(r.offers)||r.offers.length>3||r.offers.some(id=>!GAME_CATALOGUE.nodes[id]||!s.powers.includes(GAME_CATALOGUE.nodes[id].power))||typeof r.discovered!=='boolean'||!Array.isArray(r.routes)||r.routes.length>5||r.routes.some(n=>![0,1].includes(n)))return null;
+    r.game=saveValidate(r.game);if(!r.game||r.game.mode!=='song-run'||r.game.bodies.length!==POPULATIONS[s.pool]+1||canonical(r.game.build)!==canonical(progressionLoadout(s).powers)||!musicValid(r.music))return null;
   }
   return s;
 }
-function poolCreate(s,music=null){const build=progressionLoadout(s).powers;s.run={id:`run-${s.attempt}`,seed:s.run?.seed||`DAWN-${s.attempt}`,roles:[],activated:[],bankBloom:false,music,game:gameCreate(`${s.run?.seed||'DAWN-'+s.attempt}-${s.pool}`,'song-run',{build,population:POPULATIONS[s.pool],relaxed:s.relaxed})};s.phase='run';}
-function reward(s,event){const result=profileReward(s.profile,{mode:'song-run',runId:s.run?.id,trackId:'first-light',poolCount:5,...event},GAME_CATALOGUE);if(!result.ok)throw new Error(result.reason);s.profile=result.profile;return result.receipt?.amount||0;}
-function finish(s){s.phase='shop';s.pool=0;s.run=null;s.borrowed=[];tidy(s);}
+function poolCreate(s,music=null){
+  const previous=s.run,build=progressionLoadout(s).powers,seed=previous?.seed||s.seed;
+  const environment=trackEnvironment(s.track,s.pool,s.route);
+  const game=gameCreate(`${seed}-${s.pool}-${s.route}`,'song-run',{build,population:POPULATIONS[s.pool],relaxed:s.relaxed,environment});
+  game.power.capacity=previous?.game.power.capacity||1;
+  music=musicCreate(music,music?.blooms||0);musicRunSection(music,s.pool,s.track);
+  s.run={id:`run-${s.attempt}`,seed,track:s.track,roles:[],activated:[],bankBloom:false,music,game,launches:previous?.launches||0,score:previous?.score||0,bonuses:previous?.bonuses||0,routes:[...(previous?.routes||[]),s.route],offers:[],discovered:false,initial:previous?.initial||{seed,track:s.track,relaxed:s.relaxed,powers:[...s.powers],equipped:[...s.equipped],borrowed:[...s.borrowed]}};s.phase='run';
+}
+function reward(s,event){const result=profileReward(s.profile,{mode:'song-run',runId:s.run?.id,trackId:s.track,poolCount:5,...event},GAME_CATALOGUE);if(!result.ok)throw new Error(result.reason);s.profile=result.profile;return result.receipt?.amount||0;}
+function finish(s){s.phase='shop';s.pool=0;s.run=null;s.borrowed=[];s.route=0;tidy(s);}
 export function progressionAct(input,action){
   const s=progressionValidate(input,input.profile?.kind);if(!s)return {ok:false,reason:'Invalid saved progression.'};
   const cat=GAME_CATALOGUE,node=cat.nodes[action.id];let r,message='Updated.';
@@ -43,35 +72,57 @@ export function progressionAct(input,action){
     case 'borrow':
       if(!node||node.kind==='base'||!s.powers.includes(node.power)||s.profile.research[action.id])return fail('Choose an unowned upgrade for your loadout.');
       if(s.borrowed.includes(action.id)){if(s.phase!=='shop')return fail('Discoveries stay until this run ends.');s.borrowed=s.borrowed.filter(id=>id!==action.id);tidy(s);break;}
+      if(s.phase==='interlude'&&(s.run.discovered||!s.run.offers.includes(action.id)))return fail('Choose one of the saved discovery offers.');
       if(node.kind==='capstone'&&(s.phase==='shop'||s.pool<2))return fail('Epic discoveries open after Build.');
-      if(s.borrowed.length>=2+s.pool+(s.phase==='interlude'?1:0))return fail('No discovery slots left.');s.borrowed.push(action.id);message='Borrowed for this run. Equip it to activate its effect.';break;
+      if(s.phase==='shop'&&s.borrowed.length>=2)return fail('Choose up to two starting loans.');
+      s.borrowed.push(action.id);if(s.run)s.run.discovered=true;message='Borrowed for this run. Equip it to activate its effect.';break;
     case 'equip':
-      if(!node||node.kind==='base')return fail('Select an upgrade.');s.equipped=s.equipped.includes(action.id)?s.equipped.filter(x=>x!==action.id):[...s.equipped,action.id];r=progressionLoadout(s);if(!r.ok)return r;break;
+      if(!node||node.kind==='base')return fail('Select an upgrade.');
+      if(s.equipped.includes(action.id))s.equipped=s.equipped.filter(x=>x!==action.id);
+      else {if(['a','b'].includes(node.kind)&&!POWER_TREES[node.power].compatible)s.equipped=s.equipped.filter(id=>id!==node.power+'.'+(node.kind==='a'?'b':'a'));s.equipped.push(action.id);}
+      r=progressionLoadout(s);if(!r.ok)return r;break;
+    case 'track':if(s.phase!=='shop'||!unlockedTracks(s).some(t=>t.id===action.track)&&s.profile.kind!=='development')return fail('Complete the preceding track to unlock this one.');if(!trackGet(action.track))return fail('Unknown track.');s.track=action.track;break;
+    case 'seed':if(s.phase!=='shop'||!seedValid(action.seed))return fail('Use 1–24 letters, numbers, underscores or hyphens.');s.seed=action.seed;break;
+    case 'route':if(s.phase!=='interlude'||![0,2].includes(s.pool)||![0,1].includes(action.route))return fail('Route choice opens before Verse and Bridge.');s.route=action.route;break;
     case 'relaxed':if(s.phase!=='shop')return fail('Choose pace before a run.');s.relaxed=!s.relaxed;break;
-    case 'start':if(s.phase!=='shop')return fail('A run already exists.');s.attempt++;poolCreate(s);message='First Light Â· Intro';break;
+    case 'retry':
+      if(s.phase!=='shop'||!s.retry)return fail('No previous attempt.');Object.assign(s,structuredClone(s.retry));if(!progressionLoadout(s).ok)return fail('Research changed; choose a new build.');s.attempt++;poolCreate(s);message='Same seed and starting build.';break;
+    case 'start':if(s.phase!=='shop')return fail('A run already exists.');s.attempt++;poolCreate(s);message=trackGet(s.track).name+' · Intro';break;
     case 'continue':if(s.phase!=='interlude')return fail('Clear this pool first.');{const music=s.run.music;s.pool++;poolCreate(s,music);message=POOL_NAMES[s.pool];}break;
-    case 'abandon':if(!s.run)return fail('No active run.');reward(s,{type:'failure',poolIndex:s.pool+(s.phase==='interlude'?1:0),blooms:0,abandoned:true});finish(s);message='Run ended. Earned Seeds and research remain.';break;
+    case 'abandon':if(!s.run)return fail('No active run.');reward(s,{type:'failure',poolIndex:s.pool+(s.phase==='interlude'?1:0),blooms:0,abandoned:true});s.retry=s.run.initial;finish(s);message='Run ended. Earned Seeds and research remain.';break;
+    case 'skin':if(action.skin!=='original'&&!profileSummary(s.profile,cat).completedTracks.includes(action.skin)&&s.profile.kind!=='development')return fail('Complete that track to unlock its skin.');s.skin=action.skin;break;
     case 'grant':r=profileCurrencyGrant(s.profile,'seeds',action.amount,cat);if(!r.ok)return r;s.profile=r.profile;message=`Added ${action.amount} development Seeds.`;break;
     case 'max':if(s.profile.kind!=='development')return fail('Development only.');for(const id of Object.keys(cat.nodes))s.profile.research[id]??={paid:0};s.profile.revision++;s.bypass=true;s.equipped=s.powers.flatMap(p=>['foundation','a',...(POWER_TREES[p].compatible?['b']:[]),'capstone'].map(k=>p+'.'+k));s.borrowed=[];message='All powers unlocked. Equipped powers maxed with tuning limit off.';break;
     case 'bypass':if(s.profile.kind!=='development')return fail('Development only.');s.bypass=!s.bypass;tidy(s);break;
     default:return fail('Unknown progression action.');
   }
-  // Interlude equipment is applied when entering the next pool, not to old physics.
   if(s.phase==='interlude')s.run.game.build=progressionLoadout(s).powers;
   return {ok:true,state:s,message};
 }
 export function poolGoalMet(s){const r=s.run;if(!r)return false;const blooms=r.game.blooms,roles=r.roles.length===3;return s.pool===0?blooms>=1:s.pool===1?blooms>=1&&roles:s.pool===2?blooms>=2:s.pool===3?r.bankBloom:blooms>=2&&roles;}
+export function goalRemaining(s){if(!s.run)return '';const r=s.run,need=[1,1,2,1,2][s.pool],parts=[];if(r.game.blooms<need)parts.push(`${need-r.game.blooms} more bloom${need-r.game.blooms>1?'s':''}`);if([1,4].includes(s.pool)&&r.roles.length<3)parts.push('contact '+['melody','bass','rhythm'].filter(x=>!r.roles.includes(x)).join(' & '));if(s.pool===3&&!r.bankBloom)parts.push('a wall bank before the fifth contact of a bloom');return parts.join(' · ')||'Goal met · let this pluck finish';}
+function resultRecord(s,outcome){
+  const r=s.run,music=r.music;if(music&&outcome==='victory')musicRunSection(music,5,s.track);
+  const record={id:r.id,kind:s.profile.kind,track:s.track,seed:r.seed,relaxed:s.relaxed,rules:RULE.version,build:structuredClone(r.game.build),routes:[...r.routes],outcome,launches:r.launches,score:r.score,bonuses:r.bonuses,music:structuredClone(music),medal:outcome==='failure'?null:r.bonuses>=MEDALS.goldBonuses&&r.launches<=MEDALS.goldLaunches?'Gold':r.bonuses>=MEDALS.silverBonuses?'Silver':'Bronze'};
+  const playback=structuredClone(record);
+  if(record.music?.run&&outcome==='victory')record.music.run.cadenceDone=true;
+  s.latest=record;s.retry=r.initial;
+  // One best song per track and difficulty, plus the recoverable latest attempt.
+  if(outcome==='victory'){const index=s.records.findIndex(x=>x.track===record.track&&x.relaxed===record.relaxed);if(index<0)s.records.push(record);else {const rank=x=>({Gold:3,Silver:2,Bronze:1}[x.medal]||0);if(rank(record)>rank(s.records[index])||rank(record)===rank(s.records[index])&&record.launches<s.records[index].launches)s.records[index]=record;}}
+  return playback;
+}
 export function progressionObserve(input,game,events,music=null){
   if(input.phase!=='run')return {state:input,message:null};
   const s=structuredClone(input),r=s.run;r.game=structuredClone(game);r.music=music;
   for(const e of events){if(e.type==='note'&&!r.roles.includes(jellyRole(e.id)))r.roles.push(jellyRole(e.id));if(e.type==='power'&&s.powers.includes(e.kind)&&!r.activated.includes(e.kind))r.activated.push(e.kind);if(e.type==='bloom'&&e.banks>0)r.bankBloom=true;}
-  // Engine bloom events carry bank count; no wall teleport can satisfy this.
-  let message=null,outcome=null;
+  let message=null,outcome=null,record=null;
   if(events.some(e=>['rest','over','win'].includes(e.type))){
     if(poolGoalMet(s)){
+      r.launches+=game.launches;r.score+=game.score;r.bonuses+=game.objective.completed>0?1:0;
       let earned=reward(s,{type:'pool',poolIndex:s.pool,activated:r.activated,bonus:r.game.objective.completed>0});
-      if(s.pool===4){earned+=reward(s,{type:'victory'});finish(s);outcome='victory';message=`First Light complete Â· +${earned} Seeds`;}else{s.phase='interlude';outcome='clear';message=`${POOL_NAMES[s.pool]} complete Â· +${earned} Seeds`;}
-    }else if(game.isOver){const earned=reward(s,{type:'failure',poolIndex:s.pool,blooms:game.blooms,abandoned:false});finish(s);outcome='failure';message=`Run ended Â· +${earned} Seeds. Your research remains.`;}
+      if(s.pool===4){earned+=reward(s,{type:'victory'});record=resultRecord(s,'victory');finish(s);outcome='victory';message=`${trackGet(s.track).name} complete · +${earned} Seeds`;}
+      else{s.phase='interlude';r.offers=discoveries(s);r.discovered=false;s.route=0;outcome='clear';message=`${POOL_NAMES[s.pool]} complete · +${earned} Seeds`;}
+    }else if(game.isOver){r.launches+=game.launches;r.score+=game.score;const missing=goalRemaining(s),earned=reward(s,{type:'failure',poolIndex:s.pool,blooms:game.blooms,abandoned:false});record=resultRecord(s,'failure');finish(s);outcome='failure';message=`${missing} · +${earned} Seeds`;}
   }
-  return {state:s,message,outcome};
+  return {state:s,message,outcome,record};
 }

@@ -1,6 +1,7 @@
-import { jellyRole } from './music.js?v=6ec72be4ad2664d5ad3ccad3e38ced59061c476e0fa523cde850ae21caa7b261';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep } from './skill-effect.js?v=d4673aac3c0d6c506fce387d0783c34eb384ed12e5a5b8af50993f9e5d0688df';
-export { skillFlags } from './skill-effect.js?v=d4673aac3c0d6c506fce387d0783c34eb384ed12e5a5b8af50993f9e5d0688df';
+import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
+import { jellyRole } from './music.js?v=d5f4ef876dcc9eebfe90c7514438f77e6ee282c1d0147ad1db027e4f8d02cacd';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=495e5208ab85e2d73bf805e158844c6d848b4a0ccfeb2f2d9d50cd589ab4379c';
+export { skillFlags } from './skill-effect.js?v=495e5208ab85e2d73bf805e158844c6d848b4a0ccfeb2f2d9d50cd589ab4379c';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
 export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 12, settleDrag: 4.8, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
@@ -118,7 +119,7 @@ function blasterStep(state, events) {
   events.push(...blasterFire(state));
 }
 export function effectGet(state, kind) { return state.effects.find(effect => effect.kind === kind); }
-export function frozenHit(state, id) { return state.isFlying && state.chain.includes(id) && !!effectGet(state, 'stasis')?.targets.includes(id); }
+export function frozenHit(state, id) { return state.isFlying && state.chain.includes(id) && (!!effectGet(state, 'stasis')?.targets.includes(id)||regionFrozen(state,id)); }
 export function seedBodies(state) { return [state.bodies[0], ...(effectGet(state, 'split')?.shards || []), ...(effectGet(state, 'echo')?.isReady ? [effectGet(state, 'echo').ghost] : [])]; }
 export function flightDrag(age) {
   const settling = Math.max(0, Math.min(1, (age - (RULE.flightSeconds - RULE.settleSeconds)) / RULE.settleSeconds));
@@ -196,7 +197,7 @@ function effectStep(state, events) {
   }
   if (effect.kind === 'rewind' && effect.returning) {
     const point=!config.legacy&&config.a&&state.tick%2?effect.route.at(-1):effect.route.pop();
-    if(point) { const dx=point.x-seed.x,dy=point.y-seed.y;seed.vx=dx/RULE.step;seed.vy=dy/RULE.step;velocityLimit(seed);seed.x=point.x;seed.y=point.y;
+    if(point) { const dx=point.x-seed.x,dy=point.y-seed.y;if(state.build&&Math.hypot(dx,dy)>60){skillTeleport(state,seed.x,seed.y,point.x,point.y,'rewind');events.push({type:'teleport',id:0,x:point.x,y:point.y,from:{x:seed.x,y:seed.y}});}seed.vx=dx/RULE.step;seed.vy=dy/RULE.step;velocityLimit(seed);seed.x=point.x;seed.y=point.y;
       if(!config.legacy&&config.b){const fade=Math.sin(Math.PI*Math.min(1,effect.route.length/(config.foundation?240:120)));seed.x=Math.max(44,Math.min(916,seed.x+Math.cos(state.tick*.025)*12*fade));seed.y=Math.max(44,Math.min(596,seed.y+Math.sin(state.tick*.025)*12*fade));} }
     if(!effect.route.length) effect.seconds=0;
   }
@@ -316,7 +317,7 @@ function effectStep(state, events) {
 function random(state) { let value = state.rng; value ^= value << 13; value ^= value >>> 17; value ^= value << 5; state.rng = value >>> 0; return state.rng / 4294967296; }
 export function gameCreate(seed = 'LAGOON', mode = 'challenge', options = {}) {
   const state = { version: RULE.version, seed: String(seed).slice(0, 32), mode, rng: seedHash(seed), tick: 0, score: 0, plucks: RULE.plucks, launches: 0, blooms: 0, bestChain: 0, chain: [], banks: 0, flightAge: 0, isFlying: false, isOver: false, power: powerCreate(seed), effects: [], flightPath: [], objective:{enabled:true,index:0,completed:0,earned:false}, shotStart:0, lastShot:null, bodies: [{ id: 0, x: 480, y: 550, vx: 0, vy: 0, radius: RULE.seedRadius, tone: 0, cooldown: 0 }] };
-  const count = options.build && buildValidate(options.build) ? Math.max(12,Math.min(18,Math.trunc(options.population||14))) : 14;
+  const count = options.build && buildValidate(options.build) ? Math.max(12,Math.min(20,Math.trunc(options.population||14))) : 14;
   if(options.build) {if(!buildValidate(options.build))throw new TypeError('Invalid skill build');state.build=structuredClone(options.build);state.skillState=skillStateCreate();state.power.offer=state.build[0].power;state.plucks=options.relaxed?8:6;}
   if(state.build)state.power.target=(state.power.target-1)%count+1;
   for (let index = 0; index < count; index++) {
@@ -324,6 +325,7 @@ export function gameCreate(seed = 'LAGOON', mode = 'challenge', options = {}) {
     const radius = state.build ? 25+random(state)*13 : 34 + random(state) * 18;
     state.bodies.push({ id: index + 1, x: 480 + Math.cos(angle) * ring + (random(state) - .5) * 24, y: 310 + Math.sin(angle) * ring * .69 + (random(state) - .5) * 24, vx: (random(state) - .5) * 24, vy: (random(state) - .5) * 24, radius, tone: index % COLORS.length, cooldown: 0 });
   }
+  if(options.environment){if(!environmentValid(options.environment))throw new TypeError('Invalid track environment');state.environment=structuredClone(options.environment);state.objective.index=(state.environment.pool+seedHash(state.seed))%3;if(state.objective.index===2&&state.build.some(p=>p.power==='wrap'))state.objective.index=1;trackLayout(state,state.environment.pool,state.environment.route);}
   return state;
 }
 export const gameWon = state => state.mode === 'challenge' && state.isOver && state.blooms >= RULE.goalBlooms;
@@ -333,7 +335,7 @@ export function launch(state, angle, power = .7) {
   const seed = state.bodies[0], speed = 280 + Math.max(0, Math.min(1, power)) * 570;
   seed.vx = Math.cos(angle) * speed; seed.vy = Math.sin(angle) * speed;
   state.power.markers = powerPlan(state);
-  effectClear(state); state.isFlying = true; state.flightAge = 0; state.chain = []; state.flightPath = []; state.banks = 0; state.launches++; state.power.used = 0; state.shotStart=state.score;state.lastShot=null;state.objective.earned=false;
+  effectClear(state); state.isFlying = true; state.flightAge = 0; state.chain = []; state.flightPath = []; state.banks = 0; state.launches++; state.power.used = 0; state.shotStart=state.score;state.lastShot=null;if(state.mode!=='song-run')state.objective.earned=false;
   if(state.build)state.skillState=skillStateCreate();
   if (state.mode !== 'free') state.plucks--;
   for (const body of state.bodies) body.cooldown = 0;
@@ -352,7 +354,7 @@ function scoreContact(state, body, collector, events) {
   if(chain===RULE.bloomNotes) {
     const blaster=effectGet(state,'blaster');
     if(blaster && skillFlags(state,'blaster').capstone && !blaster.reloaded) {blaster.ammo=skillFlags(state,'blaster').foundation?5:3;blaster.reloaded=true;events.push({type:'blaster-reload',x:state.bodies[0].x,y:state.bodies[0].y});}
-    const seed=state.bodies[0];state.blooms++;state.score+=500;if(state.mode==='challenge'||state.mode==='song-run'&&state.blooms===1)state.plucks++;
+    const seed=state.bodies[0];if(state.mode==='song-run'&&state.banks>=2)state.objective.bankBloom=true;state.blooms++;state.score+=500;if(state.mode==='challenge'||state.mode==='song-run'&&state.blooms===1)state.plucks++;
     events.push({type:'bloom',x:seed.x,y:seed.y,points:500,banks:state.banks});
     for(const jelly of state.bodies.slice(1)) {const d=Math.max(1,Math.hypot(jelly.x-seed.x,jelly.y-seed.y));jelly.vx+=(jelly.x-seed.x)/d*120;jelly.vy+=(jelly.y-seed.y)/d*120;}
   }
@@ -409,7 +411,7 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     state.effects.push({ kind, seconds: .09, targets });
   } else if (kind === 'impact') {
     state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
-    b.vx += nx * 450; b.vy += ny * 450; velocityLimit(b);
+    const impactForce=450*(skillFlags(state,'impact').a?1.35:skillFlags(state,'impact').b?.7:1);b.vx += nx * impactForce; b.vy += ny * impactForce; velocityLimit(b);
     events.push({ type: 'push', id: b.id, x: b.x, y: b.y, nx, ny });
   } else if (kind === 'comet') {
     state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
@@ -455,12 +457,13 @@ export function physicsStep(state) {
   if (state.isFlying) state.flightAge = Math.min(RULE.flightSeconds, state.flightAge + dt);
   skillStep(state,dt,events);
   effectStep(state, events);
+  environmentStep(state,dt,skillTeleport,events);
   const bodies = [...seedBodies(state), ...state.bodies.slice(1)];
   for (const body of bodies) {
     body.cooldown = Math.max(0, body.cooldown - dt);
     if (body.id === -3 || effectGet(state, 'orbit')?.satellites.includes(body.id) || body.id === 0 && (effectGet(state, 'slingshot') || effectGet(state,'rewind')?.returning)) continue;
     if (body.id > 0) { body.vx += Math.cos(state.tick * .002 + body.id * 1.7) * 4 * dt; body.vy += Math.sin(state.tick * .0025 + body.id * 2.1) * 4 * dt; }
-    const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? flightDrag(state.flightAge)*(effectGet(state,'comet')&&skillFlags(state,'comet').b&&state.flightAge>3?.5:1) : 3 : effectGet(state, 'stasis')?.targets.includes(body.id) ? 5 : .65) * dt);
+    const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? flightDrag(state.flightAge)*(effectGet(state,'comet')&&skillFlags(state,'comet').b&&state.flightAge>3?.5:1) : 3 : (effectGet(state, 'stasis')?.targets.includes(body.id)||regionFrozen(state,body.id)) ? 5 : .65) * dt);
     body.vx *= drag; body.vy *= drag; body.x += body.vx * dt; body.y += body.vy * dt;
     const left = RULE.inset + body.radius, right = RULE.width - left, top = RULE.inset + body.radius, bottom = RULE.height - top;
     if (body.id <= 0 && state.isFlying && effectGet(state, 'wrap')) {
@@ -507,7 +510,7 @@ export function physicsStep(state) {
     if (distance >= target) continue;
     // Physical split seeds collect from the same set; the delayed Echo only scores.
     const marker = a.id <= 0 && a.id >= -2 && state.isFlying ? state.power.markers.find(marker => marker.target === b.id) : null;
-    const isFrozenContact = a.id <= 0 && a.id >= -2 && state.isFlying && (effectGet(state, 'stasis') || marker?.kind === 'stasis');
+    const isFrozenContact = a.id <= 0 && a.id >= -2 && state.isFlying && (effectGet(state, 'stasis') || marker?.kind === 'stasis'||regionFrozen(state,b.id));
     const nx = distance > .0001 ? dx / distance : 1, ny = distance > .0001 ? dy / distance : 0;
     const isBubble = a.id === 0 && state.isFlying && (!!effectGet(state, 'bubble') || marker?.kind === 'bubble');
     const isPermeable = a.id <= 0 && frozenHit(state, b.id);
@@ -556,6 +559,7 @@ export function physicsStep(state) {
       if (a.id === 0 && state.isFlying && effectGet(state, 'impact') && skillFlags(state,'impact').foundation) {
         const push = Math.max(260, impulse * inverseB * .9)*(skillFlags(state,'impact').a?1.35:skillFlags(state,'impact').b?.7:1);
         b.vx += nx * push; b.vy += ny * push; velocityLimit(b);
+        if(skillFlags(state,'impact').b)pressure(state,b.x,b.y,150,150);
         events.push({ type: 'push', id: b.id, x: b.x, y: b.y, nx, ny });
       }
       if (-relative > 22 && a.cooldown <= 0 && b.cooldown <= 0) { events.push({ type: 'impact', a: a.id, b: b.id, x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, nx, ny, speed: -relative, bubble: a.id === 0 && !!effectGet(state, 'bubble') }); a.cooldown = .08; b.cooldown = .08; }
@@ -587,9 +591,10 @@ export function physicsStep(state) {
     if(achieved) {state.objective.earned=true;state.objective.completed++;state.score+=200;events.push({type:'objective',index:goal,points:200,x:seed.x,y:seed.y});}
   }
   // Apply after every collision, bloom and power impulse so impacts cannot cancel Stasis.
-  for (const id of effectGet(state, 'stasis')?.targets || []) {
-    const body = state.bodies[id], speed = Math.hypot(body.vx, body.vy);
-    if (speed > skillConfig(state,'stasis').speed) { body.vx *= skillConfig(state,'stasis').speed / speed; body.vy *= skillConfig(state,'stasis').speed / speed; }
+  for (const body of state.bodies.slice(1)) {
+    const frozen=effectGet(state,'stasis')?.targets.includes(body.id),region=regionFrozen(state,body.id);if(!frozen&&!region)continue;
+    const speed=Math.hypot(body.vx,body.vy),limit=frozen?skillConfig(state,'stasis').speed:100;
+    if(speed>limit){body.vx*=limit/speed;body.vy*=limit/speed;}
   }
   if (effectGet(state, 'slingshot')) {
     const effect = effectGet(state, 'slingshot'), anchor = state.bodies[effect.anchor], radius = effect.radius + Math.max(0, seed.radius - RULE.seedRadius);
@@ -623,7 +628,7 @@ export function physicsStep(state) {
   if(state.build&&state.skillState.total>=32){effectClear(state,events);seed.vx=seed.vy=0;}
   const ending=!effectGet(state,'echo')&&!effectGet(state,'slingshot')&&!effectGet(state,'orbit')&&!effectGet(state,'pulse')&&state.flightAge>1.5&&seedBodies(state).every(body=>Math.hypot(body.vx,body.vy)<=RULE.settleSpeed);
   if(state.isFlying && (state.flightAge>=RULE.flightSeconds||ending) && rewind && !rewind.returning && state.flightPath.length) {
-    rewind.returning=true;rewind.route=(state.build?state.flightPath.slice(-(skillFlags(state,'rewind').foundation?240:120)):state.flightPath).map(p=>({...p}));rewind.seconds=Math.min(state.build?2:3.5,rewind.route.length*RULE.step*(skillFlags(state,'rewind').a?2:1)+RULE.step);
+    rewind.returning=true;rewind.route=(state.build?state.flightPath.slice(-(skillFlags(state,'rewind').foundation?240:120)):state.flightPath).map(p=>({...p}));rewind.seconds=Math.min(state.build?4.1:3.5,rewind.route.length*RULE.step*(skillFlags(state,'rewind').a?2:1)+RULE.step);
     effectClear(state,events,'slingshot');events.push({type:'rewind',x:seed.x,y:seed.y});
   }
   if (state.isFlying && !rewind?.returning && ending) {
@@ -632,7 +637,7 @@ export function physicsStep(state) {
     state.power.markers = [];
     effectClear(state, events); state.isFlying = false; seed.vx = seed.vy = 0; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0) || state.mode==='song-run'&&state.plucks<=0;
     state.lastShot={notes:state.chain.length,banks:state.banks,points:state.shotStart===null?null:state.score-state.shotStart,powers:state.power.used,bloom:successful,objective:state.objective.earned};
-    if(state.objective.earned)state.objective.index++;
+    if(state.objective.earned&&state.mode!=='song-run')state.objective.index++;
     events.push({ type: 'power-streak', successful, capacity: state.power.capacity, previousCapacity });
     events.push({ type: gameWon(state) ? 'win' : state.isOver ? 'over' : 'rest', chain: state.chain.length });
   }
@@ -641,8 +646,9 @@ export function physicsStep(state) {
 export function saveValidate(input) {
   if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free', 'song-run'].includes(input.mode)) return null;
   const count=Array.isArray(input.bodies)?input.bodies.length-1:0;
-  if(input.build!==undefined&&(!buildValidate(input.build)||count<12||count>18||!skillStateValid(input.skillState,count)))return null;
+  if(input.build!==undefined&&(!buildValidate(input.build)||count<12||count>20||!skillStateValid(input.skillState,count)))return null;
   if(input.mode==='song-run'&&!input.build)return null;
+  if(input.environment!==undefined&&!environmentValid(input.environment))return null;
   if (input.version >= 9 && (!Array.isArray(input.effects) || input.effects.length > 3 || input.effect !== undefined || input.effects.some(effect => !effect?.kind) || new Set(input.effects.map(effect => effect.kind)).size !== input.effects.length)) return null;
   const effects = input.version >= 9 ? input.effects : input.version >= 6 ? [input.effect] : [];
   const hasEffect = kind => effects.some(effect => effect?.kind === kind);
@@ -740,6 +746,7 @@ export function saveValidate(input) {
   if(input.version>=15) {
     const o=input.objective;
     if(!o||typeof o.enabled!=='boolean'||typeof o.earned!=='boolean'||!Number.isSafeInteger(o.index)||o.index<0||!Number.isSafeInteger(o.completed)||o.completed<0||(input.shotStart!==null&&(!Number.isSafeInteger(input.shotStart)||input.shotStart<0||input.shotStart>input.score)))return null;
+    if(o.bankBloom!==undefined&&typeof o.bankBloom!=='boolean')return null;
     const shot=input.lastShot;
     if(shot!==null&&(!shot||!Number.isInteger(shot.notes)||shot.notes<0||shot.notes>count||!Number.isSafeInteger(shot.banks)||shot.banks<0||(shot.points!==null&&(!Number.isSafeInteger(shot.points)||shot.points<0))||!Number.isInteger(shot.powers)||shot.powers<0||shot.powers>3||typeof shot.bloom!=='boolean'||typeof shot.objective!=='boolean'))return null;
   }
@@ -781,6 +788,11 @@ export const OBJECTIVES=Object.freeze([
 ]);
 export function objectiveProgress(state) {
   const index=state.objective.index%OBJECTIVES.length,definition=OBJECTIVES[index];
+  if(state.mode==='song-run'){
+    const complete=state.objective.completed>0,kind=state.objective.index%3,roles=new Set(state.chain.map(jellyRole)).size;
+    const definition=kind===1?{title:'Three voices',description:'Contact melody, bass and rhythm in one pluck.',target:3,value:roles,label:'musical roles'}:kind===2?{title:'Double-bank bloom',description:'Bounce off two walls before the fifth contact of a bloom.',target:1,value:Number(!!state.objective.bankBloom),label:'double-bank bloom'}:{title:'Seven-note run',description:'Touch seven different jellies in one pluck.',target:7,value:Math.min(7,state.chain.length),label:'jellies'};
+    const value=complete?definition.target:definition.value;return {...definition,tip:'Every collector counts. The bonus stays earned for this pool.',index:kind,steps:[{key:'notes',label:definition.label,target:definition.target,value}],progress:value/definition.target,complete,reward:200};
+  }
   const values={notes:state.chain.length,banks:state.banks,powers:state.power.used};
   const labels={notes:'jellies',banks:'wall bounce',powers:'powers'};
   const steps=Object.entries(definition.targets).map(([key,target])=>({key,label:labels[key],target,value:state.isFlying?Math.min(values[key],target):0}));

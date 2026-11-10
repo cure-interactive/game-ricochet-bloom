@@ -1,5 +1,7 @@
 # Ricochet Bloom
 
+The **Song Run** button opens a five-track campaign. Clear five pools per track, earn Seeds, research 25 powers and their independent upgrades, and build a song that persists between pools. Choose routes and temporary discoveries, earn medals and cosmetic player colors, and revisit completed songs in **Collection**. **Skill tree** holds research and your three-power loadout. **Settings → Development & backups** provides isolated testing and progress export/import. Shared challenge codes supply the same fixed build regardless of permanent research. Blaster aims and fires automatically after contact; no extra input is needed. Challenge and Free play retain separate saves.
+
 **A living light pool.** A blobby physics-and-sound browser game by Cure Interactive.
 
 [Play Ricochet Bloom](https://cure-interactive.github.io/game-ricochet-bloom/)

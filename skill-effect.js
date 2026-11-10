@@ -1,4 +1,4 @@
-import { POWER_TREES } from './power-tree.js?v=12d9871dec84499b7b5f20a56d5cea7a1a29c7ea9999d4dc5e793f5daaccb1d8';
+import { POWER_TREES } from './power-tree.js?v=4929fc5eda5a5d405a8ac330c9b14b440804ab62150439a106e28084bb1f9f19';
 
 // Resolved configuration belongs to physics; profile ownership stays outside it.
 export function buildValidate(build) {
@@ -70,7 +70,6 @@ export function skillActivate(state,kind,body,events) {
   if(kind==='split')e.shards=e.shards.slice(0,c.count);
   if(kind==='comet')v.bankCharge=false;
   if(kind==='impact') {
-    if(c.a){body.vx+=(body.x-state.bodies[0].x)*2;body.vy+=(body.y-state.bodies[0].y)*2;limit(body);}
     if(c.b)pressure(state,body.x,body.y,150,150);
   }
 }
