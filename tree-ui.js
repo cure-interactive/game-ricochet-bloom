@@ -15,9 +15,9 @@ const reasonText = { 'family-gate': 'Develop this family to open this tier.', 'i
 export function treeMount() {
   const dialog = document.getElementById('tree-dialog');
   const mobile = matchMedia('(max-width: 760px)');
-  let state = simulationCreate(), selected = 'comet.base', family = mobile.matches ? 'Motion' : 'All', refund = null, resetPending = false;
-  dialog.innerHTML = `<div class="tree-heading"><div><span class="tree-eyebrow">RICOCHET BLOOM · V2 PREVIEW</span><h2>Grow your possibilities.</h2><p>Skill tree simulator <span class="tree-preview-tag">Separate from your game</span></p></div><button class="quiet tree-close" aria-label="Close skill tree">${iconHTML('close')}</button></div>
-    <div class="tree-mobile-summary" id="tree-mobile-summary"></div><div class="tree-controls" id="tree-controls"></div><div class="tree-status" id="tree-status" role="status" aria-live="polite">Start with Ripple, Attract and Comet. Try the tutorial reward or explore any power.</div>
+  let state = simulationCreate(), selected = 'comet.base', family = mobile.matches ? 'Motion' : 'All', refund = null, resetPending = false, statusTimer = null;
+  dialog.innerHTML = `<div class="tree-heading"><div class="tree-heading-copy"><span class="tree-mobile-title" tabindex="-1">Skill tree</span><span class="tree-eyebrow">RICOCHET BLOOM · V2 PREVIEW</span><h2>Grow your possibilities.</h2><p>Skill tree simulator <span class="tree-preview-tag">Separate from your game</span></p></div><div class="tree-mobile-summary" id="tree-mobile-summary"></div><button type="button" class="tree-guide-open" data-tree-action="guide" aria-label="Skill tree guide">${iconHTML('about')}</button><button class="quiet tree-close" aria-label="Close skill tree">${iconHTML('close')}</button></div>
+    <div class="tree-controls" id="tree-controls"></div><div class="tree-status" id="tree-status" role="status" aria-live="polite">Start with Ripple, Attract and Comet. Try the tutorial reward or explore any power.</div>
     <div class="tree-workspace"><section class="tree-map-section" aria-label="Connected power family trees"><div class="tree-map-toolbar"><div class="tree-family-choice" role="group" aria-label="Visible family">${['All', ...families].map(f => `<button type="button" data-family="${f}" aria-pressed="${f === family}">${f === 'All' ? 'Whole tree' : f}</button>`).join('')}</div><div class="tree-legend"><span>✓ Owned</span><span>◉ Equipped</span><span>◇ Borrowed</span><span class="tree-today-text">★ Today’s behavior</span></div></div><div class="tree-map-scroll" id="tree-map-scroll"><div class="tree-map" id="tree-map"></div></div></section><aside class="tree-detail" id="tree-detail" aria-label="Selected upgrade"></aside></div>
     <div class="tree-footer">Simulation only: purchases and loadouts here do not change pool physics or game saves. Progress lasts until you reload or reset. Family thresholds are provisional.</div><nav class="tree-mobile-nav" aria-label="Simulator view"><button type="button" data-tree-view="map" aria-pressed="true">${iconHTML('grid')}Tree</button><button type="button" data-tree-view="run" aria-pressed="false">${iconHTML('play')}Loadout & run</button></nav>`;
   dialog.dataset.view = 'map';
@@ -29,14 +29,35 @@ export function treeMount() {
   document.body.append(sheet);
   const returnDetail = () => {
     workspace.append(detail);
+    const wasGuide = sheet.dataset.guide === 'true';
+    sheet.dataset.guide = 'false';
+    detailRender();
     const source = dialog.dataset.view === 'run' ? '#tree-controls' : '#tree-map';
-    dialog.querySelector(`${source} [data-node="${selected}"]`)?.focus({ preventScroll: true });
+    const target = wasGuide ? dialog.querySelector('.tree-guide-open') : dialog.querySelector(`${source} [data-node="${selected}"]`);
+    target?.focus({ preventScroll: true });
   };
   sheet.addEventListener('close', returnDetail);
   dialog.addEventListener('close', () => { if (sheet.open) sheet.close(); });
   mobile.addEventListener('change', () => { if (sheet.open) sheet.close(); });
   dialog.querySelector('.tree-close').onclick = () => dialog.close();
-  const status = message => { dialog.querySelector('#tree-status').textContent = message; sheet.querySelector('.tree-sheet-status').textContent = message; };
+  const status = message => {
+    const target = dialog.querySelector('#tree-status');
+    target.textContent = message;
+    target.dataset.announcement = 'true';
+    clearTimeout(statusTimer);
+    statusTimer = setTimeout(() => { delete target.dataset.announcement; }, 4500);
+    sheet.querySelector('.tree-sheet-status').textContent = message;
+  };
+  function openSheet(guide = false) {
+    sheet.dataset.guide = String(guide);
+    sheet.setAttribute('aria-label', guide ? 'Skill tree guide' : 'Upgrade details');
+    sheet.querySelector('.tree-sheet-heading > span').textContent = guide ? 'SKILL TREE GUIDE' : 'UPGRADE DETAILS';
+    sheet.querySelector('.tree-sheet-status').textContent = '';
+    if (guide) detail.innerHTML = `<h3>Explore. Research. Equip.</h3><p class="tree-description">Tap any node for its effect, cost and upgrades. Scroll the family strip sideways to find every family, or choose Whole tree.</p><h4>Your starting powers</h4><p>Ripple, Attract and Comet are free. Each has four independent upgrades. Develop a family to unlock its later powers.</p><h4>Read the tree</h4><ul><li>✓ Owned: permanently researched in this preview.</li><li>◉ Equipped: active in your simulated loadout.</li><li>◇ Borrowed: a temporary upgrade.</li><li>★ Gold star: part of the power’s current game behavior. Open it for the exact combination.</li><li>△ Mapping pending: the current-behavior match is still being specified.</li></ul><h4>Try the progression</h4><p>Open Loadout & run for test Seeds, the tutorial reward, simulated pool clears and reset. Purchases happen between runs; upgrades use tuning points.</p><p class="tree-hint">This is a disposable preview. It does not change game saves or physics. Reloading clears it.</p>`;
+    sheet.append(detail);
+    sheet.showModal();
+    detail.scrollTop = 0;
+  }
   function nodeStatus(id) {
     if (state.equipped.includes(id)) return '◉ Equipped';
     if (state.profile.research[id]) return '✓ Owned';
@@ -48,7 +69,7 @@ export function treeMount() {
   }
   function nodeButton(id) {
     const n = cat.nodes[id], p = POWER_TREES[n.power], owned = !!state.profile.research[id], today = p.today.includes(n.kind), base = n.kind === 'base';
-    return `<button type="button" class="tree-node ${base ? 'tree-base' : 'tree-upgrade'} ${owned ? 'is-owned' : ''} ${state.equipped.includes(id) ? 'is-equipped' : ''} ${selected === id ? 'is-selected' : ''}" data-node="${id}" aria-pressed="${selected === id}" aria-label="${escape(p.name + ', ' + n.name + ', ' + nodeStatus(id) + (today ? ', current behavior milestone' : ''))}">${base ? powerImage(n.power) : ''}<span class="tree-node-copy"><strong>${escape(n.name)}</strong><small>${base && cat.powers[n.power].starter ? 'FREE START · ' : ''}${nodeStatus(id)}</small>${today ? `<em>★ ${p.name === 'Echo' ? 'Today component' : base ? 'Today at base' : 'Today with base'}</em>` : p.uncertain && n.kind === 'foundation' ? '<em class="tree-warning">Today match pending</em>' : ''}</span></button>`;
+    return `<button type="button" class="tree-node ${base ? 'tree-base' : 'tree-upgrade'} ${owned ? 'is-owned' : ''} ${state.equipped.includes(id) ? 'is-equipped' : ''} ${selected === id ? 'is-selected' : ''}" data-node="${id}" aria-pressed="${selected === id}" aria-label="${escape(p.name + ', ' + n.name + ', ' + nodeStatus(id) + (today ? ', current behavior milestone' : ''))}">${base ? powerImage(n.power) : ''}<span class="tree-node-copy"><strong>${escape(n.name)}</strong><small>${base && cat.powers[n.power].starter ? 'FREE START · ' : ''}${nodeStatus(id)}</small>${today ? `<span class="tree-node-marker" aria-hidden="true">★</span><em>★ ${p.name === 'Echo' ? 'Today component' : base ? 'Today at base' : 'Today with base'}</em>` : p.uncertain && n.kind === 'foundation' ? '<span class="tree-node-marker tree-warning" aria-hidden="true">△</span><em class="tree-warning">Today match pending</em>' : ''}</span></button>`;
   }
   function powerCard(power) {
     return `<div class="tree-power">${nodeButton(power + '.base')}<div class="tree-branches" aria-label="${POWER_TREES[power].name} upgrades">${['foundation', 'a', 'b', 'capstone'].map(k => nodeButton(power + '.' + k)).join('')}</div></div>`;
@@ -65,7 +86,7 @@ export function treeMount() {
   }
   function controlsRender() {
     const running = state.phase === 'run', tuning = simulationLoadout(state), mastery = profileSummary(state.profile, cat).mastery;
-    dialog.querySelector('#tree-mobile-summary').innerHTML = `<strong>${state.profile.wallet.seeds} <span>Seeds</span></strong><span>${tuning.tuning || 0}/${simulationBudget(state)} tuning · ${running ? 'Pool ' + (state.pool + 1) + '/5' : 'Between runs'}</span>`;
+    dialog.querySelector('#tree-mobile-summary').innerHTML = `<strong>${state.profile.wallet.seeds} <span>Seeds</span></strong><span>${tuning.tuning || 0}/${simulationBudget(state)} tuning</span>`;
     dialog.querySelector('#tree-controls').innerHTML = `<div class="tree-wallet"><span>SEEDS</span><strong>${state.profile.wallet.seeds}</strong><small>${Object.keys(state.profile.research).length}/120 nodes</small></div><div class="tree-loadout"><span>YOUR THREE POWERS${running ? ' · FIXED FOR THIS RUN' : ''}</span><div>${state.powers.map(p => `<button type="button" data-node="${p}.base">${powerImage(p)}<span>${POWER_TREES[p].name}<small>${Math.min(3, mastery[p])}/3 mastery</small></span></button>`).join('')}</div></div><div class="tree-run"><span>${running ? POOL_NAMES[state.pool].toUpperCase() + ' · POOL ' + (state.pool + 1) + '/5' : 'BETWEEN RUNS'}</span><strong>${tuning.tuning || 0} / ${simulationBudget(state)} tuning</strong><small>${state.borrowed.length}/${2 + (running ? state.pool : 0)} discoveries · ${running ? 'Each clear uses all three powers' : 'Two starting loans available'}</small></div><div class="tree-sim-actions">${running ? button('clear', 'Clear pool · +2 Seeds', 'check') + button('clear-bonus', 'Clear with bonus · +3', 'star-point-four') + button('end', 'End run', 'arrow-left') : button('tutorial', 'Tutorial bloom · +4', 'star-point-four', state.profile.rewards.some(r => r.id === 'tutorial') ? 'disabled' : '') + button('seeds', '+20 test Seeds', 'add') + button('start', 'Begin simulated run', 'play')}${button('reset-ask', 'Reset preview', 'trashcan-close')}</div>${resetPending ? `<div class="tree-confirm"><p>Reset only this simulator’s purchases, Seeds and run?</p>${button('reset', 'Reset simulator', 'trashcan-close')}${button('cancel', 'Keep exploring', 'arrow-left')}</div>` : ''}<p class="tree-mobile-note">Preview only. Try purchases and simulated runs here without changing your game saves. Reloading or resetting clears this preview.</p>`;
   }
   function detailRender() {
@@ -91,10 +112,11 @@ export function treeMount() {
     const view = event.target.closest('[data-tree-view]');
     if (view) { dialog.dataset.view = view.dataset.treeView; dialog.querySelectorAll('[data-tree-view]').forEach(b => b.setAttribute('aria-pressed', String(b === view))); return; }
     const node = event.target.closest('[data-node]'), filter = event.target.closest('[data-family]'), action = event.target.closest('[data-tree-action]');
-    if (node) { selected = node.dataset.node; refund = null; render(); if (mobile.matches) { sheet.querySelector('.tree-sheet-status').textContent = ''; sheet.append(detail); sheet.showModal(); detail.scrollTop = 0; } return; }
+    if (node) { selected = node.dataset.node; refund = null; render(); if (mobile.matches) openSheet(); return; }
     if (filter) { family = filter.dataset.family; mapRender(); dialog.querySelector('#tree-map-scroll').scrollTo({ top: 0, left: 0 }); return; }
     if (!action) return;
     const type = action.dataset.treeAction;
+    if (type === 'guide') { openSheet(true); return; }
     if (type === 'back-map') { sheet.close(); return; }
     if (type === 'reset-ask') { resetPending = true; controlsRender(); return; }
     if (type === 'reset') { state = simulationCreate(); selected = 'comet.base'; refund = null; resetPending = false; render(); status('Preview reset. Your game saves are unchanged.'); return; }
@@ -106,8 +128,13 @@ export function treeMount() {
   }
   dialog.addEventListener('click', handleClick);
   sheet.addEventListener('click', handleClick);
-  document.getElementById('tree-open').onclick = () => { document.querySelectorAll('dialog[open]').forEach(d => d.close()); render(); dialog.showModal(); };
+  function openTree() {
+    document.querySelectorAll('dialog[open]').forEach(d => d.close());
+    render(); dialog.showModal();
+    if (mobile.matches) dialog.querySelector('.tree-mobile-title').focus({ preventScroll: true });
+  }
+  document.getElementById('tree-open').onclick = openTree;
   render();
   // A shareable deep link opens the preview without starting or changing a pool.
-  if (new URL(location.href).searchParams.get('view') === 'tree') dialog.showModal();
+  if (new URL(location.href).searchParams.get('view') === 'tree') openTree();
 }
