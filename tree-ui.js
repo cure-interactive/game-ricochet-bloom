@@ -69,7 +69,7 @@ export function treeMount() {
   dialog.addEventListener('click', event => {
     const node = event.target.closest('[data-node]'), filter = event.target.closest('[data-family]'), action = event.target.closest('[data-tree-action]');
     if (node) { selected = node.dataset.node; refund = null; render(); if (matchMedia('(max-width: 760px)').matches) dialog.querySelector('#tree-detail').scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
-    if (filter) { family = filter.dataset.family; mapRender(); return; }
+    if (filter) { family = filter.dataset.family; mapRender(); dialog.querySelector('#tree-map-scroll').scrollTo({ top: 0, left: 0 }); return; }
     if (!action) return;
     const type = action.dataset.treeAction;
     if (type === 'back-map') { dialog.querySelector('.tree-map-section').scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }

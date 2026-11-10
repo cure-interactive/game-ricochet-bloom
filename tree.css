@@ -4,7 +4,7 @@
 #tree-dialog[open]{display:flex;flex-direction:column}
 #tree-dialog::backdrop{background:#030914c9;backdrop-filter:blur(8px)}
 #tree-dialog button,#tree-dialog select{font:inherit;font-size:12px;min-height:40px;border:1px solid #34475d;border-radius:9px;background:#17253b;color:#e0eef1;padding:8px 12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
-#tree-dialog button:hover:not(:disabled){background:#22394c;border-color:#94dfd0}
+#tree-dialog button:hover:not(:disabled){border-color:#94dfd0}
 #tree-dialog button:focus-visible,#tree-dialog select:focus-visible{outline:3px solid #e4c680;outline-offset:3px}
 #tree-dialog button:disabled{opacity:.42;cursor:not-allowed}
 .tree-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px 26px 14px;background:radial-gradient(ellipse at 20% 0%,#1a42474d,transparent 65%);flex:none}
