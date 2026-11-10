@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   height="800px"
+   width="800px"
+   version="1.1"
+   id="Layer_1"
+   viewBox="0 0 512 512"
+   xml:space="preserve"
+   sodipodi:docname="gear.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs4" /><sodipodi:namedview
+   id="namedview4"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="0.87875"
+   inkscape:cx="434.1394"
+   inkscape:cy="406.25889"
+   inkscape:window-width="1680"
+   inkscape:window-height="961"
+   inkscape:window-x="3591"
+   inkscape:window-y="902"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1" />
+<path
+   id="path1"
+   d="M 233.42875 0 C 223.20977 0 214.421 7.25327 212.48 17.30125 L 205.46125 53.78125 C 203.09325 66.133226 195.07198 75.98876 183.445 80.78875 C 171.81802 85.63174 159.14623 84.329736 148.73625 77.26875 L 117.9725 56.4475 C 109.54552 50.730512 98.196736 51.796764 90.94375 59.02875 L 52.65125 97.3225 C 45.206264 104.74648 44.287512 116.52352 50.5175 124.9925 L 68.24625 149.205 C 75.883234 159.57298 77.54649 172.39402 72.8325 184.405 C 68.11751 196.35198 58.198224 204.629 45.52625 207.04 L 17.3025 212.48 C 7.25352 214.421 3.031646e-15 223.21077 0 233.42875 L 0 287.5725 C 0 298.11148 7.6802708 307.0725 18.09125 308.6725 L 47.7025 313.2375 C 60.438474 315.1785 70.67826 323.09302 75.84125 334.89 C 80.98224 346.68698 79.788236 359.55052 72.55625 370.2175 L 56.44875 394.02625 C 50.709762 402.47423 51.798014 413.82302 59.03 421.055 L 97.3225 459.3475 C 104.76748 466.81448 116.52352 467.66823 124.9925 461.48125 L 149.205 443.7525 C 159.57298 436.13652 172.37302 434.49425 184.405 439.16625 C 196.35198 443.88125 204.629 453.80052 207.04 466.4725 L 212.48 494.6975 C 214.421 504.74748 223.21077 512 233.42875 512 L 287.5725 512 C 298.11148 512 307.0725 504.31973 308.6725 493.90875 L 311.8725 473.0875 C 313.8775 460.05252 322.00502 449.70648 334.165 444.6925 C 346.23998 439.65752 359.36002 441.21577 370.005 449.02375 L 387.0075 461.4825 C 395.43448 467.66948 407.23252 466.81598 414.6775 459.35 L 452.97 421.0575 C 460.20198 413.82552 461.29023 402.47548 455.55125 394.0275 L 439.44375 370.19875 C 432.21177 359.55377 431.01677 346.69048 436.15875 334.8925 C 441.32173 323.09552 451.56152 315.17975 464.2975 313.23875 L 493.90875 308.67375 C 504.31973 307.07375 512 298.11398 512 287.575 L 512 233.43125 C 512 223.21127 504.74673 214.421 494.69875 212.48 L 466.45375 207.04 C 453.80277 204.629 443.88275 196.35198 439.16875 184.405 C 434.45375 172.39402 436.11827 159.57273 443.75625 149.18375 L 461.48375 124.9925 C 467.71273 116.52352 466.79623 104.74648 459.35125 97.3225 L 421.0575 59.03 C 413.84652 51.798014 402.45473 50.730762 394.02875 56.44875 L 370.2 72.55625 C 359.57602 79.788236 346.73248 80.96124 334.8925 75.84125 C 323.09552 70.67826 315.181 60.438474 313.24 47.7025 L 308.675 18.09125 C 307.072 7.6802708 298.11148 -6.0632919e-15 287.5725 0 L 233.42875 0 z M 256 128 C 326.57906 128 384 185.42094 384 256 C 384 326.57906 326.57906 384 256 384 C 185.42094 384 128 326.57906 128 256 C 128 185.42094 185.42094 128 256 128 z M 256 192 C 220.71504 192 192 220.71504 192 256 C 192 291.28496 220.71504 320 256 320 C 291.28496 320 320 291.28496 320 256 C 320 220.71504 291.28496 192 256 192 z " />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Settings Gear, Essentials 3 collection, supplied by SVG Repo; individual source designer not identified. Adaptation by the Cure Interactive Icons collection author.",
+  "sources": [
+    {
+      "title": "Settings Gear on SVG Repo",
+      "url": "https://www.svgrepo.com/svg/240308/settings-gear",
+      "role": "Source artwork"
+    }
+  ],
+  "license": {
+    "name": "CC0-1.0",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "scope": "Applies to the credited Settings Gear artwork and this Cure Interactive Icons adaptation. SVG Repo lists the source under CC0.",
+    "conditions": [
+      "Credit is supplied voluntarily; attribution is not required by CC0. No endorsement is implied."
+    ],
+    "notices": []
+  },
+  "use": {
+    "status": "Commercial use, modification and redistribution permitted under CC0 1.0.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "CC0-1.0",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      }
+    ],
+    "optional_notices": [],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "allowed",
+      "summary": "Yes, including icon packs."
+    },
+    "requirements": [
+      "No attribution is required by this public-domain dedication. Source credit remains available."
+    ],
+    "required_information": []
+  },
+  "changes": "Modified for visual consistency with the Cure Interactive Icons collection: enlarged the circular opening around the center disk by approximately 20%, while preserving the outer gear contour and the center disk."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

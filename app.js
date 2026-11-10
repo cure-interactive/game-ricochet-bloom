@@ -1,3 +1,4 @@
+import {buttonLabel,iconHTML,iconNode} from './ui-icon.js';
 import {poolView} from './view.js';
 import {songLibrarySetup} from './song-ui.js';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview } from './engine.js';
@@ -347,7 +348,7 @@ function bonusRender() {
   const status=bonus.complete?'Complete! Next target after this pluck.':progress;
   $('bonus-title').textContent=bonus.title;
   $('bonus-status').textContent=status;
-  $('bonus-reward').textContent=bonus.complete?'✓ +200':'+200';
+  $('bonus-reward').replaceChildren(...(bonus.complete?[iconNode('check')]:[]),document.createTextNode('+200'));
   $('bonus-open').classList.toggle('is-complete',bonus.complete);
   $('bonus-open').setAttribute('aria-label',`Bonus objective: ${bonus.title}. ${status} ${bonus.complete?'Earned':'Reward'} ${bonus.reward} points. View details.`);
   $('bonus-fill').style.width=`${bonus.progress*100}%`;
@@ -355,11 +356,11 @@ function bonusRender() {
   $('bonus-description').textContent=bonus.description;
   $('bonus-tip').textContent=bonus.tip;
   $('bonus-count').textContent=`${game.objective.completed} completed`;
-  $('bonus-prize').textContent=bonus.complete?'✓ +200 earned':'+200 resonance';
+  $('bonus-prize').replaceChildren(...(bonus.complete?[iconNode('check')]:[]),document.createTextNode(bonus.complete?'+200 earned':'+200 resonance'));
   $('bonus-next').textContent=OBJECTIVES[(bonus.index+1)%OBJECTIVES.length].title;
   $('bonus-steps').replaceChildren(...bonus.steps.map(step=>{
     const row=document.createElement('div'),label=document.createElement('span'),meter=document.createElement('progress');
-    label.textContent=`${step.value===step.target?'✓ ':''}${step.value} / ${step.target} ${step.label}`;
+    label.append(...(step.value===step.target?[iconNode('check')]:[]),document.createTextNode(`${step.value} / ${step.target} ${step.label}`));
     meter.max=step.target;meter.value=step.value;meter.setAttribute('aria-label',step.label);
     row.append(label,meter);return row;
   }));
@@ -369,7 +370,7 @@ function uiRender() {
   $('score').textContent = game.score.toLocaleString('en-US'); $('best').textContent = best.toLocaleString('en-US');
   $('plucks').textContent = game.mode === 'free' ? '∞' : game.plucks; $('pluck-label').textContent = game.mode === 'free' ? 'FREE PLAY' : 'PLUCKS LEFT';
   $('pool-seed').textContent = `POOL / ${game.seed}`;
-  $('mode-open').textContent = `Mode: ${modeName(game.mode)} ▾`;
+  buttonLabel($('mode-open'),`Mode: ${modeName(game.mode)}`,'grid');
   $('chain-label').textContent = game.chain.length ? `${game.chain.length} NOTES ${game.chain.length >= 5 ? '· BEAUTIFUL.' : '· KEEP IT SINGING.'}` : 'FIVE DIFFERENT JELLIES. ONE BLOOM.';
   $('note-meter').replaceChildren(...Array.from({ length: 5 }, (_, index) => { const item = document.createElement('i'); if (game.chain[index]) { item.className = 'active'; item.style.setProperty('--note', COLORS[game.bodies[game.chain[index]].tone]); } return item; }));
   $('note-meter').setAttribute('aria-label', `${game.chain.length} unique notes this pluck`);
@@ -395,8 +396,8 @@ function uiRender() {
     const status = index < used ? 'used' : index < allowance ? 'ready' : 'locked';
     slot.dataset.state = status;
     const marker = markers[index - used], name = marker ? POWERS[marker.kind].name : '';
-    const label = status === 'ready' ? `${name} · Ready` : status === 'used' ? 'Used ✓' : 'Locked';
-    const content = `${status === 'ready' ? `<img src="./icon/power/${marker.kind}.svg" alt="" width="24" height="24">` : ''}<span>${label}</span>`;
+    const label = status === 'ready' ? `${name} · Ready` : status === 'used' ? 'Used' : 'Locked';
+    const content = `${status === 'ready' ? `<img src="./icon/power/${marker.kind}.svg" alt="" width="24" height="24">` : iconHTML(status==='used'?'check':'lock')}<span>${label}</span>`;
     if (slot.innerHTML !== content) slot.innerHTML = content;
   }
   $('power-progress').textContent = game.isFlying ? `${used} / ${allowance} powers used · bloom to ${allowance === 3 ? 'keep all three' : `earn ${allowance + 1} next pluck`}` : `${allowance} ${allowance === 1 ? 'power' : 'powers'} this pluck · ${allowance === 3 ? 'bloom to keep all three' : `bloom to earn ${allowance + 1} next pluck`}. No bloom resets to 1.`;
@@ -409,7 +410,7 @@ function uiRender() {
   $('power-status').textContent = markers.length > 1 ? `${markers.map(marker => POWERS[marker.kind].name).join(' + ')}. All marked jellies are ready now. Hit them in any order to activate.` : available ? `Hit the marked ${p.name} jelly with your seed. ${p.description}` : `All ${allowance} ${allowance === 1 ? 'power used' : 'powers used'} this pluck. The next set appears when this pluck ends.`;
   Object.assign(canvas.dataset, { power: available ? 'ready' : 'used', powerKind: kind, powerTarget: String(first?.target || 0), powerMarkers: markers.map(marker => `${marker.kind}:${marker.target}`).join(','), powerOffer: power.offer, powerClaims: String(power.claims), powerUsed: String(used), powerAllowance: String(allowance) });
   $('shoot').disabled = !isStarted || isPaused || game.isOver || game.isFlying;
-  $('pause').disabled = !isStarted || game.isOver; $('pause').textContent = isPaused ? '▷' : 'Ⅱ'; $('pause').setAttribute('aria-label', isPaused ? 'Resume game' : 'Pause game');
+  $('pause').disabled = !isStarted || game.isOver; buttonLabel($('pause'),'',isPaused?'play':'pause'); $('pause').setAttribute('aria-label', isPaused ? 'Resume game' : 'Pause game');
   $('over-overlay').hidden = !isStarted || !game.isOver;
   if (game.isOver) { $('end-title').textContent = gameWon(game) ? 'You made it bloom.' : 'One more ripple?'; $('end-label').textContent = gameWon(game) ? 'YOU WON · THREE BLOOMS' : 'OUT OF PLUCKS'; $('end-score').textContent = game.score.toLocaleString('en-US'); $('end-detail').textContent = `${game.blooms} / ${RULE.goalBlooms} blooms · ${game.launches} plucks used${gameWon(game) ? ' · Keep the song going below.' : ' · Reach three blooms to win.'}`; }
   // Read-only observability for live-browser QA. Never drives gameplay.
@@ -439,14 +440,14 @@ function phraseRender() {
   const activeStep = isLive ? phrase && lastStrike && game.tick - lastStrike.tick < 42 ? phrase.steps.at(-1) : -1 : isAudible && audio.lastPlayback?.reply && now - audio.lastPlayback.at < .35 ? audio.lastPlayback.step : -1;
   for (const [step, item] of [...pattern.children].entries()) item.classList.toggle('active', step === activeStep);
 }
-function controlsRender() { $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').textContent = audio.isMuted ? 'Sound is off. Enable Sound to listen.' : '♪ Sound on. Headphones make it lovelier.'; $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('motion').checked = isGentle; $('stream').checked = isStream; document.body.classList.toggle('motion-reduced', isGentle); document.body.classList.toggle('stream-mode', isStream); }
+function controlsRender() { $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').replaceChildren(iconNode('music-note'),document.createTextNode(audio.isMuted?'Sound is off. Enable Sound to listen.':'Sound on. Headphones make it lovelier.')); $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('motion').checked = isGentle; $('stream').checked = isStream; document.body.classList.toggle('motion-reduced', isGentle); document.body.classList.toggle('stream-mode', isStream); }
 function shoot() { if (!isStarted || isPaused || document.querySelector('dialog[open]')) return; audioUnlockAsync(); if (launch(game, angle, power)) { audio.eventPlay({ type: 'launch', x: game.bodies[0].x }); save(); uiRender(); } }
 function pauseSet(value) { if (!isStarted || game.isOver) return; isPaused = value; audio.pauseSet(value); dragCancel(); $('pause-overlay').hidden = !value; save(); uiRender(); if (!value) { audioUnlockAsync(); canvas.focus({ preventScroll: true }); } }
 function start() { audio.media.describe(game.seed); isStarted = true; isPaused = false; $('welcome').hidden = true; $('pause-overlay').hidden = true; if (audio.bloomCount !== game.blooms) audio.harmonySet(game.blooms); audio.pauseSet(false); audio.musicStart(); audioUnlockAsync(); save(); uiRender(); canvas.focus({ preventScroll: true }); }
 function loadPool(nextGame, music = null) {
   game = structuredClone(nextGame); audio.musicRestore(music, game.blooms, game.launches);
   membranes.clear(); powerVisual.clear(); trails = []; particles = []; rings = []; connections = []; bolts = []; reunions = []; scorePopups = []; dragCancel(); accumulator = 0;
-  angle = -Math.PI / 2; power = .7; $('power').value = 70; clearTimeout(toastTimer); $('toast').classList.remove('show'); $('copy-result').textContent = 'Copy this result ↗'; start();
+  angle = -Math.PI / 2; power = .7; $('power').value = 70; clearTimeout(toastTimer); $('toast').classList.remove('show'); buttonLabel($('copy-result'),'Copy this result','copy'); start();
 }
 function newPool(seed, mode) { loadPool(gameCreate(seed, mode)); }
 function dialogOpen(continueSong = false) {
@@ -455,14 +456,14 @@ function dialogOpen(continueSong = false) {
   $('new-title').textContent = continueSong ? 'Continue this song in Free play?' : `New ${modeName(game.mode)} game?`;
   $('new-copy').textContent = continueSong ? 'This replaces your saved Free play pool and song. Your completed Challenge stays saved.' : `This replaces only your ${modeName(game.mode)} pool and song. Your other mode and personal best stay saved.`;
   $('pool-options').hidden = continueSong;
-  $('new-confirm').textContent = continueSong ? 'Replace Free play & continue' : `Start new ${modeName(game.mode)} game`;
+  buttonLabel($('new-confirm'),continueSong?'Replace Free play & continue':`Start new ${modeName(game.mode)} game`,'add');
   $('new-dialog').showModal();
 }
 function modeOpen() {
   save();
   for (const mode of ['challenge', 'free']) {
     const entry = store.pools[mode];
-    $(`choose-${mode}`).textContent = mode === game.mode ? `✓ Current: ${modeName(mode)}` : `${entry ? 'Resume' : 'Start'} ${modeName(mode)}`;
+    buttonLabel($(`choose-${mode}`),mode===game.mode?`Current: ${modeName(mode)}`:`${entry?'Resume':'Start'} ${modeName(mode)}`,mode===game.mode?'check':'play');
     $(`choose-${mode}`).setAttribute('aria-pressed', String(mode === game.mode));
     $(`saved-${mode}`).textContent = entry ? `${entry.game.score.toLocaleString()} resonance · ${entry.game.blooms} blooms${entry.game.isOver ? ' · completed' : ''}` : 'No saved pool yet';
   }
@@ -531,17 +532,18 @@ $('volume').oninput = () => { audio.settingsSet(Number($('volume').value) / 100,
 $('audition').onclick = async () => { if (audio.isMuted) { toast('Enable Sound to listen'); return; } audio.media.describe(game.seed); await audioUnlockAsync(); audio.audition(); };
 $('motion').onchange = event => { isGentle = event.currentTarget.checked; if (isGentle) { particles = []; trails = []; } controlsRender(); save(); };
 $('stream').onchange = event => { isStream = event.currentTarget.checked; controlsRender(); save(); };
+document.addEventListener('fullscreenchange',()=>{const active=!!document.fullscreenElement;buttonLabel($('fullscreen'),'',active?'fullscreen-disable':'fullscreen-enable');$('fullscreen').setAttribute('aria-label',active?'Exit fullscreen':'Enter fullscreen');$('fullscreen').title=active?'Exit fullscreen':'Enter fullscreen';});
 $('fullscreen').onclick = async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch { toast('Fullscreen is unavailable here'); } };
-for(const name of ['settings','powers','music','help','bonus']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
+for(const name of ['settings','powers','music','help','bonus','credits']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
 $('restart').onclick = () => dialogOpen(); $('mode-open').onclick = modeOpen; $('retry').onclick = () => dialogOpen();
 for (const mode of ['challenge', 'free']) $(`choose-${mode}`).onclick = () => switchMode(mode);
 $('seed-form').onsubmit = event => { event.preventDefault(); const seed = $('seed-input').value.trim(); if (!seed) return; $('new-dialog').close(); if (carrySong) carryToFree(); else newPool(seed, game.mode); };
 document.querySelectorAll('[data-close]').forEach(button => { button.onclick = () => button.closest('dialog').close(); });
 document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('close', () => { if (isStarted) canvas.focus({ preventScroll: true }); }));
-$('copy-result').onclick = async () => { try { await navigator.clipboard.writeText(`Ricochet Bloom · ${gameWon(game) ? 'WIN · ' : ''}${game.score} resonance · ${game.blooms} blooms · ${game.bestChain} best chain · seed ${game.seed}`); $('copy-result').textContent = 'Copied ✓'; } catch { $('copy-result').textContent = 'Clipboard unavailable'; } };
+$('copy-result').onclick = async () => { try { await navigator.clipboard.writeText(`Ricochet Bloom · ${gameWon(game) ? 'WIN · ' : ''}${game.score} resonance · ${game.blooms} blooms · ${game.bestChain} best chain · seed ${game.seed}`); buttonLabel($('copy-result'),'Copied','check'); } catch { buttonLabel($('copy-result'),'Clipboard unavailable','copy'); } };
 document.addEventListener('visibilitychange', () => { if (document.hidden) { audio.pauseSet(true); if (isStarted) pauseSet(true); } else if (isStarted && game.isOver) { audio.pauseSet(false); audioUnlockAsync(); } });
 window.addEventListener('pagehide', () => { audio.pauseSet(true); save(); });
-if (saved) { $('welcome-copy').textContent = `Your ${saved.mode === 'free' ? 'free-play' : 'challenge'} pool is waiting. ${saved.score} resonance, seed ${saved.seed}.`; $('start').textContent = saved.isOver ? 'View your result ↗' : 'Return to the pool ↗'; }
+if (saved) { $('welcome-copy').textContent = `Your ${saved.mode === 'free' ? 'free-play' : 'challenge'} pool is waiting. ${saved.score} resonance, seed ${saved.seed}.`; buttonLabel($('start'),saved.isOver?'View your result':'Return to the pool','play'); }
 if (!storageIsAvailable) $('save-status').textContent = 'Save unavailable · keep this tab open';
 audio.media.actions(() => {
   if (document.hidden || audio.isMuted || !audio.volume || !audio.ambience) return;

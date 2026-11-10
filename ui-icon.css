@@ -1,0 +1,54 @@
+/* SVG artwork stays external, with its adjacent provenance and complete notices. */
+.ui-icon{display:inline-block;flex:none;width:18px;height:18px;background:currentColor;-webkit-mask:var(--ui-icon) center/contain no-repeat;mask:var(--ui-icon) center/contain no-repeat;vertical-align:middle;pointer-events:none}
+[data-icon="arrow-left"]{--ui-icon:url("./icon/ui/arrow-left.svg")}
+[data-icon="arrow-right"]{--ui-icon:url("./icon/ui/arrow-right.svg")}
+[data-icon="arrow-down"]{--ui-icon:url("./icon/ui/arrow-down.svg")}
+[data-icon="close"]{--ui-icon:url("./icon/ui/close.svg")}
+[data-icon="gear"]{--ui-icon:url("./icon/ui/gear.svg")}
+[data-icon="fullscreen-enable"]{--ui-icon:url("./icon/ui/fullscreen-enable.svg")}
+[data-icon="fullscreen-disable"]{--ui-icon:url("./icon/ui/fullscreen-disable.svg")}
+[data-icon="reset"]{--ui-icon:url("./icon/ui/reset.svg")}
+[data-icon="checkbox-on"]{--ui-icon:url("./icon/ui/checkbox-on.svg")}
+[data-icon="checkbox-off"]{--ui-icon:url("./icon/ui/checkbox-off.svg")}
+[data-icon="about"]{--ui-icon:url("./icon/ui/about.svg")}
+[data-icon="add"]{--ui-icon:url("./icon/ui/add.svg")}
+[data-icon="grid"]{--ui-icon:url("./icon/ui/grid.svg")}
+[data-icon="lock"]{--ui-icon:url("./icon/ui/lock.svg")}
+[data-icon="star-point-four"]{--ui-icon:url("./icon/ui/star-point-four.svg")}
+[data-icon="music-note"]{--ui-icon:url("./icon/ui/music-note.svg")}
+[data-icon="copy"]{--ui-icon:url("./icon/ui/copy.svg")}
+[data-icon="download"]{--ui-icon:url("./icon/ui/download.svg")}
+[data-icon="bookmark"]{--ui-icon:url("./icon/ui/bookmark.svg")}
+[data-icon="trashcan-close"]{--ui-icon:url("./icon/ui/trashcan-close.svg")}
+[data-icon="pencil"]{--ui-icon:url("./icon/ui/pencil.svg")}
+[data-icon="upload"]{--ui-icon:url("./icon/ui/upload.svg")}
+[data-icon="play"]{--ui-icon:url("./icon/ui/play.svg")}
+[data-icon="pause"]{--ui-icon:url("./icon/ui/pause.svg")}
+[data-icon="power"]{--ui-icon:url("./icon/ui/power.svg")}
+[data-icon="check"]{--ui-icon:url("./icon/ui/check.svg")}
+[data-icon="bass"]{--ui-icon:url("./icon/ui/bass.svg")}
+[data-icon="rhythm"]{--ui-icon:url("./icon/ui/rhythm.svg")}
+button:has(>.ui-icon),a:has(>.ui-icon){display:inline-flex;align-items:center;justify-content:center;gap:8px}
+button[hidden],a[hidden]{display:none!important}
+.button-label{min-width:0}.close>.ui-icon{width:16px;height:16px}
+#pause>.ui-icon,#fullscreen>.ui-icon{width:20px;height:20px}
+#mode-open::after,summary::after{content:"";display:inline-block;flex:none;width:10px;height:10px;background:currentColor;-webkit-mask:url("./icon/ui/arrow-down.svg") center/contain no-repeat;mask:url("./icon/ui/arrow-down.svg") center/contain no-repeat}
+summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{margin-left:auto}summary::-webkit-details-marker{display:none}details[open]>summary::after{transform:rotate(180deg)}
+.setting-toggle input[type="checkbox"]{appearance:none;-webkit-appearance:none;flex:none;width:21px;height:21px;min-width:21px;padding:0;border:0;border-radius:4px;background:#223149;box-shadow:inset 0 0 0 1.5px #7c8ba4;-webkit-mask:url("./icon/ui/checkbox-off.svg") center/contain no-repeat;mask:url("./icon/ui/checkbox-off.svg") center/contain no-repeat;cursor:pointer}
+.setting-toggle input[type="checkbox"]:checked{background:#9ff5df;box-shadow:none;-webkit-mask-image:url("./icon/ui/checkbox-on.svg");mask-image:url("./icon/ui/checkbox-on.svg")}
+.setting-toggle:has(input:focus-visible){outline:2px solid #b9afff;outline-offset:4px;border-radius:5px}
+.bonus-emblem{display:grid;place-items:center;border:1px solid #c4b6ff38;border-radius:50%;background:#b3a1ff12}.bonus-emblem .ui-icon{width:65%;height:65%}.bonus-arrow .ui-icon{width:14px;height:14px;transform:none}
+#bonus-reward,.bonus-steps span,#bonus-prize{display:inline-flex;align-items:center;gap:5px}#bonus-reward .ui-icon{width:11px;height:11px}.bonus-steps .ui-icon{width:14px;height:14px}
+.role-legend>span,.sound-hint{display:inline-flex;align-items:center;gap:6px}.role-legend .ui-icon{width:15px;height:15px}.sound-hint .ui-icon{width:14px;height:14px}
+.power-slots .ui-icon{width:15px;height:15px}.settings-links{flex-wrap:wrap;gap:12px}.icon-credit-list{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:22px 0}.icon-credit-list a{justify-content:flex-start;padding:8px;font-size:12px;color:#c8d0e8}.icon-credit-list .ui-icon{width:20px;height:20px}#credits-dialog a{color:#a8efdf}#credits-dialog p{font-size:12px}
+@media(max-width:600px){
+ button:has(>.ui-icon),a:has(>.ui-icon){gap:5px}.ui-icon{width:15px;height:15px}
+ header #settings-open{width:40px;min-width:40px;padding:8px}header #settings-open .button-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+ .pool-navigation button{padding:8px}.dock-tools #music-open{min-width:36px;width:36px}.dock-tools #music-open .button-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+ #mode-open::after{width:8px;height:8px}.power-dock>button>.ui-icon{width:13px;height:13px}
+}
+@media(max-height:500px) and (min-width:600px){.power-dock>button>.ui-icon{display:none}.power-slots .ui-icon{width:13px;height:13px}.dock-tools>button{gap:5px}.ui-icon{width:16px;height:16px}}
+@media(max-width:359px){
+ header,.stream-mode header{gap:4px;padding-inline:8px}.brand-icon{width:28px;height:28px}.pool-navigation button{font-size:10px;padding:7px 6px;white-space:nowrap}.pool-navigation .ui-icon{width:13px;height:13px}header #settings-open{width:34px;min-width:34px}
+ .aim-controls input{width:42px}.compact{padding:10px 8px}.dock-tools>button,.dock-tools #music-open{min-width:32px;width:32px}.dock-tools{gap:3px}
+}

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   fill="#000000"
+   width="800px"
+   height="800px"
+   viewBox="0 0 255.99316 255.99316"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="copy.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,50,0,1 @ F,0,0,1,0,12,0,1 @ F,0,0,1,0,12,0,1 @ F,0,1,1,0,82,0,1 @ F,0,0,1,0,12,0,1 @ F,0,0,1,0,12,0,1 | F,0,0,1,0,50,0,1 @ F,0,0,1,0,50,0,1 @ F,0,0,1,0,50,0,1 @ F,0,0,1,0,50,0,1"
+       radius="82"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="true"
+       hide_knots="false" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.68059028"
+     inkscape:cx="410.67293"
+     inkscape:cy="295.33187"
+     inkscape:window-width="1680"
+     inkscape:window-height="961"
+     inkscape:window-x="3591"
+     inkscape:window-y="1104"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     d="M 4.0419897e-5,50 1.451407e-4,179.99487 a 12.00001,12.00001 44.999977 0 0 12.0000098593,12 11.999599,11.999599 134.99809 0 0 11.9992,-12 l -2.2e-5,-73.99551 A 81.999976,81.999976 134.99999 0 1 105.99931,23.999359 h 73.99553 a 12.00003,12.00003 135.00007 0 0 12.00003,-12 A 11.999628,11.999628 44.998432 0 0 179.9949,4.5759153e-5 L 50,1.2711236e-5 A 49.999947,49.999947 134.99998 0 0 4.0419897e-5,50 Z M 105.9985,55.998521 l 99.99456,-3.5e-5 a 49.999983,49.999983 44.99999 0 1 50,49.999984 v 99.99455 a 50.000018,50.000018 134.99999 0 1 -50,50.00002 l -99.99456,3e-5 A 49.999982,49.999982 44.99999 0 1 55.998504,205.99309 l 0,-99.99455 A 50.000017,50.000017 134.99999 0 1 105.9985,55.998521 Z"
+     id="path1"
+     sodipodi:nodetypes="cccccccccccc"
+     inkscape:path-effect="#path-effect1"
+     inkscape:original-d="M 1.4107499e-7,0 1.5480762e-4,191.99487 H 23.999359 l -5e-5,-167.995511 H 191.99484 L 191.9949,4.880985e-5 Z M 55.998504,55.998538 255.99306,55.998469 V 255.99302 l -199.994556,7e-5 z" />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Original Copy artwork by the Cure Interactive Icons contributors.",
+  "sources": [
+    {
+      "title": "Cure Interactive Icons",
+      "role": "Collection artwork contribution"
+    }
+  ],
+  "license": {
+    "name": "MIT",
+    "url": "https://opensource.org/license/mit",
+    "scope": "Applies to the contribution of Cure Interactive Icons contributors in this artwork. It does not grant rights owned by others.",
+    "conditions": [
+      "Include the copyright notice and complete MIT license in all copies or substantial portions of the author contribution."
+    ],
+    "notices": [
+      {
+        "title": "MIT author-contribution notice",
+        "path": "attribution/license/mit/cure-interactive-icons.txt",
+        "sha256": "946e919f2079fc107dda1eaac0ba80438185cc26bea4914275304bc8cb4fec6a",
+        "text": "The MIT License (MIT)\n\nCopyright (c) 2026 Cure Interactive Icons contributors\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Commercial use, modification and redistribution of the author contribution are permitted under MIT.",
+    "conditions": [
+      "Preserve the applicable copyright and license notices."
+    ],
+    "sources": [
+      {
+        "title": "MIT",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Original drawing of overlapping sheet shapes with rounded corners."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

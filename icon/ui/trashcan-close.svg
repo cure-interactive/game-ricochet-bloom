@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 48 48"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="trashcan.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.9625"
+     inkscape:cx="400"
+     inkscape:cy="400"
+     inkscape:window-width="1680"
+     inkscape:window-height="961"
+     inkscape:window-x="3591"
+     inkscape:window-y="1104"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <title
+     id="title1">trash-solid</title>
+  <path
+     id="path1"
+     d="M 18.28567,0 A 2.2857143,2.2857143 0 0 0 16.000045,2.285759 V 4.571384 H 4.5713832 A 1.9428572,1.9428572 0 0 0 2.9714725,5.2570983 2.6285714,2.6285714 0 0 0 2.2857582,7.085759 2.4000001,2.4000001 0 0 0 4.6857583,9.142902 H 43.428617 a 1.9428572,1.9428572 0 0 0 1.599911,-0.685715 2.6285714,2.6285714 0 0 0 0.685714,-1.82866 2.4000001,2.4000001 0 0 0 -2.4,-2.057143 H 31.999956 V 2.285759 A 2.2857143,2.2857143 0 0 0 29.71433,0 Z M 9.371383,13.714286 a 2.2857143,2.2857143 0 0 0 -2.2856247,2.514241 l 2.9713397,29.714331 a 2.2857143,2.2857143 0 0 0 2.285759,2.057143 h 23.314286 a 2.2857143,2.2857143 0 0 0 2.285759,-2.057143 l 2.97134,-29.714331 a 2.2857143,2.2857143 0 0 0 -2.285625,-2.514241 z"
+     style="stroke-width:1.14286" />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Trash Solid, Denali Icons by Denali Design / Verizon Media.",
+  "sources": [
+    {
+      "title": "Trash Solid, Denali Icons",
+      "url": "https://github.com/denali-design/denali-icons/blob/9690001867a4591e3a07f17a6427e3913a0ea428/svg/trash-solid.svg",
+      "role": "Source artwork"
+    }
+  ],
+  "license": {
+    "name": "MIT",
+    "url": "https://github.com/denali-design/denali-icons/blob/9690001867a4591e3a07f17a6427e3913a0ea428/LICENSE.md",
+    "scope": "Applies to the credited artwork. Commercial use, modification and redistribution are permitted.",
+    "conditions": [
+      "Preserve the complete source-specific copyright and MIT permission notice with copies or substantial portions."
+    ],
+    "notices": [
+      {
+        "title": "MIT source notice",
+        "path": "attribution/license/mit/denali.txt",
+        "sha256": "62a805f3e9df9cf92a68382373816d63c16f29329daa1dd8868644c527db51a1",
+        "text": "The MIT License (MIT)\n\nCopyright 2020, Verizon Media\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      }
+    ]
+  },
+  "use": {
+    "status": "Subject to the stated MIT license and notice condition.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "MIT",
+        "url": "https://github.com/denali-design/denali-icons/blob/9690001867a4591e3a07f17a6427e3913a0ea428/LICENSE.md"
+      },
+      {
+        "title": "MIT license",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Uniformly fitted and centered by visible bounds for Cure Interactive Icons. Layout margins removed and drawing elements combined into a compound path; outline geometry is preserved within numeric export precision."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

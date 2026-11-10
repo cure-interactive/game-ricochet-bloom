@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<!-- Cure Interactive Icons: adapted from Grid by Ionic / Ionicons.
+MIT licensed; full copyright and permission notice: ../../attribution/icon/interface/grid.svg.md
+Modified by the collection author: smaller tiles and wider gaps, retaining the fitted
+corner radius, for visual consistency with the Cure Interactive Icons collection.
+Source: https://github.com/ionic-team/ionicons/blob/d1e2c48641fd5f4910ee42a144dc1c84b1a9a4ee/src/svg/grid.svg
+Attribution notice added 2026-09-27; drawing geometry unchanged.
+-->
+<svg
+   fill="#000000"
+   width="800px"
+   height="800px"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="grid.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.48125"
+     inkscape:cx="435.32468"
+     inkscape:cy="428.05195"
+     inkscape:window-width="1680"
+     inkscape:window-height="961"
+     inkscape:window-x="3591"
+     inkscape:window-y="902"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <title
+     id="title1">ionicons-v5-i</title>
+  <path
+     id="path1"
+     d="M 41.142857,0 C 18.420285,0 0,18.420285 0,41.142857 V 186.33143 c 0,22.72257 18.420283,41.14286 41.142857,41.14286 H 186.33143 c 22.72257,0 41.14286,-18.42029 41.14286,-41.14286 V 41.142857 C 227.47429,18.420283 209.054,0 186.33143,0 Z M 325.66857,0 C 302.946,0 284.52571,18.420283 284.52571,41.142857 V 186.33143 c 0,22.72257 18.42029,41.14286 41.14286,41.14286 H 470.85714 C 493.57971,227.47429 512,209.054 512,186.33143 V 41.142857 C 512,18.420283 493.57971,0 470.85714,0 Z M 41.142857,284.52571 C 18.420283,284.52571 0,302.946 0,325.66857 V 470.85714 C 0,493.57971 18.420283,512 41.142857,512 H 186.33143 c 22.72257,0 41.14286,-18.42029 41.14286,-41.14286 V 325.66857 c 0,-22.72257 -18.42029,-41.14286 -41.14286,-41.14286 z m 284.525713,0 c -22.72257,0 -41.14286,18.42029 -41.14286,41.14286 V 470.85714 C 284.52571,493.57971 302.946,512 325.66857,512 H 470.85714 C 493.57971,512 512,493.57971 512,470.85714 V 325.66857 c 0,-22.72257 -18.42029,-41.14286 -41.14286,-41.14286 z"
+     style="stroke-width:1.14285"
+     sodipodi:nodetypes="ssssssssssssssssssssssssssssssssssss" />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Grid, Ionicons by Ionic.",
+  "sources": [
+    {
+      "title": "Grid, Ionicons",
+      "url": "https://github.com/ionic-team/ionicons/blob/d1e2c48641fd5f4910ee42a144dc1c84b1a9a4ee/src/svg/grid.svg",
+      "role": "Source artwork"
+    }
+  ],
+  "license": {
+    "name": "MIT",
+    "url": "https://github.com/ionic-team/ionicons/blob/d1e2c48641fd5f4910ee42a144dc1c84b1a9a4ee/LICENSE",
+    "scope": "Applies to the credited source artwork.",
+    "conditions": [
+      "Preserve the copyright notice and complete MIT license with copies or substantial portions of the artwork."
+    ],
+    "notices": [
+      {
+        "title": "MIT source notice",
+        "path": "attribution/license/mit/ionicons.txt",
+        "sha256": "c89dabc60b2e4e1a04b33bd7010b5a56bb4725ffe8c00d793a5ae009fbbfebd8",
+        "text": "The MIT License (MIT)\n\nCopyright (c) 2015-present Ionic (http://ionic.io/)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Subject to the stated license and conditions.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "MIT",
+        "url": "https://github.com/ionic-team/ionicons/blob/d1e2c48641fd5f4910ee42a144dc1c84b1a9a4ee/LICENSE"
+      },
+      {
+        "title": "MIT license",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Reduced each tile width and height and widened the horizontal and vertical gaps while retaining the fitted corner radius, for visual consistency with the Cure Interactive Icons collection."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

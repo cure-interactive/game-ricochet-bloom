@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<!-- Cure Interactive Icons: Ionic / Ionicons credit retained for matching outer-box geometry.
+Checkmark design and editing by the collection author; exact acquisition history unconfirmed.
+MIT notice and modification information: attribution/icon/interface/checkbox-on.svg.md
+Source/credit notice corrected 2026-09-26; drawing data unchanged.
+-->
+<svg
+   fill="#000000"
+   width="800px"
+   height="800px"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="checkbox-on.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect2"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,1,1,0,42,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,42,0,1 @ F,0,1,1,0,42,0,1 @ F,0,1,1,0,42,0,1 @ F,0,1,1,0,42,0,1"
+       radius="42"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="true"
+       hide_knots="false" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.9625"
+     inkscape:cx="359.48052"
+     inkscape:cy="405.1948"
+     inkscape:window-width="1680"
+     inkscape:window-height="961"
+     inkscape:window-x="3591"
+     inkscape:window-y="1104"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <title
+     id="title1">ionicons-v5-l</title>
+  <path
+     id="path1"
+     style="fill:#000000;stroke-width:1.23077"
+     d="M 78.76875 0 C 35.285806 0.047746642 0.047746642 35.285806 0 78.76875 L 0 433.23125 C 0.047746642 476.7142 35.285806 511.95225 78.76875 512 L 433.23125 512 C 476.7142 511.9522 511.95225 476.7142 512 433.23125 L 512 78.76875 C 511.95225 35.285806 476.7142 0.047746642 433.23125 0 L 78.76875 0 z M 421.265 95.915 A 41.704445 41.704445 0 0 1 444.3125 107.4525 A 41.923787 41.923787 0 0 1 444.25875 166.79625 L 205.9075 404.28375 A 42.076543 42.076543 45 0 1 146.45625 404.23 L 67.83375 325.6075 A 41.704255 41.704255 0 0 1 67.41375 266.63 A 42.000332 42.000332 0 0 1 126.81125 266.63 L 176.695 316.5125 L 385.335 107.8725 A 41.704445 41.704445 0 0 1 421.265 95.915 z " />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Outer-box artwork: Ionic / Ionicons. Checkmark design and editing: Cure Interactive Icons collection author.",
+  "sources": [
+    {
+      "title": "Ionicons",
+      "url": "https://github.com/ionic-team/ionicons/blob/d1e2c48641fd5f4910ee42a144dc1c84b1a9a4ee/src/svg/checkbox.svg",
+      "role": "Source artwork"
+    }
+  ],
+  "license": {
+    "name": "MIT",
+    "url": "https://github.com/ionic-team/ionicons/blob/d1e2c48641fd5f4910ee42a144dc1c84b1a9a4ee/LICENSE",
+    "scope": "Applies to the credited source artwork.",
+    "conditions": [
+      "Preserve the copyright notice and complete MIT license with copies or substantial portions of the artwork."
+    ],
+    "notices": [
+      {
+        "title": "MIT source notice",
+        "path": "attribution/license/mit/ionicons.txt",
+        "sha256": "c89dabc60b2e4e1a04b33bd7010b5a56bb4725ffe8c00d793a5ae009fbbfebd8",
+        "text": "The MIT License (MIT)\n\nCopyright (c) 2015-present Ionic (http://ionic.io/)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Subject to the stated license and conditions.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "MIT",
+        "url": "https://github.com/ionic-team/ionicons/blob/d1e2c48641fd5f4910ee42a144dc1c84b1a9a4ee/LICENSE"
+      },
+      {
+        "title": "MIT license",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "The checkmark is larger and differently shaped, with larger rounded corners, for visual consistency with the Cure Interactive Icons collection. The outer box is uniformly fitted to the canvas."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

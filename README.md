@@ -31,3 +31,5 @@ Song library saves up to 24 named favorites independently of the current pool, i
 Your plucks automatically shape the song. A three-hit pluck establishes a recurring melody. It repeats for eight bars, then fresh melody-jelly hits can change one half at the next section while the other half stays familiar. Short shots still get musical replies; misses never erase the song. Bass and rhythm ideas join at two-bar boundaries. Older saved hooks and favorites are preserved as starting melodies.
 
 The screen-filling layout keeps play and controls visible without page scrolling. Open Settings, Powers or Music for secondary controls; their panels scroll independently. Add the page to your Home Screen to use its standalone display and bloom icon.
+
+Interface controls use SVG artwork from Cure Interactive Icons, with a small set of original game fallbacks. Settings → Icon credits links to each bundled attribution and full license. See [the icon inventory](icon/ui/INDEX.md).
