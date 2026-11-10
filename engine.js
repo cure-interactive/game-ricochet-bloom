@@ -1,5 +1,8 @@
+import { jellyRole } from './music.js?v=6ec72be4ad2664d5ad3ccad3e38ced59061c476e0fa523cde850ae21caa7b261';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep } from './skill-effect.js?v=d18fe1ae27d9b1552f91df0bc888bd3ce5b3c33360a3511c13c66f795178e541';
+export { skillFlags } from './skill-effect.js?v=d18fe1ae27d9b1552f91df0bc888bd3ce5b3c33360a3511c13c66f795178e541';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
-export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 17, settleSeconds: 2, settleSpeed: 12, settleDrag: 4.8, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
+export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 12, settleDrag: 4.8, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
 export function seedHash(seed) { let hash = 2166136261; for (const char of String(seed)) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619); return hash >>> 0 || 1; }
 export const POWERS = Object.freeze({
@@ -26,16 +29,18 @@ export const POWERS = Object.freeze({
   pulse: { name: 'Pulse', symbol: '◴', color: '#ffadc7', description: 'Erupt at three random spots across the pool, pushing jellies away one beat at a time.' },
   drunk: { name: 'Drunk', symbol: '∿', color: '#ffacd8', description: 'Swerve side to side for four seconds without losing speed. Split seeds get tipsy too.' },
   wrap: { name: 'Wrap', symbol: '⇥', color: '#8cefff', description: 'Cross any wall and emerge at the opposite edge for five seconds. Keep your direction and momentum; Split seeds wrap too. Replaces wall bounces, including Spring.' },
+  blaster: { name: 'Blaster', symbol: '✧', color: '#fff0a8', description: 'Load three gel shots. Tap while moving to fire automatically at a nearby unhit jelly. Shots push jellies, play notes and give you a little recoil.' },
   homing: { name: 'Homing', symbol: '➶', color: '#c1ffa2', description: 'Curve toward nearby unhit jellies ahead for five seconds. Keep your momentum and seek a new target after each hit. Split seeds home too; green brackets show the target.' }
 });
 const powerKinds = Object.keys(POWERS);
+const offeredKinds = state => state.build ? state.build.map(p=>p.power) : powerKinds;
 function powerCreate(seed) { const hash = seedHash(seed); return { offer: powerKinds[hash % powerKinds.length], target: hash % 14 + 1, shot: 0, claims: 0, used: 0, capacity: 1, markers: [] }; }
 export function powerAllowance(state) { return state.power.capacity; }
 // The preview and flight share one allocation; contacts only remove existing markers.
 function powerPlan(state, count = powerAllowance(state)) {
-  const markers = [], power = state.power;
+  const markers = [], power = state.power, kinds=offeredKinds(state);
   for (let index = 0; index < count; index++) {
-    const kind = powerKinds[(powerKinds.indexOf(power.offer) + index) % powerKinds.length];
+    const kind = kinds[(Math.max(0,kinds.indexOf(power.offer)) + index) % kinds.length];
     const candidates = state.bodies.slice(1).filter(body => body.id !== power.target && !markers.some(marker => marker.target === body.id));
     const unhit = candidates.filter(body => !state.chain.includes(body.id));
     const pool = unhit.length ? unhit : candidates;
@@ -48,13 +53,67 @@ export function powerMarkers(state) { return state.isFlying ? state.power.marker
 export function powerAvailable(state) { return powerMarkers(state).length > 0; }
 function powerNext(state) {
   const power = state.power; power.claims++;
-  power.offer = powerKinds[(powerKinds.indexOf(power.offer) + 1) % powerKinds.length];
+  const kinds=offeredKinds(state);power.offer = kinds[(kinds.indexOf(power.offer) + 1) % kinds.length];
   powerTargetNext(state);
 }
 function powerTargetNext(state) {
   const power = state.power;
   const candidates = state.bodies.slice(1).filter(body => body.id !== power.target && !state.chain.includes(body.id));
-  power.target = candidates.length ? candidates[seedHash(state.seed + ':' + power.claims) % candidates.length].id : (power.target + seedHash(state.seed + ':' + power.claims) % 13) % 14 + 1;
+  power.target = candidates.length ? candidates[seedHash(state.seed + ':' + power.claims) % candidates.length].id : (power.target + seedHash(state.seed + ':' + power.claims) % (state.bodies.length-2)) % (state.bodies.length-1) + 1;
+}
+// Optional v2 configuration. Missing configuration preserves legacy power behavior.
+export function blasterTarget(state) {
+  const seed=state.bodies[0];
+  const candidates=state.bodies.slice(1).filter(body=>!state.chain.includes(body.id));
+  candidates.sort((a,b)=>Math.hypot(a.x-seed.x,a.y-seed.y)-Math.hypot(b.x-seed.x,b.y-seed.y)||a.id-b.id);
+  const target=candidates[0];if(!target)return null;
+  // Predict the intercept; targeting remains deterministic and never changes launch aim.
+  const dx=target.x-seed.x,dy=target.y-seed.y;
+  const a=target.vx**2+target.vy**2-980**2,b=2*(dx*target.vx+dy*target.vy),c=dx**2+dy**2;
+  const disc=b*b-4*a*c;
+  const roots=disc>=0&&Math.abs(a)>1e-6?[(-b-Math.sqrt(disc))/(2*a),(-b+Math.sqrt(disc))/(2*a)]:[];
+  const time=Math.min(1.2,...roots.filter(t=>t>0));
+  return {id:target.id,x:Math.max(35,Math.min(925,target.x+target.vx*time)),y:Math.max(35,Math.min(605,target.y+target.vy*time))};
+}
+export function blasterFire(state) {
+  const target=blasterTarget(state);if(!target)return [];
+  const {x,y}=target;
+  const effect = effectGet(state, 'blaster'), seed = state.bodies[0];
+  if (!state.isFlying || state.isOver || !effect || effect.ammo < 1 || effect.cooldown > 0 || !Number.isFinite(x) || !Number.isFinite(y)) return [];
+  const distance = Math.hypot(x-seed.x,y-seed.y);
+  if (distance < 1) return [];
+  const aim = Math.atan2(y-seed.y,x-seed.x), flags = skillFlags(state,'blaster'), volley = effect.volley++;
+  effect.ammo--; effect.cooldown = .16; effect.hits.push([]);
+  for (const offset of flags.b ? [-.14,0,.14] : [0]) {
+    const a=aim+offset, nx=Math.cos(a),ny=Math.sin(a);
+    effect.shots.push({x:Math.max(35,Math.min(925,seed.x+nx*(seed.radius+7))),y:Math.max(35,Math.min(605,seed.y+ny*(seed.radius+7))),vx:nx*980,vy:ny*980,life:1.6,bounces:flags.a?1:0,volley});
+  }
+  seed.vx-=Math.cos(aim)*45;seed.vy-=Math.sin(aim)*45;velocityLimit(seed);
+  return [{type:'blaster-fire',x:seed.x,y:seed.y,nx:Math.cos(aim),ny:Math.sin(aim),ammo:effect.ammo}];
+}
+function blasterStep(state, events) {
+  const effect=effectGet(state,'blaster'); if(!effect) return;
+  effect.cooldown=Math.max(0,effect.cooldown-RULE.step);
+  for(const shot of effect.shots) {
+    shot.life-=RULE.step;shot.x+=shot.vx*RULE.step;shot.y+=shot.vy*RULE.step;
+    const nx=shot.x<35?1:shot.x>925?-1:0,ny=shot.y<35?1:shot.y>605?-1:0;
+    if(nx||ny) {
+      if(shot.bounces>0) {shot.bounces--;if(nx)shot.vx*=-1;if(ny)shot.vy*=-1;shot.x=Math.max(35,Math.min(925,shot.x));shot.y=Math.max(35,Math.min(605,shot.y));events.push({type:'blaster-bank',x:shot.x,y:shot.y});}
+      else shot.life=0;
+    }
+    if(shot.life<=0)continue;
+    for(const jelly of state.bodies.slice(1)) {
+      if(effect.hits[shot.volley].includes(jelly.id)||Math.hypot(jelly.x-shot.x,jelly.y-shot.y)>jelly.radius+5)continue;
+      effect.hits[shot.volley].push(jelly.id);shot.life=0;
+      const speed=Math.hypot(shot.vx,shot.vy),dx=shot.vx/speed,dy=shot.vy/speed;
+      jelly.vx+=dx*260;jelly.vy+=dy*260;velocityLimit(jelly);
+      const marker=state.power.markers.find(item=>item.target===jelly.id);
+      if(marker)powerCollect(state,marker,state.bodies[0],jelly,dx,dy,events);
+      scoreContact(state,jelly,{id:-4,vx:shot.vx,vy:shot.vy},events);
+      events.push({type:'blaster-hit',id:jelly.id,x:jelly.x,y:jelly.y,nx:dx,ny:dy});break;
+    }
+  }
+  effect.shots=effect.shots.filter(shot=>shot.life>0);
 }
 export function effectGet(state, kind) { return state.effects.find(effect => effect.kind === kind); }
 export function frozenHit(state, id) { return state.isFlying && state.chain.includes(id) && !!effectGet(state, 'stasis')?.targets.includes(id); }
@@ -73,10 +132,11 @@ export function homingTarget(state, seed) {
   for (const body of state.bodies.slice(1)) {
     if (state.chain.includes(body.id) || effectGet(state, 'orbit')?.satellites.includes(body.id)) continue;
     const dx = body.x - seed.x, dy = body.y - seed.y, distance = Math.hypot(dx, dy);
-    if (distance < 1 || distance > RULE.homingReach) continue;
+    if (distance < 1 || distance > skillConfig(state,'homing').reach) continue;
     const ahead = (dx * seed.vx + dy * seed.vy) / (distance * speed);
     if (ahead < -.15) continue; // Keep the shot's direction instead of making a U-turn.
-    const cost = distance * (1 + .7 * (1 - ahead));
+    const missingRole=skillFlags(state,'homing').capstone&&!state.chain.some(id=>jellyRole(id)===jellyRole(body.id));
+    const cost = distance * (1 + .7 * (1 - ahead))*(missingRole?.7:1);
     if (cost < best || cost === best && body.id < target.id) { target = body; best = cost; }
   }
   return target;
@@ -97,7 +157,7 @@ function effectStep(state, events) {
   if (!state.isFlying) return;
   const seed = state.bodies[0];
   for (const effect of [...state.effects]) {
-  const previousSeconds = effect.seconds;
+  const previousSeconds = effect.seconds, config=skillConfig(state,effect.kind);
   if (effect.kind !== 'rewind' || effect.returning) effect.seconds = Math.max(0, effect.seconds - RULE.step);
   if (effect.kind === 'wake') {
     effect.trail = effect.trail.map(p => ({ ...p, age: p.age + RULE.step })).filter(p => p.age < 1.8);
@@ -107,33 +167,35 @@ function effectStep(state, events) {
     }
     effect.trail = effect.trail.slice(-162);
     for (const body of state.bodies.slice(1)) {
-      const point = effect.trail.filter(p => Math.hypot(body.x-p.x,body.y-p.y)<body.radius+28).sort((a,b)=>a.age-b.age)[0];
-      if (point) { body.vx += point.nx * 1000 * RULE.step; body.vy += point.ny * 1000 * RULE.step; velocityLimit(body); }
+      const point = effect.trail.filter(p => Math.hypot(body.x-p.x,body.y-p.y)<body.radius+(config.a?16:config.b?44:28)).sort((a,b)=>a.age-b.age)[0];
+      if (point) { body.vx += point.nx * (config.a?1450:config.b?700:1000) * RULE.step; body.vy += point.ny * (config.a?1450:config.b?700:1000) * RULE.step; velocityLimit(body); }
     }
   }
   if (effect.kind === 'orbit') {
-    effect.phase += RULE.step * 3.5;
+    effect.phase += RULE.step * config.turn;
     for (const [i, id] of effect.satellites.entries()) {
-      const body = state.bodies[id], angle = effect.phase + i * Math.PI, radius = seed.radius + body.radius + 35;
+      const body = state.bodies[id], angle = effect.phase + i * Math.PI, radius = seed.radius + body.radius + config.reach;
       body.x = seed.x + Math.cos(angle) * radius; body.y = seed.y + Math.sin(angle) * radius;
       body.vx = seed.vx - Math.sin(angle) * 500; body.vy = seed.vy + Math.cos(angle) * 500;
-      if (effect.seconds === 0) { body.vx = Math.cos(angle)*800 + seed.vx*.3; body.vy = Math.sin(angle)*800 + seed.vy*.3; velocityLimit(body); events.push({type:'orbit-release',id,x:body.x,y:body.y,nx:Math.cos(angle),ny:Math.sin(angle)}); }
+      if (effect.seconds === 0) { const out=config.capstone?Math.atan2(Math.sin(angle)*.55+Math.sin(Math.atan2(seed.vy,seed.vx))*.45,Math.cos(angle)*.55+Math.cos(Math.atan2(seed.vy,seed.vx))*.45):angle;body.vx = Math.cos(out)*800 + seed.vx*.3; body.vy = Math.sin(out)*800 + seed.vy*.3; velocityLimit(body); events.push({type:'orbit-release',id,x:body.x,y:body.y,nx:Math.cos(angle),ny:Math.sin(angle)}); }
     }
   }
   if (effect.kind === 'pulse' && effect.seconds <= effect.next) {
-    const beat = 3 - effect.remaining, margin = RULE.inset + 60;
+    const beat = config.count - effect.remaining, margin = RULE.inset + 60;
     // Saved RNG keeps each new wave unpredictable in play and exact on resume.
-    const x=margin+random(state)*(RULE.width-2*margin),y=margin+random(state)*(RULE.height-2*margin);
+    let x=margin+random(state)*(RULE.width-2*margin),y=margin+random(state)*(RULE.height-2*margin);
+    if(config.capstone&&effect.remaining===1){const targets=state.bodies.slice(1).filter(b=>!state.chain.includes(b.id));if(targets.length){const t=targets[Math.floor(random(state)*targets.length)];x=x*.35+t.x*.65;y=y*.35+t.y*.65;}}
     for (const body of state.bodies.slice(1)) {
       const dx=body.x-x,dy=body.y-y,d=Math.max(1,Math.hypot(dx,dy));
-      if(d<460) { const impulse=720*(1-d/600); body.vx+=dx/d*impulse;body.vy+=dy/d*impulse;velocityLimit(body); }
+      if(d<460) { const impulse=config.force*(1-d/600); body.vx+=dx/d*impulse;body.vy+=dy/d*impulse;velocityLimit(body); }
     }
-    events.push({type:'pulse',x,y,beat}); effect.remaining--; effect.next=Math.max(0,effect.next-.75);
+    events.push({type:'pulse',x,y,beat}); effect.remaining--; effect.next=Math.max(0,effect.next-config.beat);
     if (!effect.remaining) effect.seconds=0;
   }
   if (effect.kind === 'rewind' && effect.returning) {
-    const point=effect.route.pop();
-    if(point) { const dx=point.x-seed.x,dy=point.y-seed.y;seed.vx=dx/RULE.step;seed.vy=dy/RULE.step;velocityLimit(seed);seed.x=point.x;seed.y=point.y; }
+    const point=!config.legacy&&config.a&&state.tick%2?effect.route.at(-1):effect.route.pop();
+    if(point) { const dx=point.x-seed.x,dy=point.y-seed.y;seed.vx=dx/RULE.step;seed.vy=dy/RULE.step;velocityLimit(seed);seed.x=point.x;seed.y=point.y;
+      if(!config.legacy&&config.b){const fade=Math.sin(Math.PI*Math.min(1,effect.route.length/(config.foundation?240:120)));seed.x=Math.max(44,Math.min(916,seed.x+Math.cos(state.tick*.025)*12*fade));seed.y=Math.max(44,Math.min(596,seed.y+Math.sin(state.tick*.025)*12*fade));} }
     if(!effect.route.length) effect.seconds=0;
   }
   if (effect.kind === 'homing' && effect.seconds > 0) {
@@ -144,14 +206,14 @@ function effectStep(state, events) {
       const lead = Math.min(.25, Math.hypot(target.x - body.x, target.y - body.y) / speed * .4);
       const aim = Math.atan2(target.y + target.vy * lead - body.y, target.x + target.vx * lead - body.x);
       const error = Math.atan2(Math.sin(aim - heading), Math.cos(aim - heading));
-      const limit = RULE.homingTurn * RULE.step, turn = Math.max(-limit, Math.min(limit, error));
+      const limit = skillConfig(state,'homing').turn * RULE.step, turn = Math.max(-limit, Math.min(limit, error));
       body.vx = Math.cos(heading + turn) * speed; body.vy = Math.sin(heading + turn) * speed;
     }
   }
   if (effect.kind === 'drunk') {
     // Integrate a bounded heading offset, preserving speed and deterministic saves.
     const sway = t => Math.sin(Math.PI * Math.min(1, t / .3) / 2) * Math.sin(Math.PI * Math.min(1, (RULE.drunkSeconds - t) / .6) / 2)
-      * (.68 * Math.sin(t * Math.PI * 2 / 1.2) + .16 * Math.sin(t * Math.PI * 2 / .7));
+      * (config.a?.55:config.b?1.35:1)*(.68 * Math.sin(t * Math.PI * 2 / (!config.legacy&&config.foundation?.75:config.b?1.6:1.2)) + .16 * Math.sin(t * Math.PI * 2 / (!config.legacy&&config.foundation?1.5:config.b?1:.7)));
     const turn = sway(RULE.drunkSeconds - effect.seconds) - sway(RULE.drunkSeconds - previousSeconds);
     const cos = Math.cos(turn), sin = Math.sin(turn);
     for (const body of [seed, ...(effectGet(state, 'split')?.shards || [])]) {
@@ -160,55 +222,57 @@ function effectStep(state, events) {
     }
   }
   if (effect.kind === 'portal') effect.cooldown = Math.max(0, effect.cooldown - RULE.step);
-  if (effect.kind === 'echo' && effect.path.length === 60) {
+  if (effect.kind === 'echo' && (effect.path.length === 60 || state.skillState?.echoDrain && effect.path.length)) {
     const point = effect.path.shift(), ghost = effect.ghost, follow = effect.follow;
-    const jumped = effect.isReady && Math.hypot(point.x - follow.x, point.y - follow.y) > 60;
+    const jumped = effect.isReady && (Math.hypot(point.x - follow.x, point.y - follow.y) > 60 || state.build&&point.teleport!==follow.teleport);
     if (jumped) events.push({ type: 'echo-jump', x: point.x, y: point.y });
     const vx = effect.isReady && !jumped ? (point.x - follow.x) / RULE.step : 0;
     const vy = effect.isReady && !jumped ? (point.y - follow.y) / RULE.step : 0;
     // Bias the existing spring, never teleport or detach from the delayed route.
     // Nearby unhit surfaces compete by distance; targets behind the path are left behind.
-    let seekX = 0, seekY = 0, nearest = RULE.echoLeash;
-    if (effect.isReady && !jumped) for (const body of state.bodies.slice(1)) {
+    let seekX = 0, seekY = 0, nearest = skillConfig(state,'echo').leash;
+    if (config.seek && effect.isReady && !jumped) for (const body of state.bodies.slice(1)) {
       if (state.chain.includes(body.id)) continue;
       const dx = body.x - point.x, dy = body.y - point.y, distance = Math.hypot(dx, dy);
       const gap = Math.max(0, distance - body.radius - point.radius);
       if (gap >= nearest || distance < .001 || dx * vx + dy * vy < -body.radius * Math.hypot(vx, vy)) continue;
       nearest = gap;
-      const proximity = 1 - gap / RULE.echoLeash;
-      const reach = Math.min(distance, RULE.echoLeash * .75) * proximity * proximity * (3 - 2 * proximity);
+      const proximity = 1 - gap / skillConfig(state,'echo').leash;
+      const reach = Math.min(distance, skillConfig(state,'echo').leash * .75) * proximity * proximity * (3 - 2 * proximity);
       seekX = dx / distance * reach; seekY = dy / distance * reach;
     }
     for (const [axis, velocity, speed] of [['x', 'vx', vx], ['y', 'vy', vy]]) {
       const offset = effect.isReady && !jumped ? ghost[axis] - follow[axis] : 0;
       const relative = effect.isReady && !jumped ? ghost[velocity] - follow[velocity] : 0;
-      const spring = relative + (100 * ((axis === 'x' ? seekX : seekY) - offset) - 14 * relative) * RULE.step;
+      const spring = relative + ((config.elastic?100:180) * ((axis === 'x' ? seekX : seekY) - offset) - (config.elastic?14:25) * relative) * RULE.step;
       ghost[axis] = point[axis] + offset + spring * RULE.step;
       ghost[velocity] = speed + spring;
     }
-    effect.follow = { x: point.x, y: point.y, vx, vy };
+    effect.follow = { x: point.x, y: point.y, vx, vy, ...(state.build?{teleport:point.teleport||0}:{}) };
     ghost.radius = point.radius; velocityLimit(ghost); effect.isReady = true;
   }
   if (effect.kind === 'slingshot') {
     effect.angle += effect.spin * 7 * RULE.step;
     if (effect.seconds === 0) {
-      const target = state.bodies.slice(1).filter(body => !state.chain.includes(body.id)).sort((a, b) =>
-        Math.hypot(a.x - seed.x, a.y - seed.y) - Math.hypot(b.x - seed.x, b.y - seed.y) || a.id - b.id)[0];
-      const lead = target ? Math.min(.25, Math.hypot(target.x - seed.x, target.y - seed.y) / 1050) : 0;
+      const flags=skillFlags(state,'slingshot'),candidates=state.bodies.slice(1).filter(body=>!state.chain.includes(body.id));
+      const forward=candidates.filter(b=>(b.x-seed.x)*seed.vx+(b.y-seed.y)*seed.vy>=0),pool=(flags.a||flags.b)&&forward.length?forward:candidates;
+      const target=(flags.legacy||flags.foundation||flags.a||flags.b||flags.capstone)?pool.sort((a,b)=>(flags.b?-1:1)*(Math.hypot(a.x-seed.x,a.y-seed.y)-Math.hypot(b.x-seed.x,b.y-seed.y))||a.id-b.id)[0]:null;
+      const lead=target&&(flags.legacy||flags.foundation)?Math.min(.25,Math.hypot(target.x-seed.x,target.y-seed.y)/1050):0;
+      if(state.build&&flags.capstone&&!state.skillState.slingUsed)state.skillState.slingTarget=target?.id||0;
       const angle = target ? Math.atan2(Math.max(60, Math.min(580, target.y + target.vy * lead)) - seed.y,
         Math.max(60, Math.min(900, target.x + target.vx * lead)) - seed.x) : effect.angle + effect.spin * Math.PI / 2;
       seed.vx = Math.cos(angle) * 1050; seed.vy = Math.sin(angle) * 1050;
       events.push({ type: 'slingshot', x: seed.x, y: seed.y, target: target?.id || 0 });
     }
   }
-  if (effect.kind === 'bubble') seed.radius = Math.min(42, seed.radius + 140 * RULE.step);
+  if (effect.kind === 'bubble') {const size=config.size*(config.capstone?1+.1*Math.sin(state.tick*RULE.step*Math.PI*2/.75):1);seed.radius+=Math.max(-140*RULE.step,Math.min(140*RULE.step,size-seed.radius));}
   if (effect.kind === 'tether') {
     // Each member receives one gentle pull, independent of how many links it has.
     for (const id of new Set(effect.links.flatMap(link => [link.a, link.b]))) {
       const body = state.bodies[id], dx = seed.x - body.x, dy = seed.y - body.y, distance = Math.hypot(dx, dy);
       const proximity = Math.min(1, Math.max(0, distance - seed.radius - body.radius) / 180);
       if (distance > .001) {
-        const pull = 240 * proximity * proximity * (3 - 2 * proximity) * RULE.step;
+        const pull = config.pull * proximity * proximity * (3 - 2 * proximity) * RULE.step;
         body.vx += dx / distance * pull; body.vy += dy / distance * pull; velocityLimit(body);
       }
     }
@@ -216,7 +280,7 @@ function effectStep(state, events) {
       const a = state.bodies[link.a], b = state.bodies[link.b], dx = b.x - a.x, dy = b.y - a.y;
       const distance = Math.hypot(dx, dy), nx = distance > .001 ? dx / distance : 1, ny = distance > .001 ? dy / distance : 0;
       const stretch = distance - link.length, relative = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
-      const force = Math.max(-1100, Math.min(1100, stretch * 7 + relative * 2));
+      const force = Math.max(-1100, Math.min(1100, stretch * config.spring + relative * 2));
       a.vx += nx * force * RULE.step; a.vy += ny * force * RULE.step;
       b.vx -= nx * force * RULE.step; b.vy -= ny * force * RULE.step; velocityLimit(a); velocityLimit(b);
       link.cooldown = Math.max(0, link.cooldown - RULE.step);
@@ -230,8 +294,8 @@ function effectStep(state, events) {
     for (const body of state.bodies.slice(1)) {
       if (state.chain.includes(body.id)) continue;
       const dx = seed.x - body.x, dy = seed.y - body.y, distance = Math.hypot(dx, dy);
-      if (distance > seed.radius + body.radius && distance < RULE.powerRadius) {
-        const force = 1300 * (1 - .5 * distance / RULE.powerRadius) * RULE.step;
+      if (distance > seed.radius + body.radius && distance < config.reach) {
+        const force = config.force * (1 - .5 * distance / config.reach) * RULE.step;
         body.vx += dx / distance * force; body.vy += dy / distance * force; velocityLimit(body);
       }
     }
@@ -243,15 +307,19 @@ function effectStep(state, events) {
     events.push({ type: 'lightning', id: body.id, index: 3 - effect.targets.length, x: body.x, y: body.y, fromX: seed.x, fromY: seed.y, nx, ny });
     if (effect.targets.length) effect.seconds = .22;
   }
+  if(effect.seconds===0&&effect.kind==='tether'&&config.capstone)for(const link of effect.links){const a=state.bodies[link.a],b=state.bodies[link.b],d=Math.max(1,Math.hypot(b.x-a.x,b.y-a.y)),force=Math.max(0,Math.min(300,(d-link.length)*5));a.vx-=(b.x-a.x)/d*force;a.vy-=(b.y-a.y)/d*force;b.vx+=(b.x-a.x)/d*force;b.vy+=(b.y-a.y)/d*force;velocityLimit(a);velocityLimit(b);}
   if (effect.seconds === 0) effectClear(state, events, effect.kind);
   }
 }
 function random(state) { let value = state.rng; value ^= value << 13; value ^= value >>> 17; value ^= value << 5; state.rng = value >>> 0; return state.rng / 4294967296; }
-export function gameCreate(seed = 'LAGOON', mode = 'challenge') {
+export function gameCreate(seed = 'LAGOON', mode = 'challenge', options = {}) {
   const state = { version: RULE.version, seed: String(seed).slice(0, 32), mode, rng: seedHash(seed), tick: 0, score: 0, plucks: RULE.plucks, launches: 0, blooms: 0, bestChain: 0, chain: [], banks: 0, flightAge: 0, isFlying: false, isOver: false, power: powerCreate(seed), effects: [], flightPath: [], objective:{enabled:true,index:0,completed:0,earned:false}, shotStart:0, lastShot:null, bodies: [{ id: 0, x: 480, y: 550, vx: 0, vy: 0, radius: RULE.seedRadius, tone: 0, cooldown: 0 }] };
-  for (let index = 0; index < 14; index++) {
+  const count = options.build && buildValidate(options.build) ? Math.max(12,Math.min(18,Math.trunc(options.population||14))) : 14;
+  if(options.build) {if(!buildValidate(options.build))throw new TypeError('Invalid skill build');state.build=structuredClone(options.build);state.skillState=skillStateCreate();state.power.offer=state.build[0].power;state.plucks=options.relaxed?8:6;}
+  if(state.build)state.power.target=(state.power.target-1)%count+1;
+  for (let index = 0; index < count; index++) {
     const angle = index * 2.399963, ring = index < 5 ? 125 : 270;
-    const radius = 34 + random(state) * 18;
+    const radius = state.build ? 25+random(state)*13 : 34 + random(state) * 18;
     state.bodies.push({ id: index + 1, x: 480 + Math.cos(angle) * ring + (random(state) - .5) * 24, y: 310 + Math.sin(angle) * ring * .69 + (random(state) - .5) * 24, vx: (random(state) - .5) * 24, vy: (random(state) - .5) * 24, radius, tone: index % COLORS.length, cooldown: 0 });
   }
   return state;
@@ -264,13 +332,15 @@ export function launch(state, angle, power = .7) {
   seed.vx = Math.cos(angle) * speed; seed.vy = Math.sin(angle) * speed;
   state.power.markers = powerPlan(state);
   effectClear(state); state.isFlying = true; state.flightAge = 0; state.chain = []; state.flightPath = []; state.banks = 0; state.launches++; state.power.used = 0; state.shotStart=state.score;state.lastShot=null;state.objective.earned=false;
-  if (state.mode === 'challenge') state.plucks--;
+  if(state.build)state.skillState=skillStateCreate();
+  if (state.mode !== 'free') state.plucks--;
   for (const body of state.bodies) body.cooldown = 0;
   return true;
 }
 function scoreContact(state, body, collector, events) {
   if(state.chain.includes(body.id)) return;
   state.chain.push(body.id); const chain=state.chain.length;
+  skillContact(state,body,events);
   const points=chain*25+(state.banks>0?25:0);state.score+=points;state.bestChain=Math.max(state.bestChain,chain);
   events.push({type:'note',id:body.id,x:body.x,y:body.y,tone:body.tone,chain,points,seedId:collector.id,speed:Math.hypot(collector.vx,collector.vy)});
   const relay=effectGet(state,'relay');
@@ -278,7 +348,9 @@ function scoreContact(state, body, collector, events) {
   const speed=Math.hypot(collector.vx,collector.vy),boost=Math.max(1,390/Math.max(1,speed));
   if(speed>1 && collector.id<=0 && collector.id!==-3 && !effectGet(state,'slingshot')) {collector.vx*=boost;collector.vy*=boost;}
   if(chain===RULE.bloomNotes) {
-    const seed=state.bodies[0];state.blooms++;state.score+=500;if(state.mode==='challenge')state.plucks++;
+    const blaster=effectGet(state,'blaster');
+    if(blaster && skillFlags(state,'blaster').capstone && !blaster.reloaded) {blaster.ammo=skillFlags(state,'blaster').foundation?5:3;blaster.reloaded=true;events.push({type:'blaster-reload',x:state.bodies[0].x,y:state.bodies[0].y});}
+    const seed=state.bodies[0];state.blooms++;state.score+=500;if(state.mode==='challenge'||state.mode==='song-run'&&state.blooms===1)state.plucks++;
     events.push({type:'bloom',x:seed.x,y:seed.y,points:500,banks:state.banks});
     for(const jelly of state.bodies.slice(1)) {const d=Math.max(1,Math.hypot(jelly.x-seed.x,jelly.y-seed.y));jelly.vx+=(jelly.x-seed.x)/d*120;jelly.vy+=(jelly.y-seed.y)/d*120;}
   }
@@ -288,9 +360,11 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
   const kind = marker.kind; state.power.markers = state.power.markers.filter(item => item !== marker); state.power.shot = state.launches; state.power.used++;
   state.flightAge = 0;
   // Pluck-long effects follow the renewed flight; short-lived powers keep their own clocks.
-  for (const effect of state.effects) if (['comet', 'impact', 'bubble', 'stasis', 'echo'].includes(effect.kind)) effect.seconds = RULE.flightSeconds;
+  for (const effect of state.effects) if (['comet', 'impact', 'bubble', 'stasis', 'echo', 'blaster'].includes(effect.kind)) effect.seconds = RULE.flightSeconds;
   const event = { type: 'power', kind, seedId: a.id, x: b.x, y: b.y };
-  if (['relay','wake','spring','orbit','rewind','pulse','wrap','homing'].includes(kind)) {
+  if(kind==='blaster') {
+    const flags=skillFlags(state,'blaster');state.effects.push({kind,seconds:RULE.flightSeconds,targets:[],ammo:!flags.legacy&&flags.foundation?5:3,cooldown:0,volley:0,hits:[],shots:[],reloaded:false});
+  } else if (['relay','wake','spring','orbit','rewind','pulse','wrap','homing'].includes(kind)) {
     const effect={kind, seconds:kind==='orbit'?3:kind==='pulse'?2.3:kind==='rewind'?7:5, targets:[]};
     if(kind==='relay') Object.assign(effect,{armed:[],spent:[],remaining:3});
     if(kind==='wake') effect.trail=[];
@@ -318,7 +392,7 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     // The fan leaves the contact, so all three seeds have a clear outward launch.
     const angle = Math.atan2(-ny, -nx), speed = Math.max(650, Math.min(1000, Math.hypot(seed.vx, seed.vy)));
     if (!effectGet(state, 'bubble')) seed.radius = 10; seed.vx = Math.cos(angle) * speed; seed.vy = Math.sin(angle) * speed;
-    const shards = [-.65, .65].map((offset, index) => ({ ...seed, id: -index - 1, radius: 10, vx: Math.cos(angle + offset) * speed, vy: Math.sin(angle + offset) * speed }));
+    const shards = [-skillConfig(state,'split').fan, skillConfig(state,'split').fan].map((offset, index) => ({ ...seed, id: -index - 1, radius: 10, vx: Math.cos(angle + offset) * speed, vy: Math.sin(angle + offset) * speed }));
     state.effects.push({ kind, seconds: Math.min(3, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], shards });
   } else if (kind === 'bubble') {
     state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
@@ -339,7 +413,7 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
     seed.vx = -nx * 1150; seed.vy = -ny * 1150;
   } else if (kind === 'stasis') {
-    const targets = state.bodies.slice(1).filter(body => Math.hypot(body.x - b.x, body.y - b.y) < RULE.powerRadius);
+    const targets = state.bodies.slice(1).filter(body => Math.hypot(body.x - b.x, body.y - b.y) < skillConfig(state,'stasis').reach);
     for (const body of targets) {
       if (body === b) continue; // Finish the activating collision before applying its slow cap.
       const falloff = 1 - (Math.hypot(body.x - b.x, body.y - b.y) / RULE.powerRadius) ** 2;
@@ -347,12 +421,16 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     }
     state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: targets.map(body => body.id) });
   } else if (kind === 'swap') {
-    const destination = state.bodies.slice(1).filter(body => body !== b).reduce((far, body) =>
-      Math.hypot(body.x - seed.x, body.y - seed.y) > Math.hypot(far.x - seed.x, far.y - seed.y) ? body : far);
+    const flags=skillFlags(state,'swap');
+    let candidates=state.bodies.slice(1).filter(body=>body!==b);
+    if(!flags.legacy&&flags.foundation){const unhit=candidates.filter(b=>!state.chain.includes(b.id));if(unhit.length)candidates=unhit;}
+    if(flags.a){const forward=candidates.filter(b=>(b.x-seed.x)*seed.vx+(b.y-seed.y)*seed.vy>0);if(forward.length)candidates=forward;}
+    const rank=body=>flags.b?Math.min(...state.bodies.slice(1).filter(b=>b!==body).map(b=>Math.hypot(b.x-body.x,b.y-body.y)-b.radius-body.radius)):Math.hypot(body.x-seed.x,body.y-seed.y);
+    const destination=candidates.sort((a,b)=>rank(b)-rank(a)||a.id-b.id)[0];
     const x = seed.x, y = seed.y;
     seed.x = destination.x; seed.y = destination.y; destination.x = x; destination.y = y;
     Object.assign(event, { exitX: seed.x, exitY: seed.y, destination: destination.id });
-  } else for (const body of state.bodies.slice(1)) {
+  } else if(!state.build) for (const body of state.bodies.slice(1)) {
     if (body === b) continue;
     const dx = body.x - b.x, dy = body.y - b.y, distance = Math.hypot(dx, dy);
     if (distance < RULE.powerRadius) {
@@ -364,6 +442,8 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
       }
     }
   }
+  skillActivate(state,kind,b,events);
+  if(kind==='swap')skillTeleport(state,event.x,event.y,event.exitX,event.exitY,'swap');
   events.push(event);
   powerNext(state);
 }
@@ -371,46 +451,49 @@ export function physicsStep(state) {
   if (state.isOver) return [];
   const dt = RULE.step, events = [], seed = state.bodies[0]; state.tick++;
   if (state.isFlying) state.flightAge = Math.min(RULE.flightSeconds, state.flightAge + dt);
+  skillStep(state,dt,events);
   effectStep(state, events);
   const bodies = [...seedBodies(state), ...state.bodies.slice(1)];
   for (const body of bodies) {
     body.cooldown = Math.max(0, body.cooldown - dt);
     if (body.id === -3 || effectGet(state, 'orbit')?.satellites.includes(body.id) || body.id === 0 && (effectGet(state, 'slingshot') || effectGet(state,'rewind')?.returning)) continue;
     if (body.id > 0) { body.vx += Math.cos(state.tick * .002 + body.id * 1.7) * 4 * dt; body.vy += Math.sin(state.tick * .0025 + body.id * 2.1) * 4 * dt; }
-    const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? flightDrag(state.flightAge) : 3 : effectGet(state, 'stasis')?.targets.includes(body.id) ? 5 : .65) * dt);
+    const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? flightDrag(state.flightAge)*(effectGet(state,'comet')&&skillFlags(state,'comet').b&&state.flightAge>3?.5:1) : 3 : effectGet(state, 'stasis')?.targets.includes(body.id) ? 5 : .65) * dt);
     body.vx *= drag; body.vy *= drag; body.x += body.vx * dt; body.y += body.vy * dt;
     const left = RULE.inset + body.radius, right = RULE.width - left, top = RULE.inset + body.radius, bottom = RULE.height - top;
     if (body.id <= 0 && state.isFlying && effectGet(state, 'wrap')) {
-      const nx = body.x < left && body.vx < 0 ? 1 : body.x > right && body.vx > 0 ? -1 : 0;
-      const ny = body.y < top && body.vy < 0 ? 1 : body.y > bottom && body.vy > 0 ? -1 : 0;
+      const wrap=skillFlags(state,'wrap');
+      const nx = !wrap.legacy&&wrap.b&&!wrap.a ? 0 : body.x < left && body.vx < 0 ? 1 : body.x > right && body.vx > 0 ? -1 : 0;
+      const ny = !wrap.legacy&&wrap.a&&!wrap.b ? 0 : body.y < top && body.vy < 0 ? 1 : body.y > bottom && body.vy > 0 ? -1 : 0;
       if (nx || ny) {
         const fromX = Math.max(left, Math.min(right, body.x)), fromY = Math.max(top, Math.min(bottom, body.y));
         // Carry the overshoot across each crossed edge, including diagonal corners.
         if (nx) body.x = left + ((body.x - left) % (right - left) + right - left) % (right - left);
         if (ny) body.y = top + ((body.y - top) % (bottom - top) + bottom - top) % (bottom - top);
-        events.push({ type: 'wrap', id: body.id, fromX, fromY, x: body.x, y: body.y, nx, ny });
+        skillTeleport(state,fromX,fromY,body.x,body.y,'wrap');events.push({ type: 'wrap', id: body.id, fromX, fromY, x: body.x, y: body.y, nx, ny });
       }
-      continue;
     }
-    const restitution = body.id === 0 && effectGet(state, 'comet') ? .99 : .94;
+    const restitution = body.id === 0 && effectGet(state, 'comet') && skillFlags(state,'comet').foundation ? .99 : .94;
     let speed = 0, normalX = 0, normalY = 0;
     if (body.x < left) { body.x = left; if (body.vx < 0) { speed = -body.vx; body.vx *= -restitution; normalX = 1; } }
     if (body.x > right) { body.x = right; if (body.vx > 0) { speed = body.vx; body.vx *= -restitution; normalX = -1; } }
     if (body.y < top) { body.y = top; if (body.vy < 0) { speed = -body.vy; body.vy *= -restitution; normalY = 1; } }
     if (body.y > bottom) { body.y = bottom; if (body.vy > 0) { speed = body.vy; body.vy *= -restitution; normalY = -1; } }
     if (speed > 25 && body.id <= 0 && effectGet(state,'spring')) {
-      body.vx += normalX * Math.max(220,speed*.35); body.vy += normalY * Math.max(220,speed*.35); velocityLimit(body);
+      body.vx += normalX * Math.max(220,speed*.35)*(skillFlags(state,'spring').a?1.3:1); body.vy += normalY * Math.max(220,speed*.35)*(skillFlags(state,'spring').a?1.3:1); velocityLimit(body);
       events.push({type:'spring',x:body.x,y:body.y,nx:normalX,ny:normalY,speed});
     }
-    if (speed > 25) { if (body.id <= 0 && state.isFlying) state.banks++; events.push({ type: 'wall', id: body.id, x: body.x, y: body.y, nx: normalX, ny: normalY, speed }); }
+    if (speed > 25) { if (body.id <= 0 && state.isFlying) state.banks++; skillWall(state,body,normalX,normalY,events);events.push({ type: 'wall', id: body.id, x: body.x, y: body.y, nx: normalX, ny: normalY, speed }); }
   }
   if (effectGet(state, 'portal')?.cooldown === 0 && !effectGet(state, 'slingshot') && !effectGet(state,'rewind')?.returning) {
     const effect = effectGet(state, 'portal');
-    for (const [index, gate] of effect.gates.entries()) if (Math.hypot(seed.x - gate.x, seed.y - gate.y) < 30 + seed.radius) {
-      const exit = effect.gates[1 - index], speed = Math.hypot(seed.vx, seed.vy), nx = speed > .001 ? seed.vx / speed : 1, ny = speed > .001 ? seed.vy / speed : 0;
+    for (const [index, gate] of effect.gates.entries()) if (Math.hypot(seed.x - gate.x, seed.y - gate.y) < (skillFlags(state,'portal').a?44:30) + seed.radius) {
+      const exit = effect.gates[1 - index], speed = Math.hypot(seed.vx, seed.vy);
+      if(skillFlags(state,'portal').b){const t=state.bodies.slice(1).filter(b=>!state.chain.includes(b.id)&&((b.x-exit.x)*seed.vx+(b.y-exit.y)*seed.vy)>0).sort((a,b)=>Math.hypot(a.x-exit.x,a.y-exit.y)-Math.hypot(b.x-exit.x,b.y-exit.y))[0];if(t){const a=Math.atan2(seed.vy,seed.vx),d=Math.atan2(Math.sin(Math.atan2(t.y-exit.y,t.x-exit.x)-a),Math.cos(Math.atan2(t.y-exit.y,t.x-exit.x)-a)),turn=Math.max(-.3,Math.min(.3,d));seed.vx=Math.cos(a+turn)*speed;seed.vy=Math.sin(a+turn)*speed;}}
+      const nx = speed > .001 ? seed.vx / speed : 1, ny = speed > .001 ? seed.vy / speed : 0;
       const fromX = seed.x, fromY = seed.y;
       seed.x = exit.x + nx * (35 + seed.radius); seed.y = exit.y + ny * (35 + seed.radius); effect.cooldown = .45;
-      events.push({ type: 'portal', fromX, fromY, x: seed.x, y: seed.y }); break;
+      skillTeleport(state,fromX,fromY,seed.x,seed.y,'portal');events.push({ type: 'portal', fromX, fromY, x: seed.x, y: seed.y }); break;
     }
   }
   for (let pass = 0; pass < 3; pass++) for (let first = 0; first < bodies.length; first++) for (let second = first + 1; second < bodies.length; second++) {
@@ -427,7 +510,7 @@ export function physicsStep(state) {
     const isBubble = a.id === 0 && state.isFlying && (!!effectGet(state, 'bubble') || marker?.kind === 'bubble');
     const isPermeable = a.id <= 0 && frozenHit(state, b.id);
     if (isPermeable && !isBubble && pass === 0) {
-      const depth = 1 - distance / target, pressure = 2200 * depth * depth * (3 - 2 * depth) * dt;
+      const depth = 1 - distance / target, pressure = 2200 * skillConfig(state,'stasis').pressure * depth * depth * (3 - 2 * depth) * dt;
       const incomingX = a.vx, incomingY = a.vy, incomingSpeed = Math.hypot(incomingX, incomingY);
       a.vx -= nx * pressure; a.vy -= ny * pressure;
       const speed = Math.hypot(a.vx, a.vy);
@@ -444,7 +527,7 @@ export function physicsStep(state) {
     if (isBubble && pass === 0) {
       const width = Math.max(RULE.seedRadius, a.radius - (effectGet(state, 'split') ? 10 : RULE.seedRadius));
       const depth = Math.min(1, (target - distance) / width);
-      const pressure = 2400 * depth * depth * (3 - 2 * depth) * dt * (effectGet(state, 'impact') ? 1.8 : 1);
+      const pressure = 2400 * skillConfig(state,'bubble').pressure * depth * depth * (3 - 2 * depth) * dt * (effectGet(state, 'impact') ? 1.8 : 1);
       b.vx += nx * pressure; b.vy += ny * pressure; velocityLimit(b);
       // A light reaction bends/slows the player gradually instead of ricocheting.
       a.vx -= nx * pressure * .18; a.vy -= ny * pressure * .18; velocityLimit(a);
@@ -458,7 +541,7 @@ export function physicsStep(state) {
       const impulse = -(1 + .94) * relative / inverseSum;
       a.vx -= impulse * inverseA * nx; a.vy -= impulse * inverseA * ny; b.vx += impulse * inverseB * nx; b.vy += impulse * inverseB * ny;
       if (a.id === -3) { velocityLimit(a); velocityLimit(b); }
-      if (isFrozenContact || a.id === 0 && state.isFlying && effectGet(state, 'comet')) {
+      if (isFrozenContact || a.id === 0 && state.isFlying && effectGet(state, 'comet') && skillFlags(state,'comet').foundation) {
         // Frozen surfaces and Comet preserve the same incoming ricochet, applied only once.
         // Only reflect when heading into the jelly; a jelly may catch an outgoing seed.
         const toward = incomingX * nx + incomingY * ny;
@@ -468,8 +551,8 @@ export function physicsStep(state) {
         }
         velocityLimit(a);
       }
-      if (a.id === 0 && state.isFlying && effectGet(state, 'impact')) {
-        const push = Math.max(260, impulse * inverseB * .9);
+      if (a.id === 0 && state.isFlying && effectGet(state, 'impact') && skillFlags(state,'impact').foundation) {
+        const push = Math.max(260, impulse * inverseB * .9)*(skillFlags(state,'impact').a?1.35:skillFlags(state,'impact').b?.7:1);
         b.vx += nx * push; b.vy += ny * push; velocityLimit(b);
         events.push({ type: 'push', id: b.id, x: b.x, y: b.y, nx, ny });
       }
@@ -479,6 +562,7 @@ export function physicsStep(state) {
     const stasis = effectGet(state, 'stasis');
     if (a.id <= 0 && state.isFlying && stasis && !stasis.targets.includes(b.id)) stasis.targets.push(b.id);
     if (a.id <= 0 && state.isFlying) scoreContact(state,b,a,events);
+    if(pass===0&&relative < -12)skillCollision(state,a,b,events,(target,from)=>{const m=state.power.markers.find(m=>m.target===target.id);if(m)powerCollect(state,m,seed,target,nx,ny,events);scoreContact(state,target,from,events);});
     const relay=effectGet(state,'relay');
     if (state.isFlying && relay && a.id>0 && b.id>0 && relative < -12) {
       for (const [from,to] of [[a,b],[b,a]]) {
@@ -486,6 +570,8 @@ export function physicsStep(state) {
         const relayMarker=state.power.markers.find(marker=>marker.target===to.id);
         if(state.chain.includes(to.id)&&!relayMarker) continue;
         relay.spent.push(from.id);
+        const flags=skillFlags(state,'relay');if(flags.a){const d=Math.max(1,Math.hypot(to.x-from.x,to.y-from.y));to.vx+=(to.x-from.x)/d*200;to.vy+=(to.y-from.y)/d*200;velocityLimit(to);}
+        if(state.build&&flags.capstone&&!state.skillState.relayExtra&&!relay.armed.includes(to.id)){state.skillState.relayExtra=true;relay.armed.push(to.id);}
         // The impact collects for the player, with the same marker and flight rules as a seed hit.
         if(relayMarker) powerCollect(state,relayMarker,seed,to,from===a?nx:-nx,from===a?ny:-ny,events);
         scoreContact(state,to,from,events);
@@ -493,6 +579,7 @@ export function physicsStep(state) {
       }
     }
   }
+  if(state.isFlying) blasterStep(state,events);
   if(state.isFlying && !state.objective.earned) {
     const goal=state.objective.index%OBJECTIVES.length,achieved=objectiveProgress(state).progress===1;
     if(achieved) {state.objective.earned=true;state.objective.completed++;state.score+=200;events.push({type:'objective',index:goal,points:200,x:seed.x,y:seed.y});}
@@ -500,7 +587,7 @@ export function physicsStep(state) {
   // Apply after every collision, bloom and power impulse so impacts cannot cancel Stasis.
   for (const id of effectGet(state, 'stasis')?.targets || []) {
     const body = state.bodies[id], speed = Math.hypot(body.vx, body.vy);
-    if (speed > RULE.stasisSpeed) { body.vx *= RULE.stasisSpeed / speed; body.vy *= RULE.stasisSpeed / speed; }
+    if (speed > skillConfig(state,'stasis').speed) { body.vx *= skillConfig(state,'stasis').speed / speed; body.vy *= skillConfig(state,'stasis').speed / speed; }
   }
   if (effectGet(state, 'slingshot')) {
     const effect = effectGet(state, 'slingshot'), anchor = state.bodies[effect.anchor], radius = effect.radius + Math.max(0, seed.radius - RULE.seedRadius);
@@ -512,14 +599,16 @@ export function physicsStep(state) {
   for (const body of bodies) { body.x = Math.max(RULE.inset + body.radius, Math.min(RULE.width - RULE.inset - body.radius, body.x)); body.y = Math.max(RULE.inset + body.radius, Math.min(RULE.height - RULE.inset - body.radius, body.y)); }
   if (effectGet(state, 'echo')) {
     const effect = effectGet(state, 'echo'), ghost = effect.ghost, follow = effect.follow;
-    effect.path.push({ x: seed.x, y: seed.y, radius: Math.min(12, seed.radius) });
-    if (!effect.isReady) { ghost.x = follow.x = effect.path[0].x; ghost.y = follow.y = effect.path[0].y; ghost.radius = effect.path[0].radius; }
+    if(!state.skillState?.echoDrain)effect.path.push({ x: seed.x, y: seed.y, radius: Math.min(12, seed.radius), ...(state.build?{teleport:state.skillState.teleport}:{}) });
+    if(state.build&&skillFlags(state,'echo').capstone&&!state.skillState.echoDrain&&state.flightAge>=6.5&&Math.hypot(seed.vx,seed.vy)<100){state.skillState.echoDrain=true;effect.seconds=.6;}
+    if(state.skillState?.echoDrain&&!effect.path.length){effectClear(state,events,'echo');}
+    if (!effect.isReady && effect.path.length) { ghost.x = follow.x = effect.path[0].x; ghost.y = follow.y = effect.path[0].y; ghost.radius = effect.path[0].radius; }
     else {
       // Bound the elastic excursion after all contact corrections, without a new bank.
       const dx = ghost.x - follow.x, dy = ghost.y - follow.y, distance = Math.hypot(dx, dy);
-      if (distance > RULE.echoLeash) {
+      if (distance > skillConfig(state,'echo').leash) {
         const nx = dx / distance, ny = dy / distance;
-        ghost.x = follow.x + nx * RULE.echoLeash; ghost.y = follow.y + ny * RULE.echoLeash;
+        ghost.x = follow.x + nx * skillConfig(state,'echo').leash; ghost.y = follow.y + ny * skillConfig(state,'echo').leash;
         const outward = (ghost.vx - follow.vx) * nx + (ghost.vy - follow.vy) * ny;
         if (outward > 0) { ghost.vx -= outward * nx; ghost.vy -= outward * ny; }
         velocityLimit(ghost);
@@ -527,17 +616,19 @@ export function physicsStep(state) {
     }
   }
   const rewind=effectGet(state,'rewind');
-  if(state.isFlying && !rewind?.returning && state.tick%4===0) { state.flightPath.push({x:seed.x,y:seed.y});state.flightPath=state.flightPath.slice(-420); }
+  if(state.isFlying && !rewind?.returning && (state.build||state.tick%4===0)) { state.flightPath.push({x:seed.x,y:seed.y,...(state.build?{teleport:state.skillState.teleport}:{})});state.flightPath=state.flightPath.slice(state.build?-240:-420); }
+  if(state.build&&state.skillState.total>=28)state.flightAge=RULE.flightSeconds;
+  if(state.build&&state.skillState.total>=32){effectClear(state,events);seed.vx=seed.vy=0;}
   const ending=!effectGet(state,'echo')&&!effectGet(state,'slingshot')&&!effectGet(state,'orbit')&&!effectGet(state,'pulse')&&state.flightAge>1.5&&seedBodies(state).every(body=>Math.hypot(body.vx,body.vy)<=RULE.settleSpeed);
   if(state.isFlying && (state.flightAge>=RULE.flightSeconds||ending) && rewind && !rewind.returning && state.flightPath.length) {
-    rewind.returning=true;rewind.route=state.flightPath.map(p=>({...p}));rewind.seconds=Math.min(3.5,rewind.route.length*RULE.step+RULE.step);
+    rewind.returning=true;rewind.route=(state.build?state.flightPath.slice(-(skillFlags(state,'rewind').foundation?240:120)):state.flightPath).map(p=>({...p}));rewind.seconds=Math.min(state.build?2:3.5,rewind.route.length*RULE.step*(skillFlags(state,'rewind').a?2:1)+RULE.step);
     effectClear(state,events,'slingshot');events.push({type:'rewind',x:seed.x,y:seed.y});
   }
   if (state.isFlying && !rewind?.returning && ending) {
     const successful = state.chain.length >= RULE.bloomNotes, previousCapacity = state.power.capacity;
     state.power.capacity = successful ? Math.min(3, previousCapacity + 1) : 1;
     state.power.markers = [];
-    effectClear(state, events); state.isFlying = false; seed.vx = seed.vy = 0; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0);
+    effectClear(state, events); state.isFlying = false; seed.vx = seed.vy = 0; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0) || state.mode==='song-run'&&state.plucks<=0;
     state.lastShot={notes:state.chain.length,banks:state.banks,points:state.shotStart===null?null:state.score-state.shotStart,powers:state.power.used,bloom:successful,objective:state.objective.earned};
     if(state.objective.earned)state.objective.index++;
     events.push({ type: 'power-streak', successful, capacity: state.power.capacity, previousCapacity });
@@ -546,22 +637,25 @@ export function physicsStep(state) {
   return events;
 }
 export function saveValidate(input) {
-  if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free'].includes(input.mode)) return null;
+  if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free', 'song-run'].includes(input.mode)) return null;
+  const count=Array.isArray(input.bodies)?input.bodies.length-1:0;
+  if(input.build!==undefined&&(!buildValidate(input.build)||count<12||count>18||!skillStateValid(input.skillState,count)))return null;
+  if(input.mode==='song-run'&&!input.build)return null;
   if (input.version >= 9 && (!Array.isArray(input.effects) || input.effects.length > 3 || input.effect !== undefined || input.effects.some(effect => !effect?.kind) || new Set(input.effects.map(effect => effect.kind)).size !== input.effects.length)) return null;
   const effects = input.version >= 9 ? input.effects : input.version >= 6 ? [input.effect] : [];
   const hasEffect = kind => effects.some(effect => effect?.kind === kind);
   for (const field of ['rng', 'tick', 'score', 'plucks', 'launches', 'blooms', 'bestChain', 'banks']) if (!Number.isSafeInteger(input[field]) || input[field] < 0) return null;
-  if (input.rng < 1 || input.rng > 4294967295 || input.plucks > RULE.plucks || input.bestChain > 14 || !Number.isFinite(input.flightAge) || input.flightAge < 0 || input.flightAge > RULE.flightSeconds + RULE.step * 2) return null;
-  if (typeof input.isFlying !== 'boolean' || typeof input.isOver !== 'boolean' || !Array.isArray(input.bodies) || input.bodies.length !== 15 || !Array.isArray(input.chain) || new Set(input.chain).size !== input.chain.length || input.chain.some(id => !Number.isInteger(id) || id < 1 || id > 14)) return null;
+  if (input.rng < 1 || input.rng > 4294967295 || input.plucks > RULE.plucks || input.bestChain > count || !Number.isFinite(input.flightAge) || input.flightAge < 0 || input.flightAge > RULE.flightSeconds + RULE.step * 2) return null;
+  if (typeof input.isFlying !== 'boolean' || typeof input.isOver !== 'boolean' || !Array.isArray(input.bodies) || (!input.build && input.bodies.length !== 15) || !Array.isArray(input.chain) || new Set(input.chain).size !== input.chain.length || input.chain.some(id => !Number.isInteger(id) || id < 1 || id > count)) return null;
   for (const [index, body] of input.bodies.entries()) {
     if (!body || body.id !== index || !Number.isInteger(body.tone) || body.tone < 0 || body.tone >= COLORS.length) return null;
     for (const field of ['x', 'y', 'vx', 'vy', 'radius', 'cooldown']) if (!Number.isFinite(body[field])) return null;
-    const seedRadiusValid = input.version >= 7 && hasEffect('bubble') ? body.radius >= (hasEffect('split') ? 10 : 14) && body.radius <= 42 : input.version >= 7 && hasEffect('split') ? body.radius === 10 : body.radius === RULE.seedRadius;
+    const seedRadiusValid = input.version >= 7 && hasEffect('bubble') ? body.radius >= (hasEffect('split') ? 10 : 14) && body.radius <= (input.build?46.2:42) : input.version >= 7 && hasEffect('split') ? body.radius === 10 : body.radius === RULE.seedRadius;
     if ((index === 0 ? !seedRadiusValid : body.radius < 14 || body.radius > 52) || Math.abs(body.vx) > 3000 || Math.abs(body.vy) > 3000 || body.cooldown < 0 || body.cooldown > .1) return null;
     if (body.x < RULE.inset + body.radius - 1 || body.x > RULE.width - RULE.inset - body.radius + 1 || body.y < RULE.inset + body.radius - 1 || body.y > RULE.height - RULE.inset - body.radius + 1) return null;
   }
-  if (input.isOver && (input.mode !== 'challenge' || (input.plucks !== 0 && input.blooms < RULE.goalBlooms) || input.isFlying)) return null;
-  if (!input.isOver && !input.isFlying && input.mode === 'challenge' && input.plucks === 0) return null;
+  if (input.isOver && (!['challenge','song-run'].includes(input.mode) || (input.plucks !== 0 && input.blooms < RULE.goalBlooms) || input.isFlying)) return null;
+  if (!input.isOver && !input.isFlying && input.mode !== 'free' && input.plucks === 0) return null;
   if (input.version === 3) {
     const ripple = input.ripple;
     if (!ripple || ['charge', 'armed', 'pending'].some(key => typeof ripple[key] !== 'boolean') || !Number.isSafeInteger(ripple.shot) || ripple.shot < 0 || ripple.shot > input.launches) return null;
@@ -569,11 +663,11 @@ export function saveValidate(input) {
   }
   if (input.version >= 4) {
     const power = input.power;
-    if (!power || !powerKinds.includes(power.offer) || !Number.isInteger(power.target) || power.target < 1 || power.target > 14 || !Number.isSafeInteger(power.claims) || power.claims < 0 || !Number.isSafeInteger(power.shot) || power.shot < 0 || power.shot > input.launches) return null;
+    if (!power || !powerKinds.includes(power.offer) || !Number.isInteger(power.target) || power.target < 1 || power.target > count || !Number.isSafeInteger(power.claims) || power.claims < 0 || !Number.isSafeInteger(power.shot) || power.shot < 0 || power.shot > input.launches) return null;
     if (input.version >= 9 && (!Number.isInteger(power.used) || power.used < 0 || power.used > 3 || !Number.isInteger(power.capacity) || power.capacity < 1 || power.capacity > 3 || input.isFlying && power.used > power.capacity || power.used > 0 && power.shot !== input.launches || effects.length > power.used)) return null;
     if (input.version >= 11) {
       const markers = power.markers;
-      if (!Array.isArray(markers) || markers.length !== (input.isFlying ? power.capacity - power.used : 0) || markers.some(marker => !marker || !powerKinds.includes(marker.kind) || !Number.isInteger(marker.target) || marker.target < 1 || marker.target > 14)) return null;
+      if (!Array.isArray(markers) || markers.length !== (input.isFlying ? power.capacity - power.used : 0) || markers.some(marker => !marker || !powerKinds.includes(marker.kind) || !Number.isInteger(marker.target) || marker.target < 1 || marker.target > count)) return null;
       if (new Set(markers.map(marker => marker.target)).size !== markers.length || new Set(markers.map(marker => marker.kind)).size !== markers.length || markers.some(marker => hasEffect(marker.kind))) return null;
     }
     if (input.version === 4) {
@@ -583,23 +677,27 @@ export function saveValidate(input) {
   }
   if (input.version >= 6) {
     for (const effect of effects) {
-    if (!effect || ![null, 'magnet', 'lightning', 'impact', 'comet', ...(input.version >= 7 ? ['tether', 'split', 'bubble'] : []), ...(input.version >= 8 ? ['portal', 'echo', 'slingshot'] : []), ...(input.version >= 10 ? ['stasis'] : []), ...(input.version >= 13 ? ['drunk'] : []), ...(input.version >= 14 ? ['relay','wake','spring','orbit','rewind','pulse'] : []), ...(input.version >= 16 ? ['wrap'] : []), ...(input.version >= 17 ? ['homing'] : [])].includes(effect.kind) || !Number.isFinite(effect.seconds) || effect.seconds < 0 || effect.seconds > RULE.flightSeconds || !Array.isArray(effect.targets)) return null;
+    if (!effect || ![null, 'magnet', 'lightning', 'impact', 'comet', ...(input.version >= 7 ? ['tether', 'split', 'bubble'] : []), ...(input.version >= 8 ? ['portal', 'echo', 'slingshot'] : []), ...(input.version >= 10 ? ['stasis'] : []), ...(input.version >= 13 ? ['drunk'] : []), ...(input.version >= 14 ? ['relay','wake','spring','orbit','rewind','pulse'] : []), ...(input.version >= 16 ? ['wrap'] : []), ...(input.version >= 17 ? ['homing'] : []), ...(input.version >= 18 ? ['blaster'] : [])].includes(effect.kind) || !Number.isFinite(effect.seconds) || effect.seconds < 0 || effect.seconds > RULE.flightSeconds || !Array.isArray(effect.targets)) return null;
     if (effect.kind && (!input.isFlying || input.power.shot !== input.launches || effect.seconds <= 0)) return null;
     if (!effect.kind && effect.seconds !== 0) return null;
+    if(effect.kind==='blaster') {
+      if(!Number.isInteger(effect.ammo)||effect.ammo<0||effect.ammo>5||!Number.isInteger(effect.volley)||effect.volley<0||effect.volley>10||typeof effect.reloaded!=='boolean'||!Number.isFinite(effect.cooldown)||effect.cooldown<0||effect.cooldown>.16||!Array.isArray(effect.hits)||effect.hits.length!==effect.volley||effect.hits.some(ids=>!Array.isArray(ids)||ids.length>14||new Set(ids).size!==ids.length||ids.some(id=>!Number.isInteger(id)||id<1||id>count))||!Array.isArray(effect.shots)||effect.shots.length>30)return null;
+      for(const shot of effect.shots) if(!shot||['x','y','vx','vy','life'].some(k=>!Number.isFinite(shot[k]))||shot.x<30||shot.x>930||shot.y<30||shot.y>610||Math.hypot(shot.vx,shot.vy)>981||shot.life<=0||shot.life>1.6||![0,1].includes(shot.bounces)||!Number.isInteger(shot.volley)||shot.volley<0||shot.volley>=effect.volley)return null;
+    }
     if (effect.kind === 'drunk' && effect.seconds > RULE.drunkSeconds) return null;
     if (effect.kind === 'wrap' && effect.seconds > 5 || effect.kind === 'homing' && effect.seconds > RULE.homingSeconds) return null;
-    if (effect.kind === 'magnet' && effect.seconds > 2.4 || effect.kind === 'lightning' && effect.seconds > .22) return null;
+    if (effect.kind === 'magnet' && effect.seconds > (input.build?3.2:2.4) || effect.kind === 'lightning' && effect.seconds > .22) return null;
     if (effect.kind === 'lightning' || effect.kind === 'stasis') {
-      if (effect.targets.length < 1 || effect.targets.length > (effect.kind === 'stasis' ? 14 : 3) || new Set(effect.targets).size !== effect.targets.length || effect.targets.some(id => !Number.isInteger(id) || id < 1 || id > 14)) return null;
+      if (effect.targets.length < 1 || effect.targets.length > (effect.kind === 'stasis' ? count : 3) || new Set(effect.targets).size !== effect.targets.length || effect.targets.some(id => !Number.isInteger(id) || id < 1 || id > count)) return null;
     } else if (effect.targets.length) return null;
-    const idsValid=ids=>Array.isArray(ids)&&new Set(ids).size===ids.length&&ids.every(id=>Number.isInteger(id)&&id>=1&&id<=14);
-    if(effect.kind==='relay' && (!idsValid(effect.armed)||!idsValid(effect.spent)||effect.armed.length>3||effect.spent.some(id=>!effect.armed.includes(id))||!Number.isInteger(effect.remaining)||effect.remaining!==3-effect.armed.length)) return null;
+    const idsValid=ids=>Array.isArray(ids)&&new Set(ids).size===ids.length&&ids.every(id=>Number.isInteger(id)&&id>=1&&id<=count);
+    if(effect.kind==='relay' && (!idsValid(effect.armed)||!idsValid(effect.spent)||effect.armed.length>(input.build?4:3)||effect.spent.some(id=>!effect.armed.includes(id))||!Number.isInteger(effect.remaining)||effect.remaining<0||effect.remaining>3||effect.remaining+effect.armed.length>4)) return null;
     if(effect.kind==='wake' && (!Array.isArray(effect.trail)||effect.trail.length>162||effect.trail.some(p=>!p||['x','y','nx','ny','age'].some(k=>!Number.isFinite(p[k]))||p.x<40||p.x>920||p.y<40||p.y>600||Math.hypot(p.nx,p.ny)>1.00001||p.age<0||p.age>1.8))) return null;
     if(effect.kind==='orbit' && (!idsValid(effect.satellites)||effect.satellites.length>2||!Number.isFinite(effect.phase)||effect.phase<0||effect.phase>11||effect.seconds>3)) return null;
     if(effect.kind==='rewind' && (typeof effect.returning!=='boolean'||!Array.isArray(effect.route)||effect.route.length>420||effect.route.some(p=>!p||!Number.isFinite(p.x)||!Number.isFinite(p.y)||p.x<40||p.x>920||p.y<40||p.y>600))) return null;
-    if(effect.kind==='pulse' && (!Number.isInteger(effect.remaining)||effect.remaining<1||effect.remaining>3||!Number.isFinite(effect.next)||effect.next<0||effect.next>1.5||effect.seconds>2.3)) return null;
+    if(effect.kind==='pulse' && (!Number.isInteger(effect.remaining)||effect.remaining<1||effect.remaining>3||!Number.isFinite(effect.next)||effect.next<0||effect.next>2||effect.seconds>3.1)) return null;
     if (effect.kind === 'split') {
-      if (effect.seconds > 3 || !Array.isArray(effect.shards) || effect.shards.length !== 2) return null;
+      if (effect.seconds > (input.build?3.5:3) || !Array.isArray(effect.shards) || (input.build?![1,2].includes(effect.shards.length):effect.shards.length !== 2)) return null;
       for (const [index, body] of effect.shards.entries()) {
         if (!body || body.id !== -index - 1 || body.radius !== 10 || body.tone !== 0) return null;
         if (['x', 'y', 'vx', 'vy', 'cooldown'].some(key => !Number.isFinite(body[key]))) return null;
@@ -607,30 +705,30 @@ export function saveValidate(input) {
       }
     } else if (effect.shards !== undefined) return null;
     if (effect.kind === 'tether') {
-      if (effect.seconds > 4 || !Array.isArray(effect.links) || effect.links.length !== 3) return null;
+      if (effect.seconds > 4 || !Array.isArray(effect.links) || (input.build?![1,3].includes(effect.links.length):effect.links.length !== 3)) return null;
       const pairs = new Set(), nodes = new Set();
       for (const link of effect.links) {
-        if (!link || !Number.isInteger(link.a) || !Number.isInteger(link.b) || link.a < 1 || link.a > 14 || link.b < 1 || link.b > 14 || link.a === link.b) return null;
+        if (!link || !Number.isInteger(link.a) || !Number.isInteger(link.b) || link.a < 1 || link.a > count || link.b < 1 || link.b > count || link.a === link.b) return null;
         if (!Number.isFinite(link.length) || link.length < 28 || link.length > 1100 || !Number.isFinite(link.cooldown) || link.cooldown < 0 || link.cooldown > .55) return null;
         pairs.add([link.a, link.b].sort((a,b) => a-b).join(':')); nodes.add(link.a); nodes.add(link.b);
       }
-      if (pairs.size !== 3 || nodes.size !== 3) return null;
+      if (pairs.size !== effect.links.length || nodes.size !== (effect.links.length===1?2:3)) return null;
     } else if (effect.links !== undefined) return null;
     const pointValid = point => point && Number.isFinite(point.x) && Number.isFinite(point.y) && point.x >= 40 && point.x <= 920 && point.y >= 40 && point.y <= 600;
     if (effect.kind === 'portal') {
       if (effect.seconds > 5 || !Number.isFinite(effect.cooldown) || effect.cooldown < 0 || effect.cooldown > .45 || !Array.isArray(effect.gates) || effect.gates.length !== 2) return null;
       if (effect.gates.some(point => !pointValid(point) || point.x < 100 || point.x > 860 || point.y < 100 || point.y > 540)) return null;
       if (Math.hypot(effect.gates[0].x - effect.gates[1].x, effect.gates[0].y - effect.gates[1].y) < 300) return null;
-    } else if (effect.gates !== undefined || effect.cooldown !== undefined) return null;
+    } else if (effect.gates !== undefined || effect.kind !== 'blaster' && effect.cooldown !== undefined) return null;
     if (effect.kind === 'echo') {
       const ghost = effect.ghost;
       if (typeof effect.isReady !== 'boolean' || !Array.isArray(effect.path) || effect.path.length < 1 || effect.path.length > 60 || effect.path.some(point => !pointValid(point) || input.version >= 9 && ![10, 12].includes(point.radius))) return null;
-      if (effect.isReady && effect.path.length !== 60 || !pointValid(ghost) || ghost.id !== -3 || !(input.version >= 9 ? [10, 12] : [12]).includes(ghost.radius) || ghost.tone !== 0) return null;
+      if (effect.isReady && !input.skillState?.echoDrain && effect.path.length !== 60 || !pointValid(ghost) || ghost.id !== -3 || !(input.version >= 9 ? [10, 12] : [12]).includes(ghost.radius) || ghost.tone !== 0) return null;
       if (!Number.isFinite(ghost.vx) || !Number.isFinite(ghost.vy) || Math.hypot(ghost.vx, ghost.vy) > 1600.000001 || !Number.isFinite(ghost.cooldown) || ghost.cooldown < 0 || ghost.cooldown > .1) return null;
-      if (input.version >= 12 && (!pointValid(effect.follow) || !Number.isFinite(effect.follow.vx) || !Number.isFinite(effect.follow.vy) || Math.hypot(effect.follow.vx, effect.follow.vy) > 7200.000001 || Math.hypot(ghost.x - effect.follow.x, ghost.y - effect.follow.y) > RULE.echoLeash + .000001)) return null;
+      if (input.version >= 12 && (!pointValid(effect.follow) || !Number.isFinite(effect.follow.vx) || !Number.isFinite(effect.follow.vy) || Math.hypot(effect.follow.vx, effect.follow.vy) > 7200.000001 || Math.hypot(ghost.x - effect.follow.x, ghost.y - effect.follow.y) > skillConfig(input,'echo').leash + .000001)) return null;
     } else if (effect.path !== undefined || effect.ghost !== undefined || effect.isReady !== undefined || effect.follow !== undefined) return null;
     if (effect.kind === 'slingshot') {
-      if (effect.seconds > .85 || !Number.isInteger(effect.anchor) || effect.anchor < 1 || effect.anchor > 14 || !input.chain.includes(effect.anchor) || ![-1, 1].includes(effect.spin)) return null;
+      if (effect.seconds > .85 || !Number.isInteger(effect.anchor) || effect.anchor < 1 || effect.anchor > count || !input.chain.includes(effect.anchor) || ![-1, 1].includes(effect.spin)) return null;
       if (!Number.isFinite(effect.angle) || Math.abs(effect.angle) > 10 || effect.radius !== input.bodies[effect.anchor].radius + RULE.seedRadius + 16) return null;
     } else if (['anchor', 'angle', 'spin', 'radius'].some(key => effect[key] !== undefined)) return null;
     }
@@ -641,7 +739,7 @@ export function saveValidate(input) {
     const o=input.objective;
     if(!o||typeof o.enabled!=='boolean'||typeof o.earned!=='boolean'||!Number.isSafeInteger(o.index)||o.index<0||!Number.isSafeInteger(o.completed)||o.completed<0||(input.shotStart!==null&&(!Number.isSafeInteger(input.shotStart)||input.shotStart<0||input.shotStart>input.score)))return null;
     const shot=input.lastShot;
-    if(shot!==null&&(!shot||!Number.isInteger(shot.notes)||shot.notes<0||shot.notes>14||!Number.isSafeInteger(shot.banks)||shot.banks<0||(shot.points!==null&&(!Number.isSafeInteger(shot.points)||shot.points<0))||!Number.isInteger(shot.powers)||shot.powers<0||shot.powers>3||typeof shot.bloom!=='boolean'||typeof shot.objective!=='boolean'))return null;
+    if(shot!==null&&(!shot||!Number.isInteger(shot.notes)||shot.notes<0||shot.notes>count||!Number.isSafeInteger(shot.banks)||shot.banks<0||(shot.points!==null&&(!Number.isSafeInteger(shot.points)||shot.points<0))||!Number.isInteger(shot.powers)||shot.powers<0||shot.powers>3||typeof shot.bloom!=='boolean'||typeof shot.objective!=='boolean'))return null;
   }
   const restored = structuredClone(input);
   if(input.version<15) {restored.objective??={enabled:true,index:0,completed:0,earned:false};restored.shotStart=input.shotStart??(input.isFlying?null:input.score);restored.lastShot=input.lastShot??null;}

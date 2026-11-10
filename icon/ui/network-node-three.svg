@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path d="m 6 0 c -0.554688 0 -1 0.445312 -1 1 v 3 c 0 0.554688 0.445312 1 1 1 h 1 v 2 h -7 v 2 h 2 v 2 h -1 c -0.554688 0 -1 0.445312 -1 1 v 3 c 0 0.554688 0.445312 1 1 1 h 4 c 0.554688 0 1 -0.445312 1 -1 v -3 c 0 -0.554688 -0.445312 -1 -1 -1 h -1 v -2 h 8 v 2 h -1 c -0.554688 0 -1 0.445312 -1 1 v 3 c 0 0.554688 0.445312 1 1 1 h 4 c 0.554688 0 1 -0.445312 1 -1 v -3 c 0 -0.554688 -0.445312 -1 -1 -1 h -1 v -2 h 2 v -2 h -7 v -2 h 1 c 0.554688 0 1 -0.445312 1 -1 v -3 c 0 -0.554688 -0.445312 -1 -1 -1 z m 0 0" fill="#000000"/>
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "GNOME Project / Adwaita Icon Theme.",
+  "sources": [
+    {
+      "title": "GNOME Adwaita Network Wired symbolic SVG, pinned publisher revision",
+      "url": "https://github.com/GNOME/adwaita-icon-theme/blob/079d4ca868f53f868771f6e0ff99ba729c430e69/Adwaita/symbolic/devices/network-wired-symbolic.svg",
+      "role": "Identical drawing and publisher source"
+    },
+    {
+      "title": "SVG Repo Network Wired #451779",
+      "url": "https://www.svgrepo.com/svg/451779/network-wired",
+      "role": "Identified SVG Repo listing"
+    },
+    {
+      "title": "GNOME Adwaita publisher COPYING",
+      "url": "https://github.com/GNOME/adwaita-icon-theme/blob/079d4ca868f53f868771f6e0ff99ba729c430e69/COPYING",
+      "role": "Publisher dual-license grant and credit guidance"
+    }
+  ],
+  "license": {
+    "name": "CC-BY-SA-3.0-US (selected publisher grant)",
+    "url": "https://creativecommons.org/licenses/by-sa/3.0/us/legalcode.en",
+    "scope": "GNOME Adwaita offers this artwork under LGPL v3 or CC BY-SA 3.0 United States. This bundle selects the CC BY-SA 3.0 US branch for this individual icon; the license does not cover separate collection assets.",
+    "conditions": [
+      "Credit GNOME Project, link the pinned source and license, preserve the publisher notice, and state that the collection paint was changed from #2E3436 to #000000.",
+      "Distribute adaptations of this artwork under a license permitted by CC BY-SA 3.0 US; do not impose additional restrictions or imply GNOME endorsement."
+    ],
+    "notices": [
+      {
+        "title": "GNOME Adwaita source notice",
+        "path": "attribution/license/cc-by-sa-3.0/gnome-adwaita.txt",
+        "sha256": "bd557d57110cfc00cfc29945948a74f766c2b00dac78d97508fb607023ecc9aa",
+        "text": "This work is licenced under the terms of either the GNU LGPL v3 or\nCreative Commons Attribution-Share Alike 3.0 United States License.\n\nTo view a copy of the CC-BY-SA licence, visit\nhttp://creativecommons.org/licenses/by-sa/3.0/ or send a letter to Creative\nCommons, 171 Second Street, Suite 300, San Francisco, California 94105, USA.\n\nWhen attributing the artwork, using \"GNOME Project\" is enough.\nPlease link to http://www.gnome.org where available.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Commercial use, adaptation, and redistribution permitted subject to the selected CC BY-SA 3.0 US terms for this icon.",
+    "conditions": [
+      "Retain credit and source/terms links when redistributing; share adaptations under permitted ShareAlike terms."
+    ],
+    "sources": [
+      {
+        "title": "CC-BY-SA-3.0-US (selected publisher grant)",
+        "url": "https://creativecommons.org/licenses/by-sa/3.0/us/legalcode.en"
+      },
+      {
+        "title": "Creative Commons license",
+        "url": "https://creativecommons.org/licenses/by-sa/3.0/us/"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Credit the named creators, link to the source and license, and identify artwork changes.",
+      "Share adaptations under the applicable ShareAlike license; do not add incompatible restrictions."
+    ],
+    "required_information": [
+      "changes",
+      "credit",
+      "sources"
+    ]
+  },
+  "changes": "Changed GNOME source paint #2E3436 to the collection monochrome #000000 for light and dark preview contrast. Path geometry and viewBox are unchanged. The SVG Repo wrapper and dimensions differ; historical acquisition route remains unproved."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

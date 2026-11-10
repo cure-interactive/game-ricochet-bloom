@@ -13,8 +13,8 @@ export const BEAT_SECONDS = .75, BAR_SECONDS = 3, PASSAGE_SECONDS = 12;
 const tonesValid = (tones, min, max) => Array.isArray(tones) && tones.length >= min && tones.length <= max && tones.every(tone => Number.isInteger(tone) && tone >= 0 && tone < 5);
 const countValid = value => Number.isSafeInteger(value) && value >= 0;
 const pitchValid = midi => Number.isInteger(midi) && midi >= 48 && midi <= 84 && [0, 2, 4, 5, 7, 9, 11].includes(midi % 12);
-const idValid = id => Number.isInteger(id) && id >= 0 && id <= 14;
-const motifValid = value => value && tonesValid(value.tones, 1, 14) && Number.isInteger(value.rhythm) && value.rhythm >= 0 && value.rhythm < 3;
+const idValid = id => Number.isInteger(id) && id >= 0 && id <= 20;
+const motifValid = value => value && tonesValid(value.tones, 1, 16) && Number.isInteger(value.rhythm) && value.rhythm >= 0 && value.rhythm < 3;
 const phraseValid = value => motifValid(value) && ['steps', 'ids', 'pitches'].every(key => Array.isArray(value[key]) && value[key].length === value.tones.length)
   && value.steps.every((step, i) => Number.isInteger(step) && step >= 0 && step < 16 && (i ? step > value.steps[i - 1] : step === 0))
   && value.ids.every(idValid) && value.pitches.every(pitchValid);
@@ -26,7 +26,7 @@ function legacyPhrase(value) {
 }
 export function musicCreate(input = null, blooms = 0, plucks = null) {
   const empty = { version: 4, blooms, plucks: countValid(plucks) ? plucks : 0, theme: [], history: [], strikes: [], motifs: [], bar: 0, formStart: 0, hook: null, evolution:{nextBar:0,half:1,pending:null}, pendingParts:{bass:null,rhythm:null}, reply: null, parts:{melody:null,bass:null,rhythm:null}, intensity:{}, pans:{}, palette:'glass', accentStart:-1, accentUntil:0 };
-  if (!input || ![1, 2, 3, 4].includes(input.version) || input.blooms !== blooms || !tonesValid(input.theme, 0, 4) || !Array.isArray(input.history) || input.history.length > Math.min(4, blooms) || !Array.isArray(input.strikes) || input.strikes.length > (input.version >= 3 ? 14 : 8)) return empty;
+  if (!input || ![1, 2, 3, 4].includes(input.version) || input.blooms !== blooms || !tonesValid(input.theme, 0, 4) || !Array.isArray(input.history) || input.history.length > Math.min(4, blooms) || !Array.isArray(input.strikes) || input.strikes.length > (input.version >= 3 ? 16 : 8)) return empty;
   if (input.history.length && input.theme.length !== 4) return empty;
   const valid = input.version >= 3 ? phraseValid : value => motifValid(value) && value.tones.length <= 8;
   if (!input.history.every(value => valid(value) && Number.isInteger(value.chord) && value.chord >= 0 && value.chord < CHORDS.length)) return empty;
@@ -72,7 +72,7 @@ function hookSet(music, phrase) {
 export function musicLaunch(music) { music.plucks++; music.strikes = []; }
 export function musicStrike(music, tone, tick, chain, id = 0, midi = PENTATONIC[tone], speed = 400, pan = 0) {
   if (chain === 1) music.strikes = [];
-  if (!tonesValid([tone], 1, 1) || music.strikes.length >= 14) return;
+  if (!tonesValid([tone], 1, 1) || music.strikes.length >= 16) return;
   music.intensity[id]=Math.max(0,Math.min(1,(Number.isFinite(speed)?speed:400)/1000));
   music.pans[id]=Number.isFinite(pan)?Math.max(-1,Math.min(1,pan)):0;
   music.strikes.push({ tone, tick: Math.max(music.strikes.at(-1)?.tick ?? 0, countValid(tick) ? tick : 0), id: idValid(id) ? id : 0, midi: pitchValid(midi) ? midi : PENTATONIC[tone] });

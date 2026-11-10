@@ -1,4 +1,4 @@
-import { POWER_TREES } from './power-tree.js?v=0c4680185586233f800dc673edd2ea81dbf97fd60d02c3b6fbf3df81b4e49839';
+import { POWER_TREES } from './power-tree.js?v=5b9b9d757691fc9af4ff737a750704704af52db425b7ea2bac25894089f8e387';
 // Progression definitions are not a claim that an engine behavior is implemented.
 // The engine integration must explicitly advertise supported node IDs.
 export const CURRENCIES = Object.freeze({ seeds: Object.freeze({ name: 'Seeds' }) });
@@ -35,7 +35,7 @@ export function catalogueCreate(supportedNodes = []) {
   }
   return Object.freeze({ version: 2, powers: Object.freeze(powers), nodes: Object.freeze(nodes) });
 }
-// No v2 engine configuration is connected yet. Later engine work enables nodes.
+// Consumers opt into implemented capabilities. run.js owns the shipping set.
 export const CATALOGUE = catalogueCreate();
 
 // Gates govern new base purchases only; owned descendants survive route refunds.

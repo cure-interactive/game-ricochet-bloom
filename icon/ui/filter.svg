@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="23.304000 47.304000 465.392000 465.392000">
+  <path d="M32 80C32 62.3 46.3 48 64 48h384c17.7 0 32 14.3 32 32 0 8.5-3.4 16.6-9.4 22.6L320 253.3V416c0 10.7-5.3 20.7-14.2 26.6l-96 64c-9.8 6.5-22.4 7.1-32.7 1.5S160 491.5 160 480V253.3L41.4 102.6C35.4 96.6 32 88.5 32 80z"/>
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Filter Filled, Jam Icons, by Michael Amprimo. Adapted by the Cure Interactive Icons collection author.",
+  "sources": [
+    {
+      "title": "Jam Icons 2.0.0 creator package, svg/filter-f.svg",
+      "url": "https://registry.npmjs.org/jam-icons/-/jam-icons-2.0.0.tgz",
+      "role": "Source artwork and license"
+    }
+  ],
+  "license": {
+    "name": "MIT",
+    "url": "https://github.com/cyberalien/jam-backup/blob/main/LICENSE",
+    "scope": "Applies to the credited artwork. Commercial use, modification and redistribution are permitted.",
+    "conditions": [
+      "Preserve the complete source-specific copyright and MIT permission notice with copies or substantial portions."
+    ],
+    "notices": [
+      {
+        "title": "MIT source notice",
+        "path": "attribution/license/mit/jam-icons.txt",
+        "sha256": "1565774e403479729ed23c38b7e71a204646bf613f5b91965c366ea9d61aad5c",
+        "text": "MIT License\n\nCopyright (c) 2017-Present Michael Amprimo\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Subject to the stated MIT license and notice condition.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "MIT",
+        "url": "https://github.com/cyberalien/jam-backup/blob/main/LICENSE"
+      },
+      {
+        "title": "MIT license",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Modified by the Cure Interactive Icons collection author for visual consistency with the collection: reshaped corners, adjusted funnel and stem proportions, and redrawn curves. The collection viewBox uniformly fits and centers painted bounds; drawing paths are unchanged."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

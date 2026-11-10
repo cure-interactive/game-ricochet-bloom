@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 48 48"
+   version="1.1"
+   id="svg3"
+   sodipodi:docname="menu.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="0.91875"
+     inkscape:cx="399.45578"
+     inkscape:cy="400"
+     inkscape:window-width="1920"
+     inkscape:window-height="974"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3" />
+  <title
+     id="title1">menu-hamburger-solid</title>
+  <path
+     id="path1"
+     d="M 2.6667188,5.33328 A 2.6666667,2.6666669 0 0 0 0,7.999999 2.6666667,2.6666669 0 0 0 2.6667188,10.666718 H 45.333281 A 2.6666667,2.6666669 0 0 0 48,7.999999 2.6666667,2.6666669 0 0 0 45.333281,5.33328 Z m 0,16.000001 A 2.6666667,2.6666669 0 0 0 0,24.000001 2.6666667,2.6666669 0 0 0 2.6667188,26.666719 H 45.333281 A 2.6666667,2.6666669 0 0 0 48,24.000001 2.6666667,2.6666669 0 0 0 45.333281,21.333281 Z m 0,16.000002 A 2.6666667,2.6666669 0 0 0 0,40.000002 2.6666667,2.6666669 0 0 0 2.6667188,42.66672 H 45.333281 A 2.6666667,2.6666669 0 0 0 48,40.000002 2.6666667,2.6666669 0 0 0 45.333281,37.333283 Z"
+     style="stroke-width:1.33333" />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Denali Menu Hamburger Solid by Denali Design / Verizon Media. Collection edit by Cure Interactive Icons author.",
+  "sources": [
+    {
+      "title": "Denali Menu Hamburger Solid official SVG",
+      "url": "https://github.com/denali-design/denali-icons/blob/master/svg/menu-hamburger-solid.svg",
+      "role": "Source artwork"
+    },
+    {
+      "title": "Denali Design / Verizon Media MIT license",
+      "url": "https://github.com/denali-design/denali-icons/blob/master/LICENSE.md",
+      "role": "Creator license grant"
+    }
+  ],
+  "license": {
+    "name": "MIT (source and Cure edit)",
+    "url": "https://github.com/denali-design/denali-icons/blob/master/LICENSE.md",
+    "scope": "MIT applies to the publisher source artwork. The Cure author grants their collection edit under MIT; original publisher rights and notices remain in force.",
+    "conditions": [
+      "Include both the complete publisher MIT copyright/license notice and the Cure author-contribution MIT notice in copies or substantial portions."
+    ],
+    "notices": [
+      {
+        "title": "Denali Menu Hamburger Solid copyright and MIT license",
+        "path": "attribution/license/mit/denali-icons.txt",
+        "sha256": "62a805f3e9df9cf92a68382373816d63c16f29329daa1dd8868644c527db51a1",
+        "text": "The MIT License (MIT)\n\nCopyright 2020, Verizon Media\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+      },
+      {
+        "title": "Cure Interactive Icons author-contribution MIT notice",
+        "path": "attribution/license/mit/cure-interactive-icons.txt",
+        "sha256": "946e919f2079fc107dda1eaac0ba80438185cc26bea4914275304bc8cb4fec6a",
+        "text": "The MIT License (MIT)\n\nCopyright (c) 2026 Cure Interactive Icons contributors\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Commercial use, modification and redistribution permitted under the applicable MIT notices.",
+    "conditions": [
+      "Keep both linked notices with redistributed copies or substantial portions."
+    ],
+    "sources": [
+      {
+        "title": "MIT (source and Cure edit)",
+        "url": "https://github.com/denali-design/denali-icons/blob/master/LICENSE.md"
+      },
+      {
+        "title": "MIT license",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Owner-edited Denali Menu Hamburger Solid for collection fit: expanded the three rounded bars symmetrically across the 48\u00d748 canvas while retaining their spacing and shape."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

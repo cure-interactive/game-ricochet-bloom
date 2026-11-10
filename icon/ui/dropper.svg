@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   width="800px"
+   height="800px"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="dropper.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="0.48664848"
+     inkscape:cx="409.94683"
+     inkscape:cy="516.80013"
+     inkscape:window-width="1920"
+     inkscape:window-height="974"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1"
+     showguides="false" />
+  <g
+     id="g3"
+     transform="matrix(-0.02635342,0,0,0.02635331,21.582977,0.09796247)">
+    <g
+       id="g2" />
+  </g>
+  <g
+     id="g4"
+     transform="matrix(0.03151237,0,0,0.03151237,6.2350283,2.404956)"
+     style="fill:#ff0000">
+    <g
+       id="g3-1"
+       style="fill:#ff0000">
+      <path
+         id="path2"
+         style="fill:#000000;stroke-width:1.15967"
+         d="m 127.43277,99.72741 275.8955,275.89541 c -2.18816,28.97852 14.84258,44.70889 31.41177,73.68741 l -21.05656,21.00676 C 382.50623,452.26264 371.98567,431.89272 344.4544,434.49784 L 68.557713,158.60127 Z m 311.40798,460.55098 -14.80517,-16.41614 -14.80513,16.41614 c -6.15234,6.82221 -36.85056,42.42494 -36.85056,73.35368 0,28.48425 23.1726,51.65577 51.65569,51.65577 28.48185,0 51.65449,-23.1727 51.65449,-51.65577 0,-30.92756 -30.69699,-66.53029 -36.84932,-73.35368 z M -91.211211,-57.725446 c 24.79046,-24.790344 64.982577,-24.789373 89.7730342,0 L 101.86185,45.574115 131.3598,16.076302 175.67267,60.388968 26.902773,209.15819 -17.410091,164.84552 12.087863,135.34771 -91.212181,32.048142 c -24.788509,-24.7893736 -24.789489,-64.983245 9.7e-4,-89.773588 z" />
+    </g>
+  </g>
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Composition and pipette shaft by the Cure Interactive Icons author; pipette head and droplet from SVG Repo item-specific CC0 listings.",
+  "sources": [
+    {
+      "title": "Dropper Dosage #267999",
+      "url": "https://www.svgrepo.com/svg/267999/dropper-dosage",
+      "role": "Pipette head artwork; item-specific CC0 listing"
+    },
+    {
+      "title": "Dropper #197908",
+      "url": "https://www.svgrepo.com/svg/197908/dropper",
+      "role": "Droplet artwork; item-specific CC0 listing"
+    },
+    {
+      "title": "Cure Interactive Icons contribution",
+      "role": "Original shaft and composition"
+    }
+  ],
+  "license": {
+    "name": "CC0 1.0 (head and droplet); MIT (shaft and composition)",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "scope": "The matching pipette head and droplet are listed individually by SVG Repo as CC0. The author-drawn shaft and composition carry the Cure contributor MIT grant. These grants apply to their respective components, not to unrelated artwork.",
+    "conditions": [
+      "Preserve the applicable MIT copyright and permission notices with copies or substantial portions. SVG Repo's source-specific CC0 listings do not identify the original artists; no separate creator credit is asserted."
+    ],
+    "notices": [
+      {
+        "title": "Cure Interactive Icons contributor MIT notice",
+        "path": "attribution/license/mit/cure-interactive-icons.txt",
+        "sha256": "946e919f2079fc107dda1eaac0ba80438185cc26bea4914275304bc8cb4fec6a",
+        "text": "The MIT License (MIT)\n\nCopyright (c) 2026 Cure Interactive Icons contributors\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Commercial use, modification and redistribution permitted under the recorded component terms.",
+    "conditions": [
+      "Retain the linked MIT notices when distributing this composite."
+    ],
+    "sources": [
+      {
+        "title": "CC0 1.0 (head and droplet); MIT (shaft and composition)",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      {
+        "title": "MIT license",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "The author combined the matching SVG Repo pipette head and droplet with their own drawn shaft. Components were placed and scaled; source artwork retains its identified shape. The historical download sequence is unrecorded. At 16 px the separate details are small; use a larger size when component recognition matters."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

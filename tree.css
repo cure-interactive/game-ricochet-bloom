@@ -96,3 +96,39 @@
 .tree-root{grid-column:1/-1;text-align:center;font-size:12px;color:#b8e6d2;padding:0 0 16px;border-bottom:1px solid #456379}.tree-root span{display:block;font-size:10px;color:#a1b6ca;margin-top:5px}.tree-map-section{scroll-margin-top:110px}
 
 @media(max-width:360px){header .brand{display:none}header .pool-navigation{margin-left:0}#tree-open{margin-left:auto}}
+
+/* A compact, consistent icon language leaves the map the largest surface. */
+.tree-family-choice button{display:inline-flex;align-items:center;gap:6px}
+.tree-family-choice .ui-icon{width:17px;height:17px}
+.tree-node>.ui-icon{width:20px;height:20px;flex:none;color:#aac9d4}
+.tree-node>.ui-icon[data-icon=epic]{color:#d5b3ff}
+.tree-loadout small .ui-icon{width:12px;height:12px;vertical-align:middle;color:#d5b3ff}
+.tree-mobile-summary strong{display:flex;align-items:center;gap:5px}
+.tree-mobile-summary .ui-icon{width:15px;height:15px}
+.tree-wallet>span,.tree-run>strong{display:flex;align-items:center;gap:8px}
+.tree-node-marker .ui-icon{width:11px;height:11px}
+.tree-current .ui-icon{width:14px;height:14px}
+.dialog-heading,.dialog-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dialog-heading h2{flex:1}.dialog-heading>button{margin-left:auto}
+.dev-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dev-controls label{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.dev-controls input{width:100%;min-height:44px}
+.dev-controls button,.dialog-actions button,.file-button{min-height:44px}
+.file-button{display:flex;align-items:center;gap:8px;position:relative;padding:10px 14px;border:1px solid #506479;border-radius:12px;cursor:pointer}
+.file-button input{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}
+.run-result-icon .ui-icon{width:48px;height:48px;color:#d5b3ff}
+.song-run-card{padding:16px;border:1px solid #617d73;background:linear-gradient(135deg,#173e34,#1a203a);border-radius:16px;margin:16px 0}
+.song-run-card>.ui-icon{float:right;width:32px;height:32px;color:#d5b3ff}.song-run-card h3{margin:0}
+#practice-return{color:#b0efcf}
+@media(max-width:760px){
+ .tree-node>.ui-icon{width:16px;height:16px}.tree-node{gap:7px}
+ .tree-family-choice button{padding:7px 10px!important;font-size:12px!important}
+ .tree-controls{gap:16px;padding:16px 12px}.tree-sim-actions{grid-template-columns:1fr 1fr}
+ .tree-sim-actions>button:first-child{grid-column:1/-1;background:#b0efcf!important;color:#102c26!important}
+ .tree-sim-actions button{font-size:12px!important;padding:10px!important}
+ #practice-return span{display:none}#practice-return .ui-icon{display:inline-block}
+ .dev-controls{grid-template-columns:1fr}
+}
+@media(max-width:480px){#tree-open .ui-icon{display:inline-block}#tree-open .button-label{display:none}}
+
+.tree-node small .ui-icon{width:11px;height:11px;vertical-align:middle;margin-right:4px}.tree-legend>span{display:inline-flex;align-items:center;gap:5px}.tree-legend .ui-icon{width:13px;height:13px}

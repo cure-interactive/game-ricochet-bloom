@@ -26,3 +26,36 @@ Cure Interactive Icons collection assets copied without artwork changes from com
 - [upload](upload.md) — collection/file/upload.svg
 
 Original game fallbacks: [play](play.md), [pause](pause.md), [power](power.md), [check](check.md), [bass](bass.md), [rhythm](rhythm.md).
+
+## Progression and gameplay additions
+
+Imported with the collection’s portable bundle exporter from the same source commit `b936941a8aee4c2a5650fe9bc6efcce020d0beff`. Each attribution page carries full required notices, source links and the exported SVG hash; retained original companions are linked beside it. Artwork paths and drawing geometry are unchanged.
+
+The Epic rarity icon is original artwork by Leviscus Tempris, licensed under the collection contributor MIT notice. It is used for capstone/mastery emphasis; it is not the private Epic Games brand asset.
+
+- [control-gun](control-gun.md) — collection/device/control-gun.svg
+- [gamepad](gamepad.md) — collection/device/gamepad.svg
+- [network-node-three](network-node-three.md) — collection/device/network-node-three.svg
+- [eye](eye.md) — collection/interface/eye.svg
+- [filter](filter.md) — collection/interface/filter.svg
+- [hand-left](hand-left.md) — collection/interface/hand-left.svg
+- [list](list.md) — collection/interface/list.svg
+- [lock-open](lock-open.md) — collection/interface/lock-open.svg
+- [menu](menu.md) — collection/interface/menu.svg
+- [radio-off](radio-off.md) — collection/interface/radio-off.svg
+- [radio-on](radio-on.md) — collection/interface/radio-on.svg
+- [shield](shield.md) — collection/interface/shield.svg
+- [speedometer](speedometer.md) — collection/interface/speedometer.svg
+- [star](star.md) — collection/interface/star.svg
+- [star-outline](star-outline.md) — collection/interface/star-outline.svg
+- [switches](switches.md) — collection/interface/switches.svg
+- [warning-triangle](warning-triangle.md) — collection/interface/warning-triangle.svg
+- [clock](clock.md) — collection/lifestyle/clock.svg
+- [coin](coin.md) — collection/lifestyle/coin.svg
+- [dice-four](dice-four.md) — collection/lifestyle/dice-four.svg
+- [pulse](pulse.md) — collection/lifestyle/pulse.svg
+- [book](book.md) — collection/media/book.svg
+- [epic](epic.md) — collection/rarity/epic.svg
+- [flask](flask.md) — collection/science/flask.svg
+- [magnet-northeast](magnet-northeast.md) — collection/science/magnet-northeast.svg
+- [dropper](dropper.md) — collection/tool/dropper.svg

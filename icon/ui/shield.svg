@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8 16L4.35009 13.3929C2.24773 11.8912 1 9.46667 1 6.88306V3L8 0L15 3V6.88306C15 9.46667 13.7523 11.8912 11.6499 13.3929L8 16ZM12.2071 5.70711L10.7929 4.29289L7 8.08579L5.20711 6.29289L3.79289 7.70711L7 10.9142L12.2071 5.70711Z" fill="#000000"/>
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Shield Check from CHUNK Icons by Noah Jacobus. No endorsement is implied.",
+  "sources": [
+    {
+      "title": "Shield Check, CHUNK Icons by Noah Jacobus",
+      "url": "https://www.figma.com/community/file/1327310800295849271/chunk-icons",
+      "role": "Creator Community source"
+    },
+    {
+      "title": "CHUNK Shield Check file and credit",
+      "url": "https://commons.wikimedia.org/wiki/File:Chunk_Icons_shield-check.svg",
+      "role": "Corresponding file and CC BY 4.0 record"
+    },
+    {
+      "title": "Shield Check, SVG Repo #535617",
+      "url": "https://www.svgrepo.com/svg/535617/shield-check",
+      "role": "Identified SVG Repo listing and retained vector"
+    }
+  ],
+  "license": {
+    "name": "CC-BY-4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "scope": "Applies to the CHUNK Shield Check artwork by Noah Jacobus. The corresponding Commons file identifies the CHUNK Community source and CC BY 4.0; Figma states free Community files use CC BY 4.0. SVG Repo\u2019s current generic CC0 label is not used to omit the creator credit.",
+    "conditions": [
+      "Credit Noah Jacobus and CHUNK Icons, link the creator source and CC BY 4.0, and identify modifications. Do not imply creator endorsement."
+    ],
+    "notices": []
+  },
+  "use": {
+    "status": "Commercial use, modification, and redistribution permitted under CC BY 4.0 with attribution.",
+    "conditions": [
+      "Preserve credit, source and license links, and the change statement with redistributed copies."
+    ],
+    "sources": [
+      {
+        "title": "CC-BY-4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Credit the named creators, link to the source and license, and identify artwork changes."
+    ],
+    "required_information": [
+      "changes",
+      "credit",
+      "sources"
+    ]
+  },
+  "changes": "No visual modification detected relative to the retained SVG Repo source: the same 16\u00d716 canvas and one compound path render pixel-identically at 512 px. Path serialization and black fill notation differ. Earlier editing history and the exact download route are unknown."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

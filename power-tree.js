@@ -1,4 +1,4 @@
-// Proposed v2 behavior data. Engine support is declared separately in catalogue.js.
+// Shared power descriptions. Shipping capabilities are declared in run.js.
 export const POWER_TREES = {
   "comet": {
     "name": "Comet",
@@ -335,8 +335,8 @@ export const POWER_TREES = {
     "family": "Control",
     "tier": 2,
     "current": "An enlarged permeable shell scores on contact and pushes jellies outward by a radius gradient, with a smaller opposing pressure on the player.",
-    "today": [],
-    "uncertain": true,
+    "today": ["foundation"],
+    "uncertain": false,
     "compatible": false,
     "nodes": [
       {
@@ -788,5 +788,38 @@ export const POWER_TREES = {
         "description": "One later contact with the specifically previewed release target can produce one shorter slingshot. The capstone supplies its own previewed target choice when no aiming upgrade is equipped; it works with the base alone. It cannot repeat a third time."
       }
     ]
-  }
+  },
+  "blaster": {
+  "name": "Blaster",
+  "family": "Propagation",
+  "tier": 1,
+  "current": "Three automatically aimed gel shots on contact. Tap the pool during flight to fire; impacts push jellies and play their notes.",
+  "today": [
+    "base"
+  ],
+  "uncertain": false,
+  "compatible": true,
+  "nodes": [
+    {
+      "name": "Blaster",
+      "description": "Load three gel shots on contact. Tap while moving to auto-aim and fire. Each jelly scores once per pluck."
+    },
+    {
+      "name": "Extra magazine",
+      "description": "Carry five shots instead of three."
+    },
+    {
+      "name": "Bank shot",
+      "description": "Shots bounce once off a wall. Projectile banks do not count as player wall banks."
+    },
+    {
+      "name": "Scatter shot",
+      "description": "Fire three pellets in a short fan for one ammunition. Each jelly can be struck only once per volley."
+    },
+    {
+      "name": "Bloom reload",
+      "description": "The first bloom after activation refills your magazine once this pluck."
+    }
+  ]
+}
 };

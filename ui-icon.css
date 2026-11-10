@@ -52,3 +52,31 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
  header,.stream-mode header{gap:4px;padding-inline:8px}.brand-icon{width:28px;height:28px}.pool-navigation button{font-size:10px;padding:7px 6px;white-space:nowrap}.pool-navigation .ui-icon{width:13px;height:13px}header #settings-open{width:34px;min-width:34px}
  .aim-controls input{width:42px}.compact{padding:10px 8px}.dock-tools>button,.dock-tools #music-open{min-width:32px;width:32px}.dock-tools{gap:3px}
 }
+
+/* Additional curated Cure Interactive assets for progression and game controls. */
+[data-icon="control-gun"]{--ui-icon:url("./icon/ui/control-gun.svg?v=606aef815129e86df9d334d861bf33b8b31ddd124651f91a19ee5dbb9a8283e9")}
+[data-icon="gamepad"]{--ui-icon:url("./icon/ui/gamepad.svg?v=1989f55e57824e66ac231da3a7c09fd69aed44263b6e5367825547d5e9b3b60c")}
+[data-icon="network-node-three"]{--ui-icon:url("./icon/ui/network-node-three.svg?v=285013b3028856a345959bd062c36deeb379c0022271fd25efd8f2e9cd4f874a")}
+[data-icon="eye"]{--ui-icon:url("./icon/ui/eye.svg?v=020d9b461463ca5be97fe05103af81aa6c83721d6fffb835d2636b77bb505b1d")}
+[data-icon="filter"]{--ui-icon:url("./icon/ui/filter.svg?v=64f66f0e1ada678230d816411d56e42c4586009620106a4815e9afc85fb11ff0")}
+[data-icon="hand-left"]{--ui-icon:url("./icon/ui/hand-left.svg?v=db53d1c7f1d892d3af7730c6f85a46df7e8fae4e203ff817e0d58ec41acf89d1")}
+[data-icon="list"]{--ui-icon:url("./icon/ui/list.svg?v=2cb477fb1298a76d1e5aa0958112a30182ea30f47dfe2d188cb517d1983a08aa")}
+[data-icon="lock-open"]{--ui-icon:url("./icon/ui/lock-open.svg?v=729ecc15d44bfbecbd9b5ffec9d128dc7b9b610acc8c4ee9ab226ee5978dec34")}
+[data-icon="menu"]{--ui-icon:url("./icon/ui/menu.svg?v=fcf12c8121a4544c704f89e18111bd1c6838cf2b741e3e48c64e139b06131d0e")}
+[data-icon="radio-off"]{--ui-icon:url("./icon/ui/radio-off.svg?v=e06ba8fc40370ca37e209e715813ab02ddf556a5ba1a97e6582c22bc020b9097")}
+[data-icon="radio-on"]{--ui-icon:url("./icon/ui/radio-on.svg?v=a901d2189c080703b0964e381fea931f1d7741d8fc2daf6913e582b0af8f844e")}
+[data-icon="shield"]{--ui-icon:url("./icon/ui/shield.svg?v=988ef478ceeb1a295397cab53b86dd675e9c5778de485a5f3e72caf0efb8d174")}
+[data-icon="speedometer"]{--ui-icon:url("./icon/ui/speedometer.svg?v=32413f1c9b804ac2952d580d48a495338a537ce6a1c3883c7a5712d93d426b6e")}
+[data-icon="star"]{--ui-icon:url("./icon/ui/star.svg?v=4cd6773d47d253a1f266f476d9822688a217544ebb3a10f5207cfb07397652af")}
+[data-icon="star-outline"]{--ui-icon:url("./icon/ui/star-outline.svg?v=f5e38cc034d60156b8d1babc66d8ba684adb4f1fdb86251b971f77f69f4c4342")}
+[data-icon="switches"]{--ui-icon:url("./icon/ui/switches.svg?v=60b9c48beac59358077239cbb0080d2e6bd850b7f58732fb87423c14bfc5565b")}
+[data-icon="warning-triangle"]{--ui-icon:url("./icon/ui/warning-triangle.svg?v=f1d2b26974051859c7df5db5aab148bc7e85c113bca1109ab4671b71c5f824d5")}
+[data-icon="clock"]{--ui-icon:url("./icon/ui/clock.svg?v=1a93203913f276f3dcfa8e29aa66196325ec486ea34c86add7aa72989a0d334c")}
+[data-icon="coin"]{--ui-icon:url("./icon/ui/coin.svg?v=c574ee73cc675c7e9aa6d1885f22f6c2f7248f9b3d20726361d58a726411f442")}
+[data-icon="dice-four"]{--ui-icon:url("./icon/ui/dice-four.svg?v=4473993d9b71ee1bdff7efc74076cf8944de1c41843c869342b880ddd43766ea")}
+[data-icon="pulse"]{--ui-icon:url("./icon/ui/pulse.svg?v=3c0029d4c1b34200fa04edeceb35af36d89515ca2d226a3b6a2388d3c0b2984e")}
+[data-icon="book"]{--ui-icon:url("./icon/ui/book.svg?v=0f3695a3d06c7888f254ad582878b125a9a0c600410bbbaffa31281fb7a52db6")}
+[data-icon="epic"]{--ui-icon:url("./icon/ui/epic.svg?v=824a7382dd0388dd22e4523e331ec5e45495ae1a959c28752a2e4c386f1b1aa5")}
+[data-icon="flask"]{--ui-icon:url("./icon/ui/flask.svg?v=0047a0dd9a9579052bba67f5cc4f85dffb3704af806b9c097bcf313c9770999a")}
+[data-icon="magnet-northeast"]{--ui-icon:url("./icon/ui/magnet-northeast.svg?v=af53ca1f3fdd6c0894a2f6566e80b1d277294492df9600cbfa7f6d553fc84279")}
+[data-icon="dropper"]{--ui-icon:url("./icon/ui/dropper.svg?v=591ba3f8a1f7d1fc972111dc3c21b3444e9ea77981aaeb14de41120521266ae6")}

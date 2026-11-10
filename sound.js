@@ -1,8 +1,8 @@
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=54c0e4fa3eab549d2e5ab1ff2eca9c9fb14a046e20c1345e853b451955c0697c';
 import {poolPan} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
 // Original procedural effects. No recordings or external audio requests.
-import { PoolMedia } from './media.js?v=c64f1958c77b46291bd8a11c2a4c41985d478b37ab753689d09c49b34263d811';
-import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, jellyRole } from './music.js?v=fad403a835d0d8ee8c0225bac2ae2fbdeba40bd62f9d7f2598ce6337176b9a84';
+import { PoolMedia } from './media.js?v=009bec909738ae5562f2f837fdc044760c04422f2495842e093a1a9940e66db6';
+import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, jellyRole } from './music.js?v=6ec72be4ad2664d5ad3ccad3e38ced59061c476e0fa523cde850ae21caa7b261';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export class PoolSound {
@@ -135,6 +135,8 @@ export class PoolSound {
     if(event.type==='objective')musicAccent(this.music);
     if (!this.context || this.isMuted) return;
     this.eventCount++;
+    if (event.type === 'blaster-fire') { this.tone(740,220,.16,.12,pan); this.tone(1480,620,.09,.045,pan); }
+    if (event.type === 'blaster-bank') this.tone(880,1320,.08,.06,pan);
     if (event.type === 'launch') { this.tone(130, 520, .13, .25, pan); this.tone(65, 38, .18, .25, pan); }
     if (event.type === 'wall') this.tone(190 + Math.min(300, event.speed), 85, .16, .1, pan);
     if (event.type === 'impact') this.tone(event.bubble ? 120 : 100 + Math.min(200, event.speed), event.bubble ? 42 : 55, event.bubble ? .18 : .095, Math.min(.15, event.speed / 2500), pan);

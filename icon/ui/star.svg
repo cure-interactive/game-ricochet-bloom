@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1"
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   sodipodi:docname="star.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect3"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,1,1,0,1,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,1,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,1,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,1,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,1,0,1 @ F,0,0,1,0,0,0,1"
+       radius="1"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="true"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,1,1,0,1.5,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,1.5,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,1.5,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,1.5,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,1.5,0,1 @ F,0,0,1,0,0,0,1"
+       radius="1.5"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="true"
+       hide_knots="false" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="17.014757"
+     inkscape:cx="15.868578"
+     inkscape:cy="20.570379"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="1671"
+     inkscape:window-y="1071"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     id="path1"
+     style="display:inline;fill-rule:evenodd;stroke-width:0;stroke-linejoin:round"
+     inkscape:transform-center-y="-2.0141908"
+     transform="matrix(3.9999393,0,0,3.9999113,-82.242665,5.9423226)"
+     d="m 25.021445,-0.97821186 0.717439,2.22458046 2.337402,-0.00511 a 0.48375683,0.48375683 71.999982 0 1 0.284546,0.8757437 l -1.894001,1.3697574 0.727156,2.2214231 A 0.48375732,0.48375732 143.99999 0 1 26.449034,6.2494225 L 24.561039,4.8713986 22.673044,6.2494223 A 0.48375755,0.48375755 36 0 1 21.92809,5.7081821 l 0.727156,-2.2214228 -1.894,-1.3697574 A 0.48375699,0.48375699 108.00002 0 1 21.045792,1.241258 l 2.337402,0.00511 0.717439,-2.22458027 a 0.48375765,0.48375765 4.5828414e-7 0 1 0.920812,10e-9 z"
+     inkscape:path-effect="#path-effect1"
+     inkscape:original-d="m 24.561039,-2.4058063 1.177845,3.6521749 3.837398,-0.00839 -3.109451,2.2487807 1.193799,3.6469913 -3.099591,-2.262352 -3.099591,2.2623518 1.193798,-3.6469911 -3.10945,-2.2487809 3.837398,0.00839 z" />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Original Star artwork by the Cure Interactive Icons contributors, created from scratch using Inkscape.",
+  "sources": [
+    {
+      "title": "Cure Interactive Icons",
+      "role": "Collection artwork contribution"
+    }
+  ],
+  "license": {
+    "name": "MIT",
+    "url": "https://opensource.org/license/mit",
+    "scope": "Applies to the contribution of Cure Interactive Icons contributors in this artwork. It does not grant rights owned by others.",
+    "conditions": [
+      "Include the copyright notice and complete MIT license in all copies or substantial portions of the author contribution."
+    ],
+    "notices": [
+      {
+        "title": "MIT author-contribution notice",
+        "path": "attribution/license/mit/cure-interactive-icons.txt",
+        "sha256": "946e919f2079fc107dda1eaac0ba80438185cc26bea4914275304bc8cb4fec6a",
+        "text": "The MIT License (MIT)\n\nCopyright (c) 2026 Cure Interactive Icons contributors\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Commercial use, modification and redistribution of the author contribution are permitted under MIT.",
+    "conditions": [
+      "Preserve the applicable copyright and license notices."
+    ],
+    "sources": [
+      {
+        "title": "MIT",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Regular star with rounded tips."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

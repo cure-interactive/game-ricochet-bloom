@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   width="800px"
+   height="800px"
+   viewBox="-0.036000 -0.176625 24.072000 24.072000"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="book.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0.96,0,1 @ F,0,0,1,0,0.96,0,1 @ F,0,0,1,0,0.96,0,1 @ F,0,0,1,0,0.96,0,1 | F,0,0,1,0,0.96,0,1 @ F,0,0,1,0,0.96,0,1 @ F,0,0,1,0,0.96,0,1 @ F,0,0,1,0,0.96,0,1"
+       radius="32"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="0.91875"
+     inkscape:cx="399.45578"
+     inkscape:cy="400"
+     inkscape:window-width="1920"
+     inkscape:window-height="974"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     d="M 0,20.639745 V 4.5153394 C 0,3.985146 0.39132261,3.3759205 0.88948226,3.1947624 3.8025277,2.1354195 6.9974695,2.1354192 9.9105151,3.1947614 10.408676,3.37592 10.8,3.985146 10.8,4.5153394 V 20.639745 c 0,0.530193 -0.391323,0.780581 -0.8894823,0.599423 -2.9130454,-1.059343 -6.1079872,-1.059343 -9.02103275,-1e-6 C 0.39132378,21.420326 0,21.169938 0,20.639745 Z m 13.2,-16.1244056 0,16.1244056 c 0,0.530193 0.391323,0.780581 0.889482,0.599423 2.913046,-1.059343 6.107987,-1.059343 9.021033,-1e-6 C 23.608676,21.420326 24,21.169938 24,20.639745 V 4.5153394 C 24,3.985146 23.608677,3.3759205 23.110518,3.1947624 20.197472,2.1354195 17.002531,2.1354192 14.089485,3.1947614 13.591324,3.37592 13.2,3.985146 13.2,4.5153394 Z"
+     id="path1"
+     style="stroke-width:1.2"
+     inkscape:path-effect="#path-effect1"
+     inkscape:original-d="M 0,21.599745 V 3.5553394 a 13.2,13.200004 0 0 1 10.8,0 V 21.599745 a 13.2,13.200004 0 0 0 -10.8,0 z M 13.2,3.5553394 V 21.599745 a 13.2,13.200004 0 0 1 10.8,0 V 3.5553394 a 13.2,13.200004 0 0 0 -10.8,0 z" />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Book Open, Font Awesome Free by Fonticons, Inc. Adapted by the Cure Interactive Icons collection author. No endorsement by Fonticons is implied.",
+  "sources": [
+    {
+      "title": "Font Awesome Free Book Open",
+      "url": "https://github.com/FortAwesome/Font-Awesome/blob/6.x/svgs/solid/book-open.svg",
+      "role": "Source artwork"
+    },
+    {
+      "title": "Font Awesome Free license",
+      "url": "https://github.com/FortAwesome/Font-Awesome/blob/6.x/LICENSE.txt",
+      "role": "Creator license statement"
+    }
+  ],
+  "license": {
+    "name": "CC-BY-4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "scope": "Applies to the credited Font Awesome SVG icon artwork. Commercial use, adaptation and redistribution are permitted under the stated conditions.",
+    "conditions": [
+      "Preserve creator credit, source, license link and supplied notice; identify the changes. Do not imply endorsement or impose additional restrictions."
+    ],
+    "notices": [
+      {
+        "title": "Font Awesome Free 6.x license notice",
+        "path": "attribution/license/cc-by-4.0/font-awesome-6-book.txt",
+        "sha256": "9b914eae88817d63b576eab5aafde7068c7a1abae125d7cdfb034f1da43a9afc",
+        "text": "Fonticons, Inc. (https://fontawesome.com)\n\n--------------------------------------------------------------------------------\n\nFont Awesome Free License\n\nFont Awesome Free is free, open source, and GPL friendly. You can use it for\ncommercial projects, open source projects, or really almost whatever you want.\nFull Font Awesome Free license: https://fontawesome.com/license/free.\n\n--------------------------------------------------------------------------------\n\n# Icons: CC BY 4.0 License (https://creativecommons.org/licenses/by/4.0/)\n\nThe Font Awesome Free download is licensed under a Creative Commons\nAttribution 4.0 International License and applies to all icons packaged\nas SVG and JS file types.\n\n--------------------------------------------------------------------------------\n\n# Fonts: SIL OFL 1.1 License\n\nIn the Font Awesome Free download, the SIL OFL license applies to all icons\npackaged as web and desktop font files.\n\nCopyright (c) 2024 Fonticons, Inc. (https://fontawesome.com)\nwith Reserved Font Name: \"Font Awesome\".\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\nSIL OPEN FONT LICENSE\nVersion 1.1 - 26 February 2007\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded,\nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting \u2014 in part or in whole \u2014 any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION &amp; CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n\n--------------------------------------------------------------------------------\n\n# Code: MIT License (https://opensource.org/licenses/MIT)\n\nIn the Font Awesome Free download, the MIT license applies to all non-font and\nnon-icon files.\n\nCopyright 2024 Fonticons, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of\nthis software and associated documentation files (the \"Software\"), to deal in the\nSoftware without restriction, including without limitation the rights to use, copy,\nmodify, merge, publish, distribute, sublicense, and/or sell copies of the Software,\nand to permit persons to whom the Software is furnished to do so, subject to the\nfollowing conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,\nINCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A\nPARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT\nHOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\nOF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n--------------------------------------------------------------------------------\n\n# Attribution\n\nAttribution is required by MIT, SIL OFL, and CC BY licenses. Downloaded Font\nAwesome Free files already contain embedded comments with sufficient\nattribution, so you shouldn't need to do anything additional when using these\nfiles normally.\n\nWe've kept attribution comments terse, so we ask that you do not actively work\nto remove them from files, especially code. They're a great way for folks to\nlearn about Font Awesome.\n\n--------------------------------------------------------------------------------\n\n# Brand Icons\n\nAll brand icons are trademarks of their respective owners. The use of these\ntrademarks does not indicate endorsement of the trademark holder by Font\nAwesome, nor vice versa. **Please do not use brand logos for any purpose except\nto represent the company, product, or service to which they refer.**\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Subject to the stated CC BY 4.0 license and attribution conditions.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "CC-BY-4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Credit the named creators, link to the source and license, and identify artwork changes."
+    ],
+    "required_information": [
+      "changes",
+      "credit",
+      "sources"
+    ]
+  },
+  "changes": "Modified by the Cure Interactive Icons collection author for visual consistency: reworked the two page proportions and upper/lower curves, widened the center gap, rounded the corners. The collection viewBox uniformly fits and centers painted bounds; drawing paths are unchanged."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

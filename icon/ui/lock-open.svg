@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 16 16"
+   fill="none"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="lock-open.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,1,0,1 @ F,0,0,1,0,1,0,1 @ F,0,0,1,0,1,0,1 @ F,0,0,1,0,1,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,1,0,1 @ F,0,1,1,0,1,0,1 @ F,0,0,1,0,0,0,1"
+       radius="1"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="true"
+       hide_knots="false" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.34029515"
+     inkscape:cx="-383.49063"
+     inkscape:cy="628.86585"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="1671"
+     inkscape:window-y="1071"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     id="path1"
+     style="fill:#000000"
+     d="M 12,0 C 9.7908666,0 8,1.7908666 8,4 V 7.28 H 1 a 1,1 135 0 0 -1,1 V 15 a 1,1 45 0 0 1,1 h 10 a 1,1 135 0 0 1,-1 V 8.28 a 1,1 45 0 0 -1,-1 H 10 V 4 c 0,-1.1045667 0.895433,-2 2,-2 1.104567,0 2,0.8954333 2,2 v 0.5 a 1,1 45 0 0 1,1 1,1 135 0 0 1,-1 V 4 C 16,1.7908666 14.209094,0 12,0 Z"
+     sodipodi:nodetypes="ssccccccsssccss"
+     inkscape:path-effect="#path-effect1"
+     inkscape:original-d="M 12,0 C 9.7908666,0 8,1.7908666 8,4 V 7.28 H 0 V 16 H 12 V 7.28 H 10 V 4 c 0,-1.1045667 0.895433,-2 2,-2 1.104567,0 2,0.8954333 2,2 v 1.5 h 2 V 4 C 16,1.7908666 14.209094,0 12,0 Z" />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Derived from Unlock Fill, Bootstrap Icons, by The Bootstrap Authors. Adapted by the Cure Interactive Icons collection author.",
+  "sources": [
+    {
+      "title": "Bootstrap Icons Unlock Fill",
+      "url": "https://github.com/twbs/icons/blob/6945b7006285d444cc17ff2e22c7691719229526/icons/unlock-fill.svg",
+      "role": "Source artwork"
+    }
+  ],
+  "license": {
+    "name": "MIT",
+    "url": "https://github.com/twbs/icons/blob/6945b7006285d444cc17ff2e22c7691719229526/LICENSE",
+    "scope": "Applies to the credited artwork. Commercial use, modification and redistribution are permitted.",
+    "conditions": [
+      "Preserve the complete source-specific copyright and MIT permission notice with copies or substantial portions."
+    ],
+    "notices": [
+      {
+        "title": "Bootstrap Icons MIT source notice",
+        "path": "attribution/license/mit/bootstrap-icons.txt",
+        "sha256": "0fb3e11bd57e896c5a512afd64864d28a37de45d19835016c87ca1ad19ead969",
+        "text": "The MIT License (MIT)\n\nCopyright (c) 2019-2024 The Bootstrap Authors\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Subject to the stated MIT license and notice condition.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "MIT",
+        "url": "https://github.com/twbs/icons/blob/6945b7006285d444cc17ff2e22c7691719229526/LICENSE"
+      },
+      {
+        "title": "MIT license",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Modified for visual consistency with the Cure Interactive Icons collection: thickened the shackle, adjusted the body height, and reduced the body corner radius. Shortened and rounded the exposed shackle tip."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

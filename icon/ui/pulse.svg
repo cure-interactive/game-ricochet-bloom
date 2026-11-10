@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1"
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   sodipodi:docname="pulse.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xml:space="preserve"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1" /><sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="10.24"
+     inkscape:cx="4.1015625"
+     inkscape:cy="27.832031"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="1671"
+     inkscape:window-y="1071"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" /><path
+     style="color:#000000;fill:#000000;stroke-width:1.59999;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+     d="m 12.881247,0.00335761 a 1.6001613,1.6001354 0 0 1 1.481251,1.24998079 l 5.14688,23.1590186 2.971877,-8.918612 a 1.6001613,1.6001354 0 0 1 1.518752,-1.093734 h 6.400005 a 1.6000013,1.5999754 0 0 1 1.600001,1.599976 1.6000013,1.5999754 0 0 1 -1.600001,1.599975 h -5.24688 L 20.718754,30.906007 A 1.6001613,1.6001354 0 0 1 17.637501,30.746634 L 12.490623,7.587616 9.5187452,16.506229 A 1.6001613,1.6001354 0 0 1 7.9999936,17.599962 H 1.5999884 A 1.6000013,1.5999754 0 0 1 -1.29e-5,15.999987 1.6000013,1.5999754 0 0 1 1.5999884,14.400011 H 6.8468679 L 11.281246,1.093966 a 1.6001613,1.6001354 0 0 1 1.600001,-1.09060839 z"
+     id="path1" />
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Humbleicons Activity by Ji\u0159\u00ed Zral\u00fd, copyright (c) 2021 Ji\u0159\u00ed Zral\u00fd. Adaptation by Cure Interactive Icons contributors.",
+  "sources": [
+    {
+      "url": "https://github.com/zraly/humbleicons/blob/2152de7d0979cfc95451ecade7f3863a00366051/icons/activity.svg",
+      "title": "Humbleicons Activity",
+      "role": "Source artwork"
+    },
+    {
+      "url": "https://www.svgrepo.com/svg/470931/activity",
+      "title": "Activity on SVG Repo",
+      "role": "Source catalogue"
+    }
+  ],
+  "license": {
+    "name": "MIT",
+    "url": "https://github.com/zraly/humbleicons/blob/2152de7d0979cfc95451ecade7f3863a00366051/license",
+    "scope": "The Humbleicons source and Cure Interactive Icons contributions are available under their respective MIT notices.",
+    "conditions": [
+      "Preserve the source copyright and full MIT license, and the copyright and full MIT license for the Cure contributions."
+    ],
+    "notices": [
+      {
+        "title": "Humbleicons copyright and MIT license",
+        "path": "attribution/license/mit/humbleicons.txt",
+        "sha256": "70d00f3871c9335b19fcc9fb9d22e4bbe6db27109b42c37beb88d90f7c438fb6",
+        "text": "MIT License\n\nCopyright (c) 2021 Ji\u0159\u00ed Zral\u00fd\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+      },
+      {
+        "title": "MIT author-contribution notice",
+        "path": "attribution/license/mit/cure-interactive-icons.txt",
+        "sha256": "946e919f2079fc107dda1eaac0ba80438185cc26bea4914275304bc8cb4fec6a",
+        "text": "The MIT License (MIT)\n\nCopyright (c) 2026 Cure Interactive Icons contributors\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Commercial use, modification and redistribution permitted under the MIT terms.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "MIT",
+        "url": "https://github.com/zraly/humbleicons/blob/2152de7d0979cfc95451ecade7f3863a00366051/license"
+      },
+      {
+        "title": "MIT license",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Adapted for visual consistency with the Cure Interactive Icons collection: converted the rounded stroke into a black filled outline and scaled and positioned it to fit the canvas."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

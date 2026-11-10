@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 16 16"
+   fill="none"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="clock.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect2"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,0,0,1 | F,0,0,1,0,1.1,0,1 @ F,0,0,1,0,1.1,0,1 @ F,0,0,1,0,0,0,1 @ F,0,0,1,0,1.1,0,1 @ F,0,0,1,0,1.1,0,1 @ F,0,1,1,0,0.5,0,1"
+       radius="0.5"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="true"
+       hide_knots="false" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.9625"
+     inkscape:cx="400"
+     inkscape:cy="400"
+     inkscape:window-width="1680"
+     inkscape:window-height="961"
+     inkscape:window-x="3591"
+     inkscape:window-y="1104"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     id="path1"
+     style="fill:#000000"
+     d="M 8,0 C 3.5817244,0 0,3.5817244 0,8 c 0,4.418296 3.5817244,8 8,8 4.418296,0 8,-3.581704 8,-8 C 16,3.5817244 12.418296,0 8,0 Z M 7.94,1.88 h 0.12 a 1.1,1.1 45 0 1 1.1,1.1 v 4.6057813 l 1.449292,1.4492921 a 1.1000002,1.1000002 90.000005 0 1 0,1.5556346 l -0.01858,0.01858 a 1.1000001,1.1000001 180 0 1 -1.5556346,0 l -1.84152,-1.84152 A 1.2071066,1.2071066 67.499997 0 1 6.84,7.9142187 V 2.98 a 1.1,1.1 135 0 1 1.1,-1.1 z"
+     sodipodi:nodetypes="sssssccccccc"
+     inkscape:path-effect="#path-effect2"
+     inkscape:original-d="M 8,0 C 3.5817244,0 0,3.5817244 0,8 c 0,4.418296 3.5817244,8 8,8 4.418296,0 8,-3.581704 8,-8 C 16,3.5817244 12.418296,0 8,0 Z M 6.84,1.88 H 9.16 V 7.5857813 L 11.387109,9.812891 9.812891,11.387109 6.84,8.4142187 Z" />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Chunk Icons; likely adaptation of artwork by Noah Jacobus.",
+  "sources": [
+    {
+      "title": "Chunk Icons",
+      "url": "https://www.figma.com/community/file/1327310800295849271/chunk-icons",
+      "role": "Source artwork"
+    }
+  ],
+  "license": {
+    "name": "CC-BY-4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "scope": "Applies to the credited source artwork.",
+    "conditions": [
+      "Preserve appropriate credit, copyright and supplied notices, source and license links, and identify changes. Do not imply endorsement or impose additional legal or technical restrictions."
+    ],
+    "notices": [
+      {
+        "title": "CC-BY-4.0 source notice",
+        "path": "attribution/license/CC-BY-4.0.md",
+        "sha256": "4e6ca2ddbe6ca5de2d91efd558714e60331a4d951cd569e1dd96c34805b86148",
+        "text": "# Creative Commons Attribution 4.0 International\n\n[Official license](https://creativecommons.org/licenses/by/4.0/) | [Full legal text](https://creativecommons.org/licenses/by/4.0/legalcode)\n\nThis license permits commercial use, sharing, and adaptation subject to its terms.\nPreserve creator identification, supplied copyright and license notices, source\nlinks, and modification information when sharing applicable material. Credit\nmust not imply endorsement. The license includes warranty disclaimers and does\nnot grant trademark rights.\n\nThe linked legal text governs. Each icon's attribution page identifies the\nreference work, its creator, and the source supporting the license finding.\nThis is not a repository-wide license.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Subject to the stated license and conditions.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "CC-BY-4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Credit the named creators, link to the source and license, and identify artwork changes."
+    ],
+    "required_information": [
+      "changes",
+      "credit",
+      "sources"
+    ]
+  },
+  "changes": "Widened the hands, lengthened the upright hand, shortened the diagonal hand, and rounded the hand corners for visual consistency with the Cure Interactive Icons collection."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

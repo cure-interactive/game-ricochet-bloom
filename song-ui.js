@@ -1,5 +1,5 @@
 import {buttonLabel} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import {SONG_STORAGE,SONG_LIMIT,songLibraryRead,songSnapshot,songRender} from './song.js?v=5636eb84a43b280e27f04f19148f74d8178ff55fb093db48edaf3bd8ab700c78';
+import {SONG_STORAGE,SONG_LIMIT,songLibraryRead,songSnapshot,songRender} from './song.js?v=2198ab6d4ebd80cc8dd2b5e24341a9a49927c4a901d5217602daa00d897817b0';
 export function songLibrarySetup(current,pause,resume) {
   const $=id=>document.getElementById(id),dialog=$('library-dialog');let library={version:1,songs:[]},selected=null,url=null,file=null,job=0;
   const status=text=>$('library-status').textContent=text;

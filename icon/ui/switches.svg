@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   height="800px"
+   width="800px"
+   version="1.1"
+   id="Layer_1"
+   viewBox="0 0 330 330"
+   xml:space="preserve"
+   sodipodi:docname="switches.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs1"><inkscape:path-effect
+     effect="mirror_symmetry"
+     start_point="0,198"
+     end_point="396,198"
+     center_point="198,198"
+     id="path-effect1"
+     is_visible="true"
+     lpeversion="1.2"
+     lpesatellites=""
+     mode="horizontal"
+     discard_orig_path="false"
+     fuse_paths="false"
+     oposite_fuse="false"
+     split_items="false"
+     split_open="false"
+     link_styles="false" /></defs><sodipodi:namedview
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="0.68059028"
+   inkscape:cx="411.40758"
+   inkscape:cy="365.85888"
+   inkscape:window-width="1920"
+   inkscape:window-height="991"
+   inkscape:window-x="1671"
+   inkscape:window-y="-9"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1" />
+<path
+   id="XMLID_2_"
+   style="stroke-width:0.88"
+   d="M 79.2 0 C 35.529164 0 -9.3791548e-15 35.529164 0 79.2 C 0 122.87084 35.529164 158.4 79.2 158.4 L 316.8 158.4 C 360.47084 158.4 396 122.87084 396 79.2 C 396 35.529164 360.47084 -9.3791548e-15 316.8 0 L 79.2 0 z M 316.8 15.84 C 351.73667 15.84 380.16 44.263331 380.16 79.2 C 380.16 114.13667 351.73667 142.56 316.8 142.56 C 281.86333 142.56 253.44 114.13667 253.44 79.2 C 253.44 44.263331 281.86333 15.84 316.8 15.84 z M 79.2 237.6 C 35.529164 237.6 0 273.12916 0 316.8 C -9.3791548e-15 360.47084 35.529164 396 79.2 396 L 316.8 396 C 360.47084 396 396 360.47084 396 316.8 C 396 273.12916 360.47084 237.6 316.8 237.6 L 79.2 237.6 z M 79.2 253.44 C 114.13667 253.44 142.56 281.86333 142.56 316.8 C 142.56 351.73667 114.13667 380.16 79.2 380.16 C 44.263331 380.16 15.84 351.73667 15.84 316.8 C 15.84 281.86333 44.263331 253.44 79.2 253.44 z "
+   transform="scale(0.83333333)" />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Switch from the Web Button Compilation collection, distributed by SVG Repo; the source listing does not identify an individual creator. Paired-switch adaptation by Cure Interactive Icons contributors.",
+  "sources": [
+    {
+      "title": "Switch \u2014 Web Button Compilation",
+      "url": "https://www.svgrepo.com/svg/155023/switch",
+      "role": "Source artwork"
+    }
+  ],
+  "license": {
+    "name": "CC0-1.0 (source); MIT (Cure contributions)",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "scope": "The SVG Repo Switch source is listed under CC0 1.0. The Cure Interactive Icons paired-switch adaptation is available under MIT.",
+    "conditions": [
+      "Source credit is supplied voluntarily. Preserve the copyright notice and full MIT license for the Cure contribution."
+    ],
+    "notices": [
+      {
+        "title": "MIT author-contribution notice",
+        "path": "attribution/license/mit/cure-interactive-icons.txt",
+        "sha256": "946e919f2079fc107dda1eaac0ba80438185cc26bea4914275304bc8cb4fec6a",
+        "text": "The MIT License (MIT)\n\nCopyright (c) 2026 Cure Interactive Icons contributors\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Commercial use, modification and redistribution permitted under the applicable CC0 and MIT terms.",
+    "conditions": [
+      "Preserve the applicable MIT notice for the Cure contribution."
+    ],
+    "sources": [
+      {
+        "title": "CC0-1.0 (source); MIT (Cure contributions)",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      {
+        "title": "MIT license",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Adapted for this collection from the credited single Switch into two stacked on/off states. The capsules were widened, the relative circular cutouts enlarged, and the lower state mirrored. The artwork remains black filled."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

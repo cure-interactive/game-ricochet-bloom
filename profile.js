@@ -1,4 +1,4 @@
-import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, familyGate } from './catalogue.js?v=5468bf88375064833a256eecf82212671221c36246193c529f6aea4185f6a137';
+import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, familyGate } from './catalogue.js?v=aa050901096f931303aa6d503b3253d402031f95163433b0c8cb1c5dbbe54371';
 
 export const PROFILE_VERSION = 1;
 const integer = value => Number.isSafeInteger(value) && value >= 0;

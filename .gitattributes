@@ -1,0 +1,8 @@
+# Keep published checksums identical to committed asset bytes.
+* text=auto eol=lf
+# Preserve the approved upstream SVG originals and their paired artwork.
+icon/ui/control-gun.svg whitespace=-blank-at-eol
+icon/ui/magnet-northeast-original.svg whitespace=-blank-at-eol
+icon/ui/magnet-northeast.svg whitespace=-blank-at-eol
+icon/ui/switches-original.svg whitespace=-blank-at-eol
+icon/ui/warning-triangle-original.svg whitespace=-blank-at-eol
