@@ -70,3 +70,5 @@
 @media(max-width:480px){header .brand-name{display:none}header{gap:5px!important;padding-left:8px!important;padding-right:8px!important}.pool-navigation{gap:5px}.pool-navigation button{padding:8px!important}#settings-open{padding:8px!important}#tree-open .ui-icon{display:none}}
 
 .tree-root{grid-column:1/-1;text-align:center;font-size:12px;color:#b8e6d2;padding:0 0 16px;border-bottom:1px solid #456379}.tree-root span{display:block;font-size:10px;color:#a1b6ca;margin-top:5px}.tree-map-section{scroll-margin-top:110px}#tree-dialog .tree-back-map{display:none}@media(max-width:760px){#tree-dialog .tree-back-map{display:inline-flex;margin-bottom:16px}}
+
+@media(max-width:360px){header .brand{display:none}header .pool-navigation{margin-left:0}#tree-open{margin-left:auto}}
