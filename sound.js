@@ -1,11 +1,12 @@
 import {instrumentNote,instrumentPercussion} from './instrument.js';
+import {poolPan} from './view.js';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js';
 import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, jellyRole } from './music.js';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export class PoolSound {
-  constructor() { this.media = new PoolMedia(); this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.replyUntil = 0; }
+  constructor() { this.media = new PoolMedia(); this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
   get bloomCount() { return this.music.blooms; }
   get harmony() { const chord = this.activeChord ?? this.music.history.at(-1)?.chord; return chord === undefined || chord === null ? null : CHORDS[chord]; }
   musicSave() { return musicCreate(this.music, this.bloomCount); }
@@ -59,7 +60,7 @@ export class PoolSound {
     this.musicRestore(null, count);
   }
   phraseClear() {
-    this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.playbackQueue = []; this.playbackLights.clear(); this.lastPlayback = null; this.replyUntil = 0;
+    this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.playbackQueue = []; this.playbackLights.clear(); this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0;
     if (!this.context) return;
     const now = this.context.currentTime;
     for (const voice of this.phraseVoices) {
@@ -90,7 +91,8 @@ export class PoolSound {
       }
       this.passage = Math.floor(Math.max(0, this.music.bar - 1 - this.music.formStart) / 4) + 1; this.stage = score.stage;
       this.previousPitch = score.nextPitch; this.section = score.section;
-      this.musicQueue.push(...score.events.map(event => ({ ...event, at: event.at + start })));
+      const phrase = score.phrase ? { ...score.phrase, pans: score.phrase.ids.map(id=>this.music.pans[id]??0) } : null;
+      this.musicQueue.push(...score.events.map(event => ({ ...event, at: event.at + start, ...(event.role === 'lead' ? { phrase } : {}) })));
       this.musicQueue.sort((a, b) => a.at - b.at); this.phraseEnd = start + score.duration;
     }
     while (this.musicQueue.length && this.musicQueue[0].at <= now + .12) {
@@ -104,7 +106,8 @@ export class PoolSound {
       const event = this.playbackQueue.shift();
       if (event.at < now - .2) continue;
       this.playbackLights.set(event.sourceId, { ...event, until: event.at + .7 });
-      this.lastPlayback = event; this.playbackCount++;
+      if (event.role === 'lead') { this.lastPlayback = event; this.playbackPhrase = event.phrase; }
+      this.playbackCount++;
     }
     for (const [id, event] of this.playbackLights) if (event.until <= now) this.playbackLights.delete(id);
   }
@@ -124,13 +127,14 @@ export class PoolSound {
     oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); stereo.disconnect(); this.phraseVoices.delete(voice); this.voiceCount--; };
   }
   eventPlay(event) {
+    const pan = poolPan(event.x, event.y, this.portrait);
     if (event.type === 'launch') musicLaunch(this.music);
     if (['rest', 'win', 'over'].includes(event.type)) musicFinish(this.music);
-    if (event.type === 'note') musicStrike(this.music, event.tone, event.tick, event.chain, event.id, (this.harmony?.notes[event.tone % 5] ?? [60, 62, 64, 67, 69][event.tone % 5]) + (event.chain > 3 ? 12 : 0), event.speed);
+    if (event.type === 'note') musicStrike(this.music, event.tone, event.tick, event.chain, event.id, (this.harmony?.notes[event.tone % 5] ?? [60, 62, 64, 67, 69][event.tone % 5]) + (event.chain > 3 ? 12 : 0), event.speed, pan);
     if (event.type === 'bloom') {musicBloom(this.music);if(event.banks>0)musicAccent(this.music);}
     if(event.type==='objective')musicAccent(this.music);
     if (!this.context || this.isMuted) return;
-    this.eventCount++; const pan = ((event.x ?? 480) / 960 - .5) * 1.5;
+    this.eventCount++;
     if (event.type === 'launch') { this.tone(130, 520, .13, .25, pan); this.tone(65, 38, .18, .25, pan); }
     if (event.type === 'wall') this.tone(190 + Math.min(300, event.speed), 85, .16, .1, pan);
     if (event.type === 'impact') this.tone(event.bubble ? 120 : 100 + Math.min(200, event.speed), event.bubble ? 42 : 55, event.bubble ? .18 : .095, Math.min(.15, event.speed / 2500), pan);

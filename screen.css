@@ -65,3 +65,13 @@ main,.stream-mode main{grid-template-rows:30px minmax(0,1fr) 25px 40px 70px 48px
  main,.stream-mode main{grid-template-rows:22px 22px 54px minmax(0,1fr) 90px 24px;gap:4px 10px}.bonus-card{grid-column:2;grid-row:3;gap:6px}.bonus-eyebrow{font-size:7px;letter-spacing:.7px}.bonus-emblem{width:24px;height:24px}#bonus-status{font-size:8px}.power-dock{grid-row:4;flex-direction:row;align-items:stretch;gap:4px}.power-dock .power-slots{flex-direction:row;align-items:stretch;gap:3px}.power-dock .power-slots li{flex:1;flex-direction:column;min-height:0;height:auto;padding:3px;font-size:8px}.power-dock>button{align-self:center;min-height:30px;padding:4px;font-size:9px}.control-strip{grid-row:5}.edge-feedback{grid-row:6}
 }
 @media(prefers-reduced-motion:reduce){.bonus-track>span{transition:none}}
+
+/* A phrase's time runs across; its vertical position records the stereo field. */
+.phrase-stereo{display:flex;align-items:stretch;gap:5px;flex:1;min-width:0;height:28px}
+.phrase-axis{width:10px;flex:none;fill:#a5b8c9;stroke:none;font:9px Fredoka,sans-serif}.phrase-axis path{stroke:#637d8f;stroke-width:1}
+.phrase-stereo .phrase-pattern{flex:1;min-width:0;height:100%;align-items:stretch;gap:4px}
+.phrase-stereo .phrase-pattern i{position:relative;height:100%;min-height:0;border-radius:0;opacity:1;background:linear-gradient(transparent calc(50% - .5px),#52647b66 50%,transparent calc(50% + .5px));box-shadow:none}
+.phrase-pattern i b{position:absolute;left:0;right:0;top:var(--pan,50%);height:5px;transform:translateY(-50%);border-radius:4px;background:var(--note);opacity:.6}
+.phrase-pattern i.active b{opacity:1;box-shadow:0 0 10px var(--note);height:7px}
+@media(min-width:1000px) and (min-height:650px){.phrase-stereo{flex:none;height:30px}}
+@media(max-width:600px){.phrase-stereo{height:22px;gap:3px}.phrase-axis{width:8px}.phrase-stereo .phrase-pattern{gap:3px}.phrase-pattern i b{height:4px}.phrase-pattern i.active b{height:6px}}

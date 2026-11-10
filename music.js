@@ -25,7 +25,7 @@ function legacyPhrase(value) {
   return { tones: [...value.tones], rhythm: value.rhythm, steps: value.tones.map((_, i) => timing[i % 4] + Math.floor(i / 4) * 8), ids: value.tones.map(() => 0), pitches: value.tones.map(tone => PENTATONIC[tone]) };
 }
 export function musicCreate(input = null, blooms = 0, plucks = null) {
-  const empty = { version: 4, blooms, plucks: countValid(plucks) ? plucks : 0, theme: [], history: [], strikes: [], motifs: [], bar: 0, formStart: 0, hook: null, evolution:{nextBar:0,half:1,pending:null}, pendingParts:{bass:null,rhythm:null}, reply: null, parts:{melody:null,bass:null,rhythm:null}, intensity:{}, palette:'glass', accentStart:-1, accentUntil:0 };
+  const empty = { version: 4, blooms, plucks: countValid(plucks) ? plucks : 0, theme: [], history: [], strikes: [], motifs: [], bar: 0, formStart: 0, hook: null, evolution:{nextBar:0,half:1,pending:null}, pendingParts:{bass:null,rhythm:null}, reply: null, parts:{melody:null,bass:null,rhythm:null}, intensity:{}, pans:{}, palette:'glass', accentStart:-1, accentUntil:0 };
   if (!input || ![1, 2, 3, 4].includes(input.version) || input.blooms !== blooms || !tonesValid(input.theme, 0, 4) || !Array.isArray(input.history) || input.history.length > Math.min(4, blooms) || !Array.isArray(input.strikes) || input.strikes.length > (input.version >= 3 ? 14 : 8)) return empty;
   if (input.history.length && input.theme.length !== 4) return empty;
   const valid = input.version >= 3 ? phraseValid : value => motifValid(value) && value.tones.length <= 8;
@@ -41,11 +41,12 @@ export function musicCreate(input = null, blooms = 0, plucks = null) {
   const pendingParts=Object.fromEntries(['bass','rhythm'].map(role=>[role,input.version===4&&input.pendingParts[role]?phraseCopy(input.pendingParts[role]):null]));
   const parts=Object.fromEntries(Object.keys(JELLY_ROLES).map(role=>[role,phraseValid(input.parts?.[role])?phraseCopy(input.parts[role]):null]));
   const intensity=Object.fromEntries(Object.entries(input.intensity||{}).filter(([id,v])=>idValid(Number(id))&&Number.isFinite(v)&&v>=0&&v<=1));
+  const pans=Object.fromEntries(Object.entries(input.pans||{}).filter(([id,v])=>idValid(Number(id))&&Number.isFinite(v)&&v>=-1&&v<=1));
   const palette=Object.hasOwn(PALETTES,input.palette)?input.palette:'glass';
   const accentStart=Number.isInteger(input.accentStart)&&input.accentStart>=-1&&input.accentStart<=input.bar+4?input.accentStart:-1;
   const accentUntil=countValid(input.accentUntil)&&input.accentUntil<=input.bar+12?input.accentUntil:0;
   const copy = value => input.version >= 3 ? phraseCopy(value) : legacyPhrase(value);
-  return { ...empty, evolution, pendingParts, parts, intensity, palette, accentStart, accentUntil, plucks: plucks ?? (input.version >= 2 ? input.plucks : blooms), theme: [...input.theme], history: input.history.map(value => ({ ...copy(value), chord: value.chord })), strikes: input.strikes.map(hit => ({ tone: hit.tone, tick: hit.tick, id: hit.id ?? 0, midi: hit.midi ?? PENTATONIC[hit.tone] })), motifs: (input.version >= 2 ? input.motifs : input.history).map(copy), bar: input.version >= 2 ? input.bar : 0, formStart: input.version >= 2 ? input.formStart : 0, hook: input.version >= 3 && input.hook ? copy(input.hook) : null, reply: input.version >= 3 && input.reply ? { phrase: copy(input.reply.phrase), part: input.reply.part } : null };
+  return { ...empty, evolution, pendingParts, parts, intensity, pans, palette, accentStart, accentUntil, plucks: plucks ?? (input.version >= 2 ? input.plucks : blooms), theme: [...input.theme], history: input.history.map(value => ({ ...copy(value), chord: value.chord })), strikes: input.strikes.map(hit => ({ tone: hit.tone, tick: hit.tick, id: hit.id ?? 0, midi: hit.midi ?? PENTATONIC[hit.tone] })), motifs: (input.version >= 2 ? input.motifs : input.history).map(copy), bar: input.version >= 2 ? input.bar : 0, formStart: input.version >= 2 ? input.formStart : 0, hook: input.version >= 3 && input.hook ? copy(input.hook) : null, reply: input.version >= 3 && input.reply ? { phrase: copy(input.reply.phrase), part: input.reply.part } : null };
 }
 function capture(music) {
   const hits = music.strikes.length ? music.strikes : [0, 2, 3, 1].map((tone, i) => ({ tone, tick: i * 90, id: 0, midi: PENTATONIC[tone] }));
@@ -69,10 +70,11 @@ function hookSet(music, phrase) {
   music.theme = Array.from({ length: 4 }, (_, i) => phrase.tones[i % phrase.tones.length]);
 }
 export function musicLaunch(music) { music.plucks++; music.strikes = []; }
-export function musicStrike(music, tone, tick, chain, id = 0, midi = PENTATONIC[tone], speed = 400) {
+export function musicStrike(music, tone, tick, chain, id = 0, midi = PENTATONIC[tone], speed = 400, pan = 0) {
   if (chain === 1) music.strikes = [];
   if (!tonesValid([tone], 1, 1) || music.strikes.length >= 14) return;
   music.intensity[id]=Math.max(0,Math.min(1,(Number.isFinite(speed)?speed:400)/1000));
+  music.pans[id]=Number.isFinite(pan)?Math.max(-1,Math.min(1,pan)):0;
   music.strikes.push({ tone, tick: Math.max(music.strikes.at(-1)?.tick ?? 0, countValid(tick) ? tick : 0), id: idValid(id) ? id : 0, midi: pitchValid(midi) ? midi : PENTATONIC[tone] });
 }
 export function musicFinish(music) {
@@ -245,7 +247,7 @@ export function musicComposeBar(music, bar = music.bar, flow = 0, previous = 67)
   events=events.map(e=>{
     if(!e.level)return e;
     const force=music.intensity?.[e.sourceId]??.45, ending=e.at>2.2?.83:1;
-    return {...e,level:e.level*(.78+force*.38)*ending,attack:Math.max(.006,(e.attack??.025)*(1.3-force*.65)),duration:e.duration*(.94+force*.12),brightness:.7+force*.6,palette:music.palette};
+    return {...e,pan:e.sourceId>0?music.pans?.[e.sourceId]??0:e.pan,level:e.level*(.78+force*.38)*ending,attack:Math.max(.006,(e.attack??.025)*(1.3-force*.65)),duration:e.duration*(.94+force*.12),brightness:.7+force*.6,palette:music.palette};
   });
-  return { ...score, section, events: events.sort((a, b) => a.at - b.at), duration: BAR_SECONDS, isReply: !!music.reply, nextPitch: events.filter(event => event.role === 'lead').at(-1)?.midi ?? previous };
+  return { ...score, section, phrase: music.reply?.phrase ?? music.hook, events: events.sort((a, b) => a.at - b.at), duration: BAR_SECONDS, isReply: !!music.reply, nextPitch: events.filter(event => event.role === 'lead').at(-1)?.midi ?? previous };
 }

@@ -25,7 +25,7 @@ export function instrumentNote(rack,event) {
       oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); stereo.disconnect(); rack.phraseVoices.delete(voice); rack.voiceCount--; };
       oscillator.start(start); oscillator.stop(start + duration + .03);
     }
-    if (event.sourceId > 0) { rack.playbackQueue.push({ at: start, sourceId: event.sourceId, step: event.step, phraseIndex: event.phraseIndex, reply: !!event.reply }); rack.playbackQueue.sort((a, b) => a.at - b.at); }
+    if (event.sourceId > 0) { rack.playbackQueue.push({ at: start, sourceId: event.sourceId, step: event.step, phraseIndex: event.phraseIndex, reply: !!event.reply, role: event.role, pan: event.pan, phrase: event.phrase }); rack.playbackQueue.sort((a, b) => a.at - b.at); }
   }
 
 export function instrumentPercussion(rack,event) {
@@ -40,5 +40,5 @@ export function instrumentPercussion(rack,event) {
     const voice = { oscillator, gain, start }; rack.phraseVoices.add(voice); rack.voiceCount++;
     oscillator.onended = () => { oscillator.disconnect(); filter.disconnect(); gain.disconnect(); stereo.disconnect(); rack.phraseVoices.delete(voice); rack.voiceCount--; };
     oscillator.start(start); oscillator.stop(start + event.duration + .01);
-    if(event.sourceId>0){rack.playbackQueue.push({at:start,sourceId:event.sourceId,step:event.step});rack.playbackQueue.sort((a,b)=>a.at-b.at);}
+    if(event.sourceId>0){rack.playbackQueue.push({at:start,sourceId:event.sourceId,step:event.step,role:event.role,pan:event.pan});rack.playbackQueue.sort((a,b)=>a.at-b.at);}
   }

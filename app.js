@@ -252,6 +252,7 @@ function blobRender(body, dt, time) {
   if (!isSeed && game.chain.includes(body.id)) { context.strokeStyle = hue + (isPermeable ? '28' : '88'); context.lineWidth = 1; context.beginPath(); for (const [index, point] of points.entries()) { const x = body.x + (point.x - body.x) * 1.1, y = body.y + (point.y - body.y) * 1.1; if (!index) context.moveTo(x, y); else context.lineTo(x, y); } context.closePath(); context.stroke(); }
 }
 function render(now) {
+  const view=geometry(), {rect,scale}=view, ratio=canvas.width/rect.width; portraitView=view.portrait; audio.portrait=portraitView;
   audio.musicUpdate(game.bodies.reduce((sum, body) => sum + Math.hypot(body.vx, body.vy), 0) / (game.bodies.length * 100));
   const elapsed = Math.min(.06, (now - previousTime) / 1000); previousTime = now;
   const isActive = isStarted && !isPaused && !game.isOver && !document.querySelector('dialog[open]') && !document.hidden;
@@ -259,7 +260,6 @@ function render(now) {
   else accumulator = 0;
   const visualDelta = isPaused || document.hidden || document.querySelector('dialog[open]') ? 0 : elapsed;
   const time = isStarted ? game.tick * RULE.step : now / 1000;
-  const view=geometry(), {rect,scale}=view, ratio=canvas.width/rect.width; portraitView=view.portrait;
   context.setTransform(1, 0, 0, 1, 0, 0); context.clearRect(0, 0, canvas.width, canvas.height); context.setTransform(...view.matrix.map(value=>value*ratio));
   // Slow luminous currents, not a grid.
   context.lineWidth = 1;
@@ -374,7 +374,7 @@ function uiRender() {
   $('chain-label').textContent = game.chain.length ? `${game.chain.length} NOTES ${game.chain.length >= 5 ? '· BEAUTIFUL.' : '· KEEP IT SINGING.'}` : 'FIVE DIFFERENT JELLIES. ONE BLOOM.';
   $('note-meter').replaceChildren(...Array.from({ length: 5 }, (_, index) => { const item = document.createElement('i'); if (game.chain[index]) { item.className = 'active'; item.style.setProperty('--note', COLORS[game.bodies[game.chain[index]].tone]); } return item; }));
   $('note-meter').setAttribute('aria-label', `${game.chain.length} unique notes this pluck`);
-  $('state-label').textContent = isPaused ? 'A QUIET MOMENT.' : game.isOver ? 'EVERY POOL HAS ITS OWN SONG.' : !isStarted ? 'YOUR NEXT LITTLE OBSESSION.' : game.isFlying ? `FOLLOW THE LIGHT · ${Math.max(0, Math.ceil(RULE.flightSeconds - game.flightAge))}s` : 'PULL BACK. LET GO. LISTEN.';
+  $('state-label').textContent = isPaused ? 'A QUIET MOMENT.' : game.isOver ? 'EVERY POOL HAS ITS OWN SONG.' : !isStarted ? 'YOUR NEXT LITTLE OBSESSION.' : game.isFlying ? game.flightAge >= RULE.flightSeconds ? 'SETTLING INTO THE POOL' : `FOLLOW THE LIGHT · ${Math.max(0, Math.ceil(RULE.flightSeconds - game.flightAge))}s` : 'PULL BACK. LET GO. LISTEN.';
   $('goal-label').textContent = game.mode === 'free' ? 'FREE PLAY · Let the pool sing' : gameWon(game) ? 'YOU WON · Three blooms complete' : `MAKE ${RULE.goalBlooms} BLOOMS TO WIN · ${Math.min(game.blooms, RULE.goalBlooms)} / ${RULE.goalBlooms}`;
   $('goal-progress').hidden = game.mode === 'free'; $('goal-progress').max = RULE.goalBlooms; $('goal-progress').value = Math.min(game.blooms, RULE.goalBlooms);
   bonusRender();
@@ -419,29 +419,34 @@ function uiRender() {
   Object.assign(canvas.dataset, { physicsTick: String(game.tick), flying: String(game.isFlying), score: String(game.score), seedX: game.bodies[0].x.toFixed(2), seedY: game.bodies[0].y.toFixed(2), chain: String(game.chain.length), audioState: audio.context?.state || 'locked', soundEvents: String(audio.eventCount), notes: String(noteCount), mode: game.mode, harmony: audio.harmony?.name || 'none', songChords: String(audio.music.history.length), songTheme: audio.music.theme.join(','), musicPending: String(audio.musicQueue.length), musicVoices: String(audio.phraseVoices.size), audioVoices: String(audio.voiceCount), harmonyPaused: String(audio.isPaused), musicPassage: String(audio.passage), musicSection: audio.section, musicStage: String(audio.stage), songStage: String(song.stage), songPlucks: String(audio.music.plucks), songBar: String(audio.music.bar), mediaState: audio.media.state, mediaReady: String(audio.media.ready), mediaArtwork: audio.media.artwork?.[0]?.src || '', hookNextBar: String(audio.music.evolution.nextBar), hookPending: String(!!audio.music.evolution.pending), phraseSteps: (audio.music.motifs.at(-1)?.steps || []).join(','), hookSteps: (audio.music.hook?.steps || []).join(','), phraseReplayCount: String(audio.playbackCount), phraseReplayIds: [...audio.playbackLights.keys()].join(','), ambience: String(audio.ambience) });
 }
 function phraseRender() {
-  const isLive = game.isFlying, phrase = isLive ? musicPhrasePreview(audio.music) : audio.music.motifs.at(-1), now = audio.context?.currentTime ?? 0;
-  const isAudible = audio.isMusicPlaying && audio.context?.state === 'running' && !audio.isMuted && !audio.isPaused && audio.ambience > 0;
+  const isLive = game.isFlying, phrase = isLive ? musicPhrasePreview(audio.music) : audio.playbackPhrase || audio.music.motifs.at(-1), now = audio.context?.currentTime ?? 0;
+  const isAudible = audio.isMusicPlaying && audio.context?.state === 'running' && !audio.isMuted && !audio.isPaused && audio.volume > 0 && audio.ambience > 0;
   const count = phrase?.tones.length || 0;
-  $('phrase-title').textContent = isLive ? `YOUR PHRASE · LIVE · ${count} ${count === 1 ? 'NOTE' : 'NOTES'}` : phrase ? `YOUR LATEST PHRASE · ${count} ${count === 1 ? 'NOTE' : 'NOTES'}` : 'YOUR PHRASE';
+  $('phrase-title').textContent = isLive ? `YOUR PHRASE · LIVE · ${count} ${count === 1 ? 'NOTE' : 'NOTES'}` : phrase ? `${audio.playbackPhrase ? audio.lastPlayback?.reply ? 'YOUR PHRASE · REPLY' : 'YOUR MELODY' : 'YOUR LATEST PHRASE'} · ${count} ${count === 1 ? 'NOTE' : 'NOTES'}` : 'YOUR PHRASE';
   $('phrase-status').textContent = isLive ? !isStarted ? 'Your unfinished phrase is saved. Return to keep playing.' : audio.isPaused ? 'Paused · your growing phrase is saved.' : phrase ? 'Each jelly adds a note. Your phrase is taking shape.' : 'Your new phrase starts with the first jelly.' : !phrase ? 'Pluck through the jellies. Listen for their reply.' : !isStarted ? 'Your phrase is saved. Return to hear it.' : audio.isPaused ? 'Paused · your phrase is saved.' : !isAudible ? 'Phrase saved · turn on sound and ambience to hear it.' : now < audio.replyUntil ? 'The pool is playing your phrase back.' : audio.music.reply ? 'Your phrase joins on the next bar.' : 'Follow the glowing jellies as your melody returns.';
   $('phrase-choice').textContent=!audio.music.hook?'Hit three different jellies in one pluck to establish your melody.':audio.music.evolution.pending?'Your melody repeats. New notes will join at the next section.':'Your melody repeats and gradually absorbs new ideas.';
-  const pattern = $('phrase-pattern'), key = JSON.stringify([isLive, phrase || null]);
+  const pattern = $('phrase-pattern'), pans = phrase?.pans || phrase?.ids.map(id=>audio.music.pans[id]??0) || [], key = JSON.stringify([isLive, phrase || null, pans]);
   pattern.dataset.live = String(isLive); pattern.dataset.noteCount = String(count);
   if (pattern.dataset.phrase !== key) {
     pattern.dataset.phrase = key;
     pattern.replaceChildren(...Array.from({ length: 16 }, (_, step) => {
       const item = document.createElement('i'), index = phrase?.steps.indexOf(step) ?? -1;
-      if (index >= 0) { item.style.setProperty('--note', COLORS[phrase.tones[index]]); item.style.setProperty('--height', `${9 + (phrase.pitches[index] - 48) * .45}px`); }
+      if (index >= 0) {
+        item.style.setProperty('--note', COLORS[phrase.tones[index]]);
+        item.style.setProperty('--pan', `${50 + pans[index] * 35}%`);
+        item.dataset.pan = String(pans[index]); item.append(document.createElement('b'));
+        item.title = `Step ${step+1} · ${Math.abs(pans[index])<.08?'Centre':pans[index]<0?'Left':'Right'}`;
+      }
       return item;
     }));
-    pattern.setAttribute('aria-label', phrase ? `${isLive ? 'Live two-bar phrase' : 'Two-bar phrase'}, ${phrase.tones.length} notes at steps ${phrase.steps.map(step => step + 1).join(', ')}` : isLive ? 'Live phrase, waiting for the first note' : 'No phrase recorded yet');
+    pattern.setAttribute('aria-label', phrase ? `${isLive ? 'Live two-bar phrase' : 'Two-bar phrase'}, ${phrase.tones.length} notes. Top is left audio, bottom is right. ${phrase.steps.map((step,i)=>`Step ${step+1}: ${Math.abs(pans[i])<.08?'centre':pans[i]<0?'left':'right'}`).join('; ')}` : isLive ? 'Live phrase, waiting for the first note. Top is left audio, bottom is right.' : 'No phrase recorded yet. Top is left audio, bottom is right.');
   }
   const lastStrike = audio.music.strikes.at(-1);
-  const activeStep = isLive ? phrase && lastStrike && game.tick - lastStrike.tick < 42 ? phrase.steps.at(-1) : -1 : isAudible && audio.lastPlayback?.reply && now - audio.lastPlayback.at < .35 ? audio.lastPlayback.step : -1;
+  const activeStep = isLive ? phrase && lastStrike && game.tick - lastStrike.tick < 42 ? phrase.steps.at(-1) : -1 : isAudible && audio.lastPlayback && now - audio.lastPlayback.at < .35 ? audio.lastPlayback.step : -1;
   for (const [step, item] of [...pattern.children].entries()) item.classList.toggle('active', step === activeStep);
 }
 function controlsRender() { $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').replaceChildren(iconNode('music-note'),document.createTextNode(audio.isMuted?'Sound is off. Enable Sound to listen.':'Sound on. Headphones make it lovelier.')); $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('motion').checked = isGentle; $('stream').checked = isStream; document.body.classList.toggle('motion-reduced', isGentle); document.body.classList.toggle('stream-mode', isStream); }
-function shoot() { if (!isStarted || isPaused || document.querySelector('dialog[open]')) return; audioUnlockAsync(); if (launch(game, angle, power)) { audio.eventPlay({ type: 'launch', x: game.bodies[0].x }); save(); uiRender(); } }
+function shoot() { if (!isStarted || isPaused || document.querySelector('dialog[open]')) return; audioUnlockAsync(); if (launch(game, angle, power)) { audio.eventPlay({ type: 'launch', x: game.bodies[0].x, y: game.bodies[0].y }); save(); uiRender(); } }
 function pauseSet(value) { if (!isStarted || game.isOver) return; isPaused = value; audio.pauseSet(value); dragCancel(); $('pause-overlay').hidden = !value; save(); uiRender(); if (!value) { audioUnlockAsync(); canvas.focus({ preventScroll: true }); } }
 function start() { audio.media.describe(game.seed); isStarted = true; isPaused = false; $('welcome').hidden = true; $('pause-overlay').hidden = true; if (audio.bloomCount !== game.blooms) audio.harmonySet(game.blooms); audio.pauseSet(false); audio.musicStart(); audioUnlockAsync(); save(); uiRender(); canvas.focus({ preventScroll: true }); }
 function loadPool(nextGame, music = null) {

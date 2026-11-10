@@ -37,3 +37,7 @@ Interface controls use SVG artwork from Cure Interactive Icons, with a small set
 Relay-armed jellies can activate powers on the jellies they bump. Each Relay jelly has one transfer; power collection uses the shared allowance and refreshes the player flight. A marked jelly that has already scored still activates its power without scoring twice.
 
 Homing curves your seed and Split seeds toward nearby unhit jellies ahead for five seconds. Green brackets mark the current target; steering preserves speed apart from ordinary water drag.
+
+Pool effects pan with the visible left and right sides, including the rotated phone view. Each jelly remembers its last struck stereo position for melody, bass and rhythm playback and saved-song exports. The phrase strip shows time across and stereo position vertically: L at the top, R at the bottom. It follows the actual recurring melody after the one-time reply, lighting each audible lead note on the audio clock.
+
+Flights retain their normal drag for the first five seconds, then water friction increases smoothly over the next two seconds. A moving seed can coast briefly beyond seven seconds; the turn ends only once all remaining seeds are moving at most 12 pool units per second. There is no high-speed cutoff. Power collection refreshes the flight and releases the added drag, while Rewind keeps its reverse encore before settling.

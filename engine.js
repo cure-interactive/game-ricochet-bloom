@@ -1,5 +1,5 @@
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
-export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 17, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
+export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 17, settleSeconds: 2, settleSpeed: 12, settleDrag: 4.8, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
 export function seedHash(seed) { let hash = 2166136261; for (const char of String(seed)) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619); return hash >>> 0 || 1; }
 export const POWERS = Object.freeze({
@@ -59,6 +59,10 @@ function powerTargetNext(state) {
 export function effectGet(state, kind) { return state.effects.find(effect => effect.kind === kind); }
 export function frozenHit(state, id) { return state.isFlying && state.chain.includes(id) && !!effectGet(state, 'stasis')?.targets.includes(id); }
 export function seedBodies(state) { return [state.bodies[0], ...(effectGet(state, 'split')?.shards || []), ...(effectGet(state, 'echo')?.isReady ? [effectGet(state, 'echo').ghost] : [])]; }
+export function flightDrag(age) {
+  const settling = Math.max(0, Math.min(1, (age - (RULE.flightSeconds - RULE.settleSeconds)) / RULE.settleSeconds));
+  return .1 + RULE.settleDrag * settling * settling;
+}
 // Shared by steering and its target cue; selection has no hidden state to save.
 export function homingTarget(state, seed) {
   if (!state.isFlying || !effectGet(state, 'homing') || seed.id === -3 ||
@@ -373,7 +377,7 @@ export function physicsStep(state) {
     body.cooldown = Math.max(0, body.cooldown - dt);
     if (body.id === -3 || effectGet(state, 'orbit')?.satellites.includes(body.id) || body.id === 0 && (effectGet(state, 'slingshot') || effectGet(state,'rewind')?.returning)) continue;
     if (body.id > 0) { body.vx += Math.cos(state.tick * .002 + body.id * 1.7) * 4 * dt; body.vy += Math.sin(state.tick * .0025 + body.id * 2.1) * 4 * dt; }
-    const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? .10 : 3 : effectGet(state, 'stasis')?.targets.includes(body.id) ? 5 : .65) * dt);
+    const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? flightDrag(state.flightAge) : 3 : effectGet(state, 'stasis')?.targets.includes(body.id) ? 5 : .65) * dt);
     body.vx *= drag; body.vy *= drag; body.x += body.vx * dt; body.y += body.vy * dt;
     const left = RULE.inset + body.radius, right = RULE.width - left, top = RULE.inset + body.radius, bottom = RULE.height - top;
     if (body.id <= 0 && state.isFlying && effectGet(state, 'wrap')) {
@@ -522,8 +526,8 @@ export function physicsStep(state) {
   }
   const rewind=effectGet(state,'rewind');
   if(state.isFlying && !rewind?.returning && state.tick%4===0) { state.flightPath.push({x:seed.x,y:seed.y});state.flightPath=state.flightPath.slice(-420); }
-  const ending=state.flightAge>=RULE.flightSeconds || (!effectGet(state,'echo')&&!effectGet(state,'slingshot')&&!effectGet(state,'orbit')&&!effectGet(state,'pulse')&&state.flightAge>1.5&&seedBodies(state).every(body=>Math.hypot(body.vx,body.vy)<45));
-  if(state.isFlying && ending && rewind && !rewind.returning && state.flightPath.length) {
+  const ending=!effectGet(state,'echo')&&!effectGet(state,'slingshot')&&!effectGet(state,'orbit')&&!effectGet(state,'pulse')&&state.flightAge>1.5&&seedBodies(state).every(body=>Math.hypot(body.vx,body.vy)<=RULE.settleSpeed);
+  if(state.isFlying && (state.flightAge>=RULE.flightSeconds||ending) && rewind && !rewind.returning && state.flightPath.length) {
     rewind.returning=true;rewind.route=state.flightPath.map(p=>({...p}));rewind.seconds=Math.min(3.5,rewind.route.length*RULE.step+RULE.step);
     effectClear(state,events,'slingshot');events.push({type:'rewind',x:seed.x,y:seed.y});
   }
@@ -531,7 +535,7 @@ export function physicsStep(state) {
     const successful = state.chain.length >= RULE.bloomNotes, previousCapacity = state.power.capacity;
     state.power.capacity = successful ? Math.min(3, previousCapacity + 1) : 1;
     state.power.markers = [];
-    effectClear(state, events); state.isFlying = false; seed.vx *= .08; seed.vy *= .08; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0);
+    effectClear(state, events); state.isFlying = false; seed.vx = seed.vy = 0; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0);
     state.lastShot={notes:state.chain.length,banks:state.banks,points:state.shotStart===null?null:state.score-state.shotStart,powers:state.power.used,bloom:successful,objective:state.objective.earned};
     if(state.objective.earned)state.objective.index++;
     events.push({ type: 'power-streak', successful, capacity: state.power.capacity, previousCapacity });
