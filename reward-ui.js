@@ -1,0 +1,23 @@
+import { GAME_CATALOGUE as cat, discoveryUse, progressionBudget, progressionLoadout, POOL_NAMES } from './run.js?v=d9759df78dc498217dd53b586f16048feafa7f17faf634eef9e660eb088ccee5';
+import { POWER_TREES } from './power-tree.js?v=4929fc5eda5a5d405a8ac330c9b14b440804ab62150439a106e28084bb1f9f19';
+import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
+import { assetURL } from './asset.js?v=a5528e3237bdbf8014b25e76066054535d27e26d94e720a9464cd2747b41bc05';
+
+export function rewardMount(controller) {
+  const dialog=document.createElement('dialog');dialog.id='reward-dialog';dialog.setAttribute('aria-label','Pool reward');document.body.append(dialog);
+  let selected=null,remove=[];
+  const button=(action,label,icon='play',extra='')=>`<button type="button" aria-label="${label}" data-reward="${action}" ${extra}>${iconHTML(icon)}<span>${label}</span></button>`;
+  function render(message=''){
+    const s=controller.get(),node=cat.nodes[selected],preview=node?discoveryUse(s,selected,remove):null;
+    dialog.innerHTML=`<header class="reward-heading"><div><small>${s.profile.kind==='development'?'TEST · ':''}${POOL_NAMES[s.pool]} COMPLETE</small><h2>${s.run.discovered?'Ready for the next pool':'Choose your next variation'}</h2></div>${button('back','Main menu','grid')}</header><div class="reward-scroll"><p class="reward-intro">${s.run.discovered?'Your discovery is equipped. It lasts for this run.':'One discovery, active immediately. Keep it for the rest of this run.'}</p><p class="reward-budget">${iconHTML('switches')}${progressionLoadout(s).tuning}/${progressionBudget(s)} tuning · ${s.profile.wallet.seeds} Seeds saved</p><div class="reward-offers">${!s.run.discovered?(selected?[selected]:s.run.offers).map(id=>{const n=cat.nodes[id];return `<article class="reward-card ${selected===id?'is-selected':''}"><div class="reward-power"><img src="${assetURL('icon/power/'+n.power+'.svg')}" width="32" height="32" alt=""><span>${POWER_TREES[n.power].name}</span>${n.kind==='capstone'?iconHTML('epic'):''}</div><h3>${n.name}</h3><p>${n.description}</p><small>${n.tuningCost} tuning</small><div>${button('preview','Compare','gamepad',`data-id="${id}"`)}${button('select','Use next pool','add',`data-id="${id}" class="primary"`)}</div></article>`;}).join('')||'<p>All upgrades for this build are already available. Keep playing or retune your powers.</p>':`<div class="reward-equipped">${iconHTML('check')}<strong>${s.equipped.map(id=>cat.nodes[id].name).join(' · ')}</strong></div>`}</div>${node&&!s.run.discovered?`<section class="reward-replace">${button('change','Choose another discovery','arrow-left')}<h3>Make room for ${node.name}</h3><p>Choose what to unequip. Research and borrowed upgrades stay available.</p>${s.equipped.map(id=>`<label><input type="checkbox" value="${id}" ${remove.includes(id)?'checked':''}><span>${cat.nodes[id].name} · ${cat.nodes[id].tuningCost} tuning${node.conflicts.includes(id)?' · conflicting mode':''}</span></label>`).join('')}<p>${preview.ok?'Fits. These are the only upgrades that will be replaced.':preview.reason}</p>${button('confirm','Replace & use next pool','check',preview.ok?'class="primary"':'disabled')}</section>`:''}<p role="status" aria-live="polite">${message}</p><div class="reward-target"></div></div><footer class="reward-footer">${button('tune','Retune build','switches')}${button('continue',s.run.discovered?'Continue to '+POOL_NAMES[s.pool+1]:'Continue without change','arrow-right','class="primary"')}</footer>`;
+    controller.target?.(dialog.querySelector('.reward-target'));
+  }
+  function open(){selected=null;remove=[];controller.screen?.();document.querySelectorAll('dialog[open]').forEach(d=>d.close());render();dialog.showModal();}
+  function use(id,removed=[]){const r=controller.act({type:'discover',id,remove:removed});if(r.ok){selected=null;remove=[];render(r.message);}else{selected=id;render(r.reason);dialog.querySelector('.reward-scroll').scrollTop=0;}}
+  dialog.onclick=e=>{const b=e.target.closest('[data-reward]');if(!b)return;
+    switch(b.dataset.reward){case 'change':selected=null;remove=[];render();break;case 'select':use(b.dataset.id);break;case 'confirm':use(selected,remove);break;case 'preview':controller.preview(b.dataset.id);break;case 'continue':controller.continue();break;case 'tune':controller.tree();break;case 'back':controller.home();break;}
+  };
+  dialog.onchange=e=>{if(e.target.matches('input[type=checkbox]')){const id=e.target.value;remove=[...dialog.querySelectorAll('input:checked')].map(x=>x.value);render();[...dialog.querySelectorAll('input')].find(x=>x.value===id)?.focus();}};
+  dialog.addEventListener('cancel',e=>{e.preventDefault();controller.home();});
+  return {open};
+}

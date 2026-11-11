@@ -1,17 +1,17 @@
 import { gameMenuMount } from './game-menu.js?v=1a8cb19a93cbd64a42eae6ed4215b8ac08ae763eda3442fa46cec7079416b822';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=4929fc5eda5a5d405a8ac330c9b14b440804ab62150439a106e28084bb1f9f19';
-import { progressionMount } from './progression-ui.js?v=57324e06f0de4d6aa6736552fe7c2961626112850eaf3874ce8ad084b9c23b77';
+import { progressionMount } from './progression-ui.js?v=2dc29543e2336445e69ad2735e18a9630b635d8319782c470232a6d950306157';
 import {assetURL} from './asset.js?v=a5528e3237bdbf8014b25e76066054535d27e26d94e720a9464cd2747b41bc05';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
-import {songLibrarySetup} from './song-ui.js?v=79176fe5ef5011113a6ac70fbedb3ab2368425ffedde7b475d61516e622098cf';
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=56b76ef371ce8d9857fad17229b62f6ad346ac3b95774147bc024b9b3cf4d11e';
-import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=ca31b5dae38e6830162d82160bec10f85efb12adefad9843459aac442d133a25';
-import { PoolSound } from './sound.js?v=199eb28731f753fd75faeb0fb0671a61ec228c9d80f3c91aa13c2c2ef2d91704';
-import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=d5f4ef876dcc9eebfe90c7514438f77e6ee282c1d0147ad1db027e4f8d02cacd';
+import {songLibrarySetup} from './song-ui.js?v=392853419cdb3de4858af177aca5ab79a367e609c960bdbb563391c98d5ee04b';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=484625264dc5bfa76ad46aa629ce94a11081c33309a67c50b27eb49df438cff8';
+import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=0bca5904126f395d3525e16690b40fa545a1863fb41879424f8591284342eadf';
+import { PoolSound } from './sound.js?v=37c24e852cbc3371ba6a09dc8ae9390e42b48c07b7ba526ab077893b9fa848d4';
+import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
-import { PowerVisual } from './power-visual.js?v=1318a9f6de449b4f72e09d4436f9b36d8d9377fb48f52a5221eacf3972a64d2a';
+import { PowerVisual } from './power-visual.js?v=837d7039642c8ca1aed9c0883dd76f8e5f60f1b082c2b52248712827a6675fdb';
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
 let store = poolStoreRead(null), storageIsAvailable = true;
 try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localStorage.getItem(LEGACY_STORAGE) ?? 'null')); } catch { storageIsAvailable = false; }
@@ -611,7 +611,7 @@ if (['127.0.0.1', 'localhost', '[::1]'].includes(location.hostname)) {
   }).catch(() => {});
 }
 
-progression=progressionMount({currentScreen:()=>navigation?.current||'home',screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),save:()=>save(),play:loadPool,message:toast,runMusic(music){if(music.run)audio.music.run=structuredClone(music.run);},restoreLegacy(){const entry=store.pools[store.activeMode];loadPool(entry?.game||gameCreate('LAGOON',store.activeMode),entry?.music);}});
+progression=progressionMount({gentle:()=>isGentle,currentScreen:()=>navigation?.current||'home',screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),save:()=>save(),play:loadPool,message:toast,runMusic(music){if(music.run)audio.music.run=structuredClone(music.run);},restoreLegacy(){const entry=store.pools[store.activeMode];loadPool(entry?.game||gameCreate('LAGOON',store.activeMode),entry?.music);}});
 
 navigation=gameMenuMount({
   suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},

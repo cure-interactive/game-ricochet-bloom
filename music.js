@@ -10,6 +10,13 @@ export const JELLY_ROLES = Object.freeze({melody:{name:'Melody',mark:'♪'},bass
 export const jellyRole = id => ['melody','bass','rhythm'][Math.max(0,id-1)%3];
 export const PALETTES = Object.freeze({glass:'Glass',velvet:'Velvet',wood:'Wood'});
 export function musicAccent(music) { if(music.bar >= music.accentUntil) { music.accentStart=Math.ceil(music.bar/4)*4;music.accentUntil=music.accentStart+8; } }
+// One brief answer per four bars, never one extra layer per physics contact.
+export function musicPower(music,kind,pan=0) {
+  if(!['blaster','echo'].includes(kind)||!music.hook||music.bar<(music.powerReply?.until||0))return false;
+  const at=music.bar+(kind==='echo'?1:0);
+  music.powerReply={kind,at,until:at+4,pan:Math.max(-1,Math.min(1,Number.isFinite(pan)?pan:0))};
+  return true;
+}
 export const BEAT_SECONDS = .75, BAR_SECONDS = 3, PASSAGE_SECONDS = 12;
 const tonesValid = (tones, min, max) => Array.isArray(tones) && tones.length >= min && tones.length <= max && tones.every(tone => Number.isInteger(tone) && tone >= 0 && tone < 5);
 const countValid = value => Number.isSafeInteger(value) && value >= 0;
@@ -48,6 +55,7 @@ export function musicCreate(input = null, blooms = 0, plucks = null) {
   const accentUntil=countValid(input.accentUntil)&&input.accentUntil<=input.bar+12?input.accentUntil:0;
   if(input.run!==undefined&&(!input.run||!trackGet(input.run.track)||!Number.isInteger(input.run.section)||input.run.section<0||input.run.section>5||!Number.isInteger(input.run.pending)||input.run.pending<0||input.run.pending>5||typeof input.run.cadenceDone!=='boolean'))return empty;
   const run=input.run?{run:{...input.run}}:{};
+  if(input.powerReply!==undefined){const r=input.powerReply;if(!r||!['blaster','echo'].includes(r.kind)||!countValid(r.at)||r.at>input.bar+1||r.until!==r.at+4||!Number.isFinite(r.pan)||Math.abs(r.pan)>1)return empty;run.powerReply={...r};}
   const copy = value => input.version >= 3 ? phraseCopy(value) : legacyPhrase(value);
   return { ...empty, ...run, evolution, pendingParts, parts, intensity, pans, palette, accentStart, accentUntil, plucks: plucks ?? (input.version >= 2 ? input.plucks : blooms), theme: [...input.theme], history: input.history.map(value => ({ ...copy(value), chord: value.chord })), strikes: input.strikes.map(hit => ({ tone: hit.tone, tick: hit.tick, id: hit.id ?? 0, midi: hit.midi ?? PENTATONIC[hit.tone] })), motifs: (input.version >= 2 ? input.motifs : input.history).map(copy), bar: input.version >= 2 ? input.bar : 0, formStart: input.version >= 2 ? input.formStart : 0, hook: input.version >= 3 && input.hook ? copy(input.hook) : null, reply: input.version >= 3 && input.reply ? { phrase: copy(input.reply.phrase), part: input.reply.part } : null };
 }
@@ -257,6 +265,18 @@ export function musicComposeBar(music, bar = music.bar, flow = 0, previous = 67)
     if(track==='glasswater')events=events.filter(e=>e.role!=='shaker'&&(e.role!=='accompaniment'||bar%2===0)).map(e=>({...e,duration:Math.min(e.duration,1.2),attack:.012}));
     if(track==='afterimage'&&bar%2===1)events=events.filter(e=>e.role!=='accompaniment').map(e=>e.role==='lead'?{...e,role:'answer',level:e.level*.7,pan:-(e.pan||0)}:e);
     if(pool===5&&!cadenceDone){section='Song complete';events=events.filter(e=>!['lead','answer','accompaniment','kick','rim','shaker'].includes(e.role));for(const [i,midi] of [67,64,60].entries())events.push({at:i*.75,midi,duration:1.5,level:.045,role:'lead',pan:0,attack:.04});}
+  }
+  const response=music.powerReply;
+  if(response?.at===bar&&music.hook&&music.run?.section!==3&&!(music.run?.section===5&&!music.run.cadenceDone)){
+    const phrase=music.hook,echo=response.kind==='echo',slots=echo?[1.5,2.625]:[1.125,1.875,2.625];
+    events=events.filter(e=>!['accompaniment','answer'].includes(e.role));
+    let index=0;
+    for(const at of slots){
+      if(events.some(e=>e.role==='lead'&&Math.abs(e.at-at)<.19))continue;
+      const source=(echo?phrase.pitches.length-1-index:index)%phrase.pitches.length;
+      events.push({at,midi:chordPitch(chord,phrase.pitches[source],60,81),duration:echo?.7:.28,level:echo?.024:.029,role:'answer',pan:echo?-response.pan:response.pan,attack:echo?.045:.012,power:response.kind});index++;
+    }
+    if(index)section=echo?'Echo · motif reply':'Blaster · motif variation';
   }
   events=events.map(e=>{
     if(!e.level)return e;

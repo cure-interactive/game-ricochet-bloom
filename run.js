@@ -1,9 +1,9 @@
 import { buildValidate } from './skill-effect.js?v=495e5208ab85e2d73bf805e158844c6d848b4a0ccfeb2f2d9d50cd589ab4379c';
-import { catalogueCreate, STARTERS } from './catalogue.js?v=29bfa3870f4a1808447f7c1b947f69e5a7dc0cc9131159769f55b5527c4ee113';
+import { catalogueCreate, STARTERS, familyGate } from './catalogue.js?v=29bfa3870f4a1808447f7c1b947f69e5a7dc0cc9131159769f55b5527c4ee113';
 import { POWER_TREES } from './power-tree.js?v=4929fc5eda5a5d405a8ac330c9b14b440804ab62150439a106e28084bb1f9f19';
 import { profileCreate, profileValidate, profilePurchase, profileRefund, profileRefundPreview, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve } from './profile.js?v=d86f3e1dc882dcf034b75db8449706fd9c205f62359e1ca4202ef4df753af1c7';
-import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=56b76ef371ce8d9857fad17229b62f6ad346ac3b95774147bc024b9b3cf4d11e';
-import { jellyRole, musicCreate, musicRunSection } from './music.js?v=d5f4ef876dcc9eebfe90c7514438f77e6ee282c1d0147ad1db027e4f8d02cacd';
+import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=484625264dc5bfa76ad46aa629ce94a11081c33309a67c50b27eb49df438cff8';
+import { jellyRole, musicCreate, musicRunSection } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 
@@ -18,6 +18,11 @@ export function campaignPoolAccess(state,pool) {
   const cleared=valid&&(profileSummary(state.profile,GAME_CATALOGUE).completedTracks.includes(state.track)||state.phase!=='shop'&&pool<next);
   return {next,play:valid&&pool===next,cleared,replay:cleared};
 }
+export function campaignRestoration(state,track) {
+  let pools=0;
+  for(const {event} of state.profile.rewards)if(event.trackId===track){if(event.type==='victory')return 5;if(event.type==='pool')pools=Math.max(pools,event.poolIndex+1);}
+  return Math.min(5,pools);
+}
 const unique=a=>Array.isArray(a)&&new Set(a).size===a.length;
 const integer=n=>Number.isSafeInteger(n)&&n>=0;
 const seedValid=s=>typeof s==='string'&&/^[A-Za-z0-9_-]{1,24}$/.test(s);
@@ -30,9 +35,37 @@ export const progressionBudget=s=>s.phase==='shop'?2:Math.min(10,2+s.pool*2+(s.p
 export const progressionLoadout=s=>loadoutResolve(s.profile,s,progressionBudget(s),GAME_CATALOGUE,{ignoreBudget:s.bypass});
 export const progressionRefundPreview=(s,id)=>profileRefundPreview(s.profile,id,GAME_CATALOGUE);
 export const unlockedTracks=s=>{const complete=profileSummary(s.profile,GAME_CATALOGUE).completedTracks;return TRACKS.filter((t,i)=>i===0||complete.includes(TRACKS[i-1].id));};
+export function researchTarget(s,id=s.target) {
+  const n=GAME_CATALOGUE.nodes[id];if(!n)return null;
+  const owned=!!s.profile.research[id],gate=familyGate(s.profile.research,n.power,GAME_CATALOGUE),mastery=profileSummary(s.profile,GAME_CATALOGUE).mastery[n.power],needs=[];
+  if(!owned){
+    const seeds=Math.max(0,n.seedCost-s.profile.wallet.seeds);if(seeds)needs.push(`${seeds} more Seeds`);
+    if(n.kind==='base'&&!gate.ok){if(gate.required>gate.upgrades)needs.push(`${gate.required-gate.upgrades} more ${POWER_TREES[n.power].family} upgrades`);if(POWER_TREES[n.power].tier===3&&gate.powers<2)needs.push(`${2-gate.powers} more powers developed`);}
+    if(n.kind!=='base'&&!s.profile.research[n.power+'.base'])needs.push(`Unlock ${POWER_TREES[n.power].name} first`);
+    if(n.masteryPools>mastery)needs.push(`${n.masteryPools-mastery} more cleared pools using ${POWER_TREES[n.power].name}`);
+  }
+  return {id,name:n.name,owned,needs,text:owned?'Researched':needs.join(' · ')||'Ready to research between runs'};
+}
 export function discoveries(s){
   if(s.phase!=='interlude')return [];
-  return Object.values(GAME_CATALOGUE.nodes).filter(n=>n.kind!=='base'&&s.powers.includes(n.power)&&!s.profile.research[n.id]&&!s.borrowed.includes(n.id)&&(n.kind!=='capstone'||s.pool>=2)).sort((a,b)=>seedHash(s.run.seed+s.pool+a.id)-seedHash(s.run.seed+s.pool+b.id)).slice(0,3).map(n=>n.id);
+  const candidates=Object.values(GAME_CATALOGUE.nodes).filter(n=>n.kind!=='base'&&s.powers.includes(n.power)&&!s.profile.research[n.id]&&!s.borrowed.includes(n.id)&&(n.kind!=='capstone'||s.pool>=2));
+  const rank=n=>(n.conflicts.some(id=>s.equipped.includes(id))?4:0)+(s.run.activated.includes(n.power)?0:1);
+  candidates.sort((a,b)=>rank(a)-rank(b)||seedHash(s.run.seed+s.pool+a.id)-seedHash(s.run.seed+s.pool+b.id));
+  const offers=[];
+  for(const n of candidates)if(!offers.some(x=>x.power===n.power))offers.push(n);
+  for(const n of candidates)if(offers.length<3&&!offers.includes(n))offers.push(n);
+  return offers.slice(0,3).map(n=>n.id);
+}
+// Preview and commit use the same transaction. No loan or equipment changes leak on failure.
+export function discoveryUse(input,id,remove=[]) {
+  const s=progressionValidate(input,input.profile?.kind),node=GAME_CATALOGUE.nodes[id];
+  if(!s||s.phase!=='interlude'||s.run.discovered||!s.run.offers.includes(id)||!node||node.kind==='base')return {ok:false,reason:'Choose one of the saved discovery offers.'};
+  if(!unique(remove)||remove.some(x=>!s.equipped.includes(x)))return {ok:false,reason:'Choose equipped upgrades to replace.'};
+  s.borrowed.push(id);s.equipped=s.equipped.filter(x=>!remove.includes(x));s.equipped.push(id);
+  const loadout=progressionLoadout(s);
+  if(!loadout.ok)return {...loadout,reason:loadout.reason==='over-budget'?'Choose upgrades to replace until the discovery fits.':loadout.reason==='incompatible-upgrades'?'Choose the conflicting upgrade to replace.':loadout.reason};
+  s.run.discovered=true;s.run.game.build=loadout.powers;
+  return {ok:true,state:s,message:`${node.name} is active for the next pool.`};
 }
 function tidy(s){s.borrowed=s.borrowed.filter(id=>!s.profile.research[id]&&s.powers.includes(GAME_CATALOGUE.nodes[id].power));s.equipped=s.equipped.filter(id=>(s.profile.research[id]||s.borrowed.includes(id))&&s.powers.includes(GAME_CATALOGUE.nodes[id].power));while(!progressionLoadout(s).ok&&s.equipped.length)s.equipped.pop();}
 function setupValid(r){return !!r&&seedValid(r.seed)&&!!trackGet(r.track)&&typeof r.relaxed==='boolean'&&unique(r.powers)&&r.powers.length===3&&r.powers.every(p=>!!GAME_CATALOGUE.powers[p])&&unique(r.equipped)&&unique(r.borrowed)&&[...r.equipped,...r.borrowed].every(id=>GAME_CATALOGUE.nodes[id]?.kind!=='base'&&r.powers.includes(GAME_CATALOGUE.nodes[id]?.power));}
@@ -40,6 +73,7 @@ function recordValid(r){return !!r&&typeof r.id==='string'&&/^run-[0-9]+$/.test(
 export function progressionValidate(input,kind='normal') {
   if(!input||input.version!==1||!['shop','run','interlude'].includes(input.phase)||!integer(input.attempt)||!Number.isInteger(input.pool)||input.pool<0||input.pool>4||typeof input.relaxed!=='boolean'||typeof input.bypass!=='boolean'||input.bypass&&kind!=='development')return null;
   const s=structuredClone(input);s.profile=profileValidate(s.profile,GAME_CATALOGUE,kind);if(!s.profile||!progressionLoadout(s).ok)return null;
+  s.target??=null;if(s.target!==null&&!GAME_CATALOGUE.nodes[s.target])return null;
   // Compatible addition of campaign fields to the original v2 preview envelope.
   s.track??='first-light';s.route??=0;s.seed??=`DAWN-${s.attempt||1}`;s.records??=[];s.latest??=null;s.retry??=null;s.skin??='original';
   if(!trackGet(s.track)||!seedValid(s.seed)||![0,1].includes(s.route)||!Array.isArray(s.records)||s.records.length>500||!s.records.every(recordValid)||!unique(s.records.map(r=>r.id))||s.latest!==null&&!recordValid(s.latest)||s.skin!=='original'&&!trackGet(s.skin))return null;
@@ -67,8 +101,10 @@ export function progressionAct(input,action){
   const s=progressionValidate(input,input.profile?.kind);if(!s)return {ok:false,reason:'Invalid saved progression.'};
   const cat=GAME_CATALOGUE,node=cat.nodes[action.id];let r,message='Updated.';
   const fail=reason=>({ok:false,reason});
-  if(s.phase==='run'&&!['abandon'].includes(action.type))return fail('Finish this pool before changing your build.');
+  if(s.phase==='run'&&!['abandon','pin'].includes(action.type))return fail('Finish this pool before changing your build.');
   switch(action.type){
+    case 'pin':if(action.id!==null&&!node)return fail('Choose a research target.');s.target=action.id;message=action.id?'Research goal pinned.':'Research goal cleared.';break;
+    case 'discover':return discoveryUse(s,action.id,action.remove||[]);
     case 'buy':case 'refund':
       if(s.phase!=='shop')return fail('Research is between runs.');
       r=action.type==='buy'?profilePurchase(s.profile,action.id,cat):profileRefund(s.profile,action.id,cat,action.revision);if(!r.ok)return r;s.profile=r.profile;

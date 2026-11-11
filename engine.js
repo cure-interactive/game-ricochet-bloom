@@ -1,5 +1,5 @@
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
-import { jellyRole } from './music.js?v=d5f4ef876dcc9eebfe90c7514438f77e6ee282c1d0147ad1db027e4f8d02cacd';
+import { jellyRole } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=495e5208ab85e2d73bf805e158844c6d848b4a0ccfeb2f2d9d50cd589ab4379c';
 export { skillFlags } from './skill-effect.js?v=495e5208ab85e2d73bf805e158844c6d848b4a0ccfeb2f2d9d50cd589ab4379c';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.

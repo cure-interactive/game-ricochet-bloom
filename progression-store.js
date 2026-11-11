@@ -1,4 +1,4 @@
-import { progressionCreate, progressionValidate } from './run.js?v=691097a9072d6b323d2b1de0403ed23963100ce0658bc16878767f8b325faa9f';
+import { progressionCreate, progressionValidate } from './run.js?v=d9759df78dc498217dd53b586f16048feafa7f17faf634eef9e660eb088ccee5';
 export const PROGRESSION_KEY='ricochet-bloom-progression-v1';
 const key=kind=>PROGRESSION_KEY+(kind==='development'?'-development':'');
 export function progressionRead(storage,kind='normal') {

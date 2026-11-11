@@ -2,7 +2,7 @@ import {instrumentNote,instrumentPercussion} from './instrument.js?v=54c0e4fa3ea
 import {poolPan} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js?v=7358b24e6622dda5508c33c1b2f9099ec24805c0bbe0767b3e349e3657eeaf47';
-import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, jellyRole } from './music.js?v=d5f4ef876dcc9eebfe90c7514438f77e6ee282c1d0147ad1db027e4f8d02cacd';
+import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, musicPower, jellyRole } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export class PoolSound {
@@ -147,16 +147,18 @@ export class PoolSound {
     if (event.type === 'note') musicStrike(this.music, event.tone, event.tick, event.chain, event.id, (this.harmony?.notes[event.tone % 5] ?? [60, 62, 64, 67, 69][event.tone % 5]) + (event.chain > 3 ? 12 : 0), event.speed, pan);
     if (event.type === 'bloom') {musicBloom(this.music);if(event.banks>0)musicAccent(this.music);}
     if(event.type==='objective')musicAccent(this.music);
+    if(event.type==='blaster-fire')musicPower(this.music,'blaster',pan);
+    if(event.type==='power'&&event.kind==='echo')musicPower(this.music,'echo',pan);
     if (!this.context || this.isMuted) return;
     this.eventCount++;
-    if (event.type === 'blaster-fire') { this.tone(740,220,.16,.12,pan); this.tone(1480,620,.09,.045,pan); }
+    if (event.type === 'blaster-fire') { const pitch=this.notePitch(0)*2;this.tone(pitch*1.08,pitch,.09,.045,pan); }
     if (event.type === 'blaster-bank') this.tone(880,1320,.08,.06,pan);
     if (event.type === 'launch') { this.tone(130, 520, .13, .25, pan); this.tone(65, 38, .18, .25, pan); }
     if (event.type === 'wall') this.tone(190 + Math.min(300, event.speed), 85, .16, .1, pan);
     if (event.type === 'impact') this.tone(event.bubble ? 120 : 100 + Math.min(200, event.speed), event.bubble ? 42 : 55, event.bubble ? .18 : .095, Math.min(.15, event.speed / 2500), pan);
     if (event.type === 'note') { const gain = event.seedId < 0 ? .65 : 1; const pitch = this.notePitch(event.tone) * (jellyRole(event.id)==='bass'?.5:event.chain>3?2:1); this.tone(pitch * 2.2, pitch, .075, .23 * gain, pan); this.tone(pitch, pitch * .998, .65, .24 * gain, pan, .025, 'sine', true); this.tone(pitch * 2, pitch * 2, .32, .055 * gain, pan, .03, 'triangle', true); }
     if (event.type === 'note' || event.type === 'launch') { this.duckUntil = this.context.currentTime + .8; this.mixUpdate(); }
-    if (event.type === 'power') {
+    if (event.type === 'power'&&!['echo','blaster'].includes(event.kind)) {
       const degrees = ({ ripple: [0, 2, 3], attract: [3, 2, 0], vortex: [0, 3, 2, 3], stasis: [3, 0], comet: [0, 2, 3, 5], swap: [0, 3, 0, 2], magnet: [5, 3, 2, 0], lightning: [], impact: [0, 0, 3], tether: [0, 2, 0], split: [0, 3, 5], bubble: [0, 3, 2], portal: [0, 5], echo: [3, 0, 3], slingshot: [0, 2], drunk: [0, 3, 2, 5, 3], homing: [0, 2, 5] })[event.kind] || [0, 2, 3];
       degrees.forEach((degree, index) => { const pitch = this.notePitch(degree); this.tone(pitch, pitch, .65, .075, pan, index * .09, 'sine', true); });
       this.duckUntil = this.context.currentTime + .8; this.mixUpdate();
