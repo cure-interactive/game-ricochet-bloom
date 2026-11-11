@@ -1,6 +1,6 @@
 import { upgradePreviewMount, upgradeFixture, BUILD_EXAMPLES } from './upgrade-preview.js?v=3769812ab9a5923ff5c2801edd246d0fbd5d60675cbf1e29fb1e02387a00c019';
 import { rewardMount } from './reward-ui.js?v=79102018fb2f0386b9e0a2d2adcbfd140fbd8173b66282f3451d8770e547d6c1';
-import { campaignMount } from './campaign-ui.js?v=1aabbd7edbadfb384b29bddbd14a6ac1541d831dd913d8b4b5f11dcf5e95527b';
+import { campaignMount } from './campaign-ui.js?v=903aabc944bf0f5cde583f767d01094fe891ec540b21d5b4bc1f0b8c0e783e8e';
 import { challengeEncode, challengeDecode } from './challenge.js?v=bfb0b08f6f70fc1ccbac4943173c3fcd1b373f5ef6d24899a94ae6d8836658e1';
 import { trackGet, trackEnvironment } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { unlockedTracks, researchTarget, campaignPoolAccess, POPULATIONS, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=58c88e9b727d2c38752239506cb914e7198e544cf55e38d7031735e3e065e2f2';
@@ -10,6 +10,7 @@ import { gameCreate } from './engine.js?v=2d94bc3e3221c7e6c61b2dd311fe2e42f65f15
 import { treeMount } from './tree-ui.js?v=f5a999f84b5f58a25ed92ede92f38aeced6f2a81b71ca45edc2e9777d67f4a3c';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
+import { skinMount } from './skin-ui.js?v=5488a5543cd05b99696dfde332e832b35ae6bfc223fc1d42872fe75a5d58373f';
 export function progressionMount(host){
   let kind='normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',practice=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,rewards,listenTimer=null;
   let saveBlocked=!loaded.available;
@@ -53,6 +54,7 @@ export function progressionMount(host){
   function open(type,id){if(type==='replay'){if(!campaignPoolAccess(state,id).replay)return {ok:false,reason:'Clear this pool first.'};host.save();const game=gameCreate(`${state.seed}-replay-${id}`,'free',{build:progressionLoadout(state).powers,randomPowers:state.powerMode==='unlocked',population:POPULATIONS[id],environment:trackEnvironment(state.track,id,state.route)});context='practice';practice={campaign:true};close();back.hidden=false;back.lastElementChild.textContent='Campaign';host.play(game,null);host.message('Replay practice · your run and rewards are preserved.');return {ok:true};}if(type==='campaign'){if(state.phase==='interlude'&&!shared)rewards.open();else campaign.open();return {ok:true};}if(type==='compare'){preview.open(id);return {ok:true};}if(type==='play')return enterRun();if(type==='practice'||type==='tutorial')return enterPractice(type==='tutorial'?'ripple.base':id,type==='tutorial');if(type==='development'){devRender();dev.showModal();return {ok:true};}}
   const preview=upgradePreviewMount({gentle:()=>host.gentle?.(),practice:id=>enterPractice(id)});
   tree=treeMount({get:()=>state,act,open,screen:()=>host.screen?.('tree'),back:()=>host.back?.()});
+  const skins=skinMount({get:()=>state,act,screen:()=>host.screen?.('skins'),back:()=>host.back?.()});
   const listen=(record,seconds=0)=>{clearTimeout(listenTimer);host.save();context='practice';practice={listening:true,campaign:seconds>0};close();back.hidden=false;back.lastElementChild.textContent=seconds?'Stop preview':'Leave listening';const listeningGame=gameCreate(record.seed,'free');listeningGame.blooms=record.music.blooms;listeningGame.launches=record.music.plucks;host.play(listeningGame,record.music);host.message('Listening to '+trackGet(record.track).name+'. Leave listening to return to your saved run.');if(seconds)listenTimer=setTimeout(()=>{if(context==='practice'&&practice?.listening&&host.currentScreen?.()==='play'){leave();campaign.open();}},seconds*1000);};
   campaign=campaignMount({screen:()=>host.screen?.('levels'),songsMount:host.songsMount,songsClose:host.songsClose,songsRefresh:host.songsRefresh,back:()=>host.back?.(),get:()=>({...state,shared:!!shared}),act,open,listen,
     code(){const build=progressionLoadout(state);if(!build.ok)return {ok:false,reason:'Your power pool could not be read.'};try{return {ok:true,code:challengeEncode({version:2,rules:18,track:state.track,seed:state.seed,relaxed:state.relaxed,build:build.powers,routes:[0,0,0,0,0]})};}catch{return {ok:false,reason:'This build cannot be shared.'};}},
@@ -86,7 +88,7 @@ export function progressionMount(host){
   if(loaded.recovered)host.message('Recovered progression from your backup.');
   return {
     get context(){return context;},get blocked(){return saveBlocked||!!practice?.listening||['run','challenge'].includes(context)&&state.phase!=='run';},get state(){return state;},
-    tree:()=>tree.open(),campaign:view=>state.phase==='interlude'&&!shared&&!['collection','songs'].includes(view)?rewards.open():campaign.open(view),play:enterRun,leave,
+    skins:()=>skins.open(),tree:()=>tree.open(),campaign:view=>state.phase==='interlude'&&!shared&&!['collection','songs'].includes(view)?rewards.open():campaign.open(view),play:enterRun,leave,
     get skin(){return state.skin==='original'?null:trackGet(state.skin)?.color;},
     checkpoint(game,music){if(['run','challenge'].includes(context)&&state.phase==='run'){const next=structuredClone(state);next.run.game=structuredClone(game);next.run.music=music;return commit(next).ok;}return true;},
     observe(game,events,music){

@@ -1,9 +1,9 @@
 import { fullscreenMount } from './fullscreen.js?v=2c3119f8c834c71afef28339288e1d4d71b96164e260d16f903a6c0fbd0ee41f';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=03fc6fb9e68bcd0e18a58ccd599a6f1ae1787b4dece14d6c3033e3679ead7888';
+import { gameMenuMount } from './game-menu.js?v=bbba276883545d2762510535f5155963c15b8287faa8b947aede070b84e35a22';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { progressionMount } from './progression-ui.js?v=b0082286eecd4b5f59052232f475784cde5e4edd2940d908a255c9afe0e54d4b';
+import { progressionMount } from './progression-ui.js?v=8328762a49b7ae4f9ee9e19a48ec90f5de9c0d2c9a7f77d94a989594e332e799';
 import {assetURL} from './asset.js?v=2b159e067962ab466dfde3d9f305e802c92bc5b4183b6ffe9932dbb398b20746';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
@@ -635,7 +635,7 @@ navigation=gameMenuMount({
   freePlay,
   info(){const s=progression.state,active=s.phase!=='shop';return {resume:active?'Continue Song Run':null,detail:active?`${trackGet(s.track).name} · Pool ${Math.min(5,s.pool+(s.phase==='interlude'?2:1))} of 5`:`${s.profile.wallet.seeds} Points · Research grows between runs`};},
   continue(){if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
-  open(screen){if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign();else if(screen==='tree')progression.tree();else if(screen==='help')$('help-dialog').showModal();else $('settings-dialog').showModal();}
+  open(screen){if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign();else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='help')$('help-dialog').showModal();else $('settings-dialog').showModal();}
 });
 fullscreenMount(document,window);
 $('welcome').hidden=true;
@@ -646,6 +646,7 @@ $('menu-dialog').querySelector('[data-close]').onclick=()=>start();
 $('menu-dialog').addEventListener('cancel',event=>{event.preventDefault();start();});
 $('menu-open').onclick=()=>navigation.pause();
 $('menu-tree').onclick=()=>progression.tree();
+$('menu-skins').onclick=()=>progression.skins();
 $('menu-help').onclick=()=>$('help-dialog').showModal();
 $('menu-settings').onclick=()=>$('settings-dialog').showModal();
 document.querySelector('header .brand').onclick=event=>{event.preventDefault();navigation.home();};
