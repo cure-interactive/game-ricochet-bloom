@@ -1,6 +1,6 @@
 import { fullscreenMount } from './fullscreen.js?v=2c3119f8c834c71afef28339288e1d4d71b96164e260d16f903a6c0fbd0ee41f';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=bbba276883545d2762510535f5155963c15b8287faa8b947aede070b84e35a22';
+import { gameMenuMount } from './game-menu.js?v=66d16c93015705b37af1321c65942457ee6fbaab7cf9a1a9af83d63ed00e09a9';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
 import { progressionMount } from './progression-ui.js?v=8328762a49b7ae4f9ee9e19a48ec90f5de9c0d2c9a7f77d94a989594e332e799';
@@ -630,6 +630,7 @@ if (['127.0.0.1', 'localhost', '[::1]'].includes(location.hostname)) {
 progression=progressionMount({songsMount:host=>songLibrary.mount(host),songsClose:()=>songLibrary.close(),songsRefresh:()=>songLibrary.refresh(),gentle:()=>isGentle,currentScreen:()=>navigation?.current||'home',screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),save:()=>save(),play:loadPool,message:toast,runMusic(music){if(music.run)audio.music.run=structuredClone(music.run);},restoreLegacy(){const entry=store.pools[store.activeMode];loadPool(entry?.game||gameCreate('LAGOON',store.activeMode),entry?.music);}});
 
 navigation=gameMenuMount({
+  gentle:()=>isGentle,
   suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},
   resume:start,
   freePlay,
