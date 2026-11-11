@@ -1,3 +1,4 @@
+import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
 import { gameMenuMount } from './game-menu.js?v=1a8cb19a93cbd64a42eae6ed4215b8ac08ae763eda3442fa46cec7079416b822';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
@@ -591,8 +592,13 @@ $('seed-form').onsubmit = event => { event.preventDefault(); const seed = $('see
 document.querySelectorAll('[data-close]').forEach(button => { button.onclick = () => button.closest('dialog').close(); });
 document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('close', () => { if (isStarted) canvas.focus({ preventScroll: true }); }));
 $('copy-result').onclick = async () => { try { await navigator.clipboard.writeText(`Ricochet Bloom · ${gameWon(game) ? 'WIN · ' : ''}${game.score} resonance · ${game.blooms} blooms · ${game.bestChain} best chain · seed ${game.seed}`); buttonLabel($('copy-result'),'Copied','check'); } catch { buttonLabel($('copy-result'),'Clipboard unavailable','copy'); } };
-document.addEventListener('visibilitychange', () => { if (document.hidden) { audio.pauseSet(true); if (isStarted) pauseSet(true); } else if (isStarted && game.isOver) { audio.pauseSet(false); audioUnlockAsync(); } });
-window.addEventListener('pagehide', () => { audio.pauseSet(true); save(); });
+lifecycleMount(document, window, () => {
+  audio.pauseSet(true); dragCancel();
+  if (isStarted && !game.isOver) pauseSet(true);
+  else save();
+}, () => {
+  if (isStarted && game.isOver && navigation?.current === 'play') { audio.pauseSet(false); audioUnlockAsync(); }
+});
 if (saved) { $('welcome-copy').textContent = `Your ${saved.mode === 'free' ? 'free-play' : 'challenge'} pool is saved. Pick up where you left off.`; buttonLabel($('start'),saved.isOver?'View your result':'Return to the pool','play'); }
 if (!storageIsAvailable) $('save-status').textContent = 'Save unavailable · keep this tab open';
 audio.media.actions(() => {
