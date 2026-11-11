@@ -1,21 +1,32 @@
 // Spatial presentation only: catalogue prerequisites and saved research stay authoritative.
 export function treeLayout(powers,nodes,bridges) {
-  const origin={x:1280,y:60};
-  const places={Motion:[80,180],Flow:[1300,180],Navigation:[80,1300],Control:[1300,1300],Propagation:[950,2420]};
-  const result={width:2600,height:3560,origin,nodes:{},families:{},edges:[],bridges:[]};
+  const origin={x:820,y:80};
+  // Power branches fan out from family entries; upgrades remain straight chains.
+  const places={Motion:[70,230],Flow:[870,230],Navigation:[70,1050],Control:[870,1050],Propagation:[650,1870]};
+  const result={width:1660,height:2700,origin,nodes:{},families:{},edges:[],bridges:[]};
   for(const [family,[x,y]] of Object.entries(places)) {
     const members=Object.keys(powers).filter(p=>powers[p].family===family).sort((a,b)=>powers[a].tier-powers[b].tier);
-    const width=members.length*180+80,center=x+width/2;
+    const width=members.length*124+40,center=x+width/2;
     const slots=members.map((_,i)=>i).sort((a,b)=>Math.abs(a-(members.length-1)/2)-Math.abs(b-(members.length-1)/2));
-    result.families[family]={name:family,x,y,width,height:1070,hub:{x:center,y:y+48},powers:members,starter:members[0]+'.base'};
+    result.families[family]={name:family,x,y,width,height:790,hub:{x:center,y:y+20},powers:members,starter:members[0]+'.base'};
     members.forEach((power,index)=>{
-      const px=x+130+slots[index]*180,py=y+230+(powers[power].tier-1)*84;
-      ['base','foundation','a','b','capstone'].forEach((kind,i)=>{const id=power+'.'+kind;result.nodes[id]={id,power,kind,family,x:px,y:py+i*148};});
+      const px=x+82+slots[index]*124,py=y+138+Math.abs(slots[index]-(members.length-1)/2)*44;
+      ['base','foundation','a','b','capstone'].forEach((kind,i)=>{const id=power+'.'+kind;result.nodes[id]={id,power,kind,family,x:px,y:py+i*112};});
     });
   }
   for(const n of Object.values(nodes))for(const from of n.requires)result.edges.push({from,to:n.id});
   for(const [to,from] of Object.entries(bridges))if(from)result.bridges.push({from,to});
   return result;
+}
+export function researchRoute(nodes,powers,bridges,id) {
+  const route=new Set();
+  function visit(key){
+    if(route.has(key)||!nodes[key])return;
+    route.add(key);const node=nodes[key];
+    for(const prior of node.requires)visit(prior);
+    if(node.kind==='base'&&bridges[powers[node.power].family])visit(bridges[powers[node.power].family]);
+  }
+  visit(id);return route;
 }
 export function cameraClamp(camera,view,world) {
   const scale=Math.max(.1,Math.min(1.8,camera.scale)),axis=(offset,viewport,size)=>size*scale<viewport? (viewport-size*scale)/2:Math.max(viewport-size*scale-80,Math.min(80,offset));
@@ -57,5 +68,5 @@ export function mapCameraMount(surface,world,change) {
   surface.addEventListener('wheel',e=>{e.preventDefault();suppress=true;if(e.shiftKey)apply({...camera,x:camera.x-e.deltaY,y:camera.y-e.deltaX});else apply(cameraZoom(camera,camera.scale*Math.exp(-Math.max(-150,Math.min(150,e.deltaY))*.003),local(e)));},{passive:false});
   surface.addEventListener('keydown',e=>{if(e.target!==surface)return;const move={ArrowLeft:[80,0],ArrowRight:[-80,0],ArrowUp:[0,80],ArrowDown:[0,-80]}[e.key];if(move){e.preventDefault();apply({...camera,x:camera.x+move[0],y:camera.y+move[1]});}});
   const observer=new ResizeObserver(()=>{if(surface.clientWidth&&surface.clientHeight)apply(camera);});observer.observe(surface);
-  return {get value(){return {...camera};},zoom(factor){const v=size();apply(cameraZoom(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale)){const v=size();apply({x:v.width/2-point.x*scale,y:Math.min(235,v.height*.41)-point.y*scale,scale});},fit(bounds={x:0,y:0,width:world.width,height:world.height}){apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel(){points.clear();start=null;surface.classList.remove('is-panning');}};
+  return {get value(){return {...camera};},zoom(factor){const v=size();apply(cameraZoom(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){const v=size();apply({x:v.width/2-point.x*scale,y:Math.min(140,v.height*vertical)-point.y*scale,scale});},fit(bounds={x:0,y:0,width:world.width,height:world.height}){apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel(){points.clear();start=null;surface.classList.remove('is-panning');}};
 }
