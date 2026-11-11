@@ -1,4 +1,4 @@
-import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, familyGate, FAMILIES, legacyFamilyAccess } from './catalogue.js?v=59838fbe2430140ae4ab48caf99499a0512cf41262d679584072bcee8b3d7133';
+import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, familyGate, FAMILIES, legacyFamilyAccess } from './catalogue.js?v=5bfcb0ab345e2201d6a2fb0f398cacce1328c732a5c0091243a81dcd45c44c6e';
 
 export const PROFILE_VERSION = 1;
 const integer = value => Number.isSafeInteger(value) && value >= 0;
@@ -122,35 +122,6 @@ export function profilePurchase(input, id, catalogue = CATALOGUE) {
   profile.wallet.seeds -= node.seedCost; profile.research[id] = { paid: node.seedCost };
   return accepted(profile, { purchased: id, paid: node.seedCost });
 }
-export function profileRefundPreview(input, id, catalogue = CATALOGUE) {
-  const profile = profileValidate(input, catalogue);
-  if (!profile) return rejected('invalid-profile');
-  if (!own(profile.research, id)) return rejected('not-owned');
-  if (STARTERS.some(power => id === power + '.base')) return rejected('starter-power');
-  const remaining = new Set(Object.keys(profile.research)); remaining.delete(id);
-  let changed;
-  do {
-    changed = false;
-    for (const key of remaining) if (!nodePrerequisitesMet(catalogue.nodes[key], other => remaining.has(other))) {
-      remaining.delete(key); changed = true;
-    }
-  } while (changed);
-  const removed = Object.keys(profile.research).filter(key => !remaining.has(key));
-  const seeds = removed.reduce((total, key) => total + profile.research[key].paid, 0);
-  if (!integer(seeds) || !integer(profile.wallet.seeds + seeds)) return rejected('balance-overflow');
-  return { ok: true, revision: profile.revision, removed, seeds };
-}
-export function profileRefund(input, id, catalogue = CATALOGUE, expectedRevision = input?.revision) {
-  const preview = profileRefundPreview(input, id, catalogue);
-  if (!preview.ok) return preview;
-  if (preview.revision !== expectedRevision) return rejected('stale-preview');
-  const profile = profileValidate(input, catalogue);
-  if (!advance(profile)) return rejected('revision-overflow');
-  for (const key of preview.removed) delete profile.research[key];
-  profile.wallet.seeds += preview.seeds;
-  return accepted(profile, { removed: preview.removed, refunded: preview.seeds });
-}
-
 // Call only from validated Song Run outcomes, never legacy score or idle time.
 // This is local consistency validation, not server-side anti-cheat.
 export function profileReward(input, event, catalogue = CATALOGUE) {

@@ -38,7 +38,7 @@ export function catalogueCreate(supportedNodes = []) {
 // Consumers opt into implemented capabilities. run.js owns the shipping set.
 export const CATALOGUE = catalogueCreate();
 
-// Family experience is earned by using powers in successful pools. Refunds cannot erase it.
+// Family experience is earned by using powers in successful pools. Earned family access is permanent.
 export const FAMILIES = Object.freeze([...new Set(Object.values(POWER_TREES).map(p=>p.family))]);
 export function legacyFamilyAccess(research,catalogue=CATALOGUE){
  return Object.fromEntries(FAMILIES.map(f=>{const nodes=Object.keys(research).map(id=>catalogue.nodes[id]).filter(n=>n&&catalogue.powers[n.power].family===f),upgrades=nodes.filter(n=>n.kind!=='base'),powers=new Set(upgrades.map(n=>n.power)).size,ownedTier=Math.max(1,...nodes.filter(n=>n.kind==='base').map(n=>catalogue.powers[n.power].tier));return [f,Math.max(ownedTier,upgrades.length>=5&&powers>=2?3:upgrades.length>=2?2:1)];}));

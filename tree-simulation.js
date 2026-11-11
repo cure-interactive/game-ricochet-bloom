@@ -1,5 +1,5 @@
-import { CATALOGUE, catalogueCreate, STARTERS } from './catalogue.js?v=59838fbe2430140ae4ab48caf99499a0512cf41262d679584072bcee8b3d7133';
-import { profileCreate, profileValidate, profilePurchase, profileRefund, profileRefundPreview, profileReward, loadoutResolve } from './profile.js?v=34737935bb9fa338929973769d09b3c14eed45a03a0c366afa3d7800febf0035';
+import { CATALOGUE, catalogueCreate, STARTERS } from './catalogue.js?v=5bfcb0ab345e2201d6a2fb0f398cacce1328c732a5c0091243a81dcd45c44c6e';
+import { profileCreate, profileValidate, profilePurchase, profileReward, loadoutResolve } from './profile.js?v=6b230ce34060f0f5cb827af2b958d96532bb590720a440c7a10c258fa5789fc5';
 
 // This capability fixture is exclusively for the UI simulator, never the engine.
 export const SIMULATION_CATALOGUE = catalogueCreate(Object.keys(CATALOGUE.nodes));
@@ -17,11 +17,8 @@ const success = (state, message) => ({ ok: true, state, message });
 function tidy(state) {
   state.borrowed = state.borrowed.filter(id => !state.profile.research[id] && state.powers.includes(SIMULATION_CATALOGUE.nodes[id].power));
   state.equipped = state.equipped.filter(id => (state.profile.research[id] || state.borrowed.includes(id)) && state.powers.includes(SIMULATION_CATALOGUE.nodes[id].power));
-  // A returned purchase must not silently remain active through a borrowed copy.
+  // Keep equipment within the current loadout budget.
   while (!simulationLoadout(state).ok && state.equipped.length) state.equipped.pop();
-}
-export function simulationRefundPreview(state, id) {
-  return profileRefundPreview(state.profile, id, SIMULATION_CATALOGUE);
 }
 export function simulationAct(input, action) {
   const state = structuredClone(input), cat = SIMULATION_CATALOGUE;
@@ -48,15 +45,7 @@ export function simulationAct(input, action) {
       if (!result.ok) return fail(result.reason);
       state.profile = result.profile; tidy(state);
       return success(state, `Researched ${node.name}.`);
-    case 'refund':
-      if (state.phase !== 'shop') return fail('Refunds are between runs.');
-      result = profileRefund(state.profile, action.id, cat, action.revision);
-      if (!result.ok) return fail(result.reason);
-      state.profile = result.profile;
-      state.powers = state.powers.filter(id => state.profile.research[id + '.base']);
-      for (const id of STARTERS) if (state.powers.length < 3 && !state.powers.includes(id)) state.powers.push(id);
-      tidy(state);
-      return success(state, `Returned ${result.refunded} Seeds. Other owned powers stay unlocked.`);
+    case 'refund':return fail('Research purchases are permanent.');
     case 'replace':
       if (state.phase !== 'shop') return fail('Your three powers are fixed during a run.');
       if (!cat.powers[action.power] || !state.profile.research[action.power + '.base']) return fail('Research this power first.');

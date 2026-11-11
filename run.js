@@ -1,7 +1,7 @@
 import { buildValidate } from './skill-effect.js?v=ee4e0aab147bf42dd5cbe6eb6c4450e4a99b71bb2da4265306038ebfe050a29d';
-import { catalogueCreate, STARTERS, familyGate } from './catalogue.js?v=59838fbe2430140ae4ab48caf99499a0512cf41262d679584072bcee8b3d7133';
+import { catalogueCreate, STARTERS, familyGate } from './catalogue.js?v=5bfcb0ab345e2201d6a2fb0f398cacce1328c732a5c0091243a81dcd45c44c6e';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { profileCreate, profileValidate, profilePurchase, profileRefund, profileRefundPreview, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve } from './profile.js?v=34737935bb9fa338929973769d09b3c14eed45a03a0c366afa3d7800febf0035';
+import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve } from './profile.js?v=6b230ce34060f0f5cb827af2b958d96532bb590720a440c7a10c258fa5789fc5';
 import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=ff1b90cebfd24e6845e51dc92c4a434e7460b271df6473d5ee0164d71af79298';
 import { jellyRole, musicCreate, musicRunSection } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 
@@ -33,7 +33,6 @@ export function progressionCreate(kind='normal') {
 }
 export const progressionBudget=s=>s.phase==='shop'?2:Math.min(10,2+s.pool*2+(s.phase==='interlude'?2:0));
 export const progressionLoadout=s=>loadoutResolve(s.profile,s,progressionBudget(s),GAME_CATALOGUE,{ignoreBudget:s.bypass});
-export const progressionRefundPreview=(s,id)=>profileRefundPreview(s.profile,id,GAME_CATALOGUE);
 export const unlockedTracks=s=>{const complete=profileSummary(s.profile,GAME_CATALOGUE).completedTracks;return TRACKS.filter((t,i)=>i===0||complete.includes(TRACKS[i-1].id));};
 export function researchTarget(s,id=s.target) {
   const n=GAME_CATALOGUE.nodes[id];if(!n)return null;
@@ -105,10 +104,11 @@ export function progressionAct(input,action){
   switch(action.type){
     case 'pin':if(action.id!==null&&!node)return fail('Choose a research target.');s.target=action.id;message=action.id?'Research goal pinned.':'Research goal cleared.';break;
     case 'discover':return discoveryUse(s,action.id,action.remove||[]);
-    case 'buy':case 'refund':
+    case 'refund':return fail('Research purchases are permanent.');
+    case 'buy':
       if(s.phase!=='shop')return fail('Research is between runs.');
-      r=action.type==='buy'?profilePurchase(s.profile,action.id,cat):profileRefund(s.profile,action.id,cat,action.revision);if(!r.ok)return r;s.profile=r.profile;
-      s.powers=s.powers.filter(p=>s.profile.research[p+'.base']);for(const p of STARTERS)if(s.powers.length<3&&!s.powers.includes(p))s.powers.push(p);tidy(s);message=action.type==='buy'?`Researched ${node.name}.`:`Returned ${r.refunded} Seeds.`;break;
+      r=profilePurchase(s.profile,action.id,cat);if(!r.ok)return r;s.profile=r.profile;
+      s.powers=s.powers.filter(p=>s.profile.research[p+'.base']);for(const p of STARTERS)if(s.powers.length<3&&!s.powers.includes(p))s.powers.push(p);tidy(s);message=`Researched ${node.name}.`;break;
     case 'replace':
       if(s.phase!=='shop'||!s.profile.research[action.power+'.base']||!Number.isInteger(action.slot)||action.slot<0||action.slot>2||s.powers.includes(action.power))return fail('Choose an owned power and a different loadout slot.');s.powers[action.slot]=action.power;tidy(s);break;
     case 'borrow':
