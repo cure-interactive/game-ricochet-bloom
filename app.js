@@ -1,6 +1,6 @@
 import { fullscreenMount } from './fullscreen.js?v=2c3119f8c834c71afef28339288e1d4d71b96164e260d16f903a6c0fbd0ee41f';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=03f8c52ca5398617c821797fd85ff2a24f146bdda2bbc651ba41795e965a9461';
+import { gameMenuMount } from './game-menu.js?v=03fc6fb9e68bcd0e18a58ccd599a6f1ae1787b4dece14d6c3033e3679ead7888';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
 import { progressionMount } from './progression-ui.js?v=a07bbfe29e138bf51c8252c28f5987566377532caf945327b367b2f777201c1a';
@@ -404,7 +404,6 @@ function uiRender() {
   $('plucks').textContent = game.mode === 'free' ? '∞' : game.plucks; $('pluck-label').textContent = game.mode === 'free' ? 'FREE PLAY' : 'PLUCKS LEFT';
   $('pool-seed').textContent = `POOL / ${game.seed}`;
   if($('development-badge')){$('development-badge').hidden=progression?.state.profile.kind!=='development';$('development-badge').textContent=progression?.context==='challenge'?'SHARED':'TEST';}
-  buttonLabel($('restart'),'New game','add');$('restart').hidden=!!progression&&progression.context!=='legacy';
   $('chain-label').textContent = game.chain.length ? `${game.chain.length} NOTES ${game.chain.length >= 5 ? '· BEAUTIFUL.' : '· KEEP IT SINGING.'}` : 'FIVE DIFFERENT JELLIES. ONE BLOOM.';
   $('note-meter').replaceChildren(...Array.from({ length: 5 }, (_, index) => { const item = document.createElement('i'); if (game.chain[index]) { item.className = 'active'; item.style.setProperty('--note', COLORS[game.bodies[game.chain[index]].tone]); } return item; }));
   $('note-meter').setAttribute('aria-label', `${game.chain.length} unique notes this pluck`);
@@ -569,10 +568,10 @@ window.addEventListener('keydown', event => {
   if (event.key === 'ArrowDown') shotPowerSet(power - .05);
   $('power').value = power * 100;
   if (event.key === ' ' && !event.repeat) shoot();
-  if (event.key.toLowerCase() === 'p' && !event.repeat) pauseSet(!isPaused);
+  if (event.key.toLowerCase() === 'p' && !event.repeat) { if(isPaused)start();else navigation.pause(); }
 });
 $('continue-free').onclick = () => { if (store.pools.free) dialogOpen(true); else carryToFree(); };
-$('start').onclick = start; $('shoot').onclick = shoot; $('pause').onclick = () => pauseSet(!isPaused); $('resume').onclick = () => pauseSet(false);
+$('start').onclick = start; $('shoot').onclick = shoot; $('pause').onclick = () => { if(isPaused)start();else navigation.pause(); }; $('resume').onclick = () => pauseSet(false);
 $('aim-left').onclick = () => { angle -= .14; }; $('aim-right').onclick = () => { angle += .14; }; $('power').oninput = () => shotPowerSet(Number($('power').value) / 100);
 $('palette').onchange=event=>{audio.music.palette=event.currentTarget.value;save();};
 $('sound').onchange = event => { audio.settingsSet(audio.volume, !event.currentTarget.checked); audioUnlockAsync(); controlsRender(); save(); };
@@ -596,10 +595,9 @@ $('audition').onclick = async () => {
 };
 $('motion').onchange = event => { isGentle = event.currentTarget.checked; if (isGentle) { particles = []; trails = []; } controlsRender(); save(); };
 $('stream').onchange = event => { isStream = event.currentTarget.checked; controlsRender(); save(); };
-$('menu-dialog').addEventListener('click',event=>{if(event.target.closest('.menu-actions button'))$('menu-dialog').close();},true);
 $('button-controls').onchange=event=>{document.querySelector('.control-strip').hidden=!event.currentTarget.checked;};
 for(const name of ['menu','powers','music','bonus','credits']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
-$('restart').onclick = () => dialogOpen(); $('retry').onclick = () => dialogOpen();
+$('retry').onclick = () => dialogOpen();
 $('seed-form').onsubmit = event => { event.preventDefault(); const seed = $('seed-input').value.trim(); if (!seed) return; $('new-dialog').close(); if (carrySong) carryToFree(); else newPool(seed, game.mode); };
 document.querySelectorAll('[data-close]').forEach(button => { button.onclick = () => button.closest('dialog').close(); });
 document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('close', () => { if (isStarted) canvas.focus({ preventScroll: true }); }));
@@ -637,13 +635,18 @@ navigation=gameMenuMount({
   freePlay,
   info(){const s=progression.state,active=s.phase!=='shop';return {resume:active?'Continue Song Run':null,detail:active?`${trackGet(s.track).name} · Pool ${Math.min(5,s.pool+(s.phase==='interlude'?2:1))} of 5`:`${s.profile.wallet.seeds} Points · Research grows between runs`};},
   continue(){if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
-  open(screen){if(screen==='levels')progression.campaign();else if(screen==='tree')progression.tree();else if(screen==='help')$('help-dialog').showModal();else $('settings-dialog').showModal();}
+  open(screen){if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign();else if(screen==='tree')progression.tree();else if(screen==='help')$('help-dialog').showModal();else $('settings-dialog').showModal();}
 });
 fullscreenMount(document,window);
 $('welcome').hidden=true;
 $('menu-home').onclick=()=>navigation.home();
 $('pause-home').onclick=()=>navigation.home();
 $('menu-resume').onclick=()=>start();
-$('menu-open').onclick=()=>{pauseSet(true);$('menu-dialog').showModal();};
+$('menu-dialog').querySelector('[data-close]').onclick=()=>start();
+$('menu-dialog').addEventListener('cancel',event=>{event.preventDefault();start();});
+$('menu-open').onclick=()=>navigation.pause();
+$('menu-tree').onclick=()=>progression.tree();
+$('menu-help').onclick=()=>$('help-dialog').showModal();
+$('menu-settings').onclick=()=>$('settings-dialog').showModal();
 document.querySelector('header .brand').onclick=event=>{event.preventDefault();navigation.home();};
 if($('tree-dialog').open)navigation.show('tree');

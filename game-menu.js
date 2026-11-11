@@ -17,7 +17,7 @@ export function gameMenuMount(host) {
     if(name!=='play')host.suspend();refresh();
   }
   function homeOpen(){close();history=[];present('home');history=[];home.querySelector(host.info().resume?'#home-continue':'#home-levels').focus({preventScroll:true});}
-  function back(){const target=history.pop()||'home';returning=true;close();if(target==='play')host.resume();else if(target==='home')homeOpen();else host.open(target);returning=false;}
+  function back(){const target=history.pop()||'home';returning=true;close();if(target==='play')host.resume();else if(target==='home')homeOpen();else {present(target);host.open(target);}returning=false;}
   home.querySelector('#home-continue').onclick=()=>host.continue();
   home.querySelector('#home-levels').onclick=()=>host.open('levels');
   home.querySelector('#home-tree').onclick=()=>host.open('tree');
@@ -25,5 +25,5 @@ export function gameMenuMount(host) {
   home.querySelector('#home-help').onclick=()=>host.open('help');
   home.querySelector('#home-settings').onclick=()=>host.open('settings');
   refresh();present('home');
-  return {home:homeOpen,back,show:present,play(){close();present('play');history=[];},get current(){return current;}};
+  return {home:homeOpen,back,show:present,pause(){close();present('pause');host.open('pause');},play(){close();present('play');history=[];},get current(){return current;}};
 }
