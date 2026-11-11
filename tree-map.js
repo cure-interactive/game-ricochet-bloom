@@ -49,7 +49,10 @@ export function mapCameraMount(surface,world,change) {
     apply({...next,x:next.x+dx,y:next.y+dy});
   });
   const end=e=>{points.delete(e.pointerId);baseline();if(!points.size)surface.classList.remove('is-panning');};
-  for(const event of ['pointerup','pointercancel','lostpointercapture'])surface.addEventListener(event,end);
+  for(const event of ['pointerup','pointercancel'])surface.addEventListener(event,end);
+  // Touch capture moves from the hit child to this surface when dragging starts.
+  // The child's bubbling loss is a handoff, not the end of the active gesture.
+  surface.addEventListener('lostpointercapture',e=>{if(e.target===surface)end(e);});
   surface.addEventListener('click',e=>{if(suppress&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();}},true);
   surface.addEventListener('wheel',e=>{e.preventDefault();suppress=true;if(e.shiftKey)apply({...camera,x:camera.x-e.deltaY,y:camera.y-e.deltaX});else apply(cameraZoom(camera,camera.scale*Math.exp(-Math.max(-150,Math.min(150,e.deltaY))*.003),local(e)));},{passive:false});
   surface.addEventListener('keydown',e=>{if(e.target!==surface)return;const move={ArrowLeft:[80,0],ArrowRight:[-80,0],ArrowUp:[0,80],ArrowDown:[0,-80]}[e.key];if(move){e.preventDefault();apply({...camera,x:camera.x+move[0],y:camera.y+move[1]});}});
