@@ -1,13 +1,13 @@
 import { fullscreenMount } from './fullscreen.js?v=a8acc13c09de3469584567a261a8792fb9e77b0fa4cafae7fe23732e27faa56a';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=0c00a0dd50cd9f0c9bfbd43acf01f44bd720028ee897caf5314edea0de0c6491';
+import { gameMenuMount } from './game-menu.js?v=276e2959be704c21f3838302b72bf75d5a2cedaa894d925dd4c348e614301d8a';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { progressionMount } from './progression-ui.js?v=e8cfb8877ea366af87ce21e8213a535c2bed7b51fb85e7434b0485141a51352b';
+import { progressionMount } from './progression-ui.js?v=4788d2b1b0f5184e21699cb81dd733599a55a226f51af5768b5d38d70af9729a';
 import {assetURL} from './asset.js?v=702ecbe37f35afa96b95db6e49c578f7cd2be014d782640f9bbab8bd04850404';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
-import {songLibrarySetup} from './song-ui.js?v=392853419cdb3de4858af177aca5ab79a367e609c960bdbb563391c98d5ee04b';
+import {songLibrarySetup} from './song-ui.js?v=23b8188ee4080ec59f902c35585a39bfbbb1d6a4b9c1e0bde2bfc222dff8edb9';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=2d94bc3e3221c7e6c61b2dd311fe2e42f65f15db0a5dcc360a487c712cf2366f';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=0cf5126e2b455b6d7cc26e861fed8b35e4e263a17919cf61933f1b963a7f42c1';
 import { PoolSound } from './sound.js?v=ea1a1f976c1bded13af5c613894a6c6c224bcc1a623bb6a76e93c3e3daf668dd';
@@ -606,7 +606,7 @@ audio.media.actions(() => {
   else if (!game.isOver) pauseSet(false);
   else { audio.pauseSet(false); audioUnlockAsync(); }
 }, () => { audio.pauseSet(true); if (isStarted && !game.isOver) pauseSet(true); });
-songLibrarySetup(()=>({name:`${game.seed} · ${game.blooms} blooms`,music:audio.musicSave()}),()=>{dragCancel();save();audio.pauseSet(true);},()=>audio.pauseSet(isPaused||!isStarted));
+const songLibrary=songLibrarySetup(()=>({name:`${game.seed} · ${game.blooms} blooms`,music:audio.musicSave()}),()=>progression.campaign('songs'));
 controlsRender(); uiRender(); requestAnimationFrame(render);
 if (['127.0.0.1', 'localhost', '[::1]'].includes(location.hostname)) {
   fetch('/api/status').then(response => response.ok ? response.json() : null).then(status => {
@@ -616,14 +616,14 @@ if (['127.0.0.1', 'localhost', '[::1]'].includes(location.hostname)) {
   }).catch(() => {});
 }
 
-progression=progressionMount({gentle:()=>isGentle,currentScreen:()=>navigation?.current||'home',screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),save:()=>save(),play:loadPool,message:toast,runMusic(music){if(music.run)audio.music.run=structuredClone(music.run);},restoreLegacy(){const entry=store.pools[store.activeMode];loadPool(entry?.game||gameCreate('LAGOON',store.activeMode),entry?.music);}});
+progression=progressionMount({songsMount:host=>songLibrary.mount(host),songsClose:()=>songLibrary.close(),songsRefresh:()=>songLibrary.refresh(),gentle:()=>isGentle,currentScreen:()=>navigation?.current||'home',screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),save:()=>save(),play:loadPool,message:toast,runMusic(music){if(music.run)audio.music.run=structuredClone(music.run);},restoreLegacy(){const entry=store.pools[store.activeMode];loadPool(entry?.game||gameCreate('LAGOON',store.activeMode),entry?.music);}});
 
 navigation=gameMenuMount({
   suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},
   resume:start,
   info(){const s=progression.state,active=s.phase!=='shop';return {resume:active?'Continue Song Run':progression.context==='legacy'&&(isStarted||saved?.launches)&&!game.isOver?'Continue '+modeName(game.mode):null,detail:active?`${trackGet(s.track).name} · Pool ${Math.min(5,s.pool+(s.phase==='interlude'?2:1))} of 5`:`${s.profile.wallet.seeds} Points · Research grows between runs`};},
   continue(){if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
-  open(screen){if(screen==='levels')progression.campaign();else if(screen==='collection')progression.campaign('collection');else if(screen==='tree')progression.tree();else if(screen==='modes')modeOpen();else $('settings-dialog').showModal();}
+  open(screen){if(screen==='levels')progression.campaign();else if(screen==='tree')progression.tree();else if(screen==='modes')modeOpen();else $('settings-dialog').showModal();}
 });
 fullscreenMount(document,window);
 $('welcome').hidden=true;
