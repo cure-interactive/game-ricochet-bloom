@@ -1,7 +1,7 @@
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
 // Progression definitions are not a claim that an engine behavior is implemented.
 // The engine integration must explicitly advertise supported node IDs.
-export const CURRENCIES = Object.freeze({ seeds: Object.freeze({ name: 'Seeds' }) });
+export const CURRENCIES = Object.freeze({ seeds: Object.freeze({ name: 'Points' }) });
 export const TRACKS = Object.freeze(['first-light', 'crosscurrent', 'glasswater', 'afterimage', 'night-bloom']);
 export const STARTERS = Object.freeze(['ripple', 'attract', 'comet']);
 export const REWARD = Object.freeze({ tutorial: 4, pool: 2, bonus: 1, victory: 3, firstClear: 4, failure: 1 });

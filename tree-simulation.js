@@ -1,5 +1,5 @@
-import { CATALOGUE, catalogueCreate, STARTERS } from './catalogue.js?v=5bfcb0ab345e2201d6a2fb0f398cacce1328c732a5c0091243a81dcd45c44c6e';
-import { profileCreate, profileValidate, profilePurchase, profileReward, loadoutResolve } from './profile.js?v=d1925eb5759bdb49347ee38f4080b4e43d56a8c52af8eaf5164a73fc030bc7bc';
+import { CATALOGUE, catalogueCreate, STARTERS } from './catalogue.js?v=58b3459a4c473401e11796ed487ddd13bcb440b9ea55bcad1fb6aff3a3f26669';
+import { profileCreate, profileValidate, profilePurchase, profileReward, loadoutResolve } from './profile.js?v=52071900e30e746c3327ad7b72c025ea66b8f6222cf9c8c8b7e965c4a9126d7b';
 
 // This capability fixture is exclusively for the UI simulator, never the engine.
 export const SIMULATION_CATALOGUE = catalogueCreate(Object.keys(CATALOGUE.nodes));
@@ -28,17 +28,17 @@ export function simulationAct(input, action) {
   switch (action.type) {
     case 'seeds': {
       // Manual funding is deliberately local to this disposable simulator.
-      if (state.phase !== 'shop') return fail('End the simulated run before adding Seeds.');
+      if (state.phase !== 'shop') return fail('End the simulated run before adding Points.');
       if (!Number.isSafeInteger(action.amount) || action.amount <= 0 || action.amount > 1000 || !Number.isSafeInteger(state.profile.wallet.seeds + action.amount)) return fail('Choose a whole amount from 1 to 1000.');
       state.profile.wallet.seeds += action.amount; state.profile.revision++;
-      return success(state, `Added ${action.amount} simulated Seeds.`);
+      return success(state, `Added ${action.amount} simulated Points.`);
     }
     case 'tutorial':
       if (state.phase !== 'shop') return fail('Finish the run first.');
       result = profileReward(state.profile, { mode: 'song-run', type: 'tutorial', bloom: true }, cat);
       if (!result.ok) return fail(result.reason);
       state.profile = result.profile;
-      return success(state, result.duplicate ? 'Tutorial reward already collected.' : 'Tutorial bloom: +4 Seeds.');
+      return success(state, result.duplicate ? 'Tutorial reward already collected.' : 'Tutorial bloom: +4 Points.');
     case 'buy':
       if (state.phase !== 'shop') return fail('Permanent research is between runs.');
       result = profilePurchase(state.profile, action.id, cat);
@@ -83,19 +83,19 @@ export function simulationAct(input, action) {
       const earned = result.receipt.amount;
       if (state.pool < 4) {
         state.pool++;
-        return success(state, `Pool cleared: +${earned} Seeds, +1 mastery for each equipped power. ${POOL_NAMES[state.pool]}: ${simulationBudget(state)} tuning points.`);
+        return success(state, `Pool cleared: +${earned} Points, +1 mastery for each equipped power. ${POOL_NAMES[state.pool]}: ${simulationBudget(state)} tuning points.`);
       }
       result = profileReward(state.profile, { ...event, type: 'victory' }, cat);
       if (!result.ok) return fail(result.reason);
       state.profile = result.profile; state.phase = 'shop'; state.pool = 0; state.borrowed = []; tidy(state);
-      return success(state, `Song complete! +${earned + result.receipt.amount} Seeds for the finale and victory. Borrowed upgrades returned; permanent research kept.`);
+      return success(state, `Song complete! +${earned + result.receipt.amount} Points for the finale and victory. Borrowed upgrades returned; permanent research kept.`);
     }
     case 'end':
       if (state.phase !== 'run') return fail('No run to end.');
       result = profileReward(state.profile, { mode: 'song-run', type: 'failure', runId: `preview-${state.attempt}`, trackId: 'first-light', poolCount: 5, poolIndex: state.pool, blooms: 0, abandoned: true }, cat);
       if (!result.ok) return fail(result.reason);
       state.profile = result.profile; state.phase = 'shop'; state.pool = 0; state.borrowed = []; tidy(state);
-      return success(state, 'Run ended. Earned Seeds remain; borrowed upgrades returned.');
+      return success(state, 'Run ended. Earned Points remain; borrowed upgrades returned.');
     default: return fail('Unknown simulation action.');
   }
 }

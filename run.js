@@ -1,7 +1,7 @@
 import { buildValidate } from './skill-effect.js?v=2fc91b76fce932fd628970e620536c90ac0648f4d8d41e17bc386ffa52a77a63';
-import { catalogueCreate, STARTERS, familyGate } from './catalogue.js?v=5bfcb0ab345e2201d6a2fb0f398cacce1328c732a5c0091243a81dcd45c44c6e';
+import { catalogueCreate, STARTERS, familyGate } from './catalogue.js?v=58b3459a4c473401e11796ed487ddd13bcb440b9ea55bcad1fb6aff3a3f26669';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=d1925eb5759bdb49347ee38f4080b4e43d56a8c52af8eaf5164a73fc030bc7bc';
+import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=52071900e30e746c3327ad7b72c025ea66b8f6222cf9c8c8b7e965c4a9126d7b';
 import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=2d94bc3e3221c7e6c61b2dd311fe2e42f65f15db0a5dcc360a487c712cf2366f';
 import { jellyRole, musicCreate, musicRunSection } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 
@@ -41,7 +41,7 @@ export function researchTarget(s,id=s.target) {
   const n=GAME_CATALOGUE.nodes[id];if(!n)return null;
   const owned=!!s.profile.research[id],gate=familyGate(s.profile,n.power,GAME_CATALOGUE),mastery=profileSummary(s.profile,GAME_CATALOGUE).mastery[n.power],needs=[];
   if(!owned){
-    const seeds=Math.max(0,n.seedCost-s.profile.wallet.seeds);if(seeds)needs.push(`${seeds} more Seeds`);
+    const seeds=Math.max(0,n.seedCost-s.profile.wallet.seeds);if(seeds)needs.push(`${seeds} more Points`);
     if(n.kind==='base'&&!gate.ok){if(gate.required>gate.clears)needs.push(`${gate.required-gate.clears} more cleared pools using ${POWER_TREES[n.power].family}`);if(POWER_TREES[n.power].tier===3&&gate.powers<2)needs.push(`${2-gate.powers} more different powers used`);}
     if(n.kind!=='base'&&!s.profile.research[n.power+'.base'])needs.push(`Unlock ${POWER_TREES[n.power].name} first`);
     if(n.masteryPools>mastery)needs.push(`${n.masteryPools-mastery} more cleared pools using ${POWER_TREES[n.power].name}`);
@@ -143,11 +143,11 @@ export function progressionAct(input,action){
       if(s.phase!=='shop'||!s.retry)return fail('No previous attempt.');Object.assign(s,structuredClone(s.retry));if(s.powerMode==='unlocked')syncUnlocked(s);if(!progressionLoadout(s).ok)return fail('Research changed; choose a new build.');s.attempt++;poolCreate(s);message='Same seed and starting build.';break;
     case 'start':if(s.phase!=='shop')return fail('A run already exists.');s.attempt++;poolCreate(s);message=trackGet(s.track).name+' · Intro';break;
     case 'continue':if(s.phase!=='interlude')return fail('Clear this pool first.');{const music=s.run.music;s.pool++;poolCreate(s,music);message=POOL_NAMES[s.pool];}break;
-    case 'abandon':if(!s.run)return fail('No active run.');reward(s,{type:'failure',poolIndex:s.pool+(s.phase==='interlude'?1:0),blooms:0,abandoned:true});s.retry=s.run.initial;finish(s);message='Run ended. Earned Seeds and research remain.';break;
+    case 'abandon':if(!s.run)return fail('No active run.');reward(s,{type:'failure',poolIndex:s.pool+(s.phase==='interlude'?1:0),blooms:0,abandoned:true});s.retry=s.run.initial;finish(s);message='Run ended. Earned Points and research remain.';break;
     case 'skin':if(action.skin!=='original'&&!completedTracks(s).includes(action.skin))return fail('Complete that track to unlock its skin.');s.skin=action.skin;break;
-    case 'grant':r=profileCurrencyGrant(s.profile,'seeds',action.amount,cat);if(!r.ok)return r;s.profile=r.profile;message=`Added ${action.amount} development Seeds.`;break;
+    case 'grant':r=profileCurrencyGrant(s.profile,'seeds',action.amount,cat);if(!r.ok)return r;s.profile=r.profile;message=`Added ${action.amount} development Points.`;break;
     case 'max':if(s.profile.kind!=='development')return fail('Development only.');for(const id of Object.keys(cat.nodes))s.profile.research[id]??={paid:0};s.profile.revision++;s.profile.familyAccess=Object.fromEntries(Object.keys(s.profile.familyAccess).map(f=>[f,3]));s.bypass=true;s.equipped=s.powers.flatMap(p=>['foundation','a',...(POWER_TREES[p].compatible?['b']:[]),'capstone'].map(k=>p+'.'+k));s.borrowed=[];syncUnlocked(s);if(s.phase==='interlude'){s.run.offers=[];s.run.discovered=true;}message='All 25 powers and 125 research nodes unlocked. Upgrades are active automatically.';break;
-    case 'max-progress':if(s.profile.kind!=='development')return fail('Development only.');s.developmentProgress=true;s.profile.wallet.seeds=Math.max(10000,s.profile.wallet.seeds);s.profile.revision++;message='All levels and skins open. 10,000 Seeds available. Songs and clear rewards are not fabricated.';break;
+    case 'max-progress':if(s.profile.kind!=='development')return fail('Development only.');s.developmentProgress=true;s.profile.wallet.seeds=Math.max(10000,s.profile.wallet.seeds);s.profile.revision++;message='All levels and skins open. 10,000 Points available. Songs and clear rewards are not fabricated.';break;
     case 'bypass':if(s.profile.kind!=='development')return fail('Development only.');s.bypass=!s.bypass;tidy(s);break;
     default:return fail('Unknown progression action.');
   }
@@ -176,9 +176,9 @@ export function progressionObserve(input,game,events,music=null){
     if(poolGoalMet(s)){
       r.launches+=game.launches;r.score+=game.score;r.bonuses+=game.objective.completed>0?1:0;
       let earned=reward(s,{type:'pool',poolIndex:s.pool,activated:r.activated,bonus:r.game.objective.completed>0});
-      if(s.pool===4){earned+=reward(s,{type:'victory'});record=resultRecord(s,'victory');finish(s);outcome='victory';message=`${trackGet(s.track).name} complete · +${earned} Seeds`;}
-      else{s.phase='interlude';r.offers=discoveries(s);r.discovered=false;s.route=0;outcome='clear';message=`${POOL_NAMES[s.pool]} complete · +${earned} Seeds`;}
-    }else if(game.isOver){r.launches+=game.launches;r.score+=game.score;const missing=goalRemaining(s),earned=reward(s,{type:'failure',poolIndex:s.pool,blooms:game.blooms,abandoned:false});record=resultRecord(s,'failure');finish(s);outcome='failure';message=`${missing} · +${earned} Seeds`;}
+      if(s.pool===4){earned+=reward(s,{type:'victory'});record=resultRecord(s,'victory');finish(s);outcome='victory';message=`${trackGet(s.track).name} complete · +${earned} Points`;}
+      else{s.phase='interlude';r.offers=discoveries(s);r.discovered=false;s.route=0;outcome='clear';message=`${POOL_NAMES[s.pool]} complete · +${earned} Points`;}
+    }else if(game.isOver){r.launches+=game.launches;r.score+=game.score;const missing=goalRemaining(s),earned=reward(s,{type:'failure',poolIndex:s.pool,blooms:game.blooms,abandoned:false});record=resultRecord(s,'failure');finish(s);outcome='failure';message=`${missing} · +${earned} Points`;}
   }
   return {state:s,message,outcome,record};
 }

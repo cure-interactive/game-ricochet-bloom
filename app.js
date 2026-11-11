@@ -2,7 +2,7 @@ import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f
 import { gameMenuMount } from './game-menu.js?v=e7016bc28e90b4d3212c9d65732faeead4b2db5d949a2528a2155e9374fc1822';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { progressionMount } from './progression-ui.js?v=0b43c0810dca9fb07b78d197d5bd099c2083db12d7dfaf49c68fbc6e7fe3991a';
+import { progressionMount } from './progression-ui.js?v=44b3176b0e87dcdf93355d0f0aba7a4691acfcaddbba4d3d12621576cf5d17af';
 import {assetURL} from './asset.js?v=702ecbe37f35afa96b95db6e49c578f7cd2be014d782640f9bbab8bd04850404';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
@@ -379,7 +379,7 @@ function bonusRender() {
   $('bonus-count').textContent=`${game.objective.completed} completed`;
   $('bonus-prize').replaceChildren(...(bonus.complete?[iconNode('check')]:[]),document.createTextNode(bonus.complete?'+200 earned':'+200 resonance'));
   $('bonus-next').textContent=game.mode==='song-run'?'New bonus in the next pool':OBJECTIVES[(bonus.index+1)%OBJECTIVES.length].title;
-  document.querySelector('.bonus-rules').textContent=game.mode==='song-run'?'One bonus per pool: +200 resonance once, and +1 Seed if you clear the pool.':'Complete a target in one pluck for +200. The next objective begins after success.';
+  document.querySelector('.bonus-rules').textContent=game.mode==='song-run'?'One bonus per pool: +200 resonance once, and +1 Point if you clear the pool.':'Complete a target in one pluck for +200. The next objective begins after success.';
   $('bonus-steps').replaceChildren(...bonus.steps.map(step=>{
     const row=document.createElement('div'),label=document.createElement('span'),meter=document.createElement('progress');
     label.append(...(step.value===step.target?[iconNode('check')]:[]),document.createTextNode(`${step.value} / ${step.target} ${step.label}`));
@@ -622,7 +622,7 @@ progression=progressionMount({gentle:()=>isGentle,currentScreen:()=>navigation?.
 navigation=gameMenuMount({
   suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},
   resume:start,
-  info(){const s=progression.state,active=s.phase!=='shop';return {resume:active?'Continue Song Run':progression.context==='legacy'&&(isStarted||saved?.launches)&&!game.isOver?'Continue '+modeName(game.mode):null,detail:active?`${trackGet(s.track).name} · Pool ${Math.min(5,s.pool+(s.phase==='interlude'?2:1))} of 5`:`${s.profile.wallet.seeds} Seeds · Research grows between runs`};},
+  info(){const s=progression.state,active=s.phase!=='shop';return {resume:active?'Continue Song Run':progression.context==='legacy'&&(isStarted||saved?.launches)&&!game.isOver?'Continue '+modeName(game.mode):null,detail:active?`${trackGet(s.track).name} · Pool ${Math.min(5,s.pool+(s.phase==='interlude'?2:1))} of 5`:`${s.profile.wallet.seeds} Points · Research grows between runs`};},
   continue(){if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
   open(screen){if(screen==='levels')progression.campaign();else if(screen==='collection')progression.campaign('collection');else if(screen==='tree')progression.tree();else if(screen==='modes')modeOpen();else $('settings-dialog').showModal();}
 });
