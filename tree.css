@@ -28,7 +28,7 @@
 .tree-legend .legend-owned:before{border-color:#9fe3ce}
 .tree-legend .legend-available:before{border-color:#e9c77f}
 .tree-legend .legend-locked:before{border-style:dashed}
-.tree-map-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:18px;background:radial-gradient(ellipse at 30% 0,#25433930,transparent 60%),radial-gradient(#8fb8cd12 1px,transparent 1px);background-size:auto,24px 24px;scrollbar-width:thin;scrollbar-color:#476677 #0b1423}
+.tree-map-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:18px;padding-bottom:max(18px,env(safe-area-inset-bottom));background:radial-gradient(ellipse at 30% 0,#25433930,transparent 60%),radial-gradient(#8fb8cd12 1px,transparent 1px);background-size:auto,24px 24px;scrollbar-width:thin;scrollbar-color:#476677 #0b1423}
 .tree-map{width:100%;max-width:1100px;margin:auto}
 .tree-map[data-overview=true]{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:24px;align-items:start}
 .skill-family{min-width:0;--family-color:#a5e7ce}
@@ -73,8 +73,6 @@
 #tree-dialog .skill-node[aria-pressed=true] .skill-orb{outline:2px solid #fff2c7;outline-offset:4px}
 #tree-dialog .skill-node:focus-visible{outline:2px solid #fff2c7;outline-offset:3px}
 .branch-progress{position:absolute;bottom:7px;left:0;right:0;text-align:center;font-size:10px;color:#8eacbc}
-.tree-actions{display:flex;justify-content:space-between;gap:10px;padding:9px 16px max(9px,env(safe-area-inset-bottom));background:#0c1b2b;border-top:1px solid #3b5265;flex:none;width:100%;max-width:none;margin:0;font:inherit;letter-spacing:normal}
-.tree-actions>button{min-width:140px}
 .tree-extra>div{display:flex;gap:8px;flex-wrap:wrap}.tree-extra>button{width:100%;margin:4px 0;text-align:left;justify-content:flex-start!important}.tree-extra small{display:block;color:#b2cad2;font-size:12px}
 @media(max-width:760px){
  #tree-dialog .tree-heading{padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top));gap:8px}
@@ -85,11 +83,10 @@
  .tree-workspace{display:flex;flex-direction:column}.tree-workspace>.tree-detail{display:none}
  .tree-map-section{flex:1}.tree-map-toolbar{padding:7px 10px;gap:6px}
  .tree-map-toolbar select{max-width:none}.tree-legend{width:100%;justify-content:space-between;margin:2px 0 0;font-size:10px}
- .tree-map-scroll{padding:14px 10px}.tree-map[data-overview=true]{grid-template-columns:1fr}
+ .tree-map-scroll{padding:14px 10px max(14px,env(safe-area-inset-bottom))}.tree-map[data-overview=true]{grid-template-columns:1fr}
  .tree-target button{font-size:12px;min-height:38px;padding:6px 10px}.tree-target small{font-size:10px}
  .family-title{padding-bottom:6px}.family-title h3{font-size:19px}.family-title p{font-size:11px}
- .tier-branches{grid-template-columns:1fr}.tree-actions{padding:7px 10px max(7px,env(safe-area-inset-bottom))}
- .tree-actions>button{min-width:0;flex:1;font-size:13px}
+ .tier-branches{grid-template-columns:1fr}
  .tree-secondary button{padding:10px 8px}.tree-detail-title h3{font-size:23px}.tree-description{font-size:16px}
 }
 @media(max-width:350px){#tree-dialog .tree-heading{gap:5px}.tree-wallet-summary strong{font-size:12px}.tree-wallet-summary small{font-size:9px}.tree-secondary{flex-direction:column}#tree-dialog .skill-node{width:105px}.skill-node>strong{font-size:11px}}
