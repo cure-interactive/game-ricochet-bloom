@@ -60,3 +60,5 @@ body:not([data-screen=play])>header,body:not([data-screen=play])>main{display:no
 #dev-reset{color:#ffc1ca;border-color:#f1839366;background:#492231}
 
 #dev-reset-confirm{color:#ffc1ca;border-color:#f1839366;background:#492231}.build-upgrades>summary{cursor:pointer;font-size:12px;color:#b6cfcc;padding:10px 0}.build-upgrades[open]>summary{margin-bottom:8px}
+.home-display{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:44px;margin-top:12px;padding:10px 14px;background:#14272f;border:1px solid #4e6c755e;border-radius:10px;color:#c6dfdc;font-size:14px}.home-display .ui-icon{width:20px;height:20px}
+#display-dialog{width:min(460px,calc(100% - 24px));padding:26px;line-height:1.6}#display-dialog h2{font-size:25px;padding-right:25px}#display-dialog p,#display-dialog li{font-size:14px;color:#bdcedb}#display-dialog ol{padding-left:24px}#display-dialog li{padding:5px 0}#display-dialog>.primary{margin-top:16px;min-height:44px}#display-dialog h3{font-size:16px;margin:22px 0 5px}

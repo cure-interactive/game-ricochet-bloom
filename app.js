@@ -1,5 +1,6 @@
+import { fullscreenMount } from './fullscreen.js?v=a8acc13c09de3469584567a261a8792fb9e77b0fa4cafae7fe23732e27faa56a';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=e7016bc28e90b4d3212c9d65732faeead4b2db5d949a2528a2155e9374fc1822';
+import { gameMenuMount } from './game-menu.js?v=0c00a0dd50cd9f0c9bfbd43acf01f44bd720028ee897caf5314edea0de0c6491';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
 import { progressionMount } from './progression-ui.js?v=e8cfb8877ea366af87ce21e8213a535c2bed7b51fb85e7434b0485141a51352b';
@@ -581,9 +582,7 @@ $('volume').oninput = () => { audio.settingsSet(Number($('volume').value) / 100,
 $('audition').onclick = async () => { if (audio.isMuted) { toast('Enable Sound to listen'); return; } audio.media.describe(game.seed); await audioUnlockAsync(); audio.audition(); };
 $('motion').onchange = event => { isGentle = event.currentTarget.checked; if (isGentle) { particles = []; trails = []; } controlsRender(); save(); };
 $('stream').onchange = event => { isStream = event.currentTarget.checked; controlsRender(); save(); };
-document.addEventListener('fullscreenchange',()=>{const active=!!document.fullscreenElement;buttonLabel($('fullscreen'),'',active?'fullscreen-disable':'fullscreen-enable');$('fullscreen').setAttribute('aria-label',active?'Exit fullscreen':'Enter fullscreen');$('fullscreen').title=active?'Exit fullscreen':'Enter fullscreen';});
-$('fullscreen').onclick = async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch { toast('Fullscreen is unavailable here'); } };
-$('menu-dialog').addEventListener('click',event=>{if(event.target.closest('.menu-actions button'))$('menu-dialog').close();},true);
+$('menu-dialog').addEventListener('click',event=>{if(event.target.closest('.menu-actions button:not([data-fullscreen])'))$('menu-dialog').close();},true);
 $('button-controls').onchange=event=>{document.querySelector('.control-strip').hidden=!event.currentTarget.checked;};
 for(const name of ['menu','settings','powers','music','help','bonus','credits']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
 $('restart').onclick = () => dialogOpen(); $('mode-open').onclick = modeOpen; $('retry').onclick = () => dialogOpen();
@@ -626,6 +625,7 @@ navigation=gameMenuMount({
   continue(){if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
   open(screen){if(screen==='levels')progression.campaign();else if(screen==='collection')progression.campaign('collection');else if(screen==='tree')progression.tree();else if(screen==='modes')modeOpen();else $('settings-dialog').showModal();}
 });
+fullscreenMount(document,window);
 $('welcome').hidden=true;
 $('menu-home').onclick=()=>navigation.home();
 $('pause-home').onclick=()=>navigation.home();
