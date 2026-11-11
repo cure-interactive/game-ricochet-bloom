@@ -108,6 +108,7 @@ const assets = {
   "icon/ui/reset-original.svg": "./icon/ui/reset-original.svg?v=48954ebff577688aa2c6d5816133726035103938ab766f6f8763a5da6d0e5fb9",
   "icon/ui/reset.svg": "./icon/ui/reset.svg?v=cb318f8964f31ff991917b35378d37b790e299eb4d5c7d31096a3d8e00f25357",
   "icon/ui/rhythm.svg": "./icon/ui/rhythm.svg?v=5a787aa92ad712af698cee1960ea1eae9e1fec35f11dc2864d7ce54b2a0ef713",
+  "icon/ui/seed.svg": "./icon/ui/seed.svg?v=c7d5ae167677954d487e0a30cb232685d6942a3f68c53d4fe457f3d3657c94ef",
   "icon/ui/shield-original.svg": "./icon/ui/shield-original.svg?v=b58b436fc54124469cd2c39361ae648e4e5369fa1e7fab859cb0452650f40896",
   "icon/ui/shield.svg": "./icon/ui/shield.svg?v=988ef478ceeb1a295397cab53b86dd675e9c5778de485a5f3e72caf0efb8d174",
   "icon/ui/speedometer-original.svg": "./icon/ui/speedometer-original.svg?v=16729a3d8532822763f26c7f01e4461baca0074f304c45ca9c95213c7db791fe",

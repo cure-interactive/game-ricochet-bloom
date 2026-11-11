@@ -80,3 +80,5 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 [data-icon="flask"]{--ui-icon:url("./icon/ui/flask.svg?v=0047a0dd9a9579052bba67f5cc4f85dffb3704af806b9c097bcf313c9770999a")}
 [data-icon="magnet-northeast"]{--ui-icon:url("./icon/ui/magnet-northeast.svg?v=af53ca1f3fdd6c0894a2f6566e80b1d277294492df9600cbfa7f6d553fc84279")}
 [data-icon="dropper"]{--ui-icon:url("./icon/ui/dropper.svg?v=591ba3f8a1f7d1fc972111dc3c21b3444e9ea77981aaeb14de41120521266ae6")}
+
+[data-icon="seed"]{--ui-icon:url("./icon/ui/seed.svg?v=c7d5ae167677954d487e0a30cb232685d6942a3f68c53d4fe457f3d3657c94ef")}
