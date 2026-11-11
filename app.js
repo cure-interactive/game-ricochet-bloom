@@ -10,7 +10,7 @@ import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc
 import {songLibrarySetup} from './song-ui.js?v=23b8188ee4080ec59f902c35585a39bfbbb1d6a4b9c1e0bde2bfc222dff8edb9';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=2d94bc3e3221c7e6c61b2dd311fe2e42f65f15db0a5dcc360a487c712cf2366f';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=0cf5126e2b455b6d7cc26e861fed8b35e4e263a17919cf61933f1b963a7f42c1';
-import { PoolSound } from './sound.js?v=ea1a1f976c1bded13af5c613894a6c6c224bcc1a623bb6a76e93c3e3daf668dd';
+import { PoolSound } from './sound.js?v=0f02b2eafeecddb7bdc66a32c0e4f28583b5ba1581f57fe65114093ae91c8945';
 import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
 import { PowerVisual } from './power-visual.js?v=6ab2a5197bfab3dbc1c0484758ced17af3672a07a8f94d1c2380b14b6767cf74';
@@ -568,7 +568,22 @@ $('palette').onchange=event=>{audio.music.palette=event.currentTarget.value;save
 $('sound').onchange = event => { audio.settingsSet(audio.volume, !event.currentTarget.checked); audioUnlockAsync(); controlsRender(); save(); };
 $('ambience').oninput = () => { audio.ambienceSet(Number($('ambience').value) / 100); save(); };
 $('volume').oninput = () => { audio.settingsSet(Number($('volume').value) / 100, audio.isMuted); save(); };
-$('audition').onclick = async () => { if (audio.isMuted) { toast('Enable Sound to listen'); return; } audio.media.describe(game.seed); await audioUnlockAsync(); audio.audition(); };
+$('audition').onclick = async () => {
+  const button=$('audition'), status=$('sound-check-status');
+  if (audio.isMuted) { status.textContent='Enable Sound above, then try again.'; return; }
+  if (!audio.volume) { status.textContent='Raise Volume above zero, then try again.'; return; }
+  button.disabled=true; status.textContent='Starting sound check…';
+  try {
+    audio.media.describe(game.seed);
+    if (!await audio.unlockAsync()) throw new Error('Audio is not running');
+    if (!audio.audition()) { status.textContent='Sound check is busy. Try again in a moment.'; return; }
+    buttonLabel(button,'Playing test notes…','music-note');
+    status.textContent='Playing three notes at your Volume setting.';
+    await new Promise(resolve=>setTimeout(resolve,1200));
+    status.textContent='Test finished. Tap Sound check to replay.';
+  } catch { status.textContent='Audio could not start. Tap Sound check to try again.'; }
+  finally { button.disabled=false; buttonLabel(button,'Sound check','play'); }
+};
 $('motion').onchange = event => { isGentle = event.currentTarget.checked; if (isGentle) { particles = []; trails = []; } controlsRender(); save(); };
 $('stream').onchange = event => { isStream = event.currentTarget.checked; controlsRender(); save(); };
 $('menu-dialog').addEventListener('click',event=>{if(event.target.closest('.menu-actions button:not([data-fullscreen])'))$('menu-dialog').close();},true);

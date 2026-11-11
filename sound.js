@@ -6,7 +6,7 @@ import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish,
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export class PoolSound {
-  constructor() { this.media = new PoolMedia(); this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
+  constructor() { this.media = new PoolMedia(); this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
   get bloomCount() { return this.music.blooms; }
   get harmony() { const chord = this.activeChord ?? this.music.history.at(-1)?.chord; return chord === undefined || chord === null ? null : CHORDS[chord]; }
   musicSave() { return musicCreate(this.music, this.bloomCount); }
@@ -116,8 +116,8 @@ export class PoolSound {
   pauseSet(value) { this.isPaused = value; if (value) this.phraseClear(); this.mixUpdate(); }
   notePitch(tone) { return this.harmony ? frequency(this.harmony.notes[tone % 5]) : SCALE[tone % 5]; }
   settingsSet(volume, isMuted) { this.volume = volume; this.isMuted = isMuted; if (isMuted) this.phraseClear(); if (this.master) this.master.gain.setTargetAtTime(isMuted ? 0 : volume * .48, this.context.currentTime, .03); this.mixUpdate(); }
-  tone(frequency, end, duration, level, pan = 0, offset = 0, type = 'sine', echo = false, phrase = false) {
-    if (!this.context || this.context.state !== 'running' || this.isMuted || this.isPaused || this.voiceCount >= 46) return;
+  tone(frequency, end, duration, level, pan = 0, offset = 0, type = 'sine', echo = false, phrase = false, { allowPaused = false } = {}) {
+    if (!this.context || this.context.state !== 'running' || this.isMuted || (this.isPaused && !allowPaused) || this.voiceCount >= 46) return;
     const context = this.context, start = context.currentTime + offset, oscillator = context.createOscillator(), gain = context.createGain(), stereo = context.createStereoPanner();
     oscillator.type = type; oscillator.frequency.setValueAtTime(frequency, start); oscillator.frequency.exponentialRampToValueAtTime(Math.max(20, end), start + duration);
     gain.gain.setValueAtTime(.0001, start); gain.gain.exponentialRampToValueAtTime(Math.max(.001, level), start + .008); gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
@@ -190,8 +190,11 @@ export class PoolSound {
     if (event.type === 'over') [523.25, 392, 329.63, 261.63].forEach((pitch, index) => this.tone(pitch, pitch, .75, .15, 0, index * .12, 'sine', true));
   }
   audition() {
-    this.musicStart();
-    // An immediate check remains audible even with the ambience slider at zero.
-    [0, 2, 3].forEach((degree, index) => { const pitch = this.notePitch(degree); this.tone(pitch, pitch, .5, .12, 0, index * .16, 'sine', true); });
+    if (!this.context || this.context.state !== 'running' || this.isMuted || !this.volume || this.voiceCount > 43 || this.context.currentTime < this.auditionUntil) return false;
+    this.auditionUntil = this.context.currentTime + 1.2;
+    // A finite UI cue bypasses only pause, never mute or master volume. It must
+    // not start the composer or advance the player's saved song from a menu.
+    [0, 2, 3].forEach((degree, index) => { const pitch = this.notePitch(degree); this.tone(pitch, pitch, .5, .12, 0, index * .16, 'sine', true, false, { allowPaused: true }); });
+    return true;
   }
 }
