@@ -6,7 +6,7 @@ import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish,
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export class PoolSound {
-  constructor() { this.media = new PoolMedia(); this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
+  constructor() { this.media = new PoolMedia(); this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
   get bloomCount() { return this.music.blooms; }
   get harmony() { const chord = this.activeChord ?? this.music.history.at(-1)?.chord; return chord === undefined || chord === null ? null : CHORDS[chord]; }
   musicSave() { return musicCreate(this.music, this.bloomCount); }
@@ -125,6 +125,20 @@ export class PoolSound {
     const voice = { oscillator, gain, start }; if (phrase) this.phraseVoices.add(voice);
     oscillator.start(start); oscillator.stop(start + duration + .02); this.voiceCount++;
     oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); stereo.disconnect(); this.phraseVoices.delete(voice); this.voiceCount--; };
+  }
+  strengthChange(previous, next) {
+    if (!Number.isFinite(previous) || !Number.isFinite(next)) return false;
+    const from = Math.round(Math.max(0, Math.min(1, previous)) * 20);
+    const to = Math.round(Math.max(0, Math.min(1, next)) * 20);
+    if (from === to || !this.context || this.context.state !== 'running' || this.isMuted || this.isPaused || !this.volume || this.voiceCount >= 46) return false;
+    const now = this.context.currentTime;
+    // No queue: rapid pointer events produce at most one short cue every 60 ms.
+    if (now - this.strengthAt < .06) return false;
+    this.strengthAt = now;
+    const degree = Math.floor(to / 2), pitch = this.notePitch(degree % 5) * 2 ** (Math.floor(degree / 5) - 1);
+    this.tone(pitch * (to > from ? .86 : 1.16), pitch, .075, .09);
+    this.eventCount++;
+    return true;
   }
   eventPlay(event) {
     const pan = poolPan(event.x, event.y, this.portrait);

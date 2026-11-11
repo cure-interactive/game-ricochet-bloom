@@ -7,7 +7,7 @@ import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc
 import {songLibrarySetup} from './song-ui.js?v=79176fe5ef5011113a6ac70fbedb3ab2368425ffedde7b475d61516e622098cf';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=56b76ef371ce8d9857fad17229b62f6ad346ac3b95774147bc024b9b3cf4d11e';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=ca31b5dae38e6830162d82160bec10f85efb12adefad9843459aac442d133a25';
-import { PoolSound } from './sound.js?v=6c655c02502c2b2ea5c1e051392080b1d267f2ecb092e14c2869a1b950c327c5';
+import { PoolSound } from './sound.js?v=199eb28731f753fd75faeb0fb0671a61ec228c9d80f3c91aa13c2c2ef2d91704';
 import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=d5f4ef876dcc9eebfe90c7514438f77e6ee282c1d0147ad1db027e4f8d02cacd';
 import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
 import { PowerVisual } from './power-visual.js?v=1318a9f6de449b4f72e09d4436f9b36d8d9377fb48f52a5221eacf3972a64d2a';
@@ -513,7 +513,18 @@ function carryToFree() {
   if (continueFree(next)) loadPool(next, music);
 }
 function pointerWorld(event) { const view=geometry();return view.world(event.clientX-view.rect.left,event.clientY-view.rect.top); }
-function dragUpdate(event) { if (!drag || drag.id !== event.pointerId) return;  const point = pointerWorld(event), dx = drag.x - point.x, dy = drag.y - point.y, distance = Math.hypot(dx, dy); if (distance > 3) { angle = Math.atan2(dy, dx); power = Math.min(1, distance / 150); drag.distance = distance; $('power').value = power * 100; } }
+function shotPowerSet(next, previous = power) {
+  power = Math.max(0, Math.min(1, next)); $('power').value = power * 100;
+  if (isStarted && !isPaused && !game.isFlying && !game.isOver && !progression?.blocked && !document.querySelector('dialog[open]')) {
+    audioUnlockAsync(); audio.strengthChange(previous, power);
+  }
+}
+function dragUpdate(event) {
+  if (!drag || drag.id !== event.pointerId) return;
+  const point = pointerWorld(event), dx = drag.x - point.x, dy = drag.y - point.y, distance = Math.hypot(dx, dy);
+  if (distance > 3) angle = Math.atan2(dy, dx);
+  shotPowerSet(distance / 150, Math.min(1, (drag.distance || 0) / 150)); drag.distance = distance;
+}
 function dragCancel(event) {
   if (!drag || event?.pointerId !== undefined && drag.id !== event.pointerId) return;
   const id = drag.id; drag = null;
@@ -551,15 +562,15 @@ window.addEventListener('keydown', event => {
   if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', ' ', 'p', 'P'].includes(event.key)) event.preventDefault();
   if (event.key === 'ArrowLeft') angle -= event.shiftKey ? .02 : .09;
   if (event.key === 'ArrowRight') angle += event.shiftKey ? .02 : .09;
-  if (event.key === 'ArrowUp') power = Math.min(1, power + .05);
-  if (event.key === 'ArrowDown') power = Math.max(0, power - .05);
+  if (event.key === 'ArrowUp') shotPowerSet(power + .05);
+  if (event.key === 'ArrowDown') shotPowerSet(power - .05);
   $('power').value = power * 100;
   if (event.key === ' ' && !event.repeat) shoot();
   if (event.key.toLowerCase() === 'p' && !event.repeat) pauseSet(!isPaused);
 });
 $('continue-free').onclick = () => { if (store.pools.free) dialogOpen(true); else carryToFree(); };
 $('start').onclick = start; $('shoot').onclick = shoot; $('pause').onclick = () => pauseSet(!isPaused); $('resume').onclick = () => pauseSet(false);
-$('aim-left').onclick = () => { angle -= .14; }; $('aim-right').onclick = () => { angle += .14; }; $('power').oninput = () => { power = Number($('power').value) / 100; };
+$('aim-left').onclick = () => { angle -= .14; }; $('aim-right').onclick = () => { angle += .14; }; $('power').oninput = () => shotPowerSet(Number($('power').value) / 100);
 $('palette').onchange=event=>{audio.music.palette=event.currentTarget.value;save();};
 $('sound').onchange = event => { audio.settingsSet(audio.volume, !event.currentTarget.checked); audioUnlockAsync(); controlsRender(); save(); };
 $('ambience').oninput = () => { audio.ambienceSet(Number($('ambience').value) / 100); save(); };
