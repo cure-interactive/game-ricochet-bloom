@@ -5,7 +5,7 @@ import { assetURL } from './asset.js?v=702ecbe37f35afa96b95db6e49c578f7cd2be014d
 export function gameMenuMount(host) {
   const home=document.createElement('section');home.id='main-menu';home.setAttribute('aria-label','Main menu');
   const button=(id,label,icon,kind='')=>`<button type="button" id="${id}" class="${kind}">${iconHTML(icon)}<span>${label}</span></button>`;
-  home.innerHTML=`<div class="home-art" aria-hidden="true"><img src="${assetURL('artwork/pool-512.png')}" alt=""></div><div class="home-content"><p class="home-eyebrow">A LITTLE MOMENTUM. A LITTLE MUSIC.</p><h1>ricochet<br><span>bloom</span></h1><nav class="home-primary" aria-label="Main game actions">${button('home-continue','Continue','play','primary')}${button('home-levels','Campaign','grid','primary')}${button('home-free','Free Play','play')}${button('home-tree','Skill tree','network-node-three')}</nav><p id="home-progress" class="home-progress"></p><nav class="home-secondary" aria-label="More game options">${button('home-settings','Settings','gear')}</nav><button type="button" class="home-display" data-fullscreen>${iconHTML('fullscreen-enable')}<span class="button-label">Enter full screen</span></button><p class="home-note">Pluck light. Make a song.</p></div>`;
+  home.innerHTML=`<div class="home-art" aria-hidden="true"><img src="${assetURL('artwork/pool-512.png')}" alt=""></div><div class="home-content"><p class="home-eyebrow">A LITTLE MOMENTUM. A LITTLE MUSIC.</p><h1>ricochet<br><span>bloom</span></h1><nav class="home-primary" aria-label="Main game actions">${button('home-continue','Continue','play','primary')}${button('home-levels','Campaign','grid','primary')}${button('home-free','Free Play','play')}${button('home-tree','Skill tree','network-node-three')}</nav><p id="home-progress" class="home-progress"></p><nav class="home-secondary" aria-label="More game options">${button('home-help','How to play','about')}${button('home-settings','Settings','gear')}</nav><button type="button" class="home-display" data-fullscreen>${iconHTML('fullscreen-enable')}<span class="button-label">Enter full screen</span></button><p class="home-note">Pluck light. Make a song.</p></div>`;
   document.body.append(home);
   let current='home',history=[],returning=false;
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
@@ -22,6 +22,7 @@ export function gameMenuMount(host) {
   home.querySelector('#home-levels').onclick=()=>host.open('levels');
   home.querySelector('#home-tree').onclick=()=>host.open('tree');
   home.querySelector('#home-free').onclick=()=>host.freePlay();
+  home.querySelector('#home-help').onclick=()=>host.open('help');
   home.querySelector('#home-settings').onclick=()=>host.open('settings');
   refresh();present('home');
   return {home:homeOpen,back,show:present,play(){close();present('play');history=[];},get current(){return current;}};
