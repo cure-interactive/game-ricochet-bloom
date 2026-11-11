@@ -39,11 +39,11 @@ body:has(#welcome:not([hidden])) main>:not(.pool-shell){visibility:hidden}body:h
 #music-dialog .song-build{display:flex;justify-content:space-between;gap:18px;margin:0 0 24px;padding:12px 0;background:none;border:0}#music-dialog .song-build progress{width:70px;flex:none}#music-dialog .song-build>div{display:flex;flex-direction:column;gap:6px}
 .sr-only{top:0;left:0}
 @media(max-width:600px){body>header,.stream-mode>header{height:52px;padding:4px 12px}.brand-name{font-size:17px}.brand-icon{width:26px;height:26px}body>main,.stream-mode>main{padding:0 10px 6px;grid-template-columns:132px minmax(0,1fr);gap:3px 8px}.score,.pluck{gap:5px}.score strong,.pluck strong{font-size:19px}.hud .label{font-size:7px}.hud{min-height:42px;padding:4px 10px}.pluck{padding-right:35px}.pluck button{width:36px;height:36px;top:-8px}.melody i{width:5px;height:5px}.melody>div{gap:4px}.goal-strip{font-size:11px}.power-dock .power-slots{gap:5px}.power-dock .power-slots li{width:25px;height:25px}.power-dock .power-slots img{width:22px;height:22px}#welcome{top:52px}.phrase-panel{--phrase-height:26px}.aim-controls label{font-size:0;gap:0}.menu-actions button{font-size:13px}}
-@media(max-height:500px) and (min-width:600px){body>header,.stream-mode>header{height:48px}body>main,.stream-mode>main{max-width:1200px;grid-template-columns:minmax(0,1fr) 188px;grid-template-rows:auto 44px 44px 36px minmax(0,1fr);gap:5px 12px}.pool-shell{grid-column:1;grid-row:1/-1}.goal-strip{grid-column:2;grid-row:1}.power-dock{grid-column:2;grid-row:2;justify-self:start;width:130px}.bonus-card{grid-column:2;grid-row:3;border-left:0;padding-left:0}.phrase-panel{grid-column:2;grid-row:4}#music-open .button-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.edge-feedback{grid-column:2;grid-row:5;align-self:start;min-height:24px}.control-strip{grid-column:1/-1;grid-row:6}.welcome-content{gap:7px;padding:12px;max-width:400px}.welcome-content h2{font-size:26px}.welcome-content h2 br{display:none}.welcome-content p{font-size:12px;margin:0}.sound-hint{display:none}#welcome{top:48px}.welcome-content>.primary,.welcome-content>.quiet{min-height:44px;padding:8px 16px}}
+@media(max-height:500px) and (min-width:480px) and (orientation:landscape){body>header,.stream-mode>header{height:48px}body>main,.stream-mode>main{max-width:1200px;grid-template-columns:minmax(0,1fr) clamp(148px,25vw,188px);grid-template-rows:auto 44px 44px 36px minmax(0,1fr);gap:5px 12px}.pool-shell{grid-column:1;grid-row:1/-1}.goal-strip{grid-column:2;grid-row:1}.power-dock{grid-column:2;grid-row:2;justify-self:start;width:130px}.bonus-card{grid-column:2;grid-row:3;border-left:0;padding-left:0}.phrase-panel{grid-column:2;grid-row:4}#music-open .button-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.edge-feedback{grid-column:2;grid-row:5;align-self:start;min-height:24px}.control-strip{grid-column:1/-1;grid-row:6}.welcome-content{gap:7px;padding:12px;max-width:400px}.welcome-content h2{font-size:26px}.welcome-content h2 br{display:none}.welcome-content p{font-size:12px;margin:0}.sound-hint{display:none}#welcome{top:48px}.welcome-content>.primary,.welcome-content>.quiet{min-height:44px;padding:8px 16px}}
 @media(prefers-reduced-motion:reduce){.bonus-track>span{transition:none}}
 
 dialog{max-height:calc(100dvh - 24px);overscroll-behavior:contain;scrollbar-gutter:stable;padding:28px;width:min(620px,calc(100% - 24px))}dialog .close{position:sticky;float:right;top:0;right:0;background:#101c33;border-radius:8px;min-width:44px;min-height:44px;z-index:2;margin:-12px -12px 0 0}dialog h2{margin:10px 0 22px}dialog .intro{display:block;margin:20px 0}dialog .intro>div:first-child{display:none}dialog .record{text-align:left;padding:0}dialog .record small{display:block}dialog .quick-controls{display:grid;gap:18px;margin:24px 0}dialog .quick-controls label{font-size:12px;display:flex;justify-content:space-between;width:100%;gap:18px}dialog .quick-controls input{width:60%;max-width:260px}dialog .quick-controls button{font-size:13px;border:1px solid var(--line);border-radius:8px;padding:12px}dialog .under-pool{display:flex;flex-direction:column;font-size:11px}dialog .under-pool>div{justify-content:flex-start}dialog footer{display:flex!important;padding:18px 0 0;gap:16px}dialog footer>span{display:none}dialog .shot-feedback{margin:14px 0;padding:14px}dialog .power-panel{margin:0;padding:0;border:0;background:none}dialog .music-choice{display:flex;flex-direction:column;align-items:stretch;margin:0;padding:16px}dialog .music-choice select{width:100%}.settings-links{display:flex;align-items:center;gap:20px}.settings-links .local-badge{display:block}
-.bonus-steps{display:grid;gap:16px;margin:24px 0}.bonus-steps>div{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:14px}.bonus-steps progress{width:45%;height:7px;accent-color:#c1afff}.bonus-tip{padding:14px 16px;border-radius:12px;background:#b4a2ff12;color:#c6d1e5;font-size:13px}.bonus-prize{display:flex;justify-content:space-between;align-items:center;margin:24px 0;color:#aaf4d6}.bonus-prize strong{font-size:23px;font-weight:500}.bonus-prize span{font-size:12px;color:#b4c0ce}.bonus-next{font-size:12px;color:#9eabc2}.bonus-next strong{margin-left:10px;color:#d3caff;font-weight:500}.bonus-rules{font-size:12px;color:#9eabc2;line-height:1.65}#bonus-dialog>.primary{margin-top:14px}
+.bonus-steps{display:grid;gap:16px;margin:24px 0}.bonus-steps>div{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:14px}.bonus-steps progress{width:45%;height:7px;accent-color:#c1afff}.bonus-tip{padding:14px 16px;border-radius:12px;background:#b4a2ff12;color:#c6d1e5;font-size:13px}.bonus-prize{display:flex;justify-content:space-between;align-items:center;margin:24px 0;color:#aaf4d6}.bonus-prize strong{font-size:23px;font-weight:500}.bonus-prize span{font-size:12px;color:#b4c0ce}.bonus-next{font-size:12px;color:#9eabc2}.bonus-next strong{margin-left:10px;color:#d3caff;font-weight:500}.bonus-rules{font-size:12px;color:#9eabc2;line-height:1.65}#bonus-dialog .dialog-body>.primary{margin-top:14px}
 /* A phrase's time runs across; its vertical position records the stereo field. */
 .phrase-panel{--phrase-height:28px;min-width:0;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .phrase-copy .label{min-width:0;overflow:hidden;text-overflow:ellipsis;line-height:12px}
@@ -60,3 +60,33 @@ body>header #practice-return{font-size:11px;padding:8px;min-height:44px}
 
 .power-dock>button .button-label{right:0;width:auto;height:auto;clip-path:none;font-size:10px;color:#a9bbca}
 .power-dock>button .ui-icon{display:none}
+
+/* Dialog actions keep real touch space, including narrow and short viewports. */
+dialog button{min-width:44px;min-height:44px}
+dialog>h2{padding-right:44px}
+dialog .dialog-actions{display:flex;flex-wrap:wrap;gap:12px}
+dialog .dialog-actions>button{flex:1 1 160px;min-width:0}
+dialog .quick-controls{width:100%;justify-items:stretch}
+dialog .quick-controls label{align-items:center;gap:12px;min-height:44px}
+dialog .quick-controls input[type=range]{height:44px;min-width:0;flex:1}
+dialog .settings-links{flex-wrap:wrap;gap:12px}
+dialog .setting-toggle{min-height:44px}
+#seed-form{display:grid;gap:12px}
+#seed-form>button{width:100%;margin:0}
+#shutdown-dialog .dialog-body>button{display:flex;align-items:center;justify-content:center;width:100%;margin-top:12px}
+.hud .pluck{padding-right:48px}.hud .pluck button{width:44px;height:44px;top:50%;transform:translateY(-50%)}
+
+/* Fixed modal chrome and independently scrolling content never overlap. */
+dialog.standard-dialog,#menu-dialog.standard-dialog{padding:0;overflow:hidden}
+dialog.standard-dialog[open]{display:flex;flex-direction:column}
+dialog.standard-dialog>.dialog-heading{display:flex;flex:none;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid #40556b66;background:#101c33}
+dialog.standard-dialog>.dialog-heading>h2{flex:1;min-width:0;padding:0;margin:0;font-size:clamp(22px,5vw,28px);line-height:1.2}
+dialog.standard-dialog .dialog-heading>.close{position:static;float:none;flex:none;transform:none;margin:0;min-width:44px;min-height:44px;padding:8px}
+dialog.standard-dialog>.dialog-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:20px}
+dialog summary{min-height:44px;padding-block:12px}
+@media(max-width:350px){dialog.standard-dialog>.dialog-heading{padding:12px 14px;gap:12px}dialog.standard-dialog>.dialog-body{padding:16px}}
+@media(max-height:500px) and (orientation:landscape){dialog.standard-dialog>.dialog-heading{padding:8px 16px}dialog.standard-dialog>.dialog-body{padding:16px}}
+
+dialog select,dialog input:not([type]),dialog input[type=number],dialog input[type=text]{min-height:44px;min-width:0;max-width:100%}
+
+.aim-controls input[type=range]{height:44px}#music-open{min-width:44px;justify-content:center}

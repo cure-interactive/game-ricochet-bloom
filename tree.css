@@ -27,8 +27,8 @@
 .tree-legend .legend-owned:before{border-color:#9fe3ce}
 .tree-legend .legend-available:before{border-color:#e9c77f}
 .tree-legend .legend-locked:before{border-style:dashed}
-.tree-map-stage{position:relative;flex:1;min-height:0;overflow:hidden;background:radial-gradient(ellipse at 35% 20%,#203e3d55,transparent 70%),#091422}
-.tree-map-scroll{position:absolute;inset:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;overscroll-behavior:contain;background-image:radial-gradient(#8fb8cd16 1px,transparent 1px);background-size:24px 24px}
+.tree-map-stage{display:flex;flex-direction:column;position:relative;flex:1;min-height:0;overflow:hidden;background:radial-gradient(ellipse at 35% 20%,#203e3d55,transparent 70%),#091422}
+.tree-map-scroll{position:relative;flex:1;min-height:0;width:100%;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;overscroll-behavior:contain;background-image:radial-gradient(#8fb8cd16 1px,transparent 1px);background-size:24px 24px}
 .tree-map-scroll.is-panning,.tree-map-scroll.is-panning *{cursor:grabbing!important}
 .tree-map{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;max-width:none;margin:0}
 .tree-world-links{position:absolute;inset:0;width:100%;height:100%;max-width:none;overflow:visible;pointer-events:none}
@@ -73,10 +73,10 @@
 #tree-dialog .skill-node .skill-orb{width:56px;height:56px;margin:0}#tree-dialog .skill-node.is-base .skill-orb{width:64px;height:64px}
 #tree-dialog .skill-node>strong{font-size:14px;max-width:156px;line-height:1.2}#tree-dialog .skill-node.is-base>strong{font-size:16px}#tree-dialog .skill-node>small{font-size:12px;max-width:156px}
 .tree-map-scroll[data-detail=overview] .skill-node>strong,.tree-map-scroll[data-detail=overview] .skill-node>small{visibility:hidden}.tree-map-scroll[data-detail=overview] .family-map-title{transform:translate(-50%,-50%) scale(var(--map-label-scale))!important;width:168px!important;min-height:78px!important;padding:8px!important}.tree-map-scroll[data-detail=overview] .family-map-title>span,.tree-map-scroll[data-detail=overview] .family-map-title>small{display:none}.tree-map-scroll[data-detail=overview] .family-map-title>strong{font-size:24px}.tree-map-scroll[data-detail=overview] .family-bridge{vector-effect:non-scaling-stroke;stroke-width:1.2px}.tree-map-scroll[data-detail=overview] .bridge-label{visibility:hidden}
-.tree-camera-controls{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:3px;max-width:calc(100% - 12px);padding:4px;background:#101f30ee;border:1px solid #496478;border-radius:14px;box-shadow:0 8px 24px #0005;z-index:3}
+.tree-camera-controls{position:relative;flex:none;align-self:center;margin:8px 0;display:flex;align-items:center;gap:8px;max-width:calc(100% - 16px);padding:6px;background:#101f30ee;border:1px solid #496478;border-radius:14px;box-shadow:0 8px 24px #0005;z-index:3}
 #tree-dialog .tree-camera-controls button{min-width:44px;height:44px;padding:8px;font-size:12px;white-space:nowrap;gap:5px}.tree-zoom{width:38px;flex:none;font-size:12px;text-align:center;color:#c1d8d7}
-#tree-dialog [data-tree-action=zoom-in]>span:last-child{display:none}#tree-dialog [data-tree-action=zoom-out]{font-size:26px}.tree-map-hint{position:absolute;left:50%;top:8px;transform:translateX(-50%);font-size:11px;white-space:nowrap;color:#b1c8d2;background:#0b1926db;padding:5px 10px;border-radius:12px;pointer-events:none}
-@media(max-width:760px){#tree-dialog [data-tree-action=focus]>span:last-child{display:none}.tree-camera-controls{bottom:8px}}
+#tree-dialog [data-tree-action=zoom-in]>span:last-child{display:none}#tree-dialog [data-tree-action=zoom-out]{font-size:26px}.tree-map-hint{position:relative;order:-1;flex:none;text-align:center;margin:0;min-height:28px;font-size:11px;line-height:18px;color:#b1c8d2;background:#0b1926db;padding:5px 10px;border-radius:12px;pointer-events:none}
+@media(max-width:760px){#tree-dialog [data-tree-action=focus]>span:last-child{display:none}.tree-camera-controls{margin:8px 0}}
 .tree-extra>div{display:flex;gap:8px;flex-wrap:wrap}.tree-extra>button{width:100%;margin:4px 0;text-align:left;justify-content:flex-start!important}.tree-extra small{display:block;color:#b2cad2;font-size:12px}
 @media(max-width:760px){
  #tree-dialog .tree-heading{padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top));gap:8px}
@@ -156,3 +156,14 @@
 @media(max-width:600px){#upgrade-preview{padding:14px}.preview-heading h2{font-size:20px}#upgrade-preview p{font-size:13px}.preview-heading button span:last-child{display:none}}
 
 #reward-dialog .reward-heading,#reward-dialog .reward-footer{width:100%;max-width:none;margin:0;letter-spacing:normal;text-align:left;font:inherit}#reward-dialog .reward-footer button{font-size:14px;flex:1}#reward-dialog .reward-budget{display:flex;align-items:center;gap:7px}.reward-budget .ui-icon{width:16px;height:16px;flex:none}#reward-dialog .reward-heading{justify-content:space-between}.reward-card>div:last-child button{font-size:13px!important}.reward-power img{width:24px;height:24px}
+
+/* Map chrome occupies its own rows so it never covers upgrade nodes. */
+#tree-dialog,#tree-sheet,#reward-dialog{scrollbar-gutter:auto}
+#development-dialog .dialog-heading{grid-template-columns:minmax(0,1fr) auto;row-gap:8px}
+#development-dialog .dialog-heading>.ui-icon{display:none}
+#development-dialog .dialog-heading h2{font-size:clamp(18px,5vw,28px);overflow-wrap:normal;word-break:normal}
+#development-dialog .dialog-heading button{padding:9px 8px;font-size:13px}
+@media(max-width:350px){.tree-camera-controls{gap:6px;padding:4px}#tree-dialog .tree-camera-controls button{padding:8px 6px}.tree-zoom{width:32px}#tree-dialog .tree-family-nav select{min-width:0}.tree-family-nav{grid-template-columns:minmax(0,1fr) minmax(94px,1.1fr) minmax(0,1fr)}}
+@media(max-height:500px) and (orientation:landscape){.tree-map-hint{display:none}.tree-camera-controls{margin:4px 0}.tree-map-toolbar{padding-block:4px}#tree-dialog>.tree-legend{padding-block:6px}#tree-dialog .tree-heading{min-height:54px;padding-block:5px}}
+
+@media(max-width:350px){#development-dialog{padding:16px}}
