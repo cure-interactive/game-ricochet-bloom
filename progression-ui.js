@@ -1,13 +1,13 @@
 import { upgradePreviewMount, upgradeFixture, BUILD_EXAMPLES } from './upgrade-preview.js?v=534fc23f1f4640d0251b16a9355ba7958c869012f5c7dffdf84b2ebef032f49b';
-import { rewardMount } from './reward-ui.js?v=817416f031774efab5349968182e10a034b28e7723a86ea16b0be6ee759731cb';
-import { campaignMount } from './campaign-ui.js?v=516390caa8a619e675d8a30a8ebb8c6d55f09a1a92835530bec40dfdb6d53936';
+import { rewardMount } from './reward-ui.js?v=276b8ed7a294905b3cf4c3393aef8fb82edd7bc936f877b9c8fd3e3264af739f';
+import { campaignMount } from './campaign-ui.js?v=82ae32d3587149d3532e566e524cc7eb528d1dd316b645366f557e6d22fca39b';
 import { challengeEncode, challengeDecode } from './challenge.js?v=094d2a4a29534bc549c9e5a10ad7c70b8eb7724c9a5af0448431028897fc0cd5';
 import { trackGet, trackEnvironment } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { unlockedTracks, researchTarget, campaignPoolAccess, POPULATIONS, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=e55ea591d2a8518da29a0874a45c1c757e53c96e6c3feabab7dec6b85f69def8';
 import { progressionRead, progressionWrite, progressionImport } from './progression-store.js?v=f4013a9b35394b6111228ea7053e37b88e5790a9b6a552c51deb8c847a2f2259';
 import { profileReward } from './profile.js?v=d1925eb5759bdb49347ee38f4080b4e43d56a8c52af8eaf5164a73fc030bc7bc';
 import { gameCreate } from './engine.js?v=2d94bc3e3221c7e6c61b2dd311fe2e42f65f15db0a5dcc360a487c712cf2366f';
-import { treeMount } from './tree-ui.js?v=055d54788f0ab88acdbae58147a26e8c0f8e5a21a5ee5234649af07bedcd37ea';
+import { treeMount } from './tree-ui.js?v=689ead46214ecde0daac6e729abb85b8a5e871ae1cdcbc559499dc93dddc0e53';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
 export function progressionMount(host){

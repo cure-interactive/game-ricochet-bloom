@@ -4,7 +4,7 @@ import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f
 import { familyGate, familyProgress } from './catalogue.js?v=5bfcb0ab345e2201d6a2fb0f398cacce1328c732a5c0091243a81dcd45c44c6e';
 import { profilePurchase, profileSummary } from './profile.js?v=d1925eb5759bdb49347ee38f4080b4e43d56a8c52af8eaf5164a73fc030bc7bc';
 import { researchTarget, progressionBudget, progressionLoadout, GAME_CATALOGUE as cat, POOL_NAMES, GOALS } from './run.js?v=e55ea591d2a8518da29a0874a45c1c757e53c96e6c3feabab7dec6b85f69def8';
-import { assetURL } from './asset.js?v=a5528e3237bdbf8014b25e76066054535d27e26d94e720a9464cd2747b41bc05';
+import { assetURL } from './asset.js?v=1ecce74df9206a27aeab9bda7359ffb217d7510bd2de8e9330088b6926042eaf';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const families = [...new Set(Object.values(POWER_TREES).map(p => p.family))];
