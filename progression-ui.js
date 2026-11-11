@@ -1,13 +1,13 @@
-import { upgradePreviewMount, upgradeFixture, BUILD_EXAMPLES } from './upgrade-preview.js?v=6a46383a554e105dbf11f1a4c59f2a6d7d4aecd050c9c28234651ee0959e0b49';
-import { rewardMount } from './reward-ui.js?v=10d809171324cdf38d1ec2ad13683d23437211ac3345faea0d4a76686d63de6e';
-import { campaignMount } from './campaign-ui.js?v=6a66753ecb26f50af8f6367db682b9d757661ac141f36028bc31cd8b85d5ef65';
-import { challengeEncode, challengeDecode } from './challenge.js?v=ff0e31667e6db2a077460e9748cbad0728de6219fb0df770aba9368fb047b388';
+import { upgradePreviewMount, upgradeFixture, BUILD_EXAMPLES } from './upgrade-preview.js?v=273d3ce8311febbf71221b79fdd8b511e76fa773a19d0d3dbe913e0f8abd57c2';
+import { rewardMount } from './reward-ui.js?v=4d7fc8c227be06c02c1c50dde9abe6ca510c533debab1235e76b770c8a8b38d2';
+import { campaignMount } from './campaign-ui.js?v=cd49020d9b2e8ac3c190535fd854d20ff7ba9ad99f4683891e3823c203aa3b56';
+import { challengeEncode, challengeDecode } from './challenge.js?v=fa0bfc81f3249e0b86cf3443563dd3bae007936346853a09092a01078b67e869';
 import { trackGet, trackEnvironment } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
-import { unlockedTracks, researchTarget, campaignPoolAccess, POPULATIONS, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=d9759df78dc498217dd53b586f16048feafa7f17faf634eef9e660eb088ccee5';
-import { progressionRead, progressionWrite, progressionImport } from './progression-store.js?v=3fc9df51711333fb700214748e782afda1b56e0e9d5fe79d86a57a97296c3751';
-import { profileReward } from './profile.js?v=d86f3e1dc882dcf034b75db8449706fd9c205f62359e1ca4202ef4df753af1c7';
-import { gameCreate } from './engine.js?v=484625264dc5bfa76ad46aa629ce94a11081c33309a67c50b27eb49df438cff8';
-import { treeMount } from './tree-ui.js?v=673d90305377ada8c0253df17efd010f050e9402d876174189175e5daaaf3ae8';
+import { unlockedTracks, researchTarget, campaignPoolAccess, POPULATIONS, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=afdfda1beb256bb301dfd037f92ff412feaa1f6568dc71a447c56e8750405fce';
+import { progressionRead, progressionWrite, progressionImport } from './progression-store.js?v=7d401b69d12e7ba1ee22eb6a6fab709c63e9301fde8d80258f5584c4fcd4dfb4';
+import { profileReward } from './profile.js?v=34737935bb9fa338929973769d09b3c14eed45a03a0c366afa3d7800febf0035';
+import { gameCreate } from './engine.js?v=ff1b90cebfd24e6845e51dc92c4a434e7460b271df6473d5ee0164d71af79298';
+import { treeMount } from './tree-ui.js?v=e8d243f69b7f044410cf1157e20779fdccbb68faa4c1312643407a35d7980551';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
 export function progressionMount(host){
@@ -52,7 +52,7 @@ export function progressionMount(host){
   const preview=upgradePreviewMount({gentle:()=>host.gentle?.(),practice:id=>enterPractice(id)});
   tree=treeMount({get:()=>state,act,open,screen:()=>host.screen?.('tree'),back:()=>host.back?.()});
   const listen=(record,seconds=0)=>{clearTimeout(listenTimer);host.save();context='practice';practice={listening:true,campaign:seconds>0};close();back.hidden=false;back.lastElementChild.textContent=seconds?'Stop preview':'Leave listening';const listeningGame=gameCreate(record.seed,'free');listeningGame.blooms=record.music.blooms;listeningGame.launches=record.music.plucks;host.play(listeningGame,record.music);host.message('Listening to '+trackGet(record.track).name+'. Leave listening to return to your saved run.');if(seconds)listenTimer=setTimeout(()=>{if(context==='practice'&&practice?.listening&&host.currentScreen?.()==='play'){leave();campaign.open();}},seconds*1000);};
-  campaign=campaignMount({screen:tab=>host.screen?.(tab==='collection'?'collection':'levels'),back:()=>host.back?.(),get:()=>({...state,shared:!!shared}),act,open,tree:()=>tree.open(),listen,
+  campaign=campaignMount({screen:tab=>host.screen?.(tab==='collection'?'collection':'levels'),back:()=>host.back?.(),get:()=>({...state,shared:!!shared}),act,open,tree:family=>tree.open(family),listen,
     code(){const build=progressionLoadout(state);if(!build.ok||build.tuning>10)return {ok:false,reason:'Use a build within 10 tuning points.'};try{return {ok:true,code:challengeEncode({version:1,rules:18,track:state.track,seed:state.seed,relaxed:state.relaxed,build:build.powers,routes:[0,0,0,0,0]})};}catch{return {ok:false,reason:'This build cannot be shared.'};}},
     resumeChallenge(){try{const saved=JSON.parse(localStorage.getItem('ricochet-bloom-shared-v1')||'null'),code=saved?.code&&challengeDecode(challengeEncode(saved.code)),next=progressionValidate(saved?.state,'development');if(!code||!next||next.phase==='shop'||JSON.stringify(progressionLoadout(next).powers)!==JSON.stringify(code.build))return {ok:false,reason:'No valid unfinished shared challenge is saved.'};host.save();if(suspended)leave();suspended={state:structuredClone(state),kind};shared=code;state=next;kind='development';return enterRun();}catch{return {ok:false,reason:'No valid saved challenge.'};}},
     challenge(text){const code=challengeDecode(text);if(!code)return {ok:false,reason:'Invalid challenge code or incompatible rules version.'};host.save();if(suspended)leave();suspended={state:structuredClone(state),kind};shared=code;

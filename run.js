@@ -1,8 +1,8 @@
-import { buildValidate } from './skill-effect.js?v=495e5208ab85e2d73bf805e158844c6d848b4a0ccfeb2f2d9d50cd589ab4379c';
-import { catalogueCreate, STARTERS, familyGate } from './catalogue.js?v=29bfa3870f4a1808447f7c1b947f69e5a7dc0cc9131159769f55b5527c4ee113';
-import { POWER_TREES } from './power-tree.js?v=4929fc5eda5a5d405a8ac330c9b14b440804ab62150439a106e28084bb1f9f19';
-import { profileCreate, profileValidate, profilePurchase, profileRefund, profileRefundPreview, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve } from './profile.js?v=d86f3e1dc882dcf034b75db8449706fd9c205f62359e1ca4202ef4df753af1c7';
-import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=484625264dc5bfa76ad46aa629ce94a11081c33309a67c50b27eb49df438cff8';
+import { buildValidate } from './skill-effect.js?v=ee4e0aab147bf42dd5cbe6eb6c4450e4a99b71bb2da4265306038ebfe050a29d';
+import { catalogueCreate, STARTERS, familyGate } from './catalogue.js?v=59838fbe2430140ae4ab48caf99499a0512cf41262d679584072bcee8b3d7133';
+import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
+import { profileCreate, profileValidate, profilePurchase, profileRefund, profileRefundPreview, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve } from './profile.js?v=34737935bb9fa338929973769d09b3c14eed45a03a0c366afa3d7800febf0035';
+import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=ff1b90cebfd24e6845e51dc92c4a434e7460b271df6473d5ee0164d71af79298';
 import { jellyRole, musicCreate, musicRunSection } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
@@ -37,10 +37,10 @@ export const progressionRefundPreview=(s,id)=>profileRefundPreview(s.profile,id,
 export const unlockedTracks=s=>{const complete=profileSummary(s.profile,GAME_CATALOGUE).completedTracks;return TRACKS.filter((t,i)=>i===0||complete.includes(TRACKS[i-1].id));};
 export function researchTarget(s,id=s.target) {
   const n=GAME_CATALOGUE.nodes[id];if(!n)return null;
-  const owned=!!s.profile.research[id],gate=familyGate(s.profile.research,n.power,GAME_CATALOGUE),mastery=profileSummary(s.profile,GAME_CATALOGUE).mastery[n.power],needs=[];
+  const owned=!!s.profile.research[id],gate=familyGate(s.profile,n.power,GAME_CATALOGUE),mastery=profileSummary(s.profile,GAME_CATALOGUE).mastery[n.power],needs=[];
   if(!owned){
     const seeds=Math.max(0,n.seedCost-s.profile.wallet.seeds);if(seeds)needs.push(`${seeds} more Seeds`);
-    if(n.kind==='base'&&!gate.ok){if(gate.required>gate.upgrades)needs.push(`${gate.required-gate.upgrades} more ${POWER_TREES[n.power].family} upgrades`);if(POWER_TREES[n.power].tier===3&&gate.powers<2)needs.push(`${2-gate.powers} more powers developed`);}
+    if(n.kind==='base'&&!gate.ok){if(gate.required>gate.clears)needs.push(`${gate.required-gate.clears} more cleared pools using ${POWER_TREES[n.power].family}`);if(POWER_TREES[n.power].tier===3&&gate.powers<2)needs.push(`${2-gate.powers} more different powers used`);}
     if(n.kind!=='base'&&!s.profile.research[n.power+'.base'])needs.push(`Unlock ${POWER_TREES[n.power].name} first`);
     if(n.masteryPools>mastery)needs.push(`${n.masteryPools-mastery} more cleared pools using ${POWER_TREES[n.power].name}`);
   }

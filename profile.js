@@ -1,4 +1,4 @@
-import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, familyGate } from './catalogue.js?v=29bfa3870f4a1808447f7c1b947f69e5a7dc0cc9131159769f55b5527c4ee113';
+import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, familyGate, FAMILIES, legacyFamilyAccess } from './catalogue.js?v=59838fbe2430140ae4ab48caf99499a0512cf41262d679584072bcee8b3d7133';
 
 export const PROFILE_VERSION = 1;
 const integer = value => Number.isSafeInteger(value) && value >= 0;
@@ -14,7 +14,7 @@ const nodeGet = (catalogue, id) => typeof id === 'string' && own(catalogue.nodes
 export function profileCreate(kind = 'normal') {
   if (!['normal', 'development'].includes(kind)) throw new TypeError('Invalid profile kind');
   return { version: PROFILE_VERSION, kind, revision: 0, wallet: { seeds: 0 },
-    research: Object.fromEntries(STARTERS.map(power => [`${power}.base`, { paid: 0 }])), rewards: [] };
+    familyAccess: Object.fromEntries(FAMILIES.map(f=>[f,1])), research: Object.fromEntries(STARTERS.map(power => [`${power}.base`, { paid: 0 }])), rewards: [] };
 }
 
 function rewardNormalize(event, catalogue) {
@@ -98,7 +98,9 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
     research[id] = { paid: purchase.paid };
   }
   if (STARTERS.some(power => research[power + '.base']?.paid !== 0)) return null;
-  return { version: PROFILE_VERSION, kind: input.kind, revision: input.revision, wallet: { seeds: input.wallet.seeds },
+  const familyAccess=input.familyAccess===undefined?legacyFamilyAccess(research,catalogue):input.familyAccess;
+  if(!object(familyAccess)||Object.keys(familyAccess).length!==FAMILIES.length||FAMILIES.some(f=>![1,2,3].includes(familyAccess[f])))return null;
+  return { version: PROFILE_VERSION, familyAccess:{...familyAccess}, kind: input.kind, revision: input.revision, wallet: { seeds: input.wallet.seeds },
     research, rewards: [...summary.receipts.values()] };
 }
 export function profileSummary(input, catalogue = CATALOGUE) {
@@ -112,7 +114,7 @@ export function profilePurchase(input, id, catalogue = CATALOGUE) {
   if (!profile) return rejected('invalid-profile');
   if (!node?.supported) return rejected('unavailable-node');
   if (own(profile.research, id)) return rejected('already-owned');
-  if (profile.kind === 'normal' && node.kind === 'base' && !familyGate(profile.research, node.power, catalogue).ok) return rejected('family-gate');
+  if (profile.kind === 'normal' && node.kind === 'base' && !familyGate(profile, node.power, catalogue).ok) return rejected('family-gate');
   if (!nodePrerequisitesMet(node, key => own(profile.research, key))) return rejected('prerequisite');
   if (profile.kind === 'normal' && profileSummary(profile, catalogue).mastery[node.power] < node.masteryPools) return rejected('mastery');
   if (profile.wallet.seeds < node.seedCost) return rejected('insufficient-seeds');

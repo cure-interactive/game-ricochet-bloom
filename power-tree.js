@@ -25,11 +25,11 @@ export const POWER_TREES = {
       },
       {
         "name": "Long flight",
-        "description": "Halve Comet's late-flight drag while it is active; still settle naturally and respect the shot ceiling."
+        "description": "Lose speed more gradually near the end of a pluck, while still coming to a natural rest."
       },
       {
         "name": "Meteor wake",
-        "description": "Comet bank charges emit a small outward jelly push at the wall, at most twice per pluck. Without A, the first two ordinary banks emit the same push; neither modifier nor Foundation is required."
+        "description": "The first two wall banks send an outward push through nearby jellies."
       }
     ]
   },
@@ -79,7 +79,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Spring",
-        "description": "The current rebound behavior for three seconds; retain its readable wall recoil."
+        "description": "Boost wall rebounds for three seconds, with a visible recoil along the wall."
       },
       {
         "name": "Lasting spring",
@@ -87,7 +87,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Deep rebound",
-        "description": "Stronger outward return, with the existing speed ceiling."
+        "description": "Bounce back more strongly, up to the normal maximum speed."
       },
       {
         "name": "Angled rebound",
@@ -112,7 +112,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Drunk",
-        "description": "The current smooth four-second swerve."
+        "description": "Swerve smoothly for four seconds."
       },
       {
         "name": "Rhythm sway",
@@ -128,7 +128,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Shared sway",
-        "description": "Nearby unhit jellies receive a weak matching sideways current. Cap affected bodies at three; it does not continuously attract them."
+        "description": "Up to three nearby unhit jellies sway sideways with the player."
       }
     ]
   },
@@ -227,7 +227,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Moving center",
-        "description": "A weak one-second swirl follows the player slowly, even without Sustained current; it cannot jump through Wrap or Portal, and fades at that discontinuity."
+        "description": "A weak swirl follows the player for one second. Teleporting breaks the swirl."
       }
     ]
   },
@@ -244,7 +244,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Magnet",
-        "description": "The current selective attraction; keep already-hit jellies excluded."
+        "description": "Draw nearby unhit jellies toward the player."
       },
       {
         "name": "Lasting magnet",
@@ -277,7 +277,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Wake",
-        "description": "Three seconds of current deposition, with the existing finite trail lifetime."
+        "description": "Leave a short-lived current along your path for three seconds."
       },
       {
         "name": "Long wake",
@@ -314,7 +314,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Deep frost",
-        "description": "Restore the current broad radius."
+        "description": "Freeze jellies across a wider area: 440 units instead of 300."
       },
       {
         "name": "Firm ice",
@@ -449,11 +449,11 @@ export const POWER_TREES = {
       },
       {
         "name": "Seeking echo",
-        "description": "Add gentle attraction toward nearby unhit jellies, including its own bounded smooth deviation when Foundation is absent."
+        "description": "Gently steer the Echo toward nearby unhit jellies beside its delayed path."
       },
       {
         "name": "Wide echo",
-        "description": "Use a longer leash for broader coverage. Alone it favors physical deflection; combined with Seeking echo it permits wider bounded seeking. Neither requires Foundation."
+        "description": "Let the Echo stray farther from its delayed path. Combine with Seeking echo to reach more nearby jellies."
       },
       {
         "name": "Final reply",
@@ -511,7 +511,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Relay team",
-        "description": "Allow the current three independently armed jellies."
+        "description": "Arm three jellies for contact transfers instead of one."
       },
       {
         "name": "Strong pass",
@@ -638,7 +638,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Swap",
-        "description": "Retain the current swap and preview its destination."
+        "description": "Exchange places with a distant jelly and keep moving."
       },
       {
         "name": "Untouched destination",
@@ -675,7 +675,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Stable gates",
-        "description": "Extend to the current five seconds."
+        "description": "Keep both gates open for five seconds instead of three."
       },
       {
         "name": "Wide gates",
@@ -753,7 +753,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Arrival field",
-        "description": "A small pressure field at the exit eases nearby jellies aside. It grants no collision immunity or free contact. The base all-edge option remains selectable with neither directional modifier equipped, including when the capstone is active."
+        "description": "An outward push at the exit eases nearby jellies aside. You can still choose all-edge, horizontal or vertical travel."
       }
     ]
   },
@@ -774,7 +774,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Aimed release",
-        "description": "Restore general unhit-target selection and lead moving targets. Near target and Far target include their own selection without this node; Foundation improves their moving-target lead when combined."
+        "description": "Aim releases toward unhit jellies and lead moving targets. Also improves the lead when combined with Near target or Far target."
       },
       {
         "name": "Near target",

@@ -1,4 +1,4 @@
-import { POWER_TREES } from './power-tree.js?v=4929fc5eda5a5d405a8ac330c9b14b440804ab62150439a106e28084bb1f9f19';
+import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
 // Progression definitions are not a claim that an engine behavior is implemented.
 // The engine integration must explicitly advertise supported node IDs.
 export const CURRENCIES = Object.freeze({ seeds: Object.freeze({ name: 'Seeds' }) });
@@ -38,15 +38,23 @@ export function catalogueCreate(supportedNodes = []) {
 // Consumers opt into implemented capabilities. run.js owns the shipping set.
 export const CATALOGUE = catalogueCreate();
 
-// Gates govern new base purchases only; owned descendants survive route refunds.
-export function familyProgress(research, family, catalogue = CATALOGUE) {
-  const nodes = Object.keys(research).map(id => catalogue.nodes[id]).filter(node => node && node.kind !== 'base' && catalogue.powers[node.power].family === family);
-  return { upgrades: nodes.length, powers: new Set(nodes.map(node => node.power)).size };
+// Family experience is earned by using powers in successful pools. Refunds cannot erase it.
+export const FAMILIES = Object.freeze([...new Set(Object.values(POWER_TREES).map(p=>p.family))]);
+export function legacyFamilyAccess(research,catalogue=CATALOGUE){
+ return Object.fromEntries(FAMILIES.map(f=>{const nodes=Object.keys(research).map(id=>catalogue.nodes[id]).filter(n=>n&&catalogue.powers[n.power].family===f),upgrades=nodes.filter(n=>n.kind!=='base'),powers=new Set(upgrades.map(n=>n.power)).size,ownedTier=Math.max(1,...nodes.filter(n=>n.kind==='base').map(n=>catalogue.powers[n.power].tier));return [f,Math.max(ownedTier,upgrades.length>=5&&powers>=2?3:upgrades.length>=2?2:1)];}));
 }
-export function familyGate(research, power, catalogue = CATALOGUE) {
-  const definition = catalogue.powers[power];
-  if (!definition) return { ok: false, required: 0, upgrades: 0, powers: 0 };
-  const progress = familyProgress(research, definition.family, catalogue);
-  const required = definition.tier === 3 ? 5 : definition.tier === 2 ? 2 : 0;
-  return { ...progress, required, ok: progress.upgrades >= required && (definition.tier !== 3 || progress.powers >= 2) };
+export function familyProgress(profile,family,catalogue=CATALOGUE){
+ const research=profile.research,powers=new Set();let clears=0;
+ for(const {event} of profile.rewards||[])if(event.type==='pool'){
+  const used=event.activated.filter(p=>catalogue.powers[p]?.family===family);
+  if(used.length){clears++;for(const p of used)powers.add(p);}
+ }
+ const upgrades=Object.keys(research).filter(id=>catalogue.nodes[id]?.kind!=='base'&&catalogue.powers[catalogue.nodes[id]?.power]?.family===family).length;
+ const earned=clears>=5&&powers.size>=2?3:clears>=2?2:1;
+ return {upgrades,clears,powers:powers.size,tier:Math.max(earned,profile.familyAccess?.[family]||1)};
+}
+export function familyGate(profile,power,catalogue=CATALOGUE){
+ const definition=catalogue.powers[power];if(!definition)return {ok:false,required:0,clears:0,powers:0,tier:1};
+ const progress=familyProgress(profile,definition.family,catalogue),required=definition.tier===3?5:definition.tier===2?2:0;
+ return {...progress,required,ok:progress.tier>=definition.tier};
 }
