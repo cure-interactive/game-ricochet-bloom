@@ -38,7 +38,6 @@
 .skill-family{--family-color:#a5e7ce}.skill-family[data-family-tree=Motion]{--family-color:#9bcbff}.skill-family[data-family-tree=Control]{--family-color:#b4e8ff}.skill-family[data-family-tree=Propagation]{--family-color:#e5b5ff}.skill-family[data-family-tree=Navigation]{--family-color:#ffcca1}
 #tree-dialog .family-map-title{position:absolute;transform:translate(-50%,-50%);width:240px;min-height:116px;display:flex;flex-direction:column;gap:5px;border:1px solid var(--family-color);border-radius:28px;background:#102332;color:var(--family-color);z-index:2;padding:14px}
 .family-map-title>strong{font-size:29px;font-weight:500}.family-map-title>span{font-size:14px;color:#bdcdd6}.family-map-title>small{font-size:13px;display:flex;align-items:center;gap:6px;color:#e8d2a2}.family-map-title.is-open>small{color:#b5d6ca}
-.tree-origin{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:8px;width:320px;padding:16px;border:1px solid #6b9385;border-radius:24px;color:#b4e9d2;background:#132d30}.tree-origin strong{font-size:24px}.tree-origin small{width:100%;text-align:center;font-size:14px}
 #tree-dialog .skill-node{position:absolute;left:var(--node-x);top:var(--node-y);transform:translate(-50%,-32px);width:160px;max-width:none;min-height:116px;display:flex;flex-direction:column;gap:4px;padding:0;border:0;border-radius:12px;background:transparent;text-align:center;justify-content:flex-start;align-items:center;font-size:13px;z-index:1;cursor:pointer}
 #tree-dialog .skill-node>.family-key{display:flex;align-items:center;gap:4px;color:#e9cf92;font-size:11px}.family-key .ui-icon{width:12px!important;height:12px!important}
 #tree-dialog .family-link{width:100%;justify-content:flex-start;text-align:left;margin:0 0 12px;background:#1b2638;border-color:#665b43;font-size:13px}.family-link small{display:block;font-size:11px;color:#bbced7;margin-top:3px}
@@ -76,7 +75,6 @@
 /* Power silhouettes and real prerequisite paths carry the map hierarchy. */
 #tree-dialog .family-map-title{width:180px;min-height:48px;padding:4px 8px;gap:3px;border:0;border-radius:0;background:transparent;box-shadow:none}
 .family-map-title>strong{font-size:23px;letter-spacing:.04em}.family-map-title>small{font-size:11px}
-.tree-origin{width:80px;height:80px;border-radius:50%;padding:8px;gap:0;background:radial-gradient(circle,#32685b,#102e35);box-shadow:0 0 32px #77e5bd24}.tree-origin img{width:30px;height:30px}.tree-origin strong{font-size:13px;width:100%;text-align:center}
 #tree-dialog .skill-node{width:116px;min-height:94px;gap:3px;transform:translate(-50%,-28px)}
 #tree-dialog .skill-node .skill-orb{width:48px;height:48px}#tree-dialog .skill-node.is-base .skill-orb{width:64px;height:64px;margin-top:-8px}
 #tree-dialog .skill-node>strong{font-size:12px;max-width:116px}#tree-dialog .skill-node.is-base>strong{font-size:15px}#tree-dialog .skill-node>small{font-size:10px}

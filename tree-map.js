@@ -1,9 +1,8 @@
 // Spatial presentation only: catalogue prerequisites and saved research stay authoritative.
 export function treeLayout(powers,nodes,bridges) {
-  const origin={x:820,y:80};
   // Power branches fan out from family entries; upgrades remain straight chains.
-  const places={Motion:[70,230],Flow:[870,230],Navigation:[70,1050],Control:[870,1050],Propagation:[650,1870]};
-  const result={width:1660,height:2700,origin,nodes:{},families:{},edges:[],bridges:[]};
+  const places={Motion:[70,50],Flow:[870,50],Navigation:[70,870],Control:[870,870],Propagation:[650,1690]};
+  const result={width:1660,height:2520,nodes:{},families:{},edges:[],bridges:[]};
   for(const [family,[x,y]] of Object.entries(places)) {
     const members=Object.keys(powers).filter(p=>powers[p].family===family).sort((a,b)=>powers[a].tier-powers[b].tier);
     const width=members.length*124+40,center=x+width/2;
