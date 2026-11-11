@@ -2,7 +2,7 @@ import { trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642
 import { POWER_TREES } from './power-tree.js?v=4929fc5eda5a5d405a8ac330c9b14b440804ab62150439a106e28084bb1f9f19';
 import { familyGate, familyProgress } from './catalogue.js?v=29bfa3870f4a1808447f7c1b947f69e5a7dc0cc9131159769f55b5527c4ee113';
 import { profilePurchase, profileSummary } from './profile.js?v=d86f3e1dc882dcf034b75db8449706fd9c205f62359e1ca4202ef4df753af1c7';
-import { progressionBudget, progressionLoadout, progressionRefundPreview, GAME_CATALOGUE as cat, POOL_NAMES, GOALS } from './run.js?v=8421ccc4a690fed8a048cdb8f9828583a0f0ed86cd69000531b66c16d4ff591b';
+import { progressionBudget, progressionLoadout, progressionRefundPreview, GAME_CATALOGUE as cat, POOL_NAMES, GOALS } from './run.js?v=691097a9072d6b323d2b1de0403ed23963100ce0658bc16878767f8b325faa9f';
 import { assetURL } from './asset.js?v=a5528e3237bdbf8014b25e76066054535d27e26d94e720a9464cd2747b41bc05';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
@@ -17,7 +17,7 @@ export function treeMount(controller) {
   const dialog = document.getElementById('tree-dialog');
   const mobile = matchMedia('(max-width: 760px)');
   let state = controller.get(), selected = 'comet.base', family = mobile.matches ? 'Motion' : 'All', refund = null, resetPending = false, statusTimer = null;
-  dialog.innerHTML = `<div class="tree-heading"><div class="tree-heading-copy"><span class="tree-mobile-title" tabindex="-1">Skill tree</span><span class="tree-eyebrow">RICOCHET BLOOM · RESEARCH</span><h2>Shape your next song.</h2><p>Permanent research · reversible tuning</p></div><div class="tree-mobile-summary" id="tree-mobile-summary"></div><button type="button" class="tree-guide-open" data-tree-action="guide" aria-label="Skill tree guide">${iconHTML('about')}</button><button class="quiet tree-close" aria-label="Close skill tree">${iconHTML('close')}</button></div>
+  dialog.innerHTML = `<div class="tree-heading"><div class="tree-heading-copy"><span class="tree-mobile-title" tabindex="-1">Skill tree</span><span class="tree-eyebrow">RICOCHET BLOOM · RESEARCH</span><h2>Skill tree</h2><p>Permanent research · reversible tuning</p></div><div class="tree-mobile-summary" id="tree-mobile-summary"></div><button type="button" class="tree-guide-open" data-tree-action="guide" aria-label="Skill tree guide">${iconHTML('about')}</button><button class="quiet tree-close" aria-label="Back from skill tree">${iconHTML('arrow-left')}<span>Back</span></button></div>
     <div class="tree-controls" id="tree-controls"></div><div class="tree-status" id="tree-status" role="status" aria-live="polite">Start with Ripple, Attract and Comet. Play the tutorial or explore any power.</div>
     <div class="tree-workspace"><section class="tree-map-section" aria-label="Connected power family trees"><div class="tree-map-toolbar"><div class="tree-family-choice" role="group" aria-label="Visible family">${['All', ...families].map(f => `<button type="button" data-family="${f}" aria-pressed="${f === family}">${iconHTML(({All:'network-node-three',Motion:'speedometer',Flow:'dropper',Control:'magnet-northeast',Propagation:'pulse',Navigation:'arrow-right'})[f]||'grid')}${f === 'All' ? 'All' : f}</button>`).join('')}</div><div class="tree-legend"><span>${iconHTML('check')}Owned</span><span>${iconHTML('radio-on')}Equipped</span><span>${iconHTML('clock')}Borrowed</span><span class="tree-today-text">${iconHTML('star')}Today’s behavior</span></div></div><div class="tree-map-scroll" id="tree-map-scroll"><div class="tree-map" id="tree-map"></div></div></section><aside class="tree-detail" id="tree-detail" aria-label="Selected upgrade"></aside></div>
     <div class="tree-footer">Unlock powers with earned Seeds. Equip upgrades within your tuning budget. Research is saved on this browser.</div><nav class="tree-mobile-nav" aria-label="Skill tree view"><button type="button" data-tree-view="map" aria-pressed="true">${iconHTML('network-node-three')}Tree</button><button type="button" data-tree-view="run" aria-pressed="false">${iconHTML('play')}Loadout & run</button></nav>`;
@@ -40,7 +40,8 @@ export function treeMount(controller) {
   sheet.addEventListener('close', returnDetail);
   dialog.addEventListener('close', () => { if (sheet.open) sheet.close(); });
   mobile.addEventListener('change', () => { if (sheet.open) sheet.close(); });
-  dialog.querySelector('.tree-close').onclick = () => dialog.close();
+  dialog.querySelector('.tree-close').onclick = () => controller.back?.();
+  dialog.addEventListener('cancel',event=>{event.preventDefault();controller.back?.();});
   const status = message => {
     const target = dialog.querySelector('#tree-status');
     target.textContent = message;
@@ -130,6 +131,7 @@ export function treeMount(controller) {
   dialog.addEventListener('click', handleClick);
   sheet.addEventListener('click', handleClick);
   function openTree() {
+    controller.screen?.();
     document.querySelectorAll('dialog[open]').forEach(d => d.close());
     state=controller.get();render(); dialog.showModal();
     if (mobile.matches) dialog.querySelector('.tree-mobile-title').focus({ preventScroll: true });

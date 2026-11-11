@@ -12,6 +12,12 @@ export const POOL_NAMES=['Intro','Verse','Build','Bridge','Finale'];
 export const POPULATIONS=[12,14,16,14,18];
 export const GOALS=['Make one bloom','Bloom + all three musical roles','Make two blooms','Bloom after banking off a wall','Two blooms + all three roles'];
 export const MEDALS={silverBonuses:3,goldBonuses:5,goldLaunches:20};
+export function campaignPoolAccess(state,pool) {
+  const next=state.phase==='shop'?0:state.pool+(state.phase==='interlude'?1:0);
+  const valid=Number.isInteger(pool)&&pool>=0&&pool<POOL_NAMES.length;
+  const cleared=valid&&(profileSummary(state.profile,GAME_CATALOGUE).completedTracks.includes(state.track)||state.phase!=='shop'&&pool<next);
+  return {next,play:valid&&pool===next,cleared,replay:cleared};
+}
 const unique=a=>Array.isArray(a)&&new Set(a).size===a.length;
 const integer=n=>Number.isSafeInteger(n)&&n>=0;
 const seedValid=s=>typeof s==='string'&&/^[A-Za-z0-9_-]{1,24}$/.test(s);
