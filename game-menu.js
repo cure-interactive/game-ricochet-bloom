@@ -1,5 +1,5 @@
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { assetURL } from './asset.js?v=702ecbe37f35afa96b95db6e49c578f7cd2be014d782640f9bbab8bd04850404';
+import { assetURL } from './asset.js?v=2b159e067962ab466dfde3d9f305e802c92bc5b4183b6ffe9932dbb398b20746';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {

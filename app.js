@@ -1,16 +1,16 @@
 import { fullscreenMount } from './fullscreen.js?v=2c3119f8c834c71afef28339288e1d4d71b96164e260d16f903a6c0fbd0ee41f';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=e59c37cdc04af87cd49147fbf80c7dd2002c56ae5a7a595c0f48456db16355ec';
+import { gameMenuMount } from './game-menu.js?v=03f8c52ca5398617c821797fd85ff2a24f146bdda2bbc651ba41795e965a9461';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { progressionMount } from './progression-ui.js?v=73a6e0125dcb2d1c506ebd2d32806e3bafdc1bf58cf43d60becee11cfb0d46d8';
-import {assetURL} from './asset.js?v=702ecbe37f35afa96b95db6e49c578f7cd2be014d782640f9bbab8bd04850404';
+import { progressionMount } from './progression-ui.js?v=a07bbfe29e138bf51c8252c28f5987566377532caf945327b367b2f777201c1a';
+import {assetURL} from './asset.js?v=2b159e067962ab466dfde3d9f305e802c92bc5b4183b6ffe9932dbb398b20746';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
 import {songLibrarySetup} from './song-ui.js?v=23b8188ee4080ec59f902c35585a39bfbbb1d6a4b9c1e0bde2bfc222dff8edb9';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=2d94bc3e3221c7e6c61b2dd311fe2e42f65f15db0a5dcc360a487c712cf2366f';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=0cf5126e2b455b6d7cc26e861fed8b35e4e263a17919cf61933f1b963a7f42c1';
-import { PoolSound } from './sound.js?v=0f02b2eafeecddb7bdc66a32c0e4f28583b5ba1581f57fe65114093ae91c8945';
+import { PoolSound } from './sound.js?v=fea6409757b0a55195c695c89df08ed9aaef1043b851841ca79e9b78277e81c4';
 import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
 import { PowerVisual } from './power-visual.js?v=6ab2a5197bfab3dbc1c0484758ced17af3672a07a8f94d1c2380b14b6767cf74';
@@ -30,6 +30,10 @@ const membranes = new Map();
 const powerVisual = new PowerVisual();
 const powerIcons = Object.fromEntries(Object.keys(POWERS).map(kind => {
   const icon = new Image(); icon.src = new URL(assetURL(`./icon/power/${kind}.svg`), import.meta.url).href; return [kind, icon];
+}));
+// Role markings use the same SVG geometry as the musical legend.
+const roleIcons = Object.fromEntries(Object.keys(JELLY_ROLES).map(role => {
+  const icon = new Image(); icon.src = new URL(assetURL(`./icon/ui/${role}.svg`), import.meta.url).href; return [role, icon];
 }));
 for (const [kind, p] of Object.entries(POWERS)) {
   const card = document.createElement('div'); card.className = 'power-card'; card.style.setProperty('--power-color', p.color);
@@ -252,7 +256,13 @@ function blobRender(body, dt, time) {
     context.restore();
   }
   const marker = powerMarkers(game).find(marker => marker.target === body.id);
-  if(!isSeed) {context.save();if(isPermeable)context.globalAlpha=.35;context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);context.fillStyle='#e9ffed';context.font=`${marker?18:26}px Fredoka, sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(JELLY_ROLES[jellyRole(body.id)].mark,0,marker?body.radius*.68:0);context.restore();}
+  if(!isSeed) {
+    const role=jellyRole(body.id),icon=roleIcons[role],size=marker?18:Math.min(32,body.radius*1.25),y=marker?Math.min(body.radius*.68,body.radius-size*.5):0;
+    context.save();if(isPermeable)context.globalAlpha=.35;context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);
+    if(icon.complete&&icon.naturalWidth)context.drawImage(icon,-size/2,y-size/2,size,size);
+    else {context.fillStyle='#e9ffed';context.font=`${size*.7}px Fredoka,sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(JELLY_ROLES[role].name[0],0,y);}
+    context.restore();
+  }
   if (marker) {
     const p = POWERS[marker.kind], icon = powerIcons[marker.kind], size = Math.min(52, body.radius * 1.25);
     context.save(); context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);context.shadowColor = p.color; context.shadowBlur = isGentle ? 0 : 12;

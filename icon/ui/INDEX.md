@@ -25,7 +25,7 @@ Cure Interactive Icons collection assets copied without artwork changes from com
 - [pencil](pencil.md) — collection/tool/pencil.svg
 - [upload](upload.md) — collection/file/upload.svg
 
-Original game fallbacks: [play](play.md), [pause](pause.md), [power](power.md), [check](check.md), [bass](bass.md), [rhythm](rhythm.md).
+Original game fallbacks: [play](play.md), [pause](pause.md), [power](power.md), [check](check.md), [melody](melody.md), [bass](bass.md), [rhythm](rhythm.md).
 
 ## Progression and gameplay additions
 

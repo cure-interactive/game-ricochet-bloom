@@ -26,8 +26,8 @@
 [data-icon="pause"]{--ui-icon:url("./icon/ui/pause.svg?v=5345b64cdfe8e5d69ebc3e8f36fd4157871677e4a802e830a768cb02c51cfb7e")}
 [data-icon="power"]{--ui-icon:url("./icon/ui/power.svg?v=9f60d4e2610febf83f6eed452ae7b6a12784b6ef090b593ce2167078060719f5")}
 [data-icon="check"]{--ui-icon:url("./icon/ui/check.svg?v=dbfb25375111a708451f95cc8368967a85e91bf71444c8c060f8472d25d4754b")}
-[data-icon="bass"]{--ui-icon:url("./icon/ui/bass.svg?v=aa7982a8a20ae67b08e52cc3c91f00e60b8594c526a4c03c5d748324e1753ea1")}
-[data-icon="rhythm"]{--ui-icon:url("./icon/ui/rhythm.svg?v=5a787aa92ad712af698cee1960ea1eae9e1fec35f11dc2864d7ce54b2a0ef713")}
+[data-icon="bass"]{--ui-icon:url("./icon/ui/bass.svg?v=0501eb06ef0a998d62addbce445b39c3963cbc1b6a7e84411afa56a76c410d8d")}
+[data-icon="rhythm"]{--ui-icon:url("./icon/ui/rhythm.svg?v=96a7458821e044c6858d8ca64bbdc07e3366859fa8e12ee37bfa55cbe293cf5c")}
 button:has(>.ui-icon),a:has(>.ui-icon){display:inline-flex;align-items:center;justify-content:center;gap:8px}
 button[hidden],a[hidden]{display:none!important}
 .button-label{min-width:0}.close>.ui-icon{width:16px;height:16px}
@@ -82,3 +82,13 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 [data-icon="dropper"]{--ui-icon:url("./icon/ui/dropper.svg?v=591ba3f8a1f7d1fc972111dc3c21b3444e9ea77981aaeb14de41120521266ae6")}
 
 [data-icon="seed"]{--ui-icon:url("./icon/ui/seed.svg?v=c7d5ae167677954d487e0a30cb232685d6942a3f68c53d4fe457f3d3657c94ef")}
+
+[data-icon="melody"]{--ui-icon:url("./icon/ui/melody.svg?v=8e517013cc2644510113d52bbc4af45b5ede31bd22f3ae5827953a52d284496c")}
+.role-legend{display:grid;align-items:start;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;min-width:0;width:100%}
+.role-legend>span{flex-direction:column;gap:6px;text-align:center;min-width:0}
+.role-legend .ui-icon{width:28px;height:28px}
+.role-legend .role-copy{display:flex;flex-direction:column;gap:3px;font-size:14px}
+.role-legend .role-copy strong{font-weight:500}.role-legend .role-copy small{font-size:11px;line-height:1.3}
+.role-legend>small{grid-column:1/-1;line-height:1.5}
+.role-key{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;margin-right:6px}
+.role-key .ui-icon{width:20px;height:20px}

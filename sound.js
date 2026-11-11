@@ -1,7 +1,7 @@
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=54c0e4fa3eab549d2e5ab1ff2eca9c9fb14a046e20c1345e853b451955c0697c';
 import {poolPan} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
 // Original procedural effects. No recordings or external audio requests.
-import { PoolMedia } from './media.js?v=b6eadf793082a6ca15d2f24d4913d2ba0c484c911232c317e9cc099631bd73df';
+import { PoolMedia } from './media.js?v=7fb2edacd2bb4e5ca171b20ddcce34f838192f9dc198aa180f88960cc5be6a2c';
 import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, musicPower, jellyRole } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
