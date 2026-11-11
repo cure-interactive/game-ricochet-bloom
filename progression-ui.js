@@ -7,7 +7,7 @@ import { unlockedTracks, researchTarget, campaignPoolAccess, POPULATIONS, progre
 import { progressionRead, progressionWrite, progressionImport } from './progression-store.js?v=a1ad1011fdafa1aa1ca09ade75fb6c76cdeed75e524a12f5ad82881c95264163';
 import { profileReward } from './profile.js?v=c981db02c3e6061c959d5372ca00296827e5487fc916235922baecb955da3915';
 import { gameCreate } from './engine.js?v=2d94bc3e3221c7e6c61b2dd311fe2e42f65f15db0a5dcc360a487c712cf2366f';
-import { treeMount } from './tree-ui.js?v=aec97923e037f3420a2a8ec450c908ab5699057ea0c106f491c4b82947e175e3';
+import { treeMount } from './tree-ui.js?v=5c637cc14449dbefef007bfe912df7f2b5b57eb9026460aee763e27708598722';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
 export function progressionMount(host){
