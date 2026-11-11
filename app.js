@@ -1,9 +1,9 @@
 import { fullscreenMount } from './fullscreen.js?v=a8acc13c09de3469584567a261a8792fb9e77b0fa4cafae7fe23732e27faa56a';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=276e2959be704c21f3838302b72bf75d5a2cedaa894d925dd4c348e614301d8a';
+import { gameMenuMount } from './game-menu.js?v=844fbb8d693026719bdf404344f2302dcbb298c1207b0af226f6a6fe1042d677';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { progressionMount } from './progression-ui.js?v=36e898c584a62834df1d10f249a650501d7bbdeeae2fb4aeb5d3c5e228311dfa';
+import { progressionMount } from './progression-ui.js?v=94278a02e3ad045eb15aa4dec34cb18a13575367b8b14053854d87f5feef3ec8';
 import {assetURL} from './asset.js?v=702ecbe37f35afa96b95db6e49c578f7cd2be014d782640f9bbab8bd04850404';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
