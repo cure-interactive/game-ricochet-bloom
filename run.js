@@ -1,7 +1,7 @@
 import { buildValidate } from './skill-effect.js?v=2fc91b76fce932fd628970e620536c90ac0648f4d8d41e17bc386ffa52a77a63';
-import { catalogueCreate, STARTERS, familyGate } from './catalogue.js?v=58b3459a4c473401e11796ed487ddd13bcb440b9ea55bcad1fb6aff3a3f26669';
+import { catalogueCreate, STARTERS, familyGate } from './catalogue.js?v=5fbcb1a1f514c613cfd9c6f10f85ee2b01f6f5148a846ca33e713b60589ae9b0';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=52071900e30e746c3327ad7b72c025ea66b8f6222cf9c8c8b7e965c4a9126d7b';
+import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=c981db02c3e6061c959d5372ca00296827e5487fc916235922baecb955da3915';
 import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=2d94bc3e3221c7e6c61b2dd311fe2e42f65f15db0a5dcc360a487c712cf2366f';
 import { jellyRole, musicCreate, musicRunSection } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 
@@ -42,8 +42,8 @@ export function researchTarget(s,id=s.target) {
   const owned=!!s.profile.research[id],gate=familyGate(s.profile,n.power,GAME_CATALOGUE),mastery=profileSummary(s.profile,GAME_CATALOGUE).mastery[n.power],needs=[];
   if(!owned){
     const seeds=Math.max(0,n.seedCost-s.profile.wallet.seeds);if(seeds)needs.push(`${seeds} more Points`);
-    if(n.kind==='base'&&!gate.ok){if(gate.required>gate.clears)needs.push(`${gate.required-gate.clears} more cleared pools using ${POWER_TREES[n.power].family}`);if(POWER_TREES[n.power].tier===3&&gate.powers<2)needs.push(`${2-gate.powers} more different powers used`);}
-    if(n.kind!=='base'&&!s.profile.research[n.power+'.base'])needs.push(`Unlock ${POWER_TREES[n.power].name} first`);
+    if(n.kind==='base'&&!gate.ok){if(!gate.entry.open)needs.push(`Research ${GAME_CATALOGUE.nodes[gate.entry.via].name} to open ${POWER_TREES[n.power].family}`);if(gate.required>gate.clears)needs.push(`${gate.required-gate.clears} more cleared pools using ${POWER_TREES[n.power].family}`);if(POWER_TREES[n.power].tier===3&&gate.powers<2)needs.push(`${2-gate.powers} more different powers used`);}
+    for(const prerequisite of n.requires)if(!s.profile.research[prerequisite])needs.push(`Research ${GAME_CATALOGUE.nodes[prerequisite].name} first`);
     if(n.masteryPools>mastery)needs.push(`${n.masteryPools-mastery} more cleared pools using ${POWER_TREES[n.power].name}`);
   }
   return {id,name:n.name,owned,needs,text:owned?'Researched':needs.join(' · ')||'Ready to research between runs'};

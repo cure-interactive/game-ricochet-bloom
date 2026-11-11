@@ -5,7 +5,15 @@ export const CURRENCIES = Object.freeze({ seeds: Object.freeze({ name: 'Points' 
 export const TRACKS = Object.freeze(['first-light', 'crosscurrent', 'glasswater', 'afterimage', 'night-bloom']);
 export const STARTERS = Object.freeze(['ripple', 'attract', 'comet']);
 export const REWARD = Object.freeze({ tutorial: 4, pool: 2, bonus: 1, victory: 3, firstClear: 4, failure: 1 });
-const kinds = ['base', 'foundation', 'a', 'b', 'capstone'];
+export const UPGRADE_ORDER = Object.freeze(['base', 'foundation', 'a', 'b', 'capstone']);
+const kinds = UPGRADE_ORDER;
+export const FAMILY_UNLOCK = Object.freeze({Motion:null,Flow:null,Control:'ripple.foundation',Navigation:'comet.foundation',Propagation:'stasis.foundation'});
+export function familyEntry(profile,family,catalogue=CATALOGUE){
+ const via=FAMILY_UNLOCK[family];
+ return {via,open:profile.kind==='development'||!via||profile.familyUnlocks?.includes(family)||!!profile.research[via]||Object.keys(profile.research).some(id=>catalogue.nodes[id]?.kind==='base'&&catalogue.powers[catalogue.nodes[id].power].family===family)};
+}
+// Research order does not invalidate old builds or independent temporary discoveries.
+export const nodeActivationMet=(node,owns)=>node.kind==='base'||owns(node.power+'.base');
 const prices = [4, 3, 5, 5, 8], tuning = [0, 1, 1, 1, 2];
 const modeReasons = { ripple: 'Choose one pressure shape: strong center or far shore.', attract: 'Choose one gathering shape: tight group or loose ring.' };
 export function nodePrerequisitesMet(node, owns) {
@@ -21,7 +29,8 @@ export function catalogueCreate(supportedNodes = []) {
       const id = `${power}.${kind}`;
       nodes[id] = Object.freeze({ id, power, kind, name: tree.nodes[index].name, description: tree.nodes[index].description,
         seedCost: prices[index], tuningCost: tuning[index], supported: supportedNodes.includes(id),
-        requires: Object.freeze(kind === 'base' ? [] : [power + '.base']),
+        requires: Object.freeze(index === 0 ? [] : [power + '.' + kinds[index-1]]),
+        unlocks: Object.freeze(Object.keys(FAMILY_UNLOCK).filter(f=>FAMILY_UNLOCK[f]===id)),
         // These select contradictory force shapes. Other researched upgrades
         // can coexist; choosing a shape never gates ownership or a capstone.
         conflicts: Object.freeze(!tree.compatible && ['a', 'b'].includes(kind)
@@ -33,7 +42,7 @@ export function catalogueCreate(supportedNodes = []) {
   for (const id of supportedNodes) {
     if (!Object.hasOwn(nodes, id) || !nodePrerequisitesMet(nodes[id], key => nodes[key].supported)) throw new TypeError('Unsupported prerequisite: ' + id);
   }
-  return Object.freeze({ version: 2, powers: Object.freeze(powers), nodes: Object.freeze(nodes) });
+  return Object.freeze({ version: 3, powers: Object.freeze(powers), nodes: Object.freeze(nodes) });
 }
 // Consumers opt into implemented capabilities. run.js owns the shipping set.
 export const CATALOGUE = catalogueCreate();
@@ -56,5 +65,6 @@ export function familyProgress(profile,family,catalogue=CATALOGUE){
 export function familyGate(profile,power,catalogue=CATALOGUE){
  const definition=catalogue.powers[power];if(!definition)return {ok:false,required:0,clears:0,powers:0,tier:1};
  const progress=familyProgress(profile,definition.family,catalogue),required=definition.tier===3?5:definition.tier===2?2:0;
- return {...progress,required,ok:progress.tier>=definition.tier};
+ const entry=familyEntry(profile,definition.family,catalogue);
+ return {...progress,required,entry,ok:entry.open&&progress.tier>=definition.tier};
 }

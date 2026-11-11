@@ -1,4 +1,4 @@
-import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, familyGate, FAMILIES, legacyFamilyAccess } from './catalogue.js?v=58b3459a4c473401e11796ed487ddd13bcb440b9ea55bcad1fb6aff3a3f26669';
+import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, familyGate, FAMILIES, legacyFamilyAccess } from './catalogue.js?v=5fbcb1a1f514c613cfd9c6f10f85ee2b01f6f5148a846ca33e713b60589ae9b0';
 
 export const PROFILE_VERSION = 1;
 const integer = value => Number.isSafeInteger(value) && value >= 0;
@@ -14,7 +14,7 @@ const nodeGet = (catalogue, id) => typeof id === 'string' && own(catalogue.nodes
 export function profileCreate(kind = 'normal') {
   if (!['normal', 'development'].includes(kind)) throw new TypeError('Invalid profile kind');
   return { version: PROFILE_VERSION, kind, revision: 0, wallet: { seeds: 0 },
-    familyAccess: Object.fromEntries(FAMILIES.map(f=>[f,1])), research: Object.fromEntries(STARTERS.map(power => [`${power}.base`, { paid: 0 }])), rewards: [] };
+    familyUnlocks: [], familyAccess: Object.fromEntries(FAMILIES.map(f=>[f,1])), research: Object.fromEntries(STARTERS.map(power => [`${power}.base`, { paid: 0 }])), rewards: [] };
 }
 
 function rewardNormalize(event, catalogue) {
@@ -93,14 +93,17 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
   const research = {};
   for (const [id, purchase] of Object.entries(input.research)) {
     const node = nodeGet(catalogue, id);
-    if (!node || !object(purchase) || !integer(purchase.paid) || !nodePrerequisitesMet(node, key => own(input.research, key)) ||
+    if (!node || !object(purchase) || !integer(purchase.paid) || !nodeActivationMet(node, key => own(input.research, key)) ||
       (input.kind === 'normal' && summary.mastery[node.power] < node.masteryPools)) return null;
     research[id] = { paid: purchase.paid };
   }
   if (STARTERS.some(power => research[power + '.base']?.paid !== 0)) return null;
   const familyAccess=input.familyAccess===undefined?legacyFamilyAccess(research,catalogue):input.familyAccess;
   if(!object(familyAccess)||Object.keys(familyAccess).length!==FAMILIES.length||FAMILIES.some(f=>![1,2,3].includes(familyAccess[f])))return null;
-  return { version: PROFILE_VERSION, familyAccess:{...familyAccess}, kind: input.kind, revision: input.revision, wallet: { seeds: input.wallet.seeds },
+  // Old profiles had every family available. Preserve that access and any out-of-order research.
+  const familyUnlocks=input.familyUnlocks===undefined?[...FAMILIES]:input.familyUnlocks;
+  if(!unique(familyUnlocks)||familyUnlocks.some(f=>!FAMILIES.includes(f)))return null;
+  return { version: PROFILE_VERSION, familyUnlocks:[...familyUnlocks], familyAccess:{...familyAccess}, kind: input.kind, revision: input.revision, wallet: { seeds: input.wallet.seeds },
     research, rewards: [...summary.receipts.values()] };
 }
 export function profileSummary(input, catalogue = CATALOGUE) {
@@ -184,13 +187,13 @@ export function loadoutResolve(input, loadout, budget, catalogue = CATALOGUE, op
   const available = new Set([...Object.keys(profile.research), ...loadout.borrowed]);
   for (const id of loadout.borrowed) {
     const node = nodeGet(catalogue, id);
-    if (!node?.supported || node.kind === 'base' || !loadout.powers.includes(node.power) || !nodePrerequisitesMet(node, key => available.has(key))) return rejected('invalid-discovery');
+    if (!node?.supported || node.kind === 'base' || !loadout.powers.includes(node.power) || !nodeActivationMet(node, key => available.has(key))) return rejected('invalid-discovery');
   }
   const equipped = new Set(loadout.equipped), active = new Set([...loadout.powers.map(id => id + '.base'), ...equipped]);
   let tuning = 0;
   for (const id of equipped) {
     const node = nodeGet(catalogue, id);
-    if (!node?.supported || node.kind === 'base' || !available.has(id) || !loadout.powers.includes(node.power) || !nodePrerequisitesMet(node, key => active.has(key))) return rejected('invalid-equipment');
+    if (!node?.supported || node.kind === 'base' || !available.has(id) || !loadout.powers.includes(node.power) || !nodeActivationMet(node, key => active.has(key))) return rejected('invalid-equipment');
     const conflict = node.conflicts.find(other => equipped.has(other));
     if (conflict) return { ...rejected('incompatible-upgrades'), conflicts: [id, conflict], message: node.conflictReason };
     tuning += node.tuningCost;
