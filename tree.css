@@ -30,6 +30,7 @@
 .tree-map-stage{display:flex;flex-direction:column;position:relative;flex:1;min-height:0;overflow:hidden;background:radial-gradient(ellipse at 35% 20%,#203e3d55,transparent 70%),#091422}
 .tree-map-scroll{position:relative;flex:1;min-height:0;width:100%;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;overscroll-behavior:contain;background-image:radial-gradient(#8fb8cd16 1px,transparent 1px);background-size:24px 24px}
 .tree-map-scroll.is-panning,.tree-map-scroll.is-panning *{cursor:grabbing!important}
+/* All map content shares this transform; only the surrounding controls stay screen-sized. */
 .tree-map{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;max-width:none;margin:0}
 .tree-world-links{position:absolute;inset:0;width:100%;height:100%;max-width:none;overflow:visible;pointer-events:none}
 .tree-world-links path{fill:none;stroke:#405b70;stroke-width:3}.tree-world-links .is-locked{stroke-dasharray:6 8}.tree-world-links .is-open{stroke:#6d9a97}.tree-world-links .is-active{stroke:#a4e9ce;stroke-width:4;filter:drop-shadow(0 0 4px #79e3bc55)}
@@ -72,7 +73,6 @@
 
 #tree-dialog .skill-node .skill-orb{width:56px;height:56px;margin:0}#tree-dialog .skill-node.is-base .skill-orb{width:64px;height:64px}
 #tree-dialog .skill-node>strong{font-size:14px;max-width:156px;line-height:1.2}#tree-dialog .skill-node.is-base>strong{font-size:16px}#tree-dialog .skill-node>small{font-size:12px;max-width:156px}
-.tree-map-scroll[data-detail=overview] .skill-node>strong,.tree-map-scroll[data-detail=overview] .skill-node>small{visibility:hidden}.tree-map-scroll[data-detail=overview] .family-map-title{transform:translate(-50%,-50%) scale(var(--map-label-scale))!important;width:168px!important;min-height:78px!important;padding:8px!important}.tree-map-scroll[data-detail=overview] .family-map-title>span,.tree-map-scroll[data-detail=overview] .family-map-title>small{display:none}.tree-map-scroll[data-detail=overview] .family-map-title>strong{font-size:24px}.tree-map-scroll[data-detail=overview] .family-bridge{vector-effect:non-scaling-stroke;stroke-width:1.2px}.tree-map-scroll[data-detail=overview] .bridge-label{visibility:hidden}
 .tree-camera-controls{position:relative;flex:none;align-self:center;margin:8px 0;display:flex;align-items:center;gap:8px;max-width:calc(100% - 16px);padding:6px;background:#101f30ee;border:1px solid #496478;border-radius:14px;box-shadow:0 8px 24px #0005;z-index:3}
 #tree-dialog .tree-camera-controls button{min-width:44px;height:44px;padding:8px;font-size:12px;white-space:nowrap;gap:5px}.tree-zoom{width:38px;flex:none;font-size:12px;text-align:center;color:#c1d8d7}
 #tree-dialog [data-tree-action=zoom-in]>span:last-child{display:none}#tree-dialog [data-tree-action=zoom-out]{font-size:26px}.tree-map-hint{position:relative;order:-1;flex:none;text-align:center;margin:0;min-height:28px;font-size:11px;line-height:18px;color:#b1c8d2;background:#0b1926db;padding:5px 10px;border-radius:12px;pointer-events:none}
