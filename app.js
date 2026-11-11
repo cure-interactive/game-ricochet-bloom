@@ -1,6 +1,6 @@
-import { fullscreenMount } from './fullscreen.js?v=a8acc13c09de3469584567a261a8792fb9e77b0fa4cafae7fe23732e27faa56a';
+import { fullscreenMount } from './fullscreen.js?v=2c3119f8c834c71afef28339288e1d4d71b96164e260d16f903a6c0fbd0ee41f';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=5cc8b6dd78fa336d9207953a5f749847c20aeaa2e67ed79ba2016609ee38ea8a';
+import { gameMenuMount } from './game-menu.js?v=e59c37cdc04af87cd49147fbf80c7dd2002c56ae5a7a595c0f48456db16355ec';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
 import { progressionMount } from './progression-ui.js?v=94278a02e3ad045eb15aa4dec34cb18a13575367b8b14053854d87f5feef3ec8';
@@ -586,7 +586,7 @@ $('audition').onclick = async () => {
 };
 $('motion').onchange = event => { isGentle = event.currentTarget.checked; if (isGentle) { particles = []; trails = []; } controlsRender(); save(); };
 $('stream').onchange = event => { isStream = event.currentTarget.checked; controlsRender(); save(); };
-$('menu-dialog').addEventListener('click',event=>{if(event.target.closest('.menu-actions button:not([data-fullscreen])'))$('menu-dialog').close();},true);
+$('menu-dialog').addEventListener('click',event=>{if(event.target.closest('.menu-actions button'))$('menu-dialog').close();},true);
 $('button-controls').onchange=event=>{document.querySelector('.control-strip').hidden=!event.currentTarget.checked;};
 for(const name of ['menu','settings','powers','music','bonus','credits']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
 $('restart').onclick = () => dialogOpen(); $('retry').onclick = () => dialogOpen();
