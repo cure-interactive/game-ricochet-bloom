@@ -25,3 +25,33 @@ body:not([data-screen=play])>header,body:not([data-screen=play])>main{display:no
 @media(max-width:600px){.restoration-feature .restoration-art{height:100px}.restoration-feature>button{position:static;margin:0 10px 10px}.restoration-feature>span:not(.restoration-art){padding:8px 12px}#campaign-dialog .track-strip button>.restoration-art{height:48px;min-height:48px}}
 
 .mastery-journey summary{cursor:pointer;min-height:44px;padding:12px 0;font-size:15px}.mastery-journey button{width:100%;justify-content:flex-start!important;text-align:left;margin:4px 0}.mastery-journey button span{flex:1}.mastery-journey small{display:block;font-size:13px;color:#bed1dc}.mastery-journey p{font-size:14px;line-height:1.5}
+
+/* Availability must remain readable, including when native disabled blocks selection. */
+#campaign-dialog .track-strip button.is-locked{opacity:1;color:#b0b9c9;background:#111a29;border-style:dashed;border-color:#63728670;cursor:not-allowed}
+#campaign-dialog .track-strip button.is-unlocked{border-color:#7bd7bc88}
+#campaign-dialog .track-strip button.is-complete{border-color:#b3a0ec88}
+#campaign-dialog .track-strip button[aria-pressed=true]{background:#173a35;border-color:#a7f1da;box-shadow:inset 0 0 0 1px #a7f1da}
+#campaign-dialog .track-strip small{display:block;white-space:normal;font-size:11px;line-height:1.4;color:#b8d1ce}
+#campaign-dialog .track-strip .is-locked small{color:#b0b9c9}
+.pool-selection-heading{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;margin-top:20px;font-size:13px}
+.pool-selection-heading small,.pool-unlock-hint{color:#a3b9c9;font-size:11px}
+#campaign-dialog .level-path{margin:14px 0 8px}
+#campaign-dialog .level-path button:disabled{opacity:1;cursor:not-allowed;color:#94a1b2}
+#campaign-dialog .level-path .is-locked b{border-style:dashed;background:#0c1524;color:#8393a9}
+#campaign-dialog .level-path b .ui-icon{width:19px;height:19px}
+#campaign-dialog .level-path small{display:block;font-size:10px}
+.pool-unlock-hint{margin:8px 0 14px}
+@media(max-width:600px){
+ #campaign-dialog .track-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ #campaign-dialog .track-strip button{display:grid;grid-template-columns:34px minmax(0,1fr);min-height:76px;align-items:center;padding:8px;gap:7px;text-align:left}
+ #campaign-dialog .track-strip button>.restoration-art{width:34px;height:40px;min-height:40px;border-radius:7px}
+ #campaign-dialog .track-strip button>span:not(.ui-icon):not(.restoration-art){font-size:12px;padding:0;min-height:0;line-height:1.3;text-align:left}
+ #campaign-dialog .track-strip small{font-size:10px;line-height:1.3;margin-top:4px;overflow:visible}
+ #campaign-dialog .track-strip button>.ui-icon{display:none}
+ #campaign-dialog .track-strip .is-locked>.restoration-art:after{content:'×';position:absolute;inset:0;display:grid;place-items:center;font-size:24px;color:#b0b9c9;background:#0c1524bb;z-index:2}
+ #campaign-dialog .campaign-preview>.restoration-feature{display:none}
+}
+.dev-controls>small{display:block;color:#b2c6d2;line-height:1.5;margin-bottom:12px}
+#dev-reset{color:#ffc1ca;border-color:#f1839366;background:#492231}
+
+#dev-reset-confirm{color:#ffc1ca;border-color:#f1839366;background:#492231}.build-upgrades>summary{cursor:pointer;font-size:12px;color:#b6cfcc;padding:10px 0}.build-upgrades[open]>summary{margin-bottom:8px}

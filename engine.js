@@ -1,7 +1,7 @@
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { jellyRole } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=ee4e0aab147bf42dd5cbe6eb6c4450e4a99b71bb2da4265306038ebfe050a29d';
-export { skillFlags } from './skill-effect.js?v=ee4e0aab147bf42dd5cbe6eb6c4450e4a99b71bb2da4265306038ebfe050a29d';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=2fc91b76fce932fd628970e620536c90ac0648f4d8d41e17bc386ffa52a77a63';
+export { skillFlags } from './skill-effect.js?v=2fc91b76fce932fd628970e620536c90ac0648f4d8d41e17bc386ffa52a77a63';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
 export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 12, settleDrag: 4.8, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
@@ -35,13 +35,15 @@ export const POWERS = Object.freeze({
 });
 const powerKinds = Object.keys(POWERS);
 const offeredKinds = state => state.build ? state.build.map(p=>p.power) : powerKinds;
+// A seeded shuffle changes each offer, with distinct powers in a multi-pickup shot.
+function randomOfferKinds(state){return offeredKinds(state).slice().sort((a,b)=>seedHash(state.seed+':offer:'+state.power.claims+':'+a)-seedHash(state.seed+':offer:'+state.power.claims+':'+b));}
 function powerCreate(seed) { const hash = seedHash(seed); return { offer: powerKinds[hash % powerKinds.length], target: hash % 14 + 1, shot: 0, claims: 0, used: 0, capacity: 1, markers: [] }; }
 export function powerAllowance(state) { return state.power.capacity; }
 // The preview and flight share one allocation; contacts only remove existing markers.
 function powerPlan(state, count = powerAllowance(state)) {
-  const markers = [], power = state.power, kinds=offeredKinds(state);
+  const markers = [], power = state.power, kinds=state.randomPowers?randomOfferKinds(state):offeredKinds(state);
   for (let index = 0; index < count; index++) {
-    const kind = kinds[(Math.max(0,kinds.indexOf(power.offer)) + index) % kinds.length];
+    const kind = kinds[((state.randomPowers?0:Math.max(0,kinds.indexOf(power.offer))) + index) % kinds.length];
     const candidates = state.bodies.slice(1).filter(body => body.id !== power.target && !markers.some(marker => marker.target === body.id));
     const unhit = candidates.filter(body => !state.chain.includes(body.id));
     const pool = unhit.length ? unhit : candidates;
@@ -54,7 +56,7 @@ export function powerMarkers(state) { return state.isFlying ? state.power.marker
 export function powerAvailable(state) { return powerMarkers(state).length > 0; }
 function powerNext(state) {
   const power = state.power; power.claims++;
-  const kinds=offeredKinds(state);power.offer = kinds[(kinds.indexOf(power.offer) + 1) % kinds.length];
+  const kinds=offeredKinds(state);power.offer = state.randomPowers?randomOfferKinds(state)[0]:kinds[(kinds.indexOf(power.offer) + 1) % kinds.length];
   powerTargetNext(state);
 }
 function powerTargetNext(state) {
@@ -318,7 +320,7 @@ function random(state) { let value = state.rng; value ^= value << 13; value ^= v
 export function gameCreate(seed = 'LAGOON', mode = 'challenge', options = {}) {
   const state = { version: RULE.version, seed: String(seed).slice(0, 32), mode, rng: seedHash(seed), tick: 0, score: 0, plucks: RULE.plucks, launches: 0, blooms: 0, bestChain: 0, chain: [], banks: 0, flightAge: 0, isFlying: false, isOver: false, power: powerCreate(seed), effects: [], flightPath: [], objective:{enabled:true,index:0,completed:0,earned:false}, shotStart:0, lastShot:null, bodies: [{ id: 0, x: 480, y: 550, vx: 0, vy: 0, radius: RULE.seedRadius, tone: 0, cooldown: 0 }] };
   const count = options.build && buildValidate(options.build) ? Math.max(12,Math.min(20,Math.trunc(options.population||14))) : 14;
-  if(options.build) {if(!buildValidate(options.build))throw new TypeError('Invalid skill build');state.build=structuredClone(options.build);state.skillState=skillStateCreate();state.power.offer=state.build[0].power;state.plucks=options.relaxed?8:6;}
+  if(options.build) {if(!buildValidate(options.build))throw new TypeError('Invalid skill build');state.build=structuredClone(options.build);state.skillState=skillStateCreate();state.power.offer=state.build[0].power;state.plucks=options.relaxed?8:6;if(options.randomPowers){state.randomPowers=true;state.power.offer=randomOfferKinds(state)[0];}}
   if(state.build)state.power.target=(state.power.target-1)%count+1;
   for (let index = 0; index < count; index++) {
     const angle = index * 2.399963, ring = index < 5 ? 125 : 270;
@@ -648,6 +650,7 @@ export function saveValidate(input) {
   const count=Array.isArray(input.bodies)?input.bodies.length-1:0;
   if(input.build!==undefined&&(!buildValidate(input.build)||count<12||count>20||!skillStateValid(input.skillState,count)))return null;
   if(input.mode==='song-run'&&!input.build)return null;
+  if(input.randomPowers!==undefined&&(input.randomPowers!==true||!input.build))return null;
   if(input.environment!==undefined&&!environmentValid(input.environment))return null;
   if (input.version >= 9 && (!Array.isArray(input.effects) || input.effects.length > 3 || input.effect !== undefined || input.effects.some(effect => !effect?.kind) || new Set(input.effects.map(effect => effect.kind)).size !== input.effects.length)) return null;
   const effects = input.version >= 9 ? input.effects : input.version >= 6 ? [input.effect] : [];

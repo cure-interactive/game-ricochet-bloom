@@ -155,6 +155,23 @@ export function profileCurrencyGrant(input, currency, amount, catalogue = CATALO
 }
 
 // A resolved loadout contains behavior selections, never mutable wallet/research.
+// Campaign research is automatically active. Only incompatible styles need a choice.
+export function unlockedResolve(input, selections, catalogue = CATALOGUE) {
+  const profile=profileValidate(input,catalogue);
+  if(!profile||!unique(selections?.borrowed)||!unique(selections?.equipped))return rejected('invalid-profile');
+  const powers=Object.keys(catalogue.powers).filter(p=>own(profile.research,p+'.base'));
+  const available=new Set([...Object.keys(profile.research),...selections.borrowed]);
+  if(selections.borrowed.some(id=>!catalogue.nodes[id]||catalogue.nodes[id].kind==='base'||!powers.includes(catalogue.nodes[id].power)))return rejected('invalid-discovery');
+  if(selections.equipped.some(id=>!catalogue.nodes[id]||catalogue.nodes[id].kind==='base'||!available.has(id)||!powers.includes(catalogue.nodes[id].power)))return rejected('invalid-equipment');
+  const equipped=[];
+  for(const power of powers){
+    const ids=['foundation','a','b','capstone'].map(k=>power+'.'+k).filter(id=>available.has(id));
+    // Keep the selected style; a freshly researched conflicting style becomes selected by run.js.
+    ids.sort((a,b)=>Number(selections.equipped.includes(b))-Number(selections.equipped.includes(a)));
+    for(const id of ids)if(!catalogue.nodes[id].conflicts.some(other=>equipped.includes(other)))equipped.push(id);
+  }
+  return {ok:true,tuning:0,budget:0,bypass:false,equipped,powers:powers.map(power=>({power,foundation:equipped.includes(power+'.foundation'),variants:['a','b'].filter(k=>equipped.includes(power+'.'+k)),capstone:equipped.includes(power+'.capstone')}))};
+}
 // Run discovery timing and persistence belong to run.js; borrowed nodes expire there.
 export function loadoutResolve(input, loadout, budget, catalogue = CATALOGUE, options = {}) {
   const profile = profileValidate(input, catalogue);

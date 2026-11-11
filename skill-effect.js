@@ -2,7 +2,7 @@ import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f
 
 // Resolved configuration belongs to physics; profile ownership stays outside it.
 export function buildValidate(build) {
-  return Array.isArray(build) && build.length === 3 && new Set(build.map(p=>p?.power)).size===3 && build.every(p=>p && Object.hasOwn(POWER_TREES,p.power) && typeof p.foundation==='boolean' && typeof p.capstone==='boolean' && Array.isArray(p.variants) && p.variants.length<=2 && new Set(p.variants).size===p.variants.length && p.variants.every(v=>v==='a'||v==='b') && (POWER_TREES[p.power].compatible || p.variants.length<=1));
+  return Array.isArray(build) && build.length >= 1 && build.length <= Object.keys(POWER_TREES).length && new Set(build.map(p=>p?.power)).size===build.length && build.every(p=>p && Object.hasOwn(POWER_TREES,p.power) && typeof p.foundation==='boolean' && typeof p.capstone==='boolean' && Array.isArray(p.variants) && p.variants.length<=2 && new Set(p.variants).size===p.variants.length && p.variants.every(v=>v==='a'||v==='b') && (POWER_TREES[p.power].compatible || p.variants.length<=1));
 }
 export function skillFlags(state,power) {
   const choice=state.build?.find(p=>p.power===power);
