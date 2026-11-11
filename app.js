@@ -1,6 +1,6 @@
 import { fullscreenMount } from './fullscreen.js?v=a8acc13c09de3469584567a261a8792fb9e77b0fa4cafae7fe23732e27faa56a';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=844fbb8d693026719bdf404344f2302dcbb298c1207b0af226f6a6fe1042d677';
+import { gameMenuMount } from './game-menu.js?v=2da86f02223801ec44d16400c5d9baae345f15bb242aeb17467689b7746ff645';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
 import { progressionMount } from './progression-ui.js?v=94278a02e3ad045eb15aa4dec34cb18a13575367b8b14053854d87f5feef3ec8';
@@ -395,7 +395,6 @@ function uiRender() {
   $('pool-seed').textContent = `POOL / ${game.seed}`;
   if($('development-badge')){$('development-badge').hidden=progression?.state.profile.kind!=='development';$('development-badge').textContent=progression?.context==='challenge'?'SHARED':'TEST';}
   buttonLabel($('restart'),'New game','add');$('restart').hidden=!!progression&&progression.context!=='legacy';
-  buttonLabel($('mode-open'),'Other modes','gamepad');
   $('chain-label').textContent = game.chain.length ? `${game.chain.length} NOTES ${game.chain.length >= 5 ? '· BEAUTIFUL.' : '· KEEP IT SINGING.'}` : 'FIVE DIFFERENT JELLIES. ONE BLOOM.';
   $('note-meter').replaceChildren(...Array.from({ length: 5 }, (_, index) => { const item = document.createElement('i'); if (game.chain[index]) { item.className = 'active'; item.style.setProperty('--note', COLORS[game.bodies[game.chain[index]].tone]); } return item; }));
   $('note-meter').setAttribute('aria-label', `${game.chain.length} unique notes this pluck`);
@@ -491,26 +490,16 @@ function dialogOpen(continueSong = false) {
   carrySong = continueSong;
   $('seed-input').value = game.seed;
   $('new-title').textContent = continueSong ? 'Continue this song in Free play?' : `New ${modeName(game.mode)} game?`;
-  $('new-copy').textContent = continueSong ? 'This replaces your saved Free play pool and song. Your completed Challenge stays saved.' : `This replaces only your ${modeName(game.mode)} pool and song. Your other mode and personal best stay saved.`;
+  $('new-copy').textContent = continueSong ? 'This replaces your saved Free play pool and song. Your completed Challenge stays saved.' : `This replaces only your ${modeName(game.mode)} pool and song. Your campaign progress and personal best stay saved.`;
   $('pool-options').hidden = continueSong;
   buttonLabel($('new-confirm'),continueSong?'Replace Free play & continue':`Start new ${modeName(game.mode)} game`,'add');
   $('new-dialog').showModal();
 }
-function modeOpen() {
-  save();
-  for (const mode of ['challenge', 'free']) {
-    const entry = store.pools[mode];
-    buttonLabel($(`choose-${mode}`),mode===game.mode?`Current: ${modeName(mode)}`:`${entry?'Resume':'Start'} ${modeName(mode)}`,mode===game.mode?'check':'play');
-    $(`choose-${mode}`).setAttribute('aria-pressed', String(mode === game.mode));
-    $(`saved-${mode}`).textContent = entry ? `${entry.game.score.toLocaleString()} resonance · ${entry.game.blooms} blooms${entry.game.isOver ? ' · completed' : ''}` : 'No saved pool yet';
-  }
-  $('mode-dialog').showModal();
-}
-function switchMode(mode) {
+function freePlay() {
   if(progression?.context!=='legacy')progression.leave();
-  save(); $('mode-dialog').close();
-  if (mode === game.mode) { start(); return; }
-  const entry = store.pools[mode]; loadPool(entry?.game || gameCreate(game.seed, mode), entry?.music);
+  save();
+  if (game.mode === 'free') { start(); return; }
+  const entry = store.pools.free; loadPool(entry?.game || gameCreate(game.seed, 'free'), entry?.music);
 }
 function carryToFree() {
   save(); const next = structuredClone(game), music = audio.musicSave();
@@ -585,8 +574,7 @@ $('stream').onchange = event => { isStream = event.currentTarget.checked; contro
 $('menu-dialog').addEventListener('click',event=>{if(event.target.closest('.menu-actions button:not([data-fullscreen])'))$('menu-dialog').close();},true);
 $('button-controls').onchange=event=>{document.querySelector('.control-strip').hidden=!event.currentTarget.checked;};
 for(const name of ['menu','settings','powers','music','help','bonus','credits']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
-$('restart').onclick = () => dialogOpen(); $('mode-open').onclick = modeOpen; $('retry').onclick = () => dialogOpen();
-for (const mode of ['challenge', 'free']) $(`choose-${mode}`).onclick = () => switchMode(mode);
+$('restart').onclick = () => dialogOpen(); $('retry').onclick = () => dialogOpen();
 $('seed-form').onsubmit = event => { event.preventDefault(); const seed = $('seed-input').value.trim(); if (!seed) return; $('new-dialog').close(); if (carrySong) carryToFree(); else newPool(seed, game.mode); };
 document.querySelectorAll('[data-close]').forEach(button => { button.onclick = () => button.closest('dialog').close(); });
 document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('close', () => { if (isStarted) canvas.focus({ preventScroll: true }); }));
@@ -621,9 +609,10 @@ progression=progressionMount({songsMount:host=>songLibrary.mount(host),songsClos
 navigation=gameMenuMount({
   suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},
   resume:start,
-  info(){const s=progression.state,active=s.phase!=='shop';return {resume:active?'Continue Song Run':progression.context==='legacy'&&(isStarted||saved?.launches)&&!game.isOver?'Continue '+modeName(game.mode):null,detail:active?`${trackGet(s.track).name} · Pool ${Math.min(5,s.pool+(s.phase==='interlude'?2:1))} of 5`:`${s.profile.wallet.seeds} Points · Research grows between runs`};},
+  freePlay,
+  info(){const s=progression.state,active=s.phase!=='shop';return {resume:active?'Continue Song Run':null,detail:active?`${trackGet(s.track).name} · Pool ${Math.min(5,s.pool+(s.phase==='interlude'?2:1))} of 5`:`${s.profile.wallet.seeds} Points · Research grows between runs`};},
   continue(){if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
-  open(screen){if(screen==='levels')progression.campaign();else if(screen==='tree')progression.tree();else if(screen==='modes')modeOpen();else $('settings-dialog').showModal();}
+  open(screen){if(screen==='levels')progression.campaign();else if(screen==='tree')progression.tree();else $('settings-dialog').showModal();}
 });
 fullscreenMount(document,window);
 $('welcome').hidden=true;
