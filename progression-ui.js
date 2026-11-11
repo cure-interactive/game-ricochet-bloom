@@ -7,7 +7,7 @@ import { unlockedTracks, researchTarget, campaignPoolAccess, POPULATIONS, progre
 import { progressionRead, progressionWrite, progressionImport } from './progression-store.js?v=7d401b69d12e7ba1ee22eb6a6fab709c63e9301fde8d80258f5584c4fcd4dfb4';
 import { profileReward } from './profile.js?v=34737935bb9fa338929973769d09b3c14eed45a03a0c366afa3d7800febf0035';
 import { gameCreate } from './engine.js?v=ff1b90cebfd24e6845e51dc92c4a434e7460b271df6473d5ee0164d71af79298';
-import { treeMount } from './tree-ui.js?v=e8d243f69b7f044410cf1157e20779fdccbb68faa4c1312643407a35d7980551';
+import { treeMount } from './tree-ui.js?v=965699975774de3a44b8101bc22ed053a62bdfd813c419f06fb155447d568b25';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
 export function progressionMount(host){
@@ -34,7 +34,9 @@ export function progressionMount(host){
   document.body.append(dev);
   const result=document.createElement('dialog');result.id='run-result-dialog';result.setAttribute('aria-labelledby','run-result-title');
   result.innerHTML=`<div class="run-result-icon">${iconHTML('epic')}</div><h2 id="run-result-title"></h2><p id="run-result-copy"></p><div id="run-restoration"></div><p id="run-target"></p><div class="dialog-actions">${button('run-listen','Listen to this song','music-note')}${button('run-skin','Use earned skin','check')}${button('run-destination','Next track','arrow-right')}${button('run-retry','Retry same setup','reset')}${button('run-next','Tune & continue','network-node-three')}${button('run-leave','Main menu','grid')}</div>`;document.body.append(result);
-  const back=document.createElement('button');back.id='practice-return';back.setAttribute('aria-label','Return to campaign');back.className='quiet';back.hidden=true;back.innerHTML=iconHTML('arrow-left')+'<span>Leave practice</span>';document.querySelector('body>header').append(back);
+  const back=document.createElement('button');back.id='practice-return';back.className='quiet';back.hidden=true;back.innerHTML=iconHTML('arrow-left')+'<span>Leave practice</span>';document.querySelector('body>header').append(back);
+  const tutorialEarned=()=>state.profile.rewards.some(r=>r.event.type==='tutorial');
+  const practiceLabel=()=>{back.lastElementChild.textContent=practice?.listening?(practice.campaign?'Stop preview':'Leave listening'):practice?.campaign?'Level select':practice?.reward?'Back to discoveries':practice?.tutorial&&tutorialEarned()?'Research upgrades':'Leave practice';};
   function leave(){clearTimeout(listenTimer);const fromMenu=host.currentScreen?.()!=='play';host.save();if(suspended){state=suspended.state;kind=suspended.kind;suspended=null;shared=null;}context='legacy';practice=null;back.hidden=true;close();host.restoreLegacy();if(fromMenu)host.home?.();}
   back.onclick=()=>{const listening=practice?.listening,fromCampaign=practice?.campaign,fromReward=practice?.reward;leave();if(fromReward)rewards.open();else if(listening)campaign.open(fromCampaign?'play':'collection');else if(fromCampaign)campaign.open();else tree.open();};
   function enterRun(){host.save();if(state.phase==='shop'){const r=act({type:'start'});if(!r.ok)return r;}else if(state.phase==='interlude'){const r=act({type:'continue'});if(!r.ok)return r;}context=shared?'challenge':'run';practice=null;back.hidden=true;close();host.play(state.run.game,state.run.music);return {ok:true};}
@@ -45,7 +47,7 @@ export function progressionMount(host){
     game.power.offer=power;game.power.target=1;
     // The practice marker starts directly above the player, so one upward pluck tests it.
     if(tutorial)Object.assign(game.bodies[1],{x:480,y:420,vx:0,vy:0});
-    context='practice';practice={tutorial,reward:state.phase==='interlude'};close();back.hidden=false;back.lastElementChild.textContent='Leave practice';host.play(game,null);host.message(tutorial?'Make one bloom to earn your first 4 Seeds. Practice has unlimited plucks.':'Pluck upward to collect the marked power. Practice does not change your run.');return {ok:true};
+    context='practice';practice={tutorial,reward:state.phase==='interlude'};close();back.hidden=false;practiceLabel();host.play(game,null);host.message(tutorial?'Hit 5 different jellies in one pluck to make a bloom.':'Pluck toward the marked jelly to try its power.');return {ok:true};
   }
   function devRender(){const development=kind==='development';$('dev-switch').checked=development;$('dev-seed').disabled=!development||state.phase==='run';document.body.dataset.development=String(development);const badge=document.getElementById('development-badge');if(badge)badge.hidden=!development;$('dev-status').textContent=`${development?'Development':'Normal'} profile · ${state.profile.wallet.seeds} Seeds`;for(const id of ['dev-max','dev-grant','dev-bypass','dev-amount',...['10','100','1000'].map(n=>'dev-add-'+n)])$(id).disabled=!development||state.phase==='run';$('dev-bypass').lastElementChild.textContent=`Tuning limit: ${state.bypass?'off':'on'}`;}
   function open(type,id){if(type==='replay'){if(!campaignPoolAccess(state,id).replay)return {ok:false,reason:'Clear this pool first.'};host.save();const game=gameCreate(`${state.seed}-replay-${id}`,'free',{build:progressionLoadout(state).powers,population:POPULATIONS[id],environment:trackEnvironment(state.track,id,state.route)});context='practice';practice={campaign:true};close();back.hidden=false;back.lastElementChild.textContent='Level select';host.play(game,null);host.message('Replay practice · your run and rewards are preserved.');return {ok:true};}if(type==='campaign'){if(state.phase==='interlude'&&!shared)rewards.open();else campaign.open();return {ok:true};}if(type==='compare'){preview.open(id);return {ok:true};}if(type==='play')return enterRun();if(type==='practice'||type==='tutorial')return enterPractice(type==='tutorial'?'ripple.base':id,type==='tutorial');if(type==='development'){devRender();dev.showModal();return {ok:true};}}
@@ -86,7 +88,7 @@ export function progressionMount(host){
     get skin(){return state.skin==='original'?null:trackGet(state.skin)?.color;},
     checkpoint(game,music){if(['run','challenge'].includes(context)&&state.phase==='run'){const next=structuredClone(state);next.run.game=structuredClone(game);next.run.music=music;return commit(next).ok;}return true;},
     observe(game,events,music){
-      if(context==='practice'&&practice?.tutorial&&events.some(e=>e.type==='bloom')){const r=profileReward(state.profile,{mode:'song-run',type:'tutorial',bloom:true},GAME_CATALOGUE);if(r.ok&&!r.duplicate){const next=structuredClone(state);next.profile=r.profile;if(commit(next).ok)host.message('First bloom · +4 Seeds! Open the tree to research your first upgrade.');}}
+      if(context==='practice'&&practice?.tutorial&&events.some(e=>e.type==='bloom')){const r=profileReward(state.profile,{mode:'song-run',type:'tutorial',bloom:true},GAME_CATALOGUE);if(r.ok&&!r.duplicate){const next=structuredClone(state);next.profile=r.profile;commit(next,()=>{practiceLabel();host.message('First bloom · +4 Seeds! Choose Research upgrades.');});}}
       if(!['run','challenge'].includes(context)||state.phase!=='run'||saveBlocked)return;
       const r=progressionObserve(state,game,events,music);
       commit(r.state,()=>{if(r.outcome){
@@ -102,6 +104,6 @@ export function progressionMount(host){
         targetRender($('run-target'));result.showModal();tree.refresh();campaign.refresh();
       }});
     },
-    hud(){if(context==='practice')return `${practice?.listening?'LISTENING':practice?.tutorial?'BLOOM LESSON':'PRACTICE'} · Unlimited plucks · no run rewards`;if(['run','challenge'].includes(context))return state.run?`${shared?'SHARED · ':kind==='development'?'TEST · ':''}${POOL_NAMES[state.pool]} ${state.pool+1}/5 · ${goalRemaining(state)}`:'Run complete · open Skill tree';return null;}
+    hud(){if(context==='practice'){if(practice?.tutorial)return tutorialEarned()?'LESSON COMPLETE · 4-Seed reward collected':'BLOOM LESSON · Hit 5 different jellies · Earn 4 Seeds';return practice?.listening?'LISTENING · Your saved song':'PRACTICE · Unlimited plucks · no run rewards';}if(['run','challenge'].includes(context))return state.run?`${shared?'SHARED · ':kind==='development'?'TEST · ':''}${POOL_NAMES[state.pool]} ${state.pool+1}/5 · ${goalRemaining(state)}`:'Run complete · open Skill tree';return null;}
   };
 }

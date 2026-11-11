@@ -1,7 +1,7 @@
 import { gameMenuMount } from './game-menu.js?v=1a8cb19a93cbd64a42eae6ed4215b8ac08ae763eda3442fa46cec7079416b822';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { progressionMount } from './progression-ui.js?v=f70c164378b2dd0e22f110cd2ffebb6867829592ac01e57994de10502f043539';
+import { progressionMount } from './progression-ui.js?v=f030cf43ba0c06380e1305932fa2f86415b01f616157ba015323ff64df0bedc1';
 import {assetURL} from './asset.js?v=a5528e3237bdbf8014b25e76066054535d27e26d94e720a9464cd2747b41bc05';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
