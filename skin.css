@@ -29,3 +29,8 @@
 .skin-unlock .ui-icon{width:18px;height:18px;flex:none}
 .skin-scroll.is-detail>.skin-status{flex:none;text-align:center;margin:0}
 @media(max-height:500px) and (min-width:500px){.skin-detail{flex-direction:row;max-width:680px;gap:24px;padding:12px 0}.skin-preview-large{width:42%;height:180px}.skin-preview-large i{width:140px;height:140px}.skin-selection{flex:1}}
+
+/* The main-menu button previews the equipped skin using the picker material. */
+.home-primary .home-skin{width:26px;height:26px;flex:none}
+.home-primary .home-skin i{width:24px;height:24px;box-shadow:inset -3px -4px 7px #07101f77,0 0 12px color-mix(in srgb,var(--skin-color) 30%,transparent)}
+.home-primary .home-skin i:after{inset:4px}

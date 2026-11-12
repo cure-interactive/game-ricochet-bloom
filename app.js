@@ -5,7 +5,7 @@ import { POOL_NAMES } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543
 import { freePlaySync } from './free-play.js?v=82b9dd49d40715d2e16e8af8a566a100c23026916c8966636a3c61483f8d3a01';
 import { fullscreenMount } from './fullscreen.js?v=e8c105c0bde8d63a2f68cb936534f947a78c62bdedc35b73614336e898cf848c';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=4864b05dff636fb95a2bf3ae1479bb8d30ea4a4ff58bd621b3cc5b20001c0bb7';
+import { gameMenuMount } from './game-menu.js?v=f547ba5cec70451fd306a11826535ffc6a11233578b9f7f10181fd76dee8c69f';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
 import { progressionMount } from './progression-ui.js?v=f492f1ecf560364e154e8b36f0c0300df8230ab98da0ba575333d10e6ccbd133';
@@ -641,6 +641,7 @@ progression=progressionMount({songsMount:(host,track)=>songLibrary.mount(host,tr
 const wiki=wikiMount({screen:()=>navigation?.show('wiki'),back:()=>navigation?.back()});
 navigation=gameMenuMount({
   gentle:()=>isGentle,
+  skin:()=>progression.skin,
   suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},
   resume:start,
   freePlay,
