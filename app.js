@@ -1,20 +1,20 @@
-import { freePlaySync } from './free-play.js?v=d66ea1aff5ba420681bf27a69c5dcf46377b764cfa2025bcff59d462e8695cd1';
+import { freePlaySync } from './free-play.js?v=cb13417311650c84f818517ca31f800dbb23ecaf95f2989f083f946c2a22c31f';
 import { fullscreenMount } from './fullscreen.js?v=2c3119f8c834c71afef28339288e1d4d71b96164e260d16f903a6c0fbd0ee41f';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=8c0c189d7287a90bcb6876e794eb0c5fc374ee4469dc88791c18d991ed5eded0';
+import { gameMenuMount } from './game-menu.js?v=d3cd92e7c23f2f57d56346c771888566af351ee453c3034f4f953fdb831c9556';
 import { environmentRender, regionFrozen } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { progressionMount } from './progression-ui.js?v=b32cec3da900dbab8dd5bde68bc5d86f7e250c8dd36e6619c6238037b3f328bf';
+import { progressionMount } from './progression-ui.js?v=735b82bb80ddf87d06a34c0aa25d2883c615cdff32ff1a7316127ee435d5bba7';
 import {assetURL} from './asset.js?v=142d7a2d7e9c9c8621efc77af5ebd0588ac88d080983132185a875ee6334cc88';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
 import {songLibrarySetup} from './song-ui.js?v=23b8188ee4080ec59f902c35585a39bfbbb1d6a4b9c1e0bde2bfc222dff8edb9';
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=2d94bc3e3221c7e6c61b2dd311fe2e42f65f15db0a5dcc360a487c712cf2366f';
-import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=0cf5126e2b455b6d7cc26e861fed8b35e4e263a17919cf61933f1b963a7f42c1';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=78193f8961efde0cbc94b402713c23a61d5384166c5a072df3d3e9cd12e7b310';
+import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=068d2e943e6ac280d50bd3c5f23e208f6d4dd5ce846b0b27407b31380ba3e326';
 import { PoolSound } from './sound.js?v=b01aaa747bcd5cdb0be43a3f7a06f958f96d54af4532429ce348194ab6142c83';
 import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
 import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
-import { PowerVisual } from './power-visual.js?v=6ab2a5197bfab3dbc1c0484758ced17af3672a07a8f94d1c2380b14b6767cf74';
+import { PowerVisual } from './power-visual.js?v=ee990496ca45efcf27724f1c248c3dddef1bee2d8b3a5522f589c7fd844e0266';
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
 let store = poolStoreRead(null), storageIsAvailable = true;
 try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localStorage.getItem(LEGACY_STORAGE) ?? 'null')); } catch { storageIsAvailable = false; }

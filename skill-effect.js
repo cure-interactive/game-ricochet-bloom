@@ -107,7 +107,9 @@ export function skillTeleport(state,fromX,fromY,x,y,kind) {
 }
 export function skillStep(state,dt,events) {
   if(!state.build||!state.isFlying)return;
-  const v=state.skillState,seed=state.bodies[0];v.total+=dt;
+  const v=state.skillState,seed=state.bodies[0];
+  // The power window can expire before the player finishes coasting.
+  v.total=Math.min(32,v.total+dt);
   for(const d of v.delayed){d.seconds-=dt;if(d.seconds<=0){pressure(state,d.x,d.y,d.radius,230,d.kind);events.push({type:'skill-wave',x:d.x,y:d.y});}}v.delayed=v.delayed.filter(d=>d.seconds>0);
   if(v.vortex){const e=v.vortex,c=skillFlags(state,'vortex');e.seconds-=dt;if(c.capstone){e.x+=(seed.x-e.x)*Math.min(1,dt*5);e.y+=(seed.y-e.y)*Math.min(1,dt*5);}pressure(state,e.x,e.y,440,160*dt,'vortex',c);if(e.seconds<=0)v.vortex=null;}
   const portal=effect(state,'portal');if(portal&&skillFlags(state,'portal').capstone)for(const g of portal.gates)pressure(state,g.x,g.y,145,180*dt);

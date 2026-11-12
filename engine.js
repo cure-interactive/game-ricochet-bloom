@@ -1,9 +1,9 @@
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { jellyRole } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=2fc91b76fce932fd628970e620536c90ac0648f4d8d41e17bc386ffa52a77a63';
-export { skillFlags } from './skill-effect.js?v=2fc91b76fce932fd628970e620536c90ac0648f4d8d41e17bc386ffa52a77a63';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=27a2ab701a8b063fcf28a0d1e0682e04d1a1c6d3e0908c29afad980f201bdb01';
+export { skillFlags } from './skill-effect.js?v=27a2ab701a8b063fcf28a0d1e0682e04d1a1c6d3e0908c29afad980f201bdb01';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
-export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 12, settleDrag: 4.8, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
+export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
 export function seedHash(seed) { let hash = 2166136261; for (const char of String(seed)) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619); return hash >>> 0 || 1; }
 export const POWERS = Object.freeze({
@@ -123,9 +123,13 @@ function blasterStep(state, events) {
 export function effectGet(state, kind) { return state.effects.find(effect => effect.kind === kind); }
 export function frozenHit(state, id) { return state.isFlying && state.chain.includes(id) && (!!effectGet(state, 'stasis')?.targets.includes(id)||regionFrozen(state,id)); }
 export function seedBodies(state) { return [state.bodies[0], ...(effectGet(state, 'split')?.shards || []), ...(effectGet(state, 'echo')?.isReady ? [effectGet(state, 'echo').ghost] : [])]; }
+function flightCoast(age) {
+  const t = Math.max(0, Math.min(1, (age - (RULE.flightSeconds - RULE.settleSeconds)) / RULE.settleSeconds));
+  return t * t * (3 - 2 * t);
+}
 export function flightDrag(age) {
-  const settling = Math.max(0, Math.min(1, (age - (RULE.flightSeconds - RULE.settleSeconds)) / RULE.settleSeconds));
-  return .1 + RULE.settleDrag * settling * settling;
+  // Ease into a gentle coast, with no sudden change at either end.
+  return .1 + RULE.settleDrag * flightCoast(age);
 }
 // Shared by steering and its target cue; selection has no hidden state to save.
 export function homingTarget(state, seed) {
@@ -466,7 +470,15 @@ export function physicsStep(state) {
     if (body.id === -3 || effectGet(state, 'orbit')?.satellites.includes(body.id) || body.id === 0 && (effectGet(state, 'slingshot') || effectGet(state,'rewind')?.returning)) continue;
     if (body.id > 0) { body.vx += Math.cos(state.tick * .002 + body.id * 1.7) * 4 * dt; body.vy += Math.sin(state.tick * .0025 + body.id * 2.1) * 4 * dt; }
     const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? flightDrag(state.flightAge)*(effectGet(state,'comet')&&skillFlags(state,'comet').b&&state.flightAge>3?.5:1) : 3 : (effectGet(state, 'stasis')?.targets.includes(body.id)||regionFrozen(state,body.id)) ? 5 : .65) * dt);
-    body.vx *= drag; body.vy *= drag; body.x += body.vx * dt; body.y += body.vy * dt;
+    body.vx *= drag; body.vy *= drag;
+    if(body.id<=0&&state.isFlying){
+      // Small rolling resistance beats ambient currents at low speed without
+      // imposing a deadline or a large percentage loss on a fast player.
+      const speed=Math.hypot(body.vx,body.vy),resistance=RULE.coastResistance*flightCoast(state.flightAge)*dt;
+      const coast=speed>0?Math.max(0,1-resistance/speed):0;
+      body.vx*=coast;body.vy*=coast;
+    }
+    body.x += body.vx * dt; body.y += body.vy * dt;
     const left = RULE.inset + body.radius, right = RULE.width - left, top = RULE.inset + body.radius, bottom = RULE.height - top;
     if (body.id <= 0 && state.isFlying && effectGet(state, 'wrap')) {
       const wrap=skillFlags(state,'wrap');
@@ -627,7 +639,8 @@ export function physicsStep(state) {
   const rewind=effectGet(state,'rewind');
   if(state.isFlying && !rewind?.returning && (state.build||state.tick%4===0)) { state.flightPath.push({x:seed.x,y:seed.y,...(state.build?{teleport:state.skillState.teleport}:{})});state.flightPath=state.flightPath.slice(state.build?-240:-420); }
   if(state.build&&state.skillState.total>=28)state.flightAge=RULE.flightSeconds;
-  if(state.build&&state.skillState.total>=32){effectClear(state,events);seed.vx=seed.vy=0;}
+  // Bound powered combinations, but let the remaining momentum coast to rest.
+  if(state.build&&state.skillState.total>=32)effectClear(state,events);
   const ending=!effectGet(state,'echo')&&!effectGet(state,'slingshot')&&!effectGet(state,'orbit')&&!effectGet(state,'pulse')&&state.flightAge>1.5&&seedBodies(state).every(body=>Math.hypot(body.vx,body.vy)<=RULE.settleSpeed);
   if(state.isFlying && (state.flightAge>=RULE.flightSeconds||ending) && rewind && !rewind.returning && state.flightPath.length) {
     rewind.returning=true;rewind.route=(state.build?state.flightPath.slice(-(skillFlags(state,'rewind').foundation?240:120)):state.flightPath).map(p=>({...p}));rewind.seconds=Math.min(state.build?4.1:3.5,rewind.route.length*RULE.step*(skillFlags(state,'rewind').a?2:1)+RULE.step);
