@@ -48,15 +48,29 @@ export function nearestMapNode(nodes,id,dx,dy) {
   return Object.values(nodes).filter(n=>n.id!==id).map(n=>{const x=n.x-from.x,y=n.y-from.y;return {id:n.id,forward:x*dx+y*dy,distance:Math.hypot(x,y)+Math.abs(x*dy-y*dx)*2};}).filter(n=>n.forward>1).sort((a,b)=>a.distance-b.distance)[0]?.id||null;
 }
 export function mapCameraMount(surface,world,change) {
-  let camera={x:0,y:0,scale:1},points=new Map(),start=null,suppress=false;
+  let camera={x:0,y:0,scale:1},points=new Map(),start=null,suppress=false,animation=null;
   const size=()=>({width:surface.clientWidth,height:surface.clientHeight});
   const local=e=>{const r=surface.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};};
   const center=ps=>({x:ps.reduce((s,p)=>s+p.x,0)/ps.length,y:ps.reduce((s,p)=>s+p.y,0)/ps.length});
   function apply(next){camera=cameraClamp(next,size(),world);change(camera);}
+  function stopAnimation(){if(!animation)return;const current=animation;animation=null;win.cancelAnimationFrame(current.frame);current.resolve(false);}
+  function focusTarget(point,scale,vertical){const v=size();return cameraClamp({x:v.width/2-point.x*scale,y:Math.min(140,v.height*vertical)-point.y*scale,scale},v,world);}
+  function focusAnimated(point,scale=Math.max(.85,camera.scale),vertical=.25,duration=450){
+    cancel();const from={...camera},to=focusTarget(point,scale,vertical);
+    if(duration<=0){apply(to);return Promise.resolve(true);}
+    return new Promise(resolve=>{
+      const motion={resolve,frame:0,started:null};animation=motion;
+      const tick=time=>{if(animation!==motion)return;motion.started??=time;const t=Math.min(1,(time-motion.started)/duration),ease=t*t*(3-2*t);
+        apply({x:from.x+(to.x-from.x)*ease,y:from.y+(to.y-from.y)*ease,scale:from.scale+(to.scale-from.scale)*ease});
+        if(t===1){animation=null;resolve(true);}else motion.frame=win.requestAnimationFrame(tick);
+      };
+      motion.frame=win.requestAnimationFrame(tick);
+    });
+  }
   function baseline(){const ps=[...points.values()];start=ps.length?{camera:{...camera},center:center(ps),distance:ps.length>1?Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y):0}:null;}
-  function cancel(){const ids=[...points.keys()];points.clear();start=null;surface.classList.remove('is-panning');for(const id of ids)if(surface.hasPointerCapture(id))surface.releasePointerCapture(id);}
+  function cancel(){stopAnimation();const ids=[...points.keys()];points.clear();start=null;surface.classList.remove('is-panning');for(const id of ids)if(surface.hasPointerCapture(id))surface.releasePointerCapture(id);}
   const end=e=>{if(!points.delete(e.pointerId))return;baseline();if(!points.size)surface.classList.remove('is-panning');};
-  surface.addEventListener('pointerdown',e=>{if(e.button!==0)return;
+  surface.addEventListener('pointerdown',e=>{if(e.button!==0)return;stopAnimation();
     // A new primary touch starts a fresh contact sequence, even if an earlier
     // release was swallowed by browser UI or an interrupted capture.
     if(e.pointerType==='touch'&&e.isPrimary)cancel();
@@ -83,8 +97,8 @@ export function mapCameraMount(surface,world,change) {
   // Safari's touch list also lets us recover a missed pointer-end notification.
   for(const event of ['touchend','touchcancel'])win.addEventListener(event,e=>{if(e.touches.length===0)cancel();},{capture:true,passive:true});
   surface.addEventListener('click',e=>{if(suppress&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();}},true);
-  surface.addEventListener('wheel',e=>{e.preventDefault();suppress=true;if(e.shiftKey)apply({...camera,x:camera.x-e.deltaY,y:camera.y-e.deltaX});else apply(cameraZoom(camera,camera.scale*Math.exp(-Math.max(-150,Math.min(150,e.deltaY))*.003),local(e)));},{passive:false});
-  surface.addEventListener('keydown',e=>{if(e.target!==surface)return;const move={ArrowLeft:[80,0],ArrowRight:[-80,0],ArrowUp:[0,80],ArrowDown:[0,-80]}[e.key];if(move){e.preventDefault();apply({...camera,x:camera.x+move[0],y:camera.y+move[1]});}});
-  const observer=new ResizeObserver(()=>{if(surface.clientWidth&&surface.clientHeight)apply(camera);});observer.observe(surface);
-  return {get value(){return {...camera};},zoom(factor){const v=size();apply(cameraZoom(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){const v=size();apply({x:v.width/2-point.x*scale,y:Math.min(140,v.height*vertical)-point.y*scale,scale});},fit(bounds={x:0,y:0,width:world.width,height:world.height}){apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel};
+  surface.addEventListener('wheel',e=>{stopAnimation();e.preventDefault();suppress=true;if(e.shiftKey)apply({...camera,x:camera.x-e.deltaY,y:camera.y-e.deltaX});else apply(cameraZoom(camera,camera.scale*Math.exp(-Math.max(-150,Math.min(150,e.deltaY))*.003),local(e)));},{passive:false});
+  surface.addEventListener('keydown',e=>{if(e.target!==surface)return;const move={ArrowLeft:[80,0],ArrowRight:[-80,0],ArrowUp:[0,80],ArrowDown:[0,-80]}[e.key];if(move){stopAnimation();e.preventDefault();apply({...camera,x:camera.x+move[0],y:camera.y+move[1]});}});
+  const observer=new ResizeObserver(()=>{if(surface.clientWidth&&surface.clientHeight){stopAnimation();apply(camera);}});observer.observe(surface);
+  return {get value(){return {...camera};},zoom(factor){stopAnimation();const v=size();apply(cameraZoom(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){stopAnimation();apply(focusTarget(point,scale,vertical));},focusAnimated,fit(bounds={x:0,y:0,width:world.width,height:world.height}){stopAnimation();apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel};
 }
