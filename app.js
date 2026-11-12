@@ -1,7 +1,7 @@
 import { freePlaySync } from './free-play.js?v=d66ea1aff5ba420681bf27a69c5dcf46377b764cfa2025bcff59d462e8695cd1';
 import { fullscreenMount } from './fullscreen.js?v=2c3119f8c834c71afef28339288e1d4d71b96164e260d16f903a6c0fbd0ee41f';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=f764743740124e79e0ba13b52f8ac2be1254df4c1235cbb50c187075d26b0a1c';
+import { gameMenuMount } from './game-menu.js?v=b4bc15bbf58f927ad94758fd2d612d420b846fb99ce63a387fd8fee8ef32c505';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
 import { progressionMount } from './progression-ui.js?v=624e63353be65bea950ff3427a3e75cc3b9e048f284db47a195aa150a403f4ed';

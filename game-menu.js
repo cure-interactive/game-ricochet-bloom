@@ -1,19 +1,20 @@
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { menuBackgroundMount } from './menu-background.js?v=a731f33ce7a06ccf7d7362015b4a1b182e7e540eaa79b3b6c03395be6fd78ccb';
+import { menuBackgroundMount } from './menu-background.js?v=79463ddc5e895a90d09799fe80233488d2c4e9b19c673b0e2aae77e11ba016ac';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
   const home=document.createElement('section');home.id='main-menu';home.setAttribute('aria-label','Main menu');
   const button=(id,label,icon,kind='')=>`<button type="button" id="${id}" class="${kind}">${iconHTML(icon)}<span>${label}</span></button>`;
-  home.innerHTML=`<canvas class="home-pool" aria-hidden="true"></canvas><div class="home-content"><h1>ricochet<br><span>bloom</span></h1><nav class="home-primary" aria-label="Main game actions">${button('home-continue','Continue','play','primary')}${button('home-levels','Campaign','grid','primary')}${button('home-free','Free Play','play')}${button('home-tree','Skill tree','network-node-three')}${button('home-skins','Player skins','dropper')}</nav><p id="home-progress" class="home-progress"></p><nav class="home-secondary" aria-label="More game options">${button('home-help','How to play','about')}${button('home-settings','Settings','gear')}</nav></div>`;
+  home.innerHTML=`<canvas class="home-pool" aria-hidden="true"></canvas><div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><nav class="home-primary" aria-label="Main game actions">${button('home-continue','Continue','play','primary')}${button('home-levels','Campaign','grid','primary')}${button('home-free','Free Play','play')}${button('home-tree','Skill tree','network-node-three')}${button('home-skins','Player skins','dropper')}</nav><p id="home-progress" class="home-progress"></p><nav class="home-secondary" aria-label="More game options">${button('home-help','How to play','about')}${button('home-settings','Settings','gear')}</nav></div>`;
   document.body.append(home);
   const background=menuBackgroundMount(home.querySelector('.home-pool'),()=>host.gentle?.()===true);
-  let current='home',history=[],returning=false;
+  let current='home',history=[],returning=false,homeMode=true;
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
   function refresh(){const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;resume.lastElementChild.textContent=info.resume||'Continue';home.querySelector('#home-levels').classList.toggle('primary',!info.resume);home.querySelector('#home-progress').textContent=info.detail;}
   function present(name){
     if(name!==current&&!returning)history.push(current);
-    current=name;document.body.dataset.screen=name;home.hidden=name!=='home';background.show(name==='home');
+    if(name==='home')homeMode=true;else if(name==='play'||name==='pause')homeMode=false;
+    current=name;document.body.dataset.screen=name;document.body.dataset.menuMode=homeMode?'home':'play';home.hidden=name!=='home';background.show(name==='home');
     document.querySelector('body>main').inert=name!=='play';document.querySelector('body>header').inert=name!=='play';
     if(name!=='play')host.suspend();refresh();
   }
@@ -26,6 +27,7 @@ export function gameMenuMount(host) {
   home.querySelector('#home-free').onclick=()=>host.freePlay();
   home.querySelector('#home-help').onclick=()=>host.open('help');
   home.querySelector('#home-settings').onclick=()=>host.open('settings');
+  home.addEventListener('click',event=>{if(event.detail&& !event.target.closest('button,a,input,select,textarea,label,summary'))background.tap(event.clientX,event.clientY);});
   refresh();present('home');
   return {home:homeOpen,back,show:present,pause(){close();present('pause');host.open('pause');},play(){close();present('play');history=[];},get current(){return current;}};
 }
