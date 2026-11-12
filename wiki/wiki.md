@@ -1,6 +1,6 @@
 # Ricochet Bloom Wiki
 
-Make music, grow your powers, and clear the campaign. Choose a topic below; Back returns through the pages you visited and then to your menu.
+Make music, grow your powers, and clear the campaign. Choose a topic below. Use Back or swipe right from the left edge to return. Revisiting a page trims your return path, so Back never cycles through the same pages. Contents returns to this page.
 
 ## Play
 

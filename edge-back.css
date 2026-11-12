@@ -1,0 +1,12 @@
+/* Visible only while the reserved left-edge gesture is being dragged. */
+.edge-back-feedback {
+  position: absolute; z-index: 30; left: 8px; top: 45%;
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px; border: 1px solid #badfd260; border-radius: 24px;
+  background: var(--glass-panel,#101e2d); color: #e4f4ef;
+  -webkit-backdrop-filter: var(--glass-filter,blur(18px));
+  backdrop-filter: var(--glass-filter,blur(18px));
+  box-shadow: 0 6px 24px #0005; font: 14px Fredoka,sans-serif;
+  pointer-events: none; user-select: none;
+}
+.edge-back-feedback.is-ready { background: #b4f4db; color: #12372e; }

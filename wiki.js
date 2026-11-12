@@ -1,7 +1,8 @@
+import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 export const WIKI_PAGES = Object.freeze({
-  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=a12d1a1d58739ae9cd5c048f6a2f7b9bcc77e57d685569882c79710af9242641' },
+  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=c0e5656371f7d87d73e88f8c85f0c066ba894d7bff4e45eba84f32967f9b67ea' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=1f7e952790505b01a3ad6df6c1e6964ba663e7bc139a2c607849df207f3df982' },
   campaign: { title: 'Campaign', url: './wiki/campaign.md?v=e1f9240427027acd8e680ed2cb956782383744d7c5ed86373fedd5807dba5cd8' },
   'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=650b1990be5ebda2f4e0bd55b7ade7a27f0c5fb1b7059e67dcbf1e46defe03b4' },
@@ -55,10 +56,10 @@ export function wikiMount(host) {
   dialog.innerHTML=`<header class="wiki-heading"><button type="button" data-wiki-back aria-label="Back">${iconHTML('arrow-left')}<span>Back</span></button><h2 id="wiki-title">Wiki</h2><button type="button" data-wiki-contents>${iconHTML('book')}<span>Contents</span></button></header><article class="wiki-article" tabindex="0" aria-label="Wiki page"></article>`;
   document.body.append(dialog);
   const article=dialog.querySelector('article'), title=dialog.querySelector('h2'), contents=dialog.querySelector('[data-wiki-contents]');
-  let current={page:'wiki',anchor:''}, history=[], request=null;
+  let current={page:'wiki',anchor:''}, request=null;const history=pageHistory(current,target=>target.page);
   function position(anchor){const heading=anchor&&article.querySelector('#'+anchor);if(heading)heading.scrollIntoView({block:'start'});else article.scrollTop=0;}
   async function load(target, remember=true) {
-    if(remember)history.push(current);current=target;request?.abort();const active=new AbortController();request=active;
+    if(remember)history.visit(target);current=target;request?.abort();const active=new AbortController();request=active;
     title.textContent=WIKI_PAGES[target.page].title;contents.hidden=target.page==='wiki';
     article.setAttribute('aria-busy','true');article.innerHTML='<p role="status">Loading page…</p>';article.scrollTop=0;
     try {
@@ -71,7 +72,7 @@ export function wikiMount(host) {
       article.removeAttribute('aria-busy');article.innerHTML='<p role="alert">This wiki page couldn’t load. Check your connection and try again.</p><button type="button" data-wiki-retry>Try Again</button>';
     }
   }
-  function back(){if(history.length)load(history.pop(),false);else {request?.abort();dialog.close();host.back();}}
+  function back(){const target=history.back();if(target)load(target,false);else {request?.abort();dialog.close();host.back();}}
   dialog.querySelector('[data-wiki-back]').onclick=back;
   contents.onclick=()=>load({page:'wiki',anchor:''});
   dialog.addEventListener('cancel',event=>{event.preventDefault();back();});
@@ -82,7 +83,7 @@ export function wikiMount(host) {
     else if(event.target.closest('[data-wiki-retry]'))load(current,false);
   });
   return {open(page='wiki'){
-    history=[];host.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());
+    history.reset({page:Object.hasOwn(WIKI_PAGES,page)?page:'wiki',anchor:''});host.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());
     dialog.showModal();load({page:Object.hasOwn(WIKI_PAGES,page)?page:'wiki',anchor:''},false);
   }};
 }

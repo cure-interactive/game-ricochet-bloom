@@ -1,13 +1,14 @@
-import { wikiMount } from './wiki.js?v=d6affce79aaea320bdc95f7098a9052a2c989a567797a7015d7970cbf6f6aa7a';
+import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
+import { wikiMount } from './wiki.js?v=a678f1f54ca549e79ee02c885588a380cae687a038065270181de5f5698e3852';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
 import { POOL_NAMES } from './run.js?v=ddcdce8b7a5156a16f65833c3f1b37eb1b5a8b4f002512cda831b395bba97739';
 import { freePlaySync } from './free-play.js?v=6d9d7244924bd91c922f5f20f93b099a9a5d21947543a2beae42d1eb86a63115';
 import { fullscreenMount } from './fullscreen.js?v=e8c105c0bde8d63a2f68cb936534f947a78c62bdedc35b73614336e898cf848c';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=85877ce90e76c380cd018f18a5f954967714048227f2633191d00bfe6a724834';
+import { gameMenuMount } from './game-menu.js?v=74c90f963cc3f6607b3f9b70f387c8499447b0695a70a1d6e681969d11e89687';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
-import { progressionMount } from './progression-ui.js?v=44b5b80de49e0eb13e823621b5e92f2483165ab1032bdd59ebf0667351597b2a';
+import { progressionMount } from './progression-ui.js?v=ab72b95976b89a08f0392981082ab858f4fb873adfe7f1804602e2cada089349';
 import {assetURL} from './asset.js?v=11557b7bbf1eaf861206cd3e17ea64ef617614459a0dba28213850a7fd0925d3';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
@@ -646,6 +647,7 @@ navigation=gameMenuMount({
   open(screen){if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign('tracks');else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='wiki')wiki.open();else if(screen==='help')wiki.open('how-to-play');else $('settings-dialog').showModal();}
 });
 fullscreenMount(document,window);
+edgeBackMount(document,window);
 $('welcome').hidden=true;
 $('menu-home').onclick=()=>navigation.home();
 $('pause-home').onclick=()=>navigation.home();
