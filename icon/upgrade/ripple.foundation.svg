@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="#e9ffed" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+  <title>Wide Ripple</title>
+  <circle cx="24" cy="24" r="8"/><path d="M10 12a18 18 0 0 0 0 24M38 12a18 18 0 0 1 0 24"/><path d="M24 12L24 4M27.87 8.59L24 4L20.13 8.59"/><path d="M24 36L24 44M20.13 39.41L24 44L27.87 39.41"/>
+</svg>

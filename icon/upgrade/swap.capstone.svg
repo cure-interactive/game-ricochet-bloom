@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="#e9ffed" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+  <title>Departure Ripple</title>
+  <circle cx="11" cy="32" r="4" fill="#e9ffed" stroke="none"/><path d="M4 23a12 12 0 0 1 18 17M4 16a19 19 0 0 1 25 27"/><path d="M20 18L39 8M36.74 13.56L39 8L33.14 6.72"/><circle cx="40" cy="8" r="4"/>
+</svg>

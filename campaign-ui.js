@@ -5,7 +5,7 @@ import { TRACKS, trackGet, LAYOUTS, trackEnvironment } from './track.js?v=57009a
 import { campaignRestoration, campaignPoolAccess, POPULATIONS, POOL_NAMES, GOALS, completedTracks, unlockedTracks, progressionLoadout, GAME_CATALOGUE } from './run.js?v=21036f0f948a62dc2381a98ea661675ef083ad2bd9180bd67176c75cfa9c8261';
 import { profileSummary } from './profile.js?v=a67f94be0e184c43ef0ce19cb07a7c7b364e802baf1f90ce5e1795d13cb570fd';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { assetURL } from './asset.js?v=142d7a2d7e9c9c8621efc77af5ebd0588ac88d080983132185a875ee6334cc88';
+import { assetURL } from './asset.js?v=44f07bd9886229b4c1add0a997ee5abbda938e15cc9bcd29a124a4c5b92753b8';
 import { SONG_STORAGE, SONG_LIMIT, songLibraryRead, songSnapshot } from './song.js?v=48873dc48654acf5ed853a7b7db0312d46dc915e3e358378f1a56edb7ac7bbcc';
 
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
