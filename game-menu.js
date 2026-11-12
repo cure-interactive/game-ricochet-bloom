@@ -5,12 +5,12 @@ import { menuBackgroundMount } from './menu-background.js?v=24819272e4348789e59e
 export function gameMenuMount(host) {
   const home=document.createElement('section');home.id='main-menu';home.setAttribute('aria-label','Main menu');
   const button=(id,label,icon,kind='')=>`<button type="button" id="${id}" class="${kind}">${iconHTML(icon)}<span>${label}</span></button>`;
-  home.innerHTML=`<canvas class="home-pool" aria-hidden="true"></canvas><div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><nav class="home-primary" aria-label="Main game actions">${button('home-continue','Continue','play','primary')}${button('home-levels','Campaign','campaign','primary')}${button('home-free','Free Play','play')}${button('home-tree','Skill tree','skill-tree')}${button('home-skins','Player skins','player-skin')}</nav><nav class="home-secondary" aria-label="More game options">${button('home-help','How to play','book')}${button('home-settings','Settings','gear')}</nav></div>`;
+  home.innerHTML=`<canvas class="home-pool" aria-hidden="true"></canvas><div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><nav class="home-primary" aria-label="Main game actions"><button type="button" id="home-continue" class="primary"><img class="continue-art" width="48" height="48" alt=""><span class="continue-copy"><span>Continue</span><small class="continue-detail"></small></span></button>${button('home-levels','Campaign','campaign','primary')}${button('home-free','Free Play','play')}${button('home-tree','Skill tree','skill-tree')}${button('home-skins','Player skins','player-skin')}</nav><nav class="home-secondary" aria-label="More game options">${button('home-help','How to play','book')}${button('home-settings','Settings','gear')}</nav></div>`;
   document.body.append(home);
   const background=menuBackgroundMount(home.querySelector('.home-pool'),()=>host.gentle?.()===true);
   let current='home',history=[],returning=false,homeMode=true;
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
-  function refresh(){const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;resume.lastElementChild.textContent=info.resume||'Continue';home.querySelector('#home-levels').classList.toggle('primary',!info.resume);}
+  function refresh(){const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-levels').classList.toggle('primary',!info.resume);}
   function present(name){
     if(name!==current&&!returning)history.push(current);
     if(name==='home')homeMode=true;else if(name==='play'||name==='pause')homeMode=false;

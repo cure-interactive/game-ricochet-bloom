@@ -146,3 +146,10 @@ body[data-menu-mode=home] #tree-sheet{height:100dvh;max-height:100dvh;border:0;b
  #campaign-dialog .campaign-footer button{min-width:0}
 }
 @media(max-width:360px){#campaign-dialog .track-overview{grid-template-columns:1fr}#campaign-dialog .track-overview .restoration-art{height:100px}}
+
+/* Continue identifies its saved destination without a generic play icon. */
+#home-continue{text-align:left;padding:12px 16px;gap:14px}
+#home-continue .continue-art{width:48px;height:48px;flex:0 0 48px;object-fit:cover;border-radius:10px;background:#102132}
+#home-continue .continue-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+#home-continue .continue-detail{font-size:12px;font-weight:400;line-height:1.4;color:#285548;white-space:normal;overflow-wrap:anywhere}
+@media(max-height:600px){#home-continue{padding:10px 14px;gap:12px}#home-continue .continue-art{width:42px;height:42px;flex-basis:42px}}
