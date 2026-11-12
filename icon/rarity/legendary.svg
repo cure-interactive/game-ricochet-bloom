@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="128mm"
+   height="128mm"
+   viewBox="0 0 128 128"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="04_legendary-8B7500.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg" fill="#A38200">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="1"
+     inkscape:cx="244.5"
+     inkscape:cy="258"
+     inkscape:window-width="1273"
+     inkscape:window-height="981"
+     inkscape:window-x="1976"
+     inkscape:window-y="31"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect2"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,1,1,0,6.35,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,6.35,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,6.35,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,6.35,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,6.35,0,1 @ F,0,0,1,0,0,0,1 @ F,0,1,1,0,6.35,0,1"
+       radius="24"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="true"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="mirror_symmetry"
+       start_point="64,0"
+       end_point="64,128"
+       center_point="64,64"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1.2"
+       lpesatellites=""
+       mode="vertical"
+       discard_orig_path="false"
+       fuse_paths="false"
+       oposite_fuse="false"
+       split_items="false"
+       split_open="false"
+       link_styles="false" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path2"
+       style="fill-rule:evenodd;stroke:currentColor;stroke-width:0"
+       transform="matrix(1.1572481,0,0,1.1572454,39.318085,42.782264)"
+       d="M 48.979913,66.229022 25.973281,44.785669 a 6.8129333,6.8129333 3.9508274e-6 0 0 -9.290343,0 L -6.3236985,66.22902 0.74347422,35.583015 A 6.8129334,6.8129334 60.000005 0 0 -3.9016967,27.537342 L -33.975502,18.334685 -3.9016976,9.1320344 A 6.8129332,6.8129332 120 0 0 0.74347459,1.0863617 L -6.3236938,-29.559646 16.682938,-8.1162928 a 6.8129333,6.8129333 4.8669418e-6 0 0 9.290343,8e-7 L 48.979918,-29.559643 41.912746,1.0863609 a 6.8129335,6.8129335 60.000005 0 0 4.645171,8.0456736 l 30.073804,9.2026565 -30.073804,9.202651 a 6.8129333,6.8129333 120 0 0 -4.645172,8.045673 z"
+       inkscape:original-d="M 48.979913,66.229022 21.32811,40.456133 -6.3236985,66.22902 2.170377,29.395411 -33.975502,18.334685 2.1703764,7.2739663 -6.3236938,-29.559646 21.328109,-3.7867565 48.979918,-29.559643 40.485843,7.2739653 76.631721,18.334691 40.485843,29.39541 Z"
+       inkscape:path-effect="#path-effect2" />
+  </g>
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Original Legendary rarity artwork by Leviscus Tempris.",
+  "sources": [
+    {
+      "title": "Leviscus Tempris",
+      "role": "Original artwork"
+    }
+  ],
+  "license": {
+    "name": "MIT",
+    "url": "https://opensource.org/license/mit",
+    "scope": "Applies to the contribution of Cure Interactive Icons contributors in this artwork. It does not grant rights owned by others.",
+    "conditions": [
+      "Include the copyright notice and complete MIT license in all copies or substantial portions of the author contribution."
+    ],
+    "notices": [
+      {
+        "title": "MIT author-contribution notice",
+        "path": "attribution/license/mit/cure-interactive-icons.txt",
+        "sha256": "946e919f2079fc107dda1eaac0ba80438185cc26bea4914275304bc8cb4fec6a",
+        "text": "The MIT License (MIT)\n\nCopyright (c) 2026 Cure Interactive Icons contributors\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Commercial use, modification and redistribution of the author contribution are permitted under MIT.",
+    "conditions": [
+      "Preserve the applicable copyright and license notice."
+    ],
+    "sources": [
+      {
+        "title": "MIT",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Original drawing geometry and 128 by 128 canvas retained from the creator's five-tier rarity family. The selected #A38200 color is applied to this collection SVG. Non-rendered source and license metadata were added.",
+  "color": {
+    "hex": "#A38200"
+  }
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

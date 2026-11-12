@@ -34,20 +34,24 @@ This reference is generated from the skill catalogue. The Skill Tree shows your 
 
 ## Attract
 
+**Common · Flow Type**
+
 Pull nearby jellies toward the contact point with one gathering impulse.
 
 **Unlock:** research Wide Ripple in Ripple, then buy this power.
 
 Upgrade in this order:
 
-- **Deep Attraction:** Increase useful reach by 20 percent.
-- **Tight Group:** Stronger attraction with a soft inner spacing limit to prevent a pile of overlapping bodies. Choose one gathering shape: tight group or loose ring.
-- **Loose Ring:** Gather into a ring around the contact location, leaving a navigable center. Choose one gathering shape: tight group or loose ring.
-- **Release:** After the gathering phase, emit a modest outward release. This makes timing meaningful instead of holding the pool in a permanent clump. Requires three cleared pools with this power activated.
+- **Deep Attraction (Rare):** Increase useful reach by 20 percent.
+- **Tight Group (Rare):** Stronger attraction with a soft inner spacing limit to prevent a pile of overlapping bodies. Choose one gathering shape: tight group or loose ring.
+- **Loose Ring (Epic):** Gather into a ring around the contact location, leaving a navigable center. Choose one gathering shape: tight group or loose ring.
+- **Release (Legendary):** After the gathering phase, emit a modest outward release. This makes timing meaningful instead of holding the pool in a permanent clump. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Blaster
+
+**Common · Propagation Type**
 
 Automatically aim and fire three gel shots after contact. No aiming, tapping or firing controls. Each jelly scores once per pluck.
 
@@ -55,29 +59,33 @@ Automatically aim and fire three gel shots after contact. No aiming, tapping or 
 
 Upgrade in this order:
 
-- **Extra Magazine:** Carry five shots instead of three.
-- **Bank Shot:** Shots bounce once off a wall. Projectile banks do not count as player wall banks.
-- **Scatter Shot:** Fire three pellets in a short fan for one ammunition. Each jelly can be struck only once per volley.
-- **Bloom Reload:** The first bloom after activation refills your magazine once this pluck. Requires three cleared pools with this power activated.
+- **Extra Magazine (Rare):** Carry five shots instead of three.
+- **Bank Shot (Rare):** Shots bounce once off a wall. Projectile banks do not count as player wall banks.
+- **Scatter Shot (Epic):** Fire three pellets in a short fan for one ammunition. Each jelly can be struck only once per volley.
+- **Bloom Reload (Legendary):** The first bloom after activation refills your magazine once this pluck. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Bubble
 
+**Rare · Control Type**
+
 Retain this soft interaction at a modest shell size. There is no solid collision core to unlock away.
 
-**Unlock:** research Deep Frost in Stasis, then buy this power.
+**Unlock:** research Strong Center in Ripple, then buy this power.
 
 Upgrade in this order:
 
-- **Large Bubble:** Increase shell radius by 20 percent, while respecting the pool bounds.
-- **Soft Bubble:** Weaker pressure on both sides; easier to envelop a cluster. Choose one Bubble mode: Soft Bubble or Firm Bubble.
-- **Firm Bubble:** Stronger outward jelly pressure and a slightly stronger player reaction; better at reorganizing the pool. Choose one Bubble mode: Soft Bubble or Firm Bubble.
-- **Breathing Bubble:** Radius gently expands and contracts by 10 percent on the pulse. Contact still counts once per jelly, and radius changes never impart an instant bounce. Requires three cleared pools with this power activated.
+- **Large Bubble (Rare):** Increase shell radius by 20 percent, while respecting the pool bounds.
+- **Soft Bubble (Epic):** Weaker pressure on both sides; easier to envelop a cluster. Choose one Bubble mode: Soft Bubble or Firm Bubble.
+- **Firm Bubble (Epic):** Stronger outward jelly pressure and a slightly stronger player reaction; better at reorganizing the pool. Choose one Bubble mode: Soft Bubble or Firm Bubble.
+- **Breathing Bubble (Legendary):** Radius gently expands and contracts by 10 percent on the pulse. Contact still counts once per jelly, and radius changes never impart an instant bounce. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Comet
+
+**Common · Motion Type**
 
 Burst forward on contact, within the normal speed limit.
 
@@ -85,29 +93,33 @@ Burst forward on contact, within the normal speed limit.
 
 Upgrade in this order:
 
-- **Momentum:** Retain more speed after bouncing off jellies and walls.
-- **Bank Charge:** The next genuine wall bounce after a new jelly contact gains a small speed boost, once per contact.
-- **Long Flight:** Lose speed more gradually near the end of a pluck, while still coming to a natural rest.
-- **Meteor Wake:** The first two wall banks send an outward push through nearby jellies. Requires three cleared pools with this power activated.
+- **Momentum (Rare):** Retain more speed after bouncing off jellies and walls.
+- **Bank Charge (Rare):** The next genuine wall bounce after a new jelly contact gains a small speed boost, once per contact.
+- **Long Flight (Epic):** Lose speed more gradually near the end of a pluck, while still coming to a natural rest.
+- **Meteor Wake (Legendary):** The first two wall banks send an outward push through nearby jellies. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Drunk
 
+**Epic · Motion Type**
+
 Swerve smoothly for four seconds.
 
-**Unlock:** research Long Flight in Comet, then buy this power.
+**Unlock:** research Quick Pulse in Pulse, then buy this power.
 
 Upgrade in this order:
 
-- **Rhythm Sway:** Align its direction changes to the musical pulse without changing launch timing.
-- **Narrow Sway:** Smaller lateral deviation for threading lanes. Choose one Drunk mode: Narrow Sway or Wide Sway.
-- **Wide Sway:** Larger sweeps for coverage, with lower turn acceleration to remain readable. Choose one Drunk mode: Narrow Sway or Wide Sway.
-- **Shared Sway:** Up to three nearby unhit jellies sway sideways with the player. Requires three cleared pools with this power activated.
+- **Rhythm Sway (Epic):** Align its direction changes to the musical pulse without changing launch timing.
+- **Narrow Sway (Legendary):** Smaller lateral deviation for threading lanes. Choose one Drunk mode: Narrow Sway or Wide Sway.
+- **Wide Sway (Legendary):** Larger sweeps for coverage, with lower turn acceleration to remain readable. Choose one Drunk mode: Narrow Sway or Wide Sway.
+- **Shared Sway (Mythic):** Up to three nearby unhit jellies sway sideways with the player. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Echo
+
+**Common · Propagation Type**
 
 The delayed path follower with smooth interpolation and shared scoring.
 
@@ -115,29 +127,33 @@ The delayed path follower with smooth interpolation and shared scoring.
 
 Upgrade in this order:
 
-- **Elastic Echo:** Give the delayed ghost a stronger elastic deflection and spring response. Smooth movement back toward its route is always included.
-- **Seeking Echo:** Gently steer the Echo toward nearby unhit jellies beside its delayed path.
-- **Wide Echo:** Let the Echo stray farther from its delayed path. Combine with Seeking echo to reach more nearby jellies.
-- **Final Reply:** When the main player settles, let the existing ghost finish its queued half-second route. It does not spawn another ghost, refresh itself or repeat already-earned contacts. Requires three cleared pools with this power activated.
+- **Elastic Echo (Rare):** Give the delayed ghost a stronger elastic deflection and spring response. Smooth movement back toward its route is always included.
+- **Seeking Echo (Rare):** Gently steer the Echo toward nearby unhit jellies beside its delayed path.
+- **Wide Echo (Epic):** Let the Echo stray farther from its delayed path. Combine with Seeking echo to reach more nearby jellies.
+- **Final Reply (Legendary):** When the main player settles, let the existing ghost finish its queued half-second route. It does not spawn another ghost, refresh itself or repeat already-earned contacts. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Homing
 
+**Rare · Navigation Type**
+
 Three seconds of bounded forward seeking with visible target brackets.
 
-**Unlock:** research Lasting Magnet in Magnet, then buy this power.
+**Unlock:** research Close Pull in Magnet, then buy this power.
 
 Upgrade in this order:
 
-- **Long Guidance:** Extend to five seconds.
-- **Gentle Pursuit:** Lower turn rate and greater look-ahead, preserving bank routes. Choose one Homing mode: Gentle Pursuit or Close Pursuit.
-- **Close Pursuit:** Stronger turns and shorter look-ahead, favoring nearby clusters. Choose one Homing mode: Gentle Pursuit or Close Pursuit.
-- **Role Guidance:** Prefer a still-needed musical role for this pool when a valid target of that role is within the normal forward cone; otherwise use normal targeting. Never turn backward automatically to satisfy a checklist. Requires three cleared pools with this power activated.
+- **Long Guidance (Rare):** Extend to five seconds.
+- **Gentle Pursuit (Epic):** Lower turn rate and greater look-ahead, preserving bank routes. Choose one Homing mode: Gentle Pursuit or Close Pursuit.
+- **Close Pursuit (Epic):** Stronger turns and shorter look-ahead, favoring nearby clusters. Choose one Homing mode: Gentle Pursuit or Close Pursuit.
+- **Role Guidance (Legendary):** Prefer a still-needed musical role for this pool when a valid target of that role is within the normal forward cone; otherwise use normal targeting. Never turn backward automatically to satisfy a checklist. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Impact
+
+**Rare · Motion Type**
 
 Strengthen the activating collision.
 
@@ -145,14 +161,16 @@ Strengthen the activating collision.
 
 Upgrade in this order:
 
-- **Follow Through:** Extend enhanced pushes to later contacts during this pluck.
-- **Focused Impact:** Narrow, stronger forward pushes suited to directing a jelly. Choose one Impact mode: Focused Impact or Broad Impact.
-- **Broad Impact:** Weaker radial pushes around the contacted jelly, suited to opening clusters. Choose one Impact mode: Focused Impact or Broad Impact.
-- **Transfer:** The first two newly contacted jellies carry one additional physical shove into another jelly. This shove alone neither scores nor triggers another Impact transfer. Requires three cleared pools with this power activated.
+- **Follow Through (Rare):** Extend enhanced pushes to later contacts during this pluck.
+- **Focused Impact (Epic):** Narrow, stronger forward pushes suited to directing a jelly. Choose one Impact mode: Focused Impact or Broad Impact.
+- **Broad Impact (Epic):** Weaker radial pushes around the contacted jelly, suited to opening clusters. Choose one Impact mode: Focused Impact or Broad Impact.
+- **Transfer (Legendary):** The first two newly contacted jellies carry one additional physical shove into another jelly. This shove alone neither scores nor triggers another Impact transfer. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Lightning
+
+**Epic · Propagation Type**
 
 Two strikes with clear target cues; retain the physical knockback role.
 
@@ -160,14 +178,16 @@ Two strikes with clear target cues; retain the physical knockback role.
 
 Upgrade in this order:
 
-- **Third Strike:** Restore the third strike.
-- **Spread:** Choose separated unhit targets for wider rearrangement. Choose one Lightning mode: Spread or Cluster.
-- **Cluster:** Prefer nearby unhit targets for a local cascade. Choose one Lightning mode: Spread or Cluster.
-- **Charged Relay:** The first struck jelly carries one Relay-like physical transfer into a different jelly. This can score or collect one marker only when that subsequent collision occurs; lightning flashes alone never award three free hits. Requires three cleared pools with this power activated.
+- **Third Strike (Epic):** Restore the third strike.
+- **Spread (Legendary):** Choose separated unhit targets for wider rearrangement. Choose one Lightning mode: Spread or Cluster.
+- **Cluster (Legendary):** Prefer nearby unhit targets for a local cascade. Choose one Lightning mode: Spread or Cluster.
+- **Charged Relay (Mythic):** The first struck jelly carries one Relay-like physical transfer into a different jelly. This can score or collect one marker only when that subsequent collision occurs; lightning flashes alone never award three free hits. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Magnet
+
+**Rare · Flow Type**
 
 Draw nearby unhit jellies toward the player.
 
@@ -175,29 +195,33 @@ Draw nearby unhit jellies toward the player.
 
 Upgrade in this order:
 
-- **Lasting Magnet:** Extend to 3.2 seconds.
-- **Close Pull:** Stronger nearby pull and shorter reach. Choose one Magnet mode: Close Pull or Distant Pull.
-- **Distant Pull:** Wider reach and weaker force. Choose one Magnet mode: Close Pull or Distant Pull.
-- **Polarity:** Newly hit jellies receive one small outward release, clearing the path for the unhit bodies still being drawn in. Requires three cleared pools with this power activated.
+- **Lasting Magnet (Rare):** Extend to 3.2 seconds.
+- **Close Pull (Epic):** Stronger nearby pull and shorter reach. Choose one Magnet mode: Close Pull or Distant Pull.
+- **Distant Pull (Epic):** Wider reach and weaker force. Choose one Magnet mode: Close Pull or Distant Pull.
+- **Polarity (Legendary):** Newly hit jellies receive one small outward release, clearing the path for the unhit bodies still being drawn in. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Orbit
 
+**Epic · Control Type**
+
 One satellite with its existing release behavior.
 
-**Unlock:** research Sustained Current in Vortex, then buy this power.
+**Unlock:** research Spiral In in Vortex, then buy this power.
 
 Upgrade in this order:
 
-- **Twin Orbit:** Allow two satellites.
-- **Close Orbit:** Smaller radius and shorter gathering time. Choose one Orbit mode: Close Orbit or Wide Orbit.
-- **Wide Orbit:** Larger radius and slower rotation, sweeping more space. Choose one Orbit mode: Close Orbit or Wide Orbit.
-- **Directed Release:** Bias release along the player's current heading instead of purely outward, with a visible release direction. Capturing a satellite does not itself score it. Requires three cleared pools with this power activated.
+- **Twin Orbit (Epic):** Allow two satellites.
+- **Close Orbit (Legendary):** Smaller radius and shorter gathering time. Choose one Orbit mode: Close Orbit or Wide Orbit.
+- **Wide Orbit (Legendary):** Larger radius and slower rotation, sweeping more space. Choose one Orbit mode: Close Orbit or Wide Orbit.
+- **Directed Release (Mythic):** Bias release along the player's current heading instead of purely outward, with a visible release direction. Capturing a satellite does not itself score it. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Portal
+
+**Rare · Navigation Type**
 
 One pair lasting three seconds.
 
@@ -205,14 +229,16 @@ One pair lasting three seconds.
 
 Upgrade in this order:
 
-- **Stable Gates:** Keep both gates open for five seconds instead of three.
-- **Wide Gates:** Larger capture radius, same crossing cooldown.
-- **Aimed Exit:** Rotate the outgoing heading slightly toward a nearby forward unhit jelly, showing the exit arrow in advance.
-- **Gate Current:** Each gate emits a weak outward jelly current while active. It moves jellies without teleporting or scoring them. Requires three cleared pools with this power activated.
+- **Stable Gates (Rare):** Keep both gates open for five seconds instead of three.
+- **Wide Gates (Epic):** Larger capture radius, same crossing cooldown.
+- **Aimed Exit (Epic):** Rotate the outgoing heading slightly toward a nearby forward unhit jelly, showing the exit arrow in advance.
+- **Gate Current (Legendary):** Each gate emits a weak outward jelly current while active. It moves jellies without teleporting or scoring them. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Pulse
+
+**Epic · Propagation Type**
 
 Two waves at independently seeded field positions.
 
@@ -220,44 +246,50 @@ Two waves at independently seeded field positions.
 
 Upgrade in this order:
 
-- **Third Beat:** Restore the third wave.
-- **Slow Pulse:** Longer spacing and stronger pressure. Choose one Pulse mode: Slow Pulse or Quick Pulse.
-- **Quick Pulse:** Shorter spacing and weaker pressure. Choose one Pulse mode: Slow Pulse or Quick Pulse.
-- **Shifting Center:** Bias the final wave toward a region with more unhit jellies, with a visible pre-cue. It remains a field wave, never becomes a player-centered pulse. Requires three cleared pools with this power activated.
+- **Third Beat (Epic):** Restore the third wave.
+- **Slow Pulse (Legendary):** Longer spacing and stronger pressure. Choose one Pulse mode: Slow Pulse or Quick Pulse.
+- **Quick Pulse (Legendary):** Shorter spacing and weaker pressure. Choose one Pulse mode: Slow Pulse or Quick Pulse.
+- **Shifting Center (Mythic):** Bias the final wave toward a region with more unhit jellies, with a visible pre-cue. It remains a field wave, never becomes a player-centered pulse. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Relay
 
+**Rare · Propagation Type**
+
 Arm one scored jelly for one transfer; keep power triggering intact.
 
-**Unlock:** research Third Thread in Tether, then buy this power.
+**Unlock:** research Transfer in Impact, then buy this power.
 
 Upgrade in this order:
 
-- **Relay Team:** Arm three jellies for contact transfers instead of one.
-- **Strong Pass:** A successful relay gives its recipient a small directional push.
-- **Patient Pass:** An armed jelly retains its opportunity until the flight ends rather than a short effect timeout.
-- **Second Pass:** One successful relay per pluck can arm its recipient for one additional transfer. Tag its lineage so it cannot return to an already-used relay or branch recursively. Requires three cleared pools with this power activated.
+- **Relay Team (Rare):** Arm three jellies for contact transfers instead of one.
+- **Strong Pass (Epic):** A successful relay gives its recipient a small directional push.
+- **Patient Pass (Epic):** An armed jelly retains its opportunity until the flight ends rather than a short effect timeout.
+- **Second Pass (Legendary):** One successful relay per pluck can arm its recipient for one additional transfer. Tag its lineage so it cannot return to an already-used relay or branch recursively. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Rewind
 
+**Epic · Propagation Type**
+
 Retrace the final one second of valid path, with shared hit history.
 
-**Unlock:** research Elastic Echo in Echo, then buy this power.
+**Unlock:** research Final Reply in Echo, then buy this power.
 
 Upgrade in this order:
 
-- **Longer Memory:** Retain up to two seconds for the encore.
-- **Gentle Rewind:** Replay more slowly, allowing drifting jellies to enter the route.
-- **Offset Rewind:** Return on a small parallel offset with softened joins; do not invent intermediate travel across teleport discontinuities.
-- **Last Chord:** A bloom earned during the return produces a brief accent and one bounded radial jelly push. It does not schedule another Rewind. Requires three cleared pools with this power activated.
+- **Longer Memory (Epic):** Retain up to two seconds for the encore.
+- **Gentle Rewind (Legendary):** Replay more slowly, allowing drifting jellies to enter the route.
+- **Offset Rewind (Legendary):** Return on a small parallel offset with softened joins; do not invent intermediate travel across teleport discontinuities.
+- **Last Chord (Mythic):** A bloom earned during the return produces a brief accent and one bounded radial jelly push. It does not schedule another Rewind. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Ripple
+
+**Common · Flow Type**
 
 Send a pressure wave outward, pushing nearby jellies away.
 
@@ -265,44 +297,50 @@ Send a pressure wave outward, pushing nearby jellies away.
 
 Upgrade in this order:
 
-- **Wide Ripple:** Expand its reach by 20 percent without increasing center strength.
-- **Strong Center:** Concentrate the impulse near the origin, opening a tight cluster. Choose one pressure shape: strong center or far shore.
-- **Far Shore:** Flatter falloff, reaching more distant jellies with weaker central force. Choose one pressure shape: strong center or far shore.
-- **Returning Ripple:** One weaker inward wave follows after half a second. It moves bodies but cannot score or recursively create waves. Requires three cleared pools with this power activated.
+- **Wide Ripple (Rare):** Expand its reach by 20 percent without increasing center strength.
+- **Strong Center (Rare):** Concentrate the impulse near the origin, opening a tight cluster. Choose one pressure shape: strong center or far shore.
+- **Far Shore (Epic):** Flatter falloff, reaching more distant jellies with weaker central force. Choose one pressure shape: strong center or far shore.
+- **Returning Ripple (Legendary):** One weaker inward wave follows after half a second. It moves bodies but cannot score or recursively create waves. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Slingshot
 
+**Epic · Navigation Type**
+
 Retain the orbit and untargeted forward tangential release, with a clear direction cue.
 
-**Unlock:** research Twin Orbit in Orbit, then buy this power.
+**Unlock:** research Directed Release in Orbit, then buy this power.
 
 Upgrade in this order:
 
-- **Aimed Release:** Aim releases toward unhit jellies and lead moving targets. Also improves the lead when combined with Near target or Far target.
-- **Near Target:** Favor the nearest reachable forward target. Choose one Slingshot mode: Near Target or Far Target.
-- **Far Target:** Favor a farther target for crossing the pool. Choose one Slingshot mode: Near Target or Far Target.
-- **Second Orbit:** One later contact with the specifically previewed release target can produce one shorter slingshot. The capstone supplies its own previewed target choice when no aiming upgrade is equipped; it works with the base alone. It cannot repeat a third time. Requires three cleared pools with this power activated.
+- **Aimed Release (Epic):** Aim releases toward unhit jellies and lead moving targets. Also improves the lead when combined with Near target or Far target.
+- **Near Target (Legendary):** Favor the nearest reachable forward target. Choose one Slingshot mode: Near Target or Far Target.
+- **Far Target (Legendary):** Favor a farther target for crossing the pool. Choose one Slingshot mode: Near Target or Far Target.
+- **Second Orbit (Mythic):** One later contact with the specifically previewed release target can produce one shorter slingshot. The capstone supplies its own previewed target choice when no aiming upgrade is equipped; it works with the base alone. It cannot repeat a third time. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Split
 
+**Rare · Propagation Type**
+
 One side seed for three seconds, with functional contact power activation from the start.
 
-**Unlock:** research Large Bubble in Bubble, then buy this power.
+**Unlock:** research Scatter Shot in Blaster, then buy this power.
 
 Upgrade in this order:
 
-- **Twin Split:** Add the second side seed.
-- **Wide Fan:** Launch at wider opposing angles for coverage. Choose one Split mode: Wide Fan or Close Fan.
-- **Close Fan:** Tighter angles and slightly longer life for a focused route. Choose one Split mode: Wide Fan or Close Fan.
-- **Reunion:** Surviving side seeds bend toward the main player during their final half-second, allowing a converging finish without extra spawns. Requires three cleared pools with this power activated.
+- **Twin Split (Rare):** Add the second side seed.
+- **Wide Fan (Epic):** Launch at wider opposing angles for coverage. Choose one Split mode: Wide Fan or Close Fan.
+- **Close Fan (Epic):** Tighter angles and slightly longer life for a focused route. Choose one Split mode: Wide Fan or Close Fan.
+- **Reunion (Legendary):** Surviving side seeds bend toward the main player during their final half-second, allowing a converging finish without extra spawns. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Spring
+
+**Rare · Motion Type**
 
 Boost wall rebounds for three seconds, with a visible recoil along the wall.
 
@@ -310,59 +348,67 @@ Boost wall rebounds for three seconds, with a visible recoil along the wall.
 
 Upgrade in this order:
 
-- **Lasting Spring:** Extend to five seconds.
-- **Deep Rebound:** Bounce back more strongly, up to the normal maximum speed.
-- **Angled Rebound:** Bias a rebound slightly toward the nearest forward unhit jelly; show the bias in its cue.
-- **Resonant Wall:** First two spring rebounds also push nearby jellies inward, creating bank opportunities rather than free score. Requires three cleared pools with this power activated.
+- **Lasting Spring (Rare):** Extend to five seconds.
+- **Deep Rebound (Epic):** Bounce back more strongly, up to the normal maximum speed.
+- **Angled Rebound (Epic):** Bias a rebound slightly toward the nearest forward unhit jelly; show the bias in its cue.
+- **Resonant Wall (Legendary):** First two spring rebounds also push nearby jellies inward, creating bank opportunities rather than free score. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Stasis
 
+**Common · Control Type**
+
 Frost a smaller area, slowing jellies and stiffening their edges. Hit frozen jellies remain translucent and permeable, with gentle pressure instead of a hard rebound.
 
-**Unlock:** research Strong Center in Ripple, then buy this power.
+**Unlock:** research Tight Group in Attract, then buy this power.
 
 Upgrade in this order:
 
-- **Deep Frost:** Freeze jellies across a wider area: 440 units instead of 300.
-- **Firm Ice:** Lower the jelly speed cap, making the arrangement more stable. Choose one Stasis mode: Firm Ice or Thin Ice.
-- **Thin Ice:** Retain more jelly motion, but reduce their outward pressure on the player for easier threading. Choose one Stasis mode: Firm Ice or Thin Ice.
-- **Frost Spread:** The first two physical jelly-to-jelly contacts from a frozen jelly frost one additional body each. Spreading itself earns no hit or power pickup. Requires three cleared pools with this power activated.
+- **Deep Frost (Rare):** Freeze jellies across a wider area: 440 units instead of 300.
+- **Firm Ice (Rare):** Lower the jelly speed cap, making the arrangement more stable. Choose one Stasis mode: Firm Ice or Thin Ice.
+- **Thin Ice (Epic):** Retain more jelly motion, but reduce their outward pressure on the player for easier threading. Choose one Stasis mode: Firm Ice or Thin Ice.
+- **Frost Spread (Legendary):** The first two physical jelly-to-jelly contacts from a frozen jelly frost one additional body each. Spreading itself earns no hit or power pickup. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Swap
 
+**Common · Navigation Type**
+
 Exchange places with a distant jelly and keep moving.
 
-**Unlock:** research Long Guidance in Homing, then buy this power.
+**Unlock:** research Long Wrap in Wrap, then buy this power.
 
 Upgrade in this order:
 
-- **Untouched Destination:** Prefer the farthest unhit jelly when one exists.
-- **Forward Swap:** Prefer a distant destination in the current forward half of the field.
-- **Open Swap:** Prefer a distant jelly with more free space around it.
-- **Departure Ripple:** One modest pressure wave at the departure point changes the next approach. The swapped jelly does not count as contacted merely because it teleported. Requires three cleared pools with this power activated.
+- **Untouched Destination (Rare):** Prefer the farthest unhit jelly when one exists.
+- **Forward Swap (Rare):** Prefer a distant destination in the current forward half of the field.
+- **Open Swap (Epic):** Prefer a distant jelly with more free space around it.
+- **Departure Ripple (Legendary):** One modest pressure wave at the departure point changes the next approach. The swapped jelly does not count as contacted merely because it teleported. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Tether
 
+**Rare · Control Type**
+
 Two linked jellies, with a gentle playerward drift preserved as the power's identity.
 
-**Unlock:** research Deep Frost in Stasis, then buy this power.
+**Unlock:** research Tight Group in Attract, then buy this power.
 
 Upgrade in this order:
 
-- **Third Thread:** Add the third jelly and full triangular linkage.
-- **Gathering Thread:** Stronger playerward drift with softer links. Choose one Tether mode: Gathering Thread or Elastic Thread.
-- **Elastic Thread:** Firmer links and stronger motion transfer, with the base drift unchanged. Choose one Tether mode: Gathering Thread or Elastic Thread.
-- **Release Knot:** When the effect expires, release stored stretch as one bounded impulse per member. No teleporting or stored-energy explosion. Requires three cleared pools with this power activated.
+- **Third Thread (Rare):** Add the third jelly and full triangular linkage.
+- **Gathering Thread (Epic):** Stronger playerward drift with softer links. Choose one Tether mode: Gathering Thread or Elastic Thread.
+- **Elastic Thread (Epic):** Firmer links and stronger motion transfer, with the base drift unchanged. Choose one Tether mode: Gathering Thread or Elastic Thread.
+- **Release Knot (Legendary):** When the effect expires, release stored stretch as one bounded impulse per member. No teleporting or stored-energy explosion. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Vortex
+
+**Rare · Flow Type**
 
 The tangential swirl.
 
@@ -370,29 +416,33 @@ The tangential swirl.
 
 Upgrade in this order:
 
-- **Sustained Current:** Continue a weaker swirl for one second.
-- **Spiral In:** Add a small inward component. Choose one Vortex mode: Spiral In or Spiral Out.
-- **Spiral Out:** Add a small outward component. Choose one Vortex mode: Spiral In or Spiral Out.
-- **Moving Center:** A weak swirl follows the player for one second. Teleporting breaks the swirl. Requires three cleared pools with this power activated.
+- **Sustained Current (Rare):** Continue a weaker swirl for one second.
+- **Spiral In (Epic):** Add a small inward component. Choose one Vortex mode: Spiral In or Spiral Out.
+- **Spiral Out (Epic):** Add a small outward component. Choose one Vortex mode: Spiral In or Spiral Out.
+- **Moving Center (Legendary):** A weak swirl follows the player for one second. Teleporting breaks the swirl. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Wake
 
+**Epic · Flow Type**
+
 Leave a short-lived current along your path for three seconds.
 
-**Unlock:** research Bank Charge in Comet, then buy this power.
+**Unlock:** research Meteor Wake in Comet, then buy this power.
 
 Upgrade in this order:
 
-- **Long Wake:** Restore five seconds of deposition.
-- **Narrow Jet:** Narrower trail with stronger directional force. Choose one Wake mode: Narrow Jet or Broad Current.
-- **Broad Current:** Wider trail with weaker force. Choose one Wake mode: Narrow Jet or Broad Current.
-- **Crossing Currents:** When two separated trail segments overlap, create one small eddy there. At most two eddies per pluck, each lasting one second. Requires three cleared pools with this power activated.
+- **Long Wake (Epic):** Restore five seconds of deposition.
+- **Narrow Jet (Legendary):** Narrower trail with stronger directional force. Choose one Wake mode: Narrow Jet or Broad Current.
+- **Broad Current (Legendary):** Wider trail with weaker force. Choose one Wake mode: Narrow Jet or Broad Current.
+- **Crossing Currents (Mythic):** When two separated trail segments overlap, create one small eddy there. At most two eddies per pluck, each lasting one second. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
 ## Wrap
+
+**Epic · Navigation Type**
 
 This exact rule for three seconds.
 
@@ -400,10 +450,10 @@ This exact rule for three seconds.
 
 Upgrade in this order:
 
-- **Long Wrap:** Extend to five seconds.
-- **Side Wrap:** Wrap only left and right edges; top and bottom remain bounceable. Choose one Wrap mode: Side Wrap or End Wrap.
-- **End Wrap:** Wrap only top and bottom edges; left and right remain bounceable. Choose one Wrap mode: Side Wrap or End Wrap.
-- **Arrival Field:** An outward push at the exit eases nearby jellies aside. You can still choose all-edge, horizontal or vertical travel. Requires three cleared pools with this power activated.
+- **Long Wrap (Epic):** Extend to five seconds.
+- **Side Wrap (Legendary):** Wrap only left and right edges; top and bottom remain bounceable. Choose one Wrap mode: Side Wrap or End Wrap.
+- **End Wrap (Legendary):** Wrap only top and bottom edges; left and right remain bounceable. Choose one Wrap mode: Side Wrap or End Wrap.
+- **Arrival Field (Mythic):** An outward push at the exit eases nearby jellies aside. You can still choose all-edge, horizontal or vertical travel. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 

@@ -2,7 +2,7 @@
 export const POWER_TREES = {
   "comet": {
     "name": "Comet",
-    "family": "Motion",
+    "type": "Motion",
     "tier": 1,
     "current": "A strong launch burst plus enhanced momentum retention through jelly and wall bounces for the pluck.",
     "today": [
@@ -35,7 +35,7 @@ export const POWER_TREES = {
   },
   "impact": {
     "name": "Impact",
-    "family": "Motion",
+    "type": "Motion",
     "tier": 2,
     "current": "Strong activation knockback and stronger later player collision pushes.",
     "today": [
@@ -68,7 +68,7 @@ export const POWER_TREES = {
   },
   "spring": {
     "name": "Spring",
-    "family": "Motion",
+    "type": "Motion",
     "tier": 2,
     "current": "Five seconds of stronger wall rebounds for the player and physical Split seeds, with elastic wall deformation.",
     "today": [
@@ -101,7 +101,7 @@ export const POWER_TREES = {
   },
   "drunk": {
     "name": "Drunk",
-    "family": "Motion",
+    "type": "Motion",
     "tier": 3,
     "current": "Smooth side-to-side steering for four seconds, also affecting physical Split seeds, without extra drag.",
     "today": [
@@ -134,7 +134,7 @@ export const POWER_TREES = {
   },
   "ripple": {
     "name": "Ripple",
-    "family": "Flow",
+    "type": "Flow",
     "tier": 1,
     "current": "An outward radial impulse on nearby jellies.",
     "today": [
@@ -167,7 +167,7 @@ export const POWER_TREES = {
   },
   "attract": {
     "name": "Attract",
-    "family": "Flow",
+    "type": "Flow",
     "tier": 1,
     "current": "An immediate inward impulse that gathers nearby jellies.",
     "today": [
@@ -200,7 +200,7 @@ export const POWER_TREES = {
   },
   "vortex": {
     "name": "Vortex",
-    "family": "Flow",
+    "type": "Flow",
     "tier": 2,
     "current": "A tangential impulse sets nearby jellies swirling.",
     "today": [
@@ -233,7 +233,7 @@ export const POWER_TREES = {
   },
   "magnet": {
     "name": "Magnet",
-    "family": "Flow",
+    "type": "Flow",
     "tier": 2,
     "current": "The moving player attracts unhit jellies for 2.4 seconds.",
     "today": [
@@ -266,7 +266,7 @@ export const POWER_TREES = {
   },
   "wake": {
     "name": "Wake",
-    "family": "Flow",
+    "type": "Flow",
     "tier": 3,
     "current": "Five seconds of player and Split trails that push crossing jellies along the flight direction.",
     "today": [
@@ -299,7 +299,7 @@ export const POWER_TREES = {
   },
   "stasis": {
     "name": "Stasis",
-    "family": "Control",
+    "type": "Control",
     "tier": 1,
     "current": "Slows nearby jellies and later contacts, shows frosted edges and reduced squish, and makes hit frozen jellies translucent and permeable with pressure on the player.",
     "today": [
@@ -332,7 +332,7 @@ export const POWER_TREES = {
   },
   "bubble": {
     "name": "Bubble",
-    "family": "Control",
+    "type": "Control",
     "tier": 2,
     "current": "An enlarged permeable shell scores on contact and pushes jellies outward by a radius gradient, with a smaller opposing pressure on the player.",
     "today": ["foundation"],
@@ -363,7 +363,7 @@ export const POWER_TREES = {
   },
   "tether": {
     "name": "Tether",
-    "family": "Control",
+    "type": "Control",
     "tier": 2,
     "current": "Three jellies gain elastic links, musical thread cues and a gentle drift toward the moving player for up to four seconds.",
     "today": [
@@ -396,7 +396,7 @@ export const POWER_TREES = {
   },
   "orbit": {
     "name": "Orbit",
-    "family": "Control",
+    "type": "Control",
     "tier": 3,
     "current": "Gathers up to two unhit satellites for three seconds and flings them outward.",
     "today": [
@@ -429,7 +429,7 @@ export const POWER_TREES = {
   },
   "echo": {
     "name": "Echo",
-    "family": "Propagation",
+    "type": "Propagation",
     "tier": 1,
     "current": "A ghost follows the actual player path half a second later, can deviate on an elastic leash and gently seeks nearby unhit jellies.",
     "today": [
@@ -463,7 +463,7 @@ export const POWER_TREES = {
   },
   "split": {
     "name": "Split",
-    "family": "Propagation",
+    "type": "Propagation",
     "tier": 2,
     "current": "Two temporary side seeds accompany the main player for three seconds, sharing hit history, power pickups and several active effects.",
     "today": [
@@ -496,7 +496,7 @@ export const POWER_TREES = {
   },
   "relay": {
     "name": "Relay",
-    "family": "Propagation",
+    "type": "Propagation",
     "tier": 2,
     "current": "Up to three scored jellies can each relay one physical contact, scoring a new jelly or collecting its marked power through the shared allowance.",
     "today": [
@@ -529,7 +529,7 @@ export const POWER_TREES = {
   },
   "rewind": {
     "name": "Rewind",
-    "family": "Propagation",
+    "type": "Propagation",
     "tier": 3,
     "current": "The player retraces recent flight positions at the end of the flight, potentially meeting previously untouched moving jellies.",
     "today": [],
@@ -561,7 +561,7 @@ export const POWER_TREES = {
   },
   "lightning": {
     "name": "Lightning",
-    "family": "Propagation",
+    "type": "Propagation",
     "tier": 3,
     "current": "Three sequential strikes knock distinct jellies away. The strike events themselves do not call the contact-scoring path.",
     "today": [
@@ -594,7 +594,7 @@ export const POWER_TREES = {
   },
   "pulse": {
     "name": "Pulse",
-    "family": "Propagation",
+    "type": "Propagation",
     "tier": 3,
     "current": "Three tempo-spaced pressure waves originate at random positions across the pool, moving jellies rather than directly scoring contacts.",
     "today": [
@@ -627,7 +627,7 @@ export const POWER_TREES = {
   },
   "swap": {
     "name": "Swap",
-    "family": "Navigation",
+    "type": "Navigation",
     "tier": 1,
     "current": "Exchanges the player with the farthest other jelly while keeping movement.",
     "today": [
@@ -660,7 +660,7 @@ export const POWER_TREES = {
   },
   "portal": {
     "name": "Portal",
-    "family": "Navigation",
+    "type": "Navigation",
     "tier": 2,
     "current": "Paired gates preserve player velocity and have crossing protection against immediate ping-pong.",
     "today": [
@@ -693,7 +693,7 @@ export const POWER_TREES = {
   },
   "homing": {
     "name": "Homing",
-    "family": "Navigation",
+    "type": "Navigation",
     "tier": 2,
     "current": "Five seconds of bounded steering toward nearby unhit jellies ahead, without extra speed, also affecting Split seeds.",
     "today": [
@@ -726,7 +726,7 @@ export const POWER_TREES = {
   },
   "wrap": {
     "name": "Wrap",
-    "family": "Navigation",
+    "type": "Navigation",
     "tier": 3,
     "current": "Five seconds of opposite-edge teleportation for the player and Split seeds, preserving velocity; it overrides wall bouncing and does not award a bank.",
     "today": [
@@ -759,7 +759,7 @@ export const POWER_TREES = {
   },
   "slingshot": {
     "name": "Slingshot",
-    "family": "Navigation",
+    "type": "Navigation",
     "tier": 3,
     "current": "Briefly orbits the marked jelly, then launches toward an unhit jelly.",
     "today": [
@@ -792,7 +792,7 @@ export const POWER_TREES = {
   },
   "blaster": {
   "name": "Blaster",
-  "family": "Propagation",
+  "type": "Propagation",
   "tier": 1,
   "current": "Contact starts three automatically aimed shots at a steady cadence. Impacts push jellies and play their notes; no player input is needed.",
   "today": [

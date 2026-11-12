@@ -12,7 +12,7 @@ follow the skill IDs, for example `comet.foundation.svg` for Momentum.
 
 All drawings use a 48-unit view box with rounded 3.6-unit strokes. Review at 64,
 30 and 20 pixels on the dark game background. The map uses the individual drawing
-inside its existing status frame; Epic upgrades retain their distinctive frame.
+inside its existing status frame; Final upgrades retain their distinctive frame; rarity uses the separate Cure badge and color.
 The same icon appears in the skill card and discovery reward.
 
 ## Attribution

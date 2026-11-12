@@ -1,0 +1,25 @@
+// Colors are the canonical Cure Interactive Icons collection rarity colors.
+export const RARITIES = Object.freeze({
+ common: {name:'Common',color:'#767676'},
+ rare: {name:'Rare',color:'#0072B2'},
+ epic: {name:'Epic',color:'#8E44AD'},
+ legendary: {name:'Legendary',color:'#A38200'},
+ mythic: {name:'Mythic',color:'#B22222'}
+});
+export const SKILL_TYPES = Object.freeze({
+ Motion: {icon:'motion',description:'Changes the player’s speed, rebounds or steering.'},
+ Flow: {icon:'flow',description:'Creates currents and forces through the pool.'},
+ Control: {icon:'control',description:'Changes how jellies move, gather or react.'},
+ Propagation: {icon:'propagation',description:'Extends contact through extra bodies, projectiles or chains.'},
+ Navigation: {icon:'navigation',description:'Changes destinations, targeting or travel through the field.'}
+});
+const rarityRanks = {
+ 1:['common','rare','rare','epic','legendary'],
+ 2:['rare','rare','epic','epic','legendary'],
+ 3:['epic','epic','legendary','legendary','mythic']
+};
+// Rarity expresses capability complexity, not random-drop odds or research cost.
+export function skillRarity(tier,kind){
+ const result=rarityRanks[tier]?.[['base','foundation','a','b','capstone'].indexOf(kind)];
+ if(!result)throw new Error('Unknown skill rarity');return result;
+}

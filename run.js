@@ -1,8 +1,8 @@
-import { buildValidate } from './skill-effect.js?v=1d4e7d0824a5390ec1da3b40d0c343136d0c37b99fd440c059415e803d655008';
-import { catalogueCreate, STARTERS } from './catalogue.js?v=fb795d4d638e40f27e780df5dbdf4f7870ba4dc3b0aaca5830fcbfc23651c5c7';
-import { POWER_TREES } from './power-tree.js?v=0bcdae42795671509b8c4f64ae024b263c7281e465d043ab76bd131d11397edc';
-import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=a67f94be0e184c43ef0ce19cb07a7c7b364e802baf1f90ce5e1795d13cb570fd';
-import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=fd7b971c19b5ec40a2b4b8a9389bd7af23085f90a22911cce3bd04ed687a7072';
+import { buildValidate } from './skill-effect.js?v=68c76a93e9644d6325bb5cb6468e19bbb68cf6b8261d5821ee0cec8d49aca638';
+import { catalogueCreate, STARTERS } from './catalogue.js?v=6265b0aef5754b05a7ff5ae96d2d89f60ffbf10836e3e10c60def7abe1634c1e';
+import { POWER_TREES } from './power-tree.js?v=6b24879d9e0b7315350a7a978aba1648d5e1ef852c112b6beffde4eceded6179';
+import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=d4ca539643faf8ddf446cec1a80997a13252a4f8d1805fa5ba3a98ba748553c3';
+import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=12aca0299e489e19cee12712b048995045f1a99ab7437f65848b511da9a147d5';
 import { jellyRole, musicCreate, musicRunSection } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
@@ -125,7 +125,7 @@ export function progressionAct(input,action){
       if(!node||node.kind==='base'||!s.powers.includes(node.power)||s.profile.research[action.id])return fail('Choose an unowned upgrade for your loadout.');
       if(s.borrowed.includes(action.id)){if(s.phase!=='shop')return fail('Discoveries stay until this run ends.');s.borrowed=s.borrowed.filter(id=>id!==action.id);tidy(s);break;}
       if(s.phase==='interlude'&&(s.run.discovered||!s.run.offers.includes(action.id)))return fail('Choose one of the saved discovery offers.');
-      if(node.kind==='capstone'&&(s.phase==='shop'||s.pool<2))return fail('Epic discoveries open after Build.');
+      if(node.kind==='capstone'&&(s.phase==='shop'||s.pool<2))return fail('Final-upgrade discoveries open after Build.');
       if(s.phase==='shop'&&s.borrowed.length>=2)return fail('Choose up to two starting loans.');
       s.borrowed.push(action.id);if(s.run)s.run.discovered=true;message='Borrowed for this run. Equip it to activate its effect.';break;
     case 'equip':

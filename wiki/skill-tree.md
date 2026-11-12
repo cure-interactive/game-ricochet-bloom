@@ -12,14 +12,30 @@ Research costs Points earned through Campaign. **Purchases are permanent and can
 
 Unlocking a power adds it to the random powers available in play, including Free Play. Compatible researched upgrades activate automatically. When two upgrades describe conflicting styles, you can switch the active style without losing either purchase.
 
-The final Epic upgrade also needs three qualifying cleared pools in which that power was activated. Its card shows the remaining requirement. Existing ownership is preserved when the game's tree changes.
+The final upgrade also needs three qualifying cleared pools in which that power was activated. Its card shows the remaining requirement. Existing ownership is preserved when the game's tree changes.
+
+## Rarity and Type
+
+Color identifies rarity, using Cure Interactive’s original badges and palette: **Common** gray, **Rare** blue, **Epic** purple, **Legendary** gold and **Mythic** red. Rarity describes the complexity of the capability; it does not change its drop chance or price. More advanced powers and upgrades occupy higher rarities.
+
+A skill’s card also shows its **type**:
+
+- **Motion:** player speed, rebounds and steering.
+- **Flow:** currents and forces through the pool.
+- **Control:** jelly movement, gathering and reactions.
+- **Propagation:** extra bodies, projectiles and contact chains.
+- **Navigation:** destinations, targeting and travel.
+
+Types describe behavior. They never partition the map or gate research. Each power and skill branches from a specific prerequisite whose effect leads naturally into it. For example, Impact’s Transfer leads to Relay, and Orbit’s Directed Release leads to Slingshot.
 
 ## Read the Map
 
-- **Active:** currently enabled, with a mint glow.
-- **Owned:** permanently researched, with a check mark.
-- **Available:** ready to research, with a gold border.
-- **Locked:** still needs a prerequisite or another requirement, with a lock.
+- **Active:** a filled glow in that skill’s rarity color, with a check mark.
+- **Owned:** a check mark; rarity color stays the same.
+- **Available:** a double outer border and the research price.
+- **Locked:** a dashed border and lock.
+
+The selected node has a white outline. Its prerequisite path keeps the rarity colors of its skills. The bottom legend shows all five rarities and the separate ownership states.
 
 Drag to move in two dimensions; pinch or scroll to zoom. Select a node to read its card. A research-prerequisite button closes the current card, moves to the required node and opens its card.
 

@@ -1,7 +1,7 @@
-import { gameCreate, launch, physicsStep, powerMarkers, seedBodies, RULE, COLORS, POWERS } from './engine.js?v=fd7b971c19b5ec40a2b4b8a9389bd7af23085f90a22911cce3bd04ed687a7072';
-import { GAME_CATALOGUE as cat } from './run.js?v=21036f0f948a62dc2381a98ea661675ef083ad2bd9180bd67176c75cfa9c8261';
-import { POWER_TREES } from './power-tree.js?v=0bcdae42795671509b8c4f64ae024b263c7281e465d043ab76bd131d11397edc';
-import { PowerVisual } from './power-visual.js?v=90cf6b90c684660f52931d362ac870d1954b0cc2bcecffcce3a2c4a9734d213e';
+import { gameCreate, launch, physicsStep, powerMarkers, seedBodies, RULE, COLORS, POWERS } from './engine.js?v=12aca0299e489e19cee12712b048995045f1a99ab7437f65848b511da9a147d5';
+import { GAME_CATALOGUE as cat } from './run.js?v=c0ea84dd906f0ed13559a0d34416d93c5e872cb0e3ad1100204904c9bb62fa30';
+import { POWER_TREES } from './power-tree.js?v=6b24879d9e0b7315350a7a978aba1648d5e1ef852c112b6beffde4eceded6179';
+import { PowerVisual } from './power-visual.js?v=03c4e68799f969204202cb91e3e12f93dfc289e00f622afe965b51aa346e3466';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 export const BUILD_EXAMPLES=Object.freeze([

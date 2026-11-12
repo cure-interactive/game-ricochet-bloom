@@ -14,7 +14,7 @@ export function treeLayout(powers,nodes) {
  function branch(id,side=-1){
   if(seen.has(id))throw new Error('Research is not a tree');seen.add(id);
   const node=nodes[id],next=children[id].find(k=>nodes[k].power===node.power),forks=children[id].filter(k=>k!==next);
-  const placed=[{id,power:node.power,kind:node.kind,family:powers[node.power].family,x:0,y:0}],levels=[],corridors=[];
+  const placed=[{id,power:node.power,kind:node.kind,x:0,y:0}],levels=[],corridors=[];
   const merge=(target,source,offset)=>source.forEach((c,i)=>{if(!c)return;const lo=c[0]+offset,hi=c[1]+offset;target[i]=target[i]?[Math.min(target[i][0],lo),Math.max(target[i][1],hi)]:[lo,hi];});
   function add(child,direction){
    const sub=branch(child,direction||side);let offset=0;
@@ -34,7 +34,7 @@ export function treeLayout(powers,nodes) {
  const placed=branch(roots[0].id).placed;
  if(placed.length!==Object.keys(nodes).length)throw new Error('Disconnected research');
  const left=Math.min(...placed.map(n=>n.x))-100,right=Math.max(...placed.map(n=>n.x))+100;
- const result={width:right-left,height:Math.max(...placed.map(n=>n.y))+240,nodes:{},families:{},edges:[],bridges:[],root:roots[0].id};
+ const result={width:right-left,height:Math.max(...placed.map(n=>n.y))+240,nodes:{},powers:{},edges:[],root:roots[0].id};
  for(const n of placed){n.x-=left;n.y+=90;result.nodes[n.id]=n;}
  for(const n of Object.values(nodes))for(const from of n.requires){
   const a=result.nodes[from],b=result.nodes[n.id],start=a.y+82,end=b.y-38,mid=(start+end)/2,side=Math.sign(b.x-a.x),radius=Math.min(12,Math.abs(b.x-a.x)/2,(end-start)/2);
@@ -42,13 +42,14 @@ export function treeLayout(powers,nodes) {
   const path=side?`M${a.x} ${start} V${mid-radius} Q${a.x} ${mid} ${a.x+side*radius} ${mid} H${b.x-side*radius} Q${b.x} ${mid} ${b.x} ${mid+radius} V${end}`:`M${a.x} ${start} V${end}`;
   result.edges.push({from,to:n.id,points,path});
  }
- for(const family of new Set(Object.values(powers).map(p=>p.family))){
-  const members=Object.keys(powers).filter(p=>powers[p].family===family),points=placed.filter(n=>n.family===family),x=Math.min(...points.map(n=>n.x))-70,y=Math.min(...points.map(n=>n.y))-60;
-  result.families[family]={name:family,powers:members,starter:members[0]+'.base',x,y,width:Math.max(...points.map(n=>n.x))-x+70,height:Math.max(...points.map(n=>n.y))-y+100};
+ for(const power of Object.keys(powers)){
+  const points=placed.filter(n=>n.power===power),x=Math.min(...points.map(n=>n.x))-70,y=Math.min(...points.map(n=>n.y))-60;
+  result.powers[power]={name:powers[power].name,starter:power+'.base',x,y,width:Math.max(...points.map(n=>n.x))-x+70,height:Math.max(...points.map(n=>n.y))-y+100};
  }
+
  return result;
 }
-export function researchRoute(nodes,powers,bridges,id) {
+export function researchRoute(nodes,id) {
  const route=new Set();
  function visit(key){if(route.has(key)||!nodes[key])return;route.add(key);for(const parent of nodes[key].requires)visit(parent);}
  visit(id);return route;
