@@ -1,0 +1,67 @@
+/* Shared material for surfaces above the pool, map or another screen.
+   Solid defaults keep contrast when backdrop filtering is unavailable. */
+:root {
+  --glass-panel: #101e2d;
+  --glass-control: #162c36;
+  --glass-accent: #b4f4db;
+  --glass-warning: #612c25;
+  --glass-filter: none;
+  --glass-edge: #badfd238;
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass-panel: rgb(12 25 39 / 82%);
+    --glass-control: rgb(22 44 54 / 65%);
+    --glass-accent: rgb(180 244 219 / 86%);
+    --glass-warning: rgb(97 44 37 / 90%);
+    --glass-filter: blur(18px) saturate(135%);
+  }
+}
+
+/* Keep full-screen destinations full-screen; only their material changes. */
+:root body :is(dialog[open], #tree-dialog[open], #campaign-dialog[open], #skin-dialog[open], #reward-dialog[open], #wiki-dialog[open]) {
+  background: var(--glass-panel);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+}
+:root body dialog::backdrop {
+  background: rgb(3 10 20 / 38%);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+:root body[data-menu-mode=home] dialog::backdrop { background: #0b1423; }
+
+/* One blur per panel: nested content uses a tint, not another full blur pass. */
+:root body :is(.dialog-heading, .campaign-heading, .campaign-footer, .tree-heading, .tree-legend, .skin-heading, .wiki-heading, .reward-heading, .reward-footer) {
+  background: rgb(21 40 54 / 48%);
+}
+:root body :is(.settings-section, .campaign-preview, .level-collection, .track-reward, .reward-card, .skin-choice) {
+  background-color: rgb(20 40 55 / 52%);
+}
+:root body .skin-choice.is-equipped { background-color: rgb(30 78 65 / 70%); }
+:root body .skin-choice:disabled { background-color: rgb(15 29 44 / 70%); }
+
+:root body :is(.overlay, #welcome, #tree-dialog .skill-tooltip, .tree-camera-controls, .tree-map-hint, .save-warning) {
+  background: var(--glass-panel);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+}
+:root body :is(#tree-dialog .skill-tooltip, .tree-camera-controls) {
+  border-color: var(--glass-edge);
+  box-shadow: inset 0 1px 0 #e5fff01a, 0 12px 36px #0005;
+}
+:root body .save-warning { background: var(--glass-warning); }
+
+/* These controls sit directly over animated jellies or the game field. */
+:root body :is(#main-menu .home-primary button, #main-menu .home-secondary button, .hud .pluck button) {
+  background: var(--glass-control);
+  border: 1px solid var(--glass-edge);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: inset 0 1px 0 #e5fff012;
+}
+:root body #main-menu .home-secondary button { border-radius: 12px; }
+:root body #main-menu .home-primary button.primary { background: var(--glass-accent); }
+@media (hover: hover) {
+  :root body #main-menu :is(.home-primary, .home-secondary) button:hover { border-color: #b4f4db80; }
+}
