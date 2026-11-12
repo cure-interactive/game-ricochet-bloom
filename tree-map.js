@@ -54,22 +54,37 @@ export function mapCameraMount(surface,world,change) {
   const center=ps=>({x:ps.reduce((s,p)=>s+p.x,0)/ps.length,y:ps.reduce((s,p)=>s+p.y,0)/ps.length});
   function apply(next){camera=cameraClamp(next,size(),world);change(camera);}
   function baseline(){const ps=[...points.values()];start=ps.length?{camera:{...camera},center:center(ps),distance:ps.length>1?Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y):0}:null;}
-  surface.addEventListener('pointerdown',e=>{if(e.button!==0)return;if(!points.size)suppress=false;points.set(e.pointerId,local(e));baseline();if(points.size>1)suppress=true;});
+  function cancel(){const ids=[...points.keys()];points.clear();start=null;surface.classList.remove('is-panning');for(const id of ids)if(surface.hasPointerCapture(id))surface.releasePointerCapture(id);}
+  const end=e=>{if(!points.delete(e.pointerId))return;baseline();if(!points.size)surface.classList.remove('is-panning');};
+  surface.addEventListener('pointerdown',e=>{if(e.button!==0)return;
+    // A new primary touch starts a fresh contact sequence, even if an earlier
+    // release was swallowed by browser UI or an interrupted capture.
+    if(e.pointerType==='touch'&&e.isPrimary)cancel();
+    if(!points.size)suppress=false;points.set(e.pointerId,local(e));baseline();if(points.size>1)suppress=true;
+  });
   surface.addEventListener('pointermove',e=>{
+    if(e.buttons===0){end(e);return;}
     if(!points.has(e.pointerId)||!start)return;points.set(e.pointerId,local(e));const ps=[...points.values()],mid=center(ps),dx=mid.x-start.center.x,dy=mid.y-start.center.y;
     if(ps.length===1&&!suppress&&Math.hypot(dx,dy)<6)return;
     suppress=true;e.preventDefault();surface.classList.add('is-panning');if(!surface.hasPointerCapture(e.pointerId))surface.setPointerCapture(e.pointerId);
     let next={...start.camera};if(ps.length>1&&start.distance>0)next=cameraZoom(next,next.scale*Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y)/start.distance,start.center);
     apply({...next,x:next.x+dx,y:next.y+dy});
   });
-  const end=e=>{points.delete(e.pointerId);baseline();if(!points.size)surface.classList.remove('is-panning');};
   for(const event of ['pointerup','pointercancel'])surface.addEventListener(event,end);
   // Touch capture moves from the hit child to this surface when dragging starts.
   // The child's bubbling loss is a handoff, not the end of the active gesture.
-  surface.addEventListener('lostpointercapture',e=>{if(e.target===surface)end(e);});
+  surface.addEventListener('lostpointercapture',e=>{if(e.target===surface||!surface.hasPointerCapture(e.pointerId))end(e);});
+  const doc=surface.ownerDocument,win=doc.defaultView;
+  // Observe releases even before the drag threshold transfers capture to the
+  // surface. Ignore unrelated releases so they cannot rebase an active pinch.
+  for(const event of ['pointerup','pointercancel'])win.addEventListener(event,end,true);
+  for(const event of ['blur','pagehide'])win.addEventListener(event,cancel);
+  doc.addEventListener('visibilitychange',()=>{if(doc.hidden)cancel();});
+  // Safari's touch list also lets us recover a missed pointer-end notification.
+  for(const event of ['touchend','touchcancel'])win.addEventListener(event,e=>{if(e.touches.length===0)cancel();},{capture:true,passive:true});
   surface.addEventListener('click',e=>{if(suppress&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();}},true);
   surface.addEventListener('wheel',e=>{e.preventDefault();suppress=true;if(e.shiftKey)apply({...camera,x:camera.x-e.deltaY,y:camera.y-e.deltaX});else apply(cameraZoom(camera,camera.scale*Math.exp(-Math.max(-150,Math.min(150,e.deltaY))*.003),local(e)));},{passive:false});
   surface.addEventListener('keydown',e=>{if(e.target!==surface)return;const move={ArrowLeft:[80,0],ArrowRight:[-80,0],ArrowUp:[0,80],ArrowDown:[0,-80]}[e.key];if(move){e.preventDefault();apply({...camera,x:camera.x+move[0],y:camera.y+move[1]});}});
   const observer=new ResizeObserver(()=>{if(surface.clientWidth&&surface.clientHeight)apply(camera);});observer.observe(surface);
-  return {get value(){return {...camera};},zoom(factor){const v=size();apply(cameraZoom(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){const v=size();apply({x:v.width/2-point.x*scale,y:Math.min(140,v.height*vertical)-point.y*scale,scale});},fit(bounds={x:0,y:0,width:world.width,height:world.height}){apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel(){points.clear();start=null;surface.classList.remove('is-panning');}};
+  return {get value(){return {...camera};},zoom(factor){const v=size();apply(cameraZoom(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){const v=size();apply({x:v.width/2-point.x*scale,y:Math.min(140,v.height*vertical)-point.y*scale,scale});},fit(bounds={x:0,y:0,width:world.width,height:world.height}){apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel};
 }
