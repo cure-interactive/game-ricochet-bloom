@@ -1,6 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="#f3fff5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="#e9ffed">
   <title>Comet</title>
-  <path d="M25 25 7 7M31 19 18 6M19 31 6 18"/>
-  <circle cx="32" cy="32" r="10"/>
-  <path d="M27.5 30.5a5 5 0 0 1 4-3.5" stroke-width="2"/>
+  <path fill-rule="evenodd" d="M43 32a11 11 0 1 1 -22 0a11 11 0 1 1 22 0Z M31 24a3 3 0 1 0 0 6a3 3 0 1 0 0-6Z"/><path d="M24 24 7 7M32 17 21 6M17 32 6 21" fill="none" stroke="#e9ffed" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

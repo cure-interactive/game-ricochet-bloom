@@ -1,1 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="#f3fff5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><title>Magnet</title><path d="M12 27V16a12 12 0 0 1 24 0v11h-8V16a4 4 0 0 0-8 0v11z"/><path d="M12 21h8m8 0h8M8 36l8-4m24 4-8-4M24 43v-8m-4 4 4-4 4 4"/><circle cx="6" cy="37" r="2"/><circle cx="42" cy="37" r="2"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="#e9ffed">
+  <title>Magnet</title>
+  <path d="M7 7h12v20a5 5 0 0 0 10 0V7h12v20a17 17 0 0 1-34 0ZM7 3h12v2H7ZM29 3h12v2H29Z"/>
+</svg>

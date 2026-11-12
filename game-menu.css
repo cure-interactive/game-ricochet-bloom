@@ -69,6 +69,41 @@ body:not([data-screen=play]):not([data-screen=pause])>header,body:not([data-scre
 .settings-display p,.settings-display li{font-size:13px;line-height:1.6;overflow-wrap:anywhere}.settings-display p{margin:10px 0}.settings-display [role=status]:empty{display:none}
 .settings-display details{border-top:1px solid #47617266;margin-top:14px;padding-top:4px}.settings-display summary{display:flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;font-size:14px}.settings-display summary>span:not(.ui-icon){flex:1;min-width:0}.settings-display ol{padding-left:20px;margin:10px 0 0}.settings-display li{margin:8px 0}
 
+/* Track artwork is the campaign's primary choice; pool details follow below. */
+#campaign-dialog .level-intro{margin:8px 0 16px;align-items:baseline}
+#campaign-dialog .level-intro strong{font-size:22px;font-weight:600;color:#e5f4ef}
+#campaign-dialog .level-intro p{font-size:12px}
+#campaign-dialog .track-strip{gap:12px;margin-bottom:26px;padding:2px}
+#campaign-dialog .track-strip button{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:0;min-height:200px;border-radius:16px;text-align:left;border-width:2px;scroll-snap-align:start}
+#campaign-dialog .track-strip button>.restoration-art{width:100%;height:120px;min-height:120px;max-height:none;border-radius:0;aspect-ratio:auto;padding:0}
+#campaign-dialog .track-strip button .restoration-art img{display:block;max-height:none;object-fit:cover}
+#campaign-dialog .track-strip button>span:not(.ui-icon):not(.restoration-art){font-size:17px;font-weight:600;line-height:1.25;padding:14px;min-height:76px;text-align:left}
+#campaign-dialog .track-strip small{display:block;font-size:11px;font-weight:400;line-height:1.45;margin-top:6px;white-space:normal;overflow:visible}
+#campaign-dialog .track-strip button>.ui-icon,#campaign-dialog .track-strip button.is-locked>.ui-icon{display:block;position:absolute;left:auto;right:12px;top:12px;transform:none;width:22px;height:22px;padding:0;border-radius:0;background:currentColor;filter:drop-shadow(0 1px 3px #000);z-index:3}
+#campaign-dialog .track-strip button[aria-pressed=true]{border-color:#b4f4db;box-shadow:0 0 0 2px #b4f4db20;background:#173a35}
+#campaign-dialog .track-strip .is-locked>.restoration-art:after{display:none}
+#campaign-dialog .track-strip .is-locked .restoration-art img{filter:grayscale(1);opacity:.35}
+#campaign-dialog .pool-selection-heading{padding-top:8px;border-top:1px solid #3a526344}
+@media(min-width:761px){
+ #campaign-dialog .campaign-preview>.restoration-feature{display:flex;align-items:center;gap:12px;border:0;background:none;border-bottom:1px solid #3a526344;border-radius:0;padding-bottom:12px}
+ #campaign-dialog .campaign-preview .restoration-feature>.restoration-art{flex:none;width:64px;height:64px;border-radius:10px}
+ #campaign-dialog .campaign-preview .restoration-feature>span:not(.restoration-art){padding:0;flex:1}
+ #campaign-dialog .campaign-preview .restoration-feature>button{position:static;flex:none}
+}
+@media(max-width:760px){
+ #campaign-dialog .track-strip{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scroll-padding-inline:2px;scrollbar-width:thin;scrollbar-color:#6da89b #101f30;padding-bottom:12px;margin-bottom:18px}
+ #campaign-dialog .track-strip button{min-height:200px}
+ #campaign-dialog .track-strip button>.restoration-art{height:112px;min-height:112px}
+ #campaign-dialog .track-strip button>span:not(.ui-icon):not(.restoration-art){font-size:20px;min-height:80px}
+ #campaign-dialog .track-strip small{font-size:12px}
+}
+@media(max-height:450px) and (orientation:landscape){
+ #campaign-dialog .level-intro{margin-block:4px 10px}
+ #campaign-dialog .track-strip{grid-auto-columns:44%;margin-bottom:12px}
+ #campaign-dialog .track-strip button{min-height:160px}
+ #campaign-dialog .track-strip button>.restoration-art{height:80px;min-height:80px}
+}
+
 /* Keep text and action groups separated when the viewport becomes narrow. */
 @media(max-width:420px){.level-intro{flex-direction:column;align-items:flex-start;gap:6px}#campaign-dialog .campaign-footer{flex-wrap:wrap;gap:10px;padding-inline:14px}#campaign-dialog .campaign-footer>button{flex:1 1 140px;min-width:0}}
 

@@ -59,3 +59,9 @@ The Epic rarity icon is original artwork by Leviscus Tempris, licensed under the
 - [flask](flask.md) — collection/science/flask.svg
 - [magnet-northeast](magnet-northeast.md) — collection/science/magnet-northeast.svg
 - [dropper](dropper.md) — collection/tool/dropper.svg
+
+## Original game navigation
+
+- [campaign](campaign.md) — A winding path of milestones ending at a flag.
+- [skill-tree](skill-tree.md) — One root branches into three rounded research nodes.
+- [player-skin](player-skin.md) — A jelly with an appearance sparkle.

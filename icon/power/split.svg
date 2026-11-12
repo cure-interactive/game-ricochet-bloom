@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="#f3fff5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="#e9ffed">
   <title>Split</title>
-  <circle cx="10" cy="12" r="5"/><circle cx="24" cy="8" r="5"/><circle cx="38" cy="12" r="5"/><path d="M24 42V22m0 12L10 22m14 12 14-12"/>
+  <path d="M24 42V27M24 31 10 17M24 31 38 17" fill="none" stroke="#e9ffed" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="12" r="6"/><circle cx="24" cy="8" r="6"/><circle cx="38" cy="12" r="6"/>
 </svg>

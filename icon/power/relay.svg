@@ -1,1 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" color="#ffe6a3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="31" r="6"/><circle cx="32" cy="14" r="6"/><circle cx="51" cy="31" r="6"/><path d="m18 26 9-8m10 0 9 8M18 40l14 10 14-10m-18 6 4 4-4 4"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="#e9ffed">
+  <title>Relay</title>
+  <path d="M10 37 24 24 38 11" fill="none" stroke="#e9ffed" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="37" r="6"/><circle cx="24" cy="24" r="6"/><circle cx="38" cy="11" r="6"/><path d="M7 10h13v13l-5-5-8 8-4-4 8-8Z"/>
+</svg>

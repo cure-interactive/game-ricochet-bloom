@@ -1,7 +1,7 @@
 import { GAME_CATALOGUE as cat, discoveryUse, progressionBudget, progressionLoadout, POOL_NAMES } from './run.js?v=501d720ce1abcc910dfc629974bc0b65ee7bd248c9664a44445ff205fee06a2b';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { assetURL } from './asset.js?v=2b159e067962ab466dfde3d9f305e802c92bc5b4183b6ffe9932dbb398b20746';
+import { assetURL } from './asset.js?v=142d7a2d7e9c9c8621efc77af5ebd0588ac88d080983132185a875ee6334cc88';
 
 export function rewardMount(controller) {
   const dialog=document.createElement('dialog');dialog.id='reward-dialog';dialog.setAttribute('aria-label','Pool reward');document.body.append(dialog);

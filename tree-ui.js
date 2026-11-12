@@ -3,7 +3,7 @@ import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f
 import { FAMILY_UNLOCK } from './catalogue.js?v=5b190da66f356e0db04d39abcc70c604726ff00146d498a6109a4be15429f888';
 import { profilePurchase, profileSummary } from './profile.js?v=64181c030af514b97953fae1219e4142f64e30029d87c33eeec1e6d7fff631f1';
 import { researchTarget, progressionBudget, progressionLoadout, GAME_CATALOGUE as cat, POOL_NAMES, GOALS } from './run.js?v=501d720ce1abcc910dfc629974bc0b65ee7bd248c9664a44445ff205fee06a2b';
-import { assetURL } from './asset.js?v=2b159e067962ab466dfde3d9f305e802c92bc5b4183b6ffe9932dbb398b20746';
+import { assetURL } from './asset.js?v=142d7a2d7e9c9c8621efc77af5ebd0588ac88d080983132185a875ee6334cc88';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const families = [...new Set(Object.values(POWER_TREES).map(p => p.family))];
