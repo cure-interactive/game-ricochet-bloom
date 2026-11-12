@@ -74,7 +74,8 @@
 /* Power silhouettes and real prerequisite paths carry the map hierarchy. */
 
 
-#tree-dialog .skill-node{width:116px;min-height:94px;gap:3px;transform:translate(-50%,-28px)}
+/* Reserve label clearance for the outer ring and the low rarity badge. */
+#tree-dialog .skill-node{width:116px;min-height:94px;gap:14px;transform:translate(-50%,-28px)}
 #tree-dialog .skill-node .skill-orb{width:48px;height:48px}#tree-dialog .skill-node.is-base .skill-orb{width:64px;height:64px;margin-top:-8px}
 #tree-dialog .skill-node>strong{font-size:12px;max-width:116px}#tree-dialog .skill-node.is-base>strong{font-size:15px}#tree-dialog .skill-node>small{font-size:10px}
 .skill-orb>img{width:25px;height:25px}.skill-node.is-base .skill-orb>img{width:34px;height:34px}
