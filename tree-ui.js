@@ -1,4 +1,4 @@
-import { purchaseComparison, tooltipPosition } from './skill-comparison.js?v=1087ef71b8959f1c141732e0c48500d367adbeb5945b1683d7578babd98cd030';
+import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=e794bb8708e956e6d553ef64c42dee9006192e328a2db4ef52dedf21bac97535';
 import { RARITIES } from './skill-trait.js?v=bef2df62b29364983801345d0a0318164dfeef5666360b3ce1e2a200ac7acdc0';
 import { skillIconHTML, rarityIconHTML } from './skill-icon.js?v=d52c5d94038e35ce5d7e7c1777c85eb886779d384f3e5d743fc8935e0649f609';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute } from './tree-map.js?v=7b09d129786c3153ea3eb88b8626e73869d7c8a942c9907d466399a6f24d8a89';
@@ -10,6 +10,14 @@ import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e
 const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const button=(action,label,icon='add',extra='')=>`<button type="button" aria-label="${escape(label)}" data-tree-action="${action}" ${extra}>${iconHTML(icon)}<span>${label}</span></button>`;
 const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn more Points by clearing pools.','mastery':'Clear 3 pools with this power activated.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
+
+function statVisual(row,value,previous=false){
+ const fill=row.kind==='count'?Array.from({length:row.max},(_,i)=>`<i class="${i<value?'filled':''}"></i>`).join(''):`<i style="width:${value/row.max*100}%"></i>`;
+ return `<span class="skill-stat-${row.kind} ${previous?'is-before':'is-after'}" aria-hidden="true">${fill}</span>`;
+}
+export function skillStatsHTML(stats){
+ return `<section class="skill-stats" aria-label="${escape(stats.heading)}"><h4>${escape(stats.heading)}</h4>${stats.compare?`<p class="skill-stat-key"><span>${escape(stats.beforeLabel)}</span><span aria-hidden="true">→</span><span>${escape(stats.afterLabel)}</span></p>`:''}<dl>${stats.rows.map(row=>`<div class="skill-stat ${row.changed?'is-changed':''}"><dt>${escape(row.label)}</dt><dd>${row.changed?`<span class="skill-stat-before">${escape(row.before)}</span><span aria-hidden="true"> → </span><span class="sr-only"> to </span>`:''}<strong>${escape(row.after)}</strong></dd>${row.kind!=='text'?`<div class="skill-stat-visual">${row.changed?statVisual(row,row.previous,true):''}${statVisual(row,row.value)}</div>`:''}</div>`).join('')}</dl>${stats.rows.some(r=>r.kind==='bar')?'<p class="skill-stat-note">Bar scale: this power’s upgrade range.</p>':''}</section>`;
+}
 
 // Explain the same gate used by purchases, beside the affected power.
 export function powerUnlock(state,power){
@@ -58,7 +66,7 @@ export function skillInfo(state,id){
  const n=cat.nodes[id];if(!n)return null;
  const v=upgradeState(state,id),blocker=researchBlocker(state,id);
  return {name:n.name,description:n.description,status:v.owned||v.borrowed?v.label:`${n.seedCost} Points`,blocker,
-   comparison:purchaseComparison(state,id),canEquip:state.powerMode==='unlocked'&&(v.owned||v.borrowed)&&n.conflicts.length>0&&!v.equipped&&!blocker&&state.phase!=='run'};
+   stats:skillStats(state,id),comparison:purchaseComparison(state,id),canEquip:state.powerMode==='unlocked'&&(v.owned||v.borrowed)&&n.conflicts.length>0&&!v.equipped&&!blocker&&state.phase!=='run'};
 }
 export function treeMount(controller){
  const dialog=document.getElementById('tree-dialog');
@@ -106,7 +114,7 @@ export function treeMount(controller){
    hideTooltip();selected=id;selectionRender();
    const source=mapElement.querySelector(`[data-node="${id}"]`),bounds=stage.getBoundingClientRect();
    tip.style.maxHeight=Math.max(44,bounds.height-16)+'px';tip.style.width=Math.min(330,bounds.width-16)+'px';
-   tip.innerHTML=`<div class="skill-tooltip-heading"><h3 id="skill-tooltip-title">${escape(info.name)}</h3>${button('dismiss','Close','close')}</div><p>${escape(info.description)}</p><p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>${comparison?`<table class="skill-comparison"><thead><tr><th scope="col">Variable</th><th scope="col">Current</th><th scope="col">After</th></tr></thead><tbody>${comparison.rows.map(row=>`<tr><th scope="row">${escape(row.label)}</th><td>${escape(row.before)}</td><td>${escape(row.after)}</td></tr>`).join('')}</tbody></table>${button('buy',`Buy · ${comparison.cost} Points`,'coin','class="primary"')}`:info.canEquip?button('equip','Use This Style','check','class="primary"'):''}`;
+   tip.innerHTML=`<div class="skill-tooltip-heading"><h3 id="skill-tooltip-title">${escape(info.name)}</h3>${button('dismiss','Close','close')}</div><p>${escape(info.description)}</p>${info.stats?skillStatsHTML(info.stats):''}<p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>${comparison?button('buy',`Buy · ${comparison.cost} Points`,'coin','class="primary"'):info.canEquip?button('equip','Use This Style','check','class="primary"'):''}`;
    tip.hidden=false;tipId=id;source.setAttribute('aria-expanded','true');
    const size=tip.getBoundingClientRect(),position=tooltipPosition(source.getBoundingClientRect(),bounds,size.width,size.height),origin=dialog.getBoundingClientRect();
    tip.style.left=position.left-origin.left+'px';tip.style.top=position.top-origin.top+'px';

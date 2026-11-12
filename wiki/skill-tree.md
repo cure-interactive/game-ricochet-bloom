@@ -8,7 +8,9 @@ Each power has its own linear upgrade chain beneath its base. The number and eff
 
 ## Research and Activation
 
-Research costs Points earned through Campaign. **Purchases are permanent and cannot be refunded.** Every power and upgrade opens a compact tooltip. Hover on desktop or tap on mobile to see its description, cost or ownership status, and any unmet requirements. Research you can purchase also shows current versus purchased values and a Buy button. Upgrade comparisons show only changed variables; a new power shows its starting values.
+Research costs Points earned through Campaign. **Purchases are permanent and cannot be refunded.** Every power and upgrade opens a compact tooltip. Hover on desktop or tap on mobile to see its description, cost or ownership status, and any unmet requirements. Every tooltip includes stats. Bars show quantities such as reach, strength and duration; pips show counts such as shots or targets. Behavior changes use words instead. Exact values stay visible, and each bar uses a consistent scale across that power’s upgrades. Longer bars mean more of that quantity, not necessarily a better choice.
+
+Upgrade previews show before and after values together, including tradeoffs. **Prerequisites → With Upgrade** means the preview includes research you still need; it does not describe your current build. Locked powers show their starting values under **On Unlock**. Active research shows **Current Power**, while inactive owned styles show a **Style Preview**. Only research you can currently purchase includes a Buy button.
 
 Unlocking a power adds it to the random powers available in play, including Free Play. Compatible researched upgrades activate automatically. When two upgrades describe conflicting styles, you can switch the active style without losing either purchase.
 
