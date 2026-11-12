@@ -18,7 +18,7 @@ Your pool, song and campaign progress save in this browser. They do not automati
 
 Use the backup export and import controls in Settings → Advanced & About → Development & Backups to keep or transfer your progress. Keep a backup before replacing browser data.
 
-Development controls use a separate test profile. They can reset test progress, maximize campaign access or maximize the skill tree without awarding normal campaign receipts. Return to the normal profile to continue your real progress.
+Development controls use a separate test profile. They can reset test progress, maximize campaign access or maximize the skill tree without awarding normal campaign receipts. Development mode and the Points-to-add amount are remembered in this browser, including after reopening the game. Test unlocks, Points and runs also remain saved; reloading does not repeat grants or maximize actions. Switch Development mode off to return to your normal progress. Clearing browser data clears these preferences, and other browsers or devices keep their own settings.
 
 [Back to Wiki](wiki.md).
 
