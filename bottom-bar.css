@@ -55,6 +55,6 @@ body[data-development=true]{--profile-top-space:calc(20px + env(safe-area-inset-
 #development-profile-bar[hidden]{display:none}
 #development-profile-bar::backdrop{background:transparent;pointer-events:none}
 body[data-development=true] #main-menu{padding-top:var(--profile-top-space)}
-:root body[data-development=true] dialog[open]{top:var(--profile-top-space);bottom:0;max-height:calc(100dvh - var(--profile-top-space) - 16px)}
+:root body[data-development=true] dialog[open]{top:var(--profile-top-space);bottom:0;max-height:calc(var(--app-height,100dvh) - var(--profile-top-space) - 16px)}
 :root body[data-development=true][data-menu-mode=home] :is(dialog,#tree-dialog)[open],
-:root body[data-development=true] :is(#tree-dialog,#campaign-dialog,#skin-dialog,#reward-dialog)[open]{inset:var(--profile-top-space) 0 0;height:calc(100dvh - var(--profile-top-space));max-height:calc(100dvh - var(--profile-top-space));padding-top:0}
+:root body[data-development=true] :is(#tree-dialog,#campaign-dialog,#skin-dialog,#reward-dialog)[open]{inset:var(--profile-top-space) 0 0;height:calc(var(--app-height,100dvh) - var(--profile-top-space));max-height:calc(var(--app-height,100dvh) - var(--profile-top-space));padding-top:0}

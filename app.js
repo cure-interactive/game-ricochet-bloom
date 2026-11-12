@@ -1,3 +1,4 @@
+import { viewportMount } from './viewport.js?v=91bdd921ed550b7501c923fff9a5b64cb99a50cc24eee3375556a1c1c0f4b953';
 import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
 import { wikiMount } from './wiki.js?v=5199effe1439bf86ff028bfc62503a8ff57bd69d3e435c090a1316437688911a';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
@@ -19,6 +20,7 @@ import { PoolSound } from './sound.js?v=fe74b0036c36f321684fdc1c7a6572b1420f0090
 import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
 import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
 import { PowerVisual } from './power-visual.js?v=edb5b2cca4cd4e7b08bd21659ff403bb1bb9bd5b07b6ff33941b51b7f787b3dd';
+viewportMount();
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
 let store = poolStoreRead(null), storageIsAvailable = true;
 try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localStorage.getItem(LEGACY_STORAGE) ?? 'null')); } catch { storageIsAvailable = false; }
