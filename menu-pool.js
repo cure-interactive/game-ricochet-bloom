@@ -4,7 +4,7 @@ import { gameCreate, launch, physicsStep, RULE } from './engine.js?v=ee2ad99d5c6
 export function menuPoolCreate(){
   const game=gameCreate('MENU BLOOM','free');
   for(const body of game.bodies.slice(1)){body.vx*=5;body.vy*=5;}
-  return {game,wait:1.4,elapsed:0,pressure:[]};
+  return {game,wait:1.4,elapsed:0,pressure:[],contacts:new Map()};
 }
 export function menuPoolView(width,height){
   const portrait=height>width;
@@ -31,6 +31,10 @@ export function menuPoolTap(pool,point){
   pool.pressure.push({...point,age:0});if(pool.pressure.length>8)pool.pressure.shift();
   return hits;
 }
+export function menuPoolHold(pool,id,point){
+  if(Number.isFinite(point.x)&&Number.isFinite(point.y))pool.contacts.set(id,{x:point.x,y:point.y});
+}
+export function menuPoolRelease(pool,id){pool.contacts.delete(id);}
 export function menuPoolStep(pool,elapsed,autoplay=true){
   pool.elapsed+=Math.min(.05,Math.max(0,elapsed));
   const events=[];
@@ -44,6 +48,12 @@ export function menuPoolStep(pool,elapsed,autoplay=true){
         launch(pool.game,Math.atan2(target.y-seed.y,target.x-seed.x),.65);
         // Quiet basic ricochets keep the menu readable; no power HUD is needed.
         pool.game.power.markers=[];pool.wait=2.4;
+      }
+    }
+    for(const point of pool.contacts.values()){
+      for(const body of pool.game.bodies){
+        const falloff=Math.max(0,1-Math.hypot(body.x-point.x,body.y-point.y)/320);
+        if(falloff)repel(body,point,1400*falloff*falloff*RULE.step);
       }
     }
     for(const point of pool.pressure){

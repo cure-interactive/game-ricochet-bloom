@@ -117,12 +117,13 @@ body[data-menu-mode=home] dialog.standard-dialog>.dialog-body{flex:1 1 auto;widt
 body[data-menu-mode=home] #development-dialog{padding:max(20px,env(safe-area-inset-top)) max(20px,calc((100vw - 760px)/2)) max(24px,env(safe-area-inset-bottom))}
 body[data-menu-mode=home] #tree-sheet{height:100dvh;max-height:100dvh;border:0;border-radius:0}
 @media(max-height:450px){body[data-menu-mode=home] dialog.standard-dialog>.dialog-heading{padding-block:8px}body[data-menu-mode=home] dialog.standard-dialog>.dialog-body{padding-block:16px}}
-#main-menu{isolation:isolate}
-.home-pool{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-2}
-#main-menu:after{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;background:linear-gradient(90deg,#080e1c08 15%,#080e1c66 48%,#080e1ce8 76%)}
+#main-menu{isolation:isolate;z-index:5;background:transparent}
+#menu-background{position:fixed;inset:0;z-index:4;pointer-events:none;overflow:hidden;background:#080e1c}
+.home-pool{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#menu-background:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#080e1c08 15%,#080e1c66 48%,#080e1ce8 76%)}
 .home-content{grid-column:2;position:relative;text-shadow:0 2px 12px #080e1c}
 .home-primary button{text-shadow:none}
-@media(max-width:600px){#main-menu:after{background:linear-gradient(90deg,#080e1c66,#080e1ca6 40%,#080e1c66)}.home-pool{opacity:.75}.home-content h1{text-shadow:0 3px 24px #080e1c}}
+@media(max-width:600px){#menu-background:after{background:linear-gradient(90deg,#080e1c66,#080e1ca6 40%,#080e1c66)}.home-pool{opacity:.75}.home-content h1{text-shadow:0 3px 24px #080e1c}}
 
 /* Campaign selects a track; each track then owns its information and pools. */
 #campaign-dialog[data-view="tracks"] .track-strip{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:row;grid-auto-columns:auto;overflow:visible;scroll-snap-type:none}

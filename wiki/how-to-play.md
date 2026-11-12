@@ -32,6 +32,8 @@ Open the music panel during play to change the instrument palette. Use Settings 
 - Keyboard: left/right arrows aim, up/down arrows change shot strength, Space plucks, and P pauses.
 - Optional buttons: Settings → Accessibility → Show on-screen controls.
 
+The main menu and its menus share a living jelly background. Press an empty area for a pulse; hold or move one or more fingers to keep pushing nearby jellies away. Menu controls and scrolling still work normally. This background does not affect your run or progress.
+
 [Explore the Campaign](campaign.md) or [learn about research](skill-tree.md).
 
 ## Attribution

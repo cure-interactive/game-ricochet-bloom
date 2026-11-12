@@ -1,21 +1,23 @@
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { menuBackgroundMount } from './menu-background.js?v=dbb6e4e91cae13e945549e8f947a3e1328014eafe479390f70d6da6a26158f94';
+import { menuBackgroundMount } from './menu-background.js?v=ddd3dfc4ec8566f1286cd5e7e74ed358d0f592566e980261d0c7ec26dca36755';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
   const home=document.createElement('section');home.id='main-menu';home.setAttribute('aria-label','Main Menu');
   const button=(id,label,icon,kind='')=>`<button type="button" id="${id}" class="${kind}">${iconHTML(icon)}<span>${label}</span></button>`;
-  home.innerHTML=`<canvas class="home-pool" aria-hidden="true"></canvas><div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><div class="home-actions"><nav class="home-primary" aria-label="Main game actions"><button type="button" id="home-continue" class="primary"><img class="continue-art" width="48" height="48" alt=""><span class="continue-copy"><span>Continue</span><small class="continue-detail"></small></span></button>${button('home-levels','Campaign','campaign','primary')}${button('home-free','Free Play','play')}${button('home-tree','Skill Tree','skill-tree')}${button('home-skins','Player Skins','player-skin')}</nav><nav class="home-secondary" aria-label="More game options">${button('home-wiki','Wiki','book')}${button('home-help','How to Play','book')}${button('home-settings','Settings','gear')}</nav></div></div>`;
-  document.body.append(home);
-  const background=menuBackgroundMount(home.querySelector('.home-pool'),()=>host.gentle?.()===true);
+  home.innerHTML=`<div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><div class="home-actions"><nav class="home-primary" aria-label="Main game actions"><button type="button" id="home-continue" class="primary"><img class="continue-art" width="48" height="48" alt=""><span class="continue-copy"><span>Continue</span><small class="continue-detail"></small></span></button>${button('home-levels','Campaign','campaign','primary')}${button('home-free','Free Play','play')}${button('home-tree','Skill Tree','skill-tree')}${button('home-skins','Player Skins','player-skin')}</nav><nav class="home-secondary" aria-label="More game options">${button('home-wiki','Wiki','book')}${button('home-help','How to Play','book')}${button('home-settings','Settings','gear')}</nav></div></div>`;
+  const backdrop=document.createElement('div');backdrop.id='menu-background';backdrop.setAttribute('aria-hidden','true');
+  backdrop.innerHTML='<canvas class="home-pool"></canvas>';
+  document.body.append(backdrop,home);
+  const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true);
   const route=pageHistory('home');let homeMode=true;
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
   function refresh(){const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-levels').classList.toggle('primary',!info.resume);}
   function present(name){
     route.visit(name);
     if(name==='home')homeMode=true;else if(name==='play'||name==='pause')homeMode=false;
-    document.body.dataset.screen=name;document.body.dataset.menuMode=homeMode?'home':'play';home.hidden=name!=='home';background.show(name==='home');
+    document.body.dataset.screen=name;document.body.dataset.menuMode=homeMode?'home':'play';home.hidden=name!=='home';backdrop.hidden=!homeMode;background.show(homeMode);
     document.querySelector('body>main').inert=name!=='play';
     if(name!=='play')host.suspend();refresh();
   }
@@ -29,7 +31,6 @@ export function gameMenuMount(host) {
   home.querySelector('#home-wiki').onclick=()=>host.open('wiki');
   home.querySelector('#home-help').onclick=()=>host.open('help');
   home.querySelector('#home-settings').onclick=()=>host.open('settings');
-  home.addEventListener('click',event=>{if(event.detail&& !event.target.closest('button,a,input,select,textarea,label,summary'))background.tap(event.clientX,event.clientY);});
   refresh();present('home');
   return {home:homeOpen,back,show:present,pause(){close();present('pause');host.open('pause');},play(){close();route.reset('play');present('play');},get current(){return route.current;}};
 }

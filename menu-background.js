@@ -1,6 +1,6 @@
 import { COLORS, RULE } from './engine.js?v=ee2ad99d5c6262d550458a805ece6f85e3ed035e8547beb369aa6a1128985f22';
 import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
-import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolPoint, menuPoolView } from './menu-pool.js?v=7fa034be4b351a3891c5f71f54f43506d2160f956546476294a154dd4ca7aa4b';
+import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=c1b113f9f5af21b575403c3cb9e48d8cdd1322267166d0a91dc06787fb47a15c';
 
 export function menuBackgroundMount(canvas,gentle){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(),skins=pool.game.bodies.map(()=>jellyCreate());
@@ -15,6 +15,11 @@ export function menuBackgroundMount(canvas,gentle){
     ctx.translate(width/2,height/2);ctx.scale(scale,scale);if(portrait)ctx.rotate(Math.PI/2);ctx.translate(-RULE.width/2,-RULE.height/2);
     for(const ring of rings){ctx.strokeStyle=`rgba(177,244,219,${Math.max(0,1-ring.age/2)*.35})`;ctx.lineWidth=2;ctx.beginPath();ctx.arc(ring.x,ring.y,20+ring.age*160,0,Math.PI*2);ctx.stroke();ring.age+=dt;}
     rings=rings.filter(r=>r.age<2);
+    for(const point of pool.contacts.values()){
+      const glow=ctx.createRadialGradient(point.x,point.y,0,point.x,point.y,180);
+      glow.addColorStop(0,'#b1f4db20');glow.addColorStop(1,'#b1f4db00');
+      ctx.fillStyle=glow;ctx.fillRect(point.x-180,point.y-180,360,360);
+    }
     for(const pulse of pool.pressure){
       const fade=1-pulse.age/1.25,radius=12+pulse.age*(gentle()?120:250);
       ctx.strokeStyle=`rgba(177,244,219,${fade*.65})`;ctx.lineWidth=2.5*fade;ctx.beginPath();ctx.arc(pulse.x,pulse.y,radius,0,Math.PI*2);ctx.stroke();
@@ -51,11 +56,36 @@ export function menuBackgroundMount(canvas,gentle){
     frame=requestAnimationFrame(animate);
   }
   function sync(){cancelAnimationFrame(frame);frame=0;previous=0;if(active&&!document.hidden)frame=requestAnimationFrame(animate);}
-  document.addEventListener('visibilitychange',sync);window.addEventListener('resize',sync);
-  return {show(value){active=value;sync();},tap(clientX,clientY){
+  function clear(){pool.contacts.clear();canvas.dataset.contacts='0';}
+  document.addEventListener('visibilitychange',()=>{clear();sync();});window.addEventListener('resize',()=>{clear();sync();});
+  const background={show(value){clear();active=value;sync();},clear,
+    contact(id,clientX,clientY,pulse=false){
+      if(!active||document.hidden)return;
+      const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;
+      if(pulse&&!pool.contacts.has(id))background.tap(clientX,clientY);
+      menuPoolHold(pool,id,menuPoolPoint(clientX-r.left,clientY-r.top,r.width,r.height));canvas.dataset.contacts=String(pool.contacts.size);
+    },release(id){menuPoolRelease(pool,id);canvas.dataset.contacts=String(pool.contacts.size);},tap(clientX,clientY){
     if(!active)return;const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;
     const point=menuPoolPoint(clientX-r.left,clientY-r.top,r.width,r.height);
     for(const hit of menuPoolTap(pool,point)){jellyHit(skins[hit.id],pool.game.bodies[hit.id].radius,hit.nx,hit.ny,hit.speed);skins[hit.id].glow=.8;}
     canvas.dataset.pulses=String(pool.pressure.length);draw(0);if(!frame)sync();
   }};
+  menuContactMount(background,document,window);
+  return background;
+}
+
+// Observe input without capture ownership or cancellation: scrolling, buttons and
+// the skill-tree camera keep their normal gestures. Touch events survive scroll.
+export function menuContactMount(background,doc,win){
+  const options={capture:true,passive:true};
+  const pulse=event=>!event.target.closest?.('button,a,input,select,textarea,label,summary,[role="button"]');
+  doc.addEventListener('touchstart',event=>{for(const touch of event.changedTouches)background.contact(`touch:${touch.identifier}`,touch.clientX,touch.clientY,pulse(event));},options);
+  doc.addEventListener('touchmove',event=>{for(const touch of event.touches)background.contact(`touch:${touch.identifier}`,touch.clientX,touch.clientY);},options);
+  const releaseTouches=event=>{for(const touch of event.changedTouches)background.release(`touch:${touch.identifier}`);};
+  doc.addEventListener('touchend',releaseTouches,options);doc.addEventListener('touchcancel',releaseTouches,options);
+  doc.addEventListener('pointerdown',event=>{if(event.pointerType!=='touch'&&event.button===0)background.contact(event.pointerId,event.clientX,event.clientY,pulse(event));},options);
+  doc.addEventListener('pointermove',event=>{if(event.pointerType==='touch')return;if(event.buttons&1)background.contact(event.pointerId,event.clientX,event.clientY);else background.release(event.pointerId);},options);
+  const releasePointer=event=>{if(event.pointerType!=='touch')background.release(event.pointerId);};
+  for(const name of ['pointerup','pointercancel','lostpointercapture'])doc.addEventListener(name,releasePointer,options);
+  win.addEventListener('blur',()=>background.clear());
 }

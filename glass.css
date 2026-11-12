@@ -29,7 +29,21 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
-:root body[data-menu-mode=home] dialog::backdrop { background: #0b1423; }
+:root body[data-menu-mode=home] :is(dialog,#tree-dialog)[open] {
+  background: rgb(8 19 33 / 24%);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+:root body[data-menu-mode=home] :is(dialog,#tree-dialog)::backdrop { background: transparent; }
+:root body[data-menu-mode=home]:has(dialog[open]) #main-menu { visibility: hidden; }
+:root body[data-menu-mode=home] .tree-map-stage { background: transparent; }
+
+/* Frost the readable controls, leaving the shared living pool visible around them. */
+:root body[data-menu-mode=home] :is(.dialog-heading,.campaign-heading,.campaign-footer,.tree-heading,.skin-heading,.wiki-heading,.reward-heading,.reward-footer,.settings-section) {
+  background: var(--glass-panel);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+}
 
 /* One blur per panel: nested content uses a tint, not another full blur pass. */
 :root body :is(.dialog-heading, .campaign-heading, .campaign-footer, .tree-heading, .skin-heading, .wiki-heading, .reward-heading, .reward-footer) {
