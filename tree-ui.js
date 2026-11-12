@@ -1,7 +1,7 @@
 import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=a7ec07ca23b26147c82a7c9dd5df52af3cd639d7920282181a5c2dcf304a9a54';
 import { RARITIES } from './skill-trait.js?v=bef2df62b29364983801345d0a0318164dfeef5666360b3ce1e2a200ac7acdc0';
 import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=d52c5d94038e35ce5d7e7c1777c85eb886779d384f3e5d743fc8935e0649f609';
-import { treeLayout, mapCameraMount, nearestMapNode, researchRoute } from './tree-map.js?v=57bec65f45600467b111e9a29bec5acd56889eb8ce270255b67f267386a92efe';
+import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=aa36f7778dc8f543f5f7070d53f59cde96077b8e3c559787c882e97daea12a2f';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
 import { profilePurchase, profileSummary } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';
 import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=6a19c662694ec547e86de13f3dce16b78524a1f4c32b95ee0a901850675bb8e3';
@@ -68,6 +68,10 @@ export function powerGraph(state,power){
  const nodes=Object.values(cat.nodes).filter(n=>n.power===power);
  return {nodes:nodes.map(n=>({...n,...upgradeState(state,n.id)})),edges:nodes.flatMap(n=>n.requires.map(from=>({from,to:n.id})))};
 }
+export function visibleResearch(state,showAll=false){
+ return Object.values(cat.nodes).map(n=>({...n,...upgradeState(state,n.id)}))
+   .filter(n=>showAll||n.owned||n.borrowed||state.phase==='shop'&&state.powerMode!=='shared'&&n.buy.ok);
+}
 // Inspection is always available; purchase and activation remain separate actions.
 export function skillInfo(state,id){
  const n=cat.nodes[id];if(!n)return null;
@@ -78,7 +82,8 @@ export function skillInfo(state,id){
 export function treeMount(controller){
  const dialog=document.getElementById('tree-dialog');
  let state=controller.get(),selected='ripple.base',tip=null,tipId=null,leaveTimer=0,pinned=false,lastView=null;
- const layout=treeLayout(POWER_TREES,cat.nodes);
+ const fullLayout=treeLayout(POWER_TREES,cat.nodes),world={x:0,y:0,width:fullLayout.width,height:fullLayout.height};
+ let layout=fullLayout,visiblePositions={};
  dialog.innerHTML=`<header class="tree-heading">${button('back','Back','arrow-left')}<h2>Skill Tree</h2><div class="tree-wallet-summary"></div></header><p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected power tree"><div class="tree-map-stage"><button type="button" class="tree-legend" data-tree-action="legend" aria-expanded="false" aria-controls="tree-legend-content"><span class="tree-legend-title">${iconHTML('about')}<span>Legend</span><span class="tree-legend-close" aria-hidden="true">${iconHTML('close')}</span></span><span id="tree-legend-content" hidden><span class="rarity-legend">${Object.entries(RARITIES).map(([id,r])=>`<span class="rarity-key">${rarityIconHTML(id)}${r.name}</span>`).join('')}</span><span class="status-legend"><span class="legend-active">Active</span><span class="legend-owned">Owned</span><span class="legend-available">Available</span><span class="legend-locked">Locked</span></span><span class="tree-legend-hint">Tap to Collapse</span></span></button><div class="tree-map-scroll" tabindex="0" aria-label="Skill Tree map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom">85%</output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div><span class="tree-map-hint">Drag to move · Pinch or scroll to zoom</span></div></section></div><section id="skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="skill-tooltip-title" hidden></section>`;
  const surface=dialog.querySelector('.tree-map-scroll'),mapElement=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage');
  const legend=dialog.querySelector('.tree-legend'),legendContent=dialog.querySelector('#tree-legend-content');
@@ -90,7 +95,7 @@ export function treeMount(controller){
    tip.hidden=true;tipId=null;pinned=false;source?.setAttribute('aria-expanded','false');
    if(restore)surface.focus({preventScroll:true});
  }
- const camera=mapCameraMount(surface,layout,view=>{
+ const camera=mapCameraMount(surface,world,view=>{
    if(lastView&&(view.x!==lastView.x||view.y!==lastView.y||view.scale!==lastView.scale))hideTooltip();lastView={...view};mapElement.style.transform=`translate(${view.x}px,${view.y}px) scale(${view.scale})`;
    dialog.querySelector('.tree-zoom').textContent=Math.round(view.scale*100)+'%';
    dialog.querySelector('[data-tree-action=zoom-out]').disabled=view.scale<=.051;
@@ -110,15 +115,19 @@ export function treeMount(controller){
  function render(){
    hideTooltip();
    dialog.querySelector('.tree-wallet-summary').innerHTML=`<strong>${iconHTML('coin')}${state.profile.wallet.seeds}<span> Points</span></strong>`;
-   const nodes=Object.keys(POWER_TREES).flatMap(p=>powerGraph(state,p).nodes),byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
-   const edges=layout.edges.map(e=>`<path class="${byId[e.to].owned?'is-active':byId[e.from].owned?'is-open':'is-locked'}" style="--rarity-color:${RARITIES[byId[e.to].rarity].color}" data-from="${e.from}" data-to="${e.to}" d="${e.path}"/>`).join('');
+   const showAll=controller.showAllSkills?.(),nodes=visibleResearch(state,showAll),byId=Object.fromEntries(nodes.map(n=>[n.id,n])),previous=layout.nodes[selected];
+   layout=showAll?fullLayout:researchLayout(POWER_TREES,nodes);
+   visiblePositions=Object.fromEntries(nodes.map(n=>[n.id,layout.nodes[n.id]]));
+   if(!byId[selected])selected=byId[layout.root]?layout.root:(nodes[0]?.id||layout.root);
+   Object.assign(world,researchBounds(visiblePositions));
+   const edges=layout.edges.filter(e=>byId[e.from]&&byId[e.to]).map(e=>`<path class="${byId[e.to].owned?'is-active':byId[e.from].owned?'is-open':'is-locked'}" style="--rarity-color:${RARITIES[byId[e.to].rarity].color}" data-from="${e.from}" data-to="${e.to}" d="${e.path}"/>`).join('');
    mapElement.style.width=layout.width+'px';mapElement.style.height=layout.height+'px';
-   mapElement.innerHTML=`<svg class="tree-world-links" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true">${edges}</svg>`+Object.keys(POWER_TREES).map(power=>`<section class="skill-power" data-power-tree="${power}" aria-label="${POWER_TREES[power].name} skills">${nodes.filter(n=>n.power===power).map(nodeButton).join('')}</section>`).join('');
-   selectionRender();
+   mapElement.innerHTML=`<svg class="tree-world-links" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true">${edges}</svg>`+Object.keys(POWER_TREES).filter(power=>nodes.some(n=>n.power===power)).map(power=>`<section class="skill-power" data-power-tree="${power}" aria-label="${POWER_TREES[power].name} skills">${nodes.filter(n=>n.power===power).map(nodeButton).join('')}</section>`).join('');
+   selectionRender();if(dialog.open){camera.refresh();const point=layout.nodes[selected];if(point&&(point.x!==previous?.x||point.y!==previous?.y))camera.focus(point,camera.value.scale);}
  }
  function showTooltip(id){
    clearTimeout(leaveTimer);const info=skillInfo(state,id),comparison=info?.comparison;
-   if(!info){hideTooltip();return;}
+   if(!info||!visiblePositions[id]){hideTooltip();return;}
    if(tipId===id&&!tip.hidden)return;
    hideTooltip();selected=id;selectionRender();
    const source=mapElement.querySelector(`[data-node="${id}"]`),bounds=stage.getBoundingClientRect();
@@ -134,7 +143,7 @@ export function treeMount(controller){
    tip.style.left=position.left-origin.left+'px';tip.style.top=position.top-origin.top+'px';
  }
  function selectNode(id,keyboard=false){
-   if(!cat.nodes[id])return;
+   if(!visiblePositions[id])return;
    if(tipId===id){if(pinned&&!keyboard)hideTooltip();else{pinned=true;if(keyboard)(tip.querySelector('.primary')||tip.querySelector('[data-tree-action=dismiss]')).focus();}return;}
    selected=id;selectionRender();camera.ensure(layout.nodes[id]);
    showTooltip(id);pinned=true;if(keyboard)(tip.querySelector('.primary')||tip.querySelector('[data-tree-action=dismiss]')).focus();
@@ -167,7 +176,7 @@ export function treeMount(controller){
    if(event.key==='Escape'&&!legendContent.hidden){event.preventDefault();event.stopPropagation();setLegend(false);legend.focus({preventScroll:true});return;}
    if(event.key==='Escape'&&!tip.hidden){event.preventDefault();event.stopPropagation();hideTooltip(true);return;}
    const from=event.target.closest('.skill-node'),direction={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[event.key];
-   if(!from||!direction)return;const next=nearestMapNode(layout.nodes,from.dataset.node,...direction);if(next){event.preventDefault();camera.ensure(layout.nodes[next]);mapElement.querySelector(`[data-node="${next}"]`).focus({preventScroll:true});}
+   if(!from||!direction)return;const next=nearestMapNode(visiblePositions,from.dataset.node,...direction);if(next){event.preventDefault();camera.ensure(layout.nodes[next]);mapElement.querySelector(`[data-node="${next}"]`).focus({preventScroll:true});}
  });
  dialog.addEventListener('click',handle);
  dialog.addEventListener('cancel',event=>{event.preventDefault();if(!legendContent.hidden)setLegend(false);else if(!tip.hidden)hideTooltip(true);else controller.back?.();});
@@ -177,7 +186,7 @@ export function treeMount(controller){
  document.addEventListener('visibilitychange',()=>{if(document.hidden)hideTooltip();});
  function open(focusSkill){
    if(cat.nodes[focusSkill])selected=focusSkill;controller.screen?.();document.querySelectorAll('dialog[open]').forEach(d=>d.close());
-   state=controller.get();status('');setLegend(false);render();dialog.showModal();camera.focus(layout.nodes[selected],.85,.12);dialog.querySelector('[data-tree-action=back]').focus({preventScroll:true});
+   state=controller.get();status('');setLegend(false);render();dialog.showModal();camera.focus(layout.nodes[selected]||{x:100,y:90},.85,.12);dialog.querySelector('[data-tree-action=back]').focus({preventScroll:true});
  }
  render();if(new URL(location.href).searchParams.get('view')==='tree')open();return {open,refresh(){state=controller.get();render();}};
 }

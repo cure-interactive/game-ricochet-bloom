@@ -5,9 +5,9 @@ export const WIKI_PAGES = Object.freeze({
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=c0e5656371f7d87d73e88f8c85f0c066ba894d7bff4e45eba84f32967f9b67ea' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=1f7e952790505b01a3ad6df6c1e6964ba663e7bc139a2c607849df207f3df982' },
   campaign: { title: 'Campaign', url: './wiki/campaign.md?v=9100f5e95ca5c140dadc3058c9e9a06b898e5a2eae673293b9c0d41c573038e4' },
-  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=b56c9449d231ed6805061489c42b47a04268d4475fce4a43061837879262c245' },
+  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=db1417ae33fb0f2fa8539af6453ae2ad1de8d18218424e485efaa524f4ee3f33' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=5394df77188d0533ce46eee9efd4168a82f1004672b6dce9ea97434c42c84abb' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=4e6dabb0a952c4983cec06561642859dbe20c6c0d2353785a07e55e219b10615' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=11bbf3d8f028330669bbcea6fa887e91cdef75ffa2b86087cbacc555ecae2cb7' }
 });
 const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const headingID = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

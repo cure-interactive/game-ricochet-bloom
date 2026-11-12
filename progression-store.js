@@ -1,15 +1,15 @@
 import { progressionCreate, progressionValidate } from './run.js?v=6a19c662694ec547e86de13f3dce16b78524a1f4c32b95ee0a901850675bb8e3';
 export const PROGRESSION_KEY='ricochet-bloom-progression-v1';
 export const DEVELOPMENT_SETTINGS_KEY='ricochet-bloom-development-settings-v1';
-const developmentDefaults=()=>({version:1,enabled:false,grantAmount:100});
-const validDevelopmentSettings=value=>value?.version===1&&typeof value.enabled==='boolean'&&Number.isSafeInteger(value.grantAmount)&&value.grantAmount>=1&&value.grantAmount<=1000000;
+const developmentDefaults=()=>({version:1,enabled:false,grantAmount:100,showAllSkills:false});
+const validDevelopmentSettings=value=>value?.version===1&&typeof value.enabled==='boolean'&&Number.isSafeInteger(value.grantAmount)&&value.grantAmount>=1&&value.grantAmount<=1000000&&(value.showAllSkills===undefined||typeof value.showAllSkills==='boolean');
 export function developmentSettingsRead(storage){
-  try{const value=JSON.parse(storage.getItem(DEVELOPMENT_SETTINGS_KEY));if(validDevelopmentSettings(value))return {version:1,enabled:value.enabled,grantAmount:value.grantAmount};}catch{}
+  try{const value=JSON.parse(storage.getItem(DEVELOPMENT_SETTINGS_KEY));if(validDevelopmentSettings(value))return {version:1,enabled:value.enabled,grantAmount:value.grantAmount,showAllSkills:value.showAllSkills??false};}catch{}
   return developmentDefaults();
 }
 export function developmentSettingsWrite(storage,input){
   if(!validDevelopmentSettings(input))return {ok:false,reason:'Use a whole Points amount from 1 to 1,000,000.'};
-  const settings={version:1,enabled:input.enabled,grantAmount:input.grantAmount};
+  const settings={version:1,enabled:input.enabled,grantAmount:input.grantAmount,showAllSkills:input.showAllSkills??false};
   try{storage.setItem(DEVELOPMENT_SETTINGS_KEY,JSON.stringify(settings));return {ok:true,settings};}
   catch{return {ok:false,reason:'Development settings could not be saved. Free some browser storage and try again.'};}
 }

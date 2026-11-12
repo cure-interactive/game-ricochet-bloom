@@ -54,9 +54,30 @@ export function researchRoute(nodes,id) {
  function visit(key){if(route.has(key)||!nodes[key])return;route.add(key);for(const parent of nodes[key].requires)visit(parent);}
  visit(id);return route;
 }
+// A filtered view can contain legacy acquisitions whose prerequisites are hidden.
+// Pack those visible islands together without drawing invented prerequisite links.
+export function researchLayout(powers,nodes){
+ const visible=Object.fromEntries(nodes.map(n=>[n.id,n])),projected=Object.fromEntries(nodes.map(n=>[n.id,{...n,requires:n.requires.filter(id=>visible[id])}]));
+ const roots=Object.values(projected).filter(n=>!n.requires.length),virtual='$view-root';
+ if(!roots.length)return {width:200,height:240,nodes:{},powers:{},edges:[],root:null};
+ if(roots.length>1){
+   projected[virtual]={id:virtual,power:roots[0].power,kind:'base',requires:[]};
+   for(const root of roots)root.requires=[virtual];
+ }
+ const used=Object.fromEntries(Object.entries(powers).filter(([id])=>nodes.some(n=>n.power===id))),layout=treeLayout(used,projected);
+ delete layout.nodes[virtual];layout.edges=layout.edges.filter(e=>visible[e.from]&&visible[e.to]);
+ layout.root=visible['ripple.base']?'ripple.base':roots[0].id;
+ return layout;
+}
+export function researchBounds(nodes){
+ const points=Object.values(nodes);
+ if(!points.length)return {x:0,y:0,width:200,height:240};
+ const x=Math.min(...points.map(n=>n.x))-100,y=Math.min(...points.map(n=>n.y))-90;
+ return {x,y,width:Math.max(...points.map(n=>n.x))+100-x,height:Math.max(...points.map(n=>n.y))+150-y};
+}
 export function cameraClamp(camera,view,world) {
-  const scale=Math.max(.05,Math.min(1.8,camera.scale)),axis=(offset,viewport,size)=>size*scale<viewport? (viewport-size*scale)/2:Math.max(viewport-size*scale-80,Math.min(80,offset));
-  return {x:axis(camera.x,view.width,world.width),y:axis(camera.y,view.height,world.height),scale};
+  const scale=Math.max(.05,Math.min(1.8,camera.scale)),axis=(offset,viewport,size,origin)=>size*scale<viewport? (viewport-size*scale)/2-origin*scale:Math.max(viewport-(origin+size)*scale-80,Math.min(80-origin*scale,offset));
+  return {x:axis(camera.x,view.width,world.width,world.x||0),y:axis(camera.y,view.height,world.height,world.y||0),scale};
 }
 export function cameraZoom(camera,scale,anchor) {
   scale=Math.max(.05,Math.min(1.8,scale));const ratio=scale/camera.scale;
@@ -123,5 +144,5 @@ export function mapCameraMount(surface,world,change) {
   surface.addEventListener('wheel',e=>{stopAnimation();e.preventDefault();suppress=true;if(e.shiftKey)apply({...camera,x:camera.x-e.deltaY,y:camera.y-e.deltaX});else apply(cameraZoom(camera,camera.scale*Math.exp(-Math.max(-150,Math.min(150,e.deltaY))*.003),local(e)));},{passive:false});
   surface.addEventListener('keydown',e=>{if(e.target!==surface)return;const move={ArrowLeft:[80,0],ArrowRight:[-80,0],ArrowUp:[0,80],ArrowDown:[0,-80]}[e.key];if(move){stopAnimation();e.preventDefault();apply({...camera,x:camera.x+move[0],y:camera.y+move[1]});}});
   const observer=new ResizeObserver(()=>{if(surface.clientWidth&&surface.clientHeight){stopAnimation();apply(camera);}});observer.observe(surface);
-  return {get value(){return {...camera};},zoom(factor){stopAnimation();const v=size();apply(cameraZoom(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){stopAnimation();apply(focusTarget(point,scale,vertical));},focusAnimated,fit(bounds={x:0,y:0,width:world.width,height:world.height}){stopAnimation();apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel};
+  return {get value(){return {...camera};},zoom(factor){stopAnimation();const v=size();apply(cameraZoom(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){stopAnimation();apply(focusTarget(point,scale,vertical));},focusAnimated,refresh(){stopAnimation();apply(camera);},fit(bounds={x:world.x||0,y:world.y||0,width:world.width,height:world.height}){stopAnimation();apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel};
 }
