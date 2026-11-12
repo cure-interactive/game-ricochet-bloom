@@ -78,6 +78,8 @@
 #tree-dialog .skill-node{width:116px;min-height:94px;gap:14px;transform:translate(-50%,-28px)}
 #tree-dialog .skill-node .skill-orb{width:48px;height:48px}#tree-dialog .skill-node.is-base .skill-orb{width:64px;height:64px;margin-top:-8px}
 #tree-dialog .skill-node>strong{font-size:12px;max-width:116px}#tree-dialog .skill-node.is-base>strong{font-size:15px}#tree-dialog .skill-node>small{font-size:10px}
+#tree-dialog .skill-node>.skill-node-cost{display:inline-flex;align-items:center;gap:4px;margin-top:-11px;font-size:11px;line-height:13px;white-space:nowrap}
+#tree-dialog .skill-node-cost .ui-icon{width:12px;height:12px;flex:none}
 .skill-orb>img{width:25px;height:25px}.skill-node.is-base .skill-orb>img{width:34px;height:34px}
 .skill-node.is-locked:not(.is-route){opacity:.75}.skill-node.is-route .skill-orb{border-color:#c3b485}.skill-node.is-route>strong{color:#f1dfb0}
 .tree-world-links path.is-route{stroke:#efcf86;stroke-width:4;stroke-dasharray:none;filter:drop-shadow(0 0 4px #e9bc5444)}

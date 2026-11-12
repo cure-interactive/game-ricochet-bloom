@@ -37,7 +37,7 @@ export function treeLayout(powers,nodes) {
  const result={width:right-left,height:Math.max(...placed.map(n=>n.y))+240,nodes:{},powers:{},edges:[],root:roots[0].id};
  for(const n of placed){n.x-=left;n.y+=90;result.nodes[n.id]=n;}
  for(const n of Object.values(nodes))for(const from of n.requires){
-  const a=result.nodes[from],b=result.nodes[n.id],start=a.y+82,end=b.y-38,mid=(start+end)/2,side=Math.sign(b.x-a.x),radius=Math.min(12,Math.abs(b.x-a.x)/2,(end-start)/2);
+  const a=result.nodes[from],b=result.nodes[n.id],start=a.y+90,end=b.y-38,mid=(start+end)/2,side=Math.sign(b.x-a.x),radius=Math.min(12,Math.abs(b.x-a.x)/2,(end-start)/2);
   const points=[{x:a.x,y:start},...(side?[{x:a.x,y:mid},{x:b.x,y:mid}]:[]),{x:b.x,y:end}];
   const path=side?`M${a.x} ${start} V${mid-radius} Q${a.x} ${mid} ${a.x+side*radius} ${mid} H${b.x-side*radius} Q${b.x} ${mid} ${b.x} ${mid+radius} V${end}`:`M${a.x} ${start} V${end}`;
   result.edges.push({from,to:n.id,points,path});
