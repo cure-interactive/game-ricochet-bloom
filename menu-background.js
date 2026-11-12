@@ -4,7 +4,6 @@ import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolPoint, menuPoolView 
 
 export function menuBackgroundMount(canvas,gentle){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(),skins=pool.game.bodies.map(()=>jellyCreate());
-  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   let active=false,frame=0,previous=0,rings=[];
   function draw(dt){
     const width=canvas.clientWidth,height=canvas.clientHeight,dpr=Math.min(2,devicePixelRatio||1);
@@ -17,7 +16,7 @@ export function menuBackgroundMount(canvas,gentle){
     for(const ring of rings){ctx.strokeStyle=`rgba(177,244,219,${Math.max(0,1-ring.age/2)*.35})`;ctx.lineWidth=2;ctx.beginPath();ctx.arc(ring.x,ring.y,20+ring.age*160,0,Math.PI*2);ctx.stroke();ring.age+=dt;}
     rings=rings.filter(r=>r.age<2);
     for(const pulse of pool.pressure){
-      const fade=1-pulse.age/1.25,radius=12+pulse.age*(gentle()||reduced.matches?120:250);
+      const fade=1-pulse.age/1.25,radius=12+pulse.age*(gentle()?120:250);
       ctx.strokeStyle=`rgba(177,244,219,${fade*.65})`;ctx.lineWidth=2.5*fade;ctx.beginPath();ctx.arc(pulse.x,pulse.y,radius,0,Math.PI*2);ctx.stroke();
       const glow=ctx.createRadialGradient(pulse.x,pulse.y,0,pulse.x,pulse.y,100);
       glow.addColorStop(0,`rgba(177,244,219,${fade*.12})`);glow.addColorStop(1,'rgba(177,244,219,0)');ctx.fillStyle=glow;ctx.fillRect(pulse.x-100,pulse.y-100,200,200);
@@ -42,19 +41,17 @@ export function menuBackgroundMount(canvas,gentle){
     const dt=previous?Math.min(.05,(now-previous)/1000):0;
     if(!previous||dt>=1/30){
       previous=now;
-      if(!reduced.matches||pool.pressure.length){
-        for(const event of menuPoolStep(pool,dt*(gentle()?.45:.75),!reduced.matches)){
-          if(event.type==='impact')for(const [id,sign] of [[event.a,1],[event.b,-1]])if(skins[id])jellyHit(skins[id],pool.game.bodies[id].radius,event.nx*sign,event.ny*sign,event.speed);
-          if(event.type==='note')skins[event.id].glow=.9;
-          if(event.type==='bloom'&&!gentle())rings.push({x:event.x,y:event.y,age:0});
-        }
+      for(const event of menuPoolStep(pool,dt*(gentle()?.45:.75))){
+        if(event.type==='impact')for(const [id,sign] of [[event.a,1],[event.b,-1]])if(skins[id])jellyHit(skins[id],pool.game.bodies[id].radius,event.nx*sign,event.ny*sign,event.speed);
+        if(event.type==='note')skins[event.id].glow=.9;
+        if(event.type==='bloom'&&!gentle())rings.push({x:event.x,y:event.y,age:0});
       }
-      draw(reduced.matches&&!pool.pressure.length?0:dt);
+      draw(dt);
     }
-    if(!reduced.matches||pool.pressure.length)frame=requestAnimationFrame(animate);
+    frame=requestAnimationFrame(animate);
   }
   function sync(){cancelAnimationFrame(frame);frame=0;previous=0;if(active&&!document.hidden)frame=requestAnimationFrame(animate);}
-  document.addEventListener('visibilitychange',sync);reduced.addEventListener('change',sync);window.addEventListener('resize',sync);
+  document.addEventListener('visibilitychange',sync);window.addEventListener('resize',sync);
   return {show(value){active=value;sync();},tap(clientX,clientY){
     if(!active)return;const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;
     const point=menuPoolPoint(clientX-r.left,clientY-r.top,r.width,r.height);

@@ -71,8 +71,7 @@ export function treeMount(controller){
   if(request!==travel||!dialog.open)return;
   // Focus restoration from the dismissed sheet must not jump the camera.
   surface.focus({preventScroll:true});
-  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const arrived=await camera.focusAnimated(layout.nodes[id],Math.max(.85,camera.value.scale),mobile.matches ? .12 : .25,reduced?0:450);
+  const arrived=await camera.focusAnimated(layout.nodes[id],Math.max(.85,camera.value.scale),mobile.matches ? .12 : .25,450);
   if(request!==travel)return;travelling=false;
   if(arrived&&dialog.open)showDetail(id,true);
  }
