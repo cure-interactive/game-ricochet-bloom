@@ -80,7 +80,8 @@ dialog.standard-dialog[open]{display:flex;flex-direction:column}
 dialog.standard-dialog>.dialog-heading{display:flex;flex:none;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid #40556b66;background:#101c33}
 dialog.standard-dialog>.dialog-heading>h2{flex:1;min-width:0;padding:0;margin:0;font-size:clamp(22px,5vw,28px);line-height:1.2}
 dialog.standard-dialog .dialog-heading>.close{position:static;float:none;flex:none;transform:none;margin:0;min-width:44px;min-height:44px;padding:8px}
-dialog.standard-dialog>.dialog-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:20px}
+/* Content-sized basis avoids Safari collapsing an auto-height dialog to its header. */
+dialog.standard-dialog>.dialog-body{flex:0 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:20px}
 dialog summary{min-height:44px;padding-block:12px}
 @media(max-width:350px){dialog.standard-dialog>.dialog-heading{padding:12px 14px;gap:12px}dialog.standard-dialog>.dialog-body{padding:16px}}
 @media(max-height:500px) and (orientation:landscape){dialog.standard-dialog>.dialog-heading{padding:8px 16px}dialog.standard-dialog>.dialog-body{padding:16px}}
@@ -92,6 +93,7 @@ dialog select,dialog input:not([type]),dialog input[type=number],dialog input[ty
 /* Settings groups share one rhythm, with audio available immediately. */
 #settings-dialog .dialog-body{display:flex;flex-direction:column;gap:12px}
 .settings-section{border:1px solid #40556b88;border-radius:12px;background:#0d192b;min-width:0}
+#settings-dialog .dialog-body>.settings-section{flex:none}
 .settings-section>summary{min-height:56px;padding:12px 14px;gap:12px;cursor:pointer;font-size:16px;color:#daeae7}
 .settings-section>summary>.ui-icon{width:22px;height:22px;flex:none;color:#a9dfcf}
 .settings-section>summary>span:not(.ui-icon){flex:1;min-width:0}
