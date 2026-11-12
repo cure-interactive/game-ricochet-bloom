@@ -70,7 +70,9 @@ export function powerGraph(state,power){
 }
 export function visibleResearch(state,showAll=false){
  return Object.values(cat.nodes).map(n=>({...n,...upgradeState(state,n.id)}))
-   .filter(n=>showAll||n.owned||n.borrowed||state.phase==='shop'&&state.powerMode!=='shared'&&n.buy.ok);
+   // The next research stays discoverable while saving Points or finishing a run.
+   // Purchase eligibility still controls Buy; it must not erase the frontier.
+   .filter(n=>showAll||n.owned||n.borrowed||state.powerMode!=='shared'&&(n.buy.ok||n.buy.reason==='insufficient-seeds'));
 }
 // Inspection is always available; purchase and activation remain separate actions.
 export function skillCost(state,id,showPurchasedCosts=false){

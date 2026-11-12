@@ -6,7 +6,7 @@
 
 Each power has its own linear upgrade chain beneath its base. The number and effects are chosen for that power; there is no fixed upgrade count. Basic utility belongs in the base power, while research adds meaningful changes. Some upgrades also open side branches into new powers. Follow the connecting paths to see which research comes next.
 
-By default, the map shows research you own, retained earned loans, and skills you can buy now. New offers appear when you meet their prerequisites, Points cost, mastery and purchase-phase requirements. Hidden nodes and their paths take no map space. Settings → Advanced & About → Development & Backups → **Show All Skills** reveals the complete tree for inspection without unlocking anything. This view preference is remembered and works with either profile.
+By default, the map shows research you own, retained earned loans, and the next skills whose prerequisites and mastery requirements you have met. These next upgrades stay visible while you save Points or finish a run; their cards explain what is needed before you can buy them. Buying still requires enough Points and being between runs. Hidden nodes and their paths take no map space. Settings → Advanced & About → Development & Backups → **Show All Skills** reveals the complete tree for inspection without unlocking anything. This view preference is remembered and works with either profile.
 
 ## Research and Activation
 
