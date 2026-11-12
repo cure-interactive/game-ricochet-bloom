@@ -8,7 +8,7 @@ import { gameCreate } from './engine.js?v=53c12a3b8ec5b7bda0625a1e527cb498490b7d
 import { treeMount } from './tree-ui.js?v=d5e66f1e5542c63afca16c63bb1b9a3516508ca213fc79babddfc474dcf153e4';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
-import { skinMount } from './skin-ui.js?v=ab2b788d5284b5a3018efe3579c635c0a8fb7b3f3fa80a14edf12007a5198674';
+import { skinMount } from './skin-ui.js?v=883c81d5f1f4162eb97177679a8c328f685410bb105867e711df88b6d4bd52e9';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;

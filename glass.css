@@ -39,7 +39,7 @@
   background-color: rgb(20 40 55 / 52%);
 }
 :root body .skin-choice.is-equipped { background-color: rgb(30 78 65 / 70%); }
-:root body .skin-choice:disabled { background-color: rgb(15 29 44 / 70%); }
+:root body .skin-choice.is-locked { background-color: rgb(15 29 44 / 70%); }
 
 :root body :is(.overlay, #welcome, #tree-dialog .skill-tooltip, #tree-dialog .tree-legend, .tree-camera-controls, .tree-map-hint, .save-warning) {
   background: var(--glass-panel);
