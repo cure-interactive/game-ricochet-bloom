@@ -1,7 +1,7 @@
 import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=a7ec07ca23b26147c82a7c9dd5df52af3cd639d7920282181a5c2dcf304a9a54';
 import { RARITIES } from './skill-trait.js?v=bef2df62b29364983801345d0a0318164dfeef5666360b3ce1e2a200ac7acdc0';
 import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=d52c5d94038e35ce5d7e7c1777c85eb886779d384f3e5d743fc8935e0649f609';
-import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=aa36f7778dc8f543f5f7070d53f59cde96077b8e3c559787c882e97daea12a2f';
+import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
 import { profilePurchase, profileSummary } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';
 import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=6a19c662694ec547e86de13f3dce16b78524a1f4c32b95ee0a901850675bb8e3';
@@ -100,10 +100,10 @@ export function treeMount(controller){
    tip.hidden=true;tipId=null;pinned=false;source?.setAttribute('aria-expanded','false');
    if(restore)surface.focus({preventScroll:true});
  }
- const camera=mapCameraMount(surface,world,view=>{
+ const camera=mapCameraMount(surface,world,(view,limits)=>{
    if(lastView&&(view.x!==lastView.x||view.y!==lastView.y||view.scale!==lastView.scale))hideTooltip();lastView={...view};mapElement.style.transform=`translate(${view.x}px,${view.y}px) scale(${view.scale})`;
    dialog.querySelector('.tree-zoom').textContent=Math.round(view.scale*100)+'%';
-   dialog.querySelector('[data-tree-action=zoom-out]').disabled=view.scale<=.051;
+   dialog.querySelector('[data-tree-action=zoom-out]').disabled=view.scale<=limits.minScale+1e-6;
    dialog.querySelector('[data-tree-action=zoom-in]').disabled=view.scale>=1.799;
  });
  function selectionRender(){

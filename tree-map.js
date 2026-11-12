@@ -76,11 +76,11 @@ export function researchBounds(nodes){
  return {x,y,width:Math.max(...points.map(n=>n.x))+100-x,height:Math.max(...points.map(n=>n.y))+150-y};
 }
 export function cameraClamp(camera,view,world) {
-  const scale=Math.max(.05,Math.min(1.8,camera.scale)),axis=(offset,viewport,size,origin)=>size*scale<viewport? (viewport-size*scale)/2-origin*scale:Math.max(viewport-(origin+size)*scale-80,Math.min(80-origin*scale,offset));
+  const scale=Math.max(cameraFit(world,view).scale,Math.min(1.8,camera.scale)),axis=(offset,viewport,size,origin)=>size*scale<viewport? (viewport-size*scale)/2-origin*scale:Math.max(viewport-(origin+size)*scale-80,Math.min(80-origin*scale,offset));
   return {x:axis(camera.x,view.width,world.width,world.x||0),y:axis(camera.y,view.height,world.height,world.y||0),scale};
 }
-export function cameraZoom(camera,scale,anchor) {
-  scale=Math.max(.05,Math.min(1.8,scale));const ratio=scale/camera.scale;
+export function cameraZoom(camera,scale,anchor,minScale=.05) {
+  scale=Math.max(minScale,Math.min(1.8,scale));const ratio=scale/camera.scale;
   return {x:anchor.x-(anchor.x-camera.x)*ratio,y:anchor.y-(anchor.y-camera.y)*ratio,scale};
 }
 export function cameraFit(bounds,view) {
@@ -96,7 +96,9 @@ export function mapCameraMount(surface,world,change) {
   const size=()=>({width:surface.clientWidth,height:surface.clientHeight});
   const local=e=>{const r=surface.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};};
   const center=ps=>({x:ps.reduce((s,p)=>s+p.x,0)/ps.length,y:ps.reduce((s,p)=>s+p.y,0)/ps.length});
-  function apply(next){camera=cameraClamp(next,size(),world);change(camera);}
+  const minimumScale=()=>cameraFit(world,size()).scale;
+  const zoomAt=(from,scale,anchor)=>cameraZoom(from,scale,anchor,minimumScale());
+  function apply(next){camera=cameraClamp(next,size(),world);change(camera,{minScale:minimumScale()});}
   function stopAnimation(){if(!animation)return;const current=animation;animation=null;win.cancelAnimationFrame(current.frame);current.resolve(false);}
   function focusTarget(point,scale,vertical){const v=size();return cameraClamp({x:v.width/2-point.x*scale,y:Math.min(140,v.height*vertical)-point.y*scale,scale},v,world);}
   function focusAnimated(point,scale=Math.max(.85,camera.scale),vertical=.25,duration=450){
@@ -125,7 +127,7 @@ export function mapCameraMount(surface,world,change) {
     if(!points.has(e.pointerId)||!start)return;points.set(e.pointerId,local(e));const ps=[...points.values()],mid=center(ps),dx=mid.x-start.center.x,dy=mid.y-start.center.y;
     if(ps.length===1&&!suppress&&Math.hypot(dx,dy)<6)return;
     suppress=true;e.preventDefault();surface.classList.add('is-panning');if(!surface.hasPointerCapture(e.pointerId))surface.setPointerCapture(e.pointerId);
-    let next={...start.camera};if(ps.length>1&&start.distance>0)next=cameraZoom(next,next.scale*Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y)/start.distance,start.center);
+    let next={...start.camera};if(ps.length>1&&start.distance>0)next=zoomAt(next,next.scale*Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y)/start.distance,start.center);
     apply({...next,x:next.x+dx,y:next.y+dy});
   });
   for(const event of ['pointerup','pointercancel'])surface.addEventListener(event,end);
@@ -141,8 +143,8 @@ export function mapCameraMount(surface,world,change) {
   // Safari's touch list also lets us recover a missed pointer-end notification.
   for(const event of ['touchend','touchcancel'])win.addEventListener(event,e=>{if(e.touches.length===0)cancel();},{capture:true,passive:true});
   surface.addEventListener('click',e=>{if(suppress&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();}},true);
-  surface.addEventListener('wheel',e=>{stopAnimation();e.preventDefault();suppress=true;if(e.shiftKey)apply({...camera,x:camera.x-e.deltaY,y:camera.y-e.deltaX});else apply(cameraZoom(camera,camera.scale*Math.exp(-Math.max(-150,Math.min(150,e.deltaY))*.003),local(e)));},{passive:false});
+  surface.addEventListener('wheel',e=>{stopAnimation();e.preventDefault();suppress=true;if(e.shiftKey)apply({...camera,x:camera.x-e.deltaY,y:camera.y-e.deltaX});else apply(zoomAt(camera,camera.scale*Math.exp(-Math.max(-150,Math.min(150,e.deltaY))*.003),local(e)));},{passive:false});
   surface.addEventListener('keydown',e=>{if(e.target!==surface)return;const move={ArrowLeft:[80,0],ArrowRight:[-80,0],ArrowUp:[0,80],ArrowDown:[0,-80]}[e.key];if(move){stopAnimation();e.preventDefault();apply({...camera,x:camera.x+move[0],y:camera.y+move[1]});}});
   const observer=new ResizeObserver(()=>{if(surface.clientWidth&&surface.clientHeight){stopAnimation();apply(camera);}});observer.observe(surface);
-  return {get value(){return {...camera};},zoom(factor){stopAnimation();const v=size();apply(cameraZoom(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){stopAnimation();apply(focusTarget(point,scale,vertical));},focusAnimated,refresh(){stopAnimation();apply(camera);},fit(bounds={x:world.x||0,y:world.y||0,width:world.width,height:world.height}){stopAnimation();apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel};
+  return {get value(){return {...camera};},zoom(factor){stopAnimation();const v=size();apply(zoomAt(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){stopAnimation();apply(focusTarget(point,scale,vertical));},focusAnimated,refresh(){stopAnimation();apply(camera);},fit(bounds={x:world.x||0,y:world.y||0,width:world.width,height:world.height}){stopAnimation();apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel};
 }
