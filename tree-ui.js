@@ -1,4 +1,4 @@
-import { treeLayout, mapCameraMount, nearestMapNode, researchRoute } from './tree-map.js?v=5c41c01c24b486346b53e4d331c81e35e7a94a6127d4f4a93e7db338ab16a931';
+import { treeLayout, mapCameraMount, nearestMapNode, researchRoute } from './tree-map.js?v=378173687325e553c35df94839e24b905973975a03058b3dc6bd5a32f580f371';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
 import { FAMILY_UNLOCK } from './catalogue.js?v=5b190da66f356e0db04d39abcc70c604726ff00146d498a6109a4be15429f888';
 import { profilePurchase, profileSummary } from './profile.js?v=64181c030af514b97953fae1219e4142f64e30029d87c33eeec1e6d7fff631f1';
@@ -86,10 +86,8 @@ export function treeMount(controller){
   route=researchRoute(cat.nodes,POWER_TREES,FAMILY_UNLOCK,selected);
   const goal=researchTarget(state);dialog.querySelector('.tree-target').innerHTML=goal?`<button type="button" data-node="${goal.id}">${iconHTML('star')}<span>${escape(goal.name)}<small>${escape(goal.text)}</small></span></button>`:'';
   const graphs=Object.keys(POWER_TREES).map(p=>powerGraph(state,p)),nodes=graphs.flatMap(g=>g.nodes),byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
-  const edges=layout.edges.map(e=>{const a=layout.nodes[e.from],b=layout.nodes[e.to],source=byId[e.from],target=byId[e.to];
-   const start=a.y+70,end=b.y-36,mid=(start+end)/2,side=Math.sign(b.x-a.x),radius=Math.min(12,Math.abs(b.x-a.x)/2,(end-start)/2);
-   const path=a.power===b.power?`M${a.x} ${start} V${b.y-29}`:`M${a.x} ${start} V${mid-radius} Q${a.x} ${mid} ${a.x+side*radius} ${mid} H${b.x-side*radius} Q${b.x} ${mid} ${b.x} ${mid+radius} V${end}`;
-   return `<path class="${target.owned?'is-active':source.owned?'is-open':'is-locked'} ${route.has(e.from)&&route.has(e.to)?'is-route':''}" data-from="${e.from}" data-to="${e.to}" d="${path}"/>`;}).join('');
+  const edges=layout.edges.map(e=>{const source=byId[e.from],target=byId[e.to];
+   return `<path class="${target.owned?'is-active':source.owned?'is-open':'is-locked'} ${route.has(e.from)&&route.has(e.to)?'is-route':''}" data-from="${e.from}" data-to="${e.to}" d="${e.path}"/>`;}).join('');
   mapElement.style.width=layout.width+'px';mapElement.style.height=layout.height+'px';
   mapElement.innerHTML=`<svg class="tree-world-links" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true">${edges}</svg>`+Object.values(layout.families).map(f=>`<section class="skill-family" data-family-tree="${f.name}" aria-label="${f.name} powers">${f.powers.flatMap(p=>graphs.find(g=>g.nodes[0].power===p).nodes).map(nodeButton).join('')}</section>`).join('');
  }

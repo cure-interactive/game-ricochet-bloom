@@ -1,25 +1,47 @@
-// Layout is derived from the same single-parent research graph as purchases.
+// Layout and connections share the single-parent graph used by purchases.
 export function treeLayout(powers,nodes) {
  const children=Object.fromEntries(Object.keys(nodes).map(id=>[id,[]]));
- for(const n of Object.values(nodes))for(const parent of n.requires)children[parent].push(n.id);
+ for(const n of Object.values(nodes)){
+  if(n.requires.length>1)throw new Error('Research is not a tree');
+  for(const parent of n.requires){if(!children[parent])throw new Error('Missing research parent');children[parent].push(n.id);}
+ }
  const roots=Object.values(nodes).filter(n=>!n.requires.length);
  if(roots.length!==1)throw new Error('Research must have exactly one root');
- const placed=[],queue=[{power:roots[0].power,x:0,y:0}],seen=new Set();
- // Place near branches first, then grow outward. Deep descendants must not
- // pull the first unlock choices off-screen. Reserve each vertical power chain.
- while(queue.length){
-  const entry=queue.shift();if(seen.has(entry.power))throw new Error('Research is not a tree');seen.add(entry.power);
-  const chain=['base','foundation','a','b','capstone'].map((kind,i)=>({id:entry.power+'.'+kind,power:entry.power,kind,family:powers[entry.power].family,x:entry.x,y:entry.y+i*140}));
-  let offset=0,step=0;
-  while(chain.some(b=>placed.some(a=>Math.abs(a.y-b.y)<130&&Math.abs(a.x-(b.x+offset))<179))){step++;offset=Math.ceil(step/2)*180*(step%2?-1:1);}
-  chain.forEach(n=>{n.x+=offset;placed.push(n);});
-  for(const n of chain)for(const child of children[n.id])if(nodes[child].power!==n.power)queue.push({power:nodes[child].power,x:n.x,y:n.y+140});
+ const seen=new Set(),row=160;
+ // Pack whole descendant branches, including their connecting corridors.
+ // A continuation stays on its power's vertical spine. Side branches have
+ // disjoint contours at every row AND between rows, so paths cannot cross.
+ function branch(id,side=-1){
+  if(seen.has(id))throw new Error('Research is not a tree');seen.add(id);
+  const node=nodes[id],next=children[id].find(k=>nodes[k].power===node.power),forks=children[id].filter(k=>k!==next);
+  const placed=[{id,power:node.power,kind:node.kind,family:powers[node.power].family,x:0,y:0}],levels=[],corridors=[];
+  const merge=(target,source,offset)=>source.forEach((c,i)=>{if(!c)return;const lo=c[0]+offset,hi=c[1]+offset;target[i]=target[i]?[Math.min(target[i][0],lo),Math.max(target[i][1],hi)]:[lo,hi];});
+  function add(child,direction){
+   const sub=branch(child,direction||side);let offset=0;
+   if(direction){
+    let distance=180;
+    for(const [a,b,gap] of [[levels,sub.levels,180],[corridors,sub.corridors,32]])b.forEach((c,i)=>{if(c&&a[i])distance=Math.max(distance,direction>0?a[i][1]-c[0]+gap:c[1]-a[i][0]+gap);});
+    offset=direction*distance;
+   }
+   for(const n of sub.placed)placed.push({...n,x:n.x+offset,y:n.y+row});
+   merge(levels,sub.levels,offset);merge(corridors,sub.corridors,offset);
+  }
+  if(next)add(next,0);
+  forks.forEach((child,i)=>add(child,i%2?-side:side));
+  const first=levels[0]||[0,0];
+  return {placed,levels:[[0,0],...levels],corridors:children[id].length?[[Math.min(0,first[0]),Math.max(0,first[1])],...corridors]:[]};
  }
+ const placed=branch(roots[0].id).placed;
  if(placed.length!==Object.keys(nodes).length)throw new Error('Disconnected research');
  const left=Math.min(...placed.map(n=>n.x))-100,right=Math.max(...placed.map(n=>n.x))+100;
  const result={width:right-left,height:Math.max(...placed.map(n=>n.y))+240,nodes:{},families:{},edges:[],bridges:[],root:roots[0].id};
  for(const n of placed){n.x-=left;n.y+=90;result.nodes[n.id]=n;}
- for(const n of Object.values(nodes))for(const from of n.requires)result.edges.push({from,to:n.id});
+ for(const n of Object.values(nodes))for(const from of n.requires){
+  const a=result.nodes[from],b=result.nodes[n.id],start=a.y+82,end=b.y-38,mid=(start+end)/2,side=Math.sign(b.x-a.x),radius=Math.min(12,Math.abs(b.x-a.x)/2,(end-start)/2);
+  const points=[{x:a.x,y:start},...(side?[{x:a.x,y:mid},{x:b.x,y:mid}]:[]),{x:b.x,y:end}];
+  const path=side?`M${a.x} ${start} V${mid-radius} Q${a.x} ${mid} ${a.x+side*radius} ${mid} H${b.x-side*radius} Q${b.x} ${mid} ${b.x} ${mid+radius} V${end}`:`M${a.x} ${start} V${end}`;
+  result.edges.push({from,to:n.id,points,path});
+ }
  for(const family of new Set(Object.values(powers).map(p=>p.family))){
   const members=Object.keys(powers).filter(p=>powers[p].family===family),points=placed.filter(n=>n.family===family),x=Math.min(...points.map(n=>n.x))-70,y=Math.min(...points.map(n=>n.y))-60;
   result.families[family]={name:family,powers:members,starter:members[0]+'.base',x,y,width:Math.max(...points.map(n=>n.x))-x+70,height:Math.max(...points.map(n=>n.y))-y+100};
