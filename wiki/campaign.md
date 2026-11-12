@@ -16,13 +16,13 @@ Each track follows the same five-pool structure with its own atmosphere and arra
 4. **Bridge:** make a bloom with a wall bank, with 14 jellies.
 5. **Finale:** make two blooms and touch all three roles, with 18 jellies.
 
-New runs give six plucks per pool. The first bloom adds one more. Your song develops across the pools; cleared pools lead to an interlude before you continue.
+New runs give six plucks per pool. The first bloom adds one more. Your song develops across the pools. After a clear, Continue takes you straight to the next pool.
 
-## Research Points and Discoveries
+## Research Points and Powers
 
 Clearing a pool earns research Points. Completing its bonus and finishing a track provide further rewards, including a first-clear reward. Spend research Points in the [Skill Tree](skill-tree.md). Your large in-pool score is a different measure; it is not your research balance.
 
-Use a power in a pool you successfully clear to build its mastery toward an Epic upgrade. Some rewards can also provide a temporary discovery during a run; that does not permanently purchase its research prerequisite.
+Use a power in a pool you successfully clear to build its mastery toward an Epic upgrade. Your unlocked powers appear randomly during play, with compatible researched upgrades applied automatically. There is no between-pool upgrade draft. Temporary upgrades already granted in an older saved run remain active until that run ends.
 
 ## Continue or Start Again
 

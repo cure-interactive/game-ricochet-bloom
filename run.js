@@ -2,7 +2,7 @@ import { buildValidate } from './skill-effect.js?v=5ff4cafca9c6bb8adee62961b5c6e
 import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=72132af057dff2bd5109c48d8a7a7ad6fdf82a3a7eb75d52b4a209a490cfffb0';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
 import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';
-import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=53c12a3b8ec5b7bda0625a1e527cb498490b7df27796c02c3c3d133a93b14c7c';
+import { gameCreate, saveValidate, RULE } from './engine.js?v=53c12a3b8ec5b7bda0625a1e527cb498490b7df27796c02c3c3d133a93b14c7c';
 import { jellyRole, musicCreate, musicRunSection } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
@@ -46,16 +46,6 @@ export function researchTarget(s,id=s.target) {
     if(n.masteryPools>mastery)needs.push(`${n.masteryPools-mastery} more cleared pools using ${POWER_TREES[n.power].name}`);
   }
   return {id,name:n.name,owned,needs,text:owned?'Researched':needs.join(' · ')||'Ready to research between runs'};
-}
-export function discoveries(s){
-  if(s.phase!=='interlude')return [];
-  const candidates=Object.values(GAME_CATALOGUE.nodes).filter(n=>n.kind!=='base'&&s.powers.includes(n.power)&&!s.profile.research[n.id]&&!s.borrowed.includes(n.id)&&(n.kind!=='capstone'||s.pool>=2));
-  const rank=n=>(n.conflicts.some(id=>s.equipped.includes(id))?4:0)+(s.run.activated.includes(n.power)?0:1);
-  candidates.sort((a,b)=>rank(a)-rank(b)||seedHash(s.run.seed+s.pool+a.id)-seedHash(s.run.seed+s.pool+b.id));
-  const offers=[];
-  for(const n of candidates)if(!offers.some(x=>x.power===n.power))offers.push(n);
-  for(const n of candidates)if(offers.length<3&&!offers.includes(n))offers.push(n);
-  return offers.slice(0,3).map(n=>n.id);
 }
 // Preview and commit use the same transaction. No loan or equipment changes leak on failure.
 export function discoveryUse(input,id,remove=[]) {
@@ -177,7 +167,7 @@ export function progressionObserve(input,game,events,music=null){
       r.launches+=game.launches;r.score+=game.score;r.bonuses+=game.objective.completed>0?1:0;
       let earned=reward(s,{type:'pool',poolIndex:s.pool,activated:r.activated,bonus:r.game.objective.completed>0});
       if(s.pool===4){earned+=reward(s,{type:'victory'});record=resultRecord(s,'victory');finish(s);outcome='victory';message=`${trackGet(s.track).name} complete · +${earned} Points`;}
-      else{s.phase='interlude';r.offers=discoveries(s);r.discovered=false;s.route=0;outcome='clear';message=`${POOL_NAMES[s.pool]} complete · +${earned} Points`;}
+      else{s.phase='interlude';r.offers=[];r.discovered=false;s.route=0;outcome='clear';message=`${POOL_NAMES[s.pool]} complete · +${earned} Points`;}
     }else if(game.isOver){r.launches+=game.launches;r.score+=game.score;const missing=goalRemaining(s),earned=reward(s,{type:'failure',poolIndex:s.pool,blooms:game.blooms,abandoned:false});record=resultRecord(s,'failure');finish(s);outcome='failure';message=`${missing} · +${earned} Points`;}
   }
   return {state:s,message,outcome,record};
