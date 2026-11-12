@@ -3,7 +3,18 @@ import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f
 // The engine integration must explicitly advertise supported node IDs.
 export const CURRENCIES = Object.freeze({ seeds: Object.freeze({ name: 'Points' }) });
 export const TRACKS = Object.freeze(['first-light', 'crosscurrent', 'glasswater', 'afterimage', 'night-bloom']);
-export const STARTERS = Object.freeze(['ripple', 'attract', 'comet']);
+export const STARTERS = Object.freeze(['ripple']);
+// One parent per power. Upgrade chains and these branches form one rooted tree.
+export const POWER_PARENT = Object.freeze({
+ ripple:null, comet:'ripple.foundation', attract:'ripple.foundation', stasis:'ripple.a', pulse:'ripple.b',
+ impact:'comet.foundation', spring:'comet.foundation', wake:'comet.a', drunk:'comet.b',
+ wrap:'spring.foundation', blaster:'impact.foundation',
+ magnet:'attract.foundation', vortex:'attract.foundation', homing:'magnet.foundation',
+ orbit:'vortex.foundation', slingshot:'orbit.foundation',
+ bubble:'stasis.foundation', tether:'stasis.foundation', relay:'tether.foundation',
+ lightning:'relay.foundation', split:'bubble.foundation', echo:'split.foundation', rewind:'echo.foundation',
+ swap:'homing.foundation', portal:'swap.foundation'
+});
 export const REWARD = Object.freeze({ tutorial: 4, pool: 2, bonus: 1, victory: 3, firstClear: 4, failure: 1 });
 export const UPGRADE_ORDER = Object.freeze(['base', 'foundation', 'a', 'b', 'capstone']);
 const kinds = UPGRADE_ORDER;
@@ -29,8 +40,8 @@ export function catalogueCreate(supportedNodes = []) {
       const id = `${power}.${kind}`;
       nodes[id] = Object.freeze({ id, power, kind, name: tree.nodes[index].name, description: tree.nodes[index].description,
         seedCost: prices[index], tuningCost: tuning[index], supported: supportedNodes.includes(id),
-        requires: Object.freeze(index === 0 ? [] : [power + '.' + kinds[index-1]]),
-        unlocks: Object.freeze(Object.keys(FAMILY_UNLOCK).filter(f=>FAMILY_UNLOCK[f]===id)),
+        requires: Object.freeze(index === 0 ? (POWER_PARENT[power] ? [POWER_PARENT[power]] : []) : [power + '.' + kinds[index-1]]),
+        unlocks: Object.freeze(Object.keys(POWER_PARENT).filter(p=>POWER_PARENT[p]===id)),
         // These select contradictory force shapes. Other researched upgrades
         // can coexist; choosing a shape never gates ownership or a capstone.
         conflicts: Object.freeze(!tree.compatible && ['a', 'b'].includes(kind)
@@ -40,9 +51,9 @@ export function catalogueCreate(supportedNodes = []) {
     });
   }
   for (const id of supportedNodes) {
-    if (!Object.hasOwn(nodes, id) || !nodePrerequisitesMet(nodes[id], key => nodes[key].supported)) throw new TypeError('Unsupported prerequisite: ' + id);
+    if (!Object.hasOwn(nodes, id) || (nodes[id].kind !== 'base' && !nodes[id].requires.every(key=>nodes[key].supported))) throw new TypeError('Unsupported prerequisite: ' + id);
   }
-  return Object.freeze({ version: 3, powers: Object.freeze(powers), nodes: Object.freeze(nodes) });
+  return Object.freeze({ version: 4, powers: Object.freeze(powers), nodes: Object.freeze(nodes) });
 }
 // Consumers opt into implemented capabilities. run.js owns the shipping set.
 export const CATALOGUE = catalogueCreate();

@@ -1,10 +1,10 @@
-import { freePlaySync } from './free-play.js?v=b23024221d47e8bce887ca87c26fba8f0ee85f7e4d43669e204f3b98968c2b13';
+import { freePlaySync } from './free-play.js?v=d66ea1aff5ba420681bf27a69c5dcf46377b764cfa2025bcff59d462e8695cd1';
 import { fullscreenMount } from './fullscreen.js?v=2c3119f8c834c71afef28339288e1d4d71b96164e260d16f903a6c0fbd0ee41f';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
 import { gameMenuMount } from './game-menu.js?v=f764743740124e79e0ba13b52f8ac2be1254df4c1235cbb50c187075d26b0a1c';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { progressionMount } from './progression-ui.js?v=852a4b96de8176d647f714986bbb5fd858964a9d1476578b3e0953e843a048d0';
+import { progressionMount } from './progression-ui.js?v=76ab23b18d5df6cb17b3ae418959f7f3af0f6a818e5f89e2e449723366368969';
 import {assetURL} from './asset.js?v=2b159e067962ab466dfde3d9f305e802c92bc5b4183b6ffe9932dbb398b20746';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';

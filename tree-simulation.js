@@ -1,11 +1,12 @@
-import { CATALOGUE, catalogueCreate, STARTERS } from './catalogue.js?v=5fbcb1a1f514c613cfd9c6f10f85ee2b01f6f5148a846ca33e713b60589ae9b0';
-import { profileCreate, profileValidate, profilePurchase, profileReward, loadoutResolve } from './profile.js?v=c981db02c3e6061c959d5372ca00296827e5487fc916235922baecb955da3915';
+import { CATALOGUE, catalogueCreate, STARTERS } from './catalogue.js?v=5b190da66f356e0db04d39abcc70c604726ff00146d498a6109a4be15429f888';
+import { profileCreate, profileValidate, profilePurchase, profileReward, loadoutResolve } from './profile.js?v=64181c030af514b97953fae1219e4142f64e30029d87c33eeec1e6d7fff631f1';
 
 // This capability fixture is exclusively for the UI simulator, never the engine.
 export const SIMULATION_CATALOGUE = catalogueCreate(Object.keys(CATALOGUE.nodes));
 export const POOL_NAMES = ['Intro', 'Verse', 'Build', 'Bridge', 'Finale'];
 export function simulationCreate() {
-  return { profile: profileCreate(), powers: [...STARTERS], equipped: ['comet.foundation', 'ripple.foundation'],
+  const profile=profileCreate();for(const p of ['attract','comet'])profile.research[p+'.base']={paid:0};
+  return { profile, powers: ['ripple','attract','comet'], equipped: ['comet.foundation', 'ripple.foundation'],
     borrowed: ['comet.foundation', 'ripple.foundation'], phase: 'shop', pool: 0, attempt: 0 };
 }
 export function simulationBudget(state) { return state.phase === 'run' ? 2 + state.pool * 2 : 2; }

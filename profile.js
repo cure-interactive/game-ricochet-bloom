@@ -1,4 +1,4 @@
-import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, familyGate, FAMILIES, legacyFamilyAccess } from './catalogue.js?v=5fbcb1a1f514c613cfd9c6f10f85ee2b01f6f5148a846ca33e713b60589ae9b0';
+import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess } from './catalogue.js?v=5b190da66f356e0db04d39abcc70c604726ff00146d498a6109a4be15429f888';
 
 export const PROFILE_VERSION = 1;
 const integer = value => Number.isSafeInteger(value) && value >= 0;
@@ -117,7 +117,6 @@ export function profilePurchase(input, id, catalogue = CATALOGUE) {
   if (!profile) return rejected('invalid-profile');
   if (!node?.supported) return rejected('unavailable-node');
   if (own(profile.research, id)) return rejected('already-owned');
-  if (profile.kind === 'normal' && node.kind === 'base' && !familyGate(profile, node.power, catalogue).ok) return rejected('family-gate');
   if (!nodePrerequisitesMet(node, key => own(profile.research, key))) return rejected('prerequisite');
   if (profile.kind === 'normal' && profileSummary(profile, catalogue).mastery[node.power] < node.masteryPools) return rejected('mastery');
   if (profile.wallet.seeds < node.seedCost) return rejected('insufficient-seeds');

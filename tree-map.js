@@ -1,42 +1,46 @@
-// Spatial presentation only: catalogue prerequisites and saved research stay authoritative.
-export function treeLayout(powers,nodes,bridges) {
-  // Power branches fan out from family entries; upgrades remain straight chains.
-  const places={Motion:[70,50],Flow:[870,50],Navigation:[70,870],Control:[870,870],Propagation:[650,1690]};
-  const result={width:1660,height:2520,nodes:{},families:{},edges:[],bridges:[]};
-  for(const [family,[x,y]] of Object.entries(places)) {
-    const members=Object.keys(powers).filter(p=>powers[p].family===family).sort((a,b)=>powers[a].tier-powers[b].tier);
-    const width=members.length*124+40,center=x+width/2;
-    const slots=members.map((_,i)=>i).sort((a,b)=>Math.abs(a-(members.length-1)/2)-Math.abs(b-(members.length-1)/2));
-    result.families[family]={name:family,x,y,width,height:790,hub:{x:center,y:y+20},powers:members,starter:members[0]+'.base'};
-    members.forEach((power,index)=>{
-      const px=x+82+slots[index]*124,py=y+138+Math.abs(slots[index]-(members.length-1)/2)*44;
-      ['base','foundation','a','b','capstone'].forEach((kind,i)=>{const id=power+'.'+kind;result.nodes[id]={id,power,kind,family,x:px,y:py+i*112};});
-    });
-  }
-  for(const n of Object.values(nodes))for(const from of n.requires)result.edges.push({from,to:n.id});
-  for(const [to,from] of Object.entries(bridges))if(from)result.bridges.push({from,to});
-  return result;
+// Layout is derived from the same single-parent research graph as purchases.
+export function treeLayout(powers,nodes) {
+ const children=Object.fromEntries(Object.keys(nodes).map(id=>[id,[]]));
+ for(const n of Object.values(nodes))for(const parent of n.requires)children[parent].push(n.id);
+ const roots=Object.values(nodes).filter(n=>!n.requires.length);
+ if(roots.length!==1)throw new Error('Research must have exactly one root');
+ const placed=[],queue=[{power:roots[0].power,x:0,y:0}],seen=new Set();
+ // Place near branches first, then grow outward. Deep descendants must not
+ // pull the first unlock choices off-screen. Reserve each vertical power chain.
+ while(queue.length){
+  const entry=queue.shift();if(seen.has(entry.power))throw new Error('Research is not a tree');seen.add(entry.power);
+  const chain=['base','foundation','a','b','capstone'].map((kind,i)=>({id:entry.power+'.'+kind,power:entry.power,kind,family:powers[entry.power].family,x:entry.x,y:entry.y+i*140}));
+  let offset=0,step=0;
+  while(chain.some(b=>placed.some(a=>Math.abs(a.y-b.y)<130&&Math.abs(a.x-(b.x+offset))<179))){step++;offset=Math.ceil(step/2)*180*(step%2?-1:1);}
+  chain.forEach(n=>{n.x+=offset;placed.push(n);});
+  for(const n of chain)for(const child of children[n.id])if(nodes[child].power!==n.power)queue.push({power:nodes[child].power,x:n.x,y:n.y+140});
+ }
+ if(placed.length!==Object.keys(nodes).length)throw new Error('Disconnected research');
+ const left=Math.min(...placed.map(n=>n.x))-100,right=Math.max(...placed.map(n=>n.x))+100;
+ const result={width:right-left,height:Math.max(...placed.map(n=>n.y))+240,nodes:{},families:{},edges:[],bridges:[],root:roots[0].id};
+ for(const n of placed){n.x-=left;n.y+=90;result.nodes[n.id]=n;}
+ for(const n of Object.values(nodes))for(const from of n.requires)result.edges.push({from,to:n.id});
+ for(const family of new Set(Object.values(powers).map(p=>p.family))){
+  const members=Object.keys(powers).filter(p=>powers[p].family===family),points=placed.filter(n=>n.family===family),x=Math.min(...points.map(n=>n.x))-70,y=Math.min(...points.map(n=>n.y))-60;
+  result.families[family]={name:family,powers:members,starter:members[0]+'.base',x,y,width:Math.max(...points.map(n=>n.x))-x+70,height:Math.max(...points.map(n=>n.y))-y+100};
+ }
+ return result;
 }
 export function researchRoute(nodes,powers,bridges,id) {
-  const route=new Set();
-  function visit(key){
-    if(route.has(key)||!nodes[key])return;
-    route.add(key);const node=nodes[key];
-    for(const prior of node.requires)visit(prior);
-    if(node.kind==='base'&&bridges[powers[node.power].family])visit(bridges[powers[node.power].family]);
-  }
-  visit(id);return route;
+ const route=new Set();
+ function visit(key){if(route.has(key)||!nodes[key])return;route.add(key);for(const parent of nodes[key].requires)visit(parent);}
+ visit(id);return route;
 }
 export function cameraClamp(camera,view,world) {
-  const scale=Math.max(.1,Math.min(1.8,camera.scale)),axis=(offset,viewport,size)=>size*scale<viewport? (viewport-size*scale)/2:Math.max(viewport-size*scale-80,Math.min(80,offset));
+  const scale=Math.max(.05,Math.min(1.8,camera.scale)),axis=(offset,viewport,size)=>size*scale<viewport? (viewport-size*scale)/2:Math.max(viewport-size*scale-80,Math.min(80,offset));
   return {x:axis(camera.x,view.width,world.width),y:axis(camera.y,view.height,world.height),scale};
 }
 export function cameraZoom(camera,scale,anchor) {
-  scale=Math.max(.1,Math.min(1.8,scale));const ratio=scale/camera.scale;
+  scale=Math.max(.05,Math.min(1.8,scale));const ratio=scale/camera.scale;
   return {x:anchor.x-(anchor.x-camera.x)*ratio,y:anchor.y-(anchor.y-camera.y)*ratio,scale};
 }
 export function cameraFit(bounds,view) {
-  const scale=Math.max(.1,Math.min(1.2,(view.width-40)/bounds.width,(view.height-40)/bounds.height));
+  const scale=Math.max(.05,Math.min(1.2,(view.width-40)/bounds.width,(view.height-40)/bounds.height));
   return {x:(view.width-bounds.width*scale)/2-bounds.x*scale,y:(view.height-bounds.height*scale)/2-bounds.y*scale,scale};
 }
 export function nearestMapNode(nodes,id,dx,dy) {
