@@ -40,7 +40,7 @@ const statDescription={
  'Crossing Eddies':'Crossing your trail creates brief swirls, up to two per pluck.',
  'Freeze Reach':'How far the initial frost spreads from its source.',
  'Jelly Speed Limit':'The speed cap for frozen jellies. Lower keeps them slower.',
- 'Player Pressure':'How strongly an already-hit frozen jelly gently pushes you away.',
+ 'Player Pressure':'Push from already-hit frozen jellies. Lower makes threading past them easier.',
  'Frost Spread':'The first two frozen-jelly collisions can frost another jelly each.',
  'Shell Radius':'The size of the player’s bubble shell.',
  'Pressure':'How firmly overlapping jellies are pushed apart by the bubble.',
@@ -143,7 +143,16 @@ export function purchaseComparison(state,id){
 }
 
 const countStats=new Set(['Linked Jellies','Satellites','Side Seeds','Relay Carriers','Strikes','Waves','Magazine','Pellets Per Shot','Wall Bounces']);
+// Direction describes this individual capability, not an overall build rating.
+// Style-only dimensions have no honest best endpoint, so keep their exact values as text.
+const lowerStats=new Set(['Late-Flight Drag','Jelly Speed Limit','Player Pressure','Playback Speed','Wave Interval']);
+const choiceStats=new Set(['Sway Width','Launch Angle','Orbit Time']);
 const numeric=value=>typeof value==='number'?value:/^\d+(?:\.\d+)?(?: s|×|°|%| rad\/s)?$/.test(value)?parseFloat(value):null;
+export function statProgress(value,best,direction){
+ if(value===null||best===null)return null;
+ if(direction==='lower')return best===0?(value===0?1:0):Math.min(1,best/value);
+ return best===0?1:Math.min(1,value/best);
+}
 const ranges=new Map();
 function statRanges(power){
  if(ranges.has(power))return ranges.get(power);
@@ -154,7 +163,9 @@ function statRanges(power){
    if(variants.length===2&&!POWER_TREES[power].compatible)continue;
    const build=[{power,foundation:!!(flags&1),variants,capstone:!!(flags&8)}];
    for(const [label,value] of Object.entries(powerVariables(build,power))){
-     const n=numeric(value);if(n!==null)result[label]=Math.max(result[label]||0,n,String(value).endsWith('%')?100:0);
+     const n=numeric(value);if(n!==null){
+       const range=result[label]||{min:n,max:n};range.min=Math.min(range.min,n);range.max=Math.max(range.max,n);result[label]=range;
+     }
    }
  }
  ranges.set(power,result);return result;
@@ -189,8 +200,10 @@ export function skillStats(state,id){
  const limits=statRanges(node.power);
  const rows=Object.entries(after).map(([label,value])=>{
    const n=numeric(value),previous=before?.[label],previousNumber=previous===undefined?null:numeric(previous);
+   const direction=choiceStats.has(label)?'choice':lowerStats.has(label)?'lower':'higher',range=limits[label],best=range?(direction==='lower'?range.min:range.max):null;
    return {label,description:statDescription[label],before:previous,after:value,changed:!!before&&previous!==value,
-     kind:n===null?'text':countStats.has(label)?'count':'bar',value:n,previous:previousNumber,max:limits[label]||null};
+     kind:n===null||direction==='choice'?'text':countStats.has(label)?'count':'bar',value:n,previous:previousNumber,max:range?.max??null,
+     direction,best,progress:statProgress(n,best,direction),previousProgress:statProgress(previousNumber,best,direction)};
  });
  return {heading,beforeLabel,afterLabel,compare:!!before,rows};
 }

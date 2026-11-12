@@ -1,4 +1,4 @@
-import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=28fa8fb39fbfd2a9b1581a843025c5126fb3ce3f19e0e2b6bd2f98b49eea71a9';
+import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=a7ec07ca23b26147c82a7c9dd5df52af3cd639d7920282181a5c2dcf304a9a54';
 import { RARITIES } from './skill-trait.js?v=bef2df62b29364983801345d0a0318164dfeef5666360b3ce1e2a200ac7acdc0';
 import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=d52c5d94038e35ce5d7e7c1777c85eb886779d384f3e5d743fc8935e0649f609';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute } from './tree-map.js?v=57bec65f45600467b111e9a29bec5acd56889eb8ce270255b67f267386a92efe';
@@ -12,18 +12,18 @@ const button=(action,label,icon='add',extra='')=>`<button type="button" aria-lab
 const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn more Points by clearing pools.','mastery':'Clear 3 pools with this power activated.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
 
 function statVisual(row){
- const value=row.value,before=row.changed?row.previous:value,kept=Math.min(before,value),extent=Math.max(before,value),change=value>before?'gain':'loss';
- const fill=row.kind==='count'?Array.from({length:row.max},(_,i)=>`<i class="${i<kept?'filled':i<extent?'skill-stat-'+change:''}"></i>`).join(''):
-   `<i style="width:${kept/row.max*100}%"></i>${row.changed?`<i class="skill-stat-${change}" style="width:${(extent-kept)/row.max*100}%"></i>`:''}`;
+ const value=row.progress,before=row.changed?row.previousProgress:value,kept=Math.min(before,value),extent=Math.max(before,value),change=value>before?'gain':'loss';
+ const fill=row.kind==='count'?Array.from({length:row.max},(_,i)=>`<i class="${i<Math.round(kept*row.max)?'filled':i<Math.round(extent*row.max)?'skill-stat-'+change:''}"></i>`).join(''):
+   `<i style="width:${kept*100}%"></i>${row.changed?`<i class="skill-stat-${change}" style="width:${(extent-kept)*100}%"></i>`:''}`;
  const bar=`<span class="skill-stat-${row.kind}" aria-hidden="true">${fill}</span>`;
  if(row.kind!=='bar')return bar;
- const partial=value<row.max,formatted=String(row.after),maximum=String(row.after).replace(/^[\d.]+/,String(row.max));
- return `<span class="sr-only">Maximum: ${escape(maximum)}</span><span class="skill-stat-meter" aria-hidden="true"><span class="skill-stat-labels ${partial&&value/row.max>.75?'is-tight':''}" style="--fill:${value/row.max*100}%;--value-width:${formatted.length+.5}ch">${partial?`<span class="skill-stat-endpoint">${escape(formatted)}</span>`:''}<span class="skill-stat-max">Max ${escape(maximum)}</span></span>${bar}</span>`;
+ const partial=value<1,formatted=String(row.after),best=String(row.after).replace(/^[\d.]+/,String(row.best));
+ return `<span class="sr-only">${row.direction==='lower'?'Lower':'Higher'} is better. Best: ${escape(best)}</span><span class="skill-stat-meter" aria-hidden="true"><span class="skill-stat-labels ${partial&&value>.75?'is-tight':''} ${row.changed?'is-'+change:''}" style="--fill:${value*100}%;--value-width:${formatted.length+.5}ch">${partial?`<span class="skill-stat-endpoint">${escape(formatted)}</span>`:''}<span class="skill-stat-max">Best ${escape(best)}</span></span>${bar}</span>`;
 }
 export function skillStatsHTML(stats){
  const changed=stats.rows.filter(r=>r.changed&&r.kind!=='text');
- const legend=changed.length?`<p class="skill-stat-change-key">${changed.some(r=>r.value>r.previous)?'<span><i class="skill-stat-gain" aria-hidden="true"></i>Increase</span>':''}${changed.some(r=>r.value<r.previous)?'<span><i class="skill-stat-loss" aria-hidden="true"></i>Decrease</span>':''}</p>`:'';
- return `<section class="skill-stats" aria-label="${escape(stats.heading)}"><h4>${escape(stats.heading)}</h4>${stats.compare?`<p class="skill-stat-key"><span>${escape(stats.beforeLabel)}</span><span aria-hidden="true">→</span><span>${escape(stats.afterLabel)}</span></p>`:''}${legend}<dl>${stats.rows.map(row=>`<div class="skill-stat ${row.changed?'is-changed':''}"><dt>${escape(row.label)}</dt><dd>${row.changed?`<span class="skill-stat-before">${escape(row.before)}</span><span aria-hidden="true"> → </span><span class="sr-only"> to </span>`:''}<strong>${escape(row.after)}</strong></dd><dd class="skill-stat-description">${escape(row.description)}</dd>${row.kind!=='text'?`<dd class="skill-stat-visual">${statVisual(row)}</dd>`:''}</div>`).join('')}</dl>${stats.rows.some(r=>r.kind==='bar')?'<p class="skill-stat-note">Bar scale: this power’s upgrade range.</p>':''}</section>`;
+ const legend=changed.length?`<p class="skill-stat-change-key">${changed.some(r=>r.progress>r.previousProgress)?'<span><i class="skill-stat-gain" aria-hidden="true"></i>Improvement</span>':''}${changed.some(r=>r.progress<r.previousProgress)?'<span><i class="skill-stat-loss" aria-hidden="true"></i>Tradeoff</span>':''}</p>`:'';
+ return `<section class="skill-stats" aria-label="${escape(stats.heading)}"><h4>${escape(stats.heading)}</h4>${stats.compare?`<p class="skill-stat-key"><span>${escape(stats.beforeLabel)}</span><span aria-hidden="true">→</span><span>${escape(stats.afterLabel)}</span></p>`:''}${legend}<dl>${stats.rows.map(row=>`<div class="skill-stat ${row.changed?'is-changed':''}" data-change="${row.changed&&row.kind!=='text'?(row.progress>row.previousProgress?'gain':'loss'):'none'}"><dt>${escape(row.label)}</dt><dd>${row.changed?`<span class="skill-stat-before">${escape(row.before)}</span><span aria-hidden="true"> → </span><span class="sr-only"> to </span>`:''}<strong>${escape(row.after)}</strong></dd><dd class="skill-stat-description">${escape(row.description)}</dd>${row.kind!=='text'?`<dd class="skill-stat-visual">${statVisual(row)}</dd>`:''}</div>`).join('')}</dl>${stats.rows.some(r=>r.kind==='bar')?'<p class="skill-stat-note">Full bar = best value for this stat. Styles can trade strengths.</p>':''}</section>`;
 }
 
 // Explain the same gate used by purchases, beside the affected power.
