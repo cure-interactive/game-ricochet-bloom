@@ -1,5 +1,7 @@
 # Sound, Settings & Saves
 
+Pause offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skill Tree and Player Skins from the Main Menu.
+
 ## Audio
 
 Settings → Audio contains the sound toggle, master volume and ambience volume. Both volume sliders start at 100%. Lower ambience to hear the contact and jelly sounds more prominently. Sound Check plays a short cue at your current sound and volume settings.
@@ -7,6 +9,8 @@ Settings → Audio contains the sound toggle, master volume and ambience volume.
 Audio begins after an interaction with the game. Leaving the page pauses the game and its sound; use Resume when you return. The music panel offers Glass, Velvet and Wood instrument palettes.
 
 ## Accessibility and Display
+
+An available unchecked setting has a bright solid outline; checked settings are mint. Disabled unchecked controls have a muted dashed outline. A disabled checked control retains its gray check, so its stored selection stays clear. Disabled controls cannot be changed until their requirement is met.
 
 Show on-screen controls adds shot-control buttons and skill-tree camera controls. It is off by default; touch gestures and keyboard controls remain available.
 

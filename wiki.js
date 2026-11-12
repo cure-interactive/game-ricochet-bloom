@@ -8,7 +8,7 @@ export const WIKI_PAGES = Object.freeze({
   campaign: { title: 'Campaign', url: './wiki/campaign.md?v=15b287b1ecd2c3f5b3ae723d422b398e91f8bbd68024c04e0c80f8f03785b840' },
   'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=9803016c0c3163965e48d2188eadfe8b7f248245f928220c5ede71224f7a3984' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=5394df77188d0533ce46eee9efd4168a82f1004672b6dce9ea97434c42c84abb' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=942d140caebba8debee69b0eb50ebefd23be7c1aea2948eb170d020d2d0e890d' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=e76497cb5c107e468a1a35ddb8dedad95f6b2934596ab6b22cb8f8162f2942d0' }
 });
 const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const headingID = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

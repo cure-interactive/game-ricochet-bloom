@@ -1,5 +1,5 @@
 import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
-import { wikiMount } from './wiki.js?v=f78f6223b5465b001b99cebacda450315d376d55863516c0e5b254b2d0de0e02';
+import { wikiMount } from './wiki.js?v=27869399a4ba5184aea527dc44d489862cb9cae1ca9cbcd3e4490547b229008b';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
 import { POOL_NAMES } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543efa29e2eada2632f613b604';
 import { freePlaySync } from './free-play.js?v=82b9dd49d40715d2e16e8af8a566a100c23026916c8966636a3c61483f8d3a01';
@@ -654,8 +654,6 @@ $('pause-home').onclick=()=>navigation.home();
 $('menu-resume').onclick=()=>start();
 $('menu-dialog').querySelector('[data-close]').onclick=()=>start();
 $('menu-dialog').addEventListener('cancel',event=>{event.preventDefault();start();});
-$('menu-tree').onclick=()=>progression.tree();
-$('menu-skins').onclick=()=>progression.skins();
 $('menu-wiki').onclick=()=>wiki.open();
 $('menu-help').onclick=()=>wiki.open('how-to-play');
 $('menu-settings').onclick=()=>$('settings-dialog').showModal();
