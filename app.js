@@ -1,8 +1,8 @@
 import { freePlaySync } from './free-play.js?v=d66ea1aff5ba420681bf27a69c5dcf46377b764cfa2025bcff59d462e8695cd1';
 import { fullscreenMount } from './fullscreen.js?v=2c3119f8c834c71afef28339288e1d4d71b96164e260d16f903a6c0fbd0ee41f';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=b4bc15bbf58f927ad94758fd2d612d420b846fb99ce63a387fd8fee8ef32c505';
-import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
+import { gameMenuMount } from './game-menu.js?v=4561b2eb18a4d41e6cadab6d545f6371e469077d68c88c965dfcf102ad22384e';
+import { environmentRender, regionFrozen } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
 import { progressionMount } from './progression-ui.js?v=624e63353be65bea950ff3427a3e75cc3b9e048f284db47a195aa150a403f4ed';
 import {assetURL} from './asset.js?v=2b159e067962ab466dfde3d9f305e802c92bc5b4183b6ffe9932dbb398b20746';
@@ -637,7 +637,7 @@ navigation=gameMenuMount({
   suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},
   resume:start,
   freePlay,
-  info(){const s=progression.state,active=s.phase!=='shop';return {resume:active?'Continue Song Run':null,detail:active?`${trackGet(s.track).name} · Pool ${Math.min(5,s.pool+(s.phase==='interlude'?2:1))} of 5`:`${s.profile.wallet.seeds} Points · Research grows between runs`};},
+  info(){return {resume:progression.state.phase!=='shop'?'Continue Song Run':null};},
   continue(){if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
   open(screen){if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign();else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='help')$('help-dialog').showModal();else $('settings-dialog').showModal();}
 });
