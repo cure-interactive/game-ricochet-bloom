@@ -128,7 +128,7 @@ export function treeMount(controller){
  function render(){
    hideTooltip();
    dialog.querySelector('.tree-wallet-summary').innerHTML=`<strong>${iconHTML('coin')}${state.profile.wallet.seeds}<span> Points</span></strong>`;
-   const showAll=controller.showAllSkills?.(),nodes=visibleResearch(state,showAll),byId=Object.fromEntries(nodes.map(n=>[n.id,n])),previous=layout.nodes[selected];
+   const showAll=controller.showHiddenContent?.(),nodes=visibleResearch(state,showAll),byId=Object.fromEntries(nodes.map(n=>[n.id,n])),previous=layout.nodes[selected];
    layout=showAll?fullLayout:researchLayout(POWER_TREES,nodes);
    visiblePositions=Object.fromEntries(nodes.map(n=>[n.id,layout.nodes[n.id]]));
    if(!byId[selected])selected=byId[layout.root]?layout.root:(nodes[0]?.id||layout.root);

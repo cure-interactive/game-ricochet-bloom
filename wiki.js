@@ -5,10 +5,10 @@ export const WIKI_PAGES = Object.freeze({
   contents: { title: 'Contents', url: './wiki/contents.md?v=dd3a6a33100720622f2d503ea0150468e640624b951417644747f3a6c0b53152' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=50eeb499e8ba7e3898c011480b7dd17f58f7c5454e8c7a8760f58fc5f34dfea5' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=1f7e952790505b01a3ad6df6c1e6964ba663e7bc139a2c607849df207f3df982' },
-  campaign: { title: 'Campaign', url: './wiki/campaign.md?v=6ba94d403093419fdc65598c7114d2b660cc85e8bca641aad88c4857830b84e2' },
-  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=227942fbda9b0c86a72db6b57943649337beac9da195c30818f42d6506cf130c' },
+  campaign: { title: 'Campaign', url: './wiki/campaign.md?v=15b287b1ecd2c3f5b3ae723d422b398e91f8bbd68024c04e0c80f8f03785b840' },
+  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=b9b85d1560f236bbb69ba11fb02ccad7b4be54da0ba33560a168d90c2185ec11' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=5394df77188d0533ce46eee9efd4168a82f1004672b6dce9ea97434c42c84abb' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=06d5255c723e8f630f34bf482d5936a552f7a72bbaecd8bc477c35ee14cccd18' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=942d140caebba8debee69b0eb50ebefd23be7c1aea2948eb170d020d2d0e890d' }
 });
 const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const headingID = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

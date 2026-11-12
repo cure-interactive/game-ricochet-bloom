@@ -1,11 +1,11 @@
 import { TRACKS } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
-import { completedTracks } from './run.js?v=6a19c662694ec547e86de13f3dce16b78524a1f4c32b95ee0a901850675bb8e3';
+import { completedTracks, unlockedTracks } from './run.js?v=6a19c662694ec547e86de13f3dce16b78524a1f4c32b95ee0a901850675bb8e3';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const skins=[{id:'original',name:'Original',color:'#f1f9d7'},...TRACKS];
-export function skinOptions(state){
-  const unlocked=new Set(['original',...completedTracks(state)]);
-  return skins.map(skin=>({...skin,owned:unlocked.has(skin.id),equipped:state.skin===skin.id}));
+export function skinOptions(state,showHidden=false){
+  const unlocked=new Set(['original',...completedTracks(state)]),visible=new Set(['original',...unlockedTracks(state).map(t=>t.id)]);
+  return skins.filter(skin=>showHidden||visible.has(skin.id)).map(skin=>({...skin,owned:unlocked.has(skin.id),equipped:state.skin===skin.id}));
 }
 export function skinSelection(state,id,enabled){
   const skin=skinOptions(state).find(s=>s.id===id);
@@ -19,7 +19,8 @@ export function skinMount(controller){
   document.body.append(dialog);
   const scroll=dialog.querySelector('.skin-scroll'),detail=dialog.querySelector('.skin-detail'),status=dialog.querySelector('.skin-status'),back=dialog.querySelector('[data-skin-back]');
   function render(){
-    const options=skinOptions(controller.get()),skin=options.find(s=>s.id===selected);
+    const options=skinOptions(controller.get(),controller.showHiddenContent?.()),skin=options.find(s=>s.id===selected);
+    if(selected&&!skin)selected=null;
     dialog.querySelector('.skin-grid').innerHTML=options.map(skin=>`<button type="button" class="skin-choice ${skin.equipped?'is-equipped':''} ${skin.owned?'':'is-locked'}" data-player-skin="${skin.id}" style="--skin-color:${skin.color}" aria-label="View ${skin.name}, ${skin.equipped?'Equipped':skin.owned?'Unlocked':'Locked'}"><span class="skin-preview" aria-hidden="true"><i></i></span><strong>${skin.name}</strong><span class="skin-choice-state">${iconHTML(skin.equipped?'check':skin.owned?'lock-open':'lock')}${skin.equipped?'Equipped':skin.owned?'Unlocked':'Locked'}</span></button>`).join('');
     dialog.querySelector('.skin-library').hidden=!!skin;detail.hidden=!skin;scroll.classList.toggle('is-detail',!!skin);
     dialog.querySelector('#skin-title').textContent=skin?skin.name:'Player Skins';back.setAttribute('aria-label',skin?'Back to Player Skins':'Back');
@@ -44,5 +45,5 @@ export function skinMount(controller){
     status.textContent=result.ok?`${skins.find(s=>s.id===action.skin).name} equipped.`:result.reason;
     const toggle=dialog.querySelector('#skin-use');(toggle.disabled?back:toggle).focus({preventScroll:true});
   });
-  return {open(){selected=null;libraryScroll=0;controller.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());render();status.textContent='';dialog.showModal();scroll.scrollTop=0;back.focus({preventScroll:true});}};
+  return {refresh(){if(dialog.open)render();},open(){selected=null;libraryScroll=0;controller.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());render();status.textContent='';dialog.showModal();scroll.scrollTop=0;back.focus({preventScroll:true});}};
 }
