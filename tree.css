@@ -270,3 +270,19 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .skill-tooltip-action>p{font-size:12px;line-height:1.4;margin:8px 0 0;color:#bed2dc}
 #tree-dialog .skill-tooltip-action>.primary{width:100%;margin:0;min-height:44px}
 #tree-dialog .skill-node.is-unavailable{opacity:.45;filter:saturate(.55)}
+
+/* Curves explain response over distance/time; they are not better/worse meters. */
+.skill-curve{margin:3px 0 0;min-width:0;padding:8px 8px 7px;border:1px solid #a8c9d526;border-radius:10px;background:#8cbbca08}
+.skill-curve svg{display:block;width:100%;height:auto;overflow:visible}
+.skill-curve svg text{fill:#b8ccd5;font-family:inherit;font-size:10px;font-variant-numeric:tabular-nums}
+.skill-curve svg .skill-curve-axis-title{fill:#d3e4ec;font-size:10px}
+.skill-curve path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.skill-curve-grid{stroke:#a8c9d518;stroke-width:1}
+.skill-curve-axis{stroke:#a8c9d549;stroke-width:1}
+.skill-curve-before{stroke:#b6c3d0;stroke-width:2;stroke-dasharray:4 4}
+.skill-curve-after{stroke:#b4f2d8;stroke-width:2.5}
+.skill-curve figcaption{display:flex;gap:12px;flex-wrap:wrap;margin:5px 0 0;font-size:10px;color:#c9dce3}
+.skill-curve figcaption span{display:inline-flex;align-items:center;gap:5px}
+.skill-curve figcaption span::before{content:"";width:18px;border-top:2px solid #b4f2d8}
+.skill-curve figcaption .skill-curve-current::before{border-color:#b6c3d0;border-top-style:dashed}
+.skill-curve p{margin:6px 0 0;color:#a7bec8;font-size:10px;line-height:1.4}

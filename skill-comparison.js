@@ -1,7 +1,8 @@
-import { skillConfig } from './skill-effect.js?v=5ff4cafca9c6bb8adee62961b5c6e07969e5a02e614b94bac8b4873b068d1e23';
+import { skillCurve } from './skill-curve.js?v=a372ff5d7dc840bd44022403579c42219188803e2dcf4d44fb0c62a60774482b';
+import { skillConfig } from './skill-effect.js?v=6783470d52e0982bd5d187dc8b0d26a9815b787acc3c581f5c2bd0321ccc393d';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
 import { profilePurchase, unlockedResolve } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';
-import { GAME_CATALOGUE as cat } from './run.js?v=6a19c662694ec547e86de13f3dce16b78524a1f4c32b95ee0a901850675bb8e3';
+import { GAME_CATALOGUE as cat } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543efa29e2eada2632f613b604';
 
 const on=value=>value?'On':'Off';
 const number=value=>Number(value.toFixed(2));
@@ -177,6 +178,7 @@ export function skillStats(state,id){
  const node=cat.nodes[id];if(!node)return null;
  const current=unlockedResolve(state.profile,state,cat);if(!current.ok)return null;
  const owned=Object.hasOwn(state.profile.research,id),active=node.kind==='base'?owned:current.equipped.includes(id);
+ let beforeBuild=null,afterBuild=current.powers;
  let before=null,after=powerVariables(current.powers,node.power),heading='Current Power',beforeLabel='Current',afterLabel='With Upgrade';
  if(!active){
    const profile=structuredClone(state.profile);let missing=false;
@@ -188,20 +190,21 @@ export function skillStats(state,id){
    }
    for(const parent of node.requires)prerequisite(parent);
    const prior=unlockedResolve(profile,state,cat);
-   before=powerVariables(prior.powers,node.power);
+   beforeBuild=prior.powers;before=powerVariables(beforeBuild,node.power);
    profile.research[id]??={paid:0};
    const selections={borrowed:state.borrowed,equipped:node.kind==='base'?state.equipped:[...state.equipped.filter(key=>key!==id&&!node.conflicts.includes(key)),id]};
-   after=powerVariables(unlockedResolve(profile,selections,cat).powers,node.power);
+   afterBuild=unlockedResolve(profile,selections,cat).powers;
+   after=powerVariables(afterBuild,node.power);
    if(node.kind==='base'){heading='On Unlock';afterLabel='On Unlock';}
    else if(missing){heading='Upgrade Preview';beforeLabel='Prerequisites';}
    else if(owned){heading='Style Preview';afterLabel='With Style';}
    else heading='Upgrade Preview';
  }
- const limits=statRanges(node.power);
+ const limits=statRanges(node.power),curve=skillCurve(node.power,beforeBuild,afterBuild,{before:beforeLabel,after:afterLabel});
  const rows=Object.entries(after).map(([label,value])=>{
    const n=numeric(value),previous=before?.[label],previousNumber=previous===undefined?null:numeric(previous);
    const direction=choiceStats.has(label)?'choice':lowerStats.has(label)?'lower':'higher',range=limits[label],best=range?(direction==='lower'?range.min:range.max):null;
-   return {label,description:statDescription[label],before:previous,after:value,changed:!!before&&previous!==value,
+   return {label,description:statDescription[label],before:previous,after:value,changed:!!before&&previous!==value,curve:curve?.label===label?curve:null,
      kind:n===null||direction==='choice'?'text':countStats.has(label)?'count':'bar',value:n,previous:previousNumber,max:range?.max??null,
      direction,best,progress:statProgress(n,best,direction),previousProgress:statProgress(previousNumber,best,direction)};
  });

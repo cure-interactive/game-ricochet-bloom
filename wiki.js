@@ -6,7 +6,7 @@ export const WIKI_PAGES = Object.freeze({
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=50eeb499e8ba7e3898c011480b7dd17f58f7c5454e8c7a8760f58fc5f34dfea5' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=1f7e952790505b01a3ad6df6c1e6964ba663e7bc139a2c607849df207f3df982' },
   campaign: { title: 'Campaign', url: './wiki/campaign.md?v=15b287b1ecd2c3f5b3ae723d422b398e91f8bbd68024c04e0c80f8f03785b840' },
-  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=9ad127649347930620455bc3d2fad4b988f6408909ee0a83585643df463302b2' },
+  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=1e70fe7ca5ebf088eb502c8d125d97db711caa6a3d5e501e7bac430496a05cde' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=5394df77188d0533ce46eee9efd4168a82f1004672b6dce9ea97434c42c84abb' },
   settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=942d140caebba8debee69b0eb50ebefd23be7c1aea2948eb170d020d2d0e890d' }
 });

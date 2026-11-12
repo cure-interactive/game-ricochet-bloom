@@ -1,15 +1,23 @@
-import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=a7ec07ca23b26147c82a7c9dd5df52af3cd639d7920282181a5c2dcf304a9a54';
+import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=19ce469d6be377b6c51233d260483029ce8f87096f3613c7e539c059c848c4fd';
 import { RARITIES } from './skill-trait.js?v=bef2df62b29364983801345d0a0318164dfeef5666360b3ce1e2a200ac7acdc0';
 import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=d52c5d94038e35ce5d7e7c1777c85eb886779d384f3e5d743fc8935e0649f609';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
 import { profilePurchase, profileSummary } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';
-import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=6a19c662694ec547e86de13f3dce16b78524a1f4c32b95ee0a901850675bb8e3';
+import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543efa29e2eada2632f613b604';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const button=(action,label,icon='add',extra='')=>`<button type="button" aria-label="${escape(label)}" data-tree-action="${action}" ${extra}>${iconHTML(icon)}<span>${label}</span></button>`;
 const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn more Points by clearing pools.','mastery':'Clear 3 pools with this power activated.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
+
+function statCurveHTML(curve,stats){
+ const left=32,right=270,top=22,bottom=112;
+ const x=v=>left+v/curve.xMax*(right-left),y=v=>bottom-(v-curve.yMin)/(curve.yMax-curve.yMin)*(bottom-top);
+ const path=points=>points.map(([a,b],i)=>`${i?'L':'M'}${x(a).toFixed(2)},${y(b).toFixed(2)}`).join(' ');
+ const zero=y(0),caption=curve.changed?`<span class="skill-curve-current">${escape(stats.beforeLabel)}</span><span class="skill-curve-upgrade">${escape(stats.afterLabel)}</span>`:'<span class="skill-curve-value">'+escape(stats.compare?stats.afterLabel:stats.heading)+'</span>';
+ return `<figure class="skill-curve"><svg viewBox="0 0 280 148" role="img" aria-label="${escape(curve.summary)}"><text class="skill-curve-axis-title" x="32" y="11">${escape(curve.yLabel)}</text><path class="skill-curve-grid" d="M32 22H270 M32 67H270 M32 112H270"/><path class="skill-curve-axis" d="M32 22V112H270 M32 ${zero}H270"/><text x="26" y="26" text-anchor="end">${curve.yMax}</text><text x="26" y="115" text-anchor="end">${curve.yMin}</text>${curve.yMin<0?`<text x="26" y="${zero+4}" text-anchor="end">0</text>`:''}${curve.previous?`<path class="skill-curve-before" d="${path(curve.previous)}"/>`:''}<path class="skill-curve-after" d="${path(curve.points)}"/><text x="32" y="127">0</text><text x="270" y="127" text-anchor="end">${escape(curve.xEnd)}</text><text x="151" y="144" text-anchor="middle">${escape(curve.xLabel)}</text></svg><figcaption>${caption}</figcaption><p>${escape(curve.note)}</p></figure>`;
+}
 
 function statVisual(row){
  const value=row.progress,before=row.changed?row.previousProgress:value,kept=Math.min(before,value),extent=Math.max(before,value),change=value>before?'gain':'loss';
@@ -21,9 +29,9 @@ function statVisual(row){
  return `<span class="sr-only">${row.direction==='lower'?'Lower':'Higher'} is better. Best: ${escape(best)}</span><span class="skill-stat-meter" aria-hidden="true"><span class="skill-stat-labels ${partial&&value>.75?'is-tight':''} ${row.changed?'is-'+change:''}" style="--fill:${value*100}%;--value-width:${formatted.length+.5}ch">${partial?`<span class="skill-stat-endpoint">${escape(formatted)}</span>`:''}<span class="skill-stat-max">Best ${escape(best)}</span></span>${bar}</span>`;
 }
 export function skillStatsHTML(stats){
- const changed=stats.rows.filter(r=>r.changed&&r.kind!=='text');
+ const changed=stats.rows.filter(r=>r.changed&&r.kind!=='text'&&!r.curve);
  const legend=changed.length?`<p class="skill-stat-change-key">${changed.some(r=>r.progress>r.previousProgress)?'<span><i class="skill-stat-gain" aria-hidden="true"></i>Improvement</span>':''}${changed.some(r=>r.progress<r.previousProgress)?'<span><i class="skill-stat-loss" aria-hidden="true"></i>Tradeoff</span>':''}</p>`:'';
- return `<section class="skill-stats" aria-label="${escape(stats.heading)}"><h4>${escape(stats.heading)}</h4>${stats.compare?`<p class="skill-stat-key"><span>${escape(stats.beforeLabel)}</span><span aria-hidden="true">→</span><span>${escape(stats.afterLabel)}</span></p>`:''}${legend}<dl>${stats.rows.map(row=>`<div class="skill-stat ${row.changed?'is-changed':''}" data-change="${row.changed&&row.kind!=='text'?(row.progress>row.previousProgress?'gain':'loss'):'none'}"><dt>${escape(row.label)}</dt><dd>${row.changed?`<span class="skill-stat-before">${escape(row.before)}</span><span aria-hidden="true"> → </span><span class="sr-only"> to </span>`:''}<strong>${escape(row.after)}</strong></dd><dd class="skill-stat-description">${escape(row.description)}</dd>${row.kind!=='text'?`<dd class="skill-stat-visual">${statVisual(row)}</dd>`:''}</div>`).join('')}</dl>${stats.rows.some(r=>r.kind==='bar')?'<p class="skill-stat-note">Full bar = best value for this stat. Styles can trade strengths.</p>':''}</section>`;
+ return `<section class="skill-stats" aria-label="${escape(stats.heading)}"><h4>${escape(stats.heading)}</h4>${stats.compare?`<p class="skill-stat-key"><span>${escape(stats.beforeLabel)}</span><span aria-hidden="true">→</span><span>${escape(stats.afterLabel)}</span></p>`:''}${legend}<dl>${stats.rows.map(row=>`<div class="skill-stat ${row.changed?'is-changed':''}" data-change="${row.changed&&row.kind!=='text'?(row.progress>row.previousProgress?'gain':'loss'):'none'}"><dt>${escape(row.label)}</dt><dd>${row.changed?`<span class="skill-stat-before">${escape(row.before)}</span><span aria-hidden="true"> → </span><span class="sr-only"> to </span>`:''}<strong>${escape(row.after)}</strong></dd><dd class="skill-stat-description">${escape(row.description)}</dd>${row.curve?`<dd class="skill-stat-visual">${statCurveHTML(row.curve,stats)}</dd>`:row.kind!=='text'?`<dd class="skill-stat-visual">${statVisual(row)}</dd>`:''}</div>`).join('')}</dl>${stats.rows.some(r=>r.kind==='bar'&&!r.curve)?'<p class="skill-stat-note">Full bar = best value for this stat. Styles can trade strengths.</p>':''}</section>`;
 }
 
 // Explain the same gate used by purchases, beside the affected power.

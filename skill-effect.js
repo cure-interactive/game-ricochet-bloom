@@ -1,3 +1,4 @@
+import { waveFalloff, waveRadial } from './power-response.js?v=53b3f123d0f0c05341a1eb30cbf1c20f19b251c6a7e30ff0cc4921ddfff73338';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
 
 // Resolved configuration belongs to physics; profile ownership stays outside it.
@@ -43,9 +44,8 @@ const limit=b=>{const v=Math.hypot(b.vx,b.vy);if(v>1600){b.vx*=1600/v;b.vy*=1600
 export function pressure(state,x,y,radius,strength,kind='ripple',shape={}) {
   for(const b of state.bodies.slice(1)) {
     const dx=b.x-x,dy=b.y-y,d=Math.hypot(dx,dy);if(d<1||d>=radius)continue;
-    let force=strength*(shape.a?(1-d/radius)**2:shape.b?1-Math.sqrt(d/radius):1-(d/radius)**2);
-    let radial=kind==='attract'?-1:kind==='vortex'?(shape.a?-.45:shape.b?.45:0):1;
-    if(kind==='attract'&&shape.b)radial=d<radius*.48?1:-1;
+    let force=strength*waveFalloff(d,radius,shape);
+    const radial=waveRadial(kind,d,radius,shape);
     if(kind==='attract'&&shape.a&&d<b.radius+30)force=0;
     b.vx+=(dx/d*radial+(kind==='vortex'?-dy/d:0))*force;b.vy+=(dy/d*radial+(kind==='vortex'?dx/d:0))*force;limit(b);
   }

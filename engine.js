@@ -1,9 +1,10 @@
+import { DRUNK_SECONDS, drunkSway, overlapResponse, magnetResponse } from './power-response.js?v=53b3f123d0f0c05341a1eb30cbf1c20f19b251c6a7e30ff0cc4921ddfff73338';
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 import { jellyRole } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=5ff4cafca9c6bb8adee62961b5c6e07969e5a02e614b94bac8b4873b068d1e23';
-export { skillFlags } from './skill-effect.js?v=5ff4cafca9c6bb8adee62961b5c6e07969e5a02e614b94bac8b4873b068d1e23';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=6783470d52e0982bd5d187dc8b0d26a9815b787acc3c581f5c2bd0321ccc393d';
+export { skillFlags } from './skill-effect.js?v=6783470d52e0982bd5d187dc8b0d26a9815b787acc3c581f5c2bd0321ccc393d';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
-export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
+export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: DRUNK_SECONDS, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
 export function seedHash(seed) { let hash = 2166136261; for (const char of String(seed)) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619); return hash >>> 0 || 1; }
 export const POWERS = Object.freeze({
@@ -221,9 +222,7 @@ function effectStep(state, events) {
   }
   if (effect.kind === 'drunk') {
     // Integrate a bounded heading offset, preserving speed and deterministic saves.
-    const sway = t => Math.sin(Math.PI * Math.min(1, t / .3) / 2) * Math.sin(Math.PI * Math.min(1, (RULE.drunkSeconds - t) / .6) / 2)
-      * config.swayScale*(.68 * Math.sin(t * Math.PI * 2 / (!config.legacy&&config.foundation?.75:config.b?1.6:1.2)) + .16 * Math.sin(t * Math.PI * 2 / (!config.legacy&&config.foundation?1.5:config.b?1:.7)));
-    const turn = sway(RULE.drunkSeconds - effect.seconds) - sway(RULE.drunkSeconds - previousSeconds);
+    const turn = drunkSway(RULE.drunkSeconds - effect.seconds,config) - drunkSway(RULE.drunkSeconds - previousSeconds,config);
     const cos = Math.cos(turn), sin = Math.sin(turn);
     for (const body of [seed, ...(effectGet(state, 'split')?.shards || [])]) {
       if (body.id === 0 && effectGet(state, 'slingshot')) continue;
@@ -247,7 +246,7 @@ function effectStep(state, events) {
       if (gap >= nearest || distance < .001 || dx * vx + dy * vy < -body.radius * Math.hypot(vx, vy)) continue;
       nearest = gap;
       const proximity = 1 - gap / skillConfig(state,'echo').leash;
-      const reach = Math.min(distance, skillConfig(state,'echo').leash * .75) * proximity * proximity * (3 - 2 * proximity);
+      const reach = Math.min(distance, skillConfig(state,'echo').leash * .75) * overlapResponse(proximity);
       seekX = dx / distance * reach; seekY = dy / distance * reach;
     }
     for (const [axis, velocity, speed] of [['x', 'vx', vx], ['y', 'vy', vy]]) {
@@ -281,7 +280,7 @@ function effectStep(state, events) {
       const body = state.bodies[id], dx = seed.x - body.x, dy = seed.y - body.y, distance = Math.hypot(dx, dy);
       const proximity = Math.min(1, Math.max(0, distance - seed.radius - body.radius) / 180);
       if (distance > .001) {
-        const pull = config.pull * proximity * proximity * (3 - 2 * proximity) * RULE.step;
+        const pull = config.pull * overlapResponse(proximity) * RULE.step;
         body.vx += dx / distance * pull; body.vy += dy / distance * pull; velocityLimit(body);
       }
     }
@@ -304,7 +303,7 @@ function effectStep(state, events) {
       if (state.chain.includes(body.id)) continue;
       const dx = seed.x - body.x, dy = seed.y - body.y, distance = Math.hypot(dx, dy);
       if (distance > seed.radius + body.radius && distance < config.reach) {
-        const force = config.force * (1 - .5 * distance / config.reach) * RULE.step;
+        const force = config.force * magnetResponse(distance,config.reach) * RULE.step;
         body.vx += dx / distance * force; body.vy += dy / distance * force; velocityLimit(body);
       }
     }
@@ -529,7 +528,7 @@ export function physicsStep(state) {
     const isBubble = a.id === 0 && state.isFlying && (!!effectGet(state, 'bubble') || marker?.kind === 'bubble');
     const isPermeable = a.id <= 0 && frozenHit(state, b.id);
     if (isPermeable && !isBubble && pass === 0) {
-      const depth = 1 - distance / target, pressure = 2200 * skillConfig(state,'stasis').pressure * depth * depth * (3 - 2 * depth) * dt;
+      const depth = 1 - distance / target, pressure = 2200 * skillConfig(state,'stasis').pressure * overlapResponse(depth) * dt;
       const incomingX = a.vx, incomingY = a.vy, incomingSpeed = Math.hypot(incomingX, incomingY);
       a.vx -= nx * pressure; a.vy -= ny * pressure;
       const speed = Math.hypot(a.vx, a.vy);
@@ -546,7 +545,7 @@ export function physicsStep(state) {
     if (isBubble && pass === 0) {
       const width = Math.max(RULE.seedRadius, a.radius - (effectGet(state, 'split') ? 10 : RULE.seedRadius));
       const depth = Math.min(1, (target - distance) / width);
-      const pressure = 2400 * skillConfig(state,'bubble').pressure * depth * depth * (3 - 2 * depth) * dt * (effectGet(state, 'impact') ? 1.8 : 1);
+      const pressure = 2400 * skillConfig(state,'bubble').pressure * overlapResponse(depth) * dt * (effectGet(state, 'impact') ? 1.8 : 1);
       b.vx += nx * pressure; b.vy += ny * pressure; velocityLimit(b);
       // A light reaction bends/slows the player gradually instead of ricocheting.
       a.vx -= nx * pressure * .18; a.vy -= ny * pressure * .18; velocityLimit(a);
