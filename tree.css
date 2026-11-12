@@ -223,6 +223,8 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .skill-tooltip-heading h3{font-size:17px;line-height:1.2;margin:0}
 #tree-dialog .skill-tooltip-heading button{flex:none;width:44px;min-height:44px;padding:10px;background:transparent;border:0}
 .skill-tooltip-heading button span:last-child{display:none}
+.skill-type-pill{display:inline-flex;align-items:center;gap:6px;max-width:100%;box-sizing:border-box;margin:3px 0 9px;padding:3px 9px;border:1px solid #aac5d044;border-radius:999px;background:#a8c9d515;color:#d3e4ec;font-size:11px;line-height:18px}
+.skill-type-pill .type-icon{width:16px;height:16px;flex:none}
 .skill-tooltip>p{font-size:13px;line-height:1.45;margin:4px 0 12px}
 .skill-stats{margin:12px 0 16px}
 .skill-stats h4{font-size:12px;color:#bed2dc;margin:0 0 8px}

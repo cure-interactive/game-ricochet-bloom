@@ -1,6 +1,6 @@
 import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=28fa8fb39fbfd2a9b1581a843025c5126fb3ce3f19e0e2b6bd2f98b49eea71a9';
 import { RARITIES } from './skill-trait.js?v=bef2df62b29364983801345d0a0318164dfeef5666360b3ce1e2a200ac7acdc0';
-import { skillIconHTML, rarityIconHTML } from './skill-icon.js?v=d52c5d94038e35ce5d7e7c1777c85eb886779d384f3e5d743fc8935e0649f609';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=d52c5d94038e35ce5d7e7c1777c85eb886779d384f3e5d743fc8935e0649f609';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute } from './tree-map.js?v=57bec65f45600467b111e9a29bec5acd56889eb8ce270255b67f267386a92efe';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
 import { profilePurchase, profileSummary } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';
@@ -68,7 +68,7 @@ export function powerGraph(state,power){
 export function skillInfo(state,id){
  const n=cat.nodes[id];if(!n)return null;
  const v=upgradeState(state,id),blocker=researchBlocker(state,id);
- return {name:n.name,description:n.description,status:v.owned||v.borrowed?v.label:`${n.seedCost} Points`,blocker,
+ return {name:n.name,type:n.type,description:n.description,status:v.owned||v.borrowed?v.label:`${n.seedCost} Points`,blocker,
    stats:skillStats(state,id),comparison:purchaseComparison(state,id),canEquip:state.powerMode==='unlocked'&&(v.owned||v.borrowed)&&n.conflicts.length>0&&!v.equipped&&!blocker&&state.phase!=='run'};
 }
 export function treeMount(controller){
@@ -117,7 +117,7 @@ export function treeMount(controller){
    hideTooltip();selected=id;selectionRender();
    const source=mapElement.querySelector(`[data-node="${id}"]`),bounds=stage.getBoundingClientRect();
    tip.style.maxHeight=Math.max(44,bounds.height-16)+'px';tip.style.width=Math.min(330,bounds.width-16)+'px';
-   tip.innerHTML=`<div class="skill-tooltip-heading"><h3 id="skill-tooltip-title">${escape(info.name)}</h3>${button('dismiss','Close','close')}</div><p>${escape(info.description)}</p>${info.stats?skillStatsHTML(info.stats):''}<p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>${comparison?button('buy',`Buy · ${comparison.cost} Points`,'coin','class="primary"'):info.canEquip?button('equip','Use This Style','check','class="primary"'):''}`;
+   tip.innerHTML=`<div class="skill-tooltip-heading"><h3 id="skill-tooltip-title">${escape(info.name)}</h3>${button('dismiss','Close','close')}</div><span class="skill-type-pill"><span class="sr-only">Type: </span>${typeIconHTML(info.type)}${escape(info.type)}</span><p>${escape(info.description)}</p>${info.stats?skillStatsHTML(info.stats):''}<p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>${comparison?button('buy',`Buy · ${comparison.cost} Points`,'coin','class="primary"'):info.canEquip?button('equip','Use This Style','check','class="primary"'):''}`;
    tip.hidden=false;tipId=id;source.setAttribute('aria-expanded','true');
    const size=tip.getBoundingClientRect(),position=tooltipPosition(source.getBoundingClientRect(),bounds,size.width,size.height),origin=dialog.getBoundingClientRect();
    tip.style.left=position.left-origin.left+'px';tip.style.top=position.top-origin.top+'px';
