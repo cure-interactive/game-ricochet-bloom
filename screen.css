@@ -54,7 +54,7 @@ dialog{max-height:calc(100dvh - 24px);overscroll-behavior:contain;scrollbar-gutt
 .phrase-pattern i.active b{opacity:1;box-shadow:0 0 10px var(--note);height:7px}
 
 body>header .brand-name{display:inline}
-body>header #practice-return{font-size:11px;padding:8px;min-height:44px}
+body>header #listening-return{font-size:11px;padding:8px;min-height:44px}
 
 .power-dock>button .button-label{right:0;width:auto;height:auto;clip-path:none;font-size:10px;color:#a9bbca}
 .power-dock>button .ui-icon{display:none}

@@ -180,3 +180,6 @@
 @media(max-height:500px) and (orientation:landscape){.tree-map-hint{display:none}.tree-camera-controls{margin:4px 0}#tree-dialog>.tree-legend{padding-block:6px}#tree-dialog .tree-heading{min-height:54px;padding-block:5px}}
 
 @media(max-width:350px){#development-dialog{padding:16px}}
+
+/* Optional gesture alternatives share the saved Accessibility setting. */
+body:not(.assisted-controls) .tree-camera-controls{display:none}

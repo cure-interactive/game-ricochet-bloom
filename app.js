@@ -4,7 +4,7 @@ import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f
 import { gameMenuMount } from './game-menu.js?v=f764743740124e79e0ba13b52f8ac2be1254df4c1235cbb50c187075d26b0a1c';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { progressionMount } from './progression-ui.js?v=3cbf494a33570530134fe57851d6743c25caa0fff1fd5678b14aef0e533e9245';
+import { progressionMount } from './progression-ui.js?v=852a4b96de8176d647f714986bbb5fd858964a9d1476578b3e0953e843a048d0';
 import {assetURL} from './asset.js?v=2b159e067962ab466dfde3d9f305e802c92bc5b4183b6ffe9932dbb398b20746';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
@@ -21,9 +21,10 @@ try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localSto
 let preferences = store.preferences, best = store.best, saved = store.pools[store.activeMode]?.game, savedMusic = store.pools[store.activeMode]?.music;
 let game = saved || gameCreate(new URL(location.href).searchParams.get('seed')?.slice(0, 32) || 'LAGOON', store.activeMode);
 let carrySong = false, portraitView = false, progression = null, navigation = null, physicsBatch = false;
-const modeName = mode => progression?.context==='challenge'?'Shared challenge':progression?.context==='practice'?'Practice':mode==='song-run'?'Song Run':mode === 'free' ? 'Free play' : 'Challenge';
+const modeName = mode => progression?.context==='challenge'?'Shared challenge':mode==='song-run'?'Song Run':mode === 'free' ? 'Free play' : 'Challenge';
 
 audio.musicRestore(savedMusic, game.blooms, game.launches);
+let assistedControls = preferences.assistedControls === true;
 let isStarted = false, isPaused = false, isGentle = preferences.gentle === true, isStream = preferences.stream === true;
 let angle = -Math.PI / 2, power = .7, drag = null, previousTime = performance.now(), accumulator = 0, lastSaveTick = 0, lastUITick = -100;
 let trails = [], particles = [], rings = [], connections = [], bolts = [], reunions = [], scorePopups = [], toastTimer, frameCount = 0, noteCount = 0;
@@ -50,7 +51,7 @@ audio.ambienceSet(preferences.ambience);
 function save() {
   if (game.mode === 'challenge') best = Math.max(best, game.score);
   if(!progression||progression.context==='legacy')poolStoreSet(store, game, audio.musicSave());
-  else if(!physicsBatch)progression.checkpoint(game,audio.musicSave()); store.best = best; store.preferences = { volume: audio.volume, ambience: audio.ambience, muted: audio.isMuted, gentle: isGentle, stream: isStream };
+  else if(!physicsBatch)progression.checkpoint(game,audio.musicSave()); store.best = best; store.preferences = { volume: audio.volume, ambience: audio.ambience, muted: audio.isMuted, gentle: isGentle, stream: isStream, assistedControls };
   try { localStorage.setItem(STORAGE, JSON.stringify(store)); storageIsAvailable = true; } catch { storageIsAvailable = false; }
   $('save-status').textContent = storageIsAvailable ? '● Pool saved on this browser' : 'Save unavailable · keep this tab open'; lastSaveTick = game.tick;
 }
@@ -484,7 +485,7 @@ function phraseRender() {
   const activeStep = isLive ? phrase && lastStrike && game.tick - lastStrike.tick < 42 ? phrase.steps.at(-1) : -1 : isAudible && audio.lastPlayback && now - audio.lastPlayback.at < .35 ? audio.lastPlayback.step : -1;
   for (const [step, item] of [...pattern.children].entries()) item.classList.toggle('active', step === activeStep);
 }
-function controlsRender() { $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').replaceChildren(iconNode('music-note'),document.createTextNode(audio.isMuted?'Sound is off. Enable Sound to listen.':'Sound on. Headphones make it lovelier.')); $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('motion').checked = isGentle; $('stream').checked = isStream; document.body.classList.toggle('motion-reduced', isGentle); document.body.classList.toggle('stream-mode', isStream); }
+function controlsRender() { $('button-controls').checked=assistedControls; document.querySelector('.control-strip').hidden=!assistedControls; document.body.classList.toggle('assisted-controls',assistedControls); $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').replaceChildren(iconNode('music-note'),document.createTextNode(audio.isMuted?'Sound is off. Enable Sound to listen.':'Sound on. Headphones make it lovelier.')); $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('motion').checked = isGentle; $('stream').checked = isStream; document.body.classList.toggle('motion-reduced', isGentle); document.body.classList.toggle('stream-mode', isStream); }
 function freePlayRefresh(){if(progression?.context==='legacy')freePlaySync(game,progression.state);}
 function shoot() { if(progression?.blocked)return; if(game.isFlying) return; if (!isStarted || isPaused || document.querySelector('dialog[open]')) return; freePlayRefresh(); audioUnlockAsync(); if (launch(game, angle, power)) { audio.eventPlay({ type: 'launch', x: game.bodies[0].x, y: game.bodies[0].y }); save(); uiRender(); } }
 function pauseSet(value) { if (!isStarted || game.isOver) return; isPaused = value; audio.pauseSet(value); dragCancel(); $('pause-overlay').hidden = !value; save(); uiRender(); if (!value) { audioUnlockAsync(); canvas.focus({ preventScroll: true }); } }
@@ -597,7 +598,7 @@ $('audition').onclick = async () => {
 $('motion').onchange = event => { isGentle = event.currentTarget.checked; if (isGentle) { particles = []; trails = []; } controlsRender(); save(); };
 $('stream').onchange = event => { isStream = event.currentTarget.checked; controlsRender(); save(); };
 $('credits-open').onclick=()=>$('credits-dialog').showModal();
-$('button-controls').onchange=event=>{document.querySelector('.control-strip').hidden=!event.currentTarget.checked;};
+$('button-controls').onchange=event=>{assistedControls=event.currentTarget.checked;controlsRender();save();};
 for(const name of ['menu','powers','music','bonus']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
 $('retry').onclick = () => dialogOpen();
 $('seed-form').onsubmit = event => { event.preventDefault(); const seed = $('seed-input').value.trim(); if (!seed) return; $('new-dialog').close(); if (carrySong) carryToFree(); else newPool(seed, game.mode); };
