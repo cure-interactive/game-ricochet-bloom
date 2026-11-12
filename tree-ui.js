@@ -46,10 +46,12 @@ export function upgradeState(state,id){
  else if(buy.ok){label=`Available · ${n.seedCost} Points`;icon='add';}
  else if(buy.reason==='insufficient-seeds'){label=`${n.seedCost} Points · need ${n.seedCost-state.profile.wallet.seeds} more`;}
  else {label=buy.reason==='mastery'?'Needs mastery':buy.reason==='prerequisite'?`Research ${cat.nodes[n.requires.find(id=>!state.profile.research[id])]?.name||POWER_TREES[n.power].name} first`:powerUnlock(state,n.power)?.remaining||'Play to unlock';icon='lock';}
- return {owned,borrowed,equipped,buy,label,icon};
+ const canUnlock=!owned&&state.phase==='shop'&&state.powerMode!=='shared'&&buy.ok;
+ return {owned,borrowed,equipped,buy,label,icon,canUnlock,dimmed:!owned&&!canUnlock};
 }
 export function researchBlocker(state,id){
  const n=cat.nodes[id],v=upgradeState(state,id);
+ if(!v.owned&&state.powerMode==='shared')return 'Unlock skills outside shared challenges.';
  if(state.powerMode==='unlocked'&&v.owned)return n.conflicts.length&&state.phase==='run'?'Finish this pool to change style.':'';
  if(v.owned&&n.kind==='base')return state.phase!=='shop'&&!state.powers.includes(n.power)?'Change powers after this run.':'';
  if(v.owned||v.borrowed&&state.powerMode!=='unlocked'){
@@ -58,9 +60,13 @@ export function researchBlocker(state,id){
   const used=state.equipped.filter(x=>!n.conflicts.includes(x)).reduce((sum,x)=>sum+cat.nodes[x].tuningCost,0),extra=used+n.tuningCost-progressionBudget(state);
   return !v.equipped&&!state.bypass&&extra>0?`Free ${extra} tuning by unequipping another upgrade.`:'';
  }
+ return unlockBlocker(state,n,v);
+}
+function unlockBlocker(state,n,v){
+ if(state.powerMode==='shared')return 'Unlock skills outside shared challenges.';
  const missing=[];
  if(state.phase!=='shop')missing.push('Research opens after this run.');
- if(!v.buy.ok)missing.push(v.buy.reason==='mastery'?`Clear ${Math.max(0,3-profileSummary(state.profile,cat).mastery[n.power])} more pools with ${POWER_TREES[n.power].name} activated.`:v.buy.reason==='insufficient-seeds'?`Need ${n.seedCost-state.profile.wallet.seeds} more Points.`:(v.buy.reason==='family-gate'?powerUnlock(state,n.power)?.remaining:v.buy.reason==='prerequisite'?`Research ${cat.nodes[n.requires.find(id=>!state.profile.research[id])]?.name||POWER_TREES[n.power].name} first.`:reasonText[v.buy.reason])||v.buy.reason);
+ if(!v.buy.ok)missing.push(v.buy.reason==='mastery'?`Clear ${Math.max(0,3-profileSummary(state.profile,cat).mastery[n.power])} more pools with ${POWER_TREES[n.power].name} activated.`:v.buy.reason==='insufficient-seeds'?`Need ${n.seedCost-state.profile.wallet.seeds} more Point${n.seedCost-state.profile.wallet.seeds===1?'':'s'}.`:(v.buy.reason==='family-gate'?powerUnlock(state,n.power)?.remaining:v.buy.reason==='prerequisite'?`Research ${cat.nodes[n.requires.find(id=>!state.profile.research[id])]?.name||POWER_TREES[n.power].name} first.`:reasonText[v.buy.reason])||v.buy.reason);
  return missing.join(' ');
 }
 // Every drawn upgrade edge comes from the same prerequisites as purchasing.
@@ -82,6 +88,7 @@ export function skillInfo(state,id,showPurchasedCosts=false){
  const n=cat.nodes[id];if(!n)return null;
  const v=upgradeState(state,id),blocker=researchBlocker(state,id),cost=skillCost(state,id,showPurchasedCosts);
  return {name:n.name,type:n.type,description:n.description,cost,status:v.owned||v.borrowed?v.label+(cost===null?'':` · ${cost} Points`):`${cost} Points`,blocker,
+   unlock:v.owned?null:{enabled:v.canUnlock,cost:n.seedCost,reason:v.canUnlock?'':unlockBlocker(state,n,v)},
    stats:skillStats(state,id),comparison:purchaseComparison(state,id),canEquip:state.powerMode==='unlocked'&&(v.owned||v.borrowed)&&n.conflicts.length>0&&!v.equipped&&!blocker&&state.phase!=='run'};
 }
 export function treeMount(controller){
@@ -112,11 +119,11 @@ export function treeMount(controller){
    for(const path of mapElement.querySelectorAll('.tree-world-links path'))path.classList.toggle('is-route',route.has(path.dataset.from)&&route.has(path.dataset.to));
  }
  function nodeButton(n){
-   const base=n.kind==='base',active=n.equipped||base&&state.powers.includes(n.power),available=state.phase==='shop'&&!n.owned&&n.buy.ok,locked=!n.owned&&!n.borrowed&&!available;
+   const base=n.kind==='base',active=n.equipped||base&&state.powers.includes(n.power),available=n.canUnlock,locked=!n.owned&&!n.borrowed&&!available;
    const cost=skillCost(state,n.id,controller.showPurchasedCosts?.());
    const badge=n.borrowed?'clock':active||n.owned?'check':locked?'lock':null;
    const label=active?'Active':n.owned?'Owned':available?'Available to Purchase':n.borrowed?'Borrowed':'Locked';
-   return `<button type="button" data-node="${n.id}" data-kind="${n.kind}" data-rarity="${n.rarity}" class="skill-node ${base?'is-base':''} ${n.kind==='capstone'?'is-capstone':''} ${n.owned?'is-owned':''} ${active?'is-active':''} ${available?'is-available':''} ${locked?'is-locked':''} ${n.borrowed?'is-borrowed':''}" style="--rarity-color:${RARITIES[n.rarity].color};--node-x:${layout.nodes[n.id].x}px;--node-y:${layout.nodes[n.id].y}px" aria-label="${escape(n.name+', '+label+(cost===null?'':', Cost: '+cost+' Points'))}" aria-pressed="${selected===n.id}" aria-haspopup="dialog" aria-controls="skill-tooltip" aria-expanded="false"><span class="skill-orb">${skillIconHTML(n)}<span class="skill-rarity" aria-hidden="true">${rarityIconHTML(n.rarity)}</span>${badge?'<i class="skill-badge">'+iconHTML(badge)+'</i>':''}</span><strong>${escape(n.name)}</strong>${cost===null?'':`<small class="skill-node-cost">${iconHTML('coin')}<span>${cost} Points</span></small>`}</button>`;
+   return `<button type="button" data-node="${n.id}" data-kind="${n.kind}" data-rarity="${n.rarity}" class="skill-node ${base?'is-base':''} ${n.kind==='capstone'?'is-capstone':''} ${n.owned?'is-owned':''} ${n.dimmed?'is-unavailable':''} ${active?'is-active':''} ${available?'is-available':''} ${locked?'is-locked':''} ${n.borrowed?'is-borrowed':''}" style="--rarity-color:${RARITIES[n.rarity].color};--node-x:${layout.nodes[n.id].x}px;--node-y:${layout.nodes[n.id].y}px" aria-label="${escape(n.name+', '+label+(cost===null?'':', Cost: '+cost+' Points'))}" aria-pressed="${selected===n.id}" aria-haspopup="dialog" aria-controls="skill-tooltip" aria-expanded="false"><span class="skill-orb">${skillIconHTML(n)}<span class="skill-rarity" aria-hidden="true">${rarityIconHTML(n.rarity)}</span>${badge?'<i class="skill-badge">'+iconHTML(badge)+'</i>':''}</span><strong>${escape(n.name)}</strong>${cost===null?'':`<small class="skill-node-cost">${iconHTML('coin')}<span>${cost} Points</span></small>`}</button>`;
  }
  function render(){
    hideTooltip();
@@ -132,13 +139,13 @@ export function treeMount(controller){
    selectionRender();if(dialog.open){camera.refresh();const point=layout.nodes[selected];if(point&&(point.x!==previous?.x||point.y!==previous?.y))camera.focus(point,camera.value.scale);}
  }
  function showTooltip(id){
-   clearTimeout(leaveTimer);const info=skillInfo(state,id,controller.showPurchasedCosts?.()),comparison=info?.comparison;
+   clearTimeout(leaveTimer);const info=skillInfo(state,id,controller.showPurchasedCosts?.());
    if(!info||!visiblePositions[id]){hideTooltip();return;}
    if(tipId===id&&!tip.hidden)return;
    hideTooltip();selected=id;selectionRender();
    const source=mapElement.querySelector(`[data-node="${id}"]`),bounds=stage.getBoundingClientRect();
    tip.style.maxHeight=Math.max(44,bounds.height-16)+'px';tip.style.width=Math.min(330,bounds.width-16)+'px';
-   tip.innerHTML=`<div class="skill-tooltip-heading"><div class="skill-card-title"><h3 id="skill-tooltip-title">${escape(info.name)}</h3><span class="skill-type-pill"><span class="sr-only">Type: </span>${typeIconHTML(info.type)}${escape(info.type)}</span></div>${button('dismiss','Close','close')}</div><p>${escape(info.description)}</p>${info.stats?skillStatsHTML(info.stats):''}<p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>${comparison?button('buy',`Buy · ${comparison.cost} Points`,'coin','class="primary"'):info.canEquip?button('equip','Use This Style','check','class="primary"'):''}`;
+   tip.innerHTML=`<div class="skill-tooltip-heading"><div class="skill-card-title"><h3 id="skill-tooltip-title">${escape(info.name)}</h3><span class="skill-type-pill"><span class="sr-only">Type: </span>${typeIconHTML(info.type)}${escape(info.type)}</span></div>${button('dismiss','Close','close')}</div><div class="skill-tooltip-body"><p>${escape(info.description)}</p>${info.stats?skillStatsHTML(info.stats):''}${info.unlock?'':`<p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>`}</div>${info.unlock?`<div class="skill-tooltip-action">${button('buy',`Unlock · ${info.unlock.cost} Points`,'lock',`class="primary" ${info.unlock.enabled?'':'disabled aria-describedby="skill-unlock-reason"'}`)}${info.unlock.reason?`<p id="skill-unlock-reason">${escape(info.unlock.reason)}</p>`:''}</div>`:info.canEquip?`<div class="skill-tooltip-action">${button('equip','Use This Style','check','class="primary"')}</div>`:''}`;
    // Mirror the selected node's actual artwork and badges; the card shares its paint rules.
    const cardIcon=document.createElement('span');
    cardIcon.className=source.className.replace('skill-node','skill-card-icon');cardIcon.setAttribute('aria-hidden','true');
@@ -150,9 +157,9 @@ export function treeMount(controller){
  }
  function selectNode(id,keyboard=false){
    if(!visiblePositions[id])return;
-   if(tipId===id){if(pinned&&!keyboard)hideTooltip();else{pinned=true;if(keyboard)(tip.querySelector('.primary')||tip.querySelector('[data-tree-action=dismiss]')).focus();}return;}
+   if(tipId===id){if(pinned&&!keyboard)hideTooltip();else{pinned=true;if(keyboard)(tip.querySelector('.primary:not(:disabled)')||tip.querySelector('[data-tree-action=dismiss]')).focus();}return;}
    selected=id;selectionRender();camera.ensure(layout.nodes[id]);
-   showTooltip(id);pinned=true;if(keyboard)(tip.querySelector('.primary')||tip.querySelector('[data-tree-action=dismiss]')).focus();
+   showTooltip(id);pinned=true;if(keyboard)(tip.querySelector('.primary:not(:disabled)')||tip.querySelector('[data-tree-action=dismiss]')).focus();
  }
  function handle(event){
    const action=event.target.closest('[data-tree-action]')?.dataset.treeAction,node=event.target.closest('.skill-node');
@@ -164,8 +171,8 @@ export function treeMount(controller){
      const result=controller.act({type:'equip',id});state=controller.get();render();status(result.ok?result.message:result.reason);surface.focus({preventScroll:true});return;
    }
    if(action==='buy'){
-     const id=tipId;if(!id||!purchaseComparison(controller.get(),id)){state=controller.get();render();return;}
-     const result=controller.act({type:'buy',id});state=controller.get();render();status(result.ok?'Purchased '+cat.nodes[id].name:result.reason);surface.focus({preventScroll:true});return;
+     const id=tipId;if(!id||!upgradeState(controller.get(),id).canUnlock){state=controller.get();render();return;}
+     const result=controller.act({type:'buy',id});state=controller.get();render();status(result.ok?'Unlocked '+cat.nodes[id].name:result.reason);surface.focus({preventScroll:true});return;
    }
    if(action==='back'){controller.back?.();return;}
    if(action==='zoom-in'||action==='zoom-out'){camera.zoom(action==='zoom-in'?1.25:.8);return;}

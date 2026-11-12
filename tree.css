@@ -74,7 +74,7 @@
 #tree-dialog .skill-node>.skill-node-cost{display:inline-flex;align-items:center;gap:4px;margin-top:-11px;font-size:11px;line-height:13px;white-space:nowrap}
 #tree-dialog .skill-node-cost .ui-icon{width:12px;height:12px;flex:none}
 .skill-orb>img{width:25px;height:25px}:is(.skill-node,.skill-card-icon).is-base .skill-orb>img{width:34px;height:34px}
-.skill-node.is-locked:not(.is-route){opacity:.75}.skill-node.is-route .skill-orb{border-color:#c3b485}.skill-node.is-route>strong{color:#f1dfb0}
+.skill-node.is-locked{opacity:.75}.skill-node.is-route .skill-orb{border-color:#c3b485}.skill-node.is-route>strong{color:#f1dfb0}
 .tree-world-links path.is-route{stroke:#efcf86;stroke-width:4;stroke-dasharray:none;filter:drop-shadow(0 0 4px #e9bc5444)}
 .tree-world-links .is-locked:not(.is-route){opacity:.85;stroke:#6b8ba2;stroke-width:4}
 .bridge-label{font-size:12px;stroke-width:4px}:is(.skill-node,.skill-card-icon).is-capstone .skill-orb{border-radius:10px;box-shadow:0 0 0 3px #171d32,0 0 0 5px #75628d66}
@@ -217,9 +217,9 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 /* Purchase information stays anchored to its node; there is no detail pane or sheet. */
 #tree-dialog .tree-workspace{grid-template-columns:minmax(0,1fr)}
 #tree-dialog .tree-status.sr-only{padding:0;margin:0}
-#tree-dialog .skill-tooltip{position:absolute;z-index:10;box-sizing:border-box;padding:12px;border:1px solid #688779;border-radius:14px;background:#102430;box-shadow:0 8px 28px #0008;overflow:auto;overscroll-behavior:contain;touch-action:pan-y;color:#e8f1f2;font-size:13px;line-height:1.45}
+#tree-dialog .skill-tooltip{position:absolute;z-index:10;box-sizing:border-box;display:flex;flex-direction:column;padding:12px;border:1px solid #688779;border-radius:14px;background:#102430;box-shadow:0 8px 28px #0008;overflow:hidden;overscroll-behavior:contain;touch-action:pan-y;color:#e8f1f2;font-size:13px;line-height:1.45}
 #tree-dialog .skill-tooltip[hidden]{display:none}
-.skill-tooltip-heading{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:12px}
+.skill-tooltip-heading{flex:none;display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:12px}
 .skill-card-title{flex:1;min-width:0;overflow-wrap:anywhere}
 .skill-card-title .skill-type-pill{margin:7px 0 0}
 .skill-card-icon{display:grid;place-items:center;width:64px;height:64px;flex:none}
@@ -230,7 +230,7 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .skill-tooltip-heading button span:last-child{display:none}
 .skill-type-pill{display:inline-flex;align-items:center;gap:6px;max-width:100%;box-sizing:border-box;margin:3px 0 9px;padding:3px 9px;border:1px solid #aac5d044;border-radius:999px;background:#a8c9d515;color:#d3e4ec;font-size:11px;line-height:18px}
 .skill-type-pill .type-icon{width:16px;height:16px;flex:none}
-.skill-tooltip>p{font-size:13px;line-height:1.45;margin:4px 0 12px}
+.skill-tooltip-body>p{font-size:13px;line-height:1.45;margin:4px 0 12px}
 .skill-stats{margin:12px 0 16px}
 .skill-stats h4{font-size:12px;color:#bed2dc;margin:0 0 8px}
 .skill-stats dl{margin:0;display:grid;gap:12px}
@@ -265,4 +265,8 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .skill-stat-key{display:flex;gap:7px;flex-wrap:wrap;color:#a7bec8;font-size:11px;margin:0 0 12px}
 .skill-stat-key span:last-child{color:#b4f2d8}
 .skill-stat-note{font-size:10px;color:#a7bec8;margin:9px 0 0}
-#tree-dialog .skill-tooltip>.primary{width:100%;margin:0;min-height:44px}
+.skill-tooltip-body{min-height:0;overflow:auto;overscroll-behavior:contain;touch-action:pan-y}
+.skill-tooltip-action{flex:none;padding-top:12px;border-top:1px solid #aac5d033}
+.skill-tooltip-action>p{font-size:12px;line-height:1.4;margin:8px 0 0;color:#bed2dc}
+#tree-dialog .skill-tooltip-action>.primary{width:100%;margin:0;min-height:44px}
+#tree-dialog :is(.skill-node,.skill-card-icon).is-unavailable{opacity:.45;filter:saturate(.55)}

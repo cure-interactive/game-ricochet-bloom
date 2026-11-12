@@ -41,7 +41,7 @@ Types describe behavior. They never partition the map or gate research. Each pow
 
 The selected node has a white outline. Its prerequisite path keeps the rarity colors of its skills. Tap Legend at the top right to show all five rarities and the separate ownership states. Tap the expanded card to collapse it and leave more of the tree visible.
 
-Drag to move in two dimensions; pinch or scroll to zoom. Zooming out stops when the visible skills fit the screen, with a small margin. This limit adjusts as skills appear or the screen size changes. Tap any node to inspect it; eligible research includes a Buy button. Tap elsewhere, close it, or move the map to dismiss it. For an owned conflicting style, open its tooltip and choose Use This Style. Inspecting it alone does not change your powers.
+Drag to move in two dimensions; pinch or scroll to zoom. Zooming out stops when the visible skills fit the screen, with a small margin. This limit adjusts as skills appear or the screen size changes. Tap any node to inspect it; every unowned skill has an Unlock button. It is enabled when you have enough Points, meet the requirements and are between runs; otherwise it stays visible and explains the restriction. The button remains visible below scrolling stats. Owned and currently unlockable skills are fully bright; unavailable unowned skills are dim, even on the highlighted path. Tap elsewhere, close it, or move the map to dismiss it. For an owned conflicting style, open its tooltip and choose Use This Style. Inspecting it alone does not change your powers.
 
 Optional zoom, Fit Tree and Focus buttons are available through Settings → Accessibility → Show on-screen controls. Arrow keys can also move through the map.
 
