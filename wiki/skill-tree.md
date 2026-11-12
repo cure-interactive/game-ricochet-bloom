@@ -8,7 +8,7 @@ Each power has its own linear upgrade chain beneath its base. The number and eff
 
 ## Research and Activation
 
-Research costs Points earned through Campaign. **Purchases are permanent and cannot be refunded.** Only research you can purchase now opens a tooltip. Hover on desktop or tap on mobile to see its description, price and current versus purchased values. Upgrade comparisons show only changed variables; a new power shows its starting values. Locked, unaffordable and owned nodes do not open information cards.
+Research costs Points earned through Campaign. **Purchases are permanent and cannot be refunded.** Every power and upgrade opens a compact tooltip. Hover on desktop or tap on mobile to see its description, cost or ownership status, and any unmet requirements. Research you can purchase also shows current versus purchased values and a Buy button. Upgrade comparisons show only changed variables; a new power shows its starting values.
 
 Unlocking a power adds it to the random powers available in play, including Free Play. Compatible researched upgrades activate automatically. When two upgrades describe conflicting styles, you can switch the active style without losing either purchase.
 
@@ -37,7 +37,7 @@ Types describe behavior. They never partition the map or gate research. Each pow
 
 The selected node has a white outline. Its prerequisite path keeps the rarity colors of its skills. The bottom legend shows all five rarities and the separate ownership states.
 
-Drag to move in two dimensions; pinch or scroll to zoom. Tap available research to open its compact tooltip, then use Buy to purchase. Tap elsewhere, close it, or move the map to dismiss it. Tap an owned conflicting style to activate it without opening a card.
+Drag to move in two dimensions; pinch or scroll to zoom. Tap any node to inspect it; eligible research includes a Buy button. Tap elsewhere, close it, or move the map to dismiss it. For an owned conflicting style, open its tooltip and choose Use This Style. Inspecting it alone does not change your powers.
 
 Optional zoom, Fit Tree and Focus buttons are available through Settings → Accessibility → Show on-screen controls. Arrow keys can also move through the map.
 

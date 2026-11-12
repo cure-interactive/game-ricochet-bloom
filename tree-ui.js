@@ -53,6 +53,13 @@ export function powerGraph(state,power){
  const nodes=Object.values(cat.nodes).filter(n=>n.power===power);
  return {nodes:nodes.map(n=>({...n,...upgradeState(state,n.id)})),edges:nodes.flatMap(n=>n.requires.map(from=>({from,to:n.id})))};
 }
+// Inspection is always available; purchase and activation remain separate actions.
+export function skillInfo(state,id){
+ const n=cat.nodes[id];if(!n)return null;
+ const v=upgradeState(state,id),blocker=researchBlocker(state,id);
+ return {name:n.name,description:n.description,status:v.owned||v.borrowed?v.label:`${n.seedCost} Points`,blocker,
+   comparison:purchaseComparison(state,id),canEquip:state.powerMode==='unlocked'&&(v.owned||v.borrowed)&&n.conflicts.length>0&&!v.equipped&&!blocker&&state.phase!=='run'};
+}
 export function treeMount(controller){
  const dialog=document.getElementById('tree-dialog');
  let state=controller.get(),selected='ripple.base',tip=null,tipId=null,leaveTimer=0,pinned=false,lastView=null;
@@ -81,7 +88,7 @@ export function treeMount(controller){
    const base=n.kind==='base',active=n.equipped||base&&state.powers.includes(n.power),available=state.phase==='shop'&&!n.owned&&n.buy.ok,locked=!n.owned&&!n.borrowed&&!available;
    const badge=n.borrowed?'clock':active||n.owned?'check':locked?'lock':null;
    const label=active?'Active':n.owned?'Owned':available?'Available to Purchase':n.borrowed?'Borrowed':'Locked';
-   return `<button type="button" data-node="${n.id}" data-kind="${n.kind}" data-rarity="${n.rarity}" class="skill-node ${base?'is-base':''} ${n.kind==='capstone'?'is-capstone':''} ${n.owned?'is-owned':''} ${active?'is-active':''} ${available?'is-available':''} ${locked?'is-locked':''} ${n.borrowed?'is-borrowed':''}" style="--rarity-color:${RARITIES[n.rarity].color};--node-x:${layout.nodes[n.id].x}px;--node-y:${layout.nodes[n.id].y}px" aria-label="${escape(n.name+', '+label)}" aria-pressed="${selected===n.id}" ${available?'aria-haspopup="dialog" aria-controls="skill-tooltip" aria-expanded="false"':''}><span class="skill-orb">${skillIconHTML(n)}<span class="skill-rarity" aria-hidden="true">${rarityIconHTML(n.rarity)}</span>${badge?'<i class="skill-badge">'+iconHTML(badge)+'</i>':''}</span><strong>${escape(n.name)}</strong></button>`;
+   return `<button type="button" data-node="${n.id}" data-kind="${n.kind}" data-rarity="${n.rarity}" class="skill-node ${base?'is-base':''} ${n.kind==='capstone'?'is-capstone':''} ${n.owned?'is-owned':''} ${active?'is-active':''} ${available?'is-available':''} ${locked?'is-locked':''} ${n.borrowed?'is-borrowed':''}" style="--rarity-color:${RARITIES[n.rarity].color};--node-x:${layout.nodes[n.id].x}px;--node-y:${layout.nodes[n.id].y}px" aria-label="${escape(n.name+', '+label)}" aria-pressed="${selected===n.id}" aria-haspopup="dialog" aria-controls="skill-tooltip" aria-expanded="false"><span class="skill-orb">${skillIconHTML(n)}<span class="skill-rarity" aria-hidden="true">${rarityIconHTML(n.rarity)}</span>${badge?'<i class="skill-badge">'+iconHTML(badge)+'</i>':''}</span><strong>${escape(n.name)}</strong></button>`;
  }
  function render(){
    hideTooltip();
@@ -93,31 +100,31 @@ export function treeMount(controller){
    selectionRender();
  }
  function showTooltip(id){
-   clearTimeout(leaveTimer);const comparison=purchaseComparison(state,id);
-   if(!comparison){hideTooltip();return;}
+   clearTimeout(leaveTimer);const info=skillInfo(state,id),comparison=info?.comparison;
+   if(!info){hideTooltip();return;}
    if(tipId===id&&!tip.hidden)return;
    hideTooltip();selected=id;selectionRender();
    const source=mapElement.querySelector(`[data-node="${id}"]`),bounds=stage.getBoundingClientRect();
    tip.style.maxHeight=Math.max(44,bounds.height-16)+'px';tip.style.width=Math.min(330,bounds.width-16)+'px';
-   tip.innerHTML=`<div class="skill-tooltip-heading"><h3 id="skill-tooltip-title">${escape(comparison.name)}</h3>${button('dismiss','Close','close')}</div><p>${escape(comparison.description)}</p><table class="skill-comparison"><thead><tr><th scope="col">Variable</th><th scope="col">Current</th><th scope="col">After</th></tr></thead><tbody>${comparison.rows.map(row=>`<tr><th scope="row">${escape(row.label)}</th><td>${escape(row.before)}</td><td>${escape(row.after)}</td></tr>`).join('')}</tbody></table>${button('buy',`Buy · ${comparison.cost} Points`,'coin','class="primary"')}`;
+   tip.innerHTML=`<div class="skill-tooltip-heading"><h3 id="skill-tooltip-title">${escape(info.name)}</h3>${button('dismiss','Close','close')}</div><p>${escape(info.description)}</p><p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>${comparison?`<table class="skill-comparison"><thead><tr><th scope="col">Variable</th><th scope="col">Current</th><th scope="col">After</th></tr></thead><tbody>${comparison.rows.map(row=>`<tr><th scope="row">${escape(row.label)}</th><td>${escape(row.before)}</td><td>${escape(row.after)}</td></tr>`).join('')}</tbody></table>${button('buy',`Buy · ${comparison.cost} Points`,'coin','class="primary"')}`:info.canEquip?button('equip','Use This Style','check','class="primary"'):''}`;
    tip.hidden=false;tipId=id;source.setAttribute('aria-expanded','true');
    const size=tip.getBoundingClientRect(),position=tooltipPosition(source.getBoundingClientRect(),bounds,size.width,size.height),origin=dialog.getBoundingClientRect();
    tip.style.left=position.left-origin.left+'px';tip.style.top=position.top-origin.top+'px';
  }
  function selectNode(id,keyboard=false){
    if(!cat.nodes[id])return;
-   if(tipId===id){if(pinned&&!keyboard)hideTooltip();else{pinned=true;if(keyboard)tip.querySelector('[data-tree-action=buy]').focus();}return;}
+   if(tipId===id){if(pinned&&!keyboard)hideTooltip();else{pinned=true;if(keyboard)(tip.querySelector('.primary')||tip.querySelector('[data-tree-action=dismiss]')).focus();}return;}
    selected=id;selectionRender();camera.ensure(layout.nodes[id]);
-   if(purchaseComparison(state,id)){showTooltip(id);pinned=true;if(keyboard)tip.querySelector('[data-tree-action=buy]').focus();return;}
-   // Owned contradictory styles remain switchable without bringing back a detail card.
-   const n=cat.nodes[id];if(state.powerMode==='unlocked'&&state.profile.research[id]&&n.conflicts.length&&!state.equipped.includes(id)){
-     const result=controller.act({type:'equip',id});if(result.ok){state=controller.get();render();status(result.message);}
-   }
+   showTooltip(id);pinned=true;if(keyboard)(tip.querySelector('.primary')||tip.querySelector('[data-tree-action=dismiss]')).focus();
  }
  function handle(event){
    const action=event.target.closest('[data-tree-action]')?.dataset.treeAction,node=event.target.closest('.skill-node');
    if(node){selectNode(node.dataset.node,event.detail===0);return;}
    if(action==='dismiss'){hideTooltip(true);return;}
+   if(action==='equip'){
+     const id=tipId;if(!id||!skillInfo(controller.get(),id)?.canEquip)return;
+     const result=controller.act({type:'equip',id});state=controller.get();render();status(result.ok?result.message:result.reason);surface.focus({preventScroll:true});return;
+   }
    if(action==='buy'){
      const id=tipId;if(!id||!purchaseComparison(controller.get(),id)){state=controller.get();render();return;}
      const result=controller.act({type:'buy',id});state=controller.get();render();status(result.ok?'Purchased '+cat.nodes[id].name:result.reason);surface.focus({preventScroll:true});return;

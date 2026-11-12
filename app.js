@@ -1,5 +1,5 @@
 import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
-import { wikiMount } from './wiki.js?v=8a27721c6c55375b6ee1d68b83d76bb09a6c3a805ab6830f6d7bd00681d4e71e';
+import { wikiMount } from './wiki.js?v=36b29f13281dc7e4831dde7b99ef04da7567e1b6c2dc0097607a83d881d8c01f';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
 import { POOL_NAMES } from './run.js?v=6a19c662694ec547e86de13f3dce16b78524a1f4c32b95ee0a901850675bb8e3';
 import { freePlaySync } from './free-play.js?v=57adf0929f85a3f87a1262220311e17212565252e39213c4d9db1c62faff10a1';
@@ -8,7 +8,7 @@ import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f
 import { gameMenuMount } from './game-menu.js?v=74c90f963cc3f6607b3f9b70f387c8499447b0695a70a1d6e681969d11e89687';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
-import { progressionMount } from './progression-ui.js?v=5852d3fec4f053e9a405a8f54f58baf7cc20b0c1882ec688f314ce50c106e177';
+import { progressionMount } from './progression-ui.js?v=24a9fd5ad01e2e1df07ba669ae67e51ec10814da19d719df5b24b7fbf9940de8';
 import {assetURL} from './asset.js?v=11557b7bbf1eaf861206cd3e17ea64ef617614459a0dba28213850a7fd0925d3';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
