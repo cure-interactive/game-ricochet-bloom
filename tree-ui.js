@@ -73,10 +73,13 @@ export function visibleResearch(state,showAll=false){
    .filter(n=>showAll||n.owned||n.borrowed||state.phase==='shop'&&state.powerMode!=='shared'&&n.buy.ok);
 }
 // Inspection is always available; purchase and activation remain separate actions.
-export function skillInfo(state,id){
+export function skillCost(state,id,showPurchasedCosts=false){
+ const n=cat.nodes[id];return n&&(!state.profile.research[id]||showPurchasedCosts)?n.seedCost:null;
+}
+export function skillInfo(state,id,showPurchasedCosts=false){
  const n=cat.nodes[id];if(!n)return null;
- const v=upgradeState(state,id),blocker=researchBlocker(state,id);
- return {name:n.name,type:n.type,description:n.description,status:v.owned||v.borrowed?v.label:`${n.seedCost} Points`,blocker,
+ const v=upgradeState(state,id),blocker=researchBlocker(state,id),cost=skillCost(state,id,showPurchasedCosts);
+ return {name:n.name,type:n.type,description:n.description,cost,status:v.owned||v.borrowed?v.label+(cost===null?'':` · ${cost} Points`):`${cost} Points`,blocker,
    stats:skillStats(state,id),comparison:purchaseComparison(state,id),canEquip:state.powerMode==='unlocked'&&(v.owned||v.borrowed)&&n.conflicts.length>0&&!v.equipped&&!blocker&&state.phase!=='run'};
 }
 export function treeMount(controller){
@@ -108,9 +111,10 @@ export function treeMount(controller){
  }
  function nodeButton(n){
    const base=n.kind==='base',active=n.equipped||base&&state.powers.includes(n.power),available=state.phase==='shop'&&!n.owned&&n.buy.ok,locked=!n.owned&&!n.borrowed&&!available;
+   const cost=skillCost(state,n.id,controller.showPurchasedCosts?.());
    const badge=n.borrowed?'clock':active||n.owned?'check':locked?'lock':null;
    const label=active?'Active':n.owned?'Owned':available?'Available to Purchase':n.borrowed?'Borrowed':'Locked';
-   return `<button type="button" data-node="${n.id}" data-kind="${n.kind}" data-rarity="${n.rarity}" class="skill-node ${base?'is-base':''} ${n.kind==='capstone'?'is-capstone':''} ${n.owned?'is-owned':''} ${active?'is-active':''} ${available?'is-available':''} ${locked?'is-locked':''} ${n.borrowed?'is-borrowed':''}" style="--rarity-color:${RARITIES[n.rarity].color};--node-x:${layout.nodes[n.id].x}px;--node-y:${layout.nodes[n.id].y}px" aria-label="${escape(n.name+', '+label+', Cost: '+n.seedCost+' Points')}" aria-pressed="${selected===n.id}" aria-haspopup="dialog" aria-controls="skill-tooltip" aria-expanded="false"><span class="skill-orb">${skillIconHTML(n)}<span class="skill-rarity" aria-hidden="true">${rarityIconHTML(n.rarity)}</span>${badge?'<i class="skill-badge">'+iconHTML(badge)+'</i>':''}</span><strong>${escape(n.name)}</strong><small class="skill-node-cost">${iconHTML('coin')}<span>${n.seedCost} Points</span></small></button>`;
+   return `<button type="button" data-node="${n.id}" data-kind="${n.kind}" data-rarity="${n.rarity}" class="skill-node ${base?'is-base':''} ${n.kind==='capstone'?'is-capstone':''} ${n.owned?'is-owned':''} ${active?'is-active':''} ${available?'is-available':''} ${locked?'is-locked':''} ${n.borrowed?'is-borrowed':''}" style="--rarity-color:${RARITIES[n.rarity].color};--node-x:${layout.nodes[n.id].x}px;--node-y:${layout.nodes[n.id].y}px" aria-label="${escape(n.name+', '+label+(cost===null?'':', Cost: '+cost+' Points'))}" aria-pressed="${selected===n.id}" aria-haspopup="dialog" aria-controls="skill-tooltip" aria-expanded="false"><span class="skill-orb">${skillIconHTML(n)}<span class="skill-rarity" aria-hidden="true">${rarityIconHTML(n.rarity)}</span>${badge?'<i class="skill-badge">'+iconHTML(badge)+'</i>':''}</span><strong>${escape(n.name)}</strong>${cost===null?'':`<small class="skill-node-cost">${iconHTML('coin')}<span>${cost} Points</span></small>`}</button>`;
  }
  function render(){
    hideTooltip();
@@ -126,7 +130,7 @@ export function treeMount(controller){
    selectionRender();if(dialog.open){camera.refresh();const point=layout.nodes[selected];if(point&&(point.x!==previous?.x||point.y!==previous?.y))camera.focus(point,camera.value.scale);}
  }
  function showTooltip(id){
-   clearTimeout(leaveTimer);const info=skillInfo(state,id),comparison=info?.comparison;
+   clearTimeout(leaveTimer);const info=skillInfo(state,id,controller.showPurchasedCosts?.()),comparison=info?.comparison;
    if(!info||!visiblePositions[id]){hideTooltip();return;}
    if(tipId===id&&!tip.hidden)return;
    hideTooltip();selected=id;selectionRender();
