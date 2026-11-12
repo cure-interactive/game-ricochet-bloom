@@ -269,4 +269,4 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .skill-tooltip-action{flex:none;padding-top:12px;border-top:1px solid #aac5d033}
 .skill-tooltip-action>p{font-size:12px;line-height:1.4;margin:8px 0 0;color:#bed2dc}
 #tree-dialog .skill-tooltip-action>.primary{width:100%;margin:0;min-height:44px}
-#tree-dialog :is(.skill-node,.skill-card-icon).is-unavailable{opacity:.45;filter:saturate(.55)}
+#tree-dialog .skill-node.is-unavailable{opacity:.45;filter:saturate(.55)}
