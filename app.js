@@ -1,5 +1,5 @@
 import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
-import { wikiMount } from './wiki.js?v=7aea00ac52e292a7a36e1a232295612b651abc46f5484d0ba46aa583ce9f5bb3';
+import { wikiMount } from './wiki.js?v=236b8f0a52d5d01088251cde7c2d73ae3f461542bfa96e93dd61aefe2066a366';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
 import { POOL_NAMES } from './run.js?v=6a19c662694ec547e86de13f3dce16b78524a1f4c32b95ee0a901850675bb8e3';
 import { freePlaySync } from './free-play.js?v=57adf0929f85a3f87a1262220311e17212565252e39213c4d9db1c62faff10a1';
@@ -8,11 +8,11 @@ import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f
 import { gameMenuMount } from './game-menu.js?v=74c90f963cc3f6607b3f9b70f387c8499447b0695a70a1d6e681969d11e89687';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
-import { progressionMount } from './progression-ui.js?v=c46806f10d9748c958e78a831e871a5e5e4eac93c4f8099dcd406765f2e2db45';
+import { progressionMount } from './progression-ui.js?v=bfc556f45b99d1bbfafdbd811c8b06632060b8bf7d555c39edb269e2f179216d';
 import {assetURL} from './asset.js?v=11557b7bbf1eaf861206cd3e17ea64ef617614459a0dba28213850a7fd0925d3';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
-import {songLibrarySetup} from './song-ui.js?v=fb95c91b467ffc8ae8d1a2d306fadd3735a35498360926b8fac67e0112d31b3c';
+import {songLibrarySetup} from './song-ui.js?v=6fbb3e2df26e7bf2f518604f207724d937ca62941b7169bc4a70efc6e6e55c02';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=53c12a3b8ec5b7bda0625a1e527cb498490b7df27796c02c3c3d133a93b14c7c';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=46d2bdbbd4b3daaf65bddd1e3ae3316362f04006e1b61f0f5ba6c1ecf7c520bb';
 import { PoolSound } from './sound.js?v=3e29a4d2a61994b7c3066c621868adbce1aa19953b15c7e2f6828680ad07c640';
@@ -634,7 +634,7 @@ if (['127.0.0.1', 'localhost', '[::1]'].includes(location.hostname)) {
   }).catch(() => {});
 }
 
-progression=progressionMount({songsMount:host=>songLibrary.mount(host),songsClose:()=>songLibrary.close(),songsRefresh:()=>songLibrary.refresh(),gentle:()=>isGentle,currentScreen:()=>navigation?.current||'home',screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),save:()=>save(),play:loadPool,message:toast,runMusic(music){if(music.run)audio.music.run=structuredClone(music.run);},restoreLegacy(){const entry=store.pools[store.activeMode];loadPool(entry?.game||gameCreate('LAGOON',store.activeMode),entry?.music);}});
+progression=progressionMount({songsMount:(host,track)=>songLibrary.mount(host,track),songsClose:()=>songLibrary.close(),songsRefresh:()=>songLibrary.refresh(),gentle:()=>isGentle,currentScreen:()=>navigation?.current||'home',screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),save:()=>save(),play:loadPool,message:toast,runMusic(music){if(music.run)audio.music.run=structuredClone(music.run);},restoreLegacy(){const entry=store.pools[store.activeMode];loadPool(entry?.game||gameCreate('LAGOON',store.activeMode),entry?.music);}});
 
 const wiki=wikiMount({screen:()=>navigation?.show('wiki'),back:()=>navigation?.back()});
 navigation=gameMenuMount({

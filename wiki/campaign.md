@@ -30,7 +30,7 @@ The main menu's Continue button names your current track and pool. Pausing or re
 
 Free Play is a separate main-menu choice with unlimited plucks and the powers you have unlocked. Use it to enjoy the pool and its music without campaign pool goals.
 
-Saved songs are available within Campaign. Browser saves belong to this device and site; see [Saves](settings.md#saves-and-backups) before moving to another device.
+Open a track in Campaign and expand **Songs** to find its recordings, latest attempt and saved versions. Free Play and older saved songs without track information remain available under **Free Play & Older Songs**. Browser saves belong to this device and site; see [Saves](settings.md#saves-and-backups) before moving to another device.
 
 ## Attribution
 
