@@ -1,0 +1,50 @@
+/* Screen navigation belongs below its independently scrolling content. */
+:root body :is(dialog, #tree-dialog) > :is(.dialog-heading, .campaign-heading, .tree-heading, .skin-heading, .wiki-heading, .reward-heading) {
+  order: 10;
+  flex-shrink: 0;
+  border-bottom: 0;
+  border-top: 1px solid #8babce30;
+  padding-top: 12px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+:root body[data-menu-mode=home] dialog[open],
+:root body :is(#tree-dialog, #campaign-dialog, #skin-dialog, #reward-dialog)[open] {
+  padding-top: env(safe-area-inset-top);
+}
+/* Only the lowest bar owns the bottom safe area. */
+:root body :is(dialog, #tree-dialog) > :is(.campaign-footer, .tree-legend, .reward-footer) { padding-bottom: 12px; }
+:root body #skin-dialog .skin-scroll,
+:root body #wiki-dialog .wiki-article { padding-bottom: 24px; }
+:root body #development-dialog.standard-dialog { padding: 0; }
+:root body[data-menu-mode=home] #development-dialog.standard-dialog { padding-top: env(safe-area-inset-top); }
+:root body #development-dialog.standard-dialog > .dialog-heading { display: flex; }
+:root body #development-dialog.standard-dialog > .dialog-heading h2 { flex: 1; }
+
+/* The field comes first; status and navigation sit beneath it. */
+body > main, .stream-mode > main {
+  grid-template-rows: minmax(0,1fr) minmax(30px,auto) 44px 36px auto auto;
+}
+.pool-shell { grid-row: 1; }
+.pool-shell > .hud { order: 1; border-top: 1px solid #38516a55; }
+.edge-feedback { grid-row: 2; }
+.power-dock, .bonus-card { grid-row: 3; }
+.phrase-panel { grid-row: 4; }
+.control-strip { grid-row: 5; }
+.goal-strip { grid-row: 6; }
+
+@media(max-height:500px) and (min-width:480px) and (orientation:landscape) {
+  body > main, .stream-mode > main { grid-template-rows: 44px 44px 36px minmax(0,1fr) auto auto; }
+  .pool-shell { grid-row: 1/-1; }
+  .power-dock { grid-row: 1; }
+  .bonus-card { grid-row: 2; }
+  .phrase-panel { grid-row: 3; }
+  .edge-feedback { grid-row: 4; }
+  .goal-strip { grid-row: 5; }
+  .control-strip { grid-row: 6; }
+}
+@media(max-height:500px) {
+  :root body :is(dialog, #tree-dialog) > :is(.dialog-heading, .campaign-heading, .tree-heading, .skin-heading, .wiki-heading, .reward-heading) {
+    padding-top: 8px;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+}
