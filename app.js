@@ -1,5 +1,5 @@
 import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
-import { wikiMount } from './wiki.js?v=cdc1d31919a5e0ba33fa3140789da1adcbc072e4f447eb6553bef1e64e92e0bf';
+import { wikiMount } from './wiki.js?v=1e931718d0e1cb4200b165ba80347cb81e2c745c381fb4ec06e6db3f9714f19a';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
 import { POOL_NAMES } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543efa29e2eada2632f613b604';
 import { freePlaySync } from './free-play.js?v=82b9dd49d40715d2e16e8af8a566a100c23026916c8966636a3c61483f8d3a01';

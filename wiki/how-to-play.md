@@ -20,7 +20,7 @@ Only powers you have unlocked are included in the random pool. Research expands 
 
 ## Build a Song
 
-Plucks collect melodic ideas; blooms add harmony and musical layers. Jelly markings identify melody, bass and rhythm. Hits on those jellies influence their part as it becomes available.
+Plucks collect melodic ideas; blooms add harmony and musical layers. Jelly markings identify **melody**, **bass** and **rhythm**. Hits on those jellies influence their part as it becomes available.
 
 Three different jellies establish a recurring melody. Later notes develop the music over time rather than replacing it after every collision. A short answering phrase plays after a shot, and the arrangement continues between plucks. New musical layers join on the beat.
 

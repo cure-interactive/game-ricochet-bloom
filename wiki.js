@@ -1,14 +1,15 @@
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=e4e58dd403eaf091cf9df214f2cb07ec1106a37ddb800d79211e8f71e4addd8b';
 
 export const WIKI_PAGES = Object.freeze({
   contents: { title: 'Contents', url: './wiki/contents.md?v=bfde9e01ebb01ca359f2ff76d0a1433eee9d45c856219274608756a36cbc9491' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=50eeb499e8ba7e3898c011480b7dd17f58f7c5454e8c7a8760f58fc5f34dfea5' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=432efcde06cbf5e9635fe2f956676e584e7fb2ffdbd6529e89493bca5559db1a' },
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=683232b876e7dd2597c4220aeb457cd772a1ed4aca5ce3f015beea40cfacf718' },
   campaign: { title: 'Campaign', url: './wiki/campaign.md?v=15b287b1ecd2c3f5b3ae723d422b398e91f8bbd68024c04e0c80f8f03785b840' },
   'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=9803016c0c3163965e48d2188eadfe8b7f248245f928220c5ede71224f7a3984' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=5394df77188d0533ce46eee9efd4168a82f1004672b6dce9ea97434c42c84abb' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=1a16ae6c8b4287386659a7856672395b170e221e74956d0cda32782abe3de1ae' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=6691214582c845f92b7481d10dc35b1d3b1f85f01b8683805ffcf86babfa6cda' }
 });
 const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const headingID = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -18,35 +19,37 @@ export function wikiTarget(href, current = 'wiki') {
   const page = match[1] ? match[1].slice(0, -3) : current;
   return Object.hasOwn(WIKI_PAGES, page) ? { page, anchor: match[2] || '' } : null;
 }
-function inline(text, current) {
+function inline(text, current, section='') {
   const pattern = /\[([^\]\n]+)\]\(([^\s)]+)\)|\*\*([^*\n]+)\*\*|`([^`\n]+)`/g;
   let html = '', cursor = 0;
   for (const m of text.matchAll(pattern)) {
     html += escape(text.slice(cursor, m.index));
     if (m[1]) {
       const target = wikiTarget(m[2], current);
-      html += target ? `<a href="${escape(WIKI_PAGES[target.page].url)}${target.anchor ? '#'+target.anchor : ''}" data-wiki-page="${target.page}" data-wiki-anchor="${target.anchor}">${escape(m[1])}</a>` : escape(m[1]);
-    } else html += m[3] ? `<strong>${escape(m[3])}</strong>` : `<code>${escape(m[4])}</code>`;
+      html += target ? `<a href="${escape(WIKI_PAGES[target.page].url)}${target.anchor ? '#'+target.anchor : ''}" data-wiki-page="${target.page}" data-wiki-anchor="${target.anchor}">${wikiTopicIcon(target.page,target.anchor)}${escape(m[1])}</a>` : escape(m[1]);
+    } else html += m[3] ? `<strong>${wikiStrongHTML(m[3],current,section,escape(m[3]))}</strong>` : `<code>${escape(m[4])}</code>`;
     cursor = m.index + m[0].length;
   }
   return html + escape(text.slice(cursor));
 }
-// Deliberately bounded Markdown: no raw HTML, images, embeds or executable URLs.
+// Bounded Markdown: no raw HTML, supplied images, embeds or executable URLs.
+// Decorative icons come exclusively from the shipped topic/catalogue allowlist.
 export function renderMarkdown(markdown, current = 'wiki') {
   const lines = markdown.replace(/\r\n?/g, '\n').split('\n'), html = [];
-  let list = '', paragraph = [], credits = false;
-  const flush = () => { if(paragraph.length){html.push(`<p>${inline(paragraph.join(' '),current)}</p>`);paragraph=[];} if(list){html.push(`</${list}>`);list='';} };
+  let list = '', paragraph = [], credits = false, section='';
+  const flush = () => { if(paragraph.length){html.push(`<p>${inline(paragraph.join(' '),current,section)}</p>`);paragraph=[];} if(list){html.push(`</${list}>`);list='';} };
   for (const line of lines) {
     const heading = /^(#{1,4}) (.+)$/.exec(line), item = /^(?:([-*])|\d+\.) (.+)$/.exec(line);
     if (heading) {
       flush();
       if(heading[2]==='Attribution'){html.push('<details class="wiki-credits"><summary>Page Credits</summary>');credits=true;continue;}
       const level=heading[1].length;
-      html.push(`<h${level} id="${headingID(heading[2])}">${inline(heading[2],current)}</h${level}>`);
+      const id=headingID(heading[2]);if(level===2)section=id;
+      html.push(`<h${level} id="${id}">${credits?'':wikiTopicIcon(current,id)}${inline(heading[2],current,section)}</h${level}>`);
     } else if(item) {
-      if(paragraph.length){html.push(`<p>${inline(paragraph.join(' '),current)}</p>`);paragraph=[];}
+      if(paragraph.length){html.push(`<p>${inline(paragraph.join(' '),current,section)}</p>`);paragraph=[];}
       const kind=item[1]?'ul':'ol';if(list!==kind){if(list)html.push(`</${list}>`);list=kind;html.push(`<${kind}>`);}
-      html.push(`<li>${inline(item[2],current)}</li>`);
+      html.push(`<li>${inline(item[2],current,section)}</li>`);
     } else if(!line.trim()) flush();
     else {if(list){html.push(`</${list}>`);list='';}paragraph.push(line.trim());}
   }

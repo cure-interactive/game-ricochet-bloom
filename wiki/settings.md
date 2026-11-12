@@ -26,6 +26,10 @@ Development controls use a separate test profile. They can reset test progress, 
 
 [Back to Wiki](wiki.md).
 
+## Screen Rotation
+
+The game supports portrait and landscape. Rotate your device to change the layout; browser toolbar changes do not rotate the pool. If Safari stays upright on iPhone, turn off Portrait Orientation Lock in Control Center. Safari’s Page Menu beside the address field belongs to the browser, not the game.
+
 ## Attribution
 
 ### Sources
@@ -37,7 +41,3 @@ Ricochet Bloom gameplay, campaign, progression and audio source in this release.
 #### Codex on behalf of `leviscustempris`
 
 Authored and checked against the game implementation.
-
-## Screen Rotation
-
-The game supports portrait and landscape. Rotate your device to change the layout; browser toolbar changes do not rotate the pool. If Safari stays upright on iPhone, turn off Portrait Orientation Lock in Control Center. Safari’s Page Menu beside the address field belongs to the browser, not the game.
