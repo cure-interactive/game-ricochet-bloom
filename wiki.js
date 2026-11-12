@@ -2,7 +2,8 @@ import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 export const WIKI_PAGES = Object.freeze({
-  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=c0e5656371f7d87d73e88f8c85f0c066ba894d7bff4e45eba84f32967f9b67ea' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=dd3a6a33100720622f2d503ea0150468e640624b951417644747f3a6c0b53152' },
+  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=50eeb499e8ba7e3898c011480b7dd17f58f7c5454e8c7a8760f58fc5f34dfea5' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=1f7e952790505b01a3ad6df6c1e6964ba663e7bc139a2c607849df207f3df982' },
   campaign: { title: 'Campaign', url: './wiki/campaign.md?v=06f2ebc0f392cf5e1078cd86da2f930461b09e182a9fbdb57118a2098753bf83' },
   'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=db1417ae33fb0f2fa8539af6453ae2ad1de8d18218424e485efaa524f4ee3f33' },
@@ -60,7 +61,7 @@ export function wikiMount(host) {
   function position(anchor){const heading=anchor&&article.querySelector('#'+anchor);if(heading)heading.scrollIntoView({block:'start'});else article.scrollTop=0;}
   async function load(target, remember=true) {
     if(remember)history.visit(target);current=target;request?.abort();const active=new AbortController();request=active;
-    title.textContent=WIKI_PAGES[target.page].title;contents.hidden=target.page==='wiki';
+    title.textContent=WIKI_PAGES[target.page].title;contents.hidden=target.page==='contents';
     article.setAttribute('aria-busy','true');article.innerHTML='<p role="status">Loading page…</p>';article.scrollTop=0;
     try {
       const response=await fetch(WIKI_PAGES[target.page].url,{cache:'no-cache',signal:active.signal});
@@ -74,7 +75,7 @@ export function wikiMount(host) {
   }
   function back(){const target=history.back();if(target)load(target,false);else {request?.abort();dialog.close();host.back();}}
   dialog.querySelector('[data-wiki-back]').onclick=back;
-  contents.onclick=()=>load({page:'wiki',anchor:''});
+  contents.onclick=()=>load({page:'contents',anchor:''});
   dialog.addEventListener('cancel',event=>{event.preventDefault();back();});
   dialog.addEventListener('close',()=>{request?.abort();});
   article.addEventListener('click',event=>{
