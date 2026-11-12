@@ -1,5 +1,5 @@
 import { rewardMount } from './reward-ui.js?v=728bcf006c7499da82747783ddac281dbf5fccf88df72f68dba8ee88c2c14f5d';
-import { campaignMount } from './campaign-ui.js?v=65df9c3993c371fc57a390d5d7c46d02997cbd13e65ed8f7e01b847d300317ed';
+import { campaignMount } from './campaign-ui.js?v=684386a4511680797e96dab52d77b622bffe1a7d63fed7057bc4dbb137de7192';
 import { challengeEncode, challengeDecode } from './challenge.js?v=d59709935c26324c15d1f2abdd9d61e468639d6f92d7a66219a5f481ba40e6a2';
 import { trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=501d720ce1abcc910dfc629974bc0b65ee7bd248c9664a44445ff205fee06a2b';
@@ -79,7 +79,7 @@ export function progressionMount(host){
   if(loaded.recovered)host.message('Recovered progression from your backup.');
   return {
     get context(){return context;},get blocked(){return saveBlocked||context==='listening'||['run','challenge'].includes(context)&&state.phase!=='run';},get state(){return state;},
-    skins:()=>skins.open(),tree:()=>tree.open(),campaign:view=>state.phase==='interlude'&&!shared&&!['collection','songs'].includes(view)?rewards.open():campaign.open(view),play:enterRun,leave,
+    skins:()=>skins.open(),tree:()=>tree.open(),campaign:view=>state.phase==='interlude'&&!shared&&!['tracks','collection','songs'].includes(view)?rewards.open():campaign.open(view),play:enterRun,leave,
     get skin(){return state.skin==='original'?null:trackGet(state.skin)?.color;},
     checkpoint(game,music){if(['run','challenge'].includes(context)&&state.phase==='run'){const next=structuredClone(state);next.run.game=structuredClone(game);next.run.music=music;return commit(next).ok;}return true;},
     observe(game,events,music){

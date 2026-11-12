@@ -4,7 +4,7 @@ import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f
 import { gameMenuMount } from './game-menu.js?v=8c0c189d7287a90bcb6876e794eb0c5fc374ee4469dc88791c18d991ed5eded0';
 import { environmentRender, regionFrozen } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
 import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { progressionMount } from './progression-ui.js?v=d4e488861e93b86a011ba19bca60e69614459f17ae572a1cc0982b92ea5f0321';
+import { progressionMount } from './progression-ui.js?v=b32cec3da900dbab8dd5bde68bc5d86f7e250c8dd36e6619c6238037b3f328bf';
 import {assetURL} from './asset.js?v=142d7a2d7e9c9c8621efc77af5ebd0588ac88d080983132185a875ee6334cc88';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
@@ -639,7 +639,7 @@ navigation=gameMenuMount({
   freePlay,
   info(){return {resume:progression.state.phase!=='shop'?'Continue Song Run':null};},
   continue(){if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
-  open(screen){if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign();else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='help')$('help-dialog').showModal();else $('settings-dialog').showModal();}
+  open(screen){if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign('tracks');else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='help')$('help-dialog').showModal();else $('settings-dialog').showModal();}
 });
 fullscreenMount(document,window);
 $('welcome').hidden=true;
