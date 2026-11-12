@@ -232,6 +232,12 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .skill-stat.is-changed dd strong{color:#b4f2d8;font-weight:700}
 .skill-stat-before{color:#a7bec8}
 .skill-stat-visual{grid-column:1/-1;display:grid;gap:3px}
+.skill-stat-meter{display:block}
+.skill-stat-labels{position:relative;display:block;height:17px;font-size:10px;font-variant-numeric:tabular-nums;line-height:14px;color:#a7bec8}
+.skill-stat-labels.is-tight{height:31px}
+.skill-stat-endpoint{position:absolute;bottom:1px;left:clamp(var(--value-width),var(--fill),100%);transform:translateX(-100%);white-space:nowrap}
+.skill-stat-max{position:absolute;right:0;top:0;white-space:nowrap}
+.skill-stat.is-changed .skill-stat-meter.is-after .skill-stat-endpoint{color:#b4f2d8}
 .skill-stat-bar{height:6px;display:block;background:#9bb7c51c;border-radius:8px;overflow:hidden}
 .skill-stat-bar i{display:block;height:100%;background:#a7bec8;border-radius:inherit}
 .skill-stat.is-changed .skill-stat-bar.is-after i{background:#b4f2d8}

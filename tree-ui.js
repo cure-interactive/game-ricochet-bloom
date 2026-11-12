@@ -13,7 +13,10 @@ const reasonText={'family-gate':'Earn this power through successful play.','insu
 
 function statVisual(row,value,previous=false){
  const fill=row.kind==='count'?Array.from({length:row.max},(_,i)=>`<i class="${i<value?'filled':''}"></i>`).join(''):`<i style="width:${value/row.max*100}%"></i>`;
- return `<span class="skill-stat-${row.kind} ${previous?'is-before':'is-after'}" aria-hidden="true">${fill}</span>`;
+ const bar=`<span class="skill-stat-${row.kind} ${previous?'is-before':'is-after'}" aria-hidden="true">${fill}</span>`;
+ if(row.kind!=='bar')return bar;
+ const partial=value<row.max,formatted=String(previous?row.before:row.after),maximum=String(row.after).replace(/^[\d.]+/,String(row.max));
+ return `${previous?'':'<span class="sr-only">Maximum: '+escape(maximum)+'</span>'}<span class="skill-stat-meter ${previous?'is-before':'is-after'}" aria-hidden="true"><span class="skill-stat-labels ${partial&&value/row.max>.75?'is-tight':''}" style="--fill:${value/row.max*100}%;--value-width:${formatted.length+.5}ch">${partial?`<span class="skill-stat-endpoint">${escape(formatted)}</span>`:''}<span class="skill-stat-max">Max ${escape(maximum)}</span></span>${bar}</span>`;
 }
 export function skillStatsHTML(stats){
  return `<section class="skill-stats" aria-label="${escape(stats.heading)}"><h4>${escape(stats.heading)}</h4>${stats.compare?`<p class="skill-stat-key"><span>${escape(stats.beforeLabel)}</span><span aria-hidden="true">→</span><span>${escape(stats.afterLabel)}</span></p>`:''}<dl>${stats.rows.map(row=>`<div class="skill-stat ${row.changed?'is-changed':''}"><dt>${escape(row.label)}</dt><dd>${row.changed?`<span class="skill-stat-before">${escape(row.before)}</span><span aria-hidden="true"> → </span><span class="sr-only"> to </span>`:''}<strong>${escape(row.after)}</strong></dd>${row.kind!=='text'?`<div class="skill-stat-visual">${row.changed?statVisual(row,row.previous,true):''}${statVisual(row,row.value)}</div>`:''}</div>`).join('')}</dl>${stats.rows.some(r=>r.kind==='bar')?'<p class="skill-stat-note">Bar scale: this power’s upgrade range.</p>':''}</section>`;
