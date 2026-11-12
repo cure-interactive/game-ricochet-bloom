@@ -1,5 +1,5 @@
 import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
-import { wikiMount } from './wiki.js?v=4cfd59b9f7a62557932de67ff82b69243064b19c026c01de97081cf58e5d04bc';
+import { wikiMount } from './wiki.js?v=f78f6223b5465b001b99cebacda450315d376d55863516c0e5b254b2d0de0e02';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
 import { POOL_NAMES } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543efa29e2eada2632f613b604';
 import { freePlaySync } from './free-play.js?v=82b9dd49d40715d2e16e8af8a566a100c23026916c8966636a3c61483f8d3a01';
@@ -8,7 +8,7 @@ import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f
 import { gameMenuMount } from './game-menu.js?v=7ab248a4d60feecc74b1f3f96003ecd19abb860f83bb0c70ba8446e2611ba245';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
-import { progressionMount } from './progression-ui.js?v=12ede0e8b58cfdce3ef616835c5d35de8eb37b605c3f30064bf70185b3933456';
+import { progressionMount } from './progression-ui.js?v=31d0958f08147f544935a35712f11a62e3b866c6df30b41b15e0ccda22f75450';
 import {assetURL} from './asset.js?v=11557b7bbf1eaf861206cd3e17ea64ef617614459a0dba28213850a7fd0925d3';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
@@ -409,7 +409,7 @@ function uiRender() {
   $('score').textContent = game.score.toLocaleString('en-US');
   $('plucks').textContent = game.mode === 'free' ? '∞' : game.plucks; $('pluck-label').textContent = game.mode === 'free' ? 'FREE PLAY' : 'PLUCKS LEFT';
   $('pool-seed').textContent = `POOL / ${game.seed}`;
-  if($('development-badge')){$('development-badge').hidden=progression?.state.profile.kind!=='development';$('development-badge').textContent=progression?.context==='challenge'?'SHARED':'TEST';}
+  progression?.profileIndicator();
   $('chain-label').textContent = game.chain.length ? `${game.chain.length} NOTES ${game.chain.length >= 5 ? '· BEAUTIFUL.' : '· KEEP IT SINGING.'}` : 'FIVE DIFFERENT JELLIES. ONE BLOOM.';
   $('note-meter').replaceChildren(...Array.from({ length: 5 }, (_, index) => { const item = document.createElement('i'); if (game.chain[index]) { item.className = 'active'; item.style.setProperty('--note', COLORS[game.bodies[game.chain[index]].tone]); } return item; }));
   $('note-meter').setAttribute('aria-label', `${game.chain.length} unique notes this pluck`);

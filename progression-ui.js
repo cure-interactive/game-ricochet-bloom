@@ -1,5 +1,6 @@
+import { developmentBarMount } from './development-bar.js?v=181dce74a6c678d17bc3bf56a544abf43f86d43f4a3425995c93deb94be38b6b';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
-import { campaignMount } from './campaign-ui.js?v=cf11900590a08f6a06fbfe3b19bb9e691167373e223cb42b5384d994343b6952';
+import { campaignMount } from './campaign-ui.js?v=04a4ffdf5ecd09b72d7bd42967a700556271bf772a14f7f66c146326896f56d9';
 import { challengeEncode, challengeDecode } from './challenge.js?v=17847d8af6a2b06d143a7c474ad099b92f43a5b185d9fe8178018f168e811dba';
 import { trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543efa29e2eada2632f613b604';
@@ -13,6 +14,7 @@ export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;
   let saveBlocked=!loaded.available;
+  const profileBar=developmentBarMount();
   const $=id=>document.getElementById(id);
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
   const warning=document.createElement('div');warning.className='save-warning';warning.hidden=!saveBlocked;warning.setAttribute('role','alert');warning.innerHTML='<span>Progress could not be read. Export a backup before replacing it.</span>'+button('save-export','Export backup','download')+button('save-retry','Retry save','reset');document.body.append(warning);
@@ -38,7 +40,7 @@ export function progressionMount(host){
   function leave(){clearTimeout(listenTimer);const fromMenu=host.currentScreen?.()!=='play';host.save();if(suspended){state=suspended.state;kind=suspended.kind;suspended=null;shared=null;}context='legacy';listening=null;back.hidden=true;close();host.restoreLegacy();if(fromMenu)host.home?.();}
   back.onclick=()=>{const fromCampaign=listening?.campaign,track=listening?.track;leave();campaign.open(fromCampaign?'play':'songs',track);};
   function enterRun(){host.save();if(state.phase==='shop'){const r=act({type:'start'});if(!r.ok)return r;}else if(state.phase==='interlude'){const r=act({type:'continue'});if(!r.ok)return r;}context=shared?'challenge':'run';listening=null;back.hidden=true;close();host.play(state.run.game,state.run.music);return {ok:true};}
-  function devRender(){const development=kind==='development';$('dev-switch').checked=development;$('dev-show-hidden-content').checked=developmentSettings.showHiddenContent;$('dev-show-purchased-costs').checked=developmentSettings.showPurchasedCosts;$('dev-seed').disabled=!development||state.phase==='run';document.body.dataset.development=String(development);const badge=document.getElementById('development-badge');if(badge)badge.hidden=!development;$('dev-status').textContent=`${development?'Development':'Normal'} profile · ${state.profile.wallet.seeds} Points`;for(const id of ['dev-max-progress','dev-max','dev-grant',...['10','100','1000'].map(n=>'dev-add-'+n)])$(id).disabled=!development||state.phase==='run';$('dev-amount').disabled=!development;$('dev-reset').disabled=!development;$('dev-reset-confirmation').hidden=true;if(development&&state.phase==='run')$('dev-status').textContent+=' · Finish this pool before maximizing progress.';}
+  function devRender(){const development=kind==='development';$('dev-switch').checked=development;$('dev-show-hidden-content').checked=developmentSettings.showHiddenContent;$('dev-show-purchased-costs').checked=developmentSettings.showPurchasedCosts;$('dev-seed').disabled=!development||state.phase==='run';profileBar.set(kind,!!shared);$('dev-status').textContent=`${development?'Development':'Normal'} profile · ${state.profile.wallet.seeds} Points`;for(const id of ['dev-max-progress','dev-max','dev-grant',...['10','100','1000'].map(n=>'dev-add-'+n)])$(id).disabled=!development||state.phase==='run';$('dev-amount').disabled=!development;$('dev-reset').disabled=!development;$('dev-reset-confirmation').hidden=true;if(development&&state.phase==='run')$('dev-status').textContent+=' · Finish this pool before maximizing progress.';}
   function open(type,id){
     if(type==='campaign'){campaign.open();return {ok:true};}
     if(type==='play')return enterRun();
@@ -56,7 +58,6 @@ export function progressionMount(host){
       for(const p of code.build){next.profile.research[p.power+'.base']={paid:0};for(const k of [...(p.foundation?['foundation']:[]),...p.variants,...(p.capstone?['capstone']:[])]){next.profile.research[p.power+'.'+k]={paid:0};next.equipped.push(p.power+'.'+k);}}
       state=next;kind='development';return enterRun();}
   });
-  const badge=document.createElement('span');badge.id='development-badge';badge.className='development-badge';badge.textContent='TEST';badge.hidden=true;document.querySelector('.goal-strip').append(badge);
 
 
   $('dev-close').onclick=()=>dev.close();
@@ -104,6 +105,7 @@ export function progressionMount(host){
   devRender();
   if(loaded.recovered)host.message('Recovered progression from your backup.');
   return {
+    profileIndicator(){profileBar.set(kind,!!shared);},
     get context(){return context;},get blocked(){return saveBlocked||context==='listening'||['run','challenge'].includes(context)&&state.phase!=='run';},get state(){return state;},
     skins:()=>skins.open(),tree:()=>tree.open(),campaign:view=>campaign.open(view),play:enterRun,leave,
     get skin(){return state.skin==='original'?null:trackGet(state.skin)?.color;},
@@ -124,6 +126,6 @@ export function progressionMount(host){
         targetRender($('run-target'));result.showModal();tree.refresh();campaign.refresh();
       }});
     },
-    hud(){if(context==='listening')return 'LISTENING · Your saved song';if(['run','challenge'].includes(context))return state.run?`${shared?'SHARED · ':kind==='development'?'TEST · ':''}${POOL_NAMES[state.pool]} ${state.pool+1}/5 · ${goalRemaining(state)}`:'Run complete · open Skill Tree';return null;}
+    hud(){if(context==='listening')return 'LISTENING · Your saved song';if(['run','challenge'].includes(context))return state.run?`${shared?'SHARED · ':''}${POOL_NAMES[state.pool]} ${state.pool+1}/5 · ${goalRemaining(state)}`:'Run complete · open Skill Tree';return null;}
   };
 }

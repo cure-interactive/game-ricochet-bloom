@@ -48,3 +48,13 @@ body > main, .stream-mode > main {
     padding-bottom: max(8px, env(safe-area-inset-bottom));
   }
 }
+
+/* Development has one quiet, persistent status line above every screen. */
+body[data-development=true]{--profile-top-space:calc(20px + env(safe-area-inset-top));padding-top:var(--profile-top-space)}
+#development-profile-bar{position:fixed;inset:0 0 auto;margin:0;width:100%;max-width:none;box-sizing:border-box;height:calc(20px + env(safe-area-inset-top));padding:env(safe-area-inset-top) max(8px,env(safe-area-inset-right)) 0 max(8px,env(safe-area-inset-left));border:0;border-bottom:1px solid #e5c58b40;border-radius:0;background:#27271fee;color:#e6d3ac;font:500 11px/19px 'Fredoka',sans-serif;letter-spacing:.3px;text-align:center;pointer-events:none;z-index:10000;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+#development-profile-bar[hidden]{display:none}
+#development-profile-bar::backdrop{background:transparent;pointer-events:none}
+body[data-development=true] #main-menu{padding-top:var(--profile-top-space)}
+:root body[data-development=true] dialog[open]{top:var(--profile-top-space);bottom:0;max-height:calc(100dvh - var(--profile-top-space) - 16px)}
+:root body[data-development=true][data-menu-mode=home] :is(dialog,#tree-dialog)[open],
+:root body[data-development=true] :is(#tree-dialog,#campaign-dialog,#skin-dialog,#reward-dialog)[open]{inset:var(--profile-top-space) 0 0;height:calc(100dvh - var(--profile-top-space));max-height:calc(100dvh - var(--profile-top-space));padding-top:0}
