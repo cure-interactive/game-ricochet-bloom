@@ -1,5 +1,5 @@
 import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
-import { wikiMount } from './wiki.js?v=27869399a4ba5184aea527dc44d489862cb9cae1ca9cbcd3e4490547b229008b';
+import { wikiMount } from './wiki.js?v=185fa5456d5a5d224eb7470a134b47d1e8e2ce07523c74cf01952111d6d5a9bf';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
 import { POOL_NAMES } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543efa29e2eada2632f613b604';
 import { freePlaySync } from './free-play.js?v=82b9dd49d40715d2e16e8af8a566a100c23026916c8966636a3c61483f8d3a01';
@@ -11,11 +11,11 @@ import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd
 import { progressionMount } from './progression-ui.js?v=31d0958f08147f544935a35712f11a62e3b866c6df30b41b15e0ccda22f75450';
 import {assetURL} from './asset.js?v=11557b7bbf1eaf861206cd3e17ea64ef617614459a0dba28213850a7fd0925d3';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
+import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 import {songLibrarySetup} from './song-ui.js?v=6fbb3e2df26e7bf2f518604f207724d937ca62941b7169bc4a70efc6e6e55c02';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=ee2ad99d5c6262d550458a805ece6f85e3ed035e8547beb369aa6a1128985f22';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=d2672864e341bfa626d48ecf0896f80293efa380f1da26733d24fdfd24642877';
-import { PoolSound } from './sound.js?v=3e29a4d2a61994b7c3066c621868adbce1aa19953b15c7e2f6828680ad07c640';
+import { PoolSound } from './sound.js?v=b5e5244869e7fd1421797e48450576ca72dd7f985e48e5918d9be4930ab74f94';
 import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
 import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
 import { PowerVisual } from './power-visual.js?v=edb5b2cca4cd4e7b08bd21659ff403bb1bb9bd5b07b6ff33941b51b7f787b3dd';
@@ -172,7 +172,9 @@ function scorePopupRender(dt, view, ratio) {
   canvas.dataset.scorePopups = scorePopups.map(popup => `+${popup.points}`).join(',');
   canvas.dataset.scorePopupOpacity = scorePopups.map(popup => Math.pow(Math.max(0, 1 - popup.age / 1.8), 1.2).toFixed(3)).join(',');
 }
-function geometry() { const rect=canvas.getBoundingClientRect(); return {rect,...poolView(rect.width,rect.height,RULE.width,RULE.height)}; }
+// Browser chrome and HUD height can change the canvas shape without rotating the phone.
+// Keep drawing, aiming and stereo mapped to the viewport orientation instead.
+function geometry() { const rect=canvas.getBoundingClientRect(); return {rect,...poolView(rect.width,rect.height,RULE.width,RULE.height,matchMedia('(orientation: portrait)').matches)}; }
 function resize() { const { rect } = geometry(), ratio = Math.min(2, devicePixelRatio || 1); canvas.width = Math.round(rect.width * ratio); canvas.height = Math.round(rect.height * ratio); }
 new ResizeObserver(resize).observe(canvas);
 // Frost is attached to the actual membrane and clipped inside its surface.

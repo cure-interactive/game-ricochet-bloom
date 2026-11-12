@@ -2,13 +2,13 @@ import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 export const WIKI_PAGES = Object.freeze({
-  contents: { title: 'Contents', url: './wiki/contents.md?v=dd3a6a33100720622f2d503ea0150468e640624b951417644747f3a6c0b53152' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=bfde9e01ebb01ca359f2ff76d0a1433eee9d45c856219274608756a36cbc9491' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=50eeb499e8ba7e3898c011480b7dd17f58f7c5454e8c7a8760f58fc5f34dfea5' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=1f7e952790505b01a3ad6df6c1e6964ba663e7bc139a2c607849df207f3df982' },
   campaign: { title: 'Campaign', url: './wiki/campaign.md?v=15b287b1ecd2c3f5b3ae723d422b398e91f8bbd68024c04e0c80f8f03785b840' },
   'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=9803016c0c3163965e48d2188eadfe8b7f248245f928220c5ede71224f7a3984' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=5394df77188d0533ce46eee9efd4168a82f1004672b6dce9ea97434c42c84abb' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=e76497cb5c107e468a1a35ddb8dedad95f6b2934596ab6b22cb8f8162f2942d0' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=1a16ae6c8b4287386659a7856672395b170e221e74956d0cda32782abe3de1ae' }
 });
 const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const headingID = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
