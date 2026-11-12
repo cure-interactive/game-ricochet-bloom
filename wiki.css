@@ -1,0 +1,13 @@
+#wiki-dialog[open]{display:flex;flex-direction:column;width:min(900px,calc(100% - 24px));height:min(880px,calc(100dvh - 24px));max-height:calc(100dvh - 24px);padding:0;overflow:hidden;background:#0b1423;color:#e4edf4}
+.wiki-heading{width:100%;max-width:none;height:auto;margin:0;display:flex;align-items:center;gap:12px;flex:none;padding:16px;border-bottom:1px solid #31475b}
+.wiki-heading h2{font-size:clamp(18px,3.8vw,24px);margin:0;flex:1;min-width:0;line-height:1.2}
+.wiki-heading button{display:flex;align-items:center;gap:8px;min-height:44px;padding:10px 12px;flex-shrink:0;border:1px solid #40596b;border-radius:12px;background:#172839;font-size:15px}
+.wiki-article{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;touch-action:pan-y;padding:24px max(20px,calc((100% - 680px)/2));line-height:1.65;overflow-wrap:anywhere;scroll-padding:20px;outline-offset:-4px}
+.wiki-article h1{font-size:clamp(28px,5vw,38px);line-height:1.15;margin:0 0 24px;color:#eaf7f5}
+.wiki-article h2{font-size:24px;line-height:1.25;margin:32px 0 12px;color:#b3f0dc}
+.wiki-article h3{font-size:19px;margin:24px 0 10px}
+.wiki-article p{margin:0 0 18px;font-size:16px;line-height:1.65}.wiki-article li{font-size:16px}.wiki-article ul,.wiki-article ol{padding-left:24px;margin:0 0 24px}.wiki-article li{margin:10px 0}.wiki-article a{color:#a8f0dd;text-decoration:underline;text-underline-offset:4px}.wiki-article a:hover{color:#fff}.wiki-article code{color:#d5c6ff}.wiki-credits{margin-top:40px;border-top:1px solid #31475b;padding-top:16px;color:#afbfcc;font-size:14px}.wiki-credits summary{cursor:pointer;min-height:44px}
+body[data-menu-mode=home] #wiki-dialog[open]{max-height:100dvh}
+body[data-menu-mode=home] .wiki-heading{padding-top:max(16px,env(safe-area-inset-top));padding-inline:max(16px,calc((100vw - 900px)/2))}
+.wiki-article{padding-bottom:max(28px,env(safe-area-inset-bottom))}
+@media(max-width:480px){.wiki-heading{gap:8px;padding:12px}.wiki-heading button{padding:10px}.wiki-heading [data-wiki-back]>span:not(.ui-icon){display:none}.wiki-heading h2{font-size:19px}.wiki-article{padding:24px 20px}.home-secondary{flex-wrap:wrap}.home-secondary button{min-width:0}}

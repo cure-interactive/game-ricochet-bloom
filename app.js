@@ -1,12 +1,13 @@
+import { wikiMount } from './wiki.js?v=42a67947fd26018c90b24b8441e50a74886b4d8369d47e739c1559a031a51c01';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
 import { POOL_NAMES } from './run.js?v=21036f0f948a62dc2381a98ea661675ef083ad2bd9180bd67176c75cfa9c8261';
 import { freePlaySync } from './free-play.js?v=75e5ebfb40292300146102009ef6f431d19d8fd8c33fa4567be3300111619f06';
 import { fullscreenMount } from './fullscreen.js?v=e8c105c0bde8d63a2f68cb936534f947a78c62bdedc35b73614336e898cf848c';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=079e46bee8ff371bfa36722bfbaafd8df2f9d02047b78cb9acb01b3990847cba';
+import { gameMenuMount } from './game-menu.js?v=c4ef85e2982e9c6e202ff8d2b57e22787443ca7f88eb35e3a1111ea99c505e97';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 import { POWER_TREES } from './power-tree.js?v=0bcdae42795671509b8c4f64ae024b263c7281e465d043ab76bd131d11397edc';
-import { progressionMount } from './progression-ui.js?v=a1cba2ebac0e5ed0a69f4b696707a825c3242c65dd13e8449117294342dc2e39';
+import { progressionMount } from './progression-ui.js?v=aba1d0d22cbf66c0fe1cb58f24575abffb19176254afc36f32a06fada1e16319';
 import {assetURL} from './asset.js?v=142d7a2d7e9c9c8621efc77af5ebd0588ac88d080983132185a875ee6334cc88';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=d26f5161b640c18e31b2a562eea74f0f78218c3aebbc50913156ffdc1cc8b581';
@@ -634,6 +635,7 @@ if (['127.0.0.1', 'localhost', '[::1]'].includes(location.hostname)) {
 
 progression=progressionMount({songsMount:host=>songLibrary.mount(host),songsClose:()=>songLibrary.close(),songsRefresh:()=>songLibrary.refresh(),gentle:()=>isGentle,currentScreen:()=>navigation?.current||'home',screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),save:()=>save(),play:loadPool,message:toast,runMusic(music){if(music.run)audio.music.run=structuredClone(music.run);},restoreLegacy(){const entry=store.pools[store.activeMode];loadPool(entry?.game||gameCreate('LAGOON',store.activeMode),entry?.music);}});
 
+const wiki=wikiMount({screen:()=>navigation?.show('wiki'),back:()=>navigation?.back()});
 navigation=gameMenuMount({
   gentle:()=>isGentle,
   suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},
@@ -641,7 +643,7 @@ navigation=gameMenuMount({
   freePlay,
   info(){const s=progression.state;if(s.phase==='shop')return {resume:null};const next=s.phase==='interlude',pool=s.pool+(next?1:0);return {resume:{artwork:assetURL('artwork/'+s.track+'.svg'),detail:trackGet(s.track).name+' · '+(next?'Next: ':'')+'Pool '+(pool+1)+' — '+POOL_NAMES[pool]}};},
   continue(){if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
-  open(screen){if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign('tracks');else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='help')$('help-dialog').showModal();else $('settings-dialog').showModal();}
+  open(screen){if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign('tracks');else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='wiki')wiki.open();else if(screen==='help')wiki.open('how-to-play');else $('settings-dialog').showModal();}
 });
 fullscreenMount(document,window);
 $('welcome').hidden=true;
@@ -652,6 +654,7 @@ $('menu-dialog').querySelector('[data-close]').onclick=()=>start();
 $('menu-dialog').addEventListener('cancel',event=>{event.preventDefault();start();});
 $('menu-tree').onclick=()=>progression.tree();
 $('menu-skins').onclick=()=>progression.skins();
-$('menu-help').onclick=()=>$('help-dialog').showModal();
+$('menu-wiki').onclick=()=>wiki.open();
+$('menu-help').onclick=()=>wiki.open('how-to-play');
 $('menu-settings').onclick=()=>$('settings-dialog').showModal();
 if($('tree-dialog').open)navigation.show('tree');
