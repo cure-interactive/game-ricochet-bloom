@@ -1,12 +1,12 @@
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
 import { rewardMount } from './reward-ui.js?v=17eef5fe3d54fec9a1929dd34953393fddbdad60612516a35b97cf18b40c64ae';
-import { campaignMount } from './campaign-ui.js?v=31449ef7084c69ea781be497191c613a0c2ffb0a652df2ac30af42ff3f58fa20';
+import { campaignMount } from './campaign-ui.js?v=54b8bc1f1d9f1040df4a9a9bd367bf38e5199f7d4b0eeb743d9d9b8efa96297b';
 import { challengeEncode, challengeDecode } from './challenge.js?v=b2ef8a9862d9f639ffbc99f881b33940eb0fbb064580c385d5333658ce9eeb0f';
 import { trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=21036f0f948a62dc2381a98ea661675ef083ad2bd9180bd67176c75cfa9c8261';
 import { progressionRead, progressionWrite, progressionImport } from './progression-store.js?v=94e8b99f305b2e888d5bd93c784ea4fc84cc224ba7b8c51b76a7c61269d0ed26';
 import { gameCreate } from './engine.js?v=fd7b971c19b5ec40a2b4b8a9389bd7af23085f90a22911cce3bd04ed687a7072';
-import { treeMount } from './tree-ui.js?v=fc78ee77f8ebea941029503f4af877d8ecb7a1f9fe461d61886af919df4008ce';
+import { treeMount } from './tree-ui.js?v=abbcfb6960d84a9f285161dd29f18a89901248d98ef4fb10d8f019c5dfa3887d';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
 import { skinMount } from './skin-ui.js?v=79303964f88823b0c45005a8d3a0444bca4f55bb1038f485af40b03577ab4026';
@@ -89,7 +89,7 @@ export function progressionMount(host){
       commit(r.state,()=>{if(r.outcome){
         if(r.record?.music)host.runMusic?.(r.record.music);
         $('run-result-title').textContent=titleCase(shared?'Shared Challenge · '+r.message:r.message);
-        $('run-result-copy').textContent=r.outcome==='clear'?`Next: ${POOL_NAMES[state.pool+1]}. Choose a discovery and continue to the next pool.`:r.outcome==='victory'?`${r.record.medal} · ${r.record.launches} plucks · ${r.record.bonuses}/5 bonuses. Song saved in Campaign.`:'Your unfinished song is saved. Retry the same setup, unlock more powers, or try Relaxed pace.';
+        $('run-result-copy').textContent=r.outcome==='clear'?`Next: ${POOL_NAMES[state.pool+1]}. Choose a discovery and continue to the next pool.`:r.outcome==='victory'?`${r.record.medal} · ${r.record.launches} plucks · ${r.record.bonuses}/5 bonuses. Song saved in Campaign.`:'Your unfinished song is saved. Retry the track or unlock more powers before your next attempt.';
         $('run-listen').hidden=!r.record?.music;$('run-retry').hidden=r.outcome!=='failure'||!!shared;
         $('run-next').lastElementChild.textContent='Next pool & discoveries';
         const won=r.outcome==='victory'&&!shared;$('run-next').hidden=r.outcome!=='clear';$('run-destination').classList.add('primary');$('run-next').classList.add('primary');$('run-skin').hidden=!won;$('run-destination').hidden=!won;
