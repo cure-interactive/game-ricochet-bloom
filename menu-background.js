@@ -58,7 +58,7 @@ export function menuBackgroundMount(canvas,gentle){
   function sync(){cancelAnimationFrame(frame);frame=0;previous=0;if(active&&!document.hidden)frame=requestAnimationFrame(animate);}
   function clear(){pool.contacts.clear();canvas.dataset.contacts='0';}
   document.addEventListener('visibilitychange',()=>{clear();sync();});window.addEventListener('resize',()=>{clear();sync();});
-  const background={show(value){clear();active=value;sync();},clear,
+  const background={show(value){if(active===value)return;clear();active=value;sync();},clear,
     contact(id,clientX,clientY,pulse=false){
       if(!active||document.hidden)return;
       const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;
@@ -78,12 +78,11 @@ export function menuBackgroundMount(canvas,gentle){
 // the skill-tree camera keep their normal gestures. Touch events survive scroll.
 export function menuContactMount(background,doc,win){
   const options={capture:true,passive:true};
-  const pulse=event=>!event.target.closest?.('button,a,input,select,textarea,label,summary,[role="button"]');
-  doc.addEventListener('touchstart',event=>{for(const touch of event.changedTouches)background.contact(`touch:${touch.identifier}`,touch.clientX,touch.clientY,pulse(event));},options);
+  doc.addEventListener('touchstart',event=>{for(const touch of event.changedTouches)background.contact(`touch:${touch.identifier}`,touch.clientX,touch.clientY,true);},options);
   doc.addEventListener('touchmove',event=>{for(const touch of event.touches)background.contact(`touch:${touch.identifier}`,touch.clientX,touch.clientY);},options);
   const releaseTouches=event=>{for(const touch of event.changedTouches)background.release(`touch:${touch.identifier}`);};
   doc.addEventListener('touchend',releaseTouches,options);doc.addEventListener('touchcancel',releaseTouches,options);
-  doc.addEventListener('pointerdown',event=>{if(event.pointerType!=='touch'&&event.button===0)background.contact(event.pointerId,event.clientX,event.clientY,pulse(event));},options);
+  doc.addEventListener('pointerdown',event=>{if(event.pointerType!=='touch'&&event.button===0)background.contact(event.pointerId,event.clientX,event.clientY,true);},options);
   doc.addEventListener('pointermove',event=>{if(event.pointerType==='touch')return;if(event.buttons&1)background.contact(event.pointerId,event.clientX,event.clientY);else background.release(event.pointerId);},options);
   const releasePointer=event=>{if(event.pointerType!=='touch')background.release(event.pointerId);};
   for(const name of ['pointerup','pointercancel','lostpointercapture'])doc.addEventListener(name,releasePointer,options);
