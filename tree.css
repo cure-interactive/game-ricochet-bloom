@@ -20,13 +20,6 @@
 
 
 
-#tree-dialog>.tree-legend{display:flex;flex:none;flex-wrap:wrap;justify-content:center;gap:8px clamp(12px,4vw,40px);width:100%;max-width:none;margin:0;padding:10px 12px max(10px,env(safe-area-inset-bottom));border-top:1px solid #314559;background:#0e1c2b;color:#b3cad4;font:inherit;font-size:11px;line-height:1.2;letter-spacing:normal;text-align:left}
-#tree-dialog>.tree-legend>span{display:flex;align-items:center;gap:5px;white-space:nowrap}
-.tree-legend>span:before{content:'';width:8px;height:8px;border:1px solid #526a80;border-radius:50%}
-.tree-legend .legend-active:before{background:#a5f5d6;border-color:#a5f5d6;box-shadow:0 0 7px #7ef9c977}
-.tree-legend .legend-owned:before{border-color:#9fe3ce}
-.tree-legend .legend-available:before{border-color:#e9c77f}
-.tree-legend .legend-locked:before{border-style:dashed}
 .tree-map-stage{display:flex;flex-direction:column;position:relative;flex:1;min-height:0;overflow:hidden;background:radial-gradient(ellipse at 35% 20%,#203e3d55,transparent 70%),#091422}
 .tree-map-scroll{position:relative;flex:1;min-height:0;width:100%;overflow:clip;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;overscroll-behavior:contain;background-image:radial-gradient(#8fb8cd16 1px,transparent 1px);background-size:24px 24px}
 .tree-map-scroll.is-panning,.tree-map-scroll.is-panning *{cursor:grabbing!important}
@@ -176,7 +169,7 @@
 #development-dialog .dialog-heading h2{font-size:clamp(18px,5vw,28px);overflow-wrap:normal;word-break:normal}
 #development-dialog .dialog-heading button{padding:9px 8px;font-size:13px}
 @media(max-width:350px){.tree-camera-controls{gap:6px;padding:4px}#tree-dialog .tree-camera-controls button{padding:8px 6px}.tree-zoom{width:32px}}
-@media(max-height:500px) and (orientation:landscape){.tree-map-hint{display:none}.tree-camera-controls{margin:4px 0}#tree-dialog>.tree-legend{padding-block:6px}#tree-dialog .tree-heading{min-height:54px;padding-block:5px}}
+@media(max-height:500px) and (orientation:landscape){.tree-map-hint{display:none}.tree-camera-controls{margin:4px 0}#tree-dialog .tree-heading{min-height:54px;padding-block:5px}}
 
 @media(max-width:350px){#development-dialog{padding:16px}}
 
@@ -201,8 +194,16 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 #tree-dialog .tree-world-links path.is-active{stroke:var(--rarity-color);stroke-width:4;opacity:1}
 #tree-dialog .tree-world-links path.is-route{stroke:var(--rarity-color);stroke-width:5;opacity:1;filter:drop-shadow(0 0 3px var(--rarity-color))}
 #tree-dialog .tree-world-links path.is-locked:not(.is-route){stroke:var(--rarity-color);stroke-width:3;opacity:.65}
-#tree-dialog>.tree-legend{display:grid;gap:9px;padding:10px 12px max(10px,env(safe-area-inset-bottom));font-size:11px}
-.rarity-legend,.status-legend{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 16px}
+#tree-dialog .tree-legend{position:absolute;z-index:5;top:12px;left:12px;display:block;box-sizing:border-box;width:max-content;max-width:calc(100% - 24px);max-height:calc(100% - 56px);overflow:auto;overscroll-behavior:contain;padding:10px 12px;text-align:left;line-height:1.35;border-radius:14px;cursor:pointer}
+#tree-dialog .tree-legend[aria-expanded=true]{width:300px}
+.tree-legend-title{display:flex;align-items:center;gap:9px;font-weight:600}
+.tree-legend-close{display:none;margin-left:auto}
+.tree-legend[aria-expanded=true] .tree-legend-close{display:flex}
+#tree-legend-content{display:grid;gap:14px;padding-top:16px;font-size:13px;font-weight:400}
+#tree-legend-content[hidden]{display:none}
+.rarity-legend,.status-legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}
+.status-legend{border-top:1px solid #b4d4de2b;padding-top:14px}
+.tree-legend-hint{font-size:11px;color:#9fb9c5}
 .rarity-key{display:flex;align-items:center;gap:4px;white-space:nowrap;color:#d4e0e8}
 .rarity-key img{width:16px;height:16px}
 .status-legend>span{display:flex;align-items:center;gap:5px;white-space:nowrap}
@@ -212,7 +213,6 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .status-legend .legend-available:before{border:3px double #c8d5df;background:none}
 .status-legend .legend-locked:before{border:1px dashed #c8d5df;background:none}
 #reward-dialog .reward-card{border-color:var(--rarity-color)}
-@media(max-width:380px){.rarity-legend{gap:8px}.rarity-key{gap:3px;font-size:10px}.rarity-key img{width:15px;height:15px}.status-legend{gap:12px}}
 
 /* Purchase information stays anchored to its node; there is no detail pane or sheet. */
 #tree-dialog .tree-workspace{grid-template-columns:minmax(0,1fr)}

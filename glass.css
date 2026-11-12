@@ -32,7 +32,7 @@
 :root body[data-menu-mode=home] dialog::backdrop { background: #0b1423; }
 
 /* One blur per panel: nested content uses a tint, not another full blur pass. */
-:root body :is(.dialog-heading, .campaign-heading, .campaign-footer, .tree-heading, .tree-legend, .skin-heading, .wiki-heading, .reward-heading, .reward-footer) {
+:root body :is(.dialog-heading, .campaign-heading, .campaign-footer, .tree-heading, .skin-heading, .wiki-heading, .reward-heading, .reward-footer) {
   background: rgb(21 40 54 / 48%);
 }
 :root body :is(.settings-section, .campaign-preview, .level-collection, .track-reward, .reward-card, .skin-choice) {
@@ -41,12 +41,12 @@
 :root body .skin-choice.is-equipped { background-color: rgb(30 78 65 / 70%); }
 :root body .skin-choice:disabled { background-color: rgb(15 29 44 / 70%); }
 
-:root body :is(.overlay, #welcome, #tree-dialog .skill-tooltip, .tree-camera-controls, .tree-map-hint, .save-warning) {
+:root body :is(.overlay, #welcome, #tree-dialog .skill-tooltip, #tree-dialog .tree-legend, .tree-camera-controls, .tree-map-hint, .save-warning) {
   background: var(--glass-panel);
   -webkit-backdrop-filter: var(--glass-filter);
   backdrop-filter: var(--glass-filter);
 }
-:root body :is(#tree-dialog .skill-tooltip, .tree-camera-controls) {
+:root body :is(#tree-dialog .skill-tooltip, #tree-dialog .tree-legend, .tree-camera-controls) {
   border-color: var(--glass-edge);
   box-shadow: inset 0 1px 0 #e5fff01a, 0 12px 36px #0005;
 }

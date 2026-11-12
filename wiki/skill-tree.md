@@ -37,7 +37,7 @@ Types describe behavior. They never partition the map or gate research. Each pow
 - **Available:** a double outer border.
 - **Locked:** a dashed border and lock.
 
-The selected node has a white outline. Its prerequisite path keeps the rarity colors of its skills. The bottom legend shows all five rarities and the separate ownership states.
+The selected node has a white outline. Its prerequisite path keeps the rarity colors of its skills. Tap Legend at the top left to show all five rarities and the separate ownership states. Tap the expanded card to collapse it and leave more of the tree visible.
 
 Drag to move in two dimensions; pinch or scroll to zoom. Tap any node to inspect it; eligible research includes a Buy button. Tap elsewhere, close it, or move the map to dismiss it. For an owned conflicting style, open its tooltip and choose Use This Style. Inspecting it alone does not change your powers.
 

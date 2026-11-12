@@ -12,7 +12,7 @@
   padding-top: env(safe-area-inset-top);
 }
 /* Only the lowest bar owns the bottom safe area. */
-:root body :is(dialog, #tree-dialog) > :is(.campaign-footer, .tree-legend, .reward-footer) { padding-bottom: 12px; }
+:root body :is(dialog, #tree-dialog) > :is(.campaign-footer, .reward-footer) { padding-bottom: 12px; }
 :root body #skin-dialog .skin-scroll,
 :root body #wiki-dialog .wiki-article { padding-bottom: 24px; }
 :root body #development-dialog.standard-dialog { padding: 0; }
