@@ -38,6 +38,14 @@
 :root body[data-menu-mode=home]:has(dialog[open]) #main-menu { visibility: hidden; }
 :root body[data-menu-mode=home] .tree-map-stage { background: transparent; }
 
+/* Child dialogs replace Settings visually while its native modal state, section
+   expansion and scroll position remain intact for Close, Escape and edge Back. */
+:root body:has(:is(#development-dialog,#credits-dialog,#shutdown-dialog)[open]) #settings-dialog[open],
+:root body:has(:is(#development-dialog,#credits-dialog,#shutdown-dialog)[open]) #settings-dialog[open]::backdrop {
+  visibility: hidden;
+}
+
+
 /* Frost the readable controls, leaving the shared living pool visible around them. */
 :root body[data-menu-mode=home] :is(.dialog-heading,.campaign-heading,.campaign-footer,.tree-heading,.skin-heading,.wiki-heading,.reward-heading,.reward-footer,.settings-section) {
   background: var(--glass-panel);
