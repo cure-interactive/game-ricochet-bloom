@@ -15,7 +15,7 @@ export function gameMenuMount(host) {
     if(name!==current&&!returning)history.push(current);
     if(name==='home')homeMode=true;else if(name==='play'||name==='pause')homeMode=false;
     current=name;document.body.dataset.screen=name;document.body.dataset.menuMode=homeMode?'home':'play';home.hidden=name!=='home';background.show(name==='home');
-    document.querySelector('body>main').inert=name!=='play';document.querySelector('body>header').inert=name!=='play';
+    document.querySelector('body>main').inert=name!=='play';
     if(name!=='play')host.suspend();refresh();
   }
   function homeOpen(){close();history=[];present('home');history=[];home.querySelector(host.info().resume?'#home-continue':'#home-levels').focus({preventScroll:true});}
