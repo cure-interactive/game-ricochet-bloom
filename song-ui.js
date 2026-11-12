@@ -1,5 +1,5 @@
 import {buttonLabel} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import {SONG_STORAGE,SONG_LIMIT,songLibraryRead,songSnapshot,songRender} from './song.js?v=6c8468e39d32c8b55eac9678fe7035241ebdb575f071a18e687ca7568a52961b';
+import {SONG_STORAGE,SONG_LIMIT,songLibraryRead,songSnapshot,songRender} from './song.js?v=48873dc48654acf5ed853a7b7db0312d46dc915e3e358378f1a56edb7ac7bbcc';
 export function songLibrarySetup(current,open) {
   const panel=document.getElementById('library-panel'),$=id=>panel.querySelector('#'+id)||document.getElementById(id);let library={version:1,songs:[]},selected=null,url=null,file=null,job=0;
   let initialized=false;

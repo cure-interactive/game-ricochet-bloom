@@ -1,4 +1,4 @@
-import {musicCreate,musicFinish,musicNextBar,BAR_SECONDS} from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
+import {musicCreate,musicFinish,musicNextBar,BAR_SECONDS} from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
 import {instrumentNote} from './instrument.js?v=54c0e4fa3eab549d2e5ab1ff2eca9c9fb14a046e20c1345e853b451955c0697c';
 export const SONG_STORAGE='ricochet-bloom-songs-v1', SONG_LIMIT=24;
 export function songLibraryRead(value) {
@@ -28,7 +28,7 @@ export async function songRender(music) {
   for(let bar=0;bar<8;bar++) {const score=musicNextBar(copy,.35,previous);previous=score.nextPitch;for(const event of score.events)if(event.role)instrumentNote(rack,{...event,at:event.at+bar*BAR_SECONDS});}
   const rendered=await context.startRendering();let peak=0;
   for(let c=0;c<rendered.numberOfChannels;c++)for(const sample of rendered.getChannelData(c))peak=Math.max(peak,Math.abs(sample));
-  // A quiet pool still makes a listenable keepsake; retain dynamics and headroom.
+  // A Quiet pool still makes a listenable keepsake; retain dynamics and headroom.
   const gain=peak>0?Math.min(10,.75/peak):1;
   for(let c=0;c<rendered.numberOfChannels;c++){const channel=rendered.getChannelData(c);for(let i=0;i<channel.length;i++)channel[i]*=gain;}
   return new Blob([wavEncode(rendered)],{type:'audio/wav'});

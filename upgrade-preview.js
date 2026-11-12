@@ -1,13 +1,13 @@
-import { gameCreate, launch, physicsStep, powerMarkers, seedBodies, RULE, COLORS, POWERS } from './engine.js?v=78193f8961efde0cbc94b402713c23a61d5384166c5a072df3d3e9cd12e7b310';
-import { GAME_CATALOGUE as cat } from './run.js?v=d4a0763247cf9d5ad868ce587a2006eccfbca07854878087aa2ab9f3c890b840';
-import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { PowerVisual } from './power-visual.js?v=ee990496ca45efcf27724f1c248c3dddef1bee2d8b3a5522f589c7fd844e0266';
+import { gameCreate, launch, physicsStep, powerMarkers, seedBodies, RULE, COLORS, POWERS } from './engine.js?v=fd7b971c19b5ec40a2b4b8a9389bd7af23085f90a22911cce3bd04ed687a7072';
+import { GAME_CATALOGUE as cat } from './run.js?v=21036f0f948a62dc2381a98ea661675ef083ad2bd9180bd67176c75cfa9c8261';
+import { POWER_TREES } from './power-tree.js?v=0bcdae42795671509b8c4f64ae024b263c7281e465d043ab76bd131d11397edc';
+import { PowerVisual } from './power-visual.js?v=90cf6b90c684660f52931d362ac870d1954b0cc2bcecffcce3a2c4a9734d213e';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 export const BUILD_EXAMPLES=Object.freeze([
-  {id:'bank',name:'Bank & reply',powers:['comet','spring','echo'],nodes:['comet.foundation','spring.b','echo.a'],description:'Keep momentum, turn a rebound, then let Echo seek a missed jelly.'},
-  {id:'current',name:'Gather & release',powers:['attract','vortex','ripple'],nodes:['attract.foundation','vortex.foundation','ripple.capstone'],description:'Gather bodies, circulate them, then send a returning pressure wave.'},
-  {id:'cascade',name:'Contact cascade',powers:['blaster','split','relay'],nodes:['blaster.foundation','split.foundation','relay.foundation'],description:'Automatic shots, side seeds and physical relays share one contact chain.'}
+  {id:'bank',name:'Bank & Reply',powers:['comet','spring','echo'],nodes:['comet.foundation','spring.b','echo.a'],description:'Keep momentum, turn a rebound, then let Echo seek a missed jelly.'},
+  {id:'current',name:'Gather & Release',powers:['attract','vortex','ripple'],nodes:['attract.foundation','vortex.foundation','ripple.capstone'],description:'Gather bodies, circulate them, then send a returning pressure wave.'},
+  {id:'cascade',name:'Contact Cascade',powers:['blaster','split','relay'],nodes:['blaster.foundation','split.foundation','relay.foundation'],description:'Automatic shots, side seeds and physical relays share one contact chain.'}
 ]);
 export function upgradeFixture(id,after=true,autoplay=true){
   const example=BUILD_EXAMPLES.find(x=>x.id===id),node=cat.nodes[id];

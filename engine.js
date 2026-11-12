@@ -1,7 +1,7 @@
-import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
-import { jellyRole } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=27a2ab701a8b063fcf28a0d1e0682e04d1a1c6d3e0908c29afad980f201bdb01';
-export { skillFlags } from './skill-effect.js?v=27a2ab701a8b063fcf28a0d1e0682e04d1a1c6d3e0908c29afad980f201bdb01';
+import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
+import { jellyRole } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=1d4e7d0824a5390ec1da3b40d0c343136d0c37b99fd440c059415e803d655008';
+export { skillFlags } from './skill-effect.js?v=1d4e7d0824a5390ec1da3b40d0c343136d0c37b99fd440c059415e803d655008';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
 export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
@@ -798,15 +798,15 @@ export function saveValidate(input) {
 }
 
 export const OBJECTIVES=Object.freeze([
-  {title:'Bank a bloom',description:'Touch five different jellies and bounce off a wall in one pluck.',targets:{notes:5,banks:1},tip:'Aim toward a wall with jellies along the rebound path.'},
-  {title:'Seven-note run',description:'Touch seven different jellies in one pluck.',targets:{notes:7},tip:'Every new jelly counts, including contacts made by your powers.'},
-  {title:'Power play',description:'Collect two powers and bounce off a wall in one pluck.',targets:{powers:2,banks:1},tip:'Build a bloom streak to begin a pluck with two or three power jellies.'}
+  {title:'Bank a Bloom',description:'Touch five different jellies and bounce off a wall in one pluck.',targets:{notes:5,banks:1},tip:'Aim toward a wall with jellies along the rebound path.'},
+  {title:'Seven-Note Run',description:'Touch seven different jellies in one pluck.',targets:{notes:7},tip:'Every new jelly counts, including contacts made by your powers.'},
+  {title:'Power Play',description:'Collect two powers and bounce off a wall in one pluck.',targets:{powers:2,banks:1},tip:'Build a bloom streak to begin a pluck with two or three power jellies.'}
 ]);
 export function objectiveProgress(state) {
   const index=state.objective.index%OBJECTIVES.length,definition=OBJECTIVES[index];
   if(state.mode==='song-run'){
     const complete=state.objective.completed>0,kind=state.objective.index%3,roles=new Set(state.chain.map(jellyRole)).size;
-    const definition=kind===1?{title:'Three voices',description:'Contact melody, bass and rhythm in one pluck.',target:3,value:roles,label:'musical roles'}:kind===2?{title:'Double-bank bloom',description:'Bounce off two walls before the fifth contact of a bloom.',target:1,value:Number(!!state.objective.bankBloom),label:'double-bank bloom'}:{title:'Seven-note run',description:'Touch seven different jellies in one pluck.',target:7,value:Math.min(7,state.chain.length),label:'jellies'};
+    const definition=kind===1?{title:'Three Voices',description:'Contact melody, bass and rhythm in one pluck.',target:3,value:roles,label:'musical roles'}:kind===2?{title:'Double-Bank Bloom',description:'Bounce off two walls before the fifth contact of a bloom.',target:1,value:Number(!!state.objective.bankBloom),label:'double-bank bloom'}:{title:'Seven-Note Run',description:'Touch seven different jellies in one pluck.',target:7,value:Math.min(7,state.chain.length),label:'jellies'};
     const value=complete?definition.target:definition.value;return {...definition,tip:'Every collector counts. The bonus stays earned for this pool.',index:kind,steps:[{key:'notes',label:definition.label,target:definition.target,value}],progress:value/definition.target,complete,reward:200};
   }
   const values={notes:state.chain.length,banks:state.banks,powers:state.power.used};

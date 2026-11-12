@@ -1,11 +1,11 @@
-import { TRACKS } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
-import { completedTracks } from './run.js?v=d4a0763247cf9d5ad868ce587a2006eccfbca07854878087aa2ab9f3c890b840';
+import { TRACKS } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
+import { completedTracks } from './run.js?v=21036f0f948a62dc2381a98ea661675ef083ad2bd9180bd67176c75cfa9c8261';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const skins=[{id:'original',name:'Original',color:'#f1f9d7'},...TRACKS];
 export function skinMount(controller){
   const dialog=document.createElement('dialog');dialog.id='skin-dialog';dialog.setAttribute('aria-labelledby','skin-title');
-  dialog.innerHTML=`<header class="skin-heading"><button type="button" data-skin-back>${iconHTML('arrow-left')}<span>Back</span></button><h2 id="skin-title">Player skins</h2></header><div class="skin-scroll"><p class="skin-intro">Your look in the pool. Complete campaign tracks to unlock more.</p><p class="skin-status" role="status"></p><div class="skin-grid"></div></div>`;
+  dialog.innerHTML=`<header class="skin-heading"><button type="button" data-skin-back>${iconHTML('arrow-left')}<span>Back</span></button><h2 id="skin-title">Player Skins</h2></header><div class="skin-scroll"><p class="skin-intro">Your look in the pool. Complete campaign tracks to unlock more.</p><p class="skin-status" role="status"></p><div class="skin-grid"></div></div>`;
   document.body.append(dialog);
   function render(){
     const state=controller.get(),unlocked=new Set(['original',...completedTracks(state)]);

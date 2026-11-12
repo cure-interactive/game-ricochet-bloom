@@ -1,4 +1,4 @@
-import { trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
+import { trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 // Play supplies the motif and harmony; arrangement supplies a musical journey.
 export const CHORDS = [
   { name: 'C6/9', notes: [60, 62, 64, 67, 69] },
@@ -144,7 +144,7 @@ export function musicBloom(music) {
 export function musicProgress(music) {
   let stage = music.blooms >= 3 ? 4 : music.blooms >= 2 || (music.plucks >= 6 && music.blooms >= 1) ? 3 : music.blooms >= 1 || (music.plucks >= 3 && music.theme.length === 4) ? 2 : music.plucks > 0 ? 1 : 0;
   if(music.run)stage=Math.min(stage,[2,3,3,2,4,4][music.run.section]);
-  return { stage, name: ['Quiet pool', 'First ripples', 'Melody', 'Groove', 'Full song'][stage], next: ['Pluck to wake the song', 'A bloom or three plucks grows your melody', 'More plucks and blooms add a groove', 'Three blooms brings the full song', 'Keep plucking to write new variations'][stage] };
+  return { stage, name: ['Quiet Pool', 'First Ripples', 'Melody', 'Groove', 'Full Song'][stage], next: ['Pluck to wake the song', 'A bloom or three plucks grows your melody', 'More plucks and blooms add a groove', 'Three blooms brings the full song', 'Keep plucking to write new variations'][stage] };
 }
 const TRIADS = [[60, 64, 67], [57, 60, 64], [53, 57, 60], [55, 59, 62]];
 const VOICINGS = [[60, 64, 67], [57, 60, 64], [57, 60, 65], [59, 62, 67]];
@@ -168,7 +168,7 @@ function contour(tones) {
 }
 export function musicCompose(music, passage = 0, flow = 0, previous = 67, barStart = passage*4+music.formStart) {
   const { stage } = musicProgress(music), cycle = Math.floor(passage / FORM.length);
-  const section = stage === 4 ? FORM[passage % FORM.length] : ['Quiet pool', 'First ripples', 'Theme', 'Growing'][stage];
+  const section = stage === 4 ? FORM[passage % FORM.length] : ['Quiet Pool', 'First Ripples', 'Theme', 'Growing'][stage];
   const chorus = section === 'Chorus', breakdown = section === 'Breakdown', build = section === 'Build';
   const events = [], motion = Math.max(0, Math.min(1, Number.isFinite(flow) ? flow : 0));
   const memories = music.history.length ? music.history : [{ chord: 0, tones: [0, 2, 3, 1], rhythm: 1 }];

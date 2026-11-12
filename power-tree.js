@@ -20,15 +20,15 @@ export const POWER_TREES = {
         "description": "Retain more speed after bouncing off jellies and walls."
       },
       {
-        "name": "Bank charge",
+        "name": "Bank Charge",
         "description": "The next genuine wall bounce after a new jelly contact gains a small speed boost, once per contact."
       },
       {
-        "name": "Long flight",
+        "name": "Long Flight",
         "description": "Lose speed more gradually near the end of a pluck, while still coming to a natural rest."
       },
       {
-        "name": "Meteor wake",
+        "name": "Meteor Wake",
         "description": "The first two wall banks send an outward push through nearby jellies."
       }
     ]
@@ -49,15 +49,15 @@ export const POWER_TREES = {
         "description": "Strengthen the activating collision."
       },
       {
-        "name": "Follow through",
+        "name": "Follow Through",
         "description": "Extend enhanced pushes to later contacts during this pluck."
       },
       {
-        "name": "Focused impact",
+        "name": "Focused Impact",
         "description": "Narrow, stronger forward pushes suited to directing a jelly."
       },
       {
-        "name": "Broad impact",
+        "name": "Broad Impact",
         "description": "Weaker radial pushes around the contacted jelly, suited to opening clusters."
       },
       {
@@ -82,19 +82,19 @@ export const POWER_TREES = {
         "description": "Boost wall rebounds for three seconds, with a visible recoil along the wall."
       },
       {
-        "name": "Lasting spring",
+        "name": "Lasting Spring",
         "description": "Extend to five seconds."
       },
       {
-        "name": "Deep rebound",
+        "name": "Deep Rebound",
         "description": "Bounce back more strongly, up to the normal maximum speed."
       },
       {
-        "name": "Angled rebound",
+        "name": "Angled Rebound",
         "description": "Bias a rebound slightly toward the nearest forward unhit jelly; show the bias in its cue."
       },
       {
-        "name": "Resonant wall",
+        "name": "Resonant Wall",
         "description": "First two spring rebounds also push nearby jellies inward, creating bank opportunities rather than free score."
       }
     ]
@@ -115,19 +115,19 @@ export const POWER_TREES = {
         "description": "Swerve smoothly for four seconds."
       },
       {
-        "name": "Rhythm sway",
+        "name": "Rhythm Sway",
         "description": "Align its direction changes to the musical pulse without changing launch timing."
       },
       {
-        "name": "Narrow sway",
+        "name": "Narrow Sway",
         "description": "Smaller lateral deviation for threading lanes."
       },
       {
-        "name": "Wide sway",
+        "name": "Wide Sway",
         "description": "Larger sweeps for coverage, with lower turn acceleration to remain readable."
       },
       {
-        "name": "Shared sway",
+        "name": "Shared Sway",
         "description": "Up to three nearby unhit jellies sway sideways with the player."
       }
     ]
@@ -148,19 +148,19 @@ export const POWER_TREES = {
         "description": "Send a pressure wave outward, pushing nearby jellies away."
       },
       {
-        "name": "Wide ripple",
+        "name": "Wide Ripple",
         "description": "Expand its reach by 20 percent without increasing center strength."
       },
       {
-        "name": "Strong center",
+        "name": "Strong Center",
         "description": "Concentrate the impulse near the origin, opening a tight cluster."
       },
       {
-        "name": "Far shore",
+        "name": "Far Shore",
         "description": "Flatter falloff, reaching more distant jellies with weaker central force."
       },
       {
-        "name": "Returning ripple",
+        "name": "Returning Ripple",
         "description": "One weaker inward wave follows after half a second. It moves bodies but cannot score or recursively create waves."
       }
     ]
@@ -181,15 +181,15 @@ export const POWER_TREES = {
         "description": "Pull nearby jellies toward the contact point with one gathering impulse."
       },
       {
-        "name": "Deep attraction",
+        "name": "Deep Attraction",
         "description": "Increase useful reach by 20 percent."
       },
       {
-        "name": "Tight group",
+        "name": "Tight Group",
         "description": "Stronger attraction with a soft inner spacing limit to prevent a pile of overlapping bodies."
       },
       {
-        "name": "Loose ring",
+        "name": "Loose Ring",
         "description": "Gather into a ring around the contact location, leaving a navigable center."
       },
       {
@@ -214,19 +214,19 @@ export const POWER_TREES = {
         "description": "The tangential swirl."
       },
       {
-        "name": "Sustained current",
+        "name": "Sustained Current",
         "description": "Continue a weaker swirl for one second."
       },
       {
-        "name": "Spiral in",
+        "name": "Spiral In",
         "description": "Add a small inward component."
       },
       {
-        "name": "Spiral out",
+        "name": "Spiral Out",
         "description": "Add a small outward component."
       },
       {
-        "name": "Moving center",
+        "name": "Moving Center",
         "description": "A weak swirl follows the player for one second. Teleporting breaks the swirl."
       }
     ]
@@ -247,15 +247,15 @@ export const POWER_TREES = {
         "description": "Draw nearby unhit jellies toward the player."
       },
       {
-        "name": "Lasting magnet",
+        "name": "Lasting Magnet",
         "description": "Extend to 3.2 seconds."
       },
       {
-        "name": "Close pull",
+        "name": "Close Pull",
         "description": "Stronger nearby pull and shorter reach."
       },
       {
-        "name": "Distant pull",
+        "name": "Distant Pull",
         "description": "Wider reach and weaker force."
       },
       {
@@ -280,19 +280,19 @@ export const POWER_TREES = {
         "description": "Leave a short-lived current along your path for three seconds."
       },
       {
-        "name": "Long wake",
+        "name": "Long Wake",
         "description": "Restore five seconds of deposition."
       },
       {
-        "name": "Narrow jet",
+        "name": "Narrow Jet",
         "description": "Narrower trail with stronger directional force."
       },
       {
-        "name": "Broad current",
+        "name": "Broad Current",
         "description": "Wider trail with weaker force."
       },
       {
-        "name": "Crossing currents",
+        "name": "Crossing Currents",
         "description": "When two separated trail segments overlap, create one small eddy there. At most two eddies per pluck, each lasting one second."
       }
     ]
@@ -313,19 +313,19 @@ export const POWER_TREES = {
         "description": "Frost a smaller area, slowing jellies and stiffening their edges. Hit frozen jellies remain translucent and permeable, with gentle pressure instead of a hard rebound."
       },
       {
-        "name": "Deep frost",
+        "name": "Deep Frost",
         "description": "Freeze jellies across a wider area: 440 units instead of 300."
       },
       {
-        "name": "Firm ice",
+        "name": "Firm Ice",
         "description": "Lower the jelly speed cap, making the arrangement more stable."
       },
       {
-        "name": "Thin ice",
+        "name": "Thin Ice",
         "description": "Retain more jelly motion, but reduce their outward pressure on the player for easier threading."
       },
       {
-        "name": "Frost spread",
+        "name": "Frost Spread",
         "description": "The first two physical jelly-to-jelly contacts from a frozen jelly frost one additional body each. Spreading itself earns no hit or power pickup."
       }
     ]
@@ -344,19 +344,19 @@ export const POWER_TREES = {
         "description": "Retain this soft interaction at a modest shell size. There is no solid collision core to unlock away."
       },
       {
-        "name": "Large bubble",
+        "name": "Large Bubble",
         "description": "Increase shell radius by 20 percent, while respecting the pool bounds."
       },
       {
-        "name": "Soft bubble",
+        "name": "Soft Bubble",
         "description": "Weaker pressure on both sides; easier to envelop a cluster."
       },
       {
-        "name": "Firm bubble",
+        "name": "Firm Bubble",
         "description": "Stronger outward jelly pressure and a slightly stronger player reaction; better at reorganizing the pool."
       },
       {
-        "name": "Breathing bubble",
+        "name": "Breathing Bubble",
         "description": "Radius gently expands and contracts by 10 percent on the pulse. Contact still counts once per jelly, and radius changes never impart an instant bounce."
       }
     ]
@@ -377,19 +377,19 @@ export const POWER_TREES = {
         "description": "Two linked jellies, with a gentle playerward drift preserved as the power's identity."
       },
       {
-        "name": "Third thread",
+        "name": "Third Thread",
         "description": "Add the third jelly and full triangular linkage."
       },
       {
-        "name": "Gathering thread",
+        "name": "Gathering Thread",
         "description": "Stronger playerward drift with softer links."
       },
       {
-        "name": "Elastic thread",
+        "name": "Elastic Thread",
         "description": "Firmer links and stronger motion transfer, with the base drift unchanged."
       },
       {
-        "name": "Release knot",
+        "name": "Release Knot",
         "description": "When the effect expires, release stored stretch as one bounded impulse per member. No teleporting or stored-energy explosion."
       }
     ]
@@ -410,19 +410,19 @@ export const POWER_TREES = {
         "description": "One satellite with its existing release behavior."
       },
       {
-        "name": "Twin orbit",
+        "name": "Twin Orbit",
         "description": "Allow two satellites."
       },
       {
-        "name": "Close orbit",
+        "name": "Close Orbit",
         "description": "Smaller radius and shorter gathering time."
       },
       {
-        "name": "Wide orbit",
+        "name": "Wide Orbit",
         "description": "Larger radius and slower rotation, sweeping more space."
       },
       {
-        "name": "Directed release",
+        "name": "Directed Release",
         "description": "Bias release along the player's current heading instead of purely outward, with a visible release direction. Capturing a satellite does not itself score it."
       }
     ]
@@ -444,19 +444,19 @@ export const POWER_TREES = {
         "description": "The delayed path follower with smooth interpolation and shared scoring."
       },
       {
-        "name": "Elastic echo",
+        "name": "Elastic Echo",
         "description": "Give the delayed ghost a stronger elastic deflection and spring response. Smooth movement back toward its route is always included."
       },
       {
-        "name": "Seeking echo",
+        "name": "Seeking Echo",
         "description": "Gently steer the Echo toward nearby unhit jellies beside its delayed path."
       },
       {
-        "name": "Wide echo",
+        "name": "Wide Echo",
         "description": "Let the Echo stray farther from its delayed path. Combine with Seeking echo to reach more nearby jellies."
       },
       {
-        "name": "Final reply",
+        "name": "Final Reply",
         "description": "When the main player settles, let the existing ghost finish its queued half-second route. It does not spawn another ghost, refresh itself or repeat already-earned contacts."
       }
     ]
@@ -477,15 +477,15 @@ export const POWER_TREES = {
         "description": "One side seed for three seconds, with functional contact power activation from the start."
       },
       {
-        "name": "Twin split",
+        "name": "Twin Split",
         "description": "Add the second side seed."
       },
       {
-        "name": "Wide fan",
+        "name": "Wide Fan",
         "description": "Launch at wider opposing angles for coverage."
       },
       {
-        "name": "Close fan",
+        "name": "Close Fan",
         "description": "Tighter angles and slightly longer life for a focused route."
       },
       {
@@ -510,19 +510,19 @@ export const POWER_TREES = {
         "description": "Arm one scored jelly for one transfer; keep power triggering intact."
       },
       {
-        "name": "Relay team",
+        "name": "Relay Team",
         "description": "Arm three jellies for contact transfers instead of one."
       },
       {
-        "name": "Strong pass",
+        "name": "Strong Pass",
         "description": "A successful relay gives its recipient a small directional push."
       },
       {
-        "name": "Patient pass",
+        "name": "Patient Pass",
         "description": "An armed jelly retains its opportunity until the flight ends rather than a short effect timeout."
       },
       {
-        "name": "Second pass",
+        "name": "Second Pass",
         "description": "One successful relay per pluck can arm its recipient for one additional transfer. Tag its lineage so it cannot return to an already-used relay or branch recursively."
       }
     ]
@@ -542,19 +542,19 @@ export const POWER_TREES = {
         "description": "Retrace the final one second of valid path, with shared hit history."
       },
       {
-        "name": "Longer memory",
+        "name": "Longer Memory",
         "description": "Retain up to two seconds for the encore."
       },
       {
-        "name": "Gentle rewind",
+        "name": "Gentle Rewind",
         "description": "Replay more slowly, allowing drifting jellies to enter the route."
       },
       {
-        "name": "Offset rewind",
+        "name": "Offset Rewind",
         "description": "Return on a small parallel offset with softened joins; do not invent intermediate travel across teleport discontinuities."
       },
       {
-        "name": "Last chord",
+        "name": "Last Chord",
         "description": "A bloom earned during the return produces a brief accent and one bounded radial jelly push. It does not schedule another Rewind."
       }
     ]
@@ -575,7 +575,7 @@ export const POWER_TREES = {
         "description": "Two strikes with clear target cues; retain the physical knockback role."
       },
       {
-        "name": "Third strike",
+        "name": "Third Strike",
         "description": "Restore the third strike."
       },
       {
@@ -587,7 +587,7 @@ export const POWER_TREES = {
         "description": "Prefer nearby unhit targets for a local cascade."
       },
       {
-        "name": "Charged relay",
+        "name": "Charged Relay",
         "description": "The first struck jelly carries one Relay-like physical transfer into a different jelly. This can score or collect one marker only when that subsequent collision occurs; lightning flashes alone never award three free hits."
       }
     ]
@@ -608,19 +608,19 @@ export const POWER_TREES = {
         "description": "Two waves at independently seeded field positions."
       },
       {
-        "name": "Third beat",
+        "name": "Third Beat",
         "description": "Restore the third wave."
       },
       {
-        "name": "Slow pulse",
+        "name": "Slow Pulse",
         "description": "Longer spacing and stronger pressure."
       },
       {
-        "name": "Quick pulse",
+        "name": "Quick Pulse",
         "description": "Shorter spacing and weaker pressure."
       },
       {
-        "name": "Shifting center",
+        "name": "Shifting Center",
         "description": "Bias the final wave toward a region with more unhit jellies, with a visible pre-cue. It remains a field wave, never becomes a player-centered pulse."
       }
     ]
@@ -641,19 +641,19 @@ export const POWER_TREES = {
         "description": "Exchange places with a distant jelly and keep moving."
       },
       {
-        "name": "Untouched destination",
+        "name": "Untouched Destination",
         "description": "Prefer the farthest unhit jelly when one exists."
       },
       {
-        "name": "Forward swap",
+        "name": "Forward Swap",
         "description": "Prefer a distant destination in the current forward half of the field."
       },
       {
-        "name": "Open swap",
+        "name": "Open Swap",
         "description": "Prefer a distant jelly with more free space around it."
       },
       {
-        "name": "Departure ripple",
+        "name": "Departure Ripple",
         "description": "One modest pressure wave at the departure point changes the next approach. The swapped jelly does not count as contacted merely because it teleported."
       }
     ]
@@ -674,19 +674,19 @@ export const POWER_TREES = {
         "description": "One pair lasting three seconds."
       },
       {
-        "name": "Stable gates",
+        "name": "Stable Gates",
         "description": "Keep both gates open for five seconds instead of three."
       },
       {
-        "name": "Wide gates",
+        "name": "Wide Gates",
         "description": "Larger capture radius, same crossing cooldown."
       },
       {
-        "name": "Aimed exit",
+        "name": "Aimed Exit",
         "description": "Rotate the outgoing heading slightly toward a nearby forward unhit jelly, showing the exit arrow in advance."
       },
       {
-        "name": "Gate current",
+        "name": "Gate Current",
         "description": "Each gate emits a weak outward jelly current while active. It moves jellies without teleporting or scoring them."
       }
     ]
@@ -707,19 +707,19 @@ export const POWER_TREES = {
         "description": "Three seconds of bounded forward seeking with visible target brackets."
       },
       {
-        "name": "Long guidance",
+        "name": "Long Guidance",
         "description": "Extend to five seconds."
       },
       {
-        "name": "Gentle pursuit",
+        "name": "Gentle Pursuit",
         "description": "Lower turn rate and greater look-ahead, preserving bank routes."
       },
       {
-        "name": "Close pursuit",
+        "name": "Close Pursuit",
         "description": "Stronger turns and shorter look-ahead, favoring nearby clusters."
       },
       {
-        "name": "Role guidance",
+        "name": "Role Guidance",
         "description": "Prefer a still-needed musical role for this pool when a valid target of that role is within the normal forward cone; otherwise use normal targeting. Never turn backward automatically to satisfy a checklist."
       }
     ]
@@ -740,19 +740,19 @@ export const POWER_TREES = {
         "description": "This exact rule for three seconds."
       },
       {
-        "name": "Long wrap",
+        "name": "Long Wrap",
         "description": "Extend to five seconds."
       },
       {
-        "name": "Side wrap",
+        "name": "Side Wrap",
         "description": "Wrap only left and right edges; top and bottom remain bounceable."
       },
       {
-        "name": "End wrap",
+        "name": "End Wrap",
         "description": "Wrap only top and bottom edges; left and right remain bounceable."
       },
       {
-        "name": "Arrival field",
+        "name": "Arrival Field",
         "description": "An outward push at the exit eases nearby jellies aside. You can still choose all-edge, horizontal or vertical travel."
       }
     ]
@@ -773,19 +773,19 @@ export const POWER_TREES = {
         "description": "Retain the orbit and untargeted forward tangential release, with a clear direction cue."
       },
       {
-        "name": "Aimed release",
+        "name": "Aimed Release",
         "description": "Aim releases toward unhit jellies and lead moving targets. Also improves the lead when combined with Near target or Far target."
       },
       {
-        "name": "Near target",
+        "name": "Near Target",
         "description": "Favor the nearest reachable forward target."
       },
       {
-        "name": "Far target",
+        "name": "Far Target",
         "description": "Favor a farther target for crossing the pool."
       },
       {
-        "name": "Second orbit",
+        "name": "Second Orbit",
         "description": "One later contact with the specifically previewed release target can produce one shorter slingshot. The capstone supplies its own previewed target choice when no aiming upgrade is equipped; it works with the base alone. It cannot repeat a third time."
       }
     ]
@@ -806,19 +806,19 @@ export const POWER_TREES = {
       "description": "Automatically aim and fire three gel shots after contact. No aiming, tapping or firing controls. Each jelly scores once per pluck."
     },
     {
-      "name": "Extra magazine",
+      "name": "Extra Magazine",
       "description": "Carry five shots instead of three."
     },
     {
-      "name": "Bank shot",
+      "name": "Bank Shot",
       "description": "Shots bounce once off a wall. Projectile banks do not count as player wall banks."
     },
     {
-      "name": "Scatter shot",
+      "name": "Scatter Shot",
       "description": "Fire three pellets in a short fan for one ammunition. Each jelly can be struck only once per volley."
     },
     {
-      "name": "Bloom reload",
+      "name": "Bloom Reload",
       "description": "The first bloom after activation refills your magazine once this pluck."
     }
   ]

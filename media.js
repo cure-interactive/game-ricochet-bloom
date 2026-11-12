@@ -15,7 +15,7 @@ export class PoolMedia {
     if (!this.session || !this.env.MediaMetadata || this.key === seed) return;
     try {
       this.artwork = [512, 256].map(size => ({ src: new URL(assetURL(`./artwork/pool-${size}.png`), this.env.location.href).href, sizes: `${size}x${size}`, type: 'image/png' }));
-      this.session.metadata = new this.env.MediaMetadata({ title: `${seed} · Ricochet Bloom`, artist: 'Cure Interactive', album: 'A living light pool', artwork: this.artwork }); this.key = seed;
+      this.session.metadata = new this.env.MediaMetadata({ title: `${seed} · Ricochet Bloom`, artist: 'Cure Interactive', album: 'A Living Light Pool', artwork: this.artwork }); this.key = seed;
     } catch { /* Optional metadata must not affect the synthesizer. */ }
   }
   actions(play, pause) {

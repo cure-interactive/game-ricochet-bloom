@@ -1,11 +1,11 @@
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { menuBackgroundMount } from './menu-background.js?v=24819272e4348789e59ebca22d1fb4e9f26e9862f3608abb740fc08a4890ee2f';
+import { menuBackgroundMount } from './menu-background.js?v=6f6d954ac5e00c9b9a7c472544b4524ad7faae7e5860cd15be76c36c1ad41bdf';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
-  const home=document.createElement('section');home.id='main-menu';home.setAttribute('aria-label','Main menu');
+  const home=document.createElement('section');home.id='main-menu';home.setAttribute('aria-label','Main Menu');
   const button=(id,label,icon,kind='')=>`<button type="button" id="${id}" class="${kind}">${iconHTML(icon)}<span>${label}</span></button>`;
-  home.innerHTML=`<canvas class="home-pool" aria-hidden="true"></canvas><div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><nav class="home-primary" aria-label="Main game actions"><button type="button" id="home-continue" class="primary"><img class="continue-art" width="48" height="48" alt=""><span class="continue-copy"><span>Continue</span><small class="continue-detail"></small></span></button>${button('home-levels','Campaign','campaign','primary')}${button('home-free','Free Play','play')}${button('home-tree','Skill tree','skill-tree')}${button('home-skins','Player skins','player-skin')}</nav><nav class="home-secondary" aria-label="More game options">${button('home-help','How to play','book')}${button('home-settings','Settings','gear')}</nav></div>`;
+  home.innerHTML=`<canvas class="home-pool" aria-hidden="true"></canvas><div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><nav class="home-primary" aria-label="Main game actions"><button type="button" id="home-continue" class="primary"><img class="continue-art" width="48" height="48" alt=""><span class="continue-copy"><span>Continue</span><small class="continue-detail"></small></span></button>${button('home-levels','Campaign','campaign','primary')}${button('home-free','Free Play','play')}${button('home-tree','Skill Tree','skill-tree')}${button('home-skins','Player Skins','player-skin')}</nav><nav class="home-secondary" aria-label="More game options">${button('home-help','How to Play','book')}${button('home-settings','Settings','gear')}</nav></div>`;
   document.body.append(home);
   const background=menuBackgroundMount(home.querySelector('.home-pool'),()=>host.gentle?.()===true);
   let current='home',history=[],returning=false,homeMode=true;

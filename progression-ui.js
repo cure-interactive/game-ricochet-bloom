@@ -1,14 +1,15 @@
-import { rewardMount } from './reward-ui.js?v=3873c2e18e79f7c4ea9cb84ca438fd949401aba865af42c8c441ef52089ba608';
-import { campaignMount } from './campaign-ui.js?v=b139c9a564c47a8c90f5855a37a33216f93f11ef05458906b757eea0ed7dfbab';
-import { challengeEncode, challengeDecode } from './challenge.js?v=d89b4d92a1270d997464337ec143aa37a63a298485b20cd2eecb18949e32abf4';
-import { trackGet } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
-import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=d4a0763247cf9d5ad868ce587a2006eccfbca07854878087aa2ab9f3c890b840';
-import { progressionRead, progressionWrite, progressionImport } from './progression-store.js?v=90ba456e371618136b9879f2f2377aa5914bdb8de0cfe766444307afb3c34951';
-import { gameCreate } from './engine.js?v=78193f8961efde0cbc94b402713c23a61d5384166c5a072df3d3e9cd12e7b310';
-import { treeMount } from './tree-ui.js?v=96db0d32fa5da074ba6ffebec353092ad2d5b20ee398f54ae9f3a7fd1ae54ed7';
+import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
+import { rewardMount } from './reward-ui.js?v=17eef5fe3d54fec9a1929dd34953393fddbdad60612516a35b97cf18b40c64ae';
+import { campaignMount } from './campaign-ui.js?v=31449ef7084c69ea781be497191c613a0c2ffb0a652df2ac30af42ff3f58fa20';
+import { challengeEncode, challengeDecode } from './challenge.js?v=b2ef8a9862d9f639ffbc99f881b33940eb0fbb064580c385d5333658ce9eeb0f';
+import { trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
+import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=21036f0f948a62dc2381a98ea661675ef083ad2bd9180bd67176c75cfa9c8261';
+import { progressionRead, progressionWrite, progressionImport } from './progression-store.js?v=94e8b99f305b2e888d5bd93c784ea4fc84cc224ba7b8c51b76a7c61269d0ed26';
+import { gameCreate } from './engine.js?v=fd7b971c19b5ec40a2b4b8a9389bd7af23085f90a22911cce3bd04ed687a7072';
+import { treeMount } from './tree-ui.js?v=fc78ee77f8ebea941029503f4af877d8ecb7a1f9fe461d61886af919df4008ce';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
-import { skinMount } from './skin-ui.js?v=b223d770c0268a5cccc97262ef66b20a43c8c0dc6b7c901b04567b4696b8cf69';
+import { skinMount } from './skin-ui.js?v=79303964f88823b0c45005a8d3a0444bca4f55bb1038f485af40b03577ab4026';
 export function progressionMount(host){
   let kind='normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,rewards,listenTimer=null;
   let saveBlocked=!loaded.available;
@@ -18,7 +19,7 @@ export function progressionMount(host){
   function exportBackup(){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(pending||state,null,2)],{type:'application/json'}));a.href=url;a.download=`ricochet-bloom-${shared?'shared':kind}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
   function commit(next,after=null){
     let r;
-    if(shared){try{const valid=progressionValidate(next,'development');if(!valid)throw new Error('invalid');localStorage.setItem('ricochet-bloom-shared-v1',JSON.stringify({code:shared,state:valid}));r={ok:true,state:valid};}catch{r={ok:false,reason:'Shared challenge could not be saved.'};}}
+    if(shared){try{const valid=progressionValidate(next,'development');if(!valid)throw new Error('invalid');localStorage.setItem('ricochet-bloom-shared-v1',JSON.stringify({code:shared,state:valid}));r={ok:true,state:valid};}catch{r={ok:false,reason:'Shared Challenge could not be saved.'};}}
     else r=progressionWrite(localStorage,next);
     if(r.ok){state=r.state;pending=null;pendingAfter=null;saveBlocked=false;warning.hidden=true;after?.();}
     else {pending=structuredClone(next);pendingAfter=after;saveBlocked=true;warning.hidden=false;warning.firstElementChild.textContent=r.reason+' Play is paused. Export a backup or free storage and retry.';}
@@ -32,7 +33,7 @@ export function progressionMount(host){
   dev.innerHTML=`<div class="dialog-heading">${iconHTML('flask')}<h2>Development</h2>${button('dev-close','Close','close')}</div><p>Use a separate test profile. Normal research, currency and runs stay in your normal profile.</p><p id="dev-status" role="status"></p><div class="dev-controls"><label class="setting-toggle"><input id="dev-switch" type="checkbox"><span>Development mode</span></label>${button('dev-seed','Copy normal progress into test profile','copy')}<p class="dev-help">These controls change only the Development profile.</p>${button('dev-max-progress','Maximize level progress','grid')}<small>Open every level and skin, and set Points to at least 10,000. Research is unchanged.</small>${button('dev-max','Max out skill tree','epic')}<small>Unlock all 25 powers and all their upgrades. Level progress is unchanged.</small>${button('dev-reset','Reset all test progress','reset')}<small>Clear test levels, research, currency, songs and the active test run.</small><section id="dev-reset-confirmation" class="tree-confirm" hidden aria-label="Confirm reset"><strong>Reset all Development progress?</strong><p>Test levels, research, Points, saved songs and the active test run will be reset. Normal progress stays unchanged.</p>${button('dev-reset-cancel','Keep test progress','arrow-left')}${button('dev-reset-confirm','Reset Development profile','reset')}</section><label>Points to add<input id="dev-amount" type="number" min="1" max="1000000" step="1" value="100"></label><div class="grant-presets">${[10,100,1000].map(n=>button('dev-add-'+n,'+'+n,'coin')).join('')}</div>${button('dev-grant','Add Points','coin')}</div><hr><p>Progress backup · selected profile only</p><div class="dialog-actions">${button('progress-export','Export backup','download')}<label class="file-button">${iconHTML('upload')} Import backup<input id="progress-import" type="file" accept="application/json,.json"></label></div>`;
   document.body.append(dev);
   const result=document.createElement('dialog');result.id='run-result-dialog';result.setAttribute('aria-labelledby','run-result-title');
-  result.innerHTML=`<div class="run-result-icon">${iconHTML('epic')}</div><h2 id="run-result-title"></h2><p id="run-result-copy"></p><div id="run-restoration"></div><p id="run-target"></p><div class="dialog-actions">${button('run-listen','Listen to this song','music-note')}${button('run-skin','Use earned skin','check')}${button('run-destination','Next track','arrow-right')}${button('run-retry','Retry same setup','reset')}${button('run-next','Next pool & discoveries','arrow-right')}${button('run-leave','Main menu','grid')}</div>`;document.body.append(result);
+  result.innerHTML=`<div class="run-result-icon">${iconHTML('epic')}</div><h2 id="run-result-title"></h2><p id="run-result-copy"></p><div id="run-restoration"></div><p id="run-target"></p><div class="dialog-actions">${button('run-listen','Listen to this song','music-note')}${button('run-skin','Use earned skin','check')}${button('run-destination','Next track','arrow-right')}${button('run-retry','Retry same setup','reset')}${button('run-next','Next pool & discoveries','arrow-right')}${button('run-leave','Main Menu','grid')}</div>`;document.body.append(result);
   const back=document.createElement('button');back.id='listening-return';back.className='quiet';back.hidden=true;back.innerHTML=iconHTML('arrow-left')+'<span>Leave listening</span>';document.querySelector('.goal-strip').append(back);
   function leave(){clearTimeout(listenTimer);const fromMenu=host.currentScreen?.()!=='play';host.save();if(suspended){state=suspended.state;kind=suspended.kind;suspended=null;shared=null;}context='legacy';listening=null;back.hidden=true;close();host.restoreLegacy();if(fromMenu)host.home?.();}
   back.onclick=()=>{const fromCampaign=listening?.campaign;leave();campaign.open(fromCampaign?'play':'songs');};
@@ -87,7 +88,7 @@ export function progressionMount(host){
       const r=progressionObserve(state,game,events,music);
       commit(r.state,()=>{if(r.outcome){
         if(r.record?.music)host.runMusic?.(r.record.music);
-        $('run-result-title').textContent=shared?'Shared challenge · '+r.message:r.message;
+        $('run-result-title').textContent=titleCase(shared?'Shared Challenge · '+r.message:r.message);
         $('run-result-copy').textContent=r.outcome==='clear'?`Next: ${POOL_NAMES[state.pool+1]}. Choose a discovery and continue to the next pool.`:r.outcome==='victory'?`${r.record.medal} · ${r.record.launches} plucks · ${r.record.bonuses}/5 bonuses. Song saved in Campaign.`:'Your unfinished song is saved. Retry the same setup, unlock more powers, or try Relaxed pace.';
         $('run-listen').hidden=!r.record?.music;$('run-retry').hidden=r.outcome!=='failure'||!!shared;
         $('run-next').lastElementChild.textContent='Next pool & discoveries';
@@ -98,6 +99,6 @@ export function progressionMount(host){
         targetRender($('run-target'));result.showModal();tree.refresh();campaign.refresh();
       }});
     },
-    hud(){if(context==='listening')return 'LISTENING · Your saved song';if(['run','challenge'].includes(context))return state.run?`${shared?'SHARED · ':kind==='development'?'TEST · ':''}${POOL_NAMES[state.pool]} ${state.pool+1}/5 · ${goalRemaining(state)}`:'Run complete · open Skill tree';return null;}
+    hud(){if(context==='listening')return 'LISTENING · Your saved song';if(['run','challenge'].includes(context))return state.run?`${shared?'SHARED · ':kind==='development'?'TEST · ':''}${POOL_NAMES[state.pool]} ${state.pool+1}/5 · ${goalRemaining(state)}`:'Run complete · open Skill Tree';return null;}
   };
 }

@@ -1,11 +1,11 @@
-import { buildValidate } from './skill-effect.js?v=27a2ab701a8b063fcf28a0d1e0682e04d1a1c6d3e0908c29afad980f201bdb01';
-import { catalogueCreate, STARTERS } from './catalogue.js?v=5b190da66f356e0db04d39abcc70c604726ff00146d498a6109a4be15429f888';
-import { POWER_TREES } from './power-tree.js?v=2ddf449ce328f8cc92262395a8ecacc7f5d7a653c9df225d5b7c296f7596bc3c';
-import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=64181c030af514b97953fae1219e4142f64e30029d87c33eeec1e6d7fff631f1';
-import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=78193f8961efde0cbc94b402713c23a61d5384166c5a072df3d3e9cd12e7b310';
-import { jellyRole, musicCreate, musicRunSection } from './music.js?v=b5008c456a438e56836f418bb2a46e76360a0b81d9e9ecd8f24456170e3e90e8';
+import { buildValidate } from './skill-effect.js?v=1d4e7d0824a5390ec1da3b40d0c343136d0c37b99fd440c059415e803d655008';
+import { catalogueCreate, STARTERS } from './catalogue.js?v=fb795d4d638e40f27e780df5dbdf4f7870ba4dc3b0aaca5830fcbfc23651c5c7';
+import { POWER_TREES } from './power-tree.js?v=0bcdae42795671509b8c4f64ae024b263c7281e465d043ab76bd131d11397edc';
+import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=a67f94be0e184c43ef0ce19cb07a7c7b364e802baf1f90ce5e1795d13cb570fd';
+import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=fd7b971c19b5ec40a2b4b8a9389bd7af23085f90a22911cce3bd04ed687a7072';
+import { jellyRole, musicCreate, musicRunSection } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
 
-import { TRACKS, trackGet, trackEnvironment } from './track.js?v=ff2e6bff1b7be4153335e346786927680ea20b642555b591226b0cfb27ff13ff';
+import { TRACKS, trackGet, trackEnvironment } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 
 export const GAME_CATALOGUE=catalogueCreate(Object.keys(POWER_TREES).flatMap(p=>['base','foundation','a','b','capstone'].map(k=>p+'.'+k)));
 export const POOL_NAMES=['Intro','Verse','Build','Bridge','Finale'];

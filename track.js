@@ -3,7 +3,7 @@ export const TRACKS = Object.freeze([
   {id:'first-light',name:'First Light',color:'#f6d58b',palette:'velvet',mechanic:'Open pools and clear bank lanes',music:'Warm, sparse tones'},
   {id:'crosscurrent',name:'Crosscurrent',color:'#73f5dc',palette:'glass',mechanic:'Alternating current lanes gently move the pool',music:'Syncopated replies'},
   {id:'glasswater',name:'Glasswater',color:'#a4e8ff',palette:'glass',mechanic:'Frosted regions slow jellies; hit frost becomes permeable',music:'Crisp notes with space to breathe'},
-  {id:'afterimage',name:'Afterimage',color:'#c4a7ff',palette:'wood',mechanic:'Paired gates connect separated groups',music:'A quiet call and response'},
+  {id:'afterimage',name:'Afterimage',color:'#c4a7ff',palette:'wood',mechanic:'Paired gates connect separated groups',music:'A Quiet call and response'},
   {id:'night-bloom',name:'Night Bloom',color:'#ffa9d8',palette:'velvet',mechanic:'Currents, frost and gates return together',music:'A full song with quiet bridges'}
 ]);
 export const trackGet = id => TRACKS.find(t=>t.id===id);
