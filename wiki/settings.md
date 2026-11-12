@@ -1,6 +1,6 @@
 # Sound, Settings & Saves
 
-Pause offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skill Tree and Player Skins from the Main Menu.
+Pause offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skill Tree and Player Skins from the Main Menu. Settings → About displays the Cure Interactive logo and game information, with access to Icon Credits.
 
 ## Audio
 
@@ -20,7 +20,7 @@ Gentle Visuals reduces glow and motion intensity and is off by default. Stream V
 
 Your pool, song and campaign progress save in this browser. They do not automatically transfer between devices or between the local, GitHub Pages and private hosted copies. Clearing website data can remove them.
 
-Use the backup export and import controls in Settings → Advanced & About → Development & Backups to keep or transfer your progress. Keep a backup before replacing browser data.
+Use the backup export and import controls in Settings → Advanced → Development & Backups to keep or transfer your progress. Keep a backup before replacing browser data.
 
 Development controls use a separate test profile. They can reset test progress, maximize campaign access or maximize the skill tree without awarding normal campaign receipts. **Show Hidden Tracks, Skills and Skins** reveals locked tracks, research and player skins for inspection in either profile without changing unlocks or progress. Your previous Show All Skills preference carries over to this combined setting. **Show Purchased Skill Costs** displays catalogue prices on owned skill nodes and cards. Both view toggles are off by default. These toggles, Development mode and the Points-to-add amount are remembered in this browser, including after reopening the game. Test unlocks, Points and runs also remain saved; reloading does not repeat grants or maximize actions. Switch Development mode off to return to your normal progress. Clearing browser data clears these preferences, and other browsers or devices keep their own settings.
 

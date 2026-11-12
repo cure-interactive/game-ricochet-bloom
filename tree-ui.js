@@ -1,6 +1,6 @@
 import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=19ce469d6be377b6c51233d260483029ce8f87096f3613c7e539c059c848c4fd';
 import { RARITIES } from './skill-trait.js?v=bef2df62b29364983801345d0a0318164dfeef5666360b3ce1e2a200ac7acdc0';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=d52c5d94038e35ce5d7e7c1777c85eb886779d384f3e5d743fc8935e0649f609';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=1a0162a50410031bd58c7fbd6250e03b4a11b8165ae0caab7a965a7315404b54';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
 import { profilePurchase, profileSummary } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';

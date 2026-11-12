@@ -1,15 +1,15 @@
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=e4e58dd403eaf091cf9df214f2cb07ec1106a37ddb800d79211e8f71e4addd8b';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=60ecfff7399deee1dd55c124a32232b153dddffb6ac122d0758b6ac97c1f1e9b';
 
 export const WIKI_PAGES = Object.freeze({
   contents: { title: 'Contents', url: './wiki/contents.md?v=bfde9e01ebb01ca359f2ff76d0a1433eee9d45c856219274608756a36cbc9491' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=50eeb499e8ba7e3898c011480b7dd17f58f7c5454e8c7a8760f58fc5f34dfea5' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=683232b876e7dd2597c4220aeb457cd772a1ed4aca5ce3f015beea40cfacf718' },
   campaign: { title: 'Campaign', url: './wiki/campaign.md?v=15b287b1ecd2c3f5b3ae723d422b398e91f8bbd68024c04e0c80f8f03785b840' },
-  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=9803016c0c3163965e48d2188eadfe8b7f248245f928220c5ede71224f7a3984' },
+  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=891749b396c2c0e5c8912b5cbd9b3f4de418b2c52fd3464b79a9581a72d87409' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=5394df77188d0533ce46eee9efd4168a82f1004672b6dce9ea97434c42c84abb' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=6691214582c845f92b7481d10dc35b1d3b1f85f01b8683805ffcf86babfa6cda' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=b24f66ad0fec5ad08b80c3c26a9547de6a8612e746dc19d40a20b99bad293a59' }
 });
 const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const headingID = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

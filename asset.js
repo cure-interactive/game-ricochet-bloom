@@ -7,6 +7,7 @@ const assets = {
   "artwork/night-bloom.svg": "./artwork/night-bloom.svg?v=1d55b053511e90879b20390e26640d980e261b4f83ea0e5c23a03a856e5a86e0",
   "artwork/pool-256.png": "./artwork/pool-256.png?v=8cc2327b42a6796110c834e9f65f00e0ea0baa12d36fbd550043e7cf315206b5",
   "artwork/pool-512.png": "./artwork/pool-512.png?v=dcb9516c1fa1dc4a639a610fcbdae05cd82136f6686ce95d97330b41f3a44b3d",
+  "brand/cure-interactive.svg": "./brand/cure-interactive.svg?v=6f273ea321db7722e30a23ded9aa0a37ecca4a22b1a2a9e85772a032551b0dae",
   "font/fredoka/Fredoka.ttf": "./font/fredoka/Fredoka.ttf?v=2ba02e68b152868aef9ba28e24b3648c7d457fe6f25c761f2c2c53fb61a73fc8",
   "icon/app-180.png": "./icon/app-180.png?v=1304b85ea7b072221ddbf1ff8817c65ae4fccb4636f372703d97d39a74ce6e80",
   "icon/app-192.png": "./icon/app-192.png?v=4db1088c785fc16e57b73ab25b01dd4a9e3992a02362d51f2af5a59736ebe725",

@@ -1,5 +1,5 @@
 import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=bef2df62b29364983801345d0a0318164dfeef5666360b3ce1e2a200ac7acdc0';
-import { assetURL } from './asset.js?v=11557b7bbf1eaf861206cd3e17ea64ef617614459a0dba28213850a7fd0925d3';
+import { assetURL } from './asset.js?v=c707b6464e4c06a82b9fdf579ad15c74beda68c3e5dcf5a68bcf1f654aea6cf7';
 
 // The same skill identity is shown on the map, its card and discovery rewards.
 export function skillIconURL(node) {

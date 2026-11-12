@@ -103,6 +103,11 @@ dialog select,dialog input:not([type]),dialog input[type=number],dialog input[ty
 #settings-dialog #sound-check-status:empty{display:none}
 #settings-dialog .settings-section-body>button,#settings-dialog .settings-actions>button{width:100%;min-height:44px;font-size:13px;white-space:normal;justify-content:center}
 .settings-actions{display:grid;gap:12px;min-width:0}
+.settings-about{align-items:center;text-align:center;padding-block:24px;gap:16px}
+.settings-about .about-logo{display:block;width:min(100%,260px);height:auto;aspect-ratio:8875.333/4097.333;object-fit:contain;margin:0 auto 4px}
+#settings-dialog .settings-about h3{font-size:24px;line-height:1.2;margin:0;color:#e4f5f3}
+#settings-dialog .settings-about p{max-width:34ch;margin:0;font-size:14px;line-height:1.6;color:#b6cbd6}
+#settings-dialog .settings-about>button{margin-top:4px}
 #settings-dialog .settings-display{margin:4px 0 0;padding:14px 0 0;border:0;border-top:1px solid #40556b66;border-radius:0;background:none}
 #settings-dialog .display-heading{flex-wrap:wrap;gap:8px}
 #settings-dialog .display-heading h3{font-size:14px}
