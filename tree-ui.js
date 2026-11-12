@@ -121,7 +121,12 @@ export function treeMount(controller){
    hideTooltip();selected=id;selectionRender();
    const source=mapElement.querySelector(`[data-node="${id}"]`),bounds=stage.getBoundingClientRect();
    tip.style.maxHeight=Math.max(44,bounds.height-16)+'px';tip.style.width=Math.min(330,bounds.width-16)+'px';
-   tip.innerHTML=`<div class="skill-tooltip-heading"><h3 id="skill-tooltip-title">${escape(info.name)}</h3>${button('dismiss','Close','close')}</div><span class="skill-type-pill"><span class="sr-only">Type: </span>${typeIconHTML(info.type)}${escape(info.type)}</span><p>${escape(info.description)}</p>${info.stats?skillStatsHTML(info.stats):''}<p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>${comparison?button('buy',`Buy · ${comparison.cost} Points`,'coin','class="primary"'):info.canEquip?button('equip','Use This Style','check','class="primary"'):''}`;
+   tip.innerHTML=`<div class="skill-tooltip-heading"><div class="skill-card-title"><h3 id="skill-tooltip-title">${escape(info.name)}</h3><span class="skill-type-pill"><span class="sr-only">Type: </span>${typeIconHTML(info.type)}${escape(info.type)}</span></div>${button('dismiss','Close','close')}</div><p>${escape(info.description)}</p>${info.stats?skillStatsHTML(info.stats):''}<p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>${comparison?button('buy',`Buy · ${comparison.cost} Points`,'coin','class="primary"'):info.canEquip?button('equip','Use This Style','check','class="primary"'):''}`;
+   // Mirror the selected node's actual artwork and badges; the card shares its paint rules.
+   const cardIcon=document.createElement('span');
+   cardIcon.className=source.className.replace('skill-node','skill-card-icon');cardIcon.setAttribute('aria-hidden','true');
+   cardIcon.style.setProperty('--rarity-color',source.style.getPropertyValue('--rarity-color'));
+   cardIcon.append(source.querySelector('.skill-orb').cloneNode(true));tip.querySelector('.skill-tooltip-heading').prepend(cardIcon);
    tip.hidden=false;tipId=id;source.setAttribute('aria-expanded','true');
    const size=tip.getBoundingClientRect(),position=tooltipPosition(source.getBoundingClientRect(),bounds,size.width,size.height),origin=dialog.getBoundingClientRect();
    tip.style.left=position.left-origin.left+'px';tip.style.top=position.top-origin.top+'px';
