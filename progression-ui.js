@@ -1,5 +1,5 @@
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
-import { campaignMount } from './campaign-ui.js?v=c68ee91cc8c34da6ab1f1b348f79db6abb64f206fe099d036f38f4b0af59d349';
+import { campaignMount } from './campaign-ui.js?v=66c78d60195451599ad0b493f3eca2297a1bf375c8312021bdf7c77a5b12be0a';
 import { challengeEncode, challengeDecode } from './challenge.js?v=ddb3ad55a1ac7e9cab3566ff698d403ff4de2fd14fa2090c182eda7800a15c98';
 import { trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=6a19c662694ec547e86de13f3dce16b78524a1f4c32b95ee0a901850675bb8e3';
