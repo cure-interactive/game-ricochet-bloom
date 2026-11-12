@@ -1,7 +1,7 @@
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 import { jellyRole } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=b256b8e07ee94d01d7ff6ae2229c2641c4e1f19ff70eff46f37fece23e7d9dac';
-export { skillFlags } from './skill-effect.js?v=b256b8e07ee94d01d7ff6ae2229c2641c4e1f19ff70eff46f37fece23e7d9dac';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=5ff4cafca9c6bb8adee62961b5c6e07969e5a02e614b94bac8b4873b068d1e23';
+export { skillFlags } from './skill-effect.js?v=5ff4cafca9c6bb8adee62961b5c6e07969e5a02e614b94bac8b4873b068d1e23';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
 export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: 4, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
@@ -86,11 +86,11 @@ function blasterFire(state) {
   if (!state.isFlying || state.isOver || !effect || effect.ammo < 1 || effect.cooldown > 0 || !Number.isFinite(x) || !Number.isFinite(y)) return [];
   const distance = Math.hypot(x-seed.x,y-seed.y);
   if (distance < 1) return [];
-  const aim = Math.atan2(y-seed.y,x-seed.x), flags = skillFlags(state,'blaster'), volley = effect.volley++;
+  const aim = Math.atan2(y-seed.y,x-seed.x), flags = skillConfig(state,'blaster'), volley = effect.volley++;
   effect.ammo--; effect.cooldown = .45; effect.hits.push([]);
-  for (const offset of flags.b ? [-.14,0,.14] : [0]) {
+  for (const offset of flags.offsets) {
     const a=aim+offset, nx=Math.cos(a),ny=Math.sin(a);
-    effect.shots.push({x:Math.max(35,Math.min(925,seed.x+nx*(seed.radius+7))),y:Math.max(35,Math.min(605,seed.y+ny*(seed.radius+7))),vx:nx*980,vy:ny*980,life:1.6,bounces:flags.a?1:0,volley,target:target.id});
+    effect.shots.push({x:Math.max(35,Math.min(925,seed.x+nx*(seed.radius+7))),y:Math.max(35,Math.min(605,seed.y+ny*(seed.radius+7))),vx:nx*980,vy:ny*980,life:1.6,bounces:flags.bounces,volley,target:target.id});
   }
   seed.vx-=Math.cos(aim)*45;seed.vy-=Math.sin(aim)*45;velocityLimit(seed);
   return [{type:'blaster-fire',x:seed.x,y:seed.y,nx:Math.cos(aim),ny:Math.sin(aim),ammo:effect.ammo}];
@@ -176,8 +176,8 @@ function effectStep(state, events) {
     }
     effect.trail = effect.trail.slice(-162);
     for (const body of state.bodies.slice(1)) {
-      const point = effect.trail.filter(p => Math.hypot(body.x-p.x,body.y-p.y)<body.radius+(config.a?16:config.b?44:28)).sort((a,b)=>a.age-b.age)[0];
-      if (point) { body.vx += point.nx * (config.a?1450:config.b?700:1000) * RULE.step; body.vy += point.ny * (config.a?1450:config.b?700:1000) * RULE.step; velocityLimit(body); }
+      const point = effect.trail.filter(p => Math.hypot(body.x-p.x,body.y-p.y)<body.radius+config.width).sort((a,b)=>a.age-b.age)[0];
+      if (point) { body.vx += point.nx * config.force * RULE.step; body.vy += point.ny * config.force * RULE.step; velocityLimit(body); }
     }
   }
   if (effect.kind === 'orbit') {
@@ -222,7 +222,7 @@ function effectStep(state, events) {
   if (effect.kind === 'drunk') {
     // Integrate a bounded heading offset, preserving speed and deterministic saves.
     const sway = t => Math.sin(Math.PI * Math.min(1, t / .3) / 2) * Math.sin(Math.PI * Math.min(1, (RULE.drunkSeconds - t) / .6) / 2)
-      * (config.a?.55:config.b?1.35:1)*(.68 * Math.sin(t * Math.PI * 2 / (!config.legacy&&config.foundation?.75:config.b?1.6:1.2)) + .16 * Math.sin(t * Math.PI * 2 / (!config.legacy&&config.foundation?1.5:config.b?1:.7)));
+      * config.swayScale*(.68 * Math.sin(t * Math.PI * 2 / (!config.legacy&&config.foundation?.75:config.b?1.6:1.2)) + .16 * Math.sin(t * Math.PI * 2 / (!config.legacy&&config.foundation?1.5:config.b?1:.7)));
     const turn = sway(RULE.drunkSeconds - effect.seconds) - sway(RULE.drunkSeconds - previousSeconds);
     const cos = Math.cos(turn), sin = Math.sin(turn);
     for (const body of [seed, ...(effectGet(state, 'split')?.shards || [])]) {
@@ -359,7 +359,7 @@ function scoreContact(state, body, collector, events) {
   if(speed>1 && collector.id<=0 && collector.id!==-3 && !effectGet(state,'slingshot')) {collector.vx*=boost;collector.vy*=boost;}
   if(chain===RULE.bloomNotes) {
     const blaster=effectGet(state,'blaster');
-    if(blaster && skillFlags(state,'blaster').capstone && !blaster.reloaded) {blaster.ammo=skillFlags(state,'blaster').foundation?5:3;blaster.reloaded=true;events.push({type:'blaster-reload',x:state.bodies[0].x,y:state.bodies[0].y});}
+    if(blaster && skillFlags(state,'blaster').capstone && !blaster.reloaded) {blaster.ammo=skillConfig(state,'blaster').ammo;blaster.reloaded=true;events.push({type:'blaster-reload',x:state.bodies[0].x,y:state.bodies[0].y});}
     const seed=state.bodies[0];if(state.mode==='song-run'&&state.banks>=2)state.objective.bankBloom=true;state.blooms++;state.score+=500;if(state.mode==='challenge'||state.mode==='song-run'&&state.blooms===1)state.plucks++;
     events.push({type:'bloom',x:seed.x,y:seed.y,points:500,banks:state.banks});
     for(const jelly of state.bodies.slice(1)) {const d=Math.max(1,Math.hypot(jelly.x-seed.x,jelly.y-seed.y));jelly.vx+=(jelly.x-seed.x)/d*120;jelly.vy+=(jelly.y-seed.y)/d*120;}
@@ -373,7 +373,7 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
   for (const effect of state.effects) if (['comet', 'impact', 'bubble', 'stasis', 'echo', 'blaster'].includes(effect.kind)) effect.seconds = RULE.flightSeconds;
   const event = { type: 'power', kind, seedId: a.id, x: b.x, y: b.y };
   if(kind==='blaster') {
-    const flags=skillFlags(state,'blaster');state.effects.push({kind,seconds:RULE.flightSeconds,targets:[],ammo:!flags.legacy&&flags.foundation?5:3,cooldown:0,volley:0,hits:[],shots:[],reloaded:false});
+    const flags=skillConfig(state,'blaster');state.effects.push({kind,seconds:RULE.flightSeconds,targets:[],ammo:flags.ammo,cooldown:0,volley:0,hits:[],shots:[],reloaded:false});
   } else if (['relay','wake','spring','orbit','rewind','pulse','wrap','homing'].includes(kind)) {
     const effect={kind, seconds:kind==='orbit'?3:kind==='pulse'?2.3:kind==='rewind'?7:5, targets:[]};
     if(kind==='relay') Object.assign(effect,{armed:[],spent:[],remaining:3});
@@ -417,7 +417,7 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     state.effects.push({ kind, seconds: .09, targets });
   } else if (kind === 'impact') {
     state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
-    const impactForce=450*(skillFlags(state,'impact').a?1.35:skillFlags(state,'impact').b?.7:1);b.vx += nx * impactForce; b.vy += ny * impactForce; velocityLimit(b);
+    const impactForce=450*skillConfig(state,'impact').pushScale;b.vx += nx * impactForce; b.vy += ny * impactForce; velocityLimit(b);
     events.push({ type: 'push', id: b.id, x: b.x, y: b.y, nx, ny });
   } else if (kind === 'comet') {
     state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
@@ -469,7 +469,7 @@ export function physicsStep(state) {
     body.cooldown = Math.max(0, body.cooldown - dt);
     if (body.id === -3 || effectGet(state, 'orbit')?.satellites.includes(body.id) || body.id === 0 && (effectGet(state, 'slingshot') || effectGet(state,'rewind')?.returning)) continue;
     if (body.id > 0) { body.vx += Math.cos(state.tick * .002 + body.id * 1.7) * 4 * dt; body.vy += Math.sin(state.tick * .0025 + body.id * 2.1) * 4 * dt; }
-    const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? flightDrag(state.flightAge)*(effectGet(state,'comet')&&skillFlags(state,'comet').b&&state.flightAge>3?.5:1) : 3 : (effectGet(state, 'stasis')?.targets.includes(body.id)||regionFrozen(state,body.id)) ? 5 : .65) * dt);
+    const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? flightDrag(state.flightAge)*(effectGet(state,'comet')&&state.flightAge>3?skillConfig(state,'comet').lateDrag:1) : 3 : (effectGet(state, 'stasis')?.targets.includes(body.id)||regionFrozen(state,body.id)) ? 5 : .65) * dt);
     body.vx *= drag; body.vy *= drag;
     if(body.id<=0&&state.isFlying){
       // Small rolling resistance beats ambient currents at low speed without
@@ -492,21 +492,21 @@ export function physicsStep(state) {
         skillTeleport(state,fromX,fromY,body.x,body.y,'wrap');events.push({ type: 'wrap', id: body.id, fromX, fromY, x: body.x, y: body.y, nx, ny });
       }
     }
-    const restitution = body.id === 0 && effectGet(state, 'comet') && skillFlags(state,'comet').foundation ? .99 : .94;
+    const restitution = body.id === 0 && effectGet(state, 'comet') ? skillConfig(state,'comet').wallRetention : .94;
     let speed = 0, normalX = 0, normalY = 0;
     if (body.x < left) { body.x = left; if (body.vx < 0) { speed = -body.vx; body.vx *= -restitution; normalX = 1; } }
     if (body.x > right) { body.x = right; if (body.vx > 0) { speed = body.vx; body.vx *= -restitution; normalX = -1; } }
     if (body.y < top) { body.y = top; if (body.vy < 0) { speed = -body.vy; body.vy *= -restitution; normalY = 1; } }
     if (body.y > bottom) { body.y = bottom; if (body.vy > 0) { speed = body.vy; body.vy *= -restitution; normalY = -1; } }
     if (speed > 25 && body.id <= 0 && effectGet(state,'spring')) {
-      body.vx += normalX * Math.max(220,speed*.35)*(skillFlags(state,'spring').a?1.3:1); body.vy += normalY * Math.max(220,speed*.35)*(skillFlags(state,'spring').a?1.3:1); velocityLimit(body);
+      body.vx += normalX * Math.max(220,speed*.35)*skillConfig(state,'spring').reboundScale; body.vy += normalY * Math.max(220,speed*.35)*skillConfig(state,'spring').reboundScale; velocityLimit(body);
       events.push({type:'spring',x:body.x,y:body.y,nx:normalX,ny:normalY,speed});
     }
     if (speed > 25) { if (body.id <= 0 && state.isFlying) state.banks++; skillWall(state,body,normalX,normalY,events);events.push({ type: 'wall', id: body.id, x: body.x, y: body.y, nx: normalX, ny: normalY, speed }); }
   }
   if (effectGet(state, 'portal')?.cooldown === 0 && !effectGet(state, 'slingshot') && !effectGet(state,'rewind')?.returning) {
     const effect = effectGet(state, 'portal');
-    for (const [index, gate] of effect.gates.entries()) if (Math.hypot(seed.x - gate.x, seed.y - gate.y) < (skillFlags(state,'portal').a?44:30) + seed.radius) {
+    for (const [index, gate] of effect.gates.entries()) if (Math.hypot(seed.x - gate.x, seed.y - gate.y) < skillConfig(state,'portal').gateRadius + seed.radius) {
       const exit = effect.gates[1 - index], speed = Math.hypot(seed.vx, seed.vy);
       if(skillFlags(state,'portal').b){const t=state.bodies.slice(1).filter(b=>!state.chain.includes(b.id)&&((b.x-exit.x)*seed.vx+(b.y-exit.y)*seed.vy)>0).sort((a,b)=>Math.hypot(a.x-exit.x,a.y-exit.y)-Math.hypot(b.x-exit.x,b.y-exit.y))[0];if(t){const a=Math.atan2(seed.vy,seed.vx),d=Math.atan2(Math.sin(Math.atan2(t.y-exit.y,t.x-exit.x)-a),Math.cos(Math.atan2(t.y-exit.y,t.x-exit.x)-a)),turn=Math.max(-.3,Math.min(.3,d));seed.vx=Math.cos(a+turn)*speed;seed.vy=Math.sin(a+turn)*speed;}}
       const nx = speed > .001 ? seed.vx / speed : 1, ny = speed > .001 ? seed.vy / speed : 0;
@@ -571,7 +571,7 @@ export function physicsStep(state) {
         velocityLimit(a);
       }
       if (a.id === 0 && state.isFlying && effectGet(state, 'impact') && skillFlags(state,'impact').foundation) {
-        const push = Math.max(260, impulse * inverseB * .9)*(skillFlags(state,'impact').a?1.35:skillFlags(state,'impact').b?.7:1);
+        const push = Math.max(260, impulse * inverseB * .9)*skillConfig(state,'impact').pushScale;
         b.vx += nx * push; b.vy += ny * push; velocityLimit(b);
         if(skillFlags(state,'impact').b)pressure(state,b.x,b.y,150,150);
         events.push({ type: 'push', id: b.id, x: b.x, y: b.y, nx, ny });
@@ -643,7 +643,7 @@ export function physicsStep(state) {
   if(state.build&&state.skillState.total>=32)effectClear(state,events);
   const ending=!effectGet(state,'echo')&&!effectGet(state,'slingshot')&&!effectGet(state,'orbit')&&!effectGet(state,'pulse')&&state.flightAge>1.5&&seedBodies(state).every(body=>Math.hypot(body.vx,body.vy)<=RULE.settleSpeed);
   if(state.isFlying && (state.flightAge>=RULE.flightSeconds||ending) && rewind && !rewind.returning && state.flightPath.length) {
-    rewind.returning=true;rewind.route=(state.build?state.flightPath.slice(-(skillFlags(state,'rewind').foundation?240:120)):state.flightPath).map(p=>({...p}));rewind.seconds=Math.min(state.build?4.1:3.5,rewind.route.length*RULE.step*(skillFlags(state,'rewind').a?2:1)+RULE.step);
+    rewind.returning=true;rewind.route=(state.build?state.flightPath.slice(-skillConfig(state,'rewind').memory/RULE.step):state.flightPath).map(p=>({...p}));rewind.seconds=Math.min(state.build?4.1:3.5,rewind.route.length*RULE.step*(1/skillConfig(state,'rewind').playbackRate)+RULE.step);
     effectClear(state,events,'slingshot');events.push({type:'rewind',x:seed.x,y:seed.y});
   }
   if (state.isFlying && !rewind?.returning && ending) {

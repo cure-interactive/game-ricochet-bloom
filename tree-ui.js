@@ -1,9 +1,10 @@
+import { purchaseComparison, tooltipPosition } from './skill-comparison.js?v=598efefe0e55635cbbfe01f78c0e7dd67724d2a7c3fc53065db1d01f90f2dec4';
 import { RARITIES } from './skill-trait.js?v=bef2df62b29364983801345d0a0318164dfeef5666360b3ce1e2a200ac7acdc0';
-import { skillIconHTML, rarityIconHTML, skillTraitsHTML } from './skill-icon.js?v=d52c5d94038e35ce5d7e7c1777c85eb886779d384f3e5d743fc8935e0649f609';
+import { skillIconHTML, rarityIconHTML } from './skill-icon.js?v=d52c5d94038e35ce5d7e7c1777c85eb886779d384f3e5d743fc8935e0649f609';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute } from './tree-map.js?v=7b09d129786c3153ea3eb88b8626e73869d7c8a942c9907d466399a6f24d8a89';
 import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
 import { profilePurchase, profileSummary } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';
-import { researchTarget, progressionBudget, progressionLoadout, GAME_CATALOGUE as cat, POOL_NAMES, GOALS } from './run.js?v=1b76dea28464ccfbae063b3b891b59a3b22e7d7fa85f6a5adc9c243bbdf280b8';
+import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=ddcdce8b7a5156a16f65833c3f1b37eb1b5a8b4f002512cda831b395bba97739';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -53,75 +54,99 @@ export function powerGraph(state,power){
  return {nodes:nodes.map(n=>({...n,...upgradeState(state,n.id)})),edges:nodes.flatMap(n=>n.requires.map(from=>({from,to:n.id})))};
 }
 export function treeMount(controller){
- const dialog=document.getElementById('tree-dialog'),mobile=matchMedia('(max-width:760px)');
- let state=controller.get(),selected='ripple.base',confirmEquip=false,travel=0,travelling=false;
- let route=researchRoute(cat.nodes,selected);
- dialog.innerHTML=`<header class="tree-heading">${button('back','Back','arrow-left')}<h2>Skill Tree</h2><div class="tree-wallet-summary"></div></header><p class="tree-status" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected power tree"><div class="tree-target"></div><div class="tree-map-stage"><div class="tree-map-scroll" tabindex="0" aria-label="Skill Tree map. Drag to pan; pinch or use zoom controls. Arrow keys move the map."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom">85%</output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div><span class="tree-map-hint">Drag to move · Pinch or scroll to zoom</span></div></section><aside class="tree-detail" aria-label="Selected upgrade"></aside></div><footer class="tree-legend" aria-label="Skill rarity and status"><div class="rarity-legend">${Object.entries(RARITIES).map(([id,r])=>`<div class="rarity-key">${rarityIconHTML(id)}${r.name}</div>`).join('')}</div><div class="status-legend"><span class="legend-active">Active</span><span class="legend-owned">Owned</span><span class="legend-available">Available</span><span class="legend-locked">Locked</span></div></footer>`;
- const layout=treeLayout(POWER_TREES,cat.nodes),surface=dialog.querySelector('.tree-map-scroll'),mapElement=dialog.querySelector('.tree-map');
- let camera=mapCameraMount(surface,layout,view=>{mapElement.style.transform=`translate(${view.x}px,${view.y}px) scale(${view.scale})`;dialog.querySelector('.tree-zoom').textContent=Math.round(view.scale*100)+'%';dialog.querySelector('[data-tree-action=zoom-out]').disabled=view.scale<=.051;dialog.querySelector('[data-tree-action=zoom-in]').disabled=view.scale>=1.799;});
- const detail=dialog.querySelector('.tree-detail'),sheet=document.createElement('dialog');sheet.id='tree-sheet';sheet.setAttribute('aria-label','Upgrade Details');sheet.innerHTML=`<header class="tree-sheet-heading"><span>Upgrade Details</span>${button('done','Done','close')}</header><p class="tree-sheet-status" role="status" aria-live="polite"></p>`;document.body.append(sheet);
- const status=message=>{dialog.querySelector('.tree-status').textContent=message;sheet.querySelector('.tree-sheet-status').textContent=message;};
- function returnDetail(){dialog.querySelector('.tree-workspace').append(detail);if(travelling)return;detailRender();const source=dialog.querySelector(`[data-node="${selected}"]`);source?.focus({preventScroll:true});}
- sheet.addEventListener('close',returnDetail);dialog.addEventListener('close',()=>{if(sheet.open)sheet.close();});mobile.addEventListener('change',()=>{if(sheet.open)sheet.close();});
- function showDetail(id,positioned=false){travel++;travelling=false;camera.cancel();detail.hidden=false;selected=id;if(!positioned)camera.ensure(layout.nodes[id]);confirmEquip=false;detailRender();mapRender();if(mobile.matches){if(!positioned)camera.focus(layout.nodes[id],camera.value.scale,.12);sheet.querySelector('.tree-sheet-heading>span').textContent='Upgrade Details';sheet.querySelector('.tree-sheet-status').textContent='';sheet.append(detail);sheet.showModal();}detail.querySelector('.tree-detail-body')?.scrollTo(0,0);}
- async function showPrerequisite(id){
-  if(!layout.nodes[id])return;
-  const request=++travel;travelling=true;detail.hidden=true;camera.cancel();
-  if(sheet.open)await new Promise(resolve=>{sheet.addEventListener('close',resolve,{once:true});sheet.close();});
-  if(request!==travel||!dialog.open)return;
-  // Focus restoration from the dismissed sheet must not jump the camera.
-  surface.focus({preventScroll:true});
-  const arrived=await camera.focusAnimated(layout.nodes[id],Math.max(.85,camera.value.scale),mobile.matches ? .12 : .25,450);
-  if(request!==travel)return;travelling=false;
-  if(arrived&&dialog.open)showDetail(id,true);
+ const dialog=document.getElementById('tree-dialog');
+ let state=controller.get(),selected='ripple.base',tip=null,tipId=null,leaveTimer=0,pinned=false,lastView=null;
+ const layout=treeLayout(POWER_TREES,cat.nodes);
+ dialog.innerHTML=`<header class="tree-heading">${button('back','Back','arrow-left')}<h2>Skill Tree</h2><div class="tree-wallet-summary"></div></header><p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected power tree"><div class="tree-map-stage"><div class="tree-map-scroll" tabindex="0" aria-label="Skill Tree map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom">85%</output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div><span class="tree-map-hint">Drag to move · Pinch or scroll to zoom</span></div></section></div><footer class="tree-legend" aria-label="Skill rarity and status"><div class="rarity-legend">${Object.entries(RARITIES).map(([id,r])=>`<div class="rarity-key">${rarityIconHTML(id)}${r.name}</div>`).join('')}</div><div class="status-legend"><span class="legend-active">Active</span><span class="legend-owned">Owned</span><span class="legend-available">Available</span><span class="legend-locked">Locked</span></div></footer><section id="skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="skill-tooltip-title" hidden></section>`;
+ const surface=dialog.querySelector('.tree-map-scroll'),mapElement=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage');
+ tip=dialog.querySelector('.skill-tooltip');
+ const status=message=>{dialog.querySelector('.tree-status').textContent=message;};
+ function hideTooltip(restore=false){
+   clearTimeout(leaveTimer);const source=tipId&&mapElement.querySelector(`[data-node="${tipId}"]`);
+   tip.hidden=true;tipId=null;pinned=false;source?.setAttribute('aria-expanded','false');
+   if(restore)surface.focus({preventScroll:true});
  }
- function nodeButton(n){const base=n.kind==='base',active=n.equipped||base&&state.powers.includes(n.power),locked=!n.owned&&!n.borrowed&&!n.buy.ok&&n.buy.reason!=='insufficient-seeds',available=n.buy.ok&&!n.borrowed&&state.phase==='shop',badge=n.borrowed?'clock':active||n.owned?'check':locked?'lock':null;
- const status=!n.owned&&!n.borrowed&&!locked?n.seedCost+' Points':'';
- return `<button type="button" data-node="${n.id}" data-kind="${n.kind}" data-rarity="${n.rarity}" class="skill-node ${base?'is-base':''} ${route.has(n.id)?'is-route':''} ${n.kind==='capstone'?'is-capstone':''} ${n.owned?'is-owned':''} ${active?'is-active':''} ${available?'is-available':''} ${locked?'is-locked':''} ${n.borrowed?'is-borrowed':''}" style="--rarity-color:${RARITIES[n.rarity].color};--node-x:${layout.nodes[n.id].x}px;--node-y:${layout.nodes[n.id].y}px" aria-label="${escape(POWER_TREES[n.power].name+', '+n.name+', '+RARITIES[n.rarity].name+', '+n.label)}" aria-pressed="${selected===n.id}"><span class="skill-orb">${skillIconHTML(n)}<span class="skill-rarity" aria-hidden="true">${rarityIconHTML(n.rarity)}</span>${badge?'<i class="skill-badge">'+iconHTML(badge)+'</i>':''}</span><strong>${escape(n.name)}</strong>${status?`<small>${status}</small>`:''}</button>`;
+ const camera=mapCameraMount(surface,layout,view=>{
+   if(lastView&&(view.x!==lastView.x||view.y!==lastView.y||view.scale!==lastView.scale))hideTooltip();lastView={...view};mapElement.style.transform=`translate(${view.x}px,${view.y}px) scale(${view.scale})`;
+   dialog.querySelector('.tree-zoom').textContent=Math.round(view.scale*100)+'%';
+   dialog.querySelector('[data-tree-action=zoom-out]').disabled=view.scale<=.051;
+   dialog.querySelector('[data-tree-action=zoom-in]').disabled=view.scale>=1.799;
+ });
+ function selectionRender(){
+   const route=researchRoute(cat.nodes,selected);
+   for(const node of mapElement.querySelectorAll('.skill-node')){node.classList.toggle('is-route',route.has(node.dataset.node));node.setAttribute('aria-pressed',String(node.dataset.node===selected));}
+   for(const path of mapElement.querySelectorAll('.tree-world-links path'))path.classList.toggle('is-route',route.has(path.dataset.from)&&route.has(path.dataset.to));
  }
- function mapRender(){
-  route=researchRoute(cat.nodes,selected);
-  const goal=researchTarget(state);dialog.querySelector('.tree-target').innerHTML=goal?`<button type="button" data-node="${goal.id}">${iconHTML('star')}<span>${escape(goal.name)}<small>${escape(goal.text)}</small></span></button>`:'';
-  const graphs=Object.keys(POWER_TREES).map(p=>powerGraph(state,p)),nodes=graphs.flatMap(g=>g.nodes),byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
-  const edges=layout.edges.map(e=>{const source=byId[e.from],target=byId[e.to];
-   return `<path class="${target.owned?'is-active':source.owned?'is-open':'is-locked'} ${route.has(e.from)&&route.has(e.to)?'is-route':''}" style="--rarity-color:${RARITIES[target.rarity].color}" data-from="${e.from}" data-to="${e.to}" d="${e.path}"/>`;}).join('');
-  mapElement.style.width=layout.width+'px';mapElement.style.height=layout.height+'px';
-  mapElement.innerHTML=`<svg class="tree-world-links" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true">${edges}</svg>`+graphs.map(g=>`<section class="skill-power" data-power-tree="${g.nodes[0].power}" aria-label="${POWER_TREES[g.nodes[0].power].name} skills">${g.nodes.map(nodeButton).join('')}</section>`).join('');
+ function nodeButton(n){
+   const base=n.kind==='base',active=n.equipped||base&&state.powers.includes(n.power),available=state.phase==='shop'&&!n.owned&&n.buy.ok,locked=!n.owned&&!n.borrowed&&!available;
+   const badge=n.borrowed?'clock':active||n.owned?'check':locked?'lock':null;
+   const label=active?'Active':n.owned?'Owned':available?'Available to Purchase':n.borrowed?'Borrowed':'Locked';
+   return `<button type="button" data-node="${n.id}" data-kind="${n.kind}" data-rarity="${n.rarity}" class="skill-node ${base?'is-base':''} ${n.kind==='capstone'?'is-capstone':''} ${n.owned?'is-owned':''} ${active?'is-active':''} ${available?'is-available':''} ${locked?'is-locked':''} ${n.borrowed?'is-borrowed':''}" style="--rarity-color:${RARITIES[n.rarity].color};--node-x:${layout.nodes[n.id].x}px;--node-y:${layout.nodes[n.id].y}px" aria-label="${escape(n.name+', '+label)}" aria-pressed="${selected===n.id}" ${available?'aria-haspopup="dialog" aria-controls="skill-tooltip" aria-expanded="false"':''}><span class="skill-orb">${skillIconHTML(n)}<span class="skill-rarity" aria-hidden="true">${rarityIconHTML(n.rarity)}</span>${badge?'<i class="skill-badge">'+iconHTML(badge)+'</i>':''}</span><strong>${escape(n.name)}</strong></button>`;
  }
- function controlsRender(){const tuning=progressionLoadout(state);
- dialog.querySelector('.tree-wallet-summary').innerHTML=`<strong>${iconHTML('coin')}${state.profile.wallet.seeds}<span> Points</span></strong><small>${state.profile.kind==='development'?'Test · ':''}${state.powerMode==='unlocked'?state.powers.length+' powers unlocked':tuning.tuning+'/'+(state.bypass?'∞':progressionBudget(state))+' tuning'}</small>`;
+ function render(){
+   hideTooltip();
+   dialog.querySelector('.tree-wallet-summary').innerHTML=`<strong>${iconHTML('coin')}${state.profile.wallet.seeds}<span> Points</span></strong>`;
+   const nodes=Object.keys(POWER_TREES).flatMap(p=>powerGraph(state,p).nodes),byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
+   const edges=layout.edges.map(e=>`<path class="${byId[e.to].owned?'is-active':byId[e.from].owned?'is-open':'is-locked'}" style="--rarity-color:${RARITIES[byId[e.to].rarity].color}" data-from="${e.from}" data-to="${e.to}" d="${e.path}"/>`).join('');
+   mapElement.style.width=layout.width+'px';mapElement.style.height=layout.height+'px';
+   mapElement.innerHTML=`<svg class="tree-world-links" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true">${edges}</svg>`+Object.keys(POWER_TREES).map(power=>`<section class="skill-power" data-power-tree="${power}" aria-label="${POWER_TREES[power].name} skills">${nodes.filter(n=>n.power===power).map(nodeButton).join('')}</section>`).join('');
+   selectionRender();
  }
- function detailRender(){const n=cat.nodes[selected],p=POWER_TREES[n.power],v=upgradeState(state,selected),base=n.kind==='base',inLoadout=state.powers.includes(n.power),mastery=profileSummary(state.profile,cat).mastery[n.power],unlock=powerUnlock(state,n.power),blocker=researchBlocker(state,selected),conflicts=n.conflicts.filter(id=>state.equipped.includes(id)),prerequisite=!v.owned&&!(v.borrowed&&state.powerMode!=='unlocked')&&v.buy.reason==='prerequisite'?n.requires.find(id=>!state.profile.research[id]):null;
- let primary='';
- if(!v.owned)primary=button('buy',`${base?'Unlock':'Research'} · ${n.seedCost} Points`,'add',`class="primary" ${!v.buy.ok||state.phase!=='shop'?'disabled':''}`);
- if(!base&&(v.owned||v.borrowed&&state.powerMode!=='unlocked'))primary=state.powerMode==='unlocked'?(n.conflicts.length&&!v.equipped?button('equip','Use this style','switches',`class="primary" ${blocker?'disabled':''}`):'<p class="build-ready">'+iconHTML('check')+'Active automatically</p>'):button('equip',v.equipped?'Unequip upgrade':'Equip upgrade',v.equipped?'check':'add',`class="primary" ${blocker?'disabled':''}`);
- if(base&&v.owned)primary=state.powerMode==='unlocked'?'<p class="build-ready">'+iconHTML('dice-four')+'Can appear during play</p>':inLoadout?'<p class="build-ready">'+iconHTML('check')+'In your loadout</p>':`<label for="tree-slot">Replace</label><select id="tree-slot" ${state.phase!=='shop'?'disabled':''}>${state.powers.map((id,i)=>`<option value="${i}">${POWER_TREES[id].name}</option>`).join('')}</select>${button('replace','Use '+p.name,'check',`class="primary" ${state.phase!=='shop'?'disabled':''}`)}`;
- if(prerequisite)primary=button('research-first','Research '+escape(cat.nodes[prerequisite].name)+' first','arrow-right',`class="primary" data-prerequisite="${prerequisite}"`);
- detail.innerHTML=`<div class="tree-detail-body"><div class="tree-detail-title">${skillIconHTML(n)}<div><small>${p.name}${base?'':' · '+(n.kind==='capstone'?'Final upgrade':'Upgrade')}</small><h3>${escape(n.name)}</h3></div></div>${skillTraitsHTML(n)}<p class="upgrade-state">${iconHTML(v.icon)}${escape(prerequisite?'Prerequisite required':v.label)}</p><p class="tree-description">${escape(n.description)}</p>${n.unlocks.map(p=>`<button type="button" data-node="${p}.base" class="skill-branch">${iconHTML('arrow-right')}${v.owned?'Opens':'Also unlocks'} ${POWER_TREES[p].name}</button>`).join('')}<div class="tree-cost"><span>${v.owned?'Permanently owned':v.borrowed?'Borrowed for this run':n.seedCost+' Points'}</span>${state.powerMode==='unlocked'?'':'<span>'+n.tuningCost+' tuning</span>'}</div>${base&&unlock?`<p class="tree-requirement">${escape(unlock.description)}</p>`:''}${n.masteryPools?`<p class="tree-requirement">${Math.min(3,mastery)}/3 cleared pools with ${p.name} activated.</p>`:''}${n.conflictReason?`<p class="tree-requirement">${escape(n.conflictReason)} Both can be owned.</p>`:''}<div class="tree-secondary">${button('pin',state.target===selected?'Unpin goal':'Set research goal','star')}</div><details class="tree-reference"><summary>Advanced Reference</summary><p>Research follows the connected chain beneath each power. Existing purchases and temporary discoveries remain usable. Compatible upgrades combine; conflicting modes remain freely switchable.</p><p>${escape(p.current)}</p><p>Legacy configuration: ${p.today.map(k=>k==='base'?'Base power':cat.nodes[n.power+'.'+k].name).join(' + ')}${p.legacyMatch===false?' (shorter history in Song Run)':''}.</p></details>${confirmEquip?`<section class="tree-confirm"><strong>Replace ${conflicts.map(id=>cat.nodes[id].name).join(', ')}?</strong><p>Both styles remain unlocked. Only one force shape can be active at a time.</p>${button('confirm-equip','Use this style','check')}${button('cancel','Cancel','close')}</section>`:''}</div><footer class="tree-purchase"><p>${escape((prerequisite?(state.phase!=='shop'?'Research opens after this run.':''):blocker)||(!v.owned&&!prerequisite?'Purchases are permanent. Unlocked powers and upgrades join your game automatically.':''))}</p>${primary}</footer>`;
+ function showTooltip(id){
+   clearTimeout(leaveTimer);const comparison=purchaseComparison(state,id);
+   if(!comparison){hideTooltip();return;}
+   if(tipId===id&&!tip.hidden)return;
+   hideTooltip();selected=id;selectionRender();
+   const source=mapElement.querySelector(`[data-node="${id}"]`),bounds=stage.getBoundingClientRect();
+   tip.style.maxHeight=Math.max(44,bounds.height-16)+'px';tip.style.width=Math.min(330,bounds.width-16)+'px';
+   tip.innerHTML=`<div class="skill-tooltip-heading"><h3 id="skill-tooltip-title">${escape(comparison.name)}</h3>${button('dismiss','Close','close')}</div><p>${escape(comparison.description)}</p><table class="skill-comparison"><thead><tr><th scope="col">Variable</th><th scope="col">Current</th><th scope="col">After</th></tr></thead><tbody>${comparison.rows.map(row=>`<tr><th scope="row">${escape(row.label)}</th><td>${escape(row.before)}</td><td>${escape(row.after)}</td></tr>`).join('')}</tbody></table>${button('buy',`Buy · ${comparison.cost} Points`,'coin','class="primary"')}`;
+   tip.hidden=false;tipId=id;source.setAttribute('aria-expanded','true');
+   const size=tip.getBoundingClientRect(),position=tooltipPosition(source.getBoundingClientRect(),bounds,size.width,size.height),origin=dialog.getBoundingClientRect();
+   tip.style.left=position.left-origin.left+'px';tip.style.top=position.top-origin.top+'px';
  }
- function render(){const active=document.activeElement,key=['treeAction','node'].find(k=>active?.dataset?.[k]),value=active?.dataset?.[key],attrs={treeAction:'data-tree-action',node:'data-node'};controlsRender();mapRender();detailRender();if(key)(sheet.open?sheet:dialog).querySelector(`[${attrs[key]}="${value}"]:not(:disabled)`)?.focus({preventScroll:true});}
- dialog.addEventListener('close',()=>camera.cancel());
- surface.addEventListener('focusin',e=>{const id=e.target.closest('[data-node]')?.dataset.node;if(id&&!travelling&&e.target.matches(':focus-visible'))camera.ensure(layout.nodes[id]);});
-
- function handle(event){const node=event.target.closest('[data-node]'),a=event.target.closest('[data-tree-action]');
- if(node){showDetail(node.dataset.node);return;}if(!a)return;
- let type=a.dataset.treeAction;
- if(type==='research-first'){showPrerequisite(a.dataset.prerequisite);return;}
- if(type==='zoom-in'||type==='zoom-out'){camera.zoom(type==='zoom-in'?1.25:.8);return;}
- if(type==='fit'){camera.fit();return;}
- if(type==='focus'){camera.focus(layout.nodes[selected],1);return;}
- if(type==='back'){controller.back?.();return;}if(type==='done'){sheet.close();return;}
- if(type==='power-detail'){showDetail(a.dataset.power+'.base');return;}
- if(type==='cancel'){confirmEquip=false;detailRender();return;}
- if(['play','campaign'].includes(type)){const r=controller.open(type,selected);if(r?.reason)status(r.reason);return;}
- if(type==='equip'&&!state.equipped.includes(selected)&&cat.nodes[selected].conflicts.some(id=>state.equipped.includes(id))){confirmEquip=true;detailRender();detail.querySelector('.tree-confirm')?.scrollIntoView({block:'nearest'});return;}
- if(type==='confirm-equip')type='equip';
- const r=controller.act({type,id:type==='pin'&&state.target===selected?null:selected,power:cat.nodes[selected].power,slot:Number(detail.querySelector('#tree-slot')?.value)});
- if(r.ok){state=controller.get();confirmEquip=false;render();status(r.message);}else status(reasonText[r.reason]||r.reason);
+ function selectNode(id,keyboard=false){
+   if(!cat.nodes[id])return;
+   if(tipId===id){if(pinned&&!keyboard)hideTooltip();else{pinned=true;if(keyboard)tip.querySelector('[data-tree-action=buy]').focus();}return;}
+   selected=id;selectionRender();camera.ensure(layout.nodes[id]);
+   if(purchaseComparison(state,id)){showTooltip(id);pinned=true;if(keyboard)tip.querySelector('[data-tree-action=buy]').focus();return;}
+   // Owned contradictory styles remain switchable without bringing back a detail card.
+   const n=cat.nodes[id];if(state.powerMode==='unlocked'&&state.profile.research[id]&&n.conflicts.length&&!state.equipped.includes(id)){
+     const result=controller.act({type:'equip',id});if(result.ok){state=controller.get();render();status(result.message);}
+   }
  }
- dialog.addEventListener('keydown',event=>{const from=event.target.closest('.skill-node'),direction={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[event.key];if(!from||!direction)return;const next=nearestMapNode(layout.nodes,from.dataset.node,...direction);if(next){event.preventDefault();camera.ensure(layout.nodes[next]);dialog.querySelector(`.skill-node[data-node="${next}"]`)?.focus({preventScroll:true});}});
- dialog.addEventListener('click',handle);sheet.addEventListener('click',handle);dialog.addEventListener('cancel',e=>{e.preventDefault();controller.back?.();});
- function open(focusSkill){travel++;travelling=false;detail.hidden=false;if(cat.nodes[focusSkill])selected=focusSkill;controller.screen?.();document.querySelectorAll('dialog[open]').forEach(d=>d.close());state=controller.get();status('');render();dialog.showModal();camera.focus(layout.nodes[selected],.85,.12);dialog.querySelector('[data-tree-action=back]').focus({preventScroll:true});}
-
+ function handle(event){
+   const action=event.target.closest('[data-tree-action]')?.dataset.treeAction,node=event.target.closest('.skill-node');
+   if(node){selectNode(node.dataset.node,event.detail===0);return;}
+   if(action==='dismiss'){hideTooltip(true);return;}
+   if(action==='buy'){
+     const id=tipId;if(!id||!purchaseComparison(controller.get(),id)){state=controller.get();render();return;}
+     const result=controller.act({type:'buy',id});state=controller.get();render();status(result.ok?'Purchased '+cat.nodes[id].name:result.reason);surface.focus({preventScroll:true});return;
+   }
+   if(action==='back'){controller.back?.();return;}
+   if(action==='zoom-in'||action==='zoom-out'){camera.zoom(action==='zoom-in'?1.25:.8);return;}
+   if(action==='fit'){camera.fit();return;}if(action==='focus'){camera.focus(layout.nodes[selected],1);return;}
+   if(!tip.contains(event.target))hideTooltip();
+ }
+ surface.addEventListener('pointerover',event=>{if(event.pointerType==='mouse'&&!event.buttons){const node=event.target.closest('.skill-node');if(node)showTooltip(node.dataset.node);}});
+ surface.addEventListener('pointerout',event=>{if(event.pointerType==='mouse'&&event.target.closest('.skill-node')&&!event.target.closest('.skill-node').contains(event.relatedTarget)){clearTimeout(leaveTimer);if(!pinned)leaveTimer=setTimeout(()=>hideTooltip(),250);}});
+ tip.addEventListener('pointerenter',()=>clearTimeout(leaveTimer));
+ tip.addEventListener('pointerleave',event=>{if(event.pointerType==='mouse'){clearTimeout(leaveTimer);if(!pinned)leaveTimer=setTimeout(()=>hideTooltip(),250);}});
+ dialog.addEventListener('pointerdown',event=>{if(!tip.contains(event.target)&&!event.target.closest('.skill-node'))hideTooltip();});
+ surface.addEventListener('focusin',event=>{const node=event.target.closest('.skill-node');if(node&&node.matches(':focus-visible')){camera.ensure(layout.nodes[node.dataset.node]);showTooltip(node.dataset.node);}});
+ dialog.addEventListener('keydown',event=>{
+   if(event.key==='Escape'&&!tip.hidden){event.preventDefault();event.stopPropagation();hideTooltip(true);return;}
+   const from=event.target.closest('.skill-node'),direction={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[event.key];
+   if(!from||!direction)return;const next=nearestMapNode(layout.nodes,from.dataset.node,...direction);if(next){event.preventDefault();camera.ensure(layout.nodes[next]);mapElement.querySelector(`[data-node="${next}"]`).focus({preventScroll:true});}
+ });
+ dialog.addEventListener('click',handle);
+ dialog.addEventListener('cancel',event=>{event.preventDefault();if(!tip.hidden)hideTooltip(true);else controller.back?.();});
+ dialog.addEventListener('close',()=>{hideTooltip();camera.cancel();});
+ let viewport={width:window.innerWidth,height:window.innerHeight};
+ window.addEventListener('resize',()=>{if(viewport.width!==window.innerWidth||viewport.height!==window.innerHeight)hideTooltip();viewport={width:window.innerWidth,height:window.innerHeight};});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)hideTooltip();});
+ function open(focusSkill){
+   if(cat.nodes[focusSkill])selected=focusSkill;controller.screen?.();document.querySelectorAll('dialog[open]').forEach(d=>d.close());
+   state=controller.get();status('');render();dialog.showModal();camera.focus(layout.nodes[selected],.85,.12);dialog.querySelector('[data-tree-action=back]').focus({preventScroll:true});
+ }
  render();if(new URL(location.href).searchParams.get('view')==='tree')open();return {open,refresh(){state=controller.get();render();}};
 }

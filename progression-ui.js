@@ -1,15 +1,15 @@
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
-import { rewardMount } from './reward-ui.js?v=fadd2e0c52daa84eef8c2b7cf8b4859c98a999cda4ee07f3b18e7c35b727ff16';
-import { campaignMount } from './campaign-ui.js?v=1128991c843faeebd8a1332aa6190d286053c292183caa9074df10ddb0068871';
-import { challengeEncode, challengeDecode } from './challenge.js?v=2ec375849b11d975734a1379d718a68aa7065f679db2640c257659a6f9492e13';
+import { rewardMount } from './reward-ui.js?v=4f1956fddfdd78c169a63afaa9043f775fd191e3bcd7e3dedaa02c051aa32b21';
+import { campaignMount } from './campaign-ui.js?v=3265000ca65195dedb31e569bb3b2e9b16e57e360c6d2d52567f922d8d7c897f';
+import { challengeEncode, challengeDecode } from './challenge.js?v=e2c6f415ef85216ff040fdc7d114d45551f10d5b4075fdb56be1f0d8c9ecdacf';
 import { trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
-import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=1b76dea28464ccfbae063b3b891b59a3b22e7d7fa85f6a5adc9c243bbdf280b8';
-import { progressionRead, progressionWrite, progressionImport } from './progression-store.js?v=012d8f2f00e47fc09c00ba29887e6642703010ccc22328e647fc91a26f9ff573';
-import { gameCreate } from './engine.js?v=3fa3da1910798127f4f9008b75235c9afd10dac9eb9aae8276de00ac4b8b8cad';
-import { treeMount } from './tree-ui.js?v=894d5c19c2c49c56fd70518238edc88c3558a04831a402c1bcfd3ee331569a92';
+import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=ddcdce8b7a5156a16f65833c3f1b37eb1b5a8b4f002512cda831b395bba97739';
+import { progressionRead, progressionWrite, progressionImport } from './progression-store.js?v=c0f6d0306aa8b0a074a7948799c19f5108350663d162d64a5e955c6a176c89a4';
+import { gameCreate } from './engine.js?v=53c12a3b8ec5b7bda0625a1e527cb498490b7df27796c02c3c3d133a93b14c7c';
+import { treeMount } from './tree-ui.js?v=54745f7911640e0d2b421d5cedf6d47aad4dd7655ff6c705183cef7ec0fd6f5a';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
-import { skinMount } from './skin-ui.js?v=a201705d8687fd5188f85bd80706240a310a79510d8e6b71a79469183cc2f843';
+import { skinMount } from './skin-ui.js?v=17662e27383a2d7186323e4d68381e2363a0f07e68aee7428d8806edc5d353b2';
 export function progressionMount(host){
   let kind='normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,rewards,listenTimer=null;
   let saveBlocked=!loaded.available;

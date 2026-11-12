@@ -1,4 +1,4 @@
-/* One connected research tree; details are the same sheet on every screen. */
+/* One connected research tree with compact purchase tooltips. */
 #tree-dialog{width:min(1500px,100%);height:100dvh;max-width:100%;max-height:100dvh;margin:auto;padding:0;border:0;background:#0b1423;color:#e4f0f3;overflow:hidden}
 #tree-dialog[open]{display:flex;flex-direction:column}#tree-dialog::backdrop,#tree-sheet::backdrop{background:#030a16bd;backdrop-filter:blur(5px)}
 :is(#tree-dialog,#tree-sheet) button,:is(#tree-dialog,#tree-sheet) select{font:inherit;font-size:14px;min-height:44px;border:1px solid #3c5365;border-radius:10px;background:#16283a;color:#e4f0f3;padding:10px 12px;display:inline-flex;align-items:center;justify-content:center;gap:9px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
@@ -210,3 +210,20 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .status-legend .legend-locked:before{border:1px dashed #c8d5df;background:none}
 #reward-dialog .reward-card{border-color:var(--rarity-color)}
 @media(max-width:380px){.rarity-legend{gap:8px}.rarity-key{gap:3px;font-size:10px}.rarity-key img{width:15px;height:15px}.status-legend{gap:12px}}
+
+/* Purchase information stays anchored to its node; there is no detail pane or sheet. */
+#tree-dialog .tree-workspace{grid-template-columns:minmax(0,1fr)}
+#tree-dialog .tree-status.sr-only{padding:0;margin:0}
+#tree-dialog .skill-tooltip{position:absolute;z-index:10;box-sizing:border-box;padding:12px;border:1px solid #688779;border-radius:14px;background:#102430;box-shadow:0 8px 28px #0008;overflow:auto;overscroll-behavior:contain;touch-action:pan-y;color:#e8f1f2;font-size:13px;line-height:1.45}
+#tree-dialog .skill-tooltip[hidden]{display:none}
+.skill-tooltip-heading{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.skill-tooltip-heading h3{font-size:17px;line-height:1.2;margin:0}
+#tree-dialog .skill-tooltip-heading button{flex:none;width:44px;min-height:44px;padding:10px;background:transparent;border:0}
+.skill-tooltip-heading button span:last-child{display:none}
+.skill-tooltip>p{font-size:13px;line-height:1.45;margin:4px 0 12px}
+.skill-comparison{width:100%;table-layout:fixed;border-collapse:collapse;margin:8px 0 14px;font-size:12px}
+.skill-comparison th,.skill-comparison td{text-align:left;vertical-align:top;padding:7px 4px;border-bottom:1px solid #63818c44;overflow-wrap:anywhere}
+.skill-comparison th:first-child{width:44%;padding-left:0;font-weight:400}
+.skill-comparison thead th{font-size:10px;color:#a7bec8;font-weight:400}
+.skill-comparison td:last-child{color:#b4f2d8}
+#tree-dialog .skill-tooltip>.primary{width:100%;margin:0;min-height:44px}

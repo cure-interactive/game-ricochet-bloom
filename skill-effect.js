@@ -23,6 +23,19 @@ export function skillConfig(state,power) {
     case 'pulse': Object.assign(c,{count:f.foundation?3:2,beat:f.a?1:f.b?.5:.75,force:f.a?850:f.b?550:720});break;
     case 'lightning': case 'relay': Object.assign(c,{count:f.foundation?3:power==='relay'?1:2});break;
   }
+  // These values also drive purchase comparisons; physics and UI share one owner.
+  switch(power){
+    case 'ripple': case 'attract': case 'vortex': Object.assign(c,{reach:440*(f.foundation&&power!=='vortex'?1.2:1),force:640*(f.a?1.25:f.b?.85:1)});break;
+    case 'comet': Object.assign(c,{wallRetention:f.foundation?.99:.94,lateDrag:f.b?.5:1});break;
+    case 'impact': c.pushScale=f.a?1.35:f.b?.7:1;break;
+    case 'spring': c.reboundScale=f.a?1.3:1;break;
+    case 'drunk': c.swayScale=f.a?.55:f.b?1.35:1;break;
+    case 'wake': Object.assign(c,{width:f.a?16:f.b?44:28,force:f.a?1450:f.b?700:1000});break;
+    case 'portal': c.gateRadius=f.a?44:30;break;
+    case 'relay': c.duration=f.b?7:5;break;
+    case 'rewind': Object.assign(c,{memory:f.foundation?2:1,playbackRate:f.a?.5:1});break;
+    case 'blaster': Object.assign(c,{ammo:!f.legacy&&f.foundation?5:3,offsets:f.b?[-.14,0,.14]:[0],bounces:f.a?1:0});break;
+  }
   return c;
 }
 const effect=(s,k)=>s.effects.find(e=>e.kind===k);
@@ -52,7 +65,7 @@ export function skillActivate(state,kind,body,events) {
   if(!state.build)return;
   const c=skillConfig(state,kind),e=effect(state,kind),v=state.skillState;
   if(['ripple','attract','vortex'].includes(kind)) {
-    const radius=440*(c.foundation&&kind!=='vortex'?1.2:1),strength=640*(c.a?1.25:c.b?.85:1);
+    const radius=c.reach,strength=c.force;
     pressure(state,body.x,body.y,radius,strength,kind,c);
     if(kind==='vortex'&&(c.foundation||c.capstone))v.vortex={x:body.x,y:body.y,seconds:1};
     if(c.capstone&&kind!=='vortex')v.delayed.push({x:body.x,y:body.y,radius,seconds:.5,kind:kind==='ripple'?'attract':'ripple'});

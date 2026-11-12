@@ -1,5 +1,5 @@
 // Presentation only: engine events supply impulses; active effects supply geometry.
-import { RULE, POWERS, effectGet, homingTarget } from './engine.js?v=3fa3da1910798127f4f9008b75235c9afd10dac9eb9aae8276de00ac4b8b8cad';
+import { RULE, POWERS, effectGet, homingTarget } from './engine.js?v=53c12a3b8ec5b7bda0625a1e527cb498490b7df27796c02c3c3d133a93b14c7c';
 const TAU = Math.PI * 2;
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 function line(c, x, y, endX, endY) { c.beginPath(); c.moveTo(x, y); c.lineTo(endX, endY); c.stroke(); }
