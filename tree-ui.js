@@ -74,7 +74,10 @@ export function treeMount(controller){
   route=researchRoute(cat.nodes,POWER_TREES,FAMILY_UNLOCK,selected);
   const goal=researchTarget(state);dialog.querySelector('.tree-target').innerHTML=goal?`<button type="button" data-node="${goal.id}">${iconHTML('star')}<span>${escape(goal.name)}<small>${escape(goal.text)}</small></span></button>`:'';
   const graphs=Object.keys(POWER_TREES).map(p=>powerGraph(state,p)),nodes=graphs.flatMap(g=>g.nodes),byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
-  const edges=layout.edges.map(e=>{const a=layout.nodes[e.from],b=layout.nodes[e.to],source=byId[e.from],target=byId[e.to];return `<path class="${target.owned?'is-active':source.owned?'is-open':'is-locked'} ${route.has(e.from)&&route.has(e.to)?'is-route':''}" data-from="${e.from}" data-to="${e.to}" d="${a.power===b.power?`M${a.x} ${a.y+70} V${b.y-29}`:`M${a.x} ${a.y+70} C${a.x} ${a.y+92} ${b.x} ${a.y+92} ${b.x} ${b.y-36}`}"/>`;}).join('');
+  const edges=layout.edges.map(e=>{const a=layout.nodes[e.from],b=layout.nodes[e.to],source=byId[e.from],target=byId[e.to];
+   const start=a.y+70,end=b.y-36,mid=(start+end)/2,side=Math.sign(b.x-a.x),radius=Math.min(12,Math.abs(b.x-a.x)/2,(end-start)/2);
+   const path=a.power===b.power?`M${a.x} ${start} V${b.y-29}`:`M${a.x} ${start} V${mid-radius} Q${a.x} ${mid} ${a.x+side*radius} ${mid} H${b.x-side*radius} Q${b.x} ${mid} ${b.x} ${mid+radius} V${end}`;
+   return `<path class="${target.owned?'is-active':source.owned?'is-open':'is-locked'} ${route.has(e.from)&&route.has(e.to)?'is-route':''}" data-from="${e.from}" data-to="${e.to}" d="${path}"/>`;}).join('');
   mapElement.style.width=layout.width+'px';mapElement.style.height=layout.height+'px';
   mapElement.innerHTML=`<svg class="tree-world-links" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true">${edges}</svg>`+Object.values(layout.families).map(f=>`<section class="skill-family" data-family-tree="${f.name}" aria-label="${f.name} powers">${f.powers.flatMap(p=>graphs.find(g=>g.nodes[0].power===p).nodes).map(nodeButton).join('')}</section>`).join('');
  }
