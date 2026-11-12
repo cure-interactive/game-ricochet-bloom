@@ -4,8 +4,8 @@ export const WIKI_PAGES = Object.freeze({
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=a12d1a1d58739ae9cd5c048f6a2f7b9bcc77e57d685569882c79710af9242641' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=1f7e952790505b01a3ad6df6c1e6964ba663e7bc139a2c607849df207f3df982' },
   campaign: { title: 'Campaign', url: './wiki/campaign.md?v=e1f9240427027acd8e680ed2cb956782383744d7c5ed86373fedd5807dba5cd8' },
-  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=a1b8038c1da7a978745767c1a4b6fc462552475c08f23a2ecb2517e6c63e1f2a' },
-  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=db1a24bab2dd6cb8cbfe2ade2b9415fa6f2c79e820c551b6b101ac03233b405a' },
+  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=fa1b80c622a84ea117a6796ce5021346c1a213904784cfd1bdf9be524ff464b5' },
+  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=5394df77188d0533ce46eee9efd4168a82f1004672b6dce9ea97434c42c84abb' },
   settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=a235d7b2b960e0abb3025420688a616c4e7e4db911b647f0bf597950714e3f71' }
 });
 const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

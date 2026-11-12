@@ -1,4 +1,4 @@
-import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess } from './catalogue.js?v=6265b0aef5754b05a7ff5ae96d2d89f60ffbf10836e3e10c60def7abe1634c1e';
+import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=72132af057dff2bd5109c48d8a7a7ad6fdf82a3a7eb75d52b4a209a490cfffb0';
 
 export const PROFILE_VERSION = 1;
 const integer = value => Number.isSafeInteger(value) && value >= 0;
@@ -9,7 +9,7 @@ const runIdValid = value => typeof value === 'string' && /^[A-Za-z0-9_-]{1,80}$/
 const rejected = reason => ({ ok: false, reason });
 const accepted = (profile, extra = {}) => ({ ok: true, profile, ...extra });
 const advance = profile => { if (!integer(profile.revision + 1)) return false; profile.revision++; return true; };
-const nodeGet = (catalogue, id) => typeof id === 'string' && own(catalogue.nodes, id) ? catalogue.nodes[id] : null;
+const nodeGet = (catalogue,id) => typeof id==='string' ? catalogueNode(catalogue,id) : null;
 
 export function profileCreate(kind = 'normal') {
   if (!['normal', 'development'].includes(kind)) throw new TypeError('Invalid profile kind');
@@ -115,7 +115,7 @@ export function profileSummary(input, catalogue = CATALOGUE) {
 export function profilePurchase(input, id, catalogue = CATALOGUE) {
   const profile = profileValidate(input, catalogue), node = nodeGet(catalogue, id);
   if (!profile) return rejected('invalid-profile');
-  if (!node?.supported) return rejected('unavailable-node');
+  if (!node?.supported || node.historical) return rejected('unavailable-node');
   if (own(profile.research, id)) return rejected('already-owned');
   if (!nodePrerequisitesMet(node, key => own(profile.research, key))) return rejected('prerequisite');
   if (profile.kind === 'normal' && profileSummary(profile, catalogue).mastery[node.power] < node.masteryPools) return rejected('mastery');
@@ -163,16 +163,16 @@ export function unlockedResolve(input, selections, catalogue = CATALOGUE) {
   if(!profile||!unique(selections?.borrowed)||!unique(selections?.equipped))return rejected('invalid-profile');
   const powers=Object.keys(catalogue.powers).filter(p=>own(profile.research,p+'.base'));
   const available=new Set([...Object.keys(profile.research),...selections.borrowed]);
-  if(selections.borrowed.some(id=>!catalogue.nodes[id]||catalogue.nodes[id].kind==='base'||!powers.includes(catalogue.nodes[id].power)))return rejected('invalid-discovery');
-  if(selections.equipped.some(id=>!catalogue.nodes[id]||catalogue.nodes[id].kind==='base'||!available.has(id)||!powers.includes(catalogue.nodes[id].power)))return rejected('invalid-equipment');
+  if(selections.borrowed.some(id=>!nodeGet(catalogue,id)||nodeGet(catalogue,id).kind==='base'||!powers.includes(nodeGet(catalogue,id).power)))return rejected('invalid-discovery');
+  if(selections.equipped.some(id=>!nodeGet(catalogue,id)||nodeGet(catalogue,id).kind==='base'||!available.has(id)||!powers.includes(nodeGet(catalogue,id).power)))return rejected('invalid-equipment');
   const equipped=[];
   for(const power of powers){
-    const ids=['foundation','a','b','capstone'].map(k=>power+'.'+k).filter(id=>available.has(id));
+    const ids=Object.values(catalogue.nodes).filter(n=>n.power===power&&n.kind!=='base'&&available.has(n.id)).map(n=>n.id);
     // Keep the selected style; a freshly researched conflicting style becomes selected by run.js.
     ids.sort((a,b)=>Number(selections.equipped.includes(b))-Number(selections.equipped.includes(a)));
     for(const id of ids)if(!catalogue.nodes[id].conflicts.some(other=>equipped.includes(other)))equipped.push(id);
   }
-  return {ok:true,tuning:0,budget:0,bypass:false,equipped,powers:powers.map(power=>({power,foundation:equipped.includes(power+'.foundation'),variants:['a','b'].filter(k=>equipped.includes(power+'.'+k)),capstone:equipped.includes(power+'.capstone')}))};
+  return {ok:true,tuning:0,budget:0,bypass:false,equipped,powers:powers.map(power=>resolvePower(power,equipped,catalogue,true))};
 }
 // Run discovery timing and persistence belong to run.js; borrowed nodes expire there.
 export function loadoutResolve(input, loadout, budget, catalogue = CATALOGUE, options = {}) {
@@ -198,7 +198,12 @@ export function loadoutResolve(input, loadout, budget, catalogue = CATALOGUE, op
     tuning += node.tuningCost;
   }
   if (!bypass && tuning > budget) return rejected('over-budget');
-  return { ok: true, tuning, budget, bypass, powers: loadout.powers.map(power => ({ power,
-    foundation: equipped.has(power + '.foundation'), variants: ['a', 'b'].filter(kind => equipped.has(power + '.' + kind)),
-    capstone: equipped.has(power + '.capstone') })) };
+  return { ok: true, tuning, budget, bypass, powers: loadout.powers.map(power=>resolvePower(power,[...equipped],catalogue,false)) };
+}
+
+// Research identities are independent of the engine's existing behavior flags.
+function resolvePower(power,equipped,catalogue,includeBase){
+ const effects=new Set(includeBase ? catalogue.powers[power].included : []);
+ for(const id of equipped){const node=nodeGet(catalogue,id);if(node?.power===power)for(const effect of node.effects)effects.add(effect);}
+ return {power,foundation:effects.has('foundation'),variants:['a','b'].filter(k=>effects.has(k)),capstone:effects.has('capstone')};
 }

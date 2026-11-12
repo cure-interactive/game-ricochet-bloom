@@ -1,4 +1,4 @@
-import { saveValidate } from './engine.js?v=12aca0299e489e19cee12712b048995045f1a99ab7437f65848b511da9a147d5';
+import { saveValidate } from './engine.js?v=3fa3da1910798127f4f9008b75235c9afd10dac9eb9aae8276de00ac4b8b8cad';
 export const STORAGE = 'ricochet-bloom-pool-v3', LEGACY_STORAGE = 'ricochet-bloom-pool-v2';
 export function poolStoreRead(input) {
   const store = { version: 3, activeMode: 'challenge', pools: { challenge: null, free: null }, best: 0, preferences: {} };

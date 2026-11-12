@@ -4,7 +4,7 @@
 
 **Ripple is your starting power.** Every other power and upgrade branches from it. You can eventually research every branch; choosing one does not permanently shut off the others.
 
-Each power has its own linear chain of four upgrades beneath its base. Some upgrades also open side branches into new powers. Follow the connecting paths, or select a locked node to see its exact requirement.
+Each power has its own linear upgrade chain beneath its base. The number and effects are chosen for that power; there is no fixed upgrade count. Basic utility belongs in the base power, while research adds meaningful changes. Some upgrades also open side branches into new powers. Follow the connecting paths, or select a locked node to see its exact requirement.
 
 ## Research and Activation
 

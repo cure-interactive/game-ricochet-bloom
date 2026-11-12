@@ -1,5 +1,5 @@
 import { TRACKS } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
-import { completedTracks } from './run.js?v=c0ea84dd906f0ed13559a0d34416d93c5e872cb0e3ad1100204904c9bb62fa30';
+import { completedTracks } from './run.js?v=1b76dea28464ccfbae063b3b891b59a3b22e7d7fa85f6a5adc9c243bbdf280b8';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const skins=[{id:'original',name:'Original',color:'#f1f9d7'},...TRACKS];

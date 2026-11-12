@@ -1,13 +1,13 @@
-import { buildValidate } from './skill-effect.js?v=68c76a93e9644d6325bb5cb6468e19bbb68cf6b8261d5821ee0cec8d49aca638';
-import { catalogueCreate, STARTERS } from './catalogue.js?v=6265b0aef5754b05a7ff5ae96d2d89f60ffbf10836e3e10c60def7abe1634c1e';
-import { POWER_TREES } from './power-tree.js?v=6b24879d9e0b7315350a7a978aba1648d5e1ef852c112b6beffde4eceded6179';
-import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=d4ca539643faf8ddf446cec1a80997a13252a4f8d1805fa5ba3a98ba748553c3';
-import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=12aca0299e489e19cee12712b048995045f1a99ab7437f65848b511da9a147d5';
+import { buildValidate } from './skill-effect.js?v=b256b8e07ee94d01d7ff6ae2229c2641c4e1f19ff70eff46f37fece23e7d9dac';
+import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=72132af057dff2bd5109c48d8a7a7ad6fdf82a3a7eb75d52b4a209a490cfffb0';
+import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
+import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';
+import { gameCreate, saveValidate, RULE, seedHash } from './engine.js?v=3fa3da1910798127f4f9008b75235c9afd10dac9eb9aae8276de00ac4b8b8cad';
 import { jellyRole, musicCreate, musicRunSection } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
 
-export const GAME_CATALOGUE=catalogueCreate(Object.keys(POWER_TREES).flatMap(p=>['base','foundation','a','b','capstone'].map(k=>p+'.'+k)));
+export const GAME_CATALOGUE=catalogueCreate(Object.entries(POWER_TREES).flatMap(([power,tree])=>tree.nodes.map(node=>power+'.'+node.key)));
 export const POOL_NAMES=['Intro','Verse','Build','Bridge','Finale'];
 export const POPULATIONS=[12,14,16,14,18];
 export const GOALS=['Make one bloom','Bloom + all three musical roles','Make two blooms','Bloom after banking off a wall','Two blooms + all three roles'];
@@ -59,7 +59,7 @@ export function discoveries(s){
 }
 // Preview and commit use the same transaction. No loan or equipment changes leak on failure.
 export function discoveryUse(input,id,remove=[]) {
-  const s=progressionValidate(input,input.profile?.kind),node=GAME_CATALOGUE.nodes[id];
+  const s=progressionValidate(input,input.profile?.kind),node=catalogueNode(GAME_CATALOGUE,id);
   if(!s||s.phase!=='interlude'||s.run.discovered||!s.run.offers.includes(id)||!node||node.kind==='base')return {ok:false,reason:'Choose one of the saved discovery offers.'};
   if(!unique(remove)||remove.some(x=>!s.equipped.includes(x)))return {ok:false,reason:'Choose equipped upgrades to replace.'};
   s.borrowed.push(id);if(s.powerMode==='unlocked')remove=[...new Set([...remove,...node.conflicts.filter(x=>s.equipped.includes(x))])];s.equipped=s.equipped.filter(x=>!remove.includes(x));s.equipped.push(id);
@@ -69,8 +69,8 @@ export function discoveryUse(input,id,remove=[]) {
   s.run.discovered=true;s.run.game.build=loadout.powers;
   return {ok:true,state:s,message:`${node.name} is active for the next pool.`};
 }
-function tidy(s){if(s.powerMode==='unlocked'){s.borrowed=s.borrowed.filter(id=>!s.profile.research[id]);syncUnlocked(s);return;}s.borrowed=s.borrowed.filter(id=>!s.profile.research[id]&&s.powers.includes(GAME_CATALOGUE.nodes[id].power));s.equipped=s.equipped.filter(id=>(s.profile.research[id]||s.borrowed.includes(id))&&s.powers.includes(GAME_CATALOGUE.nodes[id].power));while(!progressionLoadout(s).ok&&s.equipped.length)s.equipped.pop();}
-function setupValid(r){return !!r&&seedValid(r.seed)&&!!trackGet(r.track)&&typeof r.relaxed==='boolean'&&unique(r.powers)&&r.powers.length>=1&&r.powers.length<=25&&r.powers.every(p=>!!GAME_CATALOGUE.powers[p])&&unique(r.equipped)&&unique(r.borrowed)&&[...r.equipped,...r.borrowed].every(id=>GAME_CATALOGUE.nodes[id]?.kind!=='base'&&r.powers.includes(GAME_CATALOGUE.nodes[id]?.power));}
+function tidy(s){if(s.powerMode==='unlocked'){s.borrowed=s.borrowed.filter(id=>!s.profile.research[id]);syncUnlocked(s);return;}s.borrowed=s.borrowed.filter(id=>!s.profile.research[id]&&s.powers.includes(catalogueNode(GAME_CATALOGUE,id).power));s.equipped=s.equipped.filter(id=>(s.profile.research[id]||s.borrowed.includes(id))&&s.powers.includes(catalogueNode(GAME_CATALOGUE,id).power));while(!progressionLoadout(s).ok&&s.equipped.length)s.equipped.pop();}
+function setupValid(r){return !!r&&seedValid(r.seed)&&!!trackGet(r.track)&&typeof r.relaxed==='boolean'&&unique(r.powers)&&r.powers.length>=1&&r.powers.length<=25&&r.powers.every(p=>!!GAME_CATALOGUE.powers[p])&&unique(r.equipped)&&unique(r.borrowed)&&[...r.equipped,...r.borrowed].every(id=>catalogueNode(GAME_CATALOGUE,id)?.kind!=='base'&&r.powers.includes(catalogueNode(GAME_CATALOGUE,id)?.power));}
 function recordValid(r){return !!r&&typeof r.id==='string'&&/^run-[0-9]+$/.test(r.id)&&(r.outcome==='failure'?r.medal===null:['Bronze','Silver','Gold'].includes(r.medal))&&!!trackGet(r.track)&&seedValid(r.seed)&&['victory','failure'].includes(r.outcome)&&typeof r.relaxed==='boolean'&&integer(r.launches)&&integer(r.score)&&integer(r.bonuses)&&r.bonuses<=5&&integer(r.rules)&&['normal','development'].includes(r.kind)&&musicValid(r.music)&&buildValidate(r.build)&&Array.isArray(r.routes)&&r.routes.every(n=>[0,1].includes(n));}
 export function progressionValidate(input,kind='normal') {
   if(!input||input.version!==1||!['shop','run','interlude'].includes(input.phase)||!integer(input.attempt)||!Number.isInteger(input.pool)||input.pool<0||input.pool>4||typeof input.relaxed!=='boolean'||typeof input.bypass!=='boolean'||input.bypass&&kind!=='development')return null;
@@ -78,7 +78,7 @@ export function progressionValidate(input,kind='normal') {
   const s=structuredClone(input);s.profile=profileValidate(s.profile,GAME_CATALOGUE,kind);if(!s.profile||!progressionLoadout(s).ok)return null;
   if(s.powerMode==='shared'&&(kind!=='development'||![1,2].includes(s.sharedVersion)||canonical(s.powers)!==canonical(s.fixedBuild.map(p=>p.power))))return null;
   if(s.powerMode==='unlocked'){const resolved=progressionLoadout(s);if(!unique(s.powers)||canonical([...s.powers].sort())!==canonical(resolved.powers.map(p=>p.power).sort()))return null;s.equipped=resolved.equipped;}
-  s.target??=null;if(s.target!==null&&!GAME_CATALOGUE.nodes[s.target])return null;
+  s.target??=null;if(GAME_CATALOGUE.legacyNodes[s.target])s.target=GAME_CATALOGUE.legacyNodes[s.target].power+'.base';if(s.target!==null&&!GAME_CATALOGUE.nodes[s.target])return null;
   // Compatible addition of campaign fields to the original v2 preview envelope.
   s.track??='first-light';s.route??=0;s.seed??=`DAWN-${s.attempt||1}`;s.records??=[];s.latest??=null;s.retry??=null;s.skin??='original';
   if(!trackGet(s.track)||!seedValid(s.seed)||![0,1].includes(s.route)||!Array.isArray(s.records)||s.records.length>500||!s.records.every(recordValid)||!unique(s.records.map(r=>r.id))||s.latest!==null&&!recordValid(s.latest)||s.skin!=='original'&&!trackGet(s.skin))return null;
@@ -87,9 +87,10 @@ export function progressionValidate(input,kind='normal') {
   else {
     const r=s.run;if(!r||r.id!==`run-${s.attempt}`||!seedValid(r.seed)||!unique(r.roles)||r.roles.some(x=>!['melody','bass','rhythm'].includes(x))||!unique(r.activated)||r.activated.some(x=>!s.powers.includes(x))||typeof r.bankBloom!=='boolean')return null;
     r.track??=s.track;r.launches??=0;r.score??=0;r.bonuses??=0;r.routes??=[0];r.offers??=[];r.discovered??=false;r.initial??={seed:r.seed,track:s.track,relaxed:s.relaxed,powers:[...s.powers],equipped:[...s.equipped],borrowed:[...s.borrowed]};
-    if(!setupValid(r.initial)||r.track!==s.track||![r.launches,r.score,r.bonuses].every(integer)||r.bonuses>5||!unique(r.offers)||r.offers.length>3||r.offers.some(id=>!GAME_CATALOGUE.nodes[id]||!s.powers.includes(GAME_CATALOGUE.nodes[id].power))||typeof r.discovered!=='boolean'||!Array.isArray(r.routes)||r.routes.length>5||r.routes.some(n=>![0,1].includes(n)))return null;
-    r.game=saveValidate(r.game);if(!r.game||r.game.mode!=='song-run'||r.game.bodies.length!==POPULATIONS[s.pool]+1||canonical(r.game.build)!==canonical(progressionLoadout(s).powers)||!musicValid(r.music))return null;
+    if(!setupValid(r.initial)||r.track!==s.track||![r.launches,r.score,r.bonuses].every(integer)||r.bonuses>5||!unique(r.offers)||r.offers.length>3||r.offers.some(id=>!catalogueNode(GAME_CATALOGUE,id)||!s.powers.includes(catalogueNode(GAME_CATALOGUE,id).power))||typeof r.discovered!=='boolean'||!Array.isArray(r.routes)||r.routes.length>5||r.routes.some(n=>![0,1].includes(n)))return null;
+    r.game=saveValidate(r.game);if(!r.game||r.game.mode!=='song-run'||r.game.bodies.length!==POPULATIONS[s.pool]+1||!savedBuildMatches(s,r.game.build)||!musicValid(r.music))return null;
   }
+  if(s.powerMode==='unlocked'&&s.run)s.run.offers=s.run.offers.filter(id=>!GAME_CATALOGUE.legacyNodes[id]);
   if(s.phase==='shop'&&!s.powerMode)syncUnlocked(s);
   return s;
 }
@@ -145,7 +146,7 @@ export function progressionAct(input,action){
     case 'abandon':if(!s.run)return fail('No active run.');reward(s,{type:'failure',poolIndex:s.pool+(s.phase==='interlude'?1:0),blooms:0,abandoned:true});s.retry=s.run.initial;finish(s);message='Run ended. Earned Points and research remain.';break;
     case 'skin':if(action.skin!=='original'&&!completedTracks(s).includes(action.skin))return fail('Complete that track to unlock its skin.');s.skin=action.skin;break;
     case 'grant':r=profileCurrencyGrant(s.profile,'seeds',action.amount,cat);if(!r.ok)return r;s.profile=r.profile;message=`Added ${action.amount} development Points.`;break;
-    case 'max':if(s.profile.kind!=='development')return fail('Development only.');for(const id of Object.keys(cat.nodes))s.profile.research[id]??={paid:0};s.profile.revision++;s.profile.familyAccess=Object.fromEntries(Object.keys(s.profile.familyAccess).map(f=>[f,3]));s.bypass=true;s.equipped=s.powers.flatMap(p=>['foundation','a',...(POWER_TREES[p].compatible?['b']:[]),'capstone'].map(k=>p+'.'+k));s.borrowed=[];syncUnlocked(s);if(s.phase==='interlude'){s.run.offers=[];s.run.discovered=true;}message='All 25 powers and 125 research nodes unlocked. Upgrades are active automatically.';break;
+    case 'max':if(s.profile.kind!=='development')return fail('Development only.');for(const id of Object.keys(cat.nodes))s.profile.research[id]??={paid:0};s.profile.revision++;s.profile.familyAccess=Object.fromEntries(Object.keys(s.profile.familyAccess).map(f=>[f,3]));s.bypass=true;s.equipped=Object.values(cat.nodes).filter(n=>n.kind!=='base'&&s.powers.includes(n.power)&&(!n.conflicts.length||n.effects.includes('a'))).map(n=>n.id);s.borrowed=[];syncUnlocked(s);if(s.phase==='interlude'){s.run.offers=[];s.run.discovered=true;}message=`All ${Object.keys(cat.powers).length} powers and ${Object.keys(cat.nodes).length} research nodes unlocked. Upgrades are active automatically.`;break;
     case 'max-progress':if(s.profile.kind!=='development')return fail('Development only.');s.developmentProgress=true;s.profile.wallet.seeds=Math.max(10000,s.profile.wallet.seeds);s.profile.revision++;message='All levels and skins open. 10,000 Points available. Songs and clear rewards are not fabricated.';break;
     case 'bypass':if(s.profile.kind!=='development')return fail('Development only.');s.bypass=!s.bypass;tidy(s);break;
     default:return fail('Unknown progression action.');
@@ -180,4 +181,14 @@ export function progressionObserve(input,game,events,music=null){
     }else if(game.isOver){r.launches+=game.launches;r.score+=game.score;const missing=goalRemaining(s),earned=reward(s,{type:'failure',poolIndex:s.pool,blooms:game.blooms,abandoned:false});record=resultRecord(s,'failure');finish(s);outcome='failure';message=`${missing} · +${earned} Points`;}
   }
   return {state:s,message,outcome,record};
+}
+
+// A saved flight keeps its exact old configuration until the next pool is built.
+// Only the newly included base flags may differ; ownership and all other flags still match.
+function savedBuildMatches(state,build){
+ if(!Array.isArray(build))return false;
+ const expected=progressionLoadout(state).powers;
+ if(state.powerMode!=='unlocked')return canonical(build)===canonical(expected);
+ const normalized=build.map(p=>({...p,foundation:GAME_CATALOGUE.powers[p.power].included.includes('foundation')||p.foundation}));
+ return canonical(normalized)===canonical(expected);
 }

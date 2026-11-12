@@ -1,7 +1,7 @@
-import { gameCreate, launch, physicsStep, powerMarkers, seedBodies, RULE, COLORS, POWERS } from './engine.js?v=12aca0299e489e19cee12712b048995045f1a99ab7437f65848b511da9a147d5';
-import { GAME_CATALOGUE as cat } from './run.js?v=c0ea84dd906f0ed13559a0d34416d93c5e872cb0e3ad1100204904c9bb62fa30';
-import { POWER_TREES } from './power-tree.js?v=6b24879d9e0b7315350a7a978aba1648d5e1ef852c112b6beffde4eceded6179';
-import { PowerVisual } from './power-visual.js?v=03c4e68799f969204202cb91e3e12f93dfc289e00f622afe965b51aa346e3466';
+import { gameCreate, launch, physicsStep, powerMarkers, seedBodies, RULE, COLORS, POWERS } from './engine.js?v=3fa3da1910798127f4f9008b75235c9afd10dac9eb9aae8276de00ac4b8b8cad';
+import { GAME_CATALOGUE as cat } from './run.js?v=1b76dea28464ccfbae063b3b891b59a3b22e7d7fa85f6a5adc9c243bbdf280b8';
+import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
+import { PowerVisual } from './power-visual.js?v=30a3992c0279a8066b72331d91d626207851cc8ea6180f97f01a8d75cb5c860a';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 export const BUILD_EXAMPLES=Object.freeze([
@@ -10,7 +10,7 @@ export const BUILD_EXAMPLES=Object.freeze([
   {id:'cascade',name:'Contact Cascade',powers:['blaster','split','relay'],nodes:['blaster.foundation','split.foundation','relay.foundation'],description:'Automatic shots, side seeds and physical relays share one contact chain.'}
 ]);
 export function upgradeFixture(id,after=true,autoplay=true){
-  const example=BUILD_EXAMPLES.find(x=>x.id===id),node=cat.nodes[id];
+  const example=BUILD_EXAMPLES.find(x=>x.id===id),node=cat.nodes[id]||cat.legacyNodes[id];
   if(!example&&!node)throw new TypeError('Unknown preview');
   const power=node?.power,powers=example?.powers||[power,...['ripple','attract','comet'].filter(x=>x!==power)].slice(0,3),nodes=after?(example?.nodes||[id]):[];
   const build=powers.map(p=>({power:p,foundation:nodes.includes(p+'.foundation'),variants:['a','b'].filter(k=>nodes.includes(p+'.'+k)),capstone:nodes.includes(p+'.capstone')}));
@@ -102,7 +102,7 @@ export function upgradePreviewMount(controller){
     canvas.setAttribute('aria-label',`${side?'After':'Before'} preview: ${game.chain.length} unique contacts, ${game.banks} wall banks`);
   }
   function tick(now){if(!dialog.open)return;if(!document.hidden){accumulator+=last?Math.min(.05,(now-last)/1000):0;while(accumulator>=RULE.step&&ticks<1800&&studies.some(g=>g.isFlying)){studies.forEach((g,index)=>{if(!g.isFlying)return;const events=physicsStep(g);for(const e of events){if(index===Number(side))visual.event(e,g);if(e.type==='blaster-bank')measures[index].shotBanks=(measures[index].shotBanks||0)+1;if(e.type==='power'&&e.kind==='swap')measures[index].destination=e.destination;}measures[index]=studyMeasure(g,measures[index]);});visual.update(RULE.step);accumulator-=RULE.step;ticks++;}game=studies[Number(side)];draw();dialog.querySelector('.preview-evidence').textContent='Base: '+studyReading(id,measures[0])+' · Upgrade: '+studyReading(id,measures[1]);if(!studies.some(g=>g.isFlying)||ticks>=1800)dialog.querySelector('[role=status]').textContent='Study complete. Replay, switch views, or try it yourself.';}last=now;frame=requestAnimationFrame(tick);}
-  function open(next){id=next;side=true;const example=BUILD_EXAMPLES.find(x=>x.id===id),node=cat.nodes[id];dialog.innerHTML=`<div class="preview-heading"><h2>${example?.name||node.name}</h2>${button('close','Done','close')}</div><p>${example?.description||node.description}</p><div class="preview-switch" role="group" aria-label="Compare behavior">${button('before',example?'Base powers':node.kind==='base'?'Without power':'Base power','arrow-left')}${button('after',example?'Example upgrades':'With '+node.name,'epic')}</div><canvas width="960" height="640"></canvas><p role="status" aria-live="polite"></p><p class="preview-evidence" aria-label="Measured comparison"></p><div class="preview-actions">${button('replay','Replay shot','reset')}${button('try','Try it yourself','gamepad')}</div><small>Isolated practice · no Points spent or earned</small>`;dialog.showModal();reset();mark();frame=requestAnimationFrame(tick);}
+  function open(next){id=next;side=true;const example=BUILD_EXAMPLES.find(x=>x.id===id),node=cat.nodes[id]||cat.legacyNodes[id];dialog.innerHTML=`<div class="preview-heading"><h2>${example?.name||node.name}</h2>${button('close','Done','close')}</div><p>${example?.description||node.description}</p><div class="preview-switch" role="group" aria-label="Compare behavior">${button('before',example?'Base powers':node.kind==='base'?'Without power':'Base power','arrow-left')}${button('after',example?'Example upgrades':'With '+node.name,'epic')}</div><canvas width="960" height="640"></canvas><p role="status" aria-live="polite"></p><p class="preview-evidence" aria-label="Measured comparison"></p><div class="preview-actions">${button('replay','Replay shot','reset')}${button('try','Try it yourself','gamepad')}</div><small>Isolated practice · no Points spent or earned</small>`;dialog.showModal();reset();mark();frame=requestAnimationFrame(tick);}
   function mark(){dialog.querySelector('[data-preview=before]').setAttribute('aria-pressed',String(!side));dialog.querySelector('[data-preview=after]').setAttribute('aria-pressed',String(side));}
   dialog.onclick=e=>{const action=e.target.closest('[data-preview]')?.dataset.preview;if(action==='close')dialog.close();if(action==='before'||action==='after'){side=action==='after';game=studies[Number(side)];visual.clear();draw();mark();}if(action==='replay')reset();if(action==='try'){dialog.close();controller.practice(id);}};
   dialog.addEventListener('close',()=>{cancelAnimationFrame(frame);visual.clear();});

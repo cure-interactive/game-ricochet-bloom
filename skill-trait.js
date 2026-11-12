@@ -13,13 +13,4 @@ export const SKILL_TYPES = Object.freeze({
  Propagation: {icon:'propagation',description:'Extends contact through extra bodies, projectiles or chains.'},
  Navigation: {icon:'navigation',description:'Changes destinations, targeting or travel through the field.'}
 });
-const rarityRanks = {
- 1:['common','rare','rare','epic','legendary'],
- 2:['rare','rare','epic','epic','legendary'],
- 3:['epic','epic','legendary','legendary','mythic']
-};
-// Rarity expresses capability complexity, not random-drop odds or research cost.
-export function skillRarity(tier,kind){
- const result=rarityRanks[tier]?.[['base','foundation','a','b','capstone'].indexOf(kind)];
- if(!result)throw new Error('Unknown skill rarity');return result;
-}
+// Rarity is authored per node in power-tree.js, independent of chain length.
