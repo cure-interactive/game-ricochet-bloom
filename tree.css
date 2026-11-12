@@ -242,16 +242,18 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .skill-stat-labels.is-tight{height:31px}
 .skill-stat-endpoint{position:absolute;bottom:1px;left:clamp(var(--value-width),var(--fill),100%);transform:translateX(-100%);white-space:nowrap}
 .skill-stat-max{position:absolute;right:0;top:0;white-space:nowrap}
-.skill-stat.is-changed .skill-stat-meter.is-after .skill-stat-endpoint{color:#b4f2d8}
-.skill-stat-bar{height:6px;display:block;background:#9bb7c51c;border-radius:8px;overflow:hidden}
-.skill-stat-bar i{display:block;height:100%;background:#a7bec8;border-radius:inherit}
-.skill-stat.is-changed .skill-stat-bar.is-after i{background:#b4f2d8}
-.skill-stat-bar.is-before{height:3px}
+.skill-stat.is-changed .skill-stat-endpoint{color:#b4f2d8}
+.skill-stat-bar{height:8px;display:flex;background:#9bb7c51c;border-radius:8px;overflow:hidden}
+.skill-stat-bar i{display:block;height:100%;background:#a7bec8;flex:none}
 .skill-stat-count{display:flex;gap:5px;height:8px}
 .skill-stat-count i{flex:1;max-width:28px;border:1px solid #8da6b26b;border-radius:3px;box-sizing:border-box}
 .skill-stat-count i.filled{background:#a7bec8;border-color:#a7bec8}
-.skill-stat.is-changed .skill-stat-count.is-after i.filled{background:#b4f2d8;border-color:#b4f2d8}
-.skill-stat-count.is-before{height:4px}
+.skill-stat-bar .skill-stat-gain,.skill-stat-count .skill-stat-gain,.skill-stat-change-key .skill-stat-gain{background:#b4f2d8;border-color:#b4f2d8}
+.skill-stat-bar .skill-stat-loss,.skill-stat-count .skill-stat-loss,.skill-stat-change-key .skill-stat-loss{background:repeating-linear-gradient(135deg,#e3c08b 0 2px,#755f4233 2px 5px);border-color:#e3c08b}
+.skill-stat-bar i+i{border-left:1px solid #102430;box-sizing:border-box}
+.skill-stat-change-key{display:flex;flex-wrap:wrap;gap:12px;margin:-4px 0 12px;font-size:10px;color:#bdced5}
+.skill-stat-change-key>span{display:inline-flex;align-items:center;gap:5px}
+.skill-stat-change-key i{display:inline-block;width:16px;height:7px;border-radius:2px}
 .skill-stat-key{display:flex;gap:7px;flex-wrap:wrap;color:#a7bec8;font-size:11px;margin:0 0 12px}
 .skill-stat-key span:last-child{color:#b4f2d8}
 .skill-stat-note{font-size:10px;color:#a7bec8;margin:9px 0 0}

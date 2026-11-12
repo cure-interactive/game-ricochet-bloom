@@ -11,15 +11,19 @@ const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt
 const button=(action,label,icon='add',extra='')=>`<button type="button" aria-label="${escape(label)}" data-tree-action="${action}" ${extra}>${iconHTML(icon)}<span>${label}</span></button>`;
 const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn more Points by clearing pools.','mastery':'Clear 3 pools with this power activated.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
 
-function statVisual(row,value,previous=false){
- const fill=row.kind==='count'?Array.from({length:row.max},(_,i)=>`<i class="${i<value?'filled':''}"></i>`).join(''):`<i style="width:${value/row.max*100}%"></i>`;
- const bar=`<span class="skill-stat-${row.kind} ${previous?'is-before':'is-after'}" aria-hidden="true">${fill}</span>`;
+function statVisual(row){
+ const value=row.value,before=row.changed?row.previous:value,kept=Math.min(before,value),extent=Math.max(before,value),change=value>before?'gain':'loss';
+ const fill=row.kind==='count'?Array.from({length:row.max},(_,i)=>`<i class="${i<kept?'filled':i<extent?'skill-stat-'+change:''}"></i>`).join(''):
+   `<i style="width:${kept/row.max*100}%"></i>${row.changed?`<i class="skill-stat-${change}" style="width:${(extent-kept)/row.max*100}%"></i>`:''}`;
+ const bar=`<span class="skill-stat-${row.kind}" aria-hidden="true">${fill}</span>`;
  if(row.kind!=='bar')return bar;
- const partial=value<row.max,formatted=String(previous?row.before:row.after),maximum=String(row.after).replace(/^[\d.]+/,String(row.max));
- return `${previous?'':'<span class="sr-only">Maximum: '+escape(maximum)+'</span>'}<span class="skill-stat-meter ${previous?'is-before':'is-after'}" aria-hidden="true"><span class="skill-stat-labels ${partial&&value/row.max>.75?'is-tight':''}" style="--fill:${value/row.max*100}%;--value-width:${formatted.length+.5}ch">${partial?`<span class="skill-stat-endpoint">${escape(formatted)}</span>`:''}<span class="skill-stat-max">Max ${escape(maximum)}</span></span>${bar}</span>`;
+ const partial=value<row.max,formatted=String(row.after),maximum=String(row.after).replace(/^[\d.]+/,String(row.max));
+ return `<span class="sr-only">Maximum: ${escape(maximum)}</span><span class="skill-stat-meter" aria-hidden="true"><span class="skill-stat-labels ${partial&&value/row.max>.75?'is-tight':''}" style="--fill:${value/row.max*100}%;--value-width:${formatted.length+.5}ch">${partial?`<span class="skill-stat-endpoint">${escape(formatted)}</span>`:''}<span class="skill-stat-max">Max ${escape(maximum)}</span></span>${bar}</span>`;
 }
 export function skillStatsHTML(stats){
- return `<section class="skill-stats" aria-label="${escape(stats.heading)}"><h4>${escape(stats.heading)}</h4>${stats.compare?`<p class="skill-stat-key"><span>${escape(stats.beforeLabel)}</span><span aria-hidden="true">→</span><span>${escape(stats.afterLabel)}</span></p>`:''}<dl>${stats.rows.map(row=>`<div class="skill-stat ${row.changed?'is-changed':''}"><dt>${escape(row.label)}</dt><dd>${row.changed?`<span class="skill-stat-before">${escape(row.before)}</span><span aria-hidden="true"> → </span><span class="sr-only"> to </span>`:''}<strong>${escape(row.after)}</strong></dd><dd class="skill-stat-description">${escape(row.description)}</dd>${row.kind!=='text'?`<dd class="skill-stat-visual">${row.changed?statVisual(row,row.previous,true):''}${statVisual(row,row.value)}</dd>`:''}</div>`).join('')}</dl>${stats.rows.some(r=>r.kind==='bar')?'<p class="skill-stat-note">Bar scale: this power’s upgrade range.</p>':''}</section>`;
+ const changed=stats.rows.filter(r=>r.changed&&r.kind!=='text');
+ const legend=changed.length?`<p class="skill-stat-change-key">${changed.some(r=>r.value>r.previous)?'<span><i class="skill-stat-gain" aria-hidden="true"></i>Increase</span>':''}${changed.some(r=>r.value<r.previous)?'<span><i class="skill-stat-loss" aria-hidden="true"></i>Decrease</span>':''}</p>`:'';
+ return `<section class="skill-stats" aria-label="${escape(stats.heading)}"><h4>${escape(stats.heading)}</h4>${stats.compare?`<p class="skill-stat-key"><span>${escape(stats.beforeLabel)}</span><span aria-hidden="true">→</span><span>${escape(stats.afterLabel)}</span></p>`:''}${legend}<dl>${stats.rows.map(row=>`<div class="skill-stat ${row.changed?'is-changed':''}"><dt>${escape(row.label)}</dt><dd>${row.changed?`<span class="skill-stat-before">${escape(row.before)}</span><span aria-hidden="true"> → </span><span class="sr-only"> to </span>`:''}<strong>${escape(row.after)}</strong></dd><dd class="skill-stat-description">${escape(row.description)}</dd>${row.kind!=='text'?`<dd class="skill-stat-visual">${statVisual(row)}</dd>`:''}</div>`).join('')}</dl>${stats.rows.some(r=>r.kind==='bar')?'<p class="skill-stat-note">Bar scale: this power’s upgrade range.</p>':''}</section>`;
 }
 
 // Explain the same gate used by purchases, beside the affected power.
