@@ -1,15 +1,15 @@
-import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=cdaedaf5ebe7c04ed814484c664c8251daf2ff5f018405c9c88161a34c9efcea';
+import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=79b194c25decf2f3bdc5fcec90b2a6c6b972f7184d3846b9e2e6327f076613ef';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=8204f2fbf05455900424793e65a78c64648c2b6baf30d788e5ab6fd75879fb59';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
 import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
 import { profilePurchase, profileSummary } from './profile.js?v=f09fdb22d84263dcb45cd1d7c9199cc83fc40768057dc69eedef848efd19db7a';
-import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=437191b652f3ef1846b3b93a40c93dd41bd928f024b76961c39006eff07ba611';
+import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=4c917a6151cc95f4eef5f74cb04d18ec9a44342c13259040f8d01c4fdd40057a';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const button=(action,label,icon='add',extra='')=>`<button type="button" aria-label="${escape(label)}" data-tree-action="${action}" ${extra}>${iconHTML(icon)}<span>${label}</span></button>`;
-const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn Points in any game mode.','mastery':'Activate this power on 3 plucks that hit at least 3 bubbles. Campaign clears also count.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
+const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn Points in any game mode.','mastery':'Activate this power on 3 plucks that hit at least 3 bubbles. Melody Journey clears also count.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
 
 function statCurveHTML(curve,stats){
  const left=32,right=270,top=22,bottom=112;
@@ -54,7 +54,7 @@ export function upgradeState(state,id){
  else if(buy.ok){label=`Available · ${n.seedCost} Points`;icon='add';}
  else if(buy.reason==='insufficient-seeds'){label=`${n.seedCost} Points · need ${n.seedCost-state.profile.wallet.seeds} more`;}
  else {label=buy.reason==='mastery'?'Needs mastery':buy.reason==='prerequisite'?`Research ${cat.nodes[n.requires.find(id=>!state.profile.research[id])]?.name||POWER_TREES[n.power].name} first`:powerUnlock(state,n.power)?.remaining||'Play to unlock';icon='lock';}
- const canUnlock=!owned&&state.phase==='shop'&&state.powerMode!=='shared'&&buy.ok;
+ const canUnlock=!owned&&state.powerMode!=='shared'&&buy.ok;
  return {owned,borrowed,equipped,buy,label,icon,canUnlock,dimmed:!owned&&!canUnlock};
 }
 export function researchBlocker(state,id){
@@ -73,8 +73,7 @@ export function researchBlocker(state,id){
 function unlockBlocker(state,n,v){
  if(state.powerMode==='shared')return 'Unlock skills outside shared challenges.';
  const missing=[];
- if(state.phase!=='shop')missing.push('Research opens after this run.');
- if(!v.buy.ok)missing.push(v.buy.reason==='mastery'?`Earn ${Math.max(0,3-profileSummary(state.profile,cat).mastery[n.power])} more mastery uses: activate ${POWER_TREES[n.power].name} and hit at least 3 bubbles in a pluck. Campaign clears also count.`:v.buy.reason==='insufficient-seeds'?`Need ${n.seedCost-state.profile.wallet.seeds} more Point${n.seedCost-state.profile.wallet.seeds===1?'':'s'}.`:(v.buy.reason==='family-gate'?powerUnlock(state,n.power)?.remaining:v.buy.reason==='prerequisite'?`Research ${cat.nodes[n.requires.find(id=>!state.profile.research[id])]?.name||POWER_TREES[n.power].name} first.`:reasonText[v.buy.reason])||v.buy.reason);
+ if(!v.buy.ok)missing.push(v.buy.reason==='mastery'?`Earn ${Math.max(0,3-profileSummary(state.profile,cat).mastery[n.power])} more mastery uses: activate ${POWER_TREES[n.power].name} and hit at least 3 bubbles in a pluck. Melody Journey clears also count.`:v.buy.reason==='insufficient-seeds'?`Need ${n.seedCost-state.profile.wallet.seeds} more Point${n.seedCost-state.profile.wallet.seeds===1?'':'s'}.`:(v.buy.reason==='family-gate'?powerUnlock(state,n.power)?.remaining:v.buy.reason==='prerequisite'?`Research ${cat.nodes[n.requires.find(id=>!state.profile.research[id])]?.name||POWER_TREES[n.power].name} first.`:reasonText[v.buy.reason])||v.buy.reason);
  return missing.join(' ');
 }
 // Every drawn upgrade edge comes from the same prerequisites as purchasing.

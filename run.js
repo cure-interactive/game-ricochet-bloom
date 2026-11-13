@@ -8,10 +8,19 @@ import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=f7242d62c
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 
 export const GAME_CATALOGUE=catalogueCreate(Object.entries(POWER_TREES).flatMap(([power,tree])=>tree.nodes.map(node=>power+'.'+node.key)));
+export const CAMPAIGN_NAME='Melody Journey';
 export const POOL_NAMES=['Intro','Verse','Build','Bridge','Finale'];
 export const POPULATIONS=[12,14,16,14,18];
 export const GOALS=['Make one bloom','Bloom + all three musical roles','Make two blooms','Bloom after banking off a wall','Two blooms + all three roles'];
 export const MEDALS={silverBonuses:3,goldBonuses:5,goldLaunches:20};
+// All five tracks use the same targets for the same goal. Environmental
+// difficulty changes the shot, not the meaning of its score or medal.
+export const POOL_MEDALS=Object.freeze([
+  [875,1100,1400], [875,1250,1600], [1750,2500,3500],
+  [900,1250,1600], [1750,2750,4000]
+].map(values=>Object.freeze(Object.fromEntries(['Bronze','Silver','Gold'].map((name,i)=>[name,values[i]])))));
+export function poolMedal(pool,score){return ['Gold','Silver','Bronze'].find(name=>score>=POOL_MEDALS[pool]?.[name])||null;}
+export function campaignPoolBest(s,track,pool){return (s.poolRecords||[]).find(r=>r.track===track&&r.pool===pool&&r.relaxed===s.relaxed)||null;}
 export function campaignPoolAccess(state,pool) {
   const next=state.phase==='shop'?0:state.pool+(state.phase==='interlude'?1:0);
   const valid=Number.isInteger(pool)&&pool>=0&&pool<POOL_NAMES.length;
@@ -30,7 +39,7 @@ const seedValid=s=>typeof s==='string'&&/^[A-Za-z0-9_-]{1,24}$/.test(s);
 const canonical=x=>JSON.stringify(x,(_,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.keys(v).sort().map(k=>[k,v[k]])):v);
 export function musicValid(m){return m===null||!!m&&m.version===4&&canonical(m)===canonical(musicCreate(m,m.blooms));}
 export function progressionCreate(kind='normal') {
-  return {version:1,powerMode:'unlocked',profile:profileCreate(kind),powers:[...STARTERS],equipped:[],borrowed:[],phase:'shop',pool:0,attempt:0,relaxed:false,bypass:false,run:null,track:'first-light',route:0,seed:'DAWN-1',records:[],latest:null,retry:null,skin:'original'};
+  return {version:1,powerMode:'unlocked',profile:profileCreate(kind),powers:[...STARTERS],equipped:[],borrowed:[],phase:'shop',pool:0,attempt:0,relaxed:false,bypass:false,run:null,track:'first-light',route:0,seed:'DAWN-1',records:[],poolRecords:[],latest:null,retry:null,skin:'original'};
 }
 export const progressionBudget=s=>s.phase==='shop'?2:Math.min(10,2+s.pool*2+(s.phase==='interlude'?2:0));
 export const progressionLoadout=s=>s.powerMode==='unlocked'?unlockedResolve(s.profile,s,GAME_CATALOGUE):s.powerMode==='shared'?{ok:buildValidate(s.fixedBuild),tuning:0,powers:structuredClone(s.fixedBuild)}:loadoutResolve(s.profile,s,progressionBudget(s),GAME_CATALOGUE,{ignoreBudget:s.bypass});
@@ -45,7 +54,7 @@ export function researchTarget(s,id=s.target) {
     for(const prerequisite of n.requires)if(!s.profile.research[prerequisite])needs.push(`Research ${GAME_CATALOGUE.nodes[prerequisite].name} first`);
     if(n.masteryPools>mastery)needs.push(`${n.masteryPools-mastery} more mastery uses of ${POWER_TREES[n.power].name}`);
   }
-  return {id,name:n.name,owned,needs,text:owned?'Researched':needs.join(' · ')||'Ready to research between runs'};
+  return {id,name:n.name,owned,needs,text:owned?'Researched':needs.join(' · ')||'Ready to research'};
 }
 // Preview and commit use the same transaction. No loan or equipment changes leak on failure.
 export function discoveryUse(input,id,remove=[]) {
@@ -71,6 +80,9 @@ export function progressionValidate(input,kind='normal') {
   s.target??=null;if(GAME_CATALOGUE.legacyNodes[s.target])s.target=GAME_CATALOGUE.legacyNodes[s.target].power+'.base';if(s.target!==null&&!GAME_CATALOGUE.nodes[s.target])return null;
   // Compatible addition of campaign fields to the original v2 preview envelope.
   s.track??='first-light';s.route??=0;s.seed??=`DAWN-${s.attempt||1}`;s.records??=[];s.latest??=null;s.retry??=null;s.skin??='original';
+  // Historical track totals cannot reconstruct individual pool scores.
+  s.poolRecords??=[];
+  if(!Array.isArray(s.poolRecords)||s.poolRecords.length>50||!s.poolRecords.every(r=>r&&!!trackGet(r.track)&&Number.isInteger(r.pool)&&r.pool>=0&&r.pool<5&&typeof r.relaxed==='boolean'&&integer(r.score)&&integer(r.shots)&&r.shots<=9&&seedValid(r.seed))||!unique(s.poolRecords.map(r=>`${r.track}/${r.pool}/${r.relaxed}`)))return null;
   if(!trackGet(s.track)||!seedValid(s.seed)||![0,1].includes(s.route)||!Array.isArray(s.records)||s.records.length>500||!s.records.every(recordValid)||!unique(s.records.map(r=>r.id))||s.latest!==null&&!recordValid(s.latest)||s.skin!=='original'&&!trackGet(s.skin))return null;
   if(s.retry!==null&&!setupValid(s.retry))return null;
   if(s.phase==='shop'){if(s.run!==null||s.pool!==0)return null;}
@@ -99,15 +111,15 @@ export function progressionAct(input,action){
   const cat=GAME_CATALOGUE,node=cat.nodes[action.id];let r,message='Updated.';
   const fail=reason=>({ok:false,reason});
   if(s.profile.kind==='development'&&action.type==='reset-progress')return {ok:true,state:progressionCreate('development'),message:'Development progress reset. Normal progress is unchanged.'};
-  if(s.phase==='run'&&!['abandon','pin'].includes(action.type))return fail('Finish this pool before changing your build.');
+  if(s.phase==='run'&&!['abandon','pin','buy'].includes(action.type))return fail('Finish this pool before changing your build.');
   switch(action.type){
     case 'pin':if(action.id!==null&&!node)return fail('Choose a research target.');s.target=action.id;message=action.id?'Research goal pinned.':'Research goal cleared.';break;
     case 'discover':return discoveryUse(s,action.id,action.remove||[]);
     case 'refund':return fail('Research purchases are permanent.');
     case 'buy':
-      if(s.phase!=='shop')return fail('Research is between runs.');
+      if(s.powerMode==='shared')return fail('Shared challenges use the fixed supplied build.');
       r=profilePurchase(s.profile,action.id,cat);if(!r.ok)return r;s.profile=r.profile;
-      if(s.powerMode==='unlocked'){s.equipped=s.equipped.filter(id=>id!==action.id&&!node.conflicts.includes(id));if(node.kind!=='base')s.equipped.unshift(action.id);tidy(s);message=`${node.name} unlocked and active.`;break;}
+      if(s.powerMode==='unlocked'){if(s.run)s.run.buildBeforeResearch??=structuredClone(s.run.game.build);s.equipped=s.equipped.filter(id=>id!==action.id&&!node.conflicts.includes(id));if(node.kind!=='base')s.equipped.unshift(action.id);tidy(s);message=s.run?`${node.name} unlocked. Applies from the next pool.`:`${node.name} unlocked and active.`;break;}
       s.powers=s.powers.filter(p=>s.profile.research[p+'.base']);for(const p of STARTERS)if(s.powers.length<3&&!s.powers.includes(p))s.powers.push(p);tidy(s);message=`Researched ${node.name}.`;break;
     case 'replace':
       if(s.powerMode==='unlocked')return fail('All unlocked powers appear automatically.');
@@ -142,7 +154,7 @@ export function progressionAct(input,action){
     default:return fail('Unknown progression action.');
   }
   if(s.powerMode==='unlocked')syncUnlocked(s);
-  if(s.phase==='interlude')s.run.game.build=progressionLoadout(s).powers;
+  if(s.phase==='interlude'){s.run.game.build=progressionLoadout(s).powers;delete s.run.buildBeforeResearch;}
   return {ok:true,state:s,message};
 }
 export function poolGoalMet(s){const r=s.run;if(!r)return false;const blooms=r.game.blooms,roles=r.roles.length===3;return s.pool===0?blooms>=1:s.pool===1?blooms>=1&&roles:s.pool===2?blooms>=2:s.pool===3?r.bankBloom:blooms>=2&&roles;}
@@ -161,9 +173,14 @@ export function progressionObserve(input,game,events,music=null){
   if(input.phase!=='run')return {state:input,message:null};
   const s=structuredClone(input),r=s.run;r.game=structuredClone(game);r.music=music;
   for(const e of events){if(e.type==='note'&&!r.roles.includes(bubbleRole(e.id)))r.roles.push(bubbleRole(e.id));if(e.type==='power'&&s.powers.includes(e.kind)&&!r.activated.includes(e.kind))r.activated.push(e.kind);if(e.type==='bloom'&&e.banks>0)r.bankBloom=true;}
-  let message=null,outcome=null,record=null;
-  if(events.some(e=>['rest','over','win'].includes(e.type))){
+  let message=null,outcome=null,record=null,poolResult=null;
+  if(!game.isFlying&&events.some(e=>['rest','over','win'].includes(e.type))){
     if(poolGoalMet(s)){
+      poolResult={track:s.track,pool:s.pool,relaxed:s.relaxed,seed:r.seed,score:game.score,shots:game.launches};
+      s.poolRecords??=[];
+      const best=campaignPoolBest(s,s.track,s.pool);
+      if(!best)s.poolRecords.push(poolResult);
+      else if(poolResult.score>best.score||poolResult.score===best.score&&poolResult.shots<best.shots)s.poolRecords[s.poolRecords.indexOf(best)]=poolResult;
       r.launches+=game.launches;r.score+=game.score;r.bonuses+=game.objective.completed>0?1:0;
       // Old saved bonuses retain their historical pool reward. New bonuses are
       // already banked by the shared play receipt when their shot settles.
@@ -172,13 +189,20 @@ export function progressionObserve(input,game,events,music=null){
       else{s.phase='interlude';r.offers=[];r.discovered=false;s.route=0;outcome='clear';message=`${POOL_NAMES[s.pool]} complete · +${earned} Points`;}
     }else if(game.isOver){r.launches+=game.launches;r.score+=game.score;const missing=goalRemaining(s),earned=reward(s,{type:'failure',poolIndex:s.pool,blooms:game.blooms,abandoned:false});record=resultRecord(s,'failure');finish(s);outcome='failure';message=`${missing} · +${earned} Points`;}
   }
-  return {state:s,message,outcome,record};
+  return {state:s,message,outcome,record,poolResult};
 }
 
-// A saved flight keeps its exact old configuration until the next pool is built.
-// Only the newly included base flags may differ; ownership and all other flags still match.
+// A saved pool keeps its exact configuration when new research is purchased.
+// Older saves without a purchase snapshot retain the original strict build check.
 function savedBuildMatches(state,build){
  if(!Array.isArray(build))return false;
+ if(state.run?.buildBeforeResearch!==undefined){
+  const saved=state.run.buildBeforeResearch;
+  if(state.powerMode!=='unlocked'||!buildValidate(saved)||canonical(build)!==canonical(saved))return false;
+  // Research is permanent, while the pool already in progress keeps its exact build.
+  const owned=id=>!!state.profile.research[id]||state.borrowed.includes(id);
+  return saved.every(p=>owned(p.power+'.base')&&(!p.foundation||GAME_CATALOGUE.powers[p.power].included.includes('foundation')||owned(p.power+'.foundation'))&&p.variants.every(v=>owned(p.power+'.'+v))&&(!p.capstone||owned(p.power+'.capstone')));
+ }
  const expected=progressionLoadout(state).powers;
  if(state.powerMode!=='unlocked')return canonical(build)===canonical(expected);
  const normalized=build.map(p=>({...p,foundation:GAME_CATALOGUE.powers[p.power].included.includes('foundation')||p.foundation}));

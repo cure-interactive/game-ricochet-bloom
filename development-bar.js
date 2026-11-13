@@ -6,17 +6,17 @@ export function developmentBarMount(doc=document){
  const toggle=doc.createElement('button');toggle.type='button';toggle.setAttribute('aria-controls','game-music-bar');toggle.hidden=true;
  bar.append(status,toggle);doc.body.append(bar);
  const panel=doc.getElementById('game-music-bar');
- let active=false,expanded=false,stack=[...doc.querySelectorAll('dialog[open]')];
+ let active=false,campaign=false,expanded=false,stack=[...doc.querySelectorAll('dialog[open]')];
  const popover=typeof bar.showPopover==='function';
  function disclosure(){
-  const playing=doc.body.dataset.screen==='play'&&!!panel,available=active&&playing&&!stack.length;
+  const playing=doc.body.dataset.screen==='play'&&!!panel,available=active&&!campaign&&playing&&!stack.length;
   if(!active||!playing)expanded=false;
   toggle.hidden=!available;status.hidden=available;
   toggle.textContent=`Development Profile Active · ${expanded?'Hide':'Show'} Music`;
   toggle.setAttribute('aria-label',toggle.textContent);
   toggle.setAttribute('aria-expanded',String(expanded));
   doc.body.dataset.developmentDisclosure=String(available);
-  if(panel)panel.hidden=!(active&&playing&&expanded);
+  if(panel)panel.hidden=!(playing&&(campaign||active&&expanded));
  }
  toggle.onclick=()=>{if(!active||toggle.hidden)return;expanded=!expanded;disclosure();};
  function refresh(){
@@ -40,5 +40,5 @@ export function developmentBarMount(doc=document){
  });
  observer.observe(doc.body,{attributes:true,attributeFilter:['open','data-screen'],childList:true,subtree:true});
  disclosure();
- return {set(kind,shared=false){const next=developmentProfileActive(kind,shared);if(next===active)return;active=next;doc.body.dataset.development=String(active);refresh();}};
+ return {set(kind,shared=false,musicCampaign=false){const next=developmentProfileActive(kind,shared);if(next===active&&campaign===musicCampaign)return;active=next;campaign=musicCampaign;expanded=false;doc.body.dataset.development=String(active);refresh();}};
 }

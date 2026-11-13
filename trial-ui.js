@@ -4,8 +4,10 @@ import { earningAmount } from './earning.js?v=dba3cae898a6c307e03c96ee0dcf044939
 import { assetURL } from './asset.js?v=2735d6e4791659059212031525dc3ab0a7b33fac6602b1be6fd2fc97c6e90ff6';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
+import { CAMPAIGN_NAME } from './run.js?v=4c917a6151cc95f4eef5f74cb04d18ec9a44342c13259040f8d01c4fdd40057a';
+
 export const MODE_CARDS=Object.freeze([
-  {id:'campaign',name:'Campaign',summary:'Restore five tracks. Build your song.',art:'campaign'},
+  {id:'campaign',name:CAMPAIGN_NAME,summary:'Build your song across five tracks. Chase a medal in every pool.',art:'campaign'},
   {id:'free',name:'Free Play',summary:'An open pool for your unlocked powers.',art:'free'},
   {id:'waves',name:'Endless Waves',summary:'Clear the pool before your shots run out.',art:'waves'},
   {id:'challenge',name:'Challenge',summary:'Chase a score with a limited supply of shots.',art:'challenge'},

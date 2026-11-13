@@ -1,6 +1,6 @@
 # Play the Experiments
 
-Open **Main Menu → Gamemodes** to choose Campaign, Free Play, Endless Waves, Challenge or one of three experiments. Each mode has its own illustrated card. Each experiment offers three layouts and a separate Continue button when a trial is saved.
+Open **Main Menu → Gamemodes** to choose Melody Journey, Free Play, Endless Waves, Challenge or one of three experiments. Each mode has its own illustrated card. Each experiment offers three layouts and a separate Continue button when a trial is saved.
 
 ## Controls and Saves
 

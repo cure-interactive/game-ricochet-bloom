@@ -26,6 +26,7 @@ body > main, .stream-mode > main {
 }
 .pool-shell { grid-row: 1; }
 .pool-shell > .hud { order: 1; border-top: 1px solid #38516a55; }
+.pool-shell > .hud-medals { order: 2; }
 .edge-feedback { grid-row: 2; }
 .power-dock, .bonus-card { grid-row: 3; }
 .phrase-panel { grid-row: 4; }

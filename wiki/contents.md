@@ -29,9 +29,10 @@
 - [Powers and Music](waves.md#powers-and-music)
 - [Saves and Records](waves.md#saves-and-records)
 
-## Campaign
+## Melody Journey
 
-- [Campaign](campaign.md)
+- [Melody Journey](campaign.md)
+- [Score Medals in Every Pool](campaign.md#score-medals-in-every-pool)
 - [Choose a Track](campaign.md#choose-a-track)
 - [Five Pools per Run](campaign.md#five-pools-per-run)
 - [Research Points and Powers](campaign.md#research-points-and-powers)

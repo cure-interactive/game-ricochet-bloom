@@ -1,21 +1,21 @@
 import { earningAmount } from './earning.js?v=dba3cae898a6c307e03c96ee0dcf04493997713a5080fb0914dd8d550b77a223';
-import { trialMount } from './trial-ui.js?v=b66b53a42439f4fff19ebe992706da4d262853622df9d1c033c44f5861f46d12';
-import { GAME_VERSION } from './version.js?v=61bd635507fdb0ef8bf67867d42ddf5da1350d4ea057da9a8338045dc25dbfb9';
+import { trialMount } from './trial-ui.js?v=97443fe3fa0c532539085a9c3933973f811c140081d0c38a8ee4a0c383c946ab';
+import { GAME_VERSION } from './version.js?v=89b75646044f45335a409d8ca0d8fe1f4e3629173265563bd27eec96f74d124a';
 import { powerSlots } from './power-ui.js?v=10b06f6723055daa877306d36a466e71973367437f187ee1cfde2710cf16dc01';
-import { creditsMount } from './credit.js?v=0e2de620fe562a31853142b97d6585ec8e1195f1949ce83444a3c0f68d4bee6c';
+import { creditsMount } from './credit.js?v=45394c1d8700447ce1be49add2cc8417f3343c6dc33b93b38fba9b47f56a8843';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=91bdd921ed550b7501c923fff9a5b64cb99a50cc24eee3375556a1c1c0f4b953';
 import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
-import { wikiMount } from './wiki.js?v=85a0a84894f1808235233ac9d86bed0ec27b0dc30bdfec02836a2c2e6d36a197';
+import { wikiMount } from './wiki.js?v=85597308e80fb61cdeb835744de8edca9cd97d76e202efc90b2e8283eaa4dff6';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
-import { POOL_NAMES } from './run.js?v=437191b652f3ef1846b3b93a40c93dd41bd928f024b76961c39006eff07ba611';
-import { freePlaySync, freePlayBuild } from './free-play.js?v=00306e3fa986d67df6a127ddbb8ec6d3b8416cd0798a6215b3544daccd95b2d5';
+import { POOL_NAMES } from './run.js?v=4c917a6151cc95f4eef5f74cb04d18ec9a44342c13259040f8d01c4fdd40057a';
+import { freePlaySync, freePlayBuild } from './free-play.js?v=2dcb65b8d9f4743df1029adfd8b88981b9726c5a977f7aa9408c66d8f337bfa5';
 import { fullscreenMount } from './fullscreen.js?v=e8c105c0bde8d63a2f68cb936534f947a78c62bdedc35b73614336e898cf848c';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
 import { gameMenuMount } from './game-menu.js?v=ec926218758e48c7190587fa72e11cef6b3706193be1f295565e2abb1122928c';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
-import { progressionMount } from './progression-ui.js?v=8ac48c3779e5b127f5bedb66de074f580fc3a84df2c45ba9b86a030aacdaad08';
+import { progressionMount } from './progression-ui.js?v=b28778fb99ebc890d38b35e2b901d1d0f39d8e985d7fc0e2ec50845979dab5be';
 import {assetURL} from './asset.js?v=2735d6e4791659059212031525dc3ab0a7b33fac6602b1be6fd2fc97c6e90ff6';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
@@ -33,7 +33,7 @@ try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localSto
 let preferences = store.preferences, best = store.best, saved = store.pools[store.activeMode]?.game, savedMusic = store.pools[store.activeMode]?.music;
 let game = saved || gameCreate(new URL(location.href).searchParams.get('seed')?.slice(0, 32) || 'LAGOON', store.activeMode);
 let carrySong = false, portraitView = false, progression = null, navigation = null, trials = null, physicsBatch = false;
-const modeName = mode => progression?.context==='challenge'?'Shared Challenge':mode==='song-run'?'Song Run':mode==='waves'?'Endless Waves':mode === 'free' ? 'Free play' : 'Challenge';
+const modeName = mode => progression?.context==='challenge'?'Shared Challenge':mode==='song-run'?'Melody Journey':mode==='waves'?'Endless Waves':mode === 'free' ? 'Free play' : 'Challenge';
 
 audio.musicRestore(savedMusic, game.blooms, game.launches);
 let assistedControls = preferences.assistedControls === true;
@@ -102,7 +102,7 @@ function eventHandle(event) {
     rings.push({ x: event.x, y: event.y, radius: game.bodies[event.id].radius, life: 1, color: COLORS[event.tone], bloom: false, touched: new Set([event.id]) });
     particleBurst(event.x, event.y, COLORS[event.tone], 16);
     if (event.chain === 3) toast('The pool is listening.');
-    announce(`${event.chain} notes, ${game.score} resonance.`); save();
+    announce(`${event.chain} notes, ${game.score} score.`); save();
   }
   if (event.type === 'lightning') {
     bolts.push({ ...event, life: .32 });
@@ -151,7 +151,7 @@ function eventHandle(event) {
     particleBurst(event.x, event.y, p.color, 24); save();
   }
   if (event.type === 'bloom') { toast(`Bloom! +500 · ${Math.min(3, game.power.capacity + 1)} powers next pluck.`); rings.push({ x: event.x, y: event.y, radius: 20, life: 2.5, color: '#c1b4ff', bloom: true }); particleBurst(event.x, event.y, '#ddcbff', 80); save(); }
-  if (['rest', 'over', 'win'].includes(event.type)) { freePlayRefresh(); save(); if (event.type !== 'rest') announce(`${gameWon(game) ? 'You won! Three blooms.' : 'Out of plucks. Try again.'} ${game.score} resonance.`); }
+  if (['rest', 'over', 'win'].includes(event.type)) { freePlayRefresh(); save(); if (event.type !== 'rest') announce(`${gameWon(game) ? 'You won! Three blooms.' : 'Out of plucks. Try again.'} ${game.score} score.`); }
   uiRender();
 }
 function particleBurst(x, y, color, count) {
@@ -424,9 +424,11 @@ function uiRender() {
   $('points').textContent=(progression?.points??0).toLocaleString('en-US');
   if (game.mode === 'challenge') best = Math.max(best, game.score);
   $('score').textContent = game.score.toLocaleString('en-US');
-  $('plucks').textContent = game.mode === 'free' ? '∞' : game.plucks; $('pluck-label').textContent = game.mode === 'free' ? 'FREE PLAY' : 'PLUCKS LEFT';
+  $('plucks').textContent = game.mode === 'free' ? '∞' : game.plucks; $('pluck-label').textContent = game.mode === 'free' ? 'FREE PLAY' : 'SHOTS LEFT';
   $('pool-seed').textContent = `POOL / ${game.seed}`;
   progression?.profileIndicator();
+  const medal=progression?.medalHud();$('pool-medals').hidden=!medal;
+  if(medal){for(const el of $('pool-medals').querySelectorAll('[data-medal]')){const name=el.dataset.medal,target=medal.targets[name];el.textContent=`${game.score>=target?'✓ ':''}${name} ${target.toLocaleString('en-US')}`;el.classList.toggle('is-reached',game.score>=target);} $('pool-best-score').textContent=medal.best===null?'Clear the goal to earn a medal':`Best ${medal.best.toLocaleString('en-US')} · clear the goal to earn a medal`;}
   $('chain-label').textContent = game.chain.length ? `${game.chain.length} NOTES ${game.chain.length >= 5 ? '· BEAUTIFUL.' : '· KEEP IT SINGING.'}` : 'FIVE DIFFERENT BUBBLES. ONE BLOOM.';
   $('note-meter').replaceChildren(...Array.from({ length: 5 }, (_, index) => { const item = document.createElement('i'); if (game.chain[index]) { item.className = 'active'; item.style.setProperty('--note', COLORS[game.bodies[game.chain[index]].tone]); } return item; }));
   $('note-meter').setAttribute('aria-label', `${game.chain.length} unique notes this pluck`);
@@ -634,7 +636,7 @@ $('retry').onclick = () => dialogOpen();
 $('seed-form').onsubmit = event => { event.preventDefault(); const seed = $('seed-input').value.trim(); if (!seed) return; $('new-dialog').close(); if (carrySong) carryToFree(); else newPool(seed, game.mode); };
 document.querySelectorAll('[data-close]').forEach(button => { button.onclick = () => button.closest('dialog').close(); });
 document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('close', () => { if (isStarted) canvas.focus({ preventScroll: true }); }));
-$('copy-result').onclick = async () => { try { await navigator.clipboard.writeText(`Ricochet Bloom · ${gameWon(game) ? 'WIN · ' : ''}${game.score} resonance · ${game.blooms} blooms · ${game.bestChain} best chain · seed ${game.seed}`); buttonLabel($('copy-result'),'Copied','check'); } catch { buttonLabel($('copy-result'),'Clipboard unavailable','copy'); } };
+$('copy-result').onclick = async () => { try { await navigator.clipboard.writeText(`Ricochet Bloom · ${gameWon(game) ? 'WIN · ' : ''}${game.score} score · ${game.blooms} blooms · ${game.bestChain} best chain · seed ${game.seed}`); buttonLabel($('copy-result'),'Copied','check'); } catch { buttonLabel($('copy-result'),'Clipboard unavailable','copy'); } };
 lifecycleMount(document, window, () => {
   audio.pauseSet(true); dragCancel();
   if (isStarted && !game.isOver) pauseSet(true);

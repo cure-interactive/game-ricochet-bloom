@@ -6,7 +6,18 @@ body{height:var(--app-height,100dvh);display:flex;flex-direction:column;padding:
 .hud-balance .points{color:var(--mint)}
 .hud-balance .score{min-width:0;flex-wrap:wrap}
 .hud-balance strong{overflow-wrap:anywhere}
-@media(max-width:600px){.hud-balance{display:grid;gap:2px}.hud-balance .score{gap:5px}.hud-balance .resonance strong{font-size:11px}.hud-balance .resonance .label{font-size:6px}}
+.pool-medal-targets{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:12px;line-height:1.5}
+.pool-medal-targets [data-medal]{border-bottom:2px solid transparent;padding:2px 0;color:#c9d7e3}
+.pool-medal-targets [data-medal=Bronze]{--medal:#e4ac78}
+.pool-medal-targets [data-medal=Silver]{--medal:#d6e3f2}
+.pool-medal-targets [data-medal=Gold]{--medal:#f4d679}
+.pool-medal-targets [data-medal] b{color:var(--medal)}
+.pool-medal-targets .is-reached{border-color:var(--medal);color:var(--medal)}
+.pool-best{font-size:12px;color:#a8c6bf}
+.hud-medals{flex:none;justify-content:center;padding:0 8px 4px;font-size:11px;gap:2px 12px}
+.hud-medals small{font-size:10px;color:#9eb7c2;text-align:center}
+@media(max-width:600px){.hud-medals small{flex-basis:100%}}
+@media(max-width:600px){.hud-balance{display:grid;gap:2px}.hud-balance .score{gap:5px}.hud-balance .run-score strong{font-size:11px}.hud-balance .run-score .label{font-size:6px}}
 body>main,.stream-mode>main{flex:1;min-height:0;width:100%;max-width:1100px;margin:0 auto;padding:0 12px 8px;display:grid;grid-template-columns:132px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) minmax(30px,auto) 44px 36px auto;gap:4px 12px}
 .goal-strip{grid-column:1/-1;grid-row:1;min-height:24px;margin:0 4px;font-size:12px;letter-spacing:0;line-height:1.35;gap:12px;color:#b7d6d0}.goal-strip #goal-label{min-width:0;flex:1}.goal-strip #listening-return{flex:none}.goal-strip progress{width:55px;flex:none;height:4px}
 .pool-shell{grid-column:1/-1;grid-row:2;min-height:0;border:1px solid #38516a66;border-radius:18px;display:flex;flex-direction:column;box-shadow:none}

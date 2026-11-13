@@ -8,24 +8,24 @@
 
 A new bubble earns 25 points multiplied by its place in the chain. Wall banks add a scoring bonus, and a bloom adds 500. The bonus objective offers an additional target during play. These pool scores are separate from the persistent research Points earned in every playable mode.
 
-In Campaign, follow the goal displayed above the pool and finish before you run out of plucks. The first bloom in a pool earns one extra pluck. Your shot coasts to a stop before its result is resolved.
+In Melody Journey, follow the goal displayed above the pool and finish before you run out of plucks. The first bloom in a pool earns one extra pluck. Your shot coasts to a stop before its result is resolved.
 
 Choose **Gamemodes → Endless Waves** from the main menu for five plucks per wave: bubbles pop on their first hit, and clearing every bubble advances to a harder wave. See [Endless Waves](waves.md).
 
 ## Points in Every Mode
 
-Campaign, Free Play, Endless Waves, Challenges and the three [experiments](experiments.md) all earn permanent **Points** for the Skill Tree. Points bank when your shot settles, even if you lose that run:
+Melody Journey, Free Play, Endless Waves, Challenges and the three [experiments](experiments.md) all earn permanent **Points** for the Skill Tree. Points bank when your shot settles, even if you lose that run:
 
 - **Every six scoring bubble contacts: +1 Point.** Partial progress carries between shots in the same pool or Waves run; a bubble counts once per shot.
 - **Every bloom: +1 Point.**
 - **Every cleared wave: +2 Points.**
 - **A completed three-bloom Challenge or experiment objective: +3 Points.**
 - **Bonus challenges: +1 Point per difficulty level.** The current three tiers pay 1–3 Points, separately from contact and bloom rewards. Bank a Bloom and Three Voices are difficulty 1; Seven-Note Run is difficulty 2; Power Play and Double-Bank Bloom are difficulty 3.
-- Campaign retains its additional pool, track-completion and first-clear rewards. Its bonus pays once when the shot settles, even if the pool later fails; clearing the pool does not pay that bonus again.
+- Melody Journey retains its additional pool, track-completion and first-clear rewards. Its bonus pays once when the shot settles, even if the pool later fails; clearing the pool does not pay that bonus again.
 
-Every game mode displays your available **Points** balance during play, matching the Skill Tree for your current profile. Experiment modes also show Points earned in that run separately. The balance updates when rewards are saved. A short message shows Points banked and your available balance. Your pool's Resonance score remains separate. Reopening a save does not pay twice. Listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Campaign track completion to that profile.
+Every game mode displays your available **Points** balance during play, matching the Skill Tree for your current profile. Experiment modes also show Points earned in that run separately. The balance updates when rewards are saved. A short message shows Points banked and your available balance. Your pool's Score remains separate. Reopening a save does not pay twice. Listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Melody Journey track completion to that profile.
 
-For power mastery, activate a power you own and hit at least **three different bubbles in that shot**. Each qualifying shot earns one mastery use; successful Campaign pools also count. Three uses meet a capstone's mastery requirement. You can earn every power and upgrade through Free Play or Waves; Campaign track and skin unlocks still come from Campaign completion.
+For power mastery, activate a power you own and hit at least **three different bubbles in that shot**. Each qualifying shot earns one mastery use; successful Melody Journey pools also count. Three uses meet a capstone's mastery requirement. You can earn every power and upgrade through Free Play or Waves; Melody Journey track and skin unlocks still come from Melody Journey completion.
 
 ## Contact Powers
 
@@ -51,7 +51,7 @@ Open the music panel during play to change the instrument palette. Use Settings 
 
 The main menu and its menus share a living bubble background. Press an empty area for a pulse; hold or move one or more fingers to keep pushing nearby bubbles away. Menu controls and scrolling still work normally. This background does not affect your run or progress.
 
-[Explore the Campaign](campaign.md) or [learn about research](skill-tree.md).
+[Explore the Melody Journey](campaign.md) or [learn about research](skill-tree.md).
 
 ## Attribution
 

@@ -1,8 +1,8 @@
-# Campaign
+# Melody Journey
 
 ## Choose a Track
 
-Campaign shows the tracks you have unlocked. Select a track to open its own page with goals, rewards and a start or continue action. Locked tracks stay hidden until you unlock them.
+**Melody Journey** is the original musical campaign, available from **Gamemodes**. It shows the tracks you have unlocked. Select a track to open its own page with goals, rewards and a start or continue action. Locked tracks stay hidden until you unlock them. The music bar is available during this campaign in both Normal and Development profiles.
 
 The sequence is **First Light → Crosscurrent → Glasswater → Afterimage → Night Bloom**. Completing a track opens the next one and unlocks its player skin. Open **Player Skins** from the main menu and tap a small card for an enlarged preview. Turn on **Use This Skin** to equip an earned skin; turning it off returns to Original. The skin list shows Original and rewards associated with unlocked tracks. A visible skin that you have not earned can be previewed and shows its completion requirement. Skins for locked tracks remain hidden. Back returns to the skin list. Development → **Show Hidden Tracks, Skills and Skins** reveals the complete catalogues without unlocking them.
 
@@ -16,7 +16,25 @@ Each track follows the same five-pool structure with its own atmosphere and arra
 4. **Bridge:** make a bloom with a wall bank, with 14 bubbles.
 5. **Finale:** make two blooms and touch all three roles, with 18 bubbles.
 
-New runs give six plucks per pool. The first bloom adds one more. Your song develops across the pools. After a clear, Continue takes you straight to the next pool.
+Standard runs give six shots per pool; Relaxed gives eight. The first bloom adds one extra shot, for a maximum of seven or nine. Your song develops across the pools. After a clear, Continue takes you straight to the next pool.
+
+## Score Medals in Every Pool
+
+**Score** is the value previously called Resonance. Each new bubble in a shot scores 25 multiplied by its position in the chain. A wall bank adds 25 to subsequent new contacts; a bloom adds 500. Shots remaining do not add score.
+
+All 25 levels have these targets for their respective pool:
+
+| Pool | Bronze | Silver | Gold |
+| --- | ---: | ---: | ---: |
+| Intro | 875 | 1,100 | 1,400 |
+| Verse | 875 | 1,250 | 1,600 |
+| Build | 1,750 | 2,500 | 3,500 |
+| Bridge | 900 | 1,250 | 1,600 |
+| Finale | 1,750 | 2,750 | 4,000 |
+
+You must also clear the pool's gameplay goal to earn a medal. The full final shot counts before the result is graded, including a successful last available shot. The HUD shows targets during play; the selected level shows its best score and medal. Best results are separate for Standard and Relaxed. Fewer shots break an equal-score tie. Older saves retain their progress and songs, but their track totals cannot reconstruct individual level scores; those levels show “not recorded yet” until cleared again.
+
+Track awards remain separate: Bronze for finishing all five pools, Silver for at least three bonuses, and Gold for all five bonuses within 20 shots. They do not replace the score medals awarded to individual pools.
 
 ## Research Points and Powers
 
@@ -28,9 +46,9 @@ Activate an owned power in a shot hitting at least three bubbles to build its ma
 
 The main menu's Continue button names your current track and pool. Pausing or returning to the menu preserves the run. Ending an active run from its track page asks for confirmation.
 
-Free Play is a separate main-menu choice with unlimited plucks and the powers you have unlocked. Use it to enjoy the pool and its music without campaign pool goals.
+Free Play is a separate Gamemodes choice with unlimited shots and the powers you have unlocked. Use it to enjoy the pool and its music without campaign pool goals.
 
-Open a track in Campaign and expand **Songs** to find its recordings, latest attempt and saved versions. Free Play and older saved songs without track information remain available under **Free Play & Older Songs**. Browser saves belong to this device and site; see [Saves](settings.md#saves-and-backups) before moving to another device.
+Open a track in Melody Journey and expand **Songs** to find its recordings, latest attempt and saved versions. Free Play and older saved songs without track information remain available under **Free Play & Older Songs**. Browser saves belong to this device and site; see [Saves](settings.md#saves-and-backups) before moving to another device.
 
 ## Attribution
 

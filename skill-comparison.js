@@ -2,7 +2,7 @@ import { skillCurve } from './skill-curve.js?v=d525fd9667a3081e35524eb957b3f1162
 import { skillConfig } from './skill-effect.js?v=7832dd7c58ba0da9a3d69a6424a04dc4734479b27b6f3ea1f0810fcb589d59d5';
 import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
 import { profilePurchase, unlockedResolve } from './profile.js?v=f09fdb22d84263dcb45cd1d7c9199cc83fc40768057dc69eedef848efd19db7a';
-import { GAME_CATALOGUE as cat } from './run.js?v=437191b652f3ef1846b3b93a40c93dd41bd928f024b76961c39006eff07ba611';
+import { GAME_CATALOGUE as cat } from './run.js?v=4c917a6151cc95f4eef5f74cb04d18ec9a44342c13259040f8d01c4fdd40057a';
 
 const on=value=>value?'On':'Off';
 const number=value=>Number(value.toFixed(2));
@@ -131,7 +131,7 @@ export function powerVariables(build,power){
 
 export function purchaseComparison(state,id){
  const node=cat.nodes[id];
- if(!node||state.phase!=='shop')return null;
+ if(!node||state.powerMode==='shared')return null;
  const purchase=profilePurchase(state.profile,id,cat);if(!purchase.ok)return null;
  const before=unlockedResolve(state.profile,state,cat);
  const selections={borrowed:state.borrowed,equipped:node.kind==='base'?state.equipped:[...state.equipped.filter(key=>key!==id&&!node.conflicts.includes(key)),id]};
