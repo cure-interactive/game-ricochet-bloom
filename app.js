@@ -1,3 +1,4 @@
+import { powerSlots } from './power-ui.js?v=e9dba81a64c175a9f769c602aca9c7ac9542728f4d0fc5fa9ccb2bc9ad0bb36a';
 import { creditsMount } from './credit.js?v=170bdef571751bc8e989505f689f44c033e92251e2c953b80aa86e6e6a8d0d08';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=91bdd921ed550b7501c923fff9a5b64cb99a50cc24eee3375556a1c1c0f4b953';
@@ -441,13 +442,11 @@ function uiRender() {
   $('power-active').textContent = game.effects.map(effect => `${POWERS[effect.kind].name}${effect.kind === 'echo' && !effect.isReady ? ' forming' : effect.kind === 'slingshot' ? ' winding up' : ' active'} · ${effect.seconds.toFixed(1)}s`).join('  /  ');
   canvas.dataset.powerEffect = game.effects.map(effect => effect.kind).join(',') || 'none';
   const allowance = powerAllowance(game), used = game.isFlying ? game.power.used : 0, markers = powerMarkers(game);
+  const slots=powerSlots(game);
   for (const [index, slot] of Array.from($('power-slots').children).entries()) {
-    const status = index < used ? 'used' : index < allowance ? 'ready' : 'locked';
-    slot.dataset.state = status;slot.setAttribute('title',status==='ready'&&markers[index-used]?POWERS[markers[index-used].kind].name:status);slot.setAttribute('aria-label',slot.title+' · '+status);
-    const marker = markers[index - used], name = marker ? POWERS[marker.kind].name : '';
-    const label = status === 'ready' ? `${name} · Ready` : status === 'used' ? 'Used' : 'Locked';
-    const content = `${status === 'ready' ? `<img src="${assetURL(`./icon/power/${marker.kind}.svg`)}" alt="" width="24" height="24">` : iconHTML(status==='used'?'check':'lock')}<span>${label}</span>`;
-    if (slot.innerHTML !== content) slot.innerHTML = content;
+    const view=slots[index];
+    slot.dataset.state=view.status;slot.title=view.title;slot.setAttribute('aria-label',view.label);
+    if(slot.innerHTML!==view.html)slot.innerHTML=view.html;
   }
   $('power-progress').textContent = game.isFlying ? `${used} / ${allowance} powers used · bloom to ${allowance === 3 ? 'keep all three' : `earn ${allowance + 1} next pluck`}` : `${allowance} ${allowance === 1 ? 'power' : 'powers'} this pluck · ${allowance === 3 ? 'bloom to keep all three' : `bloom to earn ${allowance + 1} next pluck`}. No bloom resets to 1.`;
   canvas.dataset.frozenHit = game.chain.filter(id => frozenHit(game, id)).join(',');
