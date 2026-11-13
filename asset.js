@@ -10,6 +10,7 @@ const assets = {
   "artwork/mode/free.svg": "./artwork/mode/free.svg?v=6bb0ff05520f4738de5ef1a2ee4e2e146295f9f7f867f88f28ed9f16dd196d60",
   "artwork/mode/outbreak.svg": "./artwork/mode/outbreak.svg?v=eb08ba8903e4b9c276768a84a1fdc15e76d077e5321f2828d3891cf73ee66882",
   "artwork/mode/reaction.svg": "./artwork/mode/reaction.svg?v=9b74c9515beecd9b3e43fd5b0bedd463f17d283558645d1a32113e047d6807b4",
+  "artwork/mode/score-attack.svg": "./artwork/mode/score-attack.svg?v=a9a8768d241087177762332364b41446960ac83fb35db617f7ba9c3eed20f7dd",
   "artwork/mode/waves.svg": "./artwork/mode/waves.svg?v=c0250649bba95cbaff85e084dd912d1bca6bf057998f4fa9c8bb1970ce65fc6c",
   "artwork/night-bloom.svg": "./artwork/night-bloom.svg?v=1d55b053511e90879b20390e26640d980e261b4f83ea0e5c23a03a856e5a86e0",
   "artwork/pool-256.png": "./artwork/pool-256.png?v=8cc2327b42a6796110c834e9f65f00e0ea0baa12d36fbd550043e7cf315206b5",

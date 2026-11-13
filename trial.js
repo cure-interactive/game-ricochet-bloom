@@ -1,4 +1,4 @@
-import { earningId, earningValid } from './earning.js?v=dba3cae898a6c307e03c96ee0dcf04493997713a5080fb0914dd8d550b77a223';
+import { earningId, earningValid } from './earning.js?v=e498e394b306ea0fe759f0e65e7ce683f4fd8b688ea12dc6b57fdd5d5467ac12';
 
 // A trial has a frozen aiming phase and a finite physical shot. Campaign's
 // continuously drifting pool is a different simulation contract.

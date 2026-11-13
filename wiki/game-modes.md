@@ -4,6 +4,8 @@
 
 ## Current Baseline
 
+[Score Attack](score-attack.md) adds 5/10/15-shot runs, separate personal bests and explicit score medals. It joins the playable modes in v3.3.0. Melody Journey’s 25 level medals are already published in v3.2.0.
+
 The shipped game already has drag-and-release launches, drifting circular bodies, wall banks, contact powers, generated music, persistence, Melody Journey, Free Play and [Endless Waves](waves.md). Waves already pops contacted bubbles and gives five plucks to clear each wave. It is an existing comparison mode, not a new proposal.
 
 The trials now include interior walls, cargo delivery, outbreak sources and bounded infected motes. General elemental payloads, player health and the broader enemy roster still require new work. Existing powers named Bubble, Split, Drunk or Tether are not evidence that the workshop's general trapping, payload division, gas exposure or anchored-object systems exist.

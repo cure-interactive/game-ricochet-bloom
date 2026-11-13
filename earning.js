@@ -6,7 +6,7 @@ export function earningId(crypto=globalThis.crypto){
   return crypto?.randomUUID?.()||`play-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
 }
 const integer=n=>Number.isSafeInteger(n)&&n>=0;
-const modes=['free','waves','challenge','song-run','reaction','cargo','outbreak'];
+const modes=['free','waves','challenge','song-run','reaction','cargo','outbreak','score-attack'];
 export const earningAmount=e=>Math.floor(e.contacts/PLAY_REWARD.contacts)+e.blooms*PLAY_REWARD.bloom+e.waves*PLAY_REWARD.wave+e.wins*PLAY_REWARD.win+(e.bonusPoints??0);
 export function earningValid(e,powers){
   const list=a=>Array.isArray(a)&&new Set(a).size===a.length&&a.every(p=>powers.includes(p));

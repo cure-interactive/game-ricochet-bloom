@@ -4,6 +4,8 @@ Make music, grow your powers, and clear the campaign. Choose a topic below. Use 
 
 ## Play
 
+- [Score Attack](score-attack.md) — 5, 10 or 15 shots, personal bests and score medals.
+
 - [Play the Experiments](experiments.md) — Reaction Puzzle, Cargo Rescue and Outbreak Containment.
 - [Endless Waves](waves.md) — clear each pool with limited shots.
 

@@ -1,14 +1,15 @@
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=e927cb28a4ca47d90298b5b420a407c7a4d65b33969ad8d661985044cb7bb545';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=f5e333a847957109a97ba1653f623a9e2bad707677c4ceb59be1cab9260e155a';
 
 export const WIKI_PAGES = Object.freeze({
+  'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=c796cf233df050335221c960bcc72a57458ae2a894ced033931abf965473cf85' },
   experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=6ad54b5d1d24a797a224f7cd96e179f5f5b6ff4f8654fb905daf3cba905b2fa8' },
   'development-concept': { title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
-  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=120f679dd9ca208d479aec9047c3363f8784bef31533cf747d7e6e40016e01f1' },
+  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=1ef56cf53c0412932db184dddc4f615a2d771d56a84ec5f4d2c654425670623c' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=07e70475d22d647f5b3857ddd7ae83f9172f5d3f6e3f92d206ba71c2dd067780' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=2f2f282e69b0e82ba84ff3ff0edf25185ac43f1a2aac5b4e805ff4904cb617e4' },
-  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=6fdbfcd7d9450de24916824523d50a7e0ddbf31ea99114d985c6d660f93f225f' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=7fd77b8aa2559cdb30ee29662611c8730aa320fa20345e99e9295df86a2c5d3d' },
+  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=149854b128bcd45fad91fe702b1c21b97d6e9f48a6cefec5e1dab19cbabf114c' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=e09229191e591a1b500e7163126dd1189730aa987fd91f7fccbe1da2ce1d4bd0' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=0c93b5ccf8eb8ceb5a0461e3fd289ddf60f4f1aff737b11a86b720aaaabbe865' },
   'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=38d0839877e5db1ed9e6c2aecc2d04d3e02fb5d2fa3c75481825b7ca0eb885b6' },

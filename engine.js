@@ -1,4 +1,5 @@
-import { BONUS_TIERS, earningValid, earningPower, earningSettle } from './earning.js?v=dba3cae898a6c307e03c96ee0dcf04493997713a5080fb0914dd8d550b77a223';
+import { SCORE_BUDGETS, SCORE_DEFAULT, SCORE_SEED, scoreAttackValid } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
+import { BONUS_TIERS, earningValid, earningPower, earningSettle } from './earning.js?v=e498e394b306ea0fe759f0e65e7ce683f4fd8b688ea12dc6b57fdd5d5467ac12';
 import { liveBubbles, waveConfig, wavePrepare, waveEntryStep, waveValid, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { DRUNK_SECONDS, drunkSway, overlapResponse, magnetResponse } from './power-response.js?v=53b3f123d0f0c05341a1eb30cbf1c20f19b251c6a7e30ff0cc4921ddfff73338';
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
@@ -338,6 +339,7 @@ export function gameCreate(seed = 'LAGOON', mode = 'challenge', options = {}) {
   }
   if(options.environment){if(!environmentValid(options.environment))throw new TypeError('Invalid track environment');state.environment=structuredClone(options.environment);state.objective.index=(state.environment.pool+seedHash(state.seed))%3;if(state.objective.index===2&&state.build.some(p=>p.power==='wrap'))state.objective.index=1;trackLayout(state,state.environment.pool,state.environment.route);}
   if(mode==='waves'){state.rng=seedHash(state.seed+':wave:'+(options.wave||1));wavePrepare(state,options.wave||1,random);state.power.target=(state.power.target-1)%count+1;}
+  if(mode==='score-attack'){const budget=options.budget??SCORE_DEFAULT,kind=options.kind??'normal';if(!SCORE_BUDGETS.includes(budget)||!['normal','development'].includes(kind)||seed!==SCORE_SEED||!state.build)throw new TypeError('Invalid Score Attack setup');state.attack={budget,kind};state.plucks=budget;}
   return state;
 }
 function waveAdvance(state,events){
@@ -348,7 +350,7 @@ function waveAdvance(state,events){
   Object.assign(state,next);events.push({type:'wave',number});
 }
 export const gameWon = state => state.mode === 'challenge' && state.isOver && state.blooms >= RULE.goalBlooms;
-export function continueFree(state) { if (!state.isOver || state.mode==='waves') return false; delete state.earning; state.mode = 'free'; state.isOver = false; return true; }
+export function continueFree(state) { if (!state.isOver || ['waves','score-attack'].includes(state.mode)) return false; delete state.earning; state.mode = 'free'; state.isOver = false; return true; }
 export function launch(state, angle, power = .7) {
   if (state.isOver || state.isFlying || state.wave?.entry<WAVE_ENTRY || !Number.isFinite(angle) || !Number.isFinite(power)) return false;
   const seed = state.bodies[0], speed = 280 + Math.max(0, Math.min(1, power)) * 570;
@@ -676,7 +678,7 @@ export function physicsStep(state) {
     const successful = state.chain.length >= RULE.bloomNotes, previousCapacity = state.power.capacity;
     state.power.capacity = successful ? Math.min(3, previousCapacity + 1) : 1;
     state.power.markers = [];
-    effectClear(state, events); state.isFlying = false; seed.vx = seed.vy = 0; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0) || ['song-run','waves'].includes(state.mode)&&state.plucks<=0;
+    effectClear(state, events); state.isFlying = false; seed.vx = seed.vy = 0; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0) || ['song-run','waves','score-attack'].includes(state.mode)&&state.plucks<=0;
     earningSettle(state,{wave:state.mode==='waves'&&!liveBubbles(state).length,win:gameWon(state),bonus:state.objective.pendingPoints??0});
     state.objective.pendingPoints=0;
     state.lastShot={notes:state.chain.length,banks:state.banks,points:state.shotStart===null?null:state.score-state.shotStart,powers:state.power.used,bloom:successful,objective:state.objective.earned};
@@ -688,20 +690,20 @@ export function physicsStep(state) {
   return events;
 }
 export function saveValidate(input) {
-  if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free', 'song-run', 'waves'].includes(input.mode)) return null;
+  if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free', 'song-run', 'waves','score-attack'].includes(input.mode)) return null;
   if(input.earning!==undefined&&(!earningValid(input.earning,Object.keys(POWERS))||input.earning.mode!==input.mode||input.earning.lastLaunch>input.launches))return null;
   const count=Array.isArray(input.bodies)?input.bodies.length-1:0;
   if(input.build!==undefined&&(!buildValidate(input.build)||count<12||count>20||!skillStateValid(input.skillState,count)))return null;
-  if(['song-run','waves'].includes(input.mode)&&!input.build)return null;
+  if(['song-run','waves','score-attack'].includes(input.mode)&&!input.build)return null;
   if(input.randomPowers!==undefined&&(input.randomPowers!==true||!input.build))return null;
   if(input.environment!==undefined&&!environmentValid(input.environment))return null;
   if (input.version >= 9 && (!Array.isArray(input.effects) || input.effects.length > 3 || input.effect !== undefined || input.effects.some(effect => !effect?.kind) || new Set(input.effects.map(effect => effect.kind)).size !== input.effects.length)) return null;
   const effects = input.version >= 9 ? input.effects : input.version >= 6 ? [input.effect] : [];
   const hasEffect = kind => effects.some(effect => effect?.kind === kind);
   for (const field of ['rng', 'tick', 'score', 'plucks', 'launches', 'blooms', 'bestChain', 'banks']) if (!Number.isSafeInteger(input[field]) || input[field] < 0) return null;
-  if (input.rng < 1 || input.rng > 4294967295 || input.plucks > RULE.plucks || input.bestChain > count || !Number.isFinite(input.flightAge) || input.flightAge < 0 || input.flightAge > RULE.flightSeconds + RULE.step * 2) return null;
+  if (input.rng < 1 || input.rng > 4294967295 || input.plucks > (input.mode==='score-attack'?input.attack?.budget:RULE.plucks) || input.bestChain > count || !Number.isFinite(input.flightAge) || input.flightAge < 0 || input.flightAge > RULE.flightSeconds + RULE.step * 2) return null;
   if (typeof input.isFlying !== 'boolean' || typeof input.isOver !== 'boolean' || !Array.isArray(input.bodies) || (!input.build && input.bodies.length !== 15) || !Array.isArray(input.chain) || new Set(input.chain).size !== input.chain.length || input.chain.some(id => !Number.isInteger(id) || id < 1 || id > count)) return null;
-  if(!waveValid(input))return null;
+  if(!waveValid(input)||!scoreAttackValid(input))return null;
   for (const [index, body] of input.bodies.entries()) {
     if (!body || body.id !== index || !Number.isInteger(body.tone) || body.tone < 0 || body.tone >= COLORS.length) return null;
     for (const field of ['x', 'y', 'vx', 'vy', 'radius', 'cooldown']) if (!Number.isFinite(body[field])) return null;
@@ -711,7 +713,7 @@ export function saveValidate(input) {
     if(arriving&&(body.x< -60||body.x>1020||body.y< -60||body.y>700))return null;
     if (!arriving&&(body.x < RULE.inset + body.radius - 1 || body.x > RULE.width - RULE.inset - body.radius + 1 || body.y < RULE.inset + body.radius - 1 || body.y > RULE.height - RULE.inset - body.radius + 1)) return null;
   }
-  if (input.isOver && (!['challenge','song-run','waves'].includes(input.mode) || (input.plucks !== 0 && input.blooms < RULE.goalBlooms) || input.isFlying)) return null;
+  if (input.isOver && (!['challenge','song-run','waves','score-attack'].includes(input.mode) || (input.plucks !== 0 && input.blooms < RULE.goalBlooms) || input.isFlying)) return null;
   if (!input.isOver && !input.isFlying && input.mode !== 'free' && input.plucks === 0) return null;
   if (input.version === 3) {
     const ripple = input.ripple;

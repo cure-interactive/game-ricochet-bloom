@@ -1,8 +1,8 @@
 import { buildValidate } from './skill-effect.js?v=7832dd7c58ba0da9a3d69a6424a04dc4734479b27b6f3ea1f0810fcb589d59d5';
 import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=c9ff036f85fda07c94971bb9701dc181e070bf11984ca7b8b6cc458235afcef6';
 import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
-import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=f09fdb22d84263dcb45cd1d7c9199cc83fc40768057dc69eedef848efd19db7a';
-import { gameCreate, saveValidate, RULE } from './engine.js?v=2ded77f8f5ce0bbac52a4750b6cd110550fff564b6bea02a0872300f96abe514';
+import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=50cf2a95bc3b9a03625262f4f59e70ba1e08c41dba49b48bf4bf248ebe445847';
+import { gameCreate, saveValidate, RULE } from './engine.js?v=65c3aeb8b35d77545bb169d8304e4db059de3a0597f502e6e135c228e90a8ead';
 import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';

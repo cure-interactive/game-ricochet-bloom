@@ -1,4 +1,4 @@
-import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=dba3cae898a6c307e03c96ee0dcf04493997713a5080fb0914dd8d550b77a223';
+import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=e498e394b306ea0fe759f0e65e7ce683f4fd8b688ea12dc6b57fdd5d5467ac12';
 import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=c9ff036f85fda07c94971bb9701dc181e070bf11984ca7b8b6cc458235afcef6';
 
 export const PROFILE_VERSION = 1;

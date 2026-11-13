@@ -1,16 +1,19 @@
-import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialLaunch,trialStep,trialStatus } from './trial.js?v=cbc58c6d0b89eeb2ea6d8c2c5cc2767348eb84bb021d12ce82e00224a7237df9';
-import { trialRead,trialWrite } from './trial-store.js?v=ad60af8e1fd84cbcee492beaf422d634c8a0b652ab1d623f7178344730218ae2';
-import { earningAmount } from './earning.js?v=dba3cae898a6c307e03c96ee0dcf04493997713a5080fb0914dd8d550b77a223';
-import { assetURL } from './asset.js?v=2735d6e4791659059212031525dc3ab0a7b33fac6602b1be6fd2fc97c6e90ff6';
+import { SCORE_BUDGETS, SCORE_DEFAULT, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
+import { scoreRead } from './score-attack-store.js?v=c7664402b385dc1697d60ec33938c860324d6a23fe6178d0009dc44535c0d4f7';
+import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialLaunch,trialStep,trialStatus } from './trial.js?v=df429ae763aa4ad594cf12b12ae32685f06dd771a97cf8087f87928a1ef9b4f1';
+import { trialRead,trialWrite } from './trial-store.js?v=93e9188099682eaf4c2ec09c93e13ad8fe641bf41a6dfc202febf18e4786ec5a';
+import { earningAmount } from './earning.js?v=e498e394b306ea0fe759f0e65e7ce683f4fd8b688ea12dc6b57fdd5d5467ac12';
+import { assetURL } from './asset.js?v=ec2dbab27d123b5d86b7970ee597907a2d7edcdaa77c73cdbe84bf4414890fd0';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
-import { CAMPAIGN_NAME } from './run.js?v=4c917a6151cc95f4eef5f74cb04d18ec9a44342c13259040f8d01c4fdd40057a';
+import { CAMPAIGN_NAME } from './run.js?v=9fa17aafe3666f4c84f832dabce26c9e17179c937b524587ed5bc0ff4f00a7bb';
 
 export const MODE_CARDS=Object.freeze([
   {id:'campaign',name:CAMPAIGN_NAME,summary:'Build your song across five tracks. Chase a medal in every pool.',art:'campaign'},
   {id:'free',name:'Free Play',summary:'An open pool for your unlocked powers.',art:'free'},
   {id:'waves',name:'Endless Waves',summary:'Clear the pool before your shots run out.',art:'waves'},
-  {id:'challenge',name:'Challenge',summary:'Chase a score with a limited supply of shots.',art:'challenge'},
+  {id:'score-attack',name:'Score Attack',summary:'Make every shot count. Five, ten or fifteen shots to beat your best.',art:'score-attack'},
+  {id:'challenge',name:'Challenge',summary:'Reach three blooms before your shots run out.',art:'challenge'},
   ...Object.entries(TRIAL_MODES).map(([id,m])=>({id,name:m.name,summary:m.summary,art:id}))
 ]);
 const art=mode=>assetURL(`artwork/mode/${mode}.svg`);
@@ -27,7 +30,19 @@ export function trialMount(host){
   const active=()=>!!game&&play.open;
   function showMenu(){if(!menu.open)menu.showModal();$('gamemodes-back').focus({preventScroll:true});}
   function gallery(){host.screen('gamemodes');$('gamemodes-title').textContent='Gamemodes';content.innerHTML='<p class="mode-intro">Choose how you want to play.</p><div class="mode-grid">'+MODE_CARDS.map(m=>`<button type="button" class="mode-card" data-mode="${m.id}"><img src="${art(m.art)}" alt="" width="480" height="240"><span><strong>${m.name}</strong><small>${m.summary}</small>${TRIAL_MODES[m.id]?'<em>Experiment · Three Layouts</em>':''}</span></button>`).join('')+'</div>';
-    for(const b of content.querySelectorAll('[data-mode]'))b.onclick=()=>{menu.close();if(TRIAL_MODES[b.dataset.mode])setup(b.dataset.mode);else host.legacy(b.dataset.mode);};showMenu();
+    for(const b of content.querySelectorAll('[data-mode]'))b.onclick=()=>{menu.close();if(b.dataset.mode==='score-attack')scoreSetup();else if(TRIAL_MODES[b.dataset.mode])setup(b.dataset.mode);else host.legacy(b.dataset.mode);};showMenu();
+  }
+  let budget=SCORE_DEFAULT;
+  function scoreSetup(){
+    host.screen('score-setup');$('gamemodes-title').textContent='Score Attack';
+    content.innerHTML=`<div class="mode-overview"><img src="${art('score-attack')}" alt="" width="480" height="240"><div><p>Build chains, bank off walls and trigger blooms. Use every shot to chase your best score.</p><small>No countdown · No extra shots · Final shot finishes before scoring</small></div></div><div class="layout-grid" role="group" aria-label="Shot budget">${SCORE_BUDGETS.map(n=>`<button class="layout-card" data-budget="${n}" aria-pressed="${n===budget}"><strong>${n} Shots</strong><small>${n===5?'Quick Run':n===10?'Standard Run':'Long Run'}</small></button>`).join('')}</div><div id="score-setup-detail"></div>`;
+    for(const b of content.querySelectorAll('[data-budget]'))b.onclick=()=>{budget=Number(b.dataset.budget);scoreSetup();content.querySelector(`[data-budget="${budget}"]`).focus();};
+    const saved=scoreRead(localStorage,host.kind(),budget),targets=scoreTargets(budget),detail=$('score-setup-detail');
+    const medal=saved.best===null?null:scoreMedal(saved.best,budget);
+    detail.innerHTML=`<p><strong>Bronze ${targets.Bronze.toLocaleString('en-US')}</strong> · Silver ${targets.Silver.toLocaleString('en-US')} · Gold ${targets.Gold.toLocaleString('en-US')}</p><p>${saved.best===null?'No completed best yet':`Personal Best: ${saved.best.toLocaleString('en-US')}${medal?' · '+medal:''}`}</p><p>Points earned here are usable in the Skill Tree. Your researched skills are fixed when a run starts; new purchases apply to your next run. Each budget and profile keeps its own save and completed best. Runs begin with the same layout; bubbles drift while you aim.</p>`;
+    if(!saved.ok){const warning=document.createElement('p');warning.className='trial-warning';warning.textContent='This save could not be read. It is preserved until you explicitly replace it.';detail.append(warning);}
+    if(saved.entry&&!saved.entry.game.isOver){const b=document.createElement('button');b.className='primary';b.textContent=`Continue · ${saved.entry.game.plucks} Shots Left`;b.onclick=()=>{menu.close();host.scorePlay(budget,false);};detail.append(b);}
+    const start=document.createElement('button');start.className='primary';start.textContent=saved.entry&&!saved.entry.game.isOver?'Replace Saved Run':!saved.ok?'Replace Unreadable Save':`Start ${budget} Shots`;start.onclick=()=>{if((!saved.ok||saved.entry&&!saved.entry.game.isOver)&&!confirm(saved.ok?'Replace this budget’s saved run? Completed personal bests and earned Points are kept.':'Replace this unreadable save? Its personal best cannot be recovered. Your Skill Tree Points are kept.'))return;menu.close();host.scorePlay(budget,true);};detail.append(start);showMenu();
   }
   function setup(mode=selected){selected=mode;host.screen('trial-setup');const m=TRIAL_MODES[mode],saved=trialRead(localStorage,host.kind(),mode);$('gamemodes-title').textContent=m.name;
     content.innerHTML=`<div class="mode-overview"><img src="${art(mode)}" alt="" width="480" height="240"><div><p>${m.goal}</p><small>${m.shots} shots · No countdown · Fixed starting tools</small></div></div>`;
@@ -86,5 +101,5 @@ export function trialMount(host){
   $('trial-angle').oninput=e=>{angle=Number(e.target.value)*Math.PI/180;renderUI();};$('trial-power').oninput=e=>{power=Number(e.target.value)/100;renderUI();};$('trial-launch').onclick=launch;$('trial-back').onclick=leave;$('trial-pause').onclick=()=>pause(!paused);$('trial-resume').onclick=()=>pause(false);$('trial-retry').onclick=retry;$('trial-save-retry').onclick=()=>{save();renderUI();};$('gamemodes-back').onclick=()=>{menu.close();host.back();};
   menu.addEventListener('cancel',e=>{e.preventDefault();menu.close();host.back();});play.addEventListener('cancel',e=>{e.preventDefault();pause();});
   for(const event of ['pagehide','freeze'])window.addEventListener(event,()=>pause());document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
-  return {gallery,setup,save,pause,get active(){return active();}};
+  return {gallery,setup,scoreSetup,save,pause,get active(){return active();}};
 }

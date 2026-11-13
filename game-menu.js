@@ -1,6 +1,6 @@
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { menuBackgroundMount } from './menu-background.js?v=e9fc4384fe43e3d17504c637d7a9c83339fd38057f28f21613103393feadbc94';
+import { menuBackgroundMount } from './menu-background.js?v=67a80cb18f02c42469890e4f742dd066898386b89e0ecbd41893117d502fe9eb';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
@@ -16,7 +16,7 @@ export function gameMenuMount(host) {
   function refresh(){home.querySelector('.home-skin').style.setProperty('--skin-color',host.skin?.()||'#f1f9d7');const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
   function present(name){
     route.visit(name);
-    if(['home','gamemodes','trial-setup'].includes(name))homeMode=true;else if(['play','pause','trial'].includes(name))homeMode=false;
+    if(['home','gamemodes','trial-setup','score-setup'].includes(name))homeMode=true;else if(['play','pause','trial'].includes(name))homeMode=false;
     document.body.dataset.screen=name;document.body.dataset.menuMode=homeMode?'home':'play';home.hidden=name!=='home';backdrop.hidden=!homeMode;background.show(homeMode);
     document.querySelector('body>main').inert=name!=='play';
     if(name!=='play')host.suspend();refresh();

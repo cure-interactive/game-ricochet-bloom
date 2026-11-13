@@ -14,3 +14,5 @@
  .trial-scroll>p,.trial-stats,.trial-controls,.trial-help,#trial-save-retry{grid-column:2}
  .trial-stats{font-size:11px;gap:5px}.trial-scroll>p:first-child{font-size:12px;margin:0}.trial-controls{grid-template-columns:1fr;gap:5px}.trial-controls label{font-size:11px}.trial-controls button{min-height:36px;justify-content:center}.trial-legend{font-size:10px;margin:0}#trial-alert{margin:0;font-size:11px;min-height:2.9em}
 }
+
+.layout-card[aria-pressed="true"]{border-color:#a4f4cf;background:#21483f;box-shadow:inset 0 0 0 1px #a4f4cf}.layout-card[aria-pressed="true"] strong::after{content:" ✓"}#score-setup-detail>button{margin:8px 10px 0 0}#score-setup-detail p{line-height:1.55}

@@ -21,6 +21,13 @@
 - [Points and Music](experiments.md#points-and-music)
 - [What to Test](experiments.md#what-to-test)
 
+## Score Attack
+
+- [Score Attack](score-attack.md)
+- [Every Shot Counts](score-attack.md#every-shot-counts)
+- [Score and Medals](score-attack.md#score-and-medals)
+- [Points and Saves](score-attack.md#points-and-saves)
+
 ## Endless Waves
 
 - [Endless Waves](waves.md)
