@@ -1,6 +1,9 @@
 // Cumulative, versioned play receipts. A snapshot replaces the same session's
 // receipt, so restoring an older pool cannot pay for the same play twice.
 export const PLAY_REWARD = Object.freeze({ contacts: 6, bloom: 1, wave: 2, win: 3 });
+export function earningId(crypto=globalThis.crypto){
+  return crypto?.randomUUID?.()||`play-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+}
 const integer=n=>Number.isSafeInteger(n)&&n>=0;
 const modes=['free','waves','challenge','song-run'];
 export const earningAmount=e=>Math.floor(e.contacts/PLAY_REWARD.contacts)+e.blooms*PLAY_REWARD.bloom+e.waves*PLAY_REWARD.wave+e.wins*PLAY_REWARD.win;
