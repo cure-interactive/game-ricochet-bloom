@@ -14,7 +14,7 @@
 ## Play the Experiments
 
 - [Play the Experiments](experiments.md)
-- [Modes and Categories](experiments.md#modes-and-categories)
+- [Find and Favourite Games](experiments.md#find-and-favourite-games)
 - [Three Levels and Settings](experiments.md#three-levels-and-settings)
 - [Trick Shots](experiments.md#trick-shots)
 - [Melody Trials](experiments.md#melody-trials)

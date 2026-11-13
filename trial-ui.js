@@ -1,11 +1,11 @@
 import { screenHeader } from './screen-header.js?v=b3d9b07c196b969e345063358159bcabb90c6ae99410d49934cf4b23eb185c73';
-import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, gamemodeCards } from './gamemode-catalogue.js?v=1245b5e5574109bb1f11e97bddde5f69e2ba71dd901ef3834621de4d90c3a7bc';
+import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=99e41d0b4b8898299b938a128fa13bfefa127190e72f8c9ab61461141c001004';
 import { songKeep } from './song.js?v=f967d4f585d3d5300be734f4ed6a4870e0de8c85450ff8f6bd9ad5fb49f1ae60';
 import { melodyDraw } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
-import { experimentArt } from './experiment-art.js?v=21bb44a2d81f61cd9b8d729d1c2c29ebbc7304e23ca0309df663b247aaa4cb5f';
-import { experimentMount } from './experiment-ui.js?v=8a9e690fdadc852bd0458b5df1a09848564fbaaf1d12712d74ec44d27d86fe56';
+import { experimentArt } from './experiment-art.js?v=3122a3a41bebb8d9124ce486b6eac7fcbcbee35a9041fcd15de114d423abc0a1';
+import { experimentMount } from './experiment-ui.js?v=20bb3cd1d0446f538878a8cf4f6f7ca866089629915d86fd49fd00b2614ec24b';
 import { experimentRewarded, experimentGoal, EXPERIMENT_RECIPES } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
-import { experimentRead, experimentSave, experimentWrite, experimentEmpty, experimentExport } from './experiment-store.js?v=f72f989eda1341e6f74b298b91680ad1979f298fe3997f199eb948c75cde33fe';
+import { experimentRead, experimentFavourite, experimentSave, experimentWrite, experimentEmpty, experimentExport } from './experiment-store.js?v=46e3d9a9ca8fe076b8f7236c25ea854f8e95b89628f352cbe0ae41ec56c83a81';
 import { SCORE_BUDGETS, SCORE_DEFAULT, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { scoreRead } from './score-attack-store.js?v=818806d3208b92737e856f74449dbd9f0421e26d62587d05493451302c7ca822';
 import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=1142334db4d9446b27b412cbc5ad6d9c93bebb7180ae6b645ebcc92c561dd824';
@@ -28,23 +28,48 @@ export function trialMount(host){
   let game=null,selected='reaction',paused=false,blocked=false,angle=0,power=.7,drag=null,oldMusic=null,frame=0,last=0,accumulator=0,lastSaved=0,flashes=[];
   const active=()=>!!game&&play.open;
   function showMenu(){if(!menu.open)menu.showModal();$('gamemodes-back').focus({preventScroll:true});}
-  let modeQuery='',modeCategory='',modeStatus='all',modeScroll=0;
+  const galleryState=new Map();
+  let rememberGallery=()=>{};
   const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function gallery(){
-    host.screen('gamemodes');$('gamemodes-title').textContent='Gamemodes';
-    content.innerHTML=`<p class="mode-intro">Choose a game. Each card opens its own levels and settings.</p><div class="gamemode-filter"><label>Search gamemodes<input id="gamemode-search" type="search" placeholder="Name, mechanic or idea number" value="${escape(modeQuery)}"></label><label>Category<select id="gamemode-category"><option value="">All categories</option>${GAMEMODE_CATEGORIES.map(m=>`<option value="${m.id}"${modeCategory===m.id?' selected':''}>${m.name}</option>`).join('')}</select></label><label>Availability<select id="gamemode-status"><option value="all">All gamemodes</option><option value="playable">Playable now</option><option value="planned">In development</option></select></label></div><div class="gamemode-toolbar"><p id="gamemode-count" role="status" aria-live="polite"></p><button id="gamemode-notebook">Saved Runs & Notes</button></div><div id="gamemode-list"></div>`;
-    $('gamemode-status').value=modeStatus;
-    function cards(){
-      const entries=gamemodeCards({query:modeQuery,category:modeCategory,status:modeStatus});
-      $('gamemode-count').textContent=`${entries.length} gamemodes · ${entries.filter(e=>e.playable).length} playable`;
-      $('gamemode-list').innerHTML=entries.length?[true,false].map(playable=>{const group=entries.filter(e=>e.playable===playable);return group.length?`<section class="gamemode-group"><h3>${playable?'Play Now':'In Development'} <small>${group.length}</small></h3>${playable?'':'<p>These ideas have their own cards and graphics. Their rules are still being built.</p>'}<div class="mode-grid">${group.map(e=>`<button type="button" class="mode-card" data-gamemode="${e.id}">${e.art?`<img src="${art(e.art)}" alt="" width="480" height="240">`:experimentArt(e.id)}<span><small class="mode-category">${GAMEMODE_CATEGORIES.find(c=>c.id===e.category)?.name??''}${/^\d/.test(e.id)?' · #'+e.id:''}</small><strong>${escape(e.name)}</strong><small>${escape(e.description)}</small><em>${e.playable?(e.route==='setup'?'Three Difficulty Levels':'Play & Settings'):'In Development · View Idea'}</em></span></button>`).join('')}</div></section>`:'';}).join(''):'<p class="gamemode-empty">No gamemodes match these filters. Try another name or choose All categories.</p>';
-      for(const b of content.querySelectorAll('[data-gamemode]'))b.onclick=()=>{modeScroll=content.scrollTop;const entry=GAMEMODE_CARDS.find(e=>e.id===b.dataset.gamemode);if(entry.route==='legacy'){menu.close();host.legacy(entry.id);}else if(entry.route==='destination')scoreSetup();else if(entry.route==='setup')hub.setup(entry.id);else hub.detail(entry.id);};
+  const starArt='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.3.9-4.5 4.4 1.1 6.2-5.7-3-5.7 3 1.1-6.2L3.2 9.6l6.3-.9Z"/></svg>';
+  function gallery(view=''){
+    rememberGallery();
+    if(!['','favourites','development',...GAMEMODE_GROUPS.map(g=>'group:'+g.id)].includes(view))view='';
+    const state=galleryState.get(view)??{query:'',category:'',scroll:0};galleryState.set(view,state);
+    host.screen(view?'gamemodes:'+view:'gamemodes');
+    const group=GAMEMODE_GROUPS.find(g=>view==='group:'+g.id),title=group?.name??(view==='favourites'?'Favourites':view==='development'?'In Development':'Gamemodes');
+    $('gamemodes-title').textContent=title;
+    content.innerHTML=`<nav class="gamemode-navigation" aria-label="Gamemode navigation">${view?'<button id="gamemode-root">Gamemodes</button>':''}<button id="gamemode-favourites" aria-pressed="${view==='favourites'}">${starArt} Favourites</button><button id="gamemode-development" aria-pressed="${view==='development'}">In Development</button><button id="gamemode-notebook">Saved Runs & Notes</button></nav><p class="mode-intro">${group?escape(group.description):view==='favourites'?'Your starred games, ready to open directly.':view==='development'?'Explore ideas whose gameplay is still being built.':'Choose a game or explore a collection of related challenges.'}</p><div class="gamemode-filter"><label>Search All Gamemodes<input id="gamemode-search" type="search" placeholder="Name, mechanic or idea number" value="${escape(state.query)}"></label>${view==='development'?`<label>Category<select id="gamemode-category"><option value="">All categories</option>${GAMEMODE_CATEGORIES.map(m=>`<option value="${m.id}"${state.category===m.id?' selected':''}>${m.name}</option>`).join('')}</select></label>`:''}</div><p id="gamemode-count" class="gamemode-count" role="status" aria-live="polite"></p><div id="gamemode-list"></div><p id="gamemode-save-status" role="status"></p>`;
+    function card(e,favourites,readable){
+      const starred=favourites.includes(e.id),label=`${starred?'Unstar':'Star'} ${e.name}`;
+      return `<article class="mode-card-shell"><button type="button" class="mode-card" data-gamemode="${e.id}">${e.art?`<img src="${art(e.art)}" alt="" width="480" height="240">`:experimentArt(e.id)}<span><small class="mode-category">${GAMEMODE_CATEGORIES.find(c=>c.id===e.category)?.name??''}${/^\d/.test(e.id)?' · #'+e.id:''}</small><strong>${escape(e.name)}</strong><small>${escape(e.description)}</small><em>${e.playable?(e.route==='setup'?'Three Difficulty Levels':'Play & Settings'):'In Development · View Idea'}</em></span></button><button type="button" class="mode-star" data-favourite="${e.id}" aria-label="${escape(label)}" aria-pressed="${starred}" title="${escape(label)}" ${readable?'':'disabled'}>${starArt}</button></article>`;
     }
-    $('gamemode-search').oninput=e=>{modeQuery=e.target.value;modeScroll=0;cards();};
-    $('gamemode-category').onchange=e=>{modeCategory=e.target.value;modeScroll=0;cards();};
-    $('gamemode-status').onchange=e=>{modeStatus=e.target.value;modeScroll=0;cards();};
-    $('gamemode-notebook').onclick=()=>{modeScroll=content.scrollTop;hub.hub();};
-    cards();showMenu();content.scrollTop=modeScroll;
+    function cards(){
+      const read=experimentRead(localStorage,host.kind()),favourites=read.library?.favourites??[],page=gamemodePage({view,query:state.query,category:state.category,favourites});
+      $('gamemode-count').textContent=state.query.trim()?`${page.entries.length} search result${page.entries.length===1?'':'s'} across all gamemodes`:page.groups.length?`${page.entries.length} games · ${page.groups.length} collections`:`${page.entries.length} ${view==='development'?'idea':'game'}${page.entries.length===1?'':'s'}`;
+      $('gamemode-save-status').textContent=read.ok?'':'Favourites could not be read. Your existing notebook is preserved.';
+      const sections=[true,false].map(playable=>{const entries=page.entries.filter(e=>e.playable===playable);return entries.length?`<section class="gamemode-group"><h3>${playable?'Play Now':'In Development'}</h3><div class="mode-grid">${entries.map(e=>card(e,favourites,read.ok)).join('')}</div></section>`:'';}).join('');
+      const collections=page.groups.length?`<section class="gamemode-group"><h3>Collections</h3><div class="mode-grid">${page.groups.map(g=>`<button type="button" class="mode-card" data-group="${g.id}">${experimentArt(g.art)}<span><strong>${g.name}</strong><small>${g.description}</small><em>${g.count} Playable Games · Explore</em></span></button>`).join('')}</div></section>`:'';
+      $('gamemode-list').innerHTML=sections+collections||`<p class="gamemode-empty">${view==='favourites'&&!state.query?'No favourites yet. Star a game using the button in the top-right corner of its card.':'No games match. Try another search or category.'}</p>`;
+      if(page.planned)$('gamemode-list').insertAdjacentHTML('beforeend',`<p>${page.planned} related ideas are still in development.</p>`);
+      for(const b of content.querySelectorAll('[data-gamemode]'))b.onclick=()=>{rememberGallery();const e=GAMEMODE_CARDS.find(e=>e.id===b.dataset.gamemode);if(e.route==='legacy'){menu.close();host.legacy(e.id);}else if(e.route==='destination')scoreSetup();else if(e.route==='setup')hub.setup(e.id);else hub.detail(e.id);};
+      for(const b of content.querySelectorAll('[data-group]'))b.onclick=()=>navigate('group:'+b.dataset.group);
+      for(const b of content.querySelectorAll('[data-favourite]'))b.onclick=()=>{
+        const id=b.dataset.favourite,scroll=content.scrollTop,result=experimentFavourite(localStorage,host.kind(),id);
+        if(!result.ok){$('gamemode-save-status').textContent='Could not save this favourite. Your existing notebook is preserved. Please try again.';return;}
+        cards();content.scrollTop=scroll;(content.querySelector(`[data-favourite="${id}"]`)??content.querySelector('[data-favourite]')??$('gamemode-favourites')).focus({preventScroll:true});
+        $('gamemode-save-status').textContent=result.active?'Added to Favourites.':'Removed from Favourites.';
+      };
+    }
+    function navigate(next){state.scroll=content.scrollTop;gallery(next);}
+    $('gamemode-root')?.addEventListener('click',()=>navigate(''));
+    $('gamemode-favourites').onclick=()=>navigate('favourites');
+    $('gamemode-development').onclick=()=>navigate('development');
+    $('gamemode-notebook').onclick=()=>{rememberGallery();hub.hub();};
+    $('gamemode-search').oninput=e=>{state.query=e.target.value;state.scroll=0;cards();};
+    $('gamemode-category')?.addEventListener('change',e=>{state.category=e.target.value;state.scroll=0;cards();});
+    cards();showMenu();content.scrollTop=state.scroll;
+    rememberGallery=()=>{state.scroll=content.scrollTop;rememberGallery=()=>{};};
   }
   let budget=SCORE_DEFAULT;
   function scoreSetup(){
@@ -128,8 +153,8 @@ export function trialMount(host){
   $('trial-home').onclick=()=>leave(true);
   $('trial-review').onclick=()=>{const id=game.setup?.experimentId??game.mode;leave();if(!game){hub.setup(id);content.querySelector('.experiment-review').open=true;}};
   $('trial-export').onclick=()=>{try{const read=experimentRead(localStorage,game.kind),pending=experimentSave(read.library??experimentEmpty(),game,host.sound.musicSave()),url=URL.createObjectURL(new Blob([experimentExport(pending,game.kind)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='ricochet-bloom-pending-experiment.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch{alert('The pending run could not be exported. Keep this tab open and retry saving.');}};
-  $('trial-angle').oninput=e=>{angle=Number(e.target.value)*Math.PI/180;renderUI();};$('trial-power').oninput=e=>{power=Number(e.target.value)/100;renderUI();};$('trial-launch').onclick=launch;$('trial-back').onclick=leave;$('trial-pause').onclick=()=>pause(!paused);$('trial-resume').onclick=()=>pause(false);$('trial-retry').onclick=retry;$('trial-save-retry').onclick=()=>{save();renderUI();};$('gamemodes-back').onclick=()=>{menu.close();host.back();};
-  menu.addEventListener('cancel',e=>{e.preventDefault();menu.close();host.back();});play.addEventListener('cancel',e=>{e.preventDefault();pause();});
+  $('trial-angle').oninput=e=>{angle=Number(e.target.value)*Math.PI/180;renderUI();};$('trial-power').oninput=e=>{power=Number(e.target.value)/100;renderUI();};$('trial-launch').onclick=launch;$('trial-back').onclick=leave;$('trial-pause').onclick=()=>pause(!paused);$('trial-resume').onclick=()=>pause(false);$('trial-retry').onclick=retry;$('trial-save-retry').onclick=()=>{save();renderUI();};$('gamemodes-back').onclick=()=>{rememberGallery();menu.close();host.back();};
+  menu.addEventListener('cancel',e=>{e.preventDefault();rememberGallery();menu.close();host.back();});play.addEventListener('cancel',e=>{e.preventDefault();pause();});
   for(const event of ['pagehide','freeze'])window.addEventListener(event,()=>pause());document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
   return {gallery,setup,hub:hub.hub,family:hub.family,detail:hub.detail,scoreSetup,save,pause,get active(){return active();}};
 }

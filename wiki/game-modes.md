@@ -61,7 +61,7 @@ Some entries are full mode concepts; others are ruleset variants or session form
 - **006. Power Order — Rule:** Collect three powers in the displayed order during one flight; wrong-order contact fails the attempt.
 #### Experiment 007
 
-- **007. Corner Tour — System:** Pass through all four corner gates in one pluck, then settle inside the finish zone.
+- **007. Corner Tour — System:** Pass through all four corner gates in one shot, then settle inside the finish zone.
 #### Experiment 008
 
 - **008. Ricochet Golf — System:** Reach a cup across successive obstacle pools using the fewest total launches.
@@ -202,7 +202,7 @@ Some entries are full mode concepts; others are ruleset variants or session form
 - **049. Overload Management — System:** Spend shots venting pressure or completing tasks; finish every task before the shared gauge overflows.
 #### Experiment 050
 
-- **050. Endurance Checkpoints — Rule:** Clear a finite ladder of harder boards with shared plucks and small checkpoint refills.
+- **050. Endurance Checkpoints — Rule:** Clear a finite ladder of harder boards with shared shots and small checkpoint refills.
 
 ### Terrain and Navigation
 
@@ -241,7 +241,7 @@ Some entries are full mode concepts; others are ruleset variants or session form
 
 #### Experiment 061
 
-- **061. Score Attack — Rule:** Maximize score within a fixed pluck budget, with the current researched build fixed at the start of each run.
+- **061. Score Attack — Rule:** Maximize score within a fixed shot budget, with the current researched build fixed at the start of each run.
 #### Experiment 062
 
 - **062. Combo Cash-Out — System:** Carry a multiplier across shots and choose when to bank; failed chains erase the unbanked pot.
@@ -256,7 +256,7 @@ Some entries are full mode concepts; others are ruleset variants or session form
 - **065. Efficiency Trial — Rule:** Clear a prescribed board while minimizing total launch energy rather than simply counting shots.
 #### Experiment 066
 
-- **066. Spare Shot Sprint — Rule:** Clear short boards; remaining plucks convert to score instead of carrying into the next board.
+- **066. Spare Shot Sprint — Rule:** Clear short boards; remaining shots convert to score instead of carrying into the next board.
 #### Experiment 067
 
 - **067. Risk Zones — System:** Earn larger rewards in dangerous regions; return to a home zone to bank a target score.

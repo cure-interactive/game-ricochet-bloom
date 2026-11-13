@@ -1,8 +1,9 @@
 import { experimentValidate, experimentKey, EXPERIMENT_VERDICTS } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
-import { EXPERIMENT_CATALOGUE } from './experiment-catalogue.js?v=56f1341273f115a6d4ee047f94e17f2ec8cb50bf4c7b69bf3de6deffb0072763';
+import { EXPERIMENT_CATALOGUE } from './experiment-catalogue.js?v=46fd868b7899d3825edca249ee222d0822e27a53f260e03d7069491bca53ea1e';
 import { trialValidate } from './trial.js?v=1142334db4d9446b27b412cbc5ad6d9c93bebb7180ae6b645ebcc92c561dd824';
 import { trialRead } from './trial-store.js?v=24ceed76d9888cbd13210f5716988b7adb37492ad0ff3aa6b2157afccdeb98fa';
 const ids=new Set([...EXPERIMENT_CATALOGUE.map(e=>e.id),'reaction','cargo','outbreak']);
+const favouriteIds=new Set([...ids,'campaign','free','waves','challenge']);
 export const experimentStoreKey=kind=>`ricochet-bloom-experiments-v1-${kind}`;
 export const experimentEmpty=()=>({version:1,favourites:[],recent:[],setups:[],records:[],saves:[],results:[],reviews:[],lastSetup:null});
 const text=(v,max)=>typeof v==='string'&&v.length<=max;
@@ -10,8 +11,9 @@ export function experimentLibraryValidate(value,kind){
   try{
     if(!['normal','development'].includes(kind))return null;
     const v=structuredClone(value);
-    if(v?.version!==1||!['favourites','recent','saves','results','reviews'].every(k=>Array.isArray(v[k]))||v.favourites.length>213||v.recent.length>20||v.saves.length>64||v.results.length>200||v.reviews.length>213)return null;
-    if(![v.favourites,v.recent].every(a=>new Set(a).size===a.length&&a.every(id=>ids.has(id))))return null;
+    if(v?.version!==1||!['favourites','recent','saves','results','reviews'].every(k=>Array.isArray(v[k]))||v.favourites.length>favouriteIds.size||v.recent.length>20||v.saves.length>64||v.results.length>200||v.reviews.length>213)return null;
+    if(new Set(v.favourites).size!==v.favourites.length||!v.favourites.every(id=>favouriteIds.has(id)))return null;
+    if(new Set(v.recent).size!==v.recent.length||!v.recent.every(id=>ids.has(id)))return null;
     if(v.lastSetup!==null&&!experimentValidate(v.lastSetup))return null;
     v.setups??=[];
     if(!Array.isArray(v.setups)||v.setups.length>64||new Set(v.setups.map(s=>s.key)).size!==v.setups.length||v.setups.some(s=>!experimentValidate(s.setup)||s.key!==experimentKey(s.setup)||!text(s.name,80)||!s.name.trim()))return null;
@@ -34,6 +36,13 @@ export function experimentRead(storage,kind){
 }
 export function experimentWrite(storage,kind,library){
   try{const valid=experimentLibraryValidate(library,kind);if(!valid)return false;storage.setItem(experimentStoreKey(kind),JSON.stringify(valid));return true;}catch{return false;}
+}
+export function experimentFavourite(storage,kind,id){
+  const current=experimentRead(storage,kind);
+  if(!current.ok||!favouriteIds.has(id))return {ok:false};
+  const next=current.library,active=!next.favourites.includes(id);
+  next.favourites=active?[...next.favourites,id]:next.favourites.filter(value=>value!==id);
+  return experimentWrite(storage,kind,next)?{ok:true,active}:{ok:false};
 }
 export function experimentRemember(library,setup){
   const next=structuredClone(library);next.lastSetup=structuredClone(setup);next.recent=[setup.experimentId,...next.recent.filter(id=>id!==setup.experimentId)].slice(0,20);return next;

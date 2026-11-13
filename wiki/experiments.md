@@ -1,10 +1,14 @@
 # Play the Gamemodes
 
-Open **Main Menu → Gamemodes**. Every experiment has its own named card and graphical thumbnail directly alongside the original modes. Select a card to open that gamemode’s own setup, with exactly three difficulty choices and its own settings. There is no parent-mode or Challenge / Variation picker.
+Open **Main Menu → Gamemodes**. Standalone games appear directly. Related games live in five illustrated collections: **Trick Shots**, **Melody Trials**, **Reaction Puzzle**, **Cargo Rescue** and **Outbreak Containment**. Each game keeps its own card, artwork, setup and difficulty choices. Back returns to the previous page and scroll position.
 
-## Modes and Categories
+## Find and Favourite Games
 
-Search by name, mechanic or idea number. Optional Category and Availability filters narrow the same page. **Play Now** contains implemented games; **In Development** contains illustrated ideas whose gameplay is still being built. A card does not imply implementation. Saved Runs & Notes retains unfinished runs, favourites, configurations, verdicts and notebook backups. Stable IDs and existing saves are preserved.
+Use **Search All Gamemodes** from any collection to find an individual game by name, mechanic or idea number. Results open the game’s setup directly. **In Development** holds unfinished ideas, with an optional category filter; these cards do not imply playable rules.
+
+Press the star at the top-right of a game card to add it to **Favourites** without opening the game. A filled star means it is saved; press it again to remove it. Favourites opens individual games directly, including games from collections and the original modes. Stars are saved in this browser, separately for normal and Development profiles, and share the existing notebook’s favourites. Search also finds unfinished ideas, which can be starred for later.
+
+**Saved Runs & Notes** retains unfinished runs, configurations, verdicts and notebook backups. Existing saves and stable game IDs are preserved.
 
 The 210 catalogue ideas use 18 categories for browsing and related simulation code. Categories are not playable replacements for their individual gamemodes. Coverage below is generated from the actual registry; the full implementation is still in progress.
 

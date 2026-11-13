@@ -5,11 +5,11 @@ import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=ff13c913ea159840
 
 export const WIKI_PAGES = Object.freeze({
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=c796cf233df050335221c960bcc72a57458ae2a894ced033931abf965473cf85' },
-  experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=9de22a1d630a05a2c323b01523d26e6fb2b13e5225479cc8bbe39f414a261f13' },
+  experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=cad0af79b06c4dc945bbf55b341263b4909580ecfe25cdb418ffb55aed29845c' },
   'development-concept': { title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
-  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=8f3130fa31a1560b06fb4e57a6980ab5120b1dcabeeefdb4445d6a2977b1eee3' },
+  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=6c5ee268e6fda5b5673173f99462c1ea03dc1249b93a28b1e5a268d79c476c71' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=8194f38bed005b43e432976d9af07fe83e12b3a71a857098f93f0aeaed6fe5f2' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=116488b97bae1e73ba3122c912705481e446fd923e6052dda2c2949d9f03e531' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=5c63a6e310e5d7839c2620d9f13d918baea3a84c1292a19e495044bbcb0dcc64' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=69b2dc0dce78ce297b3fb2cc57ef61d90d5c65c8520b125bb6cfb63b6c712a67' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=0c93b5ccf8eb8ceb5a0461e3fd289ddf60f4f1aff737b11a86b720aaaabbe865' },

@@ -81,7 +81,7 @@ export const EXPERIMENT_CATALOGUE=[
     "id": "007",
     "name": "Corner Tour",
     "scope": "System",
-    "description": "Pass through all four corner gates in one pluck, then settle inside the finish zone.",
+    "description": "Pass through all four corner gates in one shot, then settle inside the finish zone.",
     "family": "precision",
     "kind": "core-mode",
     "mechanics": []
@@ -530,7 +530,7 @@ export const EXPERIMENT_CATALOGUE=[
     "id": "050",
     "name": "Endurance Checkpoints",
     "scope": "Rule",
-    "description": "Clear a finite ladder of harder boards with shared plucks and small checkpoint refills.",
+    "description": "Clear a finite ladder of harder boards with shared shots and small checkpoint refills.",
     "family": "survival",
     "kind": "variation",
     "mechanics": []
@@ -651,7 +651,7 @@ export const EXPERIMENT_CATALOGUE=[
     "id": "061",
     "name": "Score Attack",
     "scope": "Rule",
-    "description": "Maximize score within a fixed pluck budget, with the current researched build fixed at the start of each run.",
+    "description": "Maximize score within a fixed shot budget, with the current researched build fixed at the start of each run.",
     "family": "strategy",
     "kind": "variation",
     "mechanics": [
@@ -707,7 +707,7 @@ export const EXPERIMENT_CATALOGUE=[
     "id": "066",
     "name": "Spare Shot Sprint",
     "scope": "Rule",
-    "description": "Clear short boards; remaining plucks convert to score instead of carrying into the next board.",
+    "description": "Clear short boards; remaining shots convert to score instead of carrying into the next board.",
     "family": "strategy",
     "kind": "variation",
     "mechanics": [
