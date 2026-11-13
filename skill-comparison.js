@@ -1,8 +1,8 @@
-import { skillCurve } from './skill-curve.js?v=d525fd9667a3081e35524eb957b3f11625f3f6e4683cb259e620be985973a815';
-import { skillConfig } from './skill-effect.js?v=7832dd7c58ba0da9a3d69a6424a04dc4734479b27b6f3ea1f0810fcb589d59d5';
-import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
-import { profilePurchase, unlockedResolve } from './profile.js?v=5d8031e38a69136dd5b7c990c13256f8d01b1a4967769dd8d0e292d8b229cd27';
-import { GAME_CATALOGUE as cat } from './run.js?v=02a65f603ee043af90292a2d1b31524468f9b3a1a70cdf80608551b32daaf963';
+import { skillCurve } from './skill-curve.js?v=dab90a1026a2abcc2e8d0388cf0af387d7d7e9d9f9fd6d8f7a0c87e63ace54a4';
+import { skillConfig } from './skill-effect.js?v=90a3e793542c39e354a665bbb96ae2105915367ee5f12c1f1a291426e0b632fb';
+import { POWER_TREES } from './power-tree.js?v=ae74203c23b7477ea0f5b45ee783af270b4c6d633d374a8cb8779f9077fc7919';
+import { profilePurchase, unlockedResolve } from './profile.js?v=5932d3964e5f79555bdb95acb5af513e122c816380cced060178209d2312947b';
+import { GAME_CATALOGUE as cat } from './run.js?v=e3fc5e08ab0c39705bfdd4d290e1761ea139fe39d29b006a8dab548acd2bdb38';
 
 const on=value=>value?'On':'Off';
 const number=value=>Number(value.toFixed(2));
@@ -14,7 +14,7 @@ const degrees=value=>number(value*180/Math.PI)+'°';
 const statDescription={
  'Wall Speed Retained':'Speed kept after a wall bounce. Higher means less momentum lost.',
  'Bank Charge':'A new bubble hit charges an extra boost for the next wall bounce.',
- 'Late-Flight Drag':'Braking late in a pluck. Lower lets the player coast farther.',
+ 'Late-Flight Drag':'Braking late in a shot. Lower lets the player coast farther.',
  'Wall Pressure Waves':'The first two powered wall bounces also push nearby bubbles.',
  'Push Strength':'How strongly player contact shoves a bubble.',
  'Push Shape':'Whether the shove follows your movement or spreads outward.',
@@ -38,7 +38,7 @@ const statDescription={
  'Hit-Bubble Release':'Pushes newly hit bubbles outward to clear room for unhit ones.',
  'Trail Reach':'How far the wake’s current extends from its trail.',
  'Current Strength':'How strongly the wake carries nearby bubbles along its trail.',
- 'Crossing Eddies':'Crossing your trail creates brief swirls, up to two per pluck.',
+ 'Crossing Eddies':'Crossing your trail creates brief swirls, up to two per shot.',
  'Freeze Reach':'How far the initial frost spreads from its source.',
  'Bubble Speed Limit':'The speed cap for frozen bubbles. Lower keeps them slower.',
  'Player Pressure':'Push from already-hit frozen bubbles. Lower makes threading past them easier.',
@@ -92,7 +92,7 @@ const statDescription={
  'Magazine':'Shots available each time Blaster activates.',
  'Pellets Per Shot':'Projectiles fired together for one shot of ammunition.',
  'Wall Bounces':'How many wall rebounds each projectile can make.',
- 'Bloom Reload':'The first bloom after activation refills the magazine once per pluck.'
+ 'Bloom Reload':'The first bloom after activation refills the magazine once per shot.'
 };
 
 // Values describe the configured power, not a prediction of score or collision outcome.

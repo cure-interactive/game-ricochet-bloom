@@ -1,10 +1,14 @@
-import { experimentValidate, EXPERIMENT_RECIPES } from './experiment.js?v=a106fcc3b3ef0ee5105e13cd9c3940290c0d83802cefe99912e7b5b9d1e74f2e';
-import { earningId, earningValid } from './earning.js?v=1b84da4bf236a6c11918b70b68288a2b191870d92baf41349cd67386b164a396';
+import { melodyCreate, melodyPlayer, melodyClock, melodyLaunch, melodyTouch, melodyDestinations, melodySettle, melodyOutcome, melodyAction, melodyStatus, melodyValid } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
+import { precisionCreate, precisionLaunch, precisionTouch, precisionDrag, precisionWrap, precisionBank, precisionOutcome, precisionSettle, precisionStatus, precisionValid, precisionAction } from './precision.js?v=fe3f5f9fbfc5e54cc353d2bd4dd10fcabc5bdff5850a4977b2c3ce3ad7a96ee3';
+import { experimentValidate, experimentSetup, EXPERIMENT_RECIPES } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
+import { earningId, earningValid } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
 
 // A trial has a frozen aiming phase and a finite physical shot. Campaign's
 // continuously drifting pool is a different simulation contract.
 export const TRIAL_SIZE = Object.freeze({width:900,height:600,step:1/120});
 export const TRIAL_MODES = Object.freeze({
+  music:{name:'Melody Trials',summary:'Play phrases, coordinate voices and build an arrangement.',shots:12,goal:'Complete the selected musical objective.',legend:'Lettered notes: playable pitches · Pink SOUND: forbidden · Beat window: gate timing · Separate stages: instrument destinations',layouts:['First Phrase','Two Voices','Full Arrangement']},
+  precision:{name:'Trick Shots',summary:'Call targets, bank shots and control the finish.',shots:1,goal:'Clear the chosen precision challenge.',legend:'Numbers: targets · Red cross: keeper · Mint region: finish · Red walls: forbidden in Narrow Escape',layouts:['First Line','Bank and Bend','The Final Pocket']},
   reaction:{name:'Reaction Puzzle',summary:'Build a chain. Protect the healthy cells.',shots:6,goal:'Clear all eight hazards. Keep all three healthy cells intact.',legend:'Pink: hazard · Orange: blast · Flame: fire · Green: gas · Cross: healthy cell',layouts:['First Spark','Firebreak','Chain of Islands']},
   cargo:{name:'Cargo Rescue',summary:'Push fragile cargo into the safe receiver.',shots:8,goal:'Deliver two of three cargo bubbles in eight shots.',legend:'Blue: cargo · Mint: receiver · Arrows: current · Spikes: danger · Stripes: breakable wall',layouts:['Open Water','Narrow Passage','The Long Way']},
   capture:{name:'Capture Transport Release',summary:'Enclose a payload, carry it past cover, then release it onto targets.',shots:8,goal:'Capture the orange payload and release it near every pink target.',legend:'Orange: payload · Pink: target · Ring: carrying · Spikes: payload danger · Release uses one shot',layouts:['Around the Wall','Lower Passage','The Return']},
@@ -17,6 +21,8 @@ const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 const integer=n=>Number.isSafeInteger(n)&&n>=0;
 function body(id,kind,x,y,options={}){return {id,kind,x,y,vx:0,vy:0,r:kind==='player'?16:kind==='cell'?24:20,active:true,fixed:!['player','cargo','plug','mote'].includes(kind),hp:kind==='cell'?3:1,...options};}
 export function trialCreate(mode,layout=0,kind='normal',id=earningId(),setup=null){
+  if(mode==='music'&&!setup)setup=experimentSetup('081',layout);
+  if(mode==='precision'&&!setup)setup=experimentSetup('001',layout);
   if(!TRIAL_MODES[mode]||!Number.isInteger(layout)||layout<0||layout>2||!['normal','development'].includes(kind))throw new Error('Unknown trial');
   if(setup&&(!experimentValidate(setup)||setup.mode!==mode||setup.layout!==layout))throw Error('Invalid setup');
   let next=1;const bodies=[body(0,'player',100,300)];
@@ -53,8 +59,9 @@ export function trialCreate(mode,layout=0,kind='normal',id=earningId(),setup=nul
     if(layout>0)walls.push({x:540,y:220,w:18,h:160,breakable:false,active:true});
     if(layout===2)walls.push({x:325,y:140,w:18,h:95,breakable:false,active:true});
   }
-  return {version:setup?2:1,...(setup?{setup:structuredClone(setup),explosions:0}:{}),...(mode==='capture'?{payloadState:'waiting'}:{}),mode,layout,kind,id,tick:0,age:0,phase:'aim',shots:0,hit:[],bodies,walls,receiver,current,zones:[],nextId:next,delivered:0,lost:0,popped:0,sealed:0,reason:'',events:[],log:[],
+  const game={version:setup?2:1,...(setup?{setup:structuredClone(setup),explosions:0}:{}),...(mode==='capture'?{payloadState:'waiting'}:{}),mode,layout,kind,id,tick:0,age:0,phase:'aim',shots:0,hit:[],bodies,walls,receiver,current,zones:[],nextId:next,delivered:0,lost:0,popped:0,sealed:0,reason:'',events:[],log:[],
     earning:{version:1,id,kind,mode,contacts:0,blooms:0,waves:0,wins:0,shots:0,lastLaunch:0,mastery:{},owned:[],used:[]}};
+  if(mode==='precision')precisionCreate(game);if(mode==='music')melodyCreate(game);return game;
 }
 export const trialShots=g=>g.setup?.settings.shots??TRIAL_MODES[g.mode].shots;
 const option=(g,key,fallback)=>g.setup?.settings[key]??fallback;
@@ -109,10 +116,12 @@ function wallCollide(b,w){
   const nx=dx/d,ny=dy/d,v=b.vx*nx+b.vy*ny;if(v<0){b.vx-=1.65*v*nx;b.vy-=1.65*v*ny;}
 }
 function contain(g,b){
-  for(const w of g.walls)if(w.active)wallCollide(b,w);
-  for(const [p,v,max] of [['x','vx',900],['y','vy',600]]){if(b[p]<b.r){b[p]=b.r;b[v]=Math.abs(b[v])*.75;}if(b[p]>max-b.r){b[p]=max-b.r;b[v]=-Math.abs(b[v])*.75;}}
+  for(const w of g.walls)if(w.active){const before=[b.vx,b.vy];wallCollide(b,w);if(g.mode==='precision'&&b.kind==='player'&&(b.vx!==before[0]||b.vy!==before[1]))precisionBank(g);}
+  if(g.mode==='precision'&&precisionWrap(g,b))return;
+  for(const [p,v,max] of [['x','vx',900],['y','vy',600]]){if(b[p]<b.r){if(g.mode==='precision'&&b.kind==='player')precisionBank(g);b[p]=b.r;b[v]=Math.abs(b[v])*(g.setup?.experimentId==='007'?.98:.75);}if(b[p]>max-b.r){if(g.mode==='precision'&&b.kind==='player')precisionBank(g);b[p]=max-b.r;b[v]=-Math.abs(b[v])*(g.setup?.experimentId==='007'?.98:.75);}}
 }
 function destinations(g){
+  if(g.mode==='music'){melodyDestinations(g);return;}
   for(const b of g.bodies){
     if(!b.active)continue;
     if(b.kind==='cargo'&&inside(b,g.receiver)){b.active=false;g.delivered++;note(g,b);event(g,'objective',b);explain(g,'Cargo delivered safely.');}
@@ -120,6 +129,8 @@ function destinations(g){
   }
 }
 function outcome(g){
+  if(g.mode==='music')return melodyOutcome(g);
+  if(g.mode==='precision')return precisionOutcome(g);
   if(g.mode==='reaction'){
     if(g.explosions>option(g,'blastLimit',Infinity))return ['lost','The explosion limit was exceeded.'];
     if(g.bodies.some(b=>b.kind==='cell'&&!b.active))return ['lost','A protected cell was destroyed.'];
@@ -153,6 +164,8 @@ function outbreakTurn(g){
 }
 function settle(g){
   for(const b of g.bodies){b.vx=0;b.vy=0;}
+  if(g.mode==='precision')precisionSettle(g);
+  if(g.mode==='music')melodySettle(g);
   let result=outcome(g);
   if(!result&&g.mode==='outbreak'){outbreakTurn(g);result=outcome(g);}
   g.phase=result?result[0]:'aim';g.reason=result?.[1]||'Choose your next shot.';
@@ -161,20 +174,24 @@ function settle(g){
 }
 export function trialLaunch(g,angle,power=.7){
   if(g.phase!=='aim'||!Number.isFinite(angle)||!Number.isFinite(power))return false;
-  const p=g.bodies[0],speed=300+clamp(power,0,1)*700;p.vx=Math.cos(angle)*speed;p.vy=Math.sin(angle)*speed;
+  if(g.mode==='music'&&(g.shots>=trialShots(g)||!melodyLaunch(g)))return false;
+  if(g.mode==='precision')precisionLaunch(g);
+  const p=g.mode==='music'?melodyPlayer(g):g.bodies[0],speed=300+clamp(power,0,1)*700;p.vx=Math.cos(angle)*speed;p.vy=Math.sin(angle)*speed;
   g.shots++;g.hit=[];g.age=0;g.phase='flight';g.events=[];g.reason='';event(g,'launch',p);return true;
 }
+export const trialPlayer=g=>g.mode==='music'?melodyPlayer(g):g.bodies[0];
+export const trialAction=(g,action,value)=>g.mode==='music'?melodyAction(g,action,value):precisionAction(g,action,value);
 export function trialRelease(g){
   if(g.mode!=='capture'||g.phase!=='aim'||g.payloadState!=='carried')return false;
   g.shots++;g.hit=[];g.age=0;g.events=[];g.payloadState='released';
   const p=g.bodies[0];trialBlast(g,{...p,id:g.bodies.find(b=>b.kind==='payload').id},option(g,'releaseRadius',140));settle(g);return true;
 }
 export function trialStep(g){
-  g.events=[];if(g.phase!=='flight')return g.events;
+  g.events=[];if(g.mode==='music'&&['aim','flight'].includes(g.phase)&&(g.setup.experimentId==='082'||g.melody.preview))melodyClock(g);if(g.phase!=='flight')return g.events;
   const dt=TRIAL_SIZE.step;g.tick++;g.age+=dt;
   for(const b of g.bodies.filter(moving)){
     if(g.current&&b.kind==='cargo'&&inside(b,g.current)&&g.age<3){b.vx+=g.current.vx*option(g,'currentScale',1)*dt;b.vy+=g.current.vy*option(g,'currentScale',1)*dt;}
-    const drag=Math.exp(-(g.age>3?3:1.05)*dt);b.vx=clamp(b.vx*drag,-1200,1200);b.vy=clamp(b.vy*drag,-1200,1200);b.x+=b.vx*dt;b.y+=b.vy*dt;contain(g,b);
+    const drag=Math.exp(-(g.mode==='precision'?precisionDrag(g):g.age>3?3:1.05)*dt);b.vx=clamp(b.vx*drag,-1200,1200);b.vy=clamp(b.vy*drag,-1200,1200);b.x+=b.vx*dt;b.y+=b.vy*dt;contain(g,b);
   }
   const bodies=g.bodies;
   for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++){
@@ -182,7 +199,9 @@ export function trialStep(g){
     let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);if(d>a.r+b.r)continue;
     const impact=Math.abs(((b.vx-a.vx)*dx+(b.vy-a.vy)*dy)/Math.max(.001,d));
     if(impact>option(g,'impactLimit',Infinity)&&(a.kind==='cargo'||b.kind==='cargo')){remove(g,a.kind==='cargo'?a:b,'impact limit exceeded');continue;}
-    if(a.kind==='player'){touch(g,b);if(!b.active)continue;}
+    if(g.mode==='music'&&(a.kind==='player'||b.kind==='player')&&a.kind!=='instrument'&&b.kind!=='instrument'){melodyTouch(g,a.kind==='player'?a:b,a.kind==='player'?b:a);continue;}
+    if(a.kind==='player'&&g.mode==='precision'){precisionTouch(g,b);continue;}
+    if(a.kind==='player'&&g.mode!=='music'){touch(g,b);if(!b.active)continue;}
     if(a.kind==='cargo'&&b.kind==='spike'||b.kind==='cargo'&&a.kind==='spike'){remove(g,a.kind==='cargo'?a:b,'sharp hazard');continue;}
     if(b.kind==='vent'||b.kind==='mud')continue;
     if(d<.001){dx=1;dy=0;d=1;}const nx=dx/d,ny=dy/d,invA=a.fixed?0:1,invB=b.fixed?0:1,sum=invA+invB;if(!sum)continue;
@@ -191,10 +210,14 @@ export function trialStep(g){
   }
   for(const b of bodies.filter(moving))contain(g,b);
   destinations(g);
+  if(g.mode==='music'&&g.melody.failed){settle(g);return g.events;}
+  if(g.mode==='precision'&&g.precision.failed){settle(g);return g.events;}
   if(g.age>.3&&g.bodies.filter(moving).every(b=>Math.hypot(b.vx,b.vy)<3))settle(g);
   return g.events;
 }
 export function trialStatus(g){
+  if(g.mode==='music')return melodyStatus(g);
+  if(g.mode==='precision')return precisionStatus(g);
   if(g.mode==='reaction')return `${8-g.popped}/8 hazards · ${g.bodies.filter(b=>b.kind==='cell'&&b.active).length}/3 cells${g.setup?.settings.blastLimit?' · '+g.explosions+'/'+g.setup.settings.blastLimit+' explosions':''}`;
   if(g.mode==='capture')return `${g.payloadState} payload · ${g.bodies.filter(b=>b.kind==='target'&&b.active).length}/3 targets left`;
   if(g.mode==='cargo')return `${g.delivered}/${option(g,'cargoQuota',2)} delivered · ${g.lost}/3 lost`;
@@ -205,11 +228,13 @@ export function trialValidate(value){
     const g=structuredClone(value);if(!g||![1,2].includes(g.version)||!TRIAL_MODES[g.mode]||!['normal','development'].includes(g.kind)||!Number.isInteger(g.layout)||g.layout<0||g.layout>2)return null;
     if(g.version===2&&(!experimentValidate(g.setup)||g.setup.mode!==g.mode||g.setup.layout!==g.layout||!integer(g.explosions)||g.explosions>8)||g.version===1&&g.setup)return null;
     if(g.mode==='capture'&&!['waiting','carried','released','lost'].includes(g.payloadState))return null;
-    if(!['aim','flight','won','lost'].includes(g.phase)||!['tick','shots','nextId','delivered','lost','popped','sealed'].every(k=>integer(g[k]))||g.shots>trialShots(g)||!Number.isFinite(g.age)||g.age<0||g.age>20||g.tick>20000||g.nextId>50||g.sealed>2||g.delivered+g.lost>3)return null;
+    if(!['aim','flight','won','lost'].includes(g.phase)||!['tick','shots','nextId','delivered','lost','popped','sealed'].every(k=>integer(g[k]))||g.shots>trialShots(g)||!Number.isFinite(g.age)||g.age<0||g.age>20||g.tick>(g.mode==='music'?10000000:20000)||g.nextId>50||g.sealed>2||g.delivered+g.lost>3)return null;
     const base=trialCreate(g.mode,g.layout,g.kind,g.id,g.setup);if(!Array.isArray(g.bodies)||g.bodies.length<base.bodies.length||g.bodies.length>50||new Set(g.bodies.map(b=>b.id)).size!==g.bodies.length)return null;
     for(const b of g.bodies){const original=base.bodies.find(a=>a.id===b.id);if(!integer(b.id)||b.id>=g.nextId||typeof b.active!=='boolean'||!integer(b.hp)||b.hp>3||!['x','y','vx','vy','r'].every(k=>Number.isFinite(b[k]))||b.x<0||b.x>900||b.y<0||b.y>600||Math.abs(b.vx)>1400||Math.abs(b.vy)>1400)return null;
       if(original){if(b.kind!==original.kind||b.r!==original.r||b.fixed!==original.fixed)return null;}else if(g.mode!=='outbreak'||b.kind!=='mote'||b.r!==17||b.fixed!==false)return null;
     }
+    if(g.mode==='music'&&!melodyValid(g,base))return null;
+    if(g.mode==='precision'&&!precisionValid(g,base))return null;
     if(g.mode==='capture'&&(g.bodies.find(b=>b.kind==='payload').active!==(g.payloadState==='waiting')||g.payloadState==='carried'&&g.phase==='won'))return null;
     if(g.bodies[0].id!==0||g.bodies[0].kind!=='player'||!g.bodies[0].active||g.walls.length!==base.walls.length||g.walls.some((w,i)=>typeof w.active!=='boolean'||['x','y','w','h','breakable'].some(k=>w[k]!==base.walls[i][k]))||JSON.stringify(g.receiver)!==JSON.stringify(base.receiver)||JSON.stringify(g.current)!==JSON.stringify(base.current))return null;
     if(!Array.isArray(g.zones)||g.zones.length>1||g.zones.some(z=>g.mode!=='outbreak'||z.x!==480||z.y!==300||z.r!==145)||!Array.isArray(g.hit)||g.hit.length>40||g.hit.some(id=>!g.bodies.some(b=>b.id===id))||!Array.isArray(g.log)||g.log.length>6||g.log.some(s=>typeof s!=='string'||s.length>150)||typeof g.reason!=='string'||g.reason.length>150)return null;

@@ -43,7 +43,7 @@ Some entries are full mode concepts; others are ruleset variants or session form
 
 #### Experiment 001
 
-- **001. One-Pluck Clear — Rule:** Clear every marked target in one launch; restart the same board after a miss.
+- **001. One-Shot Clear — Rule:** Clear every marked target in one launch; restart the same board after a miss.
 #### Experiment 002
 
 - **002. Bank Shot Only — Rule:** Clear a quota in six shots; contacts count only after a wall bank.

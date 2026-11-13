@@ -4,7 +4,7 @@ export const POWER_TREES = {
     "name": "Comet",
     "type": "Motion",
     "tier": 1,
-    "current": "A strong launch burst plus enhanced momentum retention through bubble and wall bounces for the pluck.",
+    "current": "A strong launch burst plus enhanced momentum retention through bubble and wall bounces for the shot.",
     "today": [
       "foundation"
     ],
@@ -53,7 +53,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Long Flight",
-        "description": "Lose speed more gradually near the end of a pluck, while still coming to a natural rest.",
+        "description": "Lose speed more gradually near the end of a shot, while still coming to a natural rest.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -95,7 +95,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Impact",
-        "description": "Strengthen the activating collision and later player contacts throughout this pluck.",
+        "description": "Strengthen the activating collision and later player contacts throughout this shot.",
         "key": "base",
         "kind": "base",
         "effects": [],
@@ -158,7 +158,7 @@ export const POWER_TREES = {
     "legacyNodes": [
       {
         "name": "Follow Through",
-        "description": "Extend enhanced pushes to later contacts during this pluck.",
+        "description": "Extend enhanced pushes to later contacts during this shot.",
         "key": "foundation",
         "kind": "foundation",
         "effects": [
@@ -753,7 +753,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Crossing Currents",
-        "description": "When two separated trail segments overlap, create one small eddy there. At most two eddies per pluck, each lasting one second.",
+        "description": "When two separated trail segments overlap, create one small eddy there. At most two eddies per shot, each lasting one second.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -1366,7 +1366,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Second Pass",
-        "description": "One successful relay per pluck can arm its recipient for one additional transfer. Tag its lineage so it cannot return to an already-used relay or branch recursively.",
+        "description": "One successful relay per shot can arm its recipient for one additional transfer. Tag its lineage so it cannot return to an already-used relay or branch recursively.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -1446,7 +1446,7 @@ export const POWER_TREES = {
         "conflicts": []
       },
       {
-        "name": "Last Chord",
+        "name": "Final Burst",
         "description": "A bloom earned during the return produces a brief accent and one bounded radial bubble push. It does not schedule another Rewind.",
         "key": "capstone",
         "kind": "capstone",
@@ -1572,7 +1572,7 @@ export const POWER_TREES = {
         "conflicts": []
       },
       {
-        "name": "Third Beat",
+        "name": "Third Wave",
         "description": "Restore the third wave.",
         "key": "foundation",
         "kind": "foundation",
@@ -2089,7 +2089,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Blaster",
-        "description": "Automatically aim and fire three gel shots after contact. No aiming, tapping or firing controls. Each bubble scores once per pluck.",
+        "description": "Automatically aim and fire three gel shots after contact. No aiming, tapping or firing controls. Each bubble scores once per shot.",
         "key": "base",
         "kind": "base",
         "effects": [],
@@ -2143,7 +2143,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Bloom Reload",
-        "description": "The first bloom after activation refills your magazine once this pluck.",
+        "description": "The first bloom after activation refills your magazine once this shot.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [

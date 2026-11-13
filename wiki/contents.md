@@ -14,8 +14,10 @@
 ## Play the Experiments
 
 - [Play the Experiments](experiments.md)
-- [Families and Catalogue](experiments.md#families-and-catalogue)
-- [Setup and Variations](experiments.md#setup-and-variations)
+- [Modes and Categories](experiments.md#modes-and-categories)
+- [Three Levels and Settings](experiments.md#three-levels-and-settings)
+- [Trick Shots](experiments.md#trick-shots)
+- [Melody Trials](experiments.md#melody-trials)
 - [Controls and Saves](experiments.md#controls-and-saves)
 - [Reaction Puzzle](experiments.md#reaction-puzzle)
 - [Cargo Rescue](experiments.md#cargo-rescue)

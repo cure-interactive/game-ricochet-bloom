@@ -1,24 +1,85 @@
-# Play the Experiments
+# Play the Gamemodes
 
-Open **Main Menu → Gamemodes → Experiments**. Choose a family, then an experiment. Seven playable prototypes share the hub: the three original trials, three rule variations and Capture Transport Release. Score Attack is also reachable from the Strategy family and keeps its own setup screen.
+Open **Main Menu → Gamemodes**. Every experiment has its own named card and graphical thumbnail directly alongside the original modes. Select a card to open that gamemode’s own setup, with exactly three difficulty choices and its own settings. There is no parent-mode or Challenge / Variation picker.
 
-## Families and Catalogue
+## Modes and Categories
 
-**Play** shows available families, unfinished setups, favourites and recently played experiments. **Development Catalogue** lists all 210 ideas plus the three original trials. Search by name, stable ID or mechanic; filter by family, kind, implementation or playtest verdict. Proposed ideas have descriptions and notes, but no Start button. Score Attack links to its existing game mode.
+Search by name, mechanic or idea number. Optional Category and Availability filters narrow the same page. **Play Now** contains implemented games; **In Development** contains illustrated ideas whose gameplay is still being built. A card does not imply implementation. Saved Runs & Notes retains unfinished runs, favourites, configurations, verdicts and notebook backups. Stable IDs and existing saves are preserved.
 
-Implementation and feedback are separate. **Playable Prototype** means rules exist; **Available Mode** links to an existing full mode; **Proposed** means the idea needs implementation. **Untested**, **Promising**, **Needs Work**, **Keep** and **Shelve** are your local verdicts. A successful automated check does not set a human verdict. IDs 001–210 also identify the entries in [Game Modes to Try](game-modes.md).
+The 210 catalogue ideas use 18 categories for browsing and related simulation code. Categories are not playable replacements for their individual gamemodes. Coverage below is generated from the actual registry; the full implementation is still in progress.
 
-## Setup and Variations
+<!-- BEGIN MODE COVERAGE -->
+| Category | Implemented Catalogue Ideas | Difficulty Levels Used by Its Gamemodes |
+| --- | --- | --- |
+| Trick Shots | 10/10 | First Line · Bank and Bend · The Final Pocket |
+| Reaction Puzzle | 1/20 | First Spark · Firebreak · Chain of Islands |
+| Cargo Rescue | 1/10 | Open Water · Narrow Passage · The Long Way |
+| Outbreak Containment | 1/10 | First Response · Crossfire · Quarantine |
+| Pressure Survival | 0/10 — In Development | Planned: Breathing Room · Closing In · Last Refuge |
+| Pool Engineer | 0/20 — In Development | Planned: Open Channel · Crossed Paths · The Switchyard |
+| Score Attack | 1/10 | Planned: Clean Break · Risk and Reward · High Stakes |
+| Power Expedition | 0/10 — In Development | Planned: First Choice · Trade-Off · Final Build |
+| Melody Trials | 10/10 | First Phrase · Two Voices · Full Arrangement |
+| Memory Pool | 0/10 — In Development | Planned: Remember Three · Hidden Route · Final Deduction |
+| Living Pool | 0/20 — In Development | Planned: One Cell · Shared Resources · The Whole Organ |
+| Pool Adventures | 0/10 — In Development | Planned: The Entrance · The Detour · The Escape |
+| Pool Duel | 0/10 — In Development | Planned: First Round · Contested Ground · The Decider |
+| Together | 0/10 — In Development | Planned: Meet in the Middle · Separate Roles · One Last Chance |
+| Pool Workshop | 0/10 — In Development | Planned: First Creation · Working System · The Showcase |
+| Capture and Release | 1/10 | Around the Wall · Lower Passage · The Return |
+| Split and Merge | 0/10 — In Development | Planned: Two Halves · Unequal Shares · Exact Balance |
+| Source Works | 0/10 — In Development | Planned: First Output · Supply Chain · The Factory |
+<!-- END MODE COVERAGE -->
 
-One setup screen contains **Variation**, **Layout**, **Preset**, a board preview and an expandable **Options** section. Standard, Gentle and Demanding presets adjust the shot budget and relevant rules. Editing an option switches to Custom. Goal, failure conditions, reward policy and the exact shot budget appear before Start.
+**Challenge Library** is an optional searchable index, not a required step before playing. Browse the illustrated mode overview or search all 210 ideas and the three original rule sets. Filter by gamemode, kind, implementation or local playtest verdict. Every challenge has a graphic thumbnail. Proposed challenges have descriptions and notes but no Start button.
 
-Reaction options include an explosion allowance for Reaction Budget. Cargo options include delivery quota and current strength, plus an impact limit for Hazardous Shipment. Containment offers source intervals. Capture Transport Release offers release radius. Options are bounded experiments; unusual combinations and demanding presets still need balance testing.
+The location bar gives a direct **Gamemodes** return. Opening a mode starts at the top of its setup screen. The mode name remains visible; a challenge is selected inside that mode. The existing Back history is preserved.
 
-Give a configuration a name and use **Save Configuration** to keep it in the Saved Configurations selector. Up to 64 named configurations can be retained; removing a saved name does not delete its run or records. Starting or continuing play also remembers the most recent configuration. Every layout, preset, resolved option set and rules version has its own save and personal record. Custom results remain separate even when their numbers match a preset. Retry Same Setup repeats those exact rules with a new attempt.
+Implementation and feedback remain separate. **Playable Prototype** means rules exist; **Available Mode** opens an existing mode; **Proposed** means implementation is pending. **Untested**, **Promising**, **Needs Work**, **Keep** and **Shelve** are local human verdicts. Automated checks do not set them. Stable IDs 001–210 identify the entries in [Game Modes to Try](game-modes.md).
+
+## Three Levels and Settings
+
+Choose a gamemode card, select one of its three illustrated difficulty boards, and press Start. Each setup has its own goal, failure rules and settings. The shared category describes related mechanics; it does not require another navigation step.
+
+**Settings** contains bounded presets and options. Changing an option creates a Custom setup with separate records. Goal and failure rules are visible before Start. **Saved Configurations** holds named setups; up to 64 are retained. Removing a saved name does not delete its run or results. Each challenge, difficulty, preset, resolved option set and rules version has its own save and record. Retry repeats that exact setup.
+
+## Trick Shots
+
+The Trick Shots category contains ten individual gamemodes. Each exposes First Line, Bank and Bend and The Final Pocket as its three difficulty levels:
+
+- **One-Pluck Clear (#001):** hit every marked target in one launch.
+- **Bank Shot Only (#002):** targets count only after a wall bank in the current shot.
+- **Called Shot (#003):** select the first target before launching; make five correct calls in seven shots. Calls lock during flight.
+- **Exact Chain (#004):** hit exactly three distinct targets; a fourth fails immediately.
+- **Last Bubble Standing (#005):** clear the targets without touching the red keeper.
+- **Power Order (#006):** collect Comet, Wrap and Stasis in order. Their speed boost, edge transfer and braking change the route.
+- **Corner Tour (#007):** visit all four corner gates in one long-gliding shot and stop in the central region.
+- **Ricochet Golf (#008):** stop fully inside the cup. Compare the shots used across the three difficulty pools.
+- **Landing Zone (#009):** collect the targets and come to rest fully inside the finish region.
+- **Narrow Escape (#010):** pass gates in order without touching forbidden walls or the boundary.
+
+All three difficulties have checked physical shot solutions for each challenge. This establishes solvability, not a human fun or balance verdict.
+
+## Melody Trials
+
+The Melody Trials category contains ten individual gamemodes. Each exposes First Phrase, Two Voices and Full Arrangement. These musical spaces add staggered keys and cover as difficulty rises:
+
+- **Melody Route (#081):** play the displayed pitch sequence. Incorrect notes sound but do not advance it.
+- **Rhythm Gates (#082):** cross numbered gates inside visible beat windows. Settings offers a timing offset and an Untimed comparison, each with separate records.
+- **Call and Response (#083):** hear and watch the call, then answer from memory. Replay Call is free; preview notes never enter your song.
+- **Harmony Builder (#084):** collect C major, D minor and G major chord tones in any order within each chord.
+- **Instrument Rescue (#085):** physically deliver Melody, Bass and Rhythm cargo into their matching stages. Each delivered part joins the arrangement.
+- **Silence Puzzle (#086):** play the green notes while avoiding every red SOUND bubble.
+- **Crescendo Run (#087):** build two chains containing at least three different notes, then stop fully inside the quiet finish. Musical intensity rises with the completed chains.
+- **Counterpoint (#088):** alternate Upper and Lower seeds, each playing C, E and G on its own side. Contact with the other voice’s notes fails.
+- **Phrase Repair (#089):** replace shown missing or incorrect notes in the indicated order.
+- **Free Composition (#090):** choose a pitch palette and play without a losing condition. At rest, Save Composition keeps the song in the existing Song Library and the setup notebook. A full or unavailable Song Library prevents completion until the save can succeed. The composition workspace supports up to 4,096 launches before it must be saved; reaching capacity does not lose the song.
+
+Every challenge has a checked physical solution on all three levels. Pitch labels agree with played and stored notes. Musical clues have visible equivalents; audio is not required. The board stays still during aim, while rhythm windows and call previews continue until Pause.
 
 ## Controls and Saves
 
-The board waits while you aim. Drag backward anywhere on the board and release to launch, or use Aim and Power followed by Launch. With the board focused, Left/Right adjust direction, Up/Down adjust power and Space launches. Escape pauses. A shot ends after all motion settles. Capture adds a Release Payload button while carrying and aiming; release uses one shot.
+Physical bodies wait while you aim. Melody Trials beat windows and call previews keep their own clock. Drag backward anywhere on the board and release to launch, or use Aim and Power followed by Launch. With the board focused, Left/Right adjust direction, Up/Down adjust power and Space launches. Escape pauses. Every finished game offers Main Menu; it saves the result before returning home. A shot ends after all motion settles. Capture adds a Release Payload button while carrying and aiming; release uses one shot.
 
 Pausing or leaving saves the full board and generated song, including an unfinished flight. Continuing a flight opens it paused. Original version-one trial saves remain under Earlier Trial Saves and retain their existing rules; new setups do not replace them. Starting another unfinished run for the exact same configuration asks before replacing it. Other configurations remain intact.
 
@@ -64,7 +125,7 @@ After a result, choose **Review / Change Setup** to write a verdict and notes, o
 
 Standard presets of Reaction Puzzle, Cargo Rescue and Outbreak Containment retain their existing Skill Tree rewards: one Point per six accumulated unique contacts, one for a chain of at least five contacts in a shot, and three for completing the objective. Rewards bank at shot boundaries, including losses; resuming the same receipt never pays twice. Earlier trial saves keep these rewards.
 
-Other presets, Custom setups, the three variations and Capture Transport Release record experimental results without awarding Skill Tree Points. Fixed environmental tools keep existing research from changing a puzzle. Trials do not train permanent power mastery. Contact-generated music accompanies play; goals and the reaction log explain outcomes with sound muted.
+Other presets, Custom setups, the rule variations, Trick Shots and Capture Transport Release record experimental results without awarding Skill Tree Points. Fixed environmental tools keep existing research from changing a puzzle. Trials do not train permanent power mastery. Contact-generated music accompanies play; goals and the reaction log explain outcomes with sound muted.
 
 ## What to Test
 

@@ -1,19 +1,20 @@
+import { screenHeader } from './screen-header.js?v=b3d9b07c196b969e345063358159bcabb90c6ae99410d49934cf4b23eb185c73';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=f5e333a847957109a97ba1653f623a9e2bad707677c4ceb59be1cab9260e155a';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=ff13c913ea159840770d60cc237c4faafe230ad0f4516a86751a9c1e016115f9';
 
 export const WIKI_PAGES = Object.freeze({
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=c796cf233df050335221c960bcc72a57458ae2a894ced033931abf965473cf85' },
-  experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=d7936fd15269c284fda13f91103a76384913f95e89d9496837c7f52997221b58' },
+  experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=9de22a1d630a05a2c323b01523d26e6fb2b13e5225479cc8bbe39f414a261f13' },
   'development-concept': { title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
-  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=bfea2e6506af5eb9aac8d48372ee405ad781ee8f96d64f8ec8eb167f77924fc3' },
-  waves: { title: 'Endless Waves', url: './wiki/waves.md?v=07e70475d22d647f5b3857ddd7ae83f9172f5d3f6e3f92d206ba71c2dd067780' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=4558e02941cf3107655a1b8547501b7c6d101afc0d87cb5e1b75099d80a7696e' },
-  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=bb1f24eb0287e073c22e6130f17ca8972844519307747de7a155019c683d9b28' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=e09229191e591a1b500e7163126dd1189730aa987fd91f7fccbe1da2ce1d4bd0' },
+  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=8f3130fa31a1560b06fb4e57a6980ab5120b1dcabeeefdb4445d6a2977b1eee3' },
+  waves: { title: 'Endless Waves', url: './wiki/waves.md?v=6c5ee268e6fda5b5673173f99462c1ea03dc1249b93a28b1e5a268d79c476c71' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=8194f38bed005b43e432976d9af07fe83e12b3a71a857098f93f0aeaed6fe5f2' },
+  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=5c63a6e310e5d7839c2620d9f13d918baea3a84c1292a19e495044bbcb0dcc64' },
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=69b2dc0dce78ce297b3fb2cc57ef61d90d5c65c8520b125bb6cfb63b6c712a67' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=0c93b5ccf8eb8ceb5a0461e3fd289ddf60f4f1aff737b11a86b720aaaabbe865' },
   'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=38d0839877e5db1ed9e6c2aecc2d04d3e02fb5d2fa3c75481825b7ca0eb885b6' },
-  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=199b2eefff64eed35fc3e17fec26657df253ea50c481225833e80a121ab76ff5' },
+  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=cd5caa5461891d4fb76bfb4866c359f3c8d00e882c09dad3644a1562868a4cad' },
   settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=7896f3fde3261ceeb3fe62b96c80c91e673fd4fcbbe1b15d9d3e0d1d663d4185' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.
@@ -74,7 +75,7 @@ export function renderMarkdown(markdown, current = 'wiki', linkRender=null) {
 }
 export function wikiMount(host) {
   const dialog=document.createElement('dialog');dialog.id='wiki-dialog';dialog.setAttribute('aria-labelledby','wiki-title');
-  dialog.innerHTML=`<header class="wiki-heading"><button type="button" data-wiki-back aria-label="Back">${iconHTML('arrow-left')}<span>Back</span></button><h2 id="wiki-title">Wiki</h2><button type="button" data-wiki-contents>${iconHTML('book')}<span>Contents</span></button></header><article class="wiki-article" tabindex="0" aria-label="Wiki page"></article>`;
+  dialog.innerHTML=`${screenHeader({className:'wiki-heading',title:'Wiki',titleId:'wiki-title',back:`<button type="button" data-wiki-back aria-label="Back">${iconHTML('arrow-left')}<span>Back</span></button>`,actions:`<button type="button" data-wiki-contents>${iconHTML('book')}<span>Contents</span></button>`})}<article class="wiki-article" tabindex="0" aria-label="Wiki page"></article>`;
   document.body.append(dialog);
   const article=dialog.querySelector('article'), title=dialog.querySelector('h2'), contents=dialog.querySelector('[data-wiki-contents]');
   let current={page:'wiki',anchor:''}, request=null;const history=pageHistory(current,target=>target.page);

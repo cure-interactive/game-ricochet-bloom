@@ -1,7 +1,7 @@
-import { experimentValidate, experimentKey, EXPERIMENT_VERDICTS } from './experiment.js?v=a106fcc3b3ef0ee5105e13cd9c3940290c0d83802cefe99912e7b5b9d1e74f2e';
-import { EXPERIMENT_CATALOGUE } from './experiment-catalogue.js?v=8d1bc888b3e88dc012793dc96d8de6c8271d75c18470eb4ae427d3c6241a6124';
-import { trialValidate } from './trial.js?v=71d242a10e76d23c54a2d3e3e1357a58eb4d1a0d8ccfdfaeafca2b01212e4c9a';
-import { trialRead } from './trial-store.js?v=ea286fe967a685d67e0171d04c09b95334d1b372d01f28f0e2840727a4244bf9';
+import { experimentValidate, experimentKey, EXPERIMENT_VERDICTS } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
+import { EXPERIMENT_CATALOGUE } from './experiment-catalogue.js?v=56f1341273f115a6d4ee047f94e17f2ec8cb50bf4c7b69bf3de6deffb0072763';
+import { trialValidate } from './trial.js?v=1142334db4d9446b27b412cbc5ad6d9c93bebb7180ae6b645ebcc92c561dd824';
+import { trialRead } from './trial-store.js?v=24ceed76d9888cbd13210f5716988b7adb37492ad0ff3aa6b2157afccdeb98fa';
 const ids=new Set([...EXPERIMENT_CATALOGUE.map(e=>e.id),'reaction','cargo','outbreak']);
 export const experimentStoreKey=kind=>`ricochet-bloom-experiments-v1-${kind}`;
 export const experimentEmpty=()=>({version:1,favourites:[],recent:[],setups:[],records:[],saves:[],results:[],reviews:[],lastSetup:null});

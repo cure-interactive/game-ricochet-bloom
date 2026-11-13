@@ -1,14 +1,14 @@
 # Endless Waves
 
-An endless score chase with **five plucks per wave**. Open **Endless Waves** on the main menu to start or resume it.
+An endless score chase with **five shots per wave**. Open **Endless Waves** on the main menu to start or resume it.
 
 ## Clear the Board
 
 Bubbles arrive from outside the pool. Aiming unlocks when they finish entering. Hit a bubble to pop it, collect its note and earn score. Popped bubbles stay gone for the rest of the wave.
 
-Pop every bubble before your five plucks run out. The current shot coasts naturally to a stop before the result is resolved. Clearing on your final pluck still advances. A clear awards 250 score plus 100 for each unused pluck, then refills your allowance to five.
+Pop every bubble before your five shots run out. The current shot coasts naturally to a stop before the result is resolved. Clearing on your final shot still advances. A clear awards 250 score plus 100 for each unused shot, then refills your allowance to five.
 
-If any bubbles remain when the final shot rests, the run ends. Retry starts a new run at Wave 1; your local records remain. Blooms give score and harmony, but do not refund plucks in this mode.
+If any bubbles remain when the final shot rests, the run ends. Retry starts a new run at Wave 1; your local records remain. Blooms give score and harmony, but do not refund shots in this mode.
 
 ## Harder Waves
 
@@ -16,7 +16,7 @@ Start with 12 bubbles. Every two waves adds one, up to 20. Each wave also makes 
 
 ## Powers and Music
 
-Only permanently unlocked powers and compatible researched upgrades enter your random power pool. A bloom increases your next pluck's power allowance up to three, subject to the number of distinct unlocked powers and bubbles remaining.
+Only permanently unlocked powers and compatible researched upgrades enter your random power pool. A bloom increases your next shot's power allowance up to three, subject to the number of distinct unlocked powers and bubbles remaining.
 
 Main-player, Split, Echo and Blaster contacts pop bubbles. Lightning strikes pop their targets too. Relay sends a short hit pulse from a popped carrier to a nearby bubble, including its marked power. Pressure effects move bubbles; merely pushing one does not pop it.
 
@@ -24,6 +24,6 @@ Your score and evolving song continue between waves. Melody Journey, Free Play a
 
 ## Saves and Records
 
-The game saves your wave, remaining bubbles, moves, current flight and musical memory. When Waves was last played, Continue identifies the saved wave and its remaining plucks. The Endless Waves button resumes an unfinished wave run; after a game over it starts a new one.
+The game saves your wave, remaining bubbles, moves, current flight and musical memory. When Waves was last played, Continue identifies the saved wave and its remaining shots. The Endless Waves button resumes an unfinished wave run; after a game over it starts a new one.
 
 The results screen shows the highest wave reached and best score saved in this browser. These are local records, not an online leaderboard.

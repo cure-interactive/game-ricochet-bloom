@@ -17,7 +17,7 @@ export const EXPERIMENT_FAMILIES={
 export const EXPERIMENT_CATALOGUE=[
   {
     "id": "001",
-    "name": "One-Pluck Clear",
+    "name": "One-Shot Clear",
     "scope": "Rule",
     "description": "Clear every marked target in one launch; restart the same board after a miss.",
     "family": "precision",

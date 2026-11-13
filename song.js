@@ -7,6 +7,16 @@ export function songLibraryRead(value) {
   return {version:1,songs:value.songs.slice(0,SONG_LIMIT).filter(s=>s&&typeof s.id==='string'&&s.id.length<=80&&typeof s.name==='string'&&s.name.trim()&&s.name.length<=60&&Number.isSafeInteger(s.created)&&s.created>=0&&[3,4].includes(s.music?.version)&&Number.isSafeInteger(s.music.blooms)&&s.music.blooms>=0&&Number.isSafeInteger(s.music.plucks)&&s.music.plucks>=0&&!ids.has(s.id)&&ids.add(s.id)).map(s=>({id:s.id,name:s.name,created:s.created,music:musicCreate(s.music,s.music.blooms,s.music.plucks)}))};
 }
 export function songSnapshot(music) {const copy=musicCreate(music,music.blooms,music.plucks);if(copy.strikes.length)musicFinish(copy);return copy;}
+export function songKeep(storage,song){
+  try{
+    const raw=storage.getItem(SONG_STORAGE),input=raw===null?{version:1,songs:[]}:JSON.parse(raw),library=songLibraryRead(input);
+    if(input?.version!==1||!Array.isArray(input.songs)||input.songs.length!==library.songs.length)return {ok:false,reason:'The Song Library could not be read. Your existing songs are preserved.'};
+    if(library.songs.some(s=>s.id===song.id))return {ok:true};
+    if(library.songs.length>=SONG_LIMIT)return {ok:false,reason:'The Song Library is full. Keep this run, then export or remove a song from the library before saving this composition.'};
+    const candidate=songLibraryRead({version:1,songs:[song]}).songs[0];if(!candidate)return {ok:false,reason:'The composition could not be saved.'};
+    storage.setItem(SONG_STORAGE,JSON.stringify({...library,songs:[{...candidate,music:songSnapshot(candidate.music)},...library.songs]}));return {ok:true};
+  }catch{return {ok:false,reason:'The composition could not be saved. Keep this tab open and try again.'};}
+}
 export function wavEncode(buffer) {
   const channels=Math.min(2,buffer.numberOfChannels),frames=buffer.length,bytes=frames*channels*2;
   const data=new ArrayBuffer(44+bytes),view=new DataView(data),text=(at,s)=>{for(let i=0;i<s.length;i++)view.setUint8(at+i,s.charCodeAt(i));};
