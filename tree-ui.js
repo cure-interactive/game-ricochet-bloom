@@ -1,10 +1,10 @@
-import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=a5e9f8a6f2ed2817789f29aed36164a26489f2a6f99c22aeb887797743a78b0a';
+import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=1b920482a18b40ed74408c30f3d8a228a8484a2b722dd5da50cc04e1df6a68b1';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=af759fa122bdfdd7961790beb583c476ca3a422effa791a40b54486b19e88f15';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
 import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
-import { profilePurchase, profileSummary } from './profile.js?v=50cf2a95bc3b9a03625262f4f59e70ba1e08c41dba49b48bf4bf248ebe445847';
-import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=9fa17aafe3666f4c84f832dabce26c9e17179c937b524587ed5bc0ff4f00a7bb';
+import { profilePurchase, profileSummary } from './profile.js?v=5d8031e38a69136dd5b7c990c13256f8d01b1a4967769dd8d0e292d8b229cd27';
+import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=02a65f603ee043af90292a2d1b31524468f9b3a1a70cdf80608551b32daaf963';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

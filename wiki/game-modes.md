@@ -1,6 +1,6 @@
 # Game Modes to Try
 
-**210 experiment ideas, grounded in the workshop mind map and game research.** Start with [Mind Map and Research Connections](#mind-map-and-research-connections) and [Direct Mind Map Experiments](#direct-mind-map-experiments). Browse the [Experiment Catalogue](#experiment-catalogue), [First Experiments to Compare](#first-experiments-to-compare) and [Experiment Guardrails](#experiment-guardrails). The developer approved all three recommended experiments for v3.0.0. Reaction Puzzle, Cargo Rescue and Outbreak Containment are now playable through Main Menu → Gamemodes, with three layouts each. See [Play the Experiments](experiments.md) for implemented rules and controls. Pressure Survival and Reaction Lab remain proposals. Trial values are starting points, not validated balance.
+**210 experiment ideas, grounded in the workshop mind map and game research.** Start with [Mind Map and Research Connections](#mind-map-and-research-connections) and [Direct Mind Map Experiments](#direct-mind-map-experiments). Browse the [Experiment Catalogue](#experiment-catalogue), [First Experiments to Compare](#first-experiments-to-compare) and [Experiment Guardrails](#experiment-guardrails). The developer approved all three recommended experiments for v3.0.0. The current hub at Main Menu → Gamemodes → Experiments contains those original trials, three controlled variations and Capture Transport Release, with three layouts each. See [Play the Experiments](experiments.md) for implemented rules and controls. Pressure Survival and Reaction Lab remain proposals. Trial values are starting points, not validated balance.
 
 ## Current Baseline
 
@@ -33,299 +33,719 @@ The following source connections distinguish observed mechanics from our propose
 
 ## Experiment Catalogue
 
-The original broad collection contains **150 candidate experiments**, grouped by the decisions they ask players to make. These are original design hypotheses, not implemented features or approved production commitments. The seven existing comparison modes are Melody Journey, Free Play, Endless Waves, Challenge, Reaction Puzzle, Cargo Rescue and Outbreak Containment.
+The original broad collection contains **150 candidate experiments**, grouped by the decisions they ask players to make. These are original design hypotheses, not blanket production commitments. The in-game Development Catalogue reports which entries are playable. Existing modes include Melody Journey, Free Play, Endless Waves, Challenge, Score Attack and the original three trials.
 
-Some entries are full mode concepts; others are ruleset variants or session formats. Try variants as options before giving each a permanent menu card. Pressure Survival and Reaction Lab retain detailed briefs below. Score Attack overlaps the existing limited-move design decision and does not settle it.
+Some entries are full mode concepts; others are ruleset variants or session formats. Try variants as options before giving each a permanent menu card. Pressure Survival and Reaction Lab retain detailed briefs below. Score Attack (#061) now links to the existing 5/10/15-shot mode.
 
-**Scope key:** **Rule** changes goals, scoring, constraints or encounter scripting around current mechanics; **System** needs a new persistent interaction or simulation rule; **Platform** needs substantial editor, replay, sharing or multiplayer infrastructure. These are dependencies, not time estimates. Every idea still needs implementation, isolated saves and checks. Turn-based experiments freeze while aiming unless explicitly described as real time. Competition and co-op can begin locally; online play is not assumed.
+**Scope key:** **Rule** changes goals, scoring, constraints or encounter scripting around current mechanics; **System** needs a new persistent interaction or simulation rule; **Platform** needs substantial editor, replay, sharing or multiplayer infrastructure. These are dependencies, not time estimates. Most ideas still need implementation. The hub currently includes Reaction Budget (#013), Hazardous Shipment (#030), Source Priority (#032) and Capture Transport Release (#151), each with isolated setups and checks. Turn-based experiments freeze while aiming unless explicitly described as real time. Competition and co-op can begin locally; online play is not assumed.
 
 ### Precision and Shot Planning
 
+#### Experiment 001
+
 - **001. One-Pluck Clear — Rule:** Clear every marked target in one launch; restart the same board after a miss.
+#### Experiment 002
+
 - **002. Bank Shot Only — Rule:** Clear a quota in six shots; contacts count only after a wall bank.
+#### Experiment 003
+
 - **003. Called Shot — Rule:** Nominate the first target before launching; complete five correct calls within seven shots.
+#### Experiment 004
+
 - **004. Exact Chain — Rule:** Finish with exactly the requested number of distinct contacts; exceeding it fails the puzzle.
+#### Experiment 005
+
 - **005. Last Bubble Standing — Rule:** Clear everything except a designated keeper; touching the keeper loses the board.
+#### Experiment 006
+
 - **006. Power Order — Rule:** Collect three powers in the displayed order during one flight; wrong-order contact fails the attempt.
+#### Experiment 007
+
 - **007. Corner Tour — System:** Pass through all four corner gates in one pluck, then settle inside the finish zone.
+#### Experiment 008
+
 - **008. Ricochet Golf — System:** Reach a cup across successive obstacle pools using the fewest total launches.
+#### Experiment 009
+
 - **009. Landing Zone — System:** Touch the required targets, then finish at rest inside a marked region; overshooting does not count.
+#### Experiment 010
+
 - **010. Narrow Escape — System:** Traverse gates without touching forbidden walls; each completed chamber advances the course.
 
 ### Reactions and Logic
 
+#### Experiment 011
+
 - **011. Fuse Route — System:** Ignite a fuse network so its final blast reaches the goal without burning protected branches.
+#### Experiment 012
+
 - **012. Controlled Demolition — Rule:** Destroy every barrier within a shot budget while keeping all cargo intact.
+#### Experiment 013
+
 - **013. Reaction Budget — System:** Clear a hazard quota while allowing no more than three explosions across the entire board.
+#### Experiment 014
+
 - **014. Color Cascade — System:** Trigger matching groups; clear every color without stranding an unmatched target.
+#### Experiment 015
+
 - **015. Polarity Puzzle — System:** Flip attraction and repulsion signs to move charged bodies onto matching sockets within six turns.
+#### Experiment 016
+
 - **016. Switch Circuit — System:** Hit switches to route a visible signal, open an exit and reach it before shots run out.
+#### Experiment 017
+
 - **017. Catalyst Courier — System:** Move a reusable catalyst between inert clusters and activate them all without losing it.
+#### Experiment 018
+
 - **018. Delayed Reaction — System:** Schedule blasts for the next turn; clear hazards while moving vulnerable bodies out of danger.
+#### Experiment 019
+
 - **019. Chain Limit — System:** Clear hazards with each reaction capped at three propagated events; larger chains fail the board.
+#### Experiment 020
+
 - **020. Counterreaction — System:** Intercept a visible impending reaction with a neutralizing effect before its turn countdown expires.
 
 ### Cargo and Rescue
 
+#### Experiment 021
+
 - **021. Cargo Sorting — System:** Deliver each cargo type to its matching receiver within a shot budget and mistake allowance.
+#### Experiment 022
+
 - **022. Convoy Escort — System:** Escort a moving group across the pool while keeping a minimum number intact for the journey.
+#### Experiment 023
+
 - **023. Towline Rescue — System:** Attach a persistent towline to cargo and guide it home without breaking the line.
+#### Experiment 024
+
 - **024. Evacuation Order — System:** Rescue numbered cargo in order before a turn-based hazard front reaches it.
+#### Experiment 025
+
 - **025. Heavy Freight — System:** Move one massive object through narrow channels and dock it before exhausting the launch budget.
+#### Experiment 026
+
 - **026. Cargo Exchange — System:** Swap two groups between opposite docks without mixing them or exceeding dock capacity.
+#### Experiment 027
+
 - **027. Fragile Relay — System:** Transfer a parcel through checkpoints, each restoring a limited handling allowance; deliver before it breaks.
+#### Experiment 028
+
 - **028. Salvage Run — System:** Retrieve valuables and extract before fuel runs out; bank only what reaches extraction.
+#### Experiment 029
+
 - **029. Rescue the Trapped — System:** Break cages, then deliver freed captives; lose if too few survive to meet the rescue quota.
+#### Experiment 030
+
 - **030. Hazardous Shipment — System:** Deliver volatile cargo that ruptures above a visible impact threshold before shots run out.
 
 ### Containment and Defense
 
+#### Experiment 031
+
 - **031. Firewall — System:** Reposition barriers to stop a spreading hazard crossing a marked line for ten turns.
+#### Experiment 032
+
 - **032. Source Priority — Rule:** Seal vents with different visible output schedules before the protected cell loses all integrity.
+#### Experiment 033
+
 - **033. Quarantine Ring — System:** Push infected bodies inside a boundary and keep them there for three consecutive turn endings.
+#### Experiment 034
+
 - **034. Cure Delivery — System:** Carry limited neutralizing charges to infected cells before spread reaches a threshold.
+#### Experiment 035
+
 - **035. Shield Rotation — System:** Rotate protective plates by impact to block attacks and preserve the core through a finite encounter.
+#### Experiment 036
+
 - **036. Leak Patrol — System:** Plug telegraphed leaks before a reservoir empties; survive a finite sequence of breaches.
+#### Experiment 037
+
 - **037. Nest Siege — System:** Break nest shields and disable their sources while managing enemies emitted between shots.
+#### Experiment 038
+
 - **038. Decoy Defense — System:** Redirect pursuers toward movable decoys and protect the real objective until evacuation completes.
+#### Experiment 039
+
 - **039. Territory Cleanse — System:** Clean every contaminated tile and stop surviving sources from recolonizing cleared ground.
+#### Experiment 040
+
 - **040. Last Light — Rule:** Protect three separated cells for eight turns when one shot cannot cover every threat.
 
 ### Survival and Time Pressure
 
+#### Experiment 041
+
 - **041. Pressure Survival — System:** Survive a finite real-time encounter with limited health and emitting sources; see its detailed brief below.
+#### Experiment 042
+
 - **042. Shrinking Pool — System:** Reach successive safe regions as the arena contracts; danger-boundary exposure drains integrity.
+#### Experiment 043
+
 - **043. Oxygen Run — System:** Visit refill stations and reach an exit before movement and waiting exhaust the oxygen supply.
+#### Experiment 044
+
 - **044. Avalanche — System:** Clear descending rows before their timed advances carry them past the bottom boundary.
+#### Experiment 045
+
 - **045. Hot Core — System:** Transfer an overheating charge to coolant targets before its fuse ends; survive several transfers.
+#### Experiment 046
+
 - **046. Rising Tide — System:** Reach higher refuge gates before a real-time hazard level overtakes the seed.
+#### Experiment 047
+
 - **047. Safe Window — System:** Cross pulsing hazard bands during visible inactive phases and reach the exit with limited lives.
+#### Experiment 048
+
 - **048. Pursuit — System:** Collect exit keys while evading a predictable hunter; too many captures end the run.
+#### Experiment 049
+
 - **049. Overload Management — System:** Spend shots venting pressure or completing tasks; finish every task before the shared gauge overflows.
+#### Experiment 050
+
 - **050. Endurance Checkpoints — Rule:** Clear a finite ladder of harder boards with shared plucks and small checkpoint refills.
 
 ### Terrain and Navigation
 
+#### Experiment 051
+
 - **051. Mirror Maze — System:** Rotate interior reflectors between shots to route the seed through checkpoints and into an exit.
+#### Experiment 052
+
 - **052. Current Engineer — System:** Reorient current emitters to deliver cargo into every receiver using limited adjustments.
+#### Experiment 053
+
 - **053. Portal Route — System:** Place limited portal pairs, then complete a checkpoint course with the fewest launches.
+#### Experiment 054
+
 - **054. Gravity Wells — System:** Use persistent attractors to bend shots through gates without entering marked capture zones.
+#### Experiment 055
+
 - **055. Breakout Chamber — System:** Destroy durable bricks to open an exit, then land there before shots run out.
+#### Experiment 056
+
 - **056. Drawn Barrier — Platform:** Draw one wall before each shot; solve target puzzles using a finite total wall-length allowance.
+#### Experiment 057
+
 - **057. Erosion — System:** Wear channels through soft terrain and deliver a payload before its supporting terrain collapses.
+#### Experiment 058
+
 - **058. Rotating Chamber — System:** Turn the world between shots, changing gravity and currents; deliver cargo through successive orientations.
+#### Experiment 059
+
 - **059. Moving Maze — System:** Navigate walls that shift on a visible turn schedule; exit within the launch limit.
+#### Experiment 060
+
 - **060. Bridge Builder — System:** Push pieces into sockets to form a safe route, then deliver cargo across it.
 
 ### Score and Risk
 
-- **061. Score Attack — Rule:** Maximize score within a fixed pluck budget and fixed build, separate from permanent research strength.
+#### Experiment 061
+
+- **061. Score Attack — Rule:** Maximize score within a fixed pluck budget, with the current researched build fixed at the start of each run.
+#### Experiment 062
+
 - **062. Combo Cash-Out — System:** Carry a multiplier across shots and choose when to bank; failed chains erase the unbanked pot.
+#### Experiment 063
+
 - **063. Bounty Board — Rule:** Choose between visible shot objectives with different rewards; maximize bounty across ten launches.
+#### Experiment 064
+
 - **064. Precision Wager — System:** Stake run-only tokens on called banks or chains; finish above a quota without going bankrupt.
+#### Experiment 065
+
 - **065. Efficiency Trial — Rule:** Clear a prescribed board while minimizing total launch energy rather than simply counting shots.
+#### Experiment 066
+
 - **066. Spare Shot Sprint — Rule:** Clear short boards; remaining plucks convert to score instead of carrying into the next board.
+#### Experiment 067
+
 - **067. Risk Zones — System:** Earn larger rewards in dangerous regions; return to a home zone to bank a target score.
+#### Experiment 068
+
 - **068. Perfect Streak — Rule:** Complete consecutive shot objectives; the first failure ends the run and records the streak.
+#### Experiment 069
+
 - **069. Contract Run — Rule:** Choose optional restrictions for larger rewards; a failed contract pays nothing even if the board clears.
+#### Experiment 070
+
 - **070. Balanced Score — Rule:** Build separate bank, contact and power totals; the weakest category limits the final score.
 
 ### Builds and Power Choices
 
+#### Experiment 071
+
 - **071. Draft Run — System:** Pick one of three temporary powers between boards and complete a short run with the resulting draft.
+#### Experiment 072
+
 - **072. Single Power Mastery — Rule:** Complete purpose-built boards with one fixed power, testing its uses rather than ownership.
+#### Experiment 073
+
 - **073. Power Pair Trials — Rule:** Solve boards using an assigned pair of powers; finish within par and compare different pairings.
+#### Experiment 074
+
 - **074. Sealed Loadout — System:** Receive a seeded power pool, choose a build and clear a gauntlet without further purchases.
+#### Experiment 075
+
 - **075. Borrowed Build — Rule:** Clear a sequence with a curated unfamiliar fixed build, learning its strengths through play.
+#### Experiment 076
+
 - **076. Power Decay — System:** Each activation weakens that power for the run; finish before the build becomes ineffective.
+#### Experiment 077
+
 - **077. Charge Economy — System:** Spend finite power charges across several pools, reserving enough for the final obstacle.
+#### Experiment 078
+
 - **078. Curse Bargain — System:** Accept explicit drawbacks for temporary advantages between boards; complete the run with those bargains.
+#### Experiment 079
+
 - **079. Evolution Run — System:** Upgrade behaviors actually used in cleared pools and guide the emerging build through a final test.
+#### Experiment 080
+
 - **080. Power Auction — System:** Bid run-only currency against a scripted rival for upgrades, then beat its multi-board target score.
 
 ### Music and Composition
 
+#### Experiment 081
+
 - **081. Melody Route — System:** Strike pitch-marked targets in a requested order within a shot budget; judge visible contact order.
+#### Experiment 082
+
 - **082. Rhythm Gates — System:** Cross gates during visible beat windows; complete the course with calibrated timing and an untimed comparison.
+#### Experiment 083
+
 - **083. Call and Response — System:** Watch and hear a phrase, then reproduce its target sequence with limited launches.
+#### Experiment 084
+
 - **084. Harmony Builder — System:** Collect compatible note groups to complete a displayed chord progression before shots run out.
+#### Experiment 085
+
 - **085. Instrument Rescue — System:** Deliver melody, bass and rhythm cargo to separate stages to complete an arrangement.
+#### Experiment 086
+
 - **086. Silence Puzzle — System:** Reach required targets without touching marked sound-triggering bubbles; forbidden contacts fail the attempt.
+#### Experiment 087
+
 - **087. Crescendo Run — System:** Raise visible musical intensity through varied chains, then complete the objective with a controlled quiet landing.
+#### Experiment 088
+
 - **088. Counterpoint — System:** Alternate two seed voices to complete separate note lines without hitting the wrong role's targets.
+#### Experiment 089
+
 - **089. Phrase Repair — System:** Replace displayed missing or incorrect notes by hitting appropriate targets within the shot limit.
+#### Experiment 090
+
 - **090. Free Composition — System:** Build a song in a chosen palette without loss conditions; finish by saving the composition.
 
 ### Memory and Hidden Information
 
+#### Experiment 091
+
 - **091. Constellation Recall — System:** Preview target markings, hide them, then hit only the remembered targets within a mistake allowance.
+#### Experiment 092
+
 - **092. Echo Route — Platform:** Watch a recorded route and reproduce ordered checkpoints; rank completions by path deviation.
+#### Experiment 093
+
 - **093. Scout and Strike — System:** Spend limited scouting shots revealing targets, then clear actual hazards before ammunition runs out.
+#### Experiment 094
+
 - **094. Hidden Cargo — System:** Reveal destinations on contact and remember them while sorting all cargo with limited mistakes.
+#### Experiment 095
+
 - **095. Rule Deduction — System:** Infer a consistent hidden matching rule from feedback, then solve a final board under that rule.
+#### Experiment 096
+
 - **096. Moving Target Memory — System:** Memorize numbered moving bubbles, then tag them in order after their numbers disappear.
+#### Experiment 097
+
 - **097. Fog Expedition — System:** Reveal passages while traveling; find a key and exit before shared energy runs out.
+#### Experiment 098
+
 - **098. Prediction Trial — System:** Predict a supplied shot's reaction outcome before launching; earn a quota of correct predictions.
+#### Experiment 099
+
 - **099. Sequence Lock — System:** Discover a switch sequence through bounded feedback and open the lock within limited attempts.
+#### Experiment 100
+
 - **100. Limited Sonar — System:** Spend a few pulses revealing obstacles; deliver a payload without exhausting its integrity.
 
 ### Growth and Material Systems
 
+#### Experiment 101
+
 - **101. Absorption — System:** Consume smaller bodies to reach a target mass while avoiding bodies large enough to absorb the seed.
+#### Experiment 102
+
 - **102. Split and Rejoin — System:** Divide mass through narrow gaps, then reunite enough at the finish to meet a quota.
+#### Experiment 103
+
 - **103. Mass Budget — System:** Propel by ejecting mass; reach the destination while retaining the required minimum size.
+#### Experiment 104
+
 - **104. Membrane Repair — System:** Deliver patches to every leak before the enclosure's remaining contents fall below a quota.
+#### Experiment 105
+
 - **105. Osmotic Balance — System:** Transfer material between chambers until displayed concentrations all fall within target ranges.
+#### Experiment 106
+
 - **106. Bubble Packing — System:** Fit deformable bodies inside a container without bursting them or exceeding its boundary.
+#### Experiment 107
+
 - **107. Pressure Network — System:** Open valves and move plugs until several chambers simultaneously reach safe pressure ranges.
+#### Experiment 108
+
 - **108. Phase Change — System:** Switch objects between invented solid, liquid-like and vapor-like states to deliver a material quota.
+#### Experiment 109
+
 - **109. Foam Sculptor — System:** Deposit and remove persistent foam to form a stable route, then pass a delivery test.
+#### Experiment 110
+
 - **110. Ecosystem Balance — System:** Keep three fictional populations within visible bounds for ten turns through feeding, separation and source control.
 
 ### Journeys and Campaign Formats
 
+#### Experiment 111
+
 - **111. Branching Expedition — System:** Choose risk-and-reward routes through short pools and reach an endpoint with shared resources remaining.
+#### Experiment 112
+
 - **112. Boss Anatomy — System:** Disable protective parts in a chosen order, expose a core and defeat it within a finite encounter.
+#### Experiment 113
+
 - **113. Heist — System:** Enter a guarded chamber, collect an artifact and extract; raising an alarm changes the return route.
+#### Experiment 114
+
 - **114. Bounty Hunt — System:** Track and capture a roaming target across connected pools before the expedition budget expires.
+#### Experiment 115
+
 - **115. Courier Circuit — System:** Choose a delivery order across chambers and complete every contract before shared fuel runs out.
+#### Experiment 116
+
 - **116. Escape Rooms — System:** Solve linked switches and object puzzles to escape successive rooms using limited hints.
+#### Experiment 117
+
 - **117. Expedition Camp — System:** Spend supplies on repairs or take harder routes; finish a finite journey with the choices made.
+#### Experiment 118
+
 - **118. Campaign Remix — Rule:** Replay existing layouts with unfamiliar fixed goals and builds under one shared shot allowance.
+#### Experiment 119
+
 - **119. Boss Rush — System:** Defeat successive compact bosses with limited recovery; rank completed runs by resources retained.
+#### Experiment 120
+
 - **120. Scenario Anthology — Rule:** Complete a curated sequence of reaction, rescue and containment trials, earning a medal for each discipline.
 
 ### Competition and Party Play
 
+#### Experiment 121
+
 - **121. Same-Seed Duel — Rule:** Pass one device between players for isolated identical boards and builds; highest score wins.
+#### Experiment 122
+
 - **122. Alternate-Shot Duel — System:** Take turns claiming targets on a shared board; most claims when it clears wins.
+#### Experiment 123
+
 - **123. Territory Claim — System:** Color regions through contacts and defend against recoloring; most territory after fixed rounds wins.
+#### Experiment 124
+
 - **124. Ricochet Goals — System:** Knock a neutral ball into the opponent's goal in alternating turns; first to the goal quota wins.
+#### Experiment 125
+
 - **125. King of the Pool — System:** Finish turns inside a contested zone to earn control points; first to the quota wins.
+#### Experiment 126
+
 - **126. Bumper Duel — System:** Knock the opposing seed out of a safe arena through alternating launches while keeping yours inside.
+#### Experiment 127
+
 - **127. Trick-Shot HORSE — Platform:** Record a checkpoint-based trick shot for another player to reproduce; failed reproductions add penalties.
+#### Experiment 128
+
 - **128. Ghost Race — Platform:** Race an asynchronous recorded run on a fixed course without physical interference; quickest completion wins.
+#### Experiment 129
+
 - **129. Daily Seed Challenge — Platform:** Give everyone the same versioned board and build with comparable results and explicit retry rules.
+#### Experiment 130
+
 - **130. Party Rotation — System:** Cycle players through short precision, rescue and reaction rounds for one overall session score.
 
 ### Cooperation
 
+#### Experiment 131
+
 - **131. Shared Plucks — System:** Alternate one seed with shared shots; clear a board that rewards discussing each next launch.
+#### Experiment 132
+
 - **132. Dual Seed Rescue — System:** Control two seeds in turns, using one to position cargo and the other to finish deliveries.
+#### Experiment 133
+
 - **133. Asymmetric Tools — System:** Give each player different fixed powers; solve a board requiring both within shared turns.
+#### Experiment 134
+
 - **134. Pilot and Engineer — System:** One player launches while another configures limited gates between shots; deliver all cargo together.
+#### Experiment 135
+
 - **135. Linked Partners — System:** Keep two player seeds joined by a persistent rope while reaching separate exits without breaking it.
+#### Experiment 136
+
 - **136. Two-Front Defense — System:** Defend two cells using alternating seeds and shared supplies; both must survive the encounter.
+#### Experiment 137
+
 - **137. Rescue Relay — System:** Hand fragile cargo between player-controlled zones and deliver the quota across the whole chain.
+#### Experiment 138
+
 - **138. Simultaneous Plan — System:** Choose launches secretly, then resolve both together; complete a shared objective without harmful collisions.
+#### Experiment 139
+
 - **139. Shared Song — System:** Assign players melody and rhythm tasks; complete both visible parts to finish a composition challenge.
+#### Experiment 140
+
 - **140. Cooperative Gauntlet — System:** Alternate the lead across specialist boards, sharing limited retries until the final clear.
 
 ### Sandboxes and Gentle Play
 
+#### Experiment 141
+
 - **141. Reaction Lab — System:** Inspect bounded interactions with stepping, a causal log and reset; deliberately omit score and loss states.
+#### Experiment 142
+
 - **142. Puzzle Workshop — Platform:** Author and share bounded goal-based layouts; require a recorded valid solution before publishing a challenge.
+#### Experiment 143
+
 - **143. Current Garden — System:** Arrange currents and obstacles to maintain a chosen circulation pattern, then save the garden.
+#### Experiment 144
+
 - **144. Zen Clearing — Rule:** Complete a finite pleasant arrangement at any pace with unlimited shots, then choose a fresh board.
+#### Experiment 145
+
 - **145. Constellation Painting — System:** Trace target points to complete a picture without a timer or punitive restart.
+#### Experiment 146
+
 - **146. Restoration Pool — System:** Clean a damaged environment through contact and delivery tasks until every visible region is restored.
+#### Experiment 147
+
 - **147. Chain Gallery — Platform:** Save successful reactions as replays and inspect causal steps while comparing solutions to the same board.
+#### Experiment 148
+
 - **148. Skill Clinic — System:** Practice a technique on adaptive drills with feedback; graduate after a repeatable accuracy target.
+#### Experiment 149
+
 - **149. Accessibility Trials — Rule:** Try equivalent untimed objectives using drag, sliders or keyboard; compare comfort and completion on identical rules.
+#### Experiment 150
+
 - **150. Rule Mixer — Platform:** Combine compatible goals, powers and modifiers; flag incompatible combinations and save a bounded custom recipe.
 
 ## Direct Mind Map Experiments
 
-All sixty additions below need **System** work. Each combines explicit workshop mechanics with a clear success condition and primary loss pressure. Unless marked otherwise, use limited shots with frozen aiming; resolve the objective after reactions settle. Counts and budgets are test parameters, not settled balance. Entries may share mechanics, but differ in the decision or objective being tested.
+All sixty additions below were scoped as **System** work. Capture Transport Release (#151) now has a bounded playable prototype; the remaining direct additions remain proposed. Each combines explicit workshop mechanics with a clear success condition and primary loss pressure. Unless marked otherwise, use limited shots with frozen aiming; resolve the objective after reactions settle. Counts and budgets are test parameters, not settled balance. Entries may share mechanics, but differ in the decision or objective being tested.
 
 ### Capture, Carry and Release
 
 Mind-map roots: [Trap, Pop, Transport and Release](development-concept.md#bubble-actions), [Enemies](development-concept.md#enemies). Research connections: Bubble Bobble's containment and Bubble Ghost's protection.
 
+#### Experiment 151
+
 - **151. Capture Transport Release — System:** Enclose a hazard, move it behind a wall and release it onto marked targets; clear them before shots run out.
+#### Experiment 152
+
 - **152. Prison Break — System:** Capture guards instead of killing them and move their containers away; escort all prisoners out within the launch budget.
+#### Experiment 153
+
 - **153. Gas Harvest — System:** Capture finite gas clouds and deliver their contents to collectors; meet the quota before a shot limit.
+#### Experiment 154
+
 - **154. Enemy Ammunition — System:** Trap a hostile spitter and transport it so its released projectiles open a barricade; reach the exit within eight turns.
+#### Experiment 155
+
 - **155. Living Key — System:** Carry a captured creature to a gate, then release it to activate the mechanism; escape before it wanders away for good.
+#### Experiment 156
+
 - **156. Catch the Fragments — System:** Place empty capture bubbles to intercept shrapnel and deliver the collected fragments within six shots.
+#### Experiment 157
+
 - **157. Nursery Transfer — System:** Move captured young organisms through predators, releasing them only inside a refuge; lose if too few survive.
+#### Experiment 158
+
 - **158. Temporary Prison — System:** Trap enemies in membranes that expire after a visible number of turns; clear an escape route before recapture becomes impossible.
+#### Experiment 159
+
 - **159. Containment Exchange — System:** Transfer contents between containers with different resistances; deliver the payload before the shared shot budget ends.
+#### Experiment 160
+
 - **160. Double Shell — System:** Pop an outer protective layer to fit a passage, preserve the inner cargo and reach its receiver within par.
 
 ### Division, Fusion and Payload Accounting
 
 Mind-map roots: [Split and Merge](development-concept.md#bubble-actions), [finite contents and split budgets](development-concept.md#chain-reactions). Research connection: Osmos's size tradeoffs; exact fusion rules remain ours.
 
+#### Experiment 161
+
 - **161. Split-Gap Delivery — System:** Divide one payload to pass separate narrow channels, then deliver every portion within the shot limit.
+#### Experiment 162
+
 - **162. Weighted Sockets — System:** Split and merge masses until each receiver contains its exact required amount; solve within a fixed action budget.
+#### Experiment 163
+
 - **163. Merge Ram — System:** Fuse small bodies into a heavy ram, break a barrier and deliver the surviving mass before shots run out.
+#### Experiment 164
+
 - **164. Volatile Fusion — System:** Merge compatible payloads only at marked demolition sites; destroy every site without rupturing protected cargo.
+#### Experiment 165
+
 - **165. Divide the Threat — System:** Split a large hostile into smaller capturable bodies; contain all of them before the turn limit.
+#### Experiment 166
+
 - **166. Assembly Line — System:** Route incoming ingredients into prescribed merged products; complete an order before the finite supply is exhausted.
+#### Experiment 167
+
 - **167. Unequal Division — System:** Choose split proportions to send enough force down one route while preserving valuable mass on another; satisfy both goals within par.
+#### Experiment 168
+
 - **168. Population Ceiling — System:** Clear a quota through splitting and capture while keeping active body count below a visible maximum.
+#### Experiment 169
+
 - **169. Merge Chain Brake — System:** Fuse reactive bodies into an inert absorber to interrupt an approaching chain; protect the objective through the encounter.
+#### Experiment 170
+
 - **170. Cargo Dilution — System:** Merge hazardous contents with a finite neutral carrier until each shipment meets a displayed safe ratio, then deliver within the shot limit.
 
 ### Elements, Status and Chain Interruption
 
 Mind-map roots: [Elements and Status Effects](development-concept.md#elements-and-status-effects), [Chain Reactions](development-concept.md#chain-reactions). Research connections: Noita's consistent interactions and Pang's readable hazard families.
 
+#### Experiment 171
+
 - **171. Shrapnel Relay — System:** Aim finite fragment bursts through successive carriers to reach a shielded target; complete the chain within the shot limit.
+#### Experiment 172
+
 - **172. Acid Key — System:** Release acid onto compatible locks while protecting non-resistant cargo; open and traverse the exit before shots run out.
+#### Experiment 173
+
 - **173. Steam Junction — System:** Merge specified steam-bearing payloads at a junction to push gates into alignment; reach the exit within par.
+#### Experiment 174
+
 - **174. Gas Corridor — System:** Capture or displace a cloud to open a safe passage; escort cargo through before its integrity is lost.
+#### Experiment 175
+
 - **175. Mud Dam — System:** Combine earth and water at a chosen bottleneck to redirect a current into cargo receivers within limited shots.
+#### Experiment 176
+
 - **176. Firebreak Sculptor — System:** Rearrange inert bodies and gaps to stop a gas ignition chain reaching a protected cell; survive one triggered cascade.
+#### Experiment 177
+
 - **177. Reagent Recovery — System:** Recover useful material after a reaction and reuse it on a second obstacle; complete both with a finite initial payload supply.
+#### Experiment 178
+
 - **178. Status Transfer — System:** Trap a slowing cloud and release it around enemies instead of the player; escort a convoy before enemies destroy its quota.
+#### Experiment 179
+
 - **179. Fragment Collector — System:** Break containers whose fragments become temporary tools, then use those tools to clear designated obstacles before shots expire.
+#### Experiment 180
+
 - **180. Reaction Interception — System:** Redirect a moving blast carrier, absorb its contents or place cover before its visible fuse ends; save every protected cell.
 
 ### Sources as Resources
 
 Mind-map roots: [Bubble Sources](development-concept.md#bubble-sources), [Enemies](development-concept.md#enemies). Research connection: Puzzle Bobble's changing supply; feed, redirect and conversion rules are our extensions.
 
+#### Experiment 181
+
 - **181. Keep One Vent Open — System:** Harvest a dangerous source to obtain needed material, then seal it and complete a delivery before the turn limit.
+#### Experiment 182
+
 - **182. Feed the Producer — System:** Deliver different food payloads to control a source's next output; manufacture the required set within limited turns.
+#### Experiment 183
+
 - **183. Source Hijack — System:** Turn hostile outputs toward enemy barriers; reach the exit without destroying the source you need, within par.
+#### Experiment 184
+
 - **184. Source Timing — System:** Activate sources in a physical production schedule so their outputs meet and react at one location; complete a target chain within turns.
+#### Experiment 185
+
 - **185. Geyser Elevator — System:** Trigger an impact-driven jet to lift or carry cargo across a blocked route; deliver before the shot budget ends.
+#### Experiment 186
+
 - **186. Producer Protection — System:** Keep a useful producer alive until it supplies a quota while diverting harmful emissions from nearby sources.
+#### Experiment 187
+
 - **187. Supply Cut — System:** Starve an enemy nest by intercepting its incoming nutrients; disable every nest before the protected cell loses its health.
+#### Experiment 188
+
 - **188. Contaminated Factory — System:** Remove an infection from a producer so it emits useful contents again; restore the required outputs within eight turns.
+#### Experiment 189
+
 - **189. Portable Source — System:** Reposition one generator to serve several separated receivers; fill them all using its finite stock.
+#### Experiment 190
+
 - **190. Plug and Unplug — System:** Seal a source with mud, reopen it with a blast and time successive releases to complete a routing puzzle within par.
 
 ### Anchors, Connections and Changing Routes
 
 Mind-map roots: [Independent Properties](development-concept.md#independent-properties), [Environment and Layout](development-concept.md#environment-and-layout). Research connections: Puzzle Bobble's connectivity, FOAMSTARS's lasting terrain and Noita's environmental effects.
 
+#### Experiment 191
+
 - **191. Anchor Release — System:** Dissolve selected tethers so a captive cluster drifts into a receiver; deliver its quota without exhausting shots.
+#### Experiment 192
+
 - **192. Support Collapse — System:** Remove a support to release many targets at once; catch required cargo while letting hazards fall into disposal zones.
+#### Experiment 193
+
 - **193. Pendulum Payload — System:** Time impacts on tethered explosive bubbles so they detonate beside barriers rather than cargo; clear within the shot limit.
+#### Experiment 194
+
 - **194. Track Switchyard — System:** Move rail-constrained bubbles through switchable junctions into matching bays before limited turns expire.
+#### Experiment 195
+
 - **195. Break the Right Link — System:** Sever one connection in an attachment chain to isolate a dangerous payload without losing the valuable cluster.
+#### Experiment 196
+
 - **196. Reactive Bumpers — System:** Use fixed bumpers that release finite effects on impact; chain their outputs to reach a protected target within par.
+#### Experiment 197
+
 - **197. Chamber Transfer — System:** Move incompatible contents through shared airlocks without allowing contact; deliver both quotas within the shot budget.
+#### Experiment 198
+
 - **198. Residue Route — System:** Leave mud or foam from earlier reactions to shape the final delivery path; deliver the last cargo within par.
+#### Experiment 199
+
 - **199. Wall Permeability — System:** Route fragments, gas and bodies through walls with clearly marked different blocking rules; reach all targets within shots.
+#### Experiment 200
+
 - **200. Shortcut Sacrifice — System:** Spend a useful payload to open a shortcut or preserve it for the long route; extract enough total value before fuel runs out.
 
 ### Fictional Cellular Missions
 
 Mind-map root: [Cellular Campaign](development-concept.md#cellular-campaign). These are invented game rules translating the same interactions; biology is not evidence for their behavior.
 
+#### Experiment 201
+
 - **201. Nutrient Courier — System:** Deliver nutrient sacs to every starving cell before any cell's visible reserve reaches zero.
+#### Experiment 202
+
 - **202. Selective Membranes — System:** Change a carrier's allowed property to pass distinct membranes; deliver each payload without exceeding the turn budget.
+#### Experiment 203
+
 - **203. Nutrient Triage — System:** Allocate a finite nutrient stock between repairing tissue and activating tools; restore all required tissue before integrity runs out.
+#### Experiment 204
+
 - **204. Infected Producer Rescue — System:** Trap and remove an infection while preserving its host producer; restart useful production within the shot limit.
+#### Experiment 205
+
 - **205. Tissue Breach — System:** Move membrane fragments into a breach and fuse them into a seal before a protected chamber empties.
+#### Experiment 206
+
 - **206. Division Labor — System:** Divide a worker into smaller bodies for simultaneous switches, then reunite enough mass to escape within turns.
+#### Experiment 207
+
 - **207. Waste Clearance — System:** Package harmful residue into resistant sacs and escort it out before the chamber's contamination meter fills.
+#### Experiment 208
+
 - **208. Immune Decoys — System:** Mark disposable carriers to draw fictional immune pursuers away from a vulnerable shipment; deliver before its health runs out.
+#### Experiment 209
+
 - **209. Symbiotic Passage — System:** Feed a resident organism so it temporarily opens a route, then recover supplies to reach the next chamber within budget.
+#### Experiment 210
+
 - **210. Organ Recovery — System:** Solve a finite linked mission of supply, containment and repair using one shared nutrient reserve; restore every chamber before it is depleted.
 
 
@@ -460,7 +880,7 @@ Run one muted session and one with generated music. Music may improve feel, but 
 
 The original recommendation was to implement Reaction Puzzle first. The developer instead approved all three, and each is now available for comparison. Pressure Survival and mass-based growth remain reserves. A full cellular campaign should follow evidence from the trials rather than precede it.
 
-All nine selected layouts have successful simulation solutions, with checks for objective ordering, saved continuation, malformed saves and Points receipts. These establish mechanical completion, not player enjoyment or physical-device acceptance.
+The organized hub adds family navigation, a searchable catalogue, versioned setups, independent records and local feedback. The original nine layouts, nine rule-variation layouts and three Capture Transport Release layouts have successful simulation solutions, with checks for objective ordering, saved continuation, malformed saves and notebook isolation. See [Play the Experiments](experiments.md) for current controls and limits. These establish mechanical completion, not player enjoyment or physical-device acceptance.
 
 Research connects the proposals to different player motives: Puzzle Bobble's grouping and supply, Bubble Bobble's containment, Bubble Ghost's protection, Osmos's resource tradeoff, FOAMSTARS's lasting terrain and Noita's systemic reactions. See the [verified source notes](development-concept.md#research-and-sources); these are design inspirations, not evidence that our modes are already fun.
 

@@ -1,4 +1,5 @@
-import { earningId, earningValid } from './earning.js?v=e498e394b306ea0fe759f0e65e7ce683f4fd8b688ea12dc6b57fdd5d5467ac12';
+import { experimentValidate, EXPERIMENT_RECIPES } from './experiment.js?v=a106fcc3b3ef0ee5105e13cd9c3940290c0d83802cefe99912e7b5b9d1e74f2e';
+import { earningId, earningValid } from './earning.js?v=1b84da4bf236a6c11918b70b68288a2b191870d92baf41349cd67386b164a396';
 
 // A trial has a frozen aiming phase and a finite physical shot. Campaign's
 // continuously drifting pool is a different simulation contract.
@@ -6,6 +7,7 @@ export const TRIAL_SIZE = Object.freeze({width:900,height:600,step:1/120});
 export const TRIAL_MODES = Object.freeze({
   reaction:{name:'Reaction Puzzle',summary:'Build a chain. Protect the healthy cells.',shots:6,goal:'Clear all eight hazards. Keep all three healthy cells intact.',legend:'Pink: hazard · Orange: blast · Flame: fire · Green: gas · Cross: healthy cell',layouts:['First Spark','Firebreak','Chain of Islands']},
   cargo:{name:'Cargo Rescue',summary:'Push fragile cargo into the safe receiver.',shots:8,goal:'Deliver two of three cargo bubbles in eight shots.',legend:'Blue: cargo · Mint: receiver · Arrows: current · Spikes: danger · Stripes: breakable wall',layouts:['Open Water','Narrow Passage','The Long Way']},
+  capture:{name:'Capture Transport Release',summary:'Enclose a payload, carry it past cover, then release it onto targets.',shots:8,goal:'Capture the orange payload and release it near every pink target.',legend:'Orange: payload · Pink: target · Ring: carrying · Spikes: payload danger · Release uses one shot',layouts:['Around the Wall','Lower Passage','The Return']},
   outbreak:{name:'Outbreak Containment',summary:'Seal the vents before the infection spreads.',shots:8,goal:'Seal both vents and clear all infected motes. Protect the central cell.',legend:'Diamond: plug · Ring: vent · Purple: infection · Brown: mud · Cross: healthy cell',layouts:['First Response','Crossfire','Quarantine']}
 });
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -14,8 +16,9 @@ const moving=b=>b.active&&!b.fixed;
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 const integer=n=>Number.isSafeInteger(n)&&n>=0;
 function body(id,kind,x,y,options={}){return {id,kind,x,y,vx:0,vy:0,r:kind==='player'?16:kind==='cell'?24:20,active:true,fixed:!['player','cargo','plug','mote'].includes(kind),hp:kind==='cell'?3:1,...options};}
-export function trialCreate(mode,layout=0,kind='normal',id=earningId()){
+export function trialCreate(mode,layout=0,kind='normal',id=earningId(),setup=null){
   if(!TRIAL_MODES[mode]||!Number.isInteger(layout)||layout<0||layout>2||!['normal','development'].includes(kind))throw new Error('Unknown trial');
+  if(setup&&(!experimentValidate(setup)||setup.mode!==mode||setup.layout!==layout))throw Error('Invalid setup');
   let next=1;const bodies=[body(0,'player',100,300)];
   const add=(type,x,y,options)=>bodies.push(body(next++,type,x,y,options));
   const walls=[];let receiver=null,current=null;
@@ -35,6 +38,12 @@ export function trialCreate(mode,layout=0,kind='normal',id=earningId()){
     walls.push({x:525,y:245,w:18,h:110,breakable:true,active:true});
     if(layout>0)walls.push({x:440,y:100,w:18,h:125,breakable:false,active:true});
     if(layout===2)walls.push({x:440,y:375,w:18,h:125,breakable:false,active:true});
+  }else if(mode==='capture'){
+    add('payload',240,300);
+    for(const [x,y] of [[690,260],[730,300],[690,340]])add('target',x,y);
+    walls.push({x:430,y:layout===1?30:150,w:24,h:layout===1?400:300,breakable:false,active:true});
+    if(layout===2)walls.push({x:560,y:400,w:150,h:20,breakable:false,active:true});
+    add('spike',530,300,{r:24});
   }else{
     add('cell',440,300);
     add('vent',735,135);add('vent',735,465);
@@ -44,9 +53,11 @@ export function trialCreate(mode,layout=0,kind='normal',id=earningId()){
     if(layout>0)walls.push({x:540,y:220,w:18,h:160,breakable:false,active:true});
     if(layout===2)walls.push({x:325,y:140,w:18,h:95,breakable:false,active:true});
   }
-  return {version:1,mode,layout,kind,id,tick:0,age:0,phase:'aim',shots:0,hit:[],bodies,walls,receiver,current,zones:[],nextId:next,delivered:0,lost:0,popped:0,sealed:0,reason:'',events:[],log:[],
+  return {version:setup?2:1,...(setup?{setup:structuredClone(setup),explosions:0}:{}),...(mode==='capture'?{payloadState:'waiting'}:{}),mode,layout,kind,id,tick:0,age:0,phase:'aim',shots:0,hit:[],bodies,walls,receiver,current,zones:[],nextId:next,delivered:0,lost:0,popped:0,sealed:0,reason:'',events:[],log:[],
     earning:{version:1,id,kind,mode,contacts:0,blooms:0,waves:0,wins:0,shots:0,lastLaunch:0,mastery:{},owned:[],used:[]}};
 }
+export const trialShots=g=>g.setup?.settings.shots??TRIAL_MODES[g.mode].shots;
+const option=(g,key,fallback)=>g.setup?.settings[key]??fallback;
 function event(g,type,b,extra={}){g.events.push({type,x:b?.x??450,y:b?.y??300,id:b?.id??0,tick:g.tick,...extra});}
 function explain(g,text){g.log.push(text);if(g.log.length>6)g.log.shift();}
 function note(g,b){if(g.hit.includes(b.id))return;g.hit.push(b.id);event(g,'note',b,{tone:b.id%5,chain:g.hit.length,speed:450});}
@@ -67,7 +78,7 @@ function remove(g,b,cause){
 export function trialBlast(g,source,radius=140){
   const queue=[{...source,radius}],seen=new Set();
   while(queue.length){
-    const a=queue.shift();if(seen.has(a.id))continue;seen.add(a.id);event(g,'blast',a,{radius:a.radius});
+    const a=queue.shift();if(seen.has(a.id))continue;seen.add(a.id);if(g.version===2)g.explosions++;event(g,'blast',a,{radius:a.radius});
     for(const w of g.walls)if(w.active&&w.breakable&&distance(a,{x:clamp(a.x,w.x,w.x+w.w),y:clamp(a.y,w.y,w.y+w.h)})<=a.radius){w.active=false;explain(g,'Blast opened a barrier.');}
     for(const b of g.bodies){
       if(!b.active||b.id===a.id||distance(a,b)>a.radius+b.r||covered(g,a,b))continue;
@@ -80,6 +91,9 @@ export function trialBlast(g,source,radius=140){
 }
 function touch(g,b){
   note(g,b);
+  if(g.mode==='capture'&&b.kind==='target')return;
+  if(b.kind==='payload'){b.active=false;g.payloadState='carried';explain(g,'Payload captured. Carry it around cover, then release.');event(g,'objective',b);return;}
+  if(g.mode==='capture'&&b.kind==='spike'&&g.payloadState==='carried'){g.payloadState='lost';explain(g,'Spikes ruptured the carried payload.');return;}
   if(['target','mote'].includes(b.kind))remove(g,b,'contact');
   else if(b.kind==='blast'){remove(g,b,'contact');explain(g,'Contact triggered a blast.');trialBlast(g,b);}
   else if(b.kind==='fire'){
@@ -107,16 +121,21 @@ function destinations(g){
 }
 function outcome(g){
   if(g.mode==='reaction'){
+    if(g.explosions>option(g,'blastLimit',Infinity))return ['lost','The explosion limit was exceeded.'];
     if(g.bodies.some(b=>b.kind==='cell'&&!b.active))return ['lost','A protected cell was destroyed.'];
     if(!g.bodies.some(b=>b.active&&['target','blast','fire','gas'].includes(b.kind)))return ['won','All hazards cleared. Every healthy cell survived.'];
   }else if(g.mode==='cargo'){
-    if(g.lost>1)return ['lost','Too few intact cargo bubbles remain.'];
-    if(g.delivered>=2)return ['won','Two cargo bubbles delivered safely.'];
+    if(g.lost>3-option(g,'cargoQuota',2))return ['lost','Too few intact cargo bubbles remain.'];
+    if(g.delivered>=option(g,'cargoQuota',2))return ['won',g.setup?'Cargo quota delivered safely.':'Two cargo bubbles delivered safely.'];
+  }else if(g.mode==='capture'){
+    if(g.payloadState==='lost')return ['lost','The carried payload ruptured.'];
+    if(!g.bodies.some(b=>b.kind==='target'&&b.active))return ['won','All targets cleared by the released payload.'];
+    if(g.payloadState==='released')return ['lost','The payload missed a target. Try another release position.'];
   }else{
     if(!g.bodies.find(b=>b.kind==='cell').active)return ['lost','The central cell lost all integrity.'];
     if(g.sealed===2&&!g.bodies.some(b=>b.kind==='mote'&&b.active))return ['won','Both vents sealed. Infection contained.'];
   }
-  return g.shots>=TRIAL_MODES[g.mode].shots?['lost','No shots remain. Try a different route.']:null;
+  return g.shots>=trialShots(g)?['lost','No shots remain. Try a different route.']:null;
 }
 function outbreakTurn(g){
   const cell=g.bodies.find(b=>b.kind==='cell');
@@ -126,6 +145,8 @@ function outbreakTurn(g){
     if(distance(b,cell)<=b.r+cell.r+2){b.active=false;cell.hp=Math.max(0,cell.hp-1);cell.active=cell.hp>0;event(g,'damage',cell);explain(g,'An infected mote reached the cell.');}
   }
   for(const v of g.bodies.filter(b=>b.kind==='vent'&&b.active)){
+    const interval=option(g,'sourceEvery',1)+(EXPERIMENT_RECIPES[g.setup?.experimentId]?.sourceSchedule&&v.id===3?1:0);
+    if(g.shots%interval!==0)continue;
     if(g.bodies.filter(b=>b.active&&b.kind==='mote').length>=6){explain(g,'Infection cap reached: vents paused.');break;}
     const toward=Math.atan2(cell.y-v.y,cell.x-v.x);g.bodies.push(body(g.nextId++,'mote',v.x+Math.cos(toward)*48,v.y+Math.sin(toward)*48,{r:17}));
   }
@@ -143,17 +164,24 @@ export function trialLaunch(g,angle,power=.7){
   const p=g.bodies[0],speed=300+clamp(power,0,1)*700;p.vx=Math.cos(angle)*speed;p.vy=Math.sin(angle)*speed;
   g.shots++;g.hit=[];g.age=0;g.phase='flight';g.events=[];g.reason='';event(g,'launch',p);return true;
 }
+export function trialRelease(g){
+  if(g.mode!=='capture'||g.phase!=='aim'||g.payloadState!=='carried')return false;
+  g.shots++;g.hit=[];g.age=0;g.events=[];g.payloadState='released';
+  const p=g.bodies[0];trialBlast(g,{...p,id:g.bodies.find(b=>b.kind==='payload').id},option(g,'releaseRadius',140));settle(g);return true;
+}
 export function trialStep(g){
   g.events=[];if(g.phase!=='flight')return g.events;
   const dt=TRIAL_SIZE.step;g.tick++;g.age+=dt;
   for(const b of g.bodies.filter(moving)){
-    if(g.current&&b.kind==='cargo'&&inside(b,g.current)&&g.age<3){b.vx+=g.current.vx*dt;b.vy+=g.current.vy*dt;}
+    if(g.current&&b.kind==='cargo'&&inside(b,g.current)&&g.age<3){b.vx+=g.current.vx*option(g,'currentScale',1)*dt;b.vy+=g.current.vy*option(g,'currentScale',1)*dt;}
     const drag=Math.exp(-(g.age>3?3:1.05)*dt);b.vx=clamp(b.vx*drag,-1200,1200);b.vy=clamp(b.vy*drag,-1200,1200);b.x+=b.vx*dt;b.y+=b.vy*dt;contain(g,b);
   }
   const bodies=g.bodies;
   for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++){
     const a=bodies[i],b=bodies[j];if(!a.active||!b.active||a.fixed&&b.fixed||['vent','mud'].includes(a.kind)||['vent','mud'].includes(b.kind)&&a.kind!=='player')continue;
     let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);if(d>a.r+b.r)continue;
+    const impact=Math.abs(((b.vx-a.vx)*dx+(b.vy-a.vy)*dy)/Math.max(.001,d));
+    if(impact>option(g,'impactLimit',Infinity)&&(a.kind==='cargo'||b.kind==='cargo')){remove(g,a.kind==='cargo'?a:b,'impact limit exceeded');continue;}
     if(a.kind==='player'){touch(g,b);if(!b.active)continue;}
     if(a.kind==='cargo'&&b.kind==='spike'||b.kind==='cargo'&&a.kind==='spike'){remove(g,a.kind==='cargo'?a:b,'sharp hazard');continue;}
     if(b.kind==='vent'||b.kind==='mud')continue;
@@ -167,18 +195,22 @@ export function trialStep(g){
   return g.events;
 }
 export function trialStatus(g){
-  if(g.mode==='reaction')return `${8-g.popped}/8 hazards · ${g.bodies.filter(b=>b.kind==='cell'&&b.active).length}/3 cells`;
-  if(g.mode==='cargo')return `${g.delivered}/2 delivered · ${g.lost}/3 lost`;
+  if(g.mode==='reaction')return `${8-g.popped}/8 hazards · ${g.bodies.filter(b=>b.kind==='cell'&&b.active).length}/3 cells${g.setup?.settings.blastLimit?' · '+g.explosions+'/'+g.setup.settings.blastLimit+' explosions':''}`;
+  if(g.mode==='capture')return `${g.payloadState} payload · ${g.bodies.filter(b=>b.kind==='target'&&b.active).length}/3 targets left`;
+  if(g.mode==='cargo')return `${g.delivered}/${option(g,'cargoQuota',2)} delivered · ${g.lost}/3 lost`;
   return `${g.sealed}/2 vents sealed · ${g.bodies.filter(b=>b.kind==='mote'&&b.active).length}/6 infected · Cell ${g.bodies.find(b=>b.kind==='cell').hp}/3`;
 }
 export function trialValidate(value){
   try{
-    const g=structuredClone(value);if(!g||g.version!==1||!TRIAL_MODES[g.mode]||!['normal','development'].includes(g.kind)||!Number.isInteger(g.layout)||g.layout<0||g.layout>2)return null;
-    if(!['aim','flight','won','lost'].includes(g.phase)||!['tick','shots','nextId','delivered','lost','popped','sealed'].every(k=>integer(g[k]))||g.shots>TRIAL_MODES[g.mode].shots||!Number.isFinite(g.age)||g.age<0||g.age>20||g.tick>20000||g.nextId>40||g.sealed>2||g.delivered+g.lost>3)return null;
-    const base=trialCreate(g.mode,g.layout,g.kind,g.id);if(!Array.isArray(g.bodies)||g.bodies.length<base.bodies.length||g.bodies.length>40||new Set(g.bodies.map(b=>b.id)).size!==g.bodies.length)return null;
+    const g=structuredClone(value);if(!g||![1,2].includes(g.version)||!TRIAL_MODES[g.mode]||!['normal','development'].includes(g.kind)||!Number.isInteger(g.layout)||g.layout<0||g.layout>2)return null;
+    if(g.version===2&&(!experimentValidate(g.setup)||g.setup.mode!==g.mode||g.setup.layout!==g.layout||!integer(g.explosions)||g.explosions>8)||g.version===1&&g.setup)return null;
+    if(g.mode==='capture'&&!['waiting','carried','released','lost'].includes(g.payloadState))return null;
+    if(!['aim','flight','won','lost'].includes(g.phase)||!['tick','shots','nextId','delivered','lost','popped','sealed'].every(k=>integer(g[k]))||g.shots>trialShots(g)||!Number.isFinite(g.age)||g.age<0||g.age>20||g.tick>20000||g.nextId>50||g.sealed>2||g.delivered+g.lost>3)return null;
+    const base=trialCreate(g.mode,g.layout,g.kind,g.id,g.setup);if(!Array.isArray(g.bodies)||g.bodies.length<base.bodies.length||g.bodies.length>50||new Set(g.bodies.map(b=>b.id)).size!==g.bodies.length)return null;
     for(const b of g.bodies){const original=base.bodies.find(a=>a.id===b.id);if(!integer(b.id)||b.id>=g.nextId||typeof b.active!=='boolean'||!integer(b.hp)||b.hp>3||!['x','y','vx','vy','r'].every(k=>Number.isFinite(b[k]))||b.x<0||b.x>900||b.y<0||b.y>600||Math.abs(b.vx)>1400||Math.abs(b.vy)>1400)return null;
       if(original){if(b.kind!==original.kind||b.r!==original.r||b.fixed!==original.fixed)return null;}else if(g.mode!=='outbreak'||b.kind!=='mote'||b.r!==17||b.fixed!==false)return null;
     }
+    if(g.mode==='capture'&&(g.bodies.find(b=>b.kind==='payload').active!==(g.payloadState==='waiting')||g.payloadState==='carried'&&g.phase==='won'))return null;
     if(g.bodies[0].id!==0||g.bodies[0].kind!=='player'||!g.bodies[0].active||g.walls.length!==base.walls.length||g.walls.some((w,i)=>typeof w.active!=='boolean'||['x','y','w','h','breakable'].some(k=>w[k]!==base.walls[i][k]))||JSON.stringify(g.receiver)!==JSON.stringify(base.receiver)||JSON.stringify(g.current)!==JSON.stringify(base.current))return null;
     if(!Array.isArray(g.zones)||g.zones.length>1||g.zones.some(z=>g.mode!=='outbreak'||z.x!==480||z.y!==300||z.r!==145)||!Array.isArray(g.hit)||g.hit.length>40||g.hit.some(id=>!g.bodies.some(b=>b.id===id))||!Array.isArray(g.log)||g.log.length>6||g.log.some(s=>typeof s!=='string'||s.length>150)||typeof g.reason!=='string'||g.reason.length>150)return null;
     if(!earningValid(g.earning,[])||g.earning.id!==g.id||g.earning.mode!==g.mode||g.earning.kind!==g.kind||g.earning.shots!==g.shots-(g.phase==='flight'?1:0))return null;

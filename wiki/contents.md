@@ -14,10 +14,14 @@
 ## Play the Experiments
 
 - [Play the Experiments](experiments.md)
+- [Families and Catalogue](experiments.md#families-and-catalogue)
+- [Setup and Variations](experiments.md#setup-and-variations)
 - [Controls and Saves](experiments.md#controls-and-saves)
 - [Reaction Puzzle](experiments.md#reaction-puzzle)
 - [Cargo Rescue](experiments.md#cargo-rescue)
 - [Outbreak Containment](experiments.md#outbreak-containment)
+- [Capture Transport Release](experiments.md#capture-transport-release)
+- [Results and Feedback](experiments.md#results-and-feedback)
 - [Points and Music](experiments.md#points-and-music)
 - [What to Test](experiments.md#what-to-test)
 

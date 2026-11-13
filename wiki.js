@@ -4,12 +4,12 @@ import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=f5e333a847957109
 
 export const WIKI_PAGES = Object.freeze({
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=c796cf233df050335221c960bcc72a57458ae2a894ced033931abf965473cf85' },
-  experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=6ad54b5d1d24a797a224f7cd96e179f5f5b6ff4f8654fb905daf3cba905b2fa8' },
+  experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=d7936fd15269c284fda13f91103a76384913f95e89d9496837c7f52997221b58' },
   'development-concept': { title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
-  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=1ef56cf53c0412932db184dddc4f615a2d771d56a84ec5f4d2c654425670623c' },
+  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=bfea2e6506af5eb9aac8d48372ee405ad781ee8f96d64f8ec8eb167f77924fc3' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=07e70475d22d647f5b3857ddd7ae83f9172f5d3f6e3f92d206ba71c2dd067780' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=7fd77b8aa2559cdb30ee29662611c8730aa320fa20345e99e9295df86a2c5d3d' },
-  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=149854b128bcd45fad91fe702b1c21b97d6e9f48a6cefec5e1dab19cbabf114c' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=4558e02941cf3107655a1b8547501b7c6d101afc0d87cb5e1b75099d80a7696e' },
+  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=bb1f24eb0287e073c22e6130f17ca8972844519307747de7a155019c683d9b28' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=e09229191e591a1b500e7163126dd1189730aa987fd91f7fccbe1da2ce1d4bd0' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=0c93b5ccf8eb8ceb5a0461e3fd289ddf60f4f1aff737b11a86b720aaaabbe865' },
   'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=38d0839877e5db1ed9e6c2aecc2d04d3e02fb5d2fa3c75481825b7ca0eb885b6' },
@@ -103,8 +103,9 @@ export function wikiMount(host) {
     if(link){event.preventDefault();const target={page:link.dataset.wikiPage,anchor:link.dataset.wikiAnchor};if(target.page===current.page)position(target.anchor);else load(target);}
     else if(event.target.closest('[data-wiki-retry]'))load(current,false);
   });
-  return {open(page='wiki'){
-    history.reset({page:Object.hasOwn(WIKI_PAGES,page)?page:'wiki',anchor:''});host.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());
-    dialog.showModal();load({page:Object.hasOwn(WIKI_PAGES,page)?page:'wiki',anchor:''},false);
+  return {open(page='wiki',anchor=''){
+    const target={page:Object.hasOwn(WIKI_PAGES,page)?page:'wiki',anchor:/^[a-z0-9-]*$/.test(anchor)?anchor:''};
+    history.reset(target);host.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());
+    dialog.showModal();load(target,false);
   }};
 }

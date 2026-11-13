@@ -1,5 +1,5 @@
 import { assetURL } from './asset.js?v=ec2dbab27d123b5d86b7970ee597907a2d7edcdaa77c73cdbe84bf4414890fd0';
-import { renderMarkdown } from './wiki.js?v=6fe71d4b50fc886bc2ca382f9e718cd00aa0737f870f8662588848566d90c8c2';
+import { renderMarkdown } from './wiki.js?v=736e3758c8e53ce5d0bf5e851a7011212f5317f7a50a9c23ad11e693ac934343';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 const escape = text => text.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
