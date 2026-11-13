@@ -1,6 +1,6 @@
 # Power-Ups
 
-Contact with a marked jelly activates its power. The random pool includes powers you have unlocked; researched compatible upgrades strengthen them automatically. Blaster aims and fires without extra player input.
+Contact with a marked bubble activates its power. The random pool includes powers you have unlocked; researched compatible upgrades strengthen them automatically. Blaster aims and fires without extra player input.
 
 This reference is generated from the skill catalogue. The Skill Tree shows your current ownership, price and mastery progress.
 
@@ -36,7 +36,7 @@ This reference is generated from the skill catalogue. The Skill Tree shows your 
 
 **Common · Flow Type**
 
-Pull nearby jellies toward the contact point with one gathering impulse.
+Pull nearby bubbles toward the contact point with one gathering impulse.
 
 **Unlock:** research Wide Ripple in Ripple, then buy this power.
 
@@ -53,7 +53,7 @@ Upgrade in this order:
 
 **Common · Propagation Type**
 
-Automatically aim and fire three gel shots after contact. No aiming, tapping or firing controls. Each jelly scores once per pluck.
+Automatically aim and fire three gel shots after contact. No aiming, tapping or firing controls. Each bubble scores once per pluck.
 
 **Unlock:** research Focused Impact in Impact, then buy this power.
 
@@ -61,7 +61,7 @@ Upgrade in this order:
 
 - **Extra Magazine (Rare):** Carry five shots instead of three.
 - **Bank Shot (Rare):** Shots bounce once off a wall. Projectile banks do not count as player wall banks.
-- **Scatter Shot (Epic):** Fire three pellets in a short fan for one ammunition. Each jelly can be struck only once per volley.
+- **Scatter Shot (Epic):** Fire three pellets in a short fan for one ammunition. Each bubble can be struck only once per volley.
 - **Bloom Reload (Legendary):** The first bloom after activation refills your magazine once this pluck. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
@@ -78,8 +78,8 @@ Upgrade in this order:
 
 - **Large Bubble (Rare):** Increase shell radius by 20 percent, while respecting the pool bounds.
 - **Soft Bubble (Epic):** Weaker pressure on both sides; easier to envelop a cluster. Choose one Bubble mode: Soft Bubble or Firm Bubble.
-- **Firm Bubble (Epic):** Stronger outward jelly pressure and a slightly stronger player reaction; better at reorganizing the pool. Choose one Bubble mode: Firm Bubble or Soft Bubble.
-- **Breathing Bubble (Legendary):** Radius gently expands and contracts by 10 percent on the pulse. Contact still counts once per jelly, and radius changes never impart an instant bounce. Requires three cleared pools with this power activated.
+- **Firm Bubble (Epic):** Stronger outward bubble pressure and a slightly stronger player reaction; better at reorganizing the pool. Choose one Bubble mode: Firm Bubble or Soft Bubble.
+- **Breathing Bubble (Legendary):** Radius gently expands and contracts by 10 percent on the pulse. Contact still counts once per bubble, and radius changes never impart an instant bounce. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -93,10 +93,10 @@ Burst forward on contact, within the normal speed limit.
 
 Upgrade in this order:
 
-- **Momentum (Rare):** Retain more speed after bouncing off jellies and walls.
-- **Bank Charge (Rare):** The next genuine wall bounce after a new jelly contact gains a small speed boost, once per contact.
+- **Momentum (Rare):** Retain more speed after bouncing off bubbles and walls.
+- **Bank Charge (Rare):** The next genuine wall bounce after a new bubble contact gains a small speed boost, once per contact.
 - **Long Flight (Epic):** Lose speed more gradually near the end of a pluck, while still coming to a natural rest.
-- **Meteor Wake (Legendary):** The first two wall banks send an outward push through nearby jellies. Requires three cleared pools with this power activated.
+- **Meteor Wake (Legendary):** The first two wall banks send an outward push through nearby bubbles. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -112,7 +112,7 @@ Upgrade in this order:
 
 - **Narrow Sway (Legendary):** Smaller lateral deviation for threading lanes. Choose one Drunk mode: Narrow Sway or Wide Sway.
 - **Wide Sway (Legendary):** Larger sweeps for coverage, with lower turn acceleration to remain readable. Choose one Drunk mode: Wide Sway or Narrow Sway.
-- **Shared Sway (Mythic):** Up to three nearby unhit jellies sway sideways with the player. Requires three cleared pools with this power activated.
+- **Shared Sway (Mythic):** Up to three nearby unhit bubbles sway sideways with the player. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -127,8 +127,8 @@ The delayed path follower with smooth interpolation and shared scoring.
 Upgrade in this order:
 
 - **Elastic Echo (Rare):** Give the delayed ghost a stronger elastic deflection and spring response. Smooth movement back toward its route is always included.
-- **Seeking Echo (Rare):** Gently steer the Echo toward nearby unhit jellies beside its delayed path.
-- **Wide Echo (Epic):** Let the Echo stray farther from its delayed path. Combine with Seeking echo to reach more nearby jellies.
+- **Seeking Echo (Rare):** Gently steer the Echo toward nearby unhit bubbles beside its delayed path.
+- **Wide Echo (Epic):** Let the Echo stray farther from its delayed path. Combine with Seeking echo to reach more nearby bubbles.
 - **Final Reply (Legendary):** When the main player settles, let the existing ghost finish its queued half-second route. It does not spawn another ghost, refresh itself or repeat already-earned contacts. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
@@ -159,9 +159,9 @@ Strengthen the activating collision and later player contacts throughout this pl
 
 Upgrade in this order:
 
-- **Focused Impact (Epic):** Narrow, stronger forward pushes suited to directing a jelly. Choose one Impact mode: Focused Impact or Broad Impact.
-- **Broad Impact (Epic):** Weaker radial pushes around the contacted jelly, suited to opening clusters. Choose one Impact mode: Broad Impact or Focused Impact.
-- **Transfer (Legendary):** The first two newly contacted jellies carry one additional physical shove into another jelly. This shove alone neither scores nor triggers another Impact transfer. Requires three cleared pools with this power activated.
+- **Focused Impact (Epic):** Narrow, stronger forward pushes suited to directing a bubble. Choose one Impact mode: Focused Impact or Broad Impact.
+- **Broad Impact (Epic):** Weaker radial pushes around the contacted bubble, suited to opening clusters. Choose one Impact mode: Broad Impact or Focused Impact.
+- **Transfer (Legendary):** The first two newly contacted bubbles carry one additional physical shove into another bubble. This shove alone neither scores nor triggers another Impact transfer. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -178,7 +178,7 @@ Upgrade in this order:
 - **Third Strike (Epic):** Restore the third strike.
 - **Spread (Legendary):** Choose separated unhit targets for wider rearrangement. Choose one Lightning mode: Spread or Cluster.
 - **Cluster (Legendary):** Prefer nearby unhit targets for a local cascade. Choose one Lightning mode: Cluster or Spread.
-- **Charged Relay (Mythic):** The first struck jelly carries one Relay-like physical transfer into a different jelly. This can score or collect one marker only when that subsequent collision occurs; lightning flashes alone never award three free hits. Requires three cleared pools with this power activated.
+- **Charged Relay (Mythic):** The first struck bubble carries one Relay-like physical transfer into a different bubble. This can score or collect one marker only when that subsequent collision occurs; lightning flashes alone never award three free hits. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -186,7 +186,7 @@ Upgrade in this order:
 
 **Rare · Flow Type**
 
-Draw nearby unhit jellies toward the moving player for 3.2 seconds.
+Draw nearby unhit bubbles toward the moving player for 3.2 seconds.
 
 **Unlock:** research Deep Attraction in Attract, then buy this power.
 
@@ -194,7 +194,7 @@ Upgrade in this order:
 
 - **Close Pull (Epic):** Stronger nearby pull and shorter reach. Choose one Magnet mode: Close Pull or Distant Pull.
 - **Distant Pull (Epic):** Wider reach and weaker force. Choose one Magnet mode: Distant Pull or Close Pull.
-- **Polarity (Legendary):** Newly hit jellies receive one small outward release, clearing the path for the unhit bodies still being drawn in. Requires three cleared pools with this power activated.
+- **Polarity (Legendary):** Newly hit bubbles receive one small outward release, clearing the path for the unhit bodies still being drawn in. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -226,8 +226,8 @@ Open one pair of gates for five seconds.
 Upgrade in this order:
 
 - **Wide Gates (Epic):** Larger capture radius, same crossing cooldown.
-- **Aimed Exit (Epic):** Rotate the outgoing heading slightly toward a nearby forward unhit jelly, showing the exit arrow in advance.
-- **Gate Current (Legendary):** Each gate emits a weak outward jelly current while active. It moves jellies without teleporting or scoring them. Requires three cleared pools with this power activated.
+- **Aimed Exit (Epic):** Rotate the outgoing heading slightly toward a nearby forward unhit bubble, showing the exit arrow in advance.
+- **Gate Current (Legendary):** Each gate emits a weak outward bubble current while active. It moves bubbles without teleporting or scoring them. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -244,7 +244,7 @@ Upgrade in this order:
 - **Third Beat (Epic):** Restore the third wave.
 - **Slow Pulse (Legendary):** Longer spacing and stronger pressure. Choose one Pulse mode: Slow Pulse or Quick Pulse.
 - **Quick Pulse (Legendary):** Shorter spacing and weaker pressure. Choose one Pulse mode: Quick Pulse or Slow Pulse.
-- **Shifting Center (Mythic):** Bias the final wave toward a region with more unhit jellies, with a visible pre-cue. It remains a field wave, never becomes a player-centered pulse. Requires three cleared pools with this power activated.
+- **Shifting Center (Mythic):** Bias the final wave toward a region with more unhit bubbles, with a visible pre-cue. It remains a field wave, never becomes a player-centered pulse. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -252,15 +252,15 @@ Upgrade in this order:
 
 **Rare · Propagation Type**
 
-Arm one scored jelly for one transfer; keep power triggering intact.
+Arm one scored bubble for one transfer; keep power triggering intact.
 
 **Unlock:** research Transfer in Impact, then buy this power.
 
 Upgrade in this order:
 
-- **Relay Team (Rare):** Arm three jellies for contact transfers instead of one.
+- **Relay Team (Rare):** Arm three bubbles for contact transfers instead of one.
 - **Strong Pass (Epic):** A successful relay gives its recipient a small directional push.
-- **Patient Pass (Epic):** An armed jelly retains its opportunity until the flight ends rather than a short effect timeout.
+- **Patient Pass (Epic):** An armed bubble retains its opportunity until the flight ends rather than a short effect timeout.
 - **Second Pass (Legendary):** One successful relay per pluck can arm its recipient for one additional transfer. Tag its lineage so it cannot return to an already-used relay or branch recursively. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
@@ -276,9 +276,9 @@ Retrace the final one second of valid path, with shared hit history.
 Upgrade in this order:
 
 - **Longer Memory (Epic):** Retain up to two seconds for the encore.
-- **Gentle Rewind (Legendary):** Replay more slowly, allowing drifting jellies to enter the route.
+- **Gentle Rewind (Legendary):** Replay more slowly, allowing drifting bubbles to enter the route.
 - **Offset Rewind (Legendary):** Return on a small parallel offset with softened joins; do not invent intermediate travel across teleport discontinuities.
-- **Last Chord (Mythic):** A bloom earned during the return produces a brief accent and one bounded radial jelly push. It does not schedule another Rewind. Requires three cleared pools with this power activated.
+- **Last Chord (Mythic):** A bloom earned during the return produces a brief accent and one bounded radial bubble push. It does not schedule another Rewind. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -286,7 +286,7 @@ Upgrade in this order:
 
 **Common · Flow Type**
 
-Send a pressure wave outward, pushing nearby jellies away.
+Send a pressure wave outward, pushing nearby bubbles away.
 
 **Unlock:** your free starting power.
 
@@ -294,7 +294,7 @@ Upgrade in this order:
 
 - **Wide Ripple (Rare):** Expand its reach by 20 percent without increasing center strength.
 - **Strong Center (Rare):** Concentrate the impulse near the origin, opening a tight cluster. Choose one pressure shape: strong center or far shore.
-- **Far Shore (Epic):** Flatter falloff, reaching more distant jellies with weaker central force. Choose one pressure shape: strong center or far shore.
+- **Far Shore (Epic):** Flatter falloff, reaching more distant bubbles with weaker central force. Choose one pressure shape: strong center or far shore.
 - **Returning Ripple (Legendary):** One weaker inward wave follows after half a second. It moves bodies but cannot score or recursively create waves. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
@@ -303,7 +303,7 @@ Upgrade in this order:
 
 **Epic · Navigation Type**
 
-Briefly orbit the contacted jelly, then automatically aim the release toward an unhit jelly, leading its motion with a clear direction cue.
+Briefly orbit the contacted bubble, then automatically aim the release toward an unhit bubble, leading its motion with a clear direction cue.
 
 **Unlock:** research Directed Release in Orbit, then buy this power.
 
@@ -343,8 +343,8 @@ Boost wall rebounds for five seconds, with a visible recoil along the wall.
 Upgrade in this order:
 
 - **Deep Rebound (Epic):** Bounce back more strongly, up to the normal maximum speed.
-- **Angled Rebound (Epic):** Bias a rebound slightly toward the nearest forward unhit jelly; show the bias in its cue.
-- **Resonant Wall (Legendary):** First two spring rebounds also push nearby jellies inward, creating bank opportunities rather than free score. Requires three cleared pools with this power activated.
+- **Angled Rebound (Epic):** Bias a rebound slightly toward the nearest forward unhit bubble; show the bias in its cue.
+- **Resonant Wall (Legendary):** First two spring rebounds also push nearby bubbles inward, creating bank opportunities rather than free score. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -352,16 +352,16 @@ Upgrade in this order:
 
 **Common · Control Type**
 
-Frost a smaller area, slowing jellies and stiffening their edges. Hit frozen jellies remain translucent and permeable, with gentle pressure instead of a hard rebound.
+Frost a smaller area, slowing bubbles and stiffening their edges. Hit frozen bubbles remain translucent and permeable, with gentle pressure instead of a hard rebound.
 
 **Unlock:** research Tight Group in Attract, then buy this power.
 
 Upgrade in this order:
 
-- **Deep Frost (Rare):** Freeze jellies across a wider area: 440 units instead of 300.
-- **Firm Ice (Rare):** Lower the jelly speed cap, making the arrangement more stable. Choose one Stasis mode: Firm Ice or Thin Ice.
-- **Thin Ice (Epic):** Retain more jelly motion, but reduce their outward pressure on the player for easier threading. Choose one Stasis mode: Thin Ice or Firm Ice.
-- **Frost Spread (Legendary):** The first two physical jelly-to-jelly contacts from a frozen jelly frost one additional body each. Spreading itself earns no hit or power pickup. Requires three cleared pools with this power activated.
+- **Deep Frost (Rare):** Freeze bubbles across a wider area: 440 units instead of 300.
+- **Firm Ice (Rare):** Lower the bubble speed cap, making the arrangement more stable. Choose one Stasis mode: Firm Ice or Thin Ice.
+- **Thin Ice (Epic):** Retain more bubble motion, but reduce their outward pressure on the player for easier threading. Choose one Stasis mode: Thin Ice or Firm Ice.
+- **Frost Spread (Legendary):** The first two physical bubble-to-bubble contacts from a frozen bubble frost one additional body each. Spreading itself earns no hit or power pickup. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -369,15 +369,15 @@ Upgrade in this order:
 
 **Common · Navigation Type**
 
-Exchange places with a distant unhit jelly when one exists, and keep moving.
+Exchange places with a distant unhit bubble when one exists, and keep moving.
 
 **Unlock:** research Side Wrap in Wrap, then buy this power.
 
 Upgrade in this order:
 
 - **Forward Swap (Rare):** Prefer a distant destination in the current forward half of the field.
-- **Open Swap (Epic):** Prefer a distant jelly with more free space around it.
-- **Departure Ripple (Legendary):** One modest pressure wave at the departure point changes the next approach. The swapped jelly does not count as contacted merely because it teleported. Requires three cleared pools with this power activated.
+- **Open Swap (Epic):** Prefer a distant bubble with more free space around it.
+- **Departure Ripple (Legendary):** One modest pressure wave at the departure point changes the next approach. The swapped bubble does not count as contacted merely because it teleported. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 
@@ -385,13 +385,13 @@ Upgrade in this order:
 
 **Rare · Control Type**
 
-Two linked jellies, with a gentle playerward drift preserved as the power's identity.
+Two linked bubbles, with a gentle playerward drift preserved as the power's identity.
 
 **Unlock:** research Tight Group in Attract, then buy this power.
 
 Upgrade in this order:
 
-- **Third Thread (Rare):** Add the third jelly and full triangular linkage.
+- **Third Thread (Rare):** Add the third bubble and full triangular linkage.
 - **Gathering Thread (Epic):** Stronger playerward drift with softer links. Choose one Tether mode: Gathering Thread or Elastic Thread.
 - **Elastic Thread (Epic):** Firmer links and stronger motion transfer, with the base drift unchanged. Choose one Tether mode: Elastic Thread or Gathering Thread.
 - **Release Knot (Legendary):** When the effect expires, release stored stretch as one bounded impulse per member. No teleporting or stored-energy explosion. Requires three cleared pools with this power activated.
@@ -443,7 +443,7 @@ Upgrade in this order:
 
 - **Side Wrap (Legendary):** Wrap only left and right edges; top and bottom remain bounceable. Choose one Wrap mode: Side Wrap or End Wrap.
 - **End Wrap (Legendary):** Wrap only top and bottom edges; left and right remain bounceable. Choose one Wrap mode: End Wrap or Side Wrap.
-- **Arrival Field (Mythic):** An outward push at the exit eases nearby jellies aside. You can still choose all-edge, horizontal or vertical travel. Requires three cleared pools with this power activated.
+- **Arrival Field (Mythic):** An outward push at the exit eases nearby bubbles aside. You can still choose all-edge, horizontal or vertical travel. Requires three cleared pools with this power activated.
 
 [All Powers](#find-a-power)
 

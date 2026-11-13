@@ -74,7 +74,7 @@
 }
 :root body .save-warning { background: var(--glass-warning); }
 
-/* These controls sit directly over animated jellies or the game field. */
+/* These controls sit directly over animated bubbles or the game field. */
 :root body :is(#main-menu .home-primary button, #main-menu .home-secondary button, .hud .pluck button) {
   background: var(--glass-control);
   border: 1px solid var(--glass-edge);

@@ -1,4 +1,4 @@
-import { trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
+import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 // Play supplies the motif and harmony; arrangement supplies a musical journey.
 export const CHORDS = [
   { name: 'C6/9', notes: [60, 62, 64, 67, 69] },
@@ -6,8 +6,8 @@ export const CHORDS = [
   { name: 'Fmaj9', notes: [53, 55, 57, 60, 64] },
   { name: 'G6/9', notes: [55, 57, 59, 62, 64] }
 ];
-export const JELLY_ROLES = Object.freeze({melody:{name:'Melody',mark:'♪'},bass:{name:'Bass',mark:'≋'},rhythm:{name:'Rhythm',mark:'⋮'}});
-export const jellyRole = id => ['melody','bass','rhythm'][Math.max(0,id-1)%3];
+export const BUBBLE_ROLES = Object.freeze({melody:{name:'Melody',mark:'♪'},bass:{name:'Bass',mark:'≋'},rhythm:{name:'Rhythm',mark:'⋮'}});
+export const bubbleRole = id => ['melody','bass','rhythm'][Math.max(0,id-1)%3];
 export const PALETTES = Object.freeze({glass:'Glass',velvet:'Velvet',wood:'Wood'});
 export function musicAccent(music) { if(music.bar >= music.accentUntil) { music.accentStart=Math.ceil(music.bar/4)*4;music.accentUntil=music.accentStart+8; } }
 // One brief answer per four bars, never one extra layer per physics contact.
@@ -47,7 +47,7 @@ export function musicCreate(input = null, blooms = 0, plucks = null) {
   }
   const evolution=input.version===4?{...input.evolution,pending:input.evolution.pending?phraseCopy(input.evolution.pending):null}:{nextBar:Math.ceil((input.bar||0)/2)*2+8,half:1,pending:null};
   const pendingParts=Object.fromEntries(['bass','rhythm'].map(role=>[role,input.version===4&&input.pendingParts[role]?phraseCopy(input.pendingParts[role]):null]));
-  const parts=Object.fromEntries(Object.keys(JELLY_ROLES).map(role=>[role,phraseValid(input.parts?.[role])?phraseCopy(input.parts[role]):null]));
+  const parts=Object.fromEntries(Object.keys(BUBBLE_ROLES).map(role=>[role,phraseValid(input.parts?.[role])?phraseCopy(input.parts[role]):null]));
   const intensity=Object.fromEntries(Object.entries(input.intensity||{}).filter(([id,v])=>idValid(Number(id))&&Number.isFinite(v)&&v>=0&&v<=1));
   const pans=Object.fromEntries(Object.entries(input.pans||{}).filter(([id,v])=>idValid(Number(id))&&Number.isFinite(v)&&v>=-1&&v<=1));
   const palette=Object.hasOwn(PALETTES,input.palette)?input.palette:'glass';
@@ -93,8 +93,8 @@ export function musicFinish(music) {
     const motif = capture(music); music.motifs.push(motif); music.motifs = music.motifs.slice(-4);
     const hadHook=!!music.hook;
     if(!hadHook && motif.tones.length>=3) {hookSet(music,motif);music.evolution.nextBar=Math.ceil(music.bar/2)*2+8;}
-    for(const role of Object.keys(JELLY_ROLES)) {
-      const hits=music.strikes.filter(hit=>hit.id>0&&jellyRole(hit.id)===role);
+    for(const role of Object.keys(BUBBLE_ROLES)) {
+      const hits=music.strikes.filter(hit=>hit.id>0&&bubbleRole(hit.id)===role);
       if(hits.length) {
         const phrase=capture({...music,strikes:hits});
         if(role==='melody') {music.parts.melody=phrase;if(hadHook)music.evolution.pending=phrase;}

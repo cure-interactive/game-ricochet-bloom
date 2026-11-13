@@ -4,7 +4,7 @@ export const POWER_TREES = {
     "name": "Comet",
     "type": "Motion",
     "tier": 1,
-    "current": "A strong launch burst plus enhanced momentum retention through jelly and wall bounces for the pluck.",
+    "current": "A strong launch burst plus enhanced momentum retention through bubble and wall bounces for the pluck.",
     "today": [
       "foundation"
     ],
@@ -25,7 +25,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Momentum",
-        "description": "Retain more speed after bouncing off jellies and walls.",
+        "description": "Retain more speed after bouncing off bubbles and walls.",
         "key": "foundation",
         "kind": "foundation",
         "effects": [
@@ -39,7 +39,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Bank Charge",
-        "description": "The next genuine wall bounce after a new jelly contact gains a small speed boost, once per contact.",
+        "description": "The next genuine wall bounce after a new bubble contact gains a small speed boost, once per contact.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -67,7 +67,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Meteor Wake",
-        "description": "The first two wall banks send an outward push through nearby jellies.",
+        "description": "The first two wall banks send an outward push through nearby bubbles.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -107,7 +107,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Focused Impact",
-        "description": "Narrow, stronger forward pushes suited to directing a jelly.",
+        "description": "Narrow, stronger forward pushes suited to directing a bubble.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -123,7 +123,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Broad Impact",
-        "description": "Weaker radial pushes around the contacted jelly, suited to opening clusters.",
+        "description": "Weaker radial pushes around the contacted bubble, suited to opening clusters.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -139,7 +139,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Transfer",
-        "description": "The first two newly contacted jellies carry one additional physical shove into another jelly. This shove alone neither scores nor triggers another Impact transfer.",
+        "description": "The first two newly contacted bubbles carry one additional physical shove into another bubble. This shove alone neither scores nor triggers another Impact transfer.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -211,7 +211,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Angled Rebound",
-        "description": "Bias a rebound slightly toward the nearest forward unhit jelly; show the bias in its cue.",
+        "description": "Bias a rebound slightly toward the nearest forward unhit bubble; show the bias in its cue.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -225,7 +225,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Resonant Wall",
-        "description": "First two spring rebounds also push nearby jellies inward, creating bank opportunities rather than free score.",
+        "description": "First two spring rebounds also push nearby bubbles inward, creating bank opportunities rather than free score.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -315,7 +315,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Shared Sway",
-        "description": "Up to three nearby unhit jellies sway sideways with the player.",
+        "description": "Up to three nearby unhit bubbles sway sideways with the player.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -352,7 +352,7 @@ export const POWER_TREES = {
     "name": "Ripple",
     "type": "Flow",
     "tier": 1,
-    "current": "An outward radial impulse on nearby jellies.",
+    "current": "An outward radial impulse on nearby bubbles.",
     "today": [
       "base"
     ],
@@ -361,7 +361,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Ripple",
-        "description": "Send a pressure wave outward, pushing nearby jellies away.",
+        "description": "Send a pressure wave outward, pushing nearby bubbles away.",
         "key": "base",
         "kind": "base",
         "effects": [],
@@ -403,7 +403,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Far Shore",
-        "description": "Flatter falloff, reaching more distant jellies with weaker central force.",
+        "description": "Flatter falloff, reaching more distant bubbles with weaker central force.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -438,7 +438,7 @@ export const POWER_TREES = {
     "name": "Attract",
     "type": "Flow",
     "tier": 1,
-    "current": "An immediate inward impulse that gathers nearby jellies.",
+    "current": "An immediate inward impulse that gathers nearby bubbles.",
     "today": [
       "base"
     ],
@@ -447,7 +447,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Attract",
-        "description": "Pull nearby jellies toward the contact point with one gathering impulse.",
+        "description": "Pull nearby bubbles toward the contact point with one gathering impulse.",
         "key": "base",
         "kind": "base",
         "effects": [],
@@ -524,7 +524,7 @@ export const POWER_TREES = {
     "name": "Vortex",
     "type": "Flow",
     "tier": 2,
-    "current": "A tangential impulse sets nearby jellies swirling.",
+    "current": "A tangential impulse sets nearby bubbles swirling.",
     "today": [
       "base"
     ],
@@ -610,7 +610,7 @@ export const POWER_TREES = {
     "name": "Magnet",
     "type": "Flow",
     "tier": 2,
-    "current": "The moving player attracts unhit jellies for 2.4 seconds.",
+    "current": "The moving player attracts unhit bubbles for 2.4 seconds.",
     "today": [
       "base"
     ],
@@ -619,7 +619,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Magnet",
-        "description": "Draw nearby unhit jellies toward the moving player for 3.2 seconds.",
+        "description": "Draw nearby unhit bubbles toward the moving player for 3.2 seconds.",
         "key": "base",
         "kind": "base",
         "effects": [],
@@ -663,7 +663,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Polarity",
-        "description": "Newly hit jellies receive one small outward release, clearing the path for the unhit bodies still being drawn in.",
+        "description": "Newly hit bubbles receive one small outward release, clearing the path for the unhit bodies still being drawn in.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -700,7 +700,7 @@ export const POWER_TREES = {
     "name": "Wake",
     "type": "Flow",
     "tier": 3,
-    "current": "Five seconds of player and Split trails that push crossing jellies along the flight direction.",
+    "current": "Five seconds of player and Split trails that push crossing bubbles along the flight direction.",
     "today": [
       "base"
     ],
@@ -790,7 +790,7 @@ export const POWER_TREES = {
     "name": "Stasis",
     "type": "Control",
     "tier": 1,
-    "current": "Slows nearby jellies and later contacts, shows frosted edges and reduced squish, and makes hit frozen jellies translucent and permeable with pressure on the player.",
+    "current": "Slows nearby bubbles and later contacts, shows frosted edges and reduced squish, and makes hit frozen bubbles translucent and permeable with pressure on the player.",
     "today": [
       "foundation"
     ],
@@ -799,7 +799,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Stasis",
-        "description": "Frost a smaller area, slowing jellies and stiffening their edges. Hit frozen jellies remain translucent and permeable, with gentle pressure instead of a hard rebound.",
+        "description": "Frost a smaller area, slowing bubbles and stiffening their edges. Hit frozen bubbles remain translucent and permeable, with gentle pressure instead of a hard rebound.",
         "key": "base",
         "kind": "base",
         "effects": [],
@@ -811,7 +811,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Deep Frost",
-        "description": "Freeze jellies across a wider area: 440 units instead of 300.",
+        "description": "Freeze bubbles across a wider area: 440 units instead of 300.",
         "key": "foundation",
         "kind": "foundation",
         "effects": [
@@ -825,7 +825,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Firm Ice",
-        "description": "Lower the jelly speed cap, making the arrangement more stable.",
+        "description": "Lower the bubble speed cap, making the arrangement more stable.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -841,7 +841,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Thin Ice",
-        "description": "Retain more jelly motion, but reduce their outward pressure on the player for easier threading.",
+        "description": "Retain more bubble motion, but reduce their outward pressure on the player for easier threading.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -857,7 +857,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Frost Spread",
-        "description": "The first two physical jelly-to-jelly contacts from a frozen jelly frost one additional body each. Spreading itself earns no hit or power pickup.",
+        "description": "The first two physical bubble-to-bubble contacts from a frozen bubble frost one additional body each. Spreading itself earns no hit or power pickup.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -876,7 +876,7 @@ export const POWER_TREES = {
     "name": "Bubble",
     "type": "Control",
     "tier": 2,
-    "current": "An enlarged permeable shell scores on contact and pushes jellies outward by a radius gradient, with a smaller opposing pressure on the player.",
+    "current": "An enlarged permeable shell scores on contact and pushes bubbles outward by a radius gradient, with a smaller opposing pressure on the player.",
     "today": [
       "foundation"
     ],
@@ -927,7 +927,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Firm Bubble",
-        "description": "Stronger outward jelly pressure and a slightly stronger player reaction; better at reorganizing the pool.",
+        "description": "Stronger outward bubble pressure and a slightly stronger player reaction; better at reorganizing the pool.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -943,7 +943,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Breathing Bubble",
-        "description": "Radius gently expands and contracts by 10 percent on the pulse. Contact still counts once per jelly, and radius changes never impart an instant bounce.",
+        "description": "Radius gently expands and contracts by 10 percent on the pulse. Contact still counts once per bubble, and radius changes never impart an instant bounce.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -962,7 +962,7 @@ export const POWER_TREES = {
     "name": "Tether",
     "type": "Control",
     "tier": 2,
-    "current": "Three jellies gain elastic links, musical thread cues and a gentle drift toward the moving player for up to four seconds.",
+    "current": "Three bubbles gain elastic links, musical thread cues and a gentle drift toward the moving player for up to four seconds.",
     "today": [
       "foundation"
     ],
@@ -971,7 +971,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Tether",
-        "description": "Two linked jellies, with a gentle playerward drift preserved as the power's identity.",
+        "description": "Two linked bubbles, with a gentle playerward drift preserved as the power's identity.",
         "key": "base",
         "kind": "base",
         "effects": [],
@@ -983,7 +983,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Third Thread",
-        "description": "Add the third jelly and full triangular linkage.",
+        "description": "Add the third bubble and full triangular linkage.",
         "key": "foundation",
         "kind": "foundation",
         "effects": [
@@ -1134,7 +1134,7 @@ export const POWER_TREES = {
     "name": "Echo",
     "type": "Propagation",
     "tier": 1,
-    "current": "A ghost follows the actual player path half a second later, can deviate on an elastic leash and gently seeks nearby unhit jellies.",
+    "current": "A ghost follows the actual player path half a second later, can deviate on an elastic leash and gently seeks nearby unhit bubbles.",
     "today": [
       "foundation",
       "a"
@@ -1170,7 +1170,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Seeking Echo",
-        "description": "Gently steer the Echo toward nearby unhit jellies beside its delayed path.",
+        "description": "Gently steer the Echo toward nearby unhit bubbles beside its delayed path.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -1184,7 +1184,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Wide Echo",
-        "description": "Let the Echo stray farther from its delayed path. Combine with Seeking echo to reach more nearby jellies.",
+        "description": "Let the Echo stray farther from its delayed path. Combine with Seeking echo to reach more nearby bubbles.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1303,7 +1303,7 @@ export const POWER_TREES = {
     "name": "Relay",
     "type": "Propagation",
     "tier": 2,
-    "current": "Up to three scored jellies can each relay one physical contact, scoring a new jelly or collecting its marked power through the shared allowance.",
+    "current": "Up to three scored bubbles can each relay one physical contact, scoring a new bubble or collecting its marked power through the shared allowance.",
     "today": [
       "foundation"
     ],
@@ -1312,7 +1312,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Relay",
-        "description": "Arm one scored jelly for one transfer; keep power triggering intact.",
+        "description": "Arm one scored bubble for one transfer; keep power triggering intact.",
         "key": "base",
         "kind": "base",
         "effects": [],
@@ -1324,7 +1324,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Relay Team",
-        "description": "Arm three jellies for contact transfers instead of one.",
+        "description": "Arm three bubbles for contact transfers instead of one.",
         "key": "foundation",
         "kind": "foundation",
         "effects": [
@@ -1352,7 +1352,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Patient Pass",
-        "description": "An armed jelly retains its opportunity until the flight ends rather than a short effect timeout.",
+        "description": "An armed bubble retains its opportunity until the flight ends rather than a short effect timeout.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1385,7 +1385,7 @@ export const POWER_TREES = {
     "name": "Rewind",
     "type": "Propagation",
     "tier": 3,
-    "current": "The player retraces recent flight positions at the end of the flight, potentially meeting previously untouched moving jellies.",
+    "current": "The player retraces recent flight positions at the end of the flight, potentially meeting previously untouched moving bubbles.",
     "today": [],
     "uncertain": false,
     "legacyMatch": false,
@@ -1419,7 +1419,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Gentle Rewind",
-        "description": "Replay more slowly, allowing drifting jellies to enter the route.",
+        "description": "Replay more slowly, allowing drifting bubbles to enter the route.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -1447,7 +1447,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Last Chord",
-        "description": "A bloom earned during the return produces a brief accent and one bounded radial jelly push. It does not schedule another Rewind.",
+        "description": "A bloom earned during the return produces a brief accent and one bounded radial bubble push. It does not schedule another Rewind.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -1466,7 +1466,7 @@ export const POWER_TREES = {
     "name": "Lightning",
     "type": "Propagation",
     "tier": 3,
-    "current": "Three sequential strikes knock distinct jellies away. The strike events themselves do not call the contact-scoring path.",
+    "current": "Three sequential strikes knock distinct bubbles away. The strike events themselves do not call the contact-scoring path.",
     "today": [
       "foundation"
     ],
@@ -1533,7 +1533,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Charged Relay",
-        "description": "The first struck jelly carries one Relay-like physical transfer into a different jelly. This can score or collect one marker only when that subsequent collision occurs; lightning flashes alone never award three free hits.",
+        "description": "The first struck bubble carries one Relay-like physical transfer into a different bubble. This can score or collect one marker only when that subsequent collision occurs; lightning flashes alone never award three free hits.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -1552,7 +1552,7 @@ export const POWER_TREES = {
     "name": "Pulse",
     "type": "Propagation",
     "tier": 3,
-    "current": "Three tempo-spaced pressure waves originate at random positions across the pool, moving jellies rather than directly scoring contacts.",
+    "current": "Three tempo-spaced pressure waves originate at random positions across the pool, moving bubbles rather than directly scoring contacts.",
     "today": [
       "foundation"
     ],
@@ -1619,7 +1619,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Shifting Center",
-        "description": "Bias the final wave toward a region with more unhit jellies, with a visible pre-cue. It remains a field wave, never becomes a player-centered pulse.",
+        "description": "Bias the final wave toward a region with more unhit bubbles, with a visible pre-cue. It remains a field wave, never becomes a player-centered pulse.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -1638,7 +1638,7 @@ export const POWER_TREES = {
     "name": "Swap",
     "type": "Navigation",
     "tier": 1,
-    "current": "Exchanges the player with the farthest other jelly while keeping movement.",
+    "current": "Exchanges the player with the farthest other bubble while keeping movement.",
     "today": [
       "base"
     ],
@@ -1647,7 +1647,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Swap",
-        "description": "Exchange places with a distant unhit jelly when one exists, and keep moving.",
+        "description": "Exchange places with a distant unhit bubble when one exists, and keep moving.",
         "key": "base",
         "kind": "base",
         "effects": [],
@@ -1673,7 +1673,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Open Swap",
-        "description": "Prefer a distant jelly with more free space around it.",
+        "description": "Prefer a distant bubble with more free space around it.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1687,7 +1687,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Departure Ripple",
-        "description": "One modest pressure wave at the departure point changes the next approach. The swapped jelly does not count as contacted merely because it teleported.",
+        "description": "One modest pressure wave at the departure point changes the next approach. The swapped bubble does not count as contacted merely because it teleported.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -1706,7 +1706,7 @@ export const POWER_TREES = {
     "legacyNodes": [
       {
         "name": "Untouched Destination",
-        "description": "Prefer the farthest unhit jelly when one exists.",
+        "description": "Prefer the farthest unhit bubble when one exists.",
         "key": "foundation",
         "kind": "foundation",
         "effects": [
@@ -1759,7 +1759,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Aimed Exit",
-        "description": "Rotate the outgoing heading slightly toward a nearby forward unhit jelly, showing the exit arrow in advance.",
+        "description": "Rotate the outgoing heading slightly toward a nearby forward unhit bubble, showing the exit arrow in advance.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1773,7 +1773,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Gate Current",
-        "description": "Each gate emits a weak outward jelly current while active. It moves jellies without teleporting or scoring them.",
+        "description": "Each gate emits a weak outward bubble current while active. It moves bubbles without teleporting or scoring them.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -1810,7 +1810,7 @@ export const POWER_TREES = {
     "name": "Homing",
     "type": "Navigation",
     "tier": 2,
-    "current": "Five seconds of bounded steering toward nearby unhit jellies ahead, without extra speed, also affecting Split seeds.",
+    "current": "Five seconds of bounded steering toward nearby unhit bubbles ahead, without extra speed, also affecting Split seeds.",
     "today": [
       "base"
     ],
@@ -1953,7 +1953,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Arrival Field",
-        "description": "An outward push at the exit eases nearby jellies aside. You can still choose all-edge, horizontal or vertical travel.",
+        "description": "An outward push at the exit eases nearby bubbles aside. You can still choose all-edge, horizontal or vertical travel.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -1990,7 +1990,7 @@ export const POWER_TREES = {
     "name": "Slingshot",
     "type": "Navigation",
     "tier": 3,
-    "current": "Briefly orbits the marked jelly, then launches toward an unhit jelly.",
+    "current": "Briefly orbits the marked bubble, then launches toward an unhit bubble.",
     "today": [
       "base"
     ],
@@ -1999,7 +1999,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Slingshot",
-        "description": "Briefly orbit the contacted jelly, then automatically aim the release toward an unhit jelly, leading its motion with a clear direction cue.",
+        "description": "Briefly orbit the contacted bubble, then automatically aim the release toward an unhit bubble, leading its motion with a clear direction cue.",
         "key": "base",
         "kind": "base",
         "effects": [],
@@ -2062,7 +2062,7 @@ export const POWER_TREES = {
     "legacyNodes": [
       {
         "name": "Aimed Release",
-        "description": "Aim releases toward unhit jellies and lead moving targets. Also improves the lead when combined with Near target or Far target.",
+        "description": "Aim releases toward unhit bubbles and lead moving targets. Also improves the lead when combined with Near target or Far target.",
         "key": "foundation",
         "kind": "foundation",
         "effects": [
@@ -2080,7 +2080,7 @@ export const POWER_TREES = {
     "name": "Blaster",
     "type": "Propagation",
     "tier": 1,
-    "current": "Contact starts three automatically aimed shots at a steady cadence. Impacts push jellies and play their notes; no player input is needed.",
+    "current": "Contact starts three automatically aimed shots at a steady cadence. Impacts push bubbles and play their notes; no player input is needed.",
     "today": [
       "base"
     ],
@@ -2089,7 +2089,7 @@ export const POWER_TREES = {
     "nodes": [
       {
         "name": "Blaster",
-        "description": "Automatically aim and fire three gel shots after contact. No aiming, tapping or firing controls. Each jelly scores once per pluck.",
+        "description": "Automatically aim and fire three gel shots after contact. No aiming, tapping or firing controls. Each bubble scores once per pluck.",
         "key": "base",
         "kind": "base",
         "effects": [],
@@ -2129,7 +2129,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Scatter Shot",
-        "description": "Fire three pellets in a short fan for one ammunition. Each jelly can be struck only once per volley.",
+        "description": "Fire three pellets in a short fan for one ammunition. Each bubble can be struck only once per volley.",
         "key": "b",
         "kind": "b",
         "effects": [

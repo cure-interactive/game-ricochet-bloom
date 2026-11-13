@@ -1,13 +1,13 @@
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { CATALOGUE } from './catalogue.js?v=72132af057dff2bd5109c48d8a7a7ad6fdf82a3a7eb75d52b4a209a490cfffb0';
-import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=bef2df62b29364983801345d0a0318164dfeef5666360b3ce1e2a200ac7acdc0';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=1a0162a50410031bd58c7fbd6250e03b4a11b8165ae0caab7a965a7315404b54';
+import { CATALOGUE } from './catalogue.js?v=c9ff036f85fda07c94971bb9701dc181e070bf11984ca7b8b6cc458235afcef6';
+import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=a2f2d28063a236c703442bfba9c353d475f4889a2281a87bc6d58932d67c7c58';
 
 // Only known topics and catalogue identities produce decoration. Markdown never
 // supplies an image URL, raw SVG or icon name to the renderer.
-const pages={wiki:'book',contents:'list','how-to-play':'gamepad',campaign:'campaign','skill-tree':'skill-tree','power-ups':'power',settings:'gear'};
+const pages={wiki:'book',contents:'list','how-to-play':'gamepad',waves:'wave',campaign:'campaign','skill-tree':'skill-tree','power-ups':'power',settings:'gear'};
 const topics={
- 'ricochet-bloom-wiki':'book','table-of-contents':'list','how-to-play':'gamepad',campaign:'campaign','skill-tree':'skill-tree','power-ups':'power','sound-settings-saves':'gear',
+ 'ricochet-bloom-wiki':'book','table-of-contents':'list','how-to-play':'gamepad',waves:'wave',campaign:'campaign','skill-tree':'skill-tree','power-ups':'power','sound-settings-saves':'gear',
  play:'play',grow:'skill-tree','make-yourself-at-home':'gear',
  'pull-release-bloom':'pulse','contact-powers':'power','build-a-song':'music-note',controls:'hand-left',
  'choose-a-track':'campaign','five-pools-per-run':'list','research-points-and-powers':'coin','continue-or-start-again':'play',

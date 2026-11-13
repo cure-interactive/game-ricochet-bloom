@@ -17,3 +17,9 @@ body[data-menu-mode=home] #wiki-dialog[open]{max-height:var(--app-height,100dvh)
 body[data-menu-mode=home] .wiki-heading{padding-top:max(16px,env(safe-area-inset-top));padding-inline:max(16px,calc((100vw - 900px)/2))}
 .wiki-article{padding-bottom:max(28px,env(safe-area-inset-bottom))}
 @media(max-width:480px){.wiki-heading{gap:8px;padding:12px}.wiki-heading button{padding:10px}.wiki-heading [data-wiki-back]>span:not(.ui-icon){display:none}.wiki-heading h2{font-size:19px}.wiki-article{padding:24px 20px}.home-secondary{flex-wrap:wrap}.home-secondary button{min-width:0}}
+.credit-page[hidden],#credits-dialog .dialog-body[hidden]{display:none!important}
+.credit-page .wiki-article{padding:12px 0;overflow:visible;max-width:100%;font-size:16px;line-height:1.65}
+.credit-page pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;padding:12px;background:#07132188;border-radius:12px}
+.credit-page summary{cursor:pointer;padding:14px 0;color:var(--mint)}
+.credit-page a{overflow-wrap:anywhere}
+.credit-page h1{font-size:26px}.credit-page h2{font-size:21px}.credit-page h3{font-size:18px}

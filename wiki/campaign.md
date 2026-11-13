@@ -10,11 +10,11 @@ The sequence is **First Light → Crosscurrent → Glasswater → Afterimage →
 
 Each track follows the same five-pool structure with its own atmosphere and arrangement:
 
-1. **Intro:** make one bloom, with 12 jellies.
-2. **Verse:** make a bloom and touch all three musical roles, with 14 jellies.
-3. **Build:** make two blooms, with 16 jellies.
-4. **Bridge:** make a bloom with a wall bank, with 14 jellies.
-5. **Finale:** make two blooms and touch all three roles, with 18 jellies.
+1. **Intro:** make one bloom, with 12 bubbles.
+2. **Verse:** make a bloom and touch all three musical roles, with 14 bubbles.
+3. **Build:** make two blooms, with 16 bubbles.
+4. **Bridge:** make a bloom with a wall bank, with 14 bubbles.
+5. **Finale:** make two blooms and touch all three roles, with 18 bubbles.
 
 New runs give six plucks per pool. The first bloom adds one more. Your song develops across the pools. After a clear, Continue takes you straight to the next pool.
 

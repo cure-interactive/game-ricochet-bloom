@@ -1,11 +1,11 @@
-import { gameCreate, launch, physicsStep, powerMarkers, seedBodies, RULE, COLORS, POWERS } from './engine.js?v=ee2ad99d5c6262d550458a805ece6f85e3ed035e8547beb369aa6a1128985f22';
-import { GAME_CATALOGUE as cat } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543efa29e2eada2632f613b604';
-import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
-import { PowerVisual } from './power-visual.js?v=edb5b2cca4cd4e7b08bd21659ff403bb1bb9bd5b07b6ff33941b51b7f787b3dd';
+import { gameCreate, launch, physicsStep, powerMarkers, seedBodies, RULE, COLORS, POWERS } from './engine.js?v=07969b6d92e08ed72ffc554ae24bd9217d6332cd51a913f52f8e52638bcab9dd';
+import { GAME_CATALOGUE as cat } from './run.js?v=f46e437fcd893aaf9e4277a1ca9b56e1ec27ca75f1396d6c33557958bb850b33';
+import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
+import { PowerVisual } from './power-visual.js?v=dc034a6a889822da9bfcf702b4f0f9c4625860d73c3ea0412aac5c94279e4da2';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 export const BUILD_EXAMPLES=Object.freeze([
-  {id:'bank',name:'Bank & Reply',powers:['comet','spring','echo'],nodes:['comet.foundation','spring.b','echo.a'],description:'Keep momentum, turn a rebound, then let Echo seek a missed jelly.'},
+  {id:'bank',name:'Bank & Reply',powers:['comet','spring','echo'],nodes:['comet.foundation','spring.b','echo.a'],description:'Keep momentum, turn a rebound, then let Echo seek a missed bubble.'},
   {id:'current',name:'Gather & Release',powers:['attract','vortex','ripple'],nodes:['attract.foundation','vortex.foundation','ripple.capstone'],description:'Gather bodies, circulate them, then send a returning pressure wave.'},
   {id:'cascade',name:'Contact Cascade',powers:['blaster','split','relay'],nodes:['blaster.foundation','split.foundation','relay.foundation'],description:'Automatic shots, side seeds and physical relays share one contact chain.'}
 ]);
@@ -28,15 +28,15 @@ export function upgradeFixture(id,after=true,autoplay=true){
 // Both sides receive the same scene; only the selected upgrade differs.
 export const STUDY_SCENES=Object.freeze({
  'echo.foundation':'Prepared rebound: watch the violet Echo stretch away from its dotted route.',
- 'echo.a':'Prepared near miss: an unhit jelly sits beside the Echo’s delayed route.',
+ 'echo.a':'Prepared near miss: an unhit bubble sits beside the Echo’s delayed route.',
  'echo.b':'Prepared rebound: compare the Echo’s maximum distance from its delayed route.',
  'echo.capstone':'Late-flight study: the player is slowing with one last Echo phrase to finish.',
- 'stasis.capstone':'Contact study: a frosted jelly approaches an unfrozen jelly.',
+ 'stasis.capstone':'Contact study: a frosted bubble approaches an unfrozen bubble.',
  'wake.capstone':'Crossing study: the player returns across an older part of its wake.',
  'rewind.capstone':'Encore study: four notes are already struck; Rewind approaches the fifth.',
  'blaster.a':'Missed-shot study: a projectile approaches the wall with time left to fly.',
- 'swap.foundation':'One distant jelly is already hit. Compare the chosen destination.',
- 'swap.a':'The farthest jelly is behind the departing player. Compare destinations.'
+ 'swap.foundation':'One distant bubble is already hit. Compare the chosen destination.',
+ 'swap.a':'The farthest bubble is behind the departing player. Compare destinations.'
 });
 function prepareStudy(game,id){
  if(id==='swap.foundation'||id==='swap.a'){
@@ -81,7 +81,7 @@ function studyReading(id,m){
  if(id==='split.capstone')return `${Math.round(m.separation||0)} units apart before rejoining`;
  if(id==='blaster.a')return `${m.shotBanks||0} projectile rebounds`;
  if(['spring.foundation','portal.foundation','wrap.foundation','relay.b'].includes(id))return `${(m.duration||0).toFixed(1)} seconds active`;
- if(id.startsWith('swap.'))return `Destination jelly ${m.destination||'…'}`;
+ if(id.startsWith('swap.'))return `Destination bubble ${m.destination||'…'}`;
  return `${m.contacts||0} contacts · ${m.banks||0} banks`;
 }
 export function upgradePreviewMount(controller){

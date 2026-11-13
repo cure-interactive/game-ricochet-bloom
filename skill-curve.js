@@ -1,4 +1,4 @@
-import { skillConfig } from './skill-effect.js?v=6783470d52e0982bd5d187dc8b0d26a9815b787acc3c581f5c2bd0321ccc393d';
+import { skillConfig } from './skill-effect.js?v=7832dd7c58ba0da9a3d69a6424a04dc4734479b27b6f3ea1f0810fcb589d59d5';
 import { DRUNK_SECONDS, waveFalloff, waveRadial, overlapResponse, magnetResponse, drunkSway } from './power-response.js?v=53b3f123d0f0c05341a1eb30cbf1c20f19b251c6a7e30ff0cc4921ddfff73338';
 
 // One explanatory graph per power, replacing only the relevant stat's meter.
@@ -7,11 +7,11 @@ function specification(power) {
  const distance={xLabel:'Distance From Center',xMax:528,xEnd:'528',yMin:0,yMax:125,yLabel:'Strength (% of Base)',note:'Distance in pool units; strength before the speed cap.'};
  switch(power){
  case 'ripple':return {...distance,label:'Falloff',yLabel:'Outward Push (% of Base)'};
- case 'attract':return {...distance,label:'Gathering Shape',yMin:-125,yLabel:'Out + / In − (% of Base)',note:'Example: a jelly of radius 24. Tight Group stops pulling near its center; Loose Ring reverses direction.'};
+ case 'attract':return {...distance,label:'Gathering Shape',yMin:-125,yLabel:'Out + / In − (% of Base)',note:'Example: a bubble of radius 24. Tight Group stops pulling near its center; Loose Ring reverses direction.'};
  case 'vortex':return {...distance,label:'Swirl Strength',yLabel:'Swirl (% of Base)',note:'Tangential push with distance; inward/outward drift is separate.'};
- case 'magnet':return {...distance,label:'Pull Strength',xMax:570,xEnd:'570',yMax:140,yLabel:'Pull (% of Base)',note:'Unhit jelly, radius 24; player radius 14. Pull stops on overlap and outside reach.'};
- case 'bubble':return {label:'Pressure',xLabel:'Shell Overlap',xMax:1,xEnd:'100%',yMin:0,yMax:140,yLabel:'Jelly Push (% of Base)',note:'Deeper overlap pushes harder. Without Impact; the player receives an 18% reaction.'};
- case 'stasis':return {label:'Player Pressure',xLabel:'Overlap With Frozen Jelly',xMax:1,xEnd:'100%',yMin:0,yMax:100,yLabel:'Pressure (% of Base)',note:'After the frozen jelly is hit. Lower pressure bends your path less; speed is preserved.'};
+ case 'magnet':return {...distance,label:'Pull Strength',xMax:570,xEnd:'570',yMax:140,yLabel:'Pull (% of Base)',note:'Unhit bubble, radius 24; player radius 14. Pull stops on overlap and outside reach.'};
+ case 'bubble':return {label:'Pressure',xLabel:'Shell Overlap',xMax:1,xEnd:'100%',yMin:0,yMax:140,yLabel:'Bubble Push (% of Base)',note:'Deeper overlap pushes harder. Without Impact; the player receives an 18% reaction.'};
+ case 'stasis':return {label:'Player Pressure',xLabel:'Overlap With Frozen Bubble',xMax:1,xEnd:'100%',yMin:0,yMax:100,yLabel:'Pressure (% of Base)',note:'After the frozen bubble is hit. Lower pressure bends your path less; speed is preserved.'};
  case 'tether':return {label:'Playerward Pull',xLabel:'Gap From Player Surface',xMax:240,xEnd:'240',yMin:0,yMax:150,yLabel:'Pull (% of Base)',note:'Gap in pool units. Pull eases in, then levels off at a gap of 180.'};
  case 'drunk':return {label:'Sway Width',xLabel:'Time Since Activation',xMax:DRUNK_SECONDS,xEnd:DRUNK_SECONDS+' s',yMin:-70,yMax:70,yLabel:'Heading Offset (°)',note:'Side-to-side heading offset, not a predicted flight path. Speed stays unchanged.'};
  default:return null;
@@ -20,7 +20,7 @@ function specification(power) {
 export function skillCurveValue(power,c,x){
  if(['ripple','attract','vortex'].includes(power)){
   if(x>=c.reach)return 0;
-  if(power==='attract'&&c.a&&x<54)return 0; // Labelled representative jelly radius 24 + 30.
+  if(power==='attract'&&c.a&&x<54)return 0; // Labelled representative bubble radius 24 + 30.
   const force=c.force/640*100*waveFalloff(x,c.reach,c);
   return power==='attract'?force*waveRadial(power,x,c.reach,c):force;
  }

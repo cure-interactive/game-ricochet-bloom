@@ -1,6 +1,6 @@
-import { unlockedResolve } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';
-import { GAME_CATALOGUE } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543efa29e2eada2632f613b604';
-import { skillStateCreate } from './skill-effect.js?v=6783470d52e0982bd5d187dc8b0d26a9815b787acc3c581f5c2bd0321ccc393d';
+import { unlockedResolve } from './profile.js?v=9078c56cc1e0eae227105818494b7175ccc018790a79571c34d411819cb4a6f5';
+import { GAME_CATALOGUE } from './run.js?v=f46e437fcd893aaf9e4277a1ca9b56e1ec27ca75f1396d6c33557958bb850b33';
+import { skillStateCreate } from './skill-effect.js?v=7832dd7c58ba0da9a3d69a6424a04dc4734479b27b6f3ea1f0810fcb589d59d5';
 
 export function freePlayBuild(progress){
   const equipped=progress.equipped.filter(id=>Object.hasOwn(progress.profile.research,id));
@@ -12,7 +12,7 @@ export function freePlayBuild(progress){
 // Apply research at a shot boundary, keeping an already-saved flight exact.
 // The caller excludes campaign replays, tutorials and upgrade previews.
 export function freePlaySync(game,progress){
-  if(game.mode!=='free'||game.isFlying)return false;
+  if(!['free','waves'].includes(game.mode)||game.isFlying)return false;
   const build=freePlayBuild(progress);
   if(game.randomPowers===true&&JSON.stringify(game.build)===JSON.stringify(build))return false;
   game.build=build;game.randomPowers=true;game.skillState=skillStateCreate();

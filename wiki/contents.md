@@ -10,6 +10,14 @@
 - [Build a Song](how-to-play.md#build-a-song)
 - [Controls](how-to-play.md#controls)
 
+## Endless Waves
+
+- [Endless Waves](waves.md)
+- [Clear the Board](waves.md#clear-the-board)
+- [Harder Waves](waves.md#harder-waves)
+- [Powers and Music](waves.md#powers-and-music)
+- [Saves and Records](waves.md#saves-and-records)
+
 ## Campaign
 
 - [Campaign](campaign.md)

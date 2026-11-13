@@ -1,38 +1,39 @@
+import { liveBubbles, waveConfig, wavePrepare, waveEntryStep, waveValid, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { DRUNK_SECONDS, drunkSway, overlapResponse, magnetResponse } from './power-response.js?v=53b3f123d0f0c05341a1eb30cbf1c20f19b251c6a7e30ff0cc4921ddfff73338';
-import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
-import { jellyRole } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=6783470d52e0982bd5d187dc8b0d26a9815b787acc3c581f5c2bd0321ccc393d';
-export { skillFlags } from './skill-effect.js?v=6783470d52e0982bd5d187dc8b0d26a9815b787acc3c581f5c2bd0321ccc393d';
+import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
+import { bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=7832dd7c58ba0da9a3d69a6424a04dc4734479b27b6f3ea1f0810fcb589d59d5';
+export { skillFlags } from './skill-effect.js?v=7832dd7c58ba0da9a3d69a6424a04dc4734479b27b6f3ea1f0810fcb589d59d5';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
 export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: DRUNK_SECONDS, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
 export function seedHash(seed) { let hash = 2166136261; for (const char of String(seed)) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619); return hash >>> 0 || 1; }
 export const POWERS = Object.freeze({
-  ripple: { name: 'Ripple', symbol: '◎', color: '#9ff5df', description: 'Push nearby jellies outward.' },
-  attract: { name: 'Attract', symbol: '✦', color: '#ffb5de', description: 'Pull nearby jellies together.' },
-  vortex: { name: 'Vortex', symbol: '↻', color: '#c4b6ff', description: 'Send nearby jellies swirling.' },
-  stasis: { name: 'Stasis', symbol: '❄', color: '#a4e8ff', description: 'Freeze jellies for this pluck. After a hit they turn translucent: pass through their soft outward pressure without losing speed.' },
+  ripple: { name: 'Ripple', symbol: '◎', color: '#9ff5df', description: 'Push nearby bubbles outward.' },
+  attract: { name: 'Attract', symbol: '✦', color: '#ffb5de', description: 'Pull nearby bubbles together.' },
+  vortex: { name: 'Vortex', symbol: '↻', color: '#c4b6ff', description: 'Send nearby bubbles swirling.' },
+  stasis: { name: 'Stasis', symbol: '❄', color: '#a4e8ff', description: 'Freeze bubbles for this pluck. After a hit they turn translucent: pass through their soft outward pressure without losing speed.' },
   comet: { name: 'Comet', symbol: '☄', color: '#ffd293', description: 'Launch at comet speed and keep your momentum through bounces for this pluck.' },
-  swap: { name: 'Swap', symbol: '⇄', color: '#f3b3ff', description: 'Exchange places with the farthest jelly and keep moving.' },
-  magnet: { name: 'Magnet', symbol: '∩', color: '#ffb3cd', description: 'Draw unhit jellies toward your moving seed for 2.4 seconds.' },
-  lightning: { name: 'Lightning', symbol: 'ϟ', color: '#b9dfff', description: 'Strike three different jellies in quick succession and knock them away.' },
+  swap: { name: 'Swap', symbol: '⇄', color: '#f3b3ff', description: 'Exchange places with the farthest bubble and keep moving.' },
+  magnet: { name: 'Magnet', symbol: '∩', color: '#ffb3cd', description: 'Draw unhit bubbles toward your moving seed for 2.4 seconds.' },
+  lightning: { name: 'Lightning', symbol: 'ϟ', color: '#b9dfff', description: 'Strike three different bubbles in quick succession and knock them away.' },
   impact: { name: 'Impact', symbol: '»', color: '#ffe39e', description: 'Give your seed much stronger pushes for the rest of this pluck.' },
-  tether: { name: 'Tether', symbol: '△', color: '#b4f6d2', description: 'Link three jellies with stretchy musical threads. The group drifts toward your moving seed for four seconds.' },
-  split: { name: 'Split', symbol: '⋔', color: '#c9c0ff', description: 'Fan into three little seeds for three seconds. All three collect powers; every jelly still scores once.' },
-  bubble: { name: 'Bubble', symbol: '◯', color: '#aaeaff', description: 'Float through jellies without bouncing. Smooth pressure pushes them outward and gently nudges you away, growing stronger with overlap; touches still play notes.' },
+  tether: { name: 'Tether', symbol: '△', color: '#b4f6d2', description: 'Link three bubbles with stretchy musical threads. The group drifts toward your moving seed for four seconds.' },
+  split: { name: 'Split', symbol: '⋔', color: '#c9c0ff', description: 'Fan into three little seeds for three seconds. All three collect powers; every bubble still scores once.' },
+  bubble: { name: 'Bubble', symbol: '◯', color: '#aaeaff', description: 'Float through bubbles without bouncing. Smooth pressure pushes them outward and gently nudges you away, growing stronger with overlap; touches still play notes.' },
   portal: { name: 'Portal', symbol: '◌', color: '#b4ffe7', description: 'Open two gates across the pool. Pass through either and keep your speed.' },
-  echo: { name: 'Echo', symbol: '◔', color: '#c7d1ff', description: 'A ghost trails half a second behind, gently seeking nearby unhit jellies. It shares your chain and springs back toward your path.' },
-  slingshot: { name: 'Slingshot', symbol: '➹', color: '#ffc99f', description: 'Orbit the marked jelly briefly, then launch toward an untouched jelly.' },
-  relay: { name: 'Relay', symbol: '⌁', color: '#ffe6a3', description: 'The next three scored jellies each relay one bump: wake a new jelly or activate a marked power, refreshing your flight.' },
-  wake: { name: 'Wake', symbol: '≋', color: '#89f4ef', description: 'Leave a flowing current for five seconds. Crossing jellies are swept along your trail.' },
+  echo: { name: 'Echo', symbol: '◔', color: '#c7d1ff', description: 'A ghost trails half a second behind, gently seeking nearby unhit bubbles. It shares your chain and springs back toward your path.' },
+  slingshot: { name: 'Slingshot', symbol: '➹', color: '#ffc99f', description: 'Orbit the marked bubble briefly, then launch toward an untouched bubble.' },
+  relay: { name: 'Relay', symbol: '⌁', color: '#ffe6a3', description: 'The next three scored bubbles each relay one bump: wake a new bubble or activate a marked power, refreshing your flight.' },
+  wake: { name: 'Wake', symbol: '≋', color: '#89f4ef', description: 'Leave a flowing current for five seconds. Crossing bubbles are swept along your trail.' },
   spring: { name: 'Spring', symbol: '∧', color: '#f6c0ff', description: 'Elastic walls launch your seeds back into the pool for five seconds.' },
-  orbit: { name: 'Orbit', symbol: '◉', color: '#ffdc9a', description: 'Gather up to two untouched jellies as satellites, then fling them outward after three seconds.' },
-  rewind: { name: 'Rewind', symbol: '≪', color: '#b7b9ff', description: 'At the end of this flight, retrace its recent path for a quick encore. Moving jellies can become new notes.' },
-  pulse: { name: 'Pulse', symbol: '◴', color: '#ffadc7', description: 'Erupt at three random spots across the pool, pushing jellies away one beat at a time.' },
+  orbit: { name: 'Orbit', symbol: '◉', color: '#ffdc9a', description: 'Gather up to two untouched bubbles as satellites, then fling them outward after three seconds.' },
+  rewind: { name: 'Rewind', symbol: '≪', color: '#b7b9ff', description: 'At the end of this flight, retrace its recent path for a quick encore. Moving bubbles can become new notes.' },
+  pulse: { name: 'Pulse', symbol: '◴', color: '#ffadc7', description: 'Erupt at three random spots across the pool, pushing bubbles away one beat at a time.' },
   drunk: { name: 'Drunk', symbol: '∿', color: '#ffacd8', description: 'Swerve side to side for four seconds without losing speed. Split seeds get tipsy too.' },
   wrap: { name: 'Wrap', symbol: '⇥', color: '#8cefff', description: 'Cross any wall and emerge at the opposite edge for five seconds. Keep your direction and momentum; Split seeds wrap too. Replaces wall bounces, including Spring.' },
-  blaster: { name: 'Blaster', symbol: '✧', color: '#fff0a8', description: 'Automatically aim and fire three gel shots after contact, with no further input. Shots push jellies, play notes and give you a little recoil.' },
-  homing: { name: 'Homing', symbol: '➶', color: '#c1ffa2', description: 'Curve toward nearby unhit jellies ahead for five seconds. Keep your momentum and seek a new target after each hit. Split seeds home too; green brackets show the target.' }
+  blaster: { name: 'Blaster', symbol: '✧', color: '#fff0a8', description: 'Automatically aim and fire three gel shots after contact, with no further input. Shots push bubbles, play notes and give you a little recoil.' },
+  homing: { name: 'Homing', symbol: '➶', color: '#c1ffa2', description: 'Curve toward nearby unhit bubbles ahead for five seconds. Keep your momentum and seek a new target after each hit. Split seeds home too; green brackets show the target.' }
 });
 const powerKinds = Object.keys(POWERS);
 const offeredKinds = state => state.build ? state.build.map(p=>p.power) : powerKinds;
@@ -44,11 +45,12 @@ export function powerAllowance(state) { return state.power.capacity; }
 function powerPlan(state, count = powerAllowance(state)) {
   const markers = [], power = state.power, kinds=state.randomPowers?randomOfferKinds(state):offeredKinds(state);
   for (let index = 0; index < count; index++) {
+    if(state.mode==='waves' && (index>=liveBubbles(state).length || index>=kinds.length))break;
     const kind = kinds[((state.randomPowers?0:Math.max(0,kinds.indexOf(power.offer))) + index) % kinds.length];
-    const candidates = state.bodies.slice(1).filter(body => body.id !== power.target && !markers.some(marker => marker.target === body.id));
+    const candidates = liveBubbles(state).filter(body => body.id !== power.target && !markers.some(marker => marker.target === body.id));
     const unhit = candidates.filter(body => !state.chain.includes(body.id));
     const pool = unhit.length ? unhit : candidates;
-    const target = index === 0 ? power.target : pool[seedHash(state.seed + ':' + power.claims + ':' + index) % pool.length].id;
+    const target = index === 0 && liveBubbles(state).some(b=>b.id===power.target) ? power.target : (pool.length?pool:liveBubbles(state))[seedHash(state.seed + ':' + power.claims + ':' + index) % (pool.length||liveBubbles(state).length)].id;
     markers.push({ kind, target });
   }
   return markers;
@@ -62,14 +64,14 @@ function powerNext(state) {
 }
 function powerTargetNext(state) {
   const power = state.power;
-  const candidates = state.bodies.slice(1).filter(body => body.id !== power.target && !state.chain.includes(body.id));
+  const candidates = liveBubbles(state).filter(body => body.id !== power.target && !state.chain.includes(body.id));
   power.target = candidates.length ? candidates[seedHash(state.seed + ':' + power.claims) % candidates.length].id : (power.target + seedHash(state.seed + ':' + power.claims) % (state.bodies.length-2)) % (state.bodies.length-1) + 1;
 }
 // Optional v2 configuration. Missing configuration preserves legacy power behavior.
 export function blasterTarget(state) {
   const seed=state.bodies[0];
   const pending=new Set((effectGet(state,'blaster')?.shots||[]).map(shot=>shot.target));
-  const candidates=state.bodies.slice(1).filter(body=>!state.chain.includes(body.id)&&!pending.has(body.id));
+  const candidates=liveBubbles(state).filter(body=>!state.chain.includes(body.id)&&!pending.has(body.id));
   candidates.sort((a,b)=>Math.hypot(a.x-seed.x,a.y-seed.y)-Math.hypot(b.x-seed.x,b.y-seed.y)||a.id-b.id);
   const target=candidates[0];if(!target)return null;
   // Predict the intercept; targeting remains deterministic and never changes launch aim.
@@ -107,15 +109,15 @@ function blasterStep(state, events) {
       else shot.life=0;
     }
     if(shot.life<=0)continue;
-    for(const jelly of state.bodies.slice(1)) {
-      if(effect.hits[shot.volley].includes(jelly.id)||Math.hypot(jelly.x-shot.x,jelly.y-shot.y)>jelly.radius+5)continue;
-      effect.hits[shot.volley].push(jelly.id);shot.life=0;
+    for(const bubble of liveBubbles(state)) {
+      if(effect.hits[shot.volley].includes(bubble.id)||Math.hypot(bubble.x-shot.x,bubble.y-shot.y)>bubble.radius+5)continue;
+      effect.hits[shot.volley].push(bubble.id);shot.life=0;
       const speed=Math.hypot(shot.vx,shot.vy),dx=shot.vx/speed,dy=shot.vy/speed;
-      jelly.vx+=dx*260;jelly.vy+=dy*260;velocityLimit(jelly);
-      const marker=state.power.markers.find(item=>item.target===jelly.id);
-      if(marker)powerCollect(state,marker,state.bodies[0],jelly,dx,dy,events);
-      scoreContact(state,jelly,{id:-4,vx:shot.vx,vy:shot.vy},events);
-      events.push({type:'blaster-hit',id:jelly.id,x:jelly.x,y:jelly.y,nx:dx,ny:dy});break;
+      bubble.vx+=dx*260;bubble.vy+=dy*260;velocityLimit(bubble);
+      const marker=state.power.markers.find(item=>item.target===bubble.id);
+      if(marker)powerCollect(state,marker,state.bodies[0],bubble,dx,dy,events);
+      scoreContact(state,bubble,{id:-4,vx:shot.vx,vy:shot.vy},events);
+      events.push({type:'blaster-hit',id:bubble.id,x:bubble.x,y:bubble.y,nx:dx,ny:dy});break;
     }
   }
   effect.shots=effect.shots.filter(shot=>shot.life>0);
@@ -139,13 +141,13 @@ export function homingTarget(state, seed) {
   const speed = Math.hypot(seed.vx, seed.vy);
   if (speed < 45) return null;
   let target = null, best = Infinity;
-  for (const body of state.bodies.slice(1)) {
+  for (const body of liveBubbles(state)) {
     if (state.chain.includes(body.id) || effectGet(state, 'orbit')?.satellites.includes(body.id)) continue;
     const dx = body.x - seed.x, dy = body.y - seed.y, distance = Math.hypot(dx, dy);
     if (distance < 1 || distance > skillConfig(state,'homing').reach) continue;
     const ahead = (dx * seed.vx + dy * seed.vy) / (distance * speed);
     if (ahead < -.15) continue; // Keep the shot's direction instead of making a U-turn.
-    const missingRole=skillFlags(state,'homing').capstone&&!state.chain.some(id=>jellyRole(id)===jellyRole(body.id));
+    const missingRole=skillFlags(state,'homing').capstone&&!state.chain.some(id=>bubbleRole(id)===bubbleRole(body.id));
     const cost = distance * (1 + .7 * (1 - ahead))*(missingRole?.7:1);
     if (cost < best || cost === best && body.id < target.id) { target = body; best = cost; }
   }
@@ -176,7 +178,7 @@ function effectStep(state, events) {
       effect.trail.push({ x: body.x, y: body.y, nx: body.vx / speed, ny: body.vy / speed, age: 0 });
     }
     effect.trail = effect.trail.slice(-162);
-    for (const body of state.bodies.slice(1)) {
+    for (const body of liveBubbles(state)) {
       const point = effect.trail.filter(p => Math.hypot(body.x-p.x,body.y-p.y)<body.radius+config.width).sort((a,b)=>a.age-b.age)[0];
       if (point) { body.vx += point.nx * config.force * RULE.step; body.vy += point.ny * config.force * RULE.step; velocityLimit(body); }
     }
@@ -194,8 +196,8 @@ function effectStep(state, events) {
     const beat = config.count - effect.remaining, margin = RULE.inset + 60;
     // Saved RNG keeps each new wave unpredictable in play and exact on resume.
     let x=margin+random(state)*(RULE.width-2*margin),y=margin+random(state)*(RULE.height-2*margin);
-    if(config.capstone&&effect.remaining===1){const targets=state.bodies.slice(1).filter(b=>!state.chain.includes(b.id));if(targets.length){const t=targets[Math.floor(random(state)*targets.length)];x=x*.35+t.x*.65;y=y*.35+t.y*.65;}}
-    for (const body of state.bodies.slice(1)) {
+    if(config.capstone&&effect.remaining===1){const targets=liveBubbles(state).filter(b=>!state.chain.includes(b.id));if(targets.length){const t=targets[Math.floor(random(state)*targets.length)];x=x*.35+t.x*.65;y=y*.35+t.y*.65;}}
+    for (const body of liveBubbles(state)) {
       const dx=body.x-x,dy=body.y-y,d=Math.max(1,Math.hypot(dx,dy));
       if(d<460) { const impulse=config.force*(1-d/600); body.vx+=dx/d*impulse;body.vy+=dy/d*impulse;velocityLimit(body); }
     }
@@ -239,7 +241,7 @@ function effectStep(state, events) {
     // Bias the existing spring, never teleport or detach from the delayed route.
     // Nearby unhit surfaces compete by distance; targets behind the path are left behind.
     let seekX = 0, seekY = 0, nearest = skillConfig(state,'echo').leash;
-    if (config.seek && effect.isReady && !jumped) for (const body of state.bodies.slice(1)) {
+    if (config.seek && effect.isReady && !jumped) for (const body of liveBubbles(state)) {
       if (state.chain.includes(body.id)) continue;
       const dx = body.x - point.x, dy = body.y - point.y, distance = Math.hypot(dx, dy);
       const gap = Math.max(0, distance - body.radius - point.radius);
@@ -262,7 +264,7 @@ function effectStep(state, events) {
   if (effect.kind === 'slingshot') {
     effect.angle += effect.spin * 7 * RULE.step;
     if (effect.seconds === 0) {
-      const flags=skillFlags(state,'slingshot'),candidates=state.bodies.slice(1).filter(body=>!state.chain.includes(body.id));
+      const flags=skillFlags(state,'slingshot'),candidates=liveBubbles(state).filter(body=>!state.chain.includes(body.id));
       const forward=candidates.filter(b=>(b.x-seed.x)*seed.vx+(b.y-seed.y)*seed.vy>=0),pool=(flags.a||flags.b)&&forward.length?forward:candidates;
       const target=(flags.legacy||flags.foundation||flags.a||flags.b||flags.capstone)?pool.sort((a,b)=>(flags.b?-1:1)*(Math.hypot(a.x-seed.x,a.y-seed.y)-Math.hypot(b.x-seed.x,b.y-seed.y))||a.id-b.id)[0]:null;
       const lead=target&&(flags.legacy||flags.foundation)?Math.min(.25,Math.hypot(target.x-seed.x,target.y-seed.y)/1050):0;
@@ -299,7 +301,7 @@ function effectStep(state, events) {
     }
   }
   if (effect.kind === 'magnet') {
-    for (const body of state.bodies.slice(1)) {
+    for (const body of liveBubbles(state)) {
       if (state.chain.includes(body.id)) continue;
       const dx = seed.x - body.x, dy = seed.y - body.y, distance = Math.hypot(dx, dy);
       if (distance > seed.radius + body.radius && distance < config.reach) {
@@ -309,8 +311,11 @@ function effectStep(state, events) {
     }
   }
   if (effect.kind === 'lightning' && effect.seconds === 0) {
+    if(state.mode==='waves')effect.targets=effect.targets.filter(id=>!state.bodies[id].popped);
+    if(!effect.targets.length){effectClear(state,events,effect.kind);continue;}
     const body = state.bodies[effect.targets.shift()], dx = body.x - seed.x, dy = body.y - seed.y;
     const distance = Math.hypot(dx, dy), nx = distance > .001 ? dx / distance : 1, ny = distance > .001 ? dy / distance : 0;
+    if(state.mode==='waves'){const marker=state.power.markers.find(m=>m.target===body.id);if(marker)powerCollect(state,marker,seed,body,nx,ny,events);scoreContact(state,body,seed,events);}
     body.vx += nx * 850; body.vy += ny * 850; velocityLimit(body);
     events.push({ type: 'lightning', id: body.id, index: 3 - effect.targets.length, x: body.x, y: body.y, fromX: seed.x, fromY: seed.y, nx, ny });
     if (effect.targets.length) effect.seconds = .22;
@@ -322,7 +327,7 @@ function effectStep(state, events) {
 function random(state) { let value = state.rng; value ^= value << 13; value ^= value >>> 17; value ^= value << 5; state.rng = value >>> 0; return state.rng / 4294967296; }
 export function gameCreate(seed = 'LAGOON', mode = 'challenge', options = {}) {
   const state = { version: RULE.version, seed: String(seed).slice(0, 32), mode, rng: seedHash(seed), tick: 0, score: 0, plucks: RULE.plucks, launches: 0, blooms: 0, bestChain: 0, chain: [], banks: 0, flightAge: 0, isFlying: false, isOver: false, power: powerCreate(seed), effects: [], flightPath: [], objective:{enabled:true,index:0,completed:0,earned:false}, shotStart:0, lastShot:null, bodies: [{ id: 0, x: 480, y: 550, vx: 0, vy: 0, radius: RULE.seedRadius, tone: 0, cooldown: 0 }] };
-  const count = options.build && buildValidate(options.build) ? Math.max(12,Math.min(20,Math.trunc(options.population||14))) : 14;
+  const count = mode==='waves' ? waveConfig(options.wave||1).count : options.build && buildValidate(options.build) ? Math.max(12,Math.min(20,Math.trunc(options.population||14))) : 14;
   if(options.build) {if(!buildValidate(options.build))throw new TypeError('Invalid skill build');state.build=structuredClone(options.build);state.skillState=skillStateCreate();state.power.offer=state.build[0].power;state.plucks=options.relaxed?8:6;if(options.randomPowers){state.randomPowers=true;state.power.offer=randomOfferKinds(state)[0];}}
   if(state.build)state.power.target=(state.power.target-1)%count+1;
   for (let index = 0; index < count; index++) {
@@ -331,12 +336,20 @@ export function gameCreate(seed = 'LAGOON', mode = 'challenge', options = {}) {
     state.bodies.push({ id: index + 1, x: 480 + Math.cos(angle) * ring + (random(state) - .5) * 24, y: 310 + Math.sin(angle) * ring * .69 + (random(state) - .5) * 24, vx: (random(state) - .5) * 24, vy: (random(state) - .5) * 24, radius, tone: index % COLORS.length, cooldown: 0 });
   }
   if(options.environment){if(!environmentValid(options.environment))throw new TypeError('Invalid track environment');state.environment=structuredClone(options.environment);state.objective.index=(state.environment.pool+seedHash(state.seed))%3;if(state.objective.index===2&&state.build.some(p=>p.power==='wrap'))state.objective.index=1;trackLayout(state,state.environment.pool,state.environment.route);}
+  if(mode==='waves'){state.rng=seedHash(state.seed+':wave:'+(options.wave||1));wavePrepare(state,options.wave||1,random);state.power.target=(state.power.target-1)%count+1;}
   return state;
 }
+function waveAdvance(state,events){
+  const number=state.wave.number+1,next=gameCreate(state.seed,'waves',{build:state.build,randomPowers:true,wave:number});
+  for(const key of ['tick','score','launches','blooms','bestChain'])next[key]=state[key];
+  next.objective.completed=state.objective.completed;next.objective.index=state.objective.index;
+  next.power.claims=state.power.claims;next.power.capacity=state.power.capacity;
+  Object.assign(state,next);events.push({type:'wave',number});
+}
 export const gameWon = state => state.mode === 'challenge' && state.isOver && state.blooms >= RULE.goalBlooms;
-export function continueFree(state) { if (!state.isOver) return false; state.mode = 'free'; state.isOver = false; return true; }
+export function continueFree(state) { if (!state.isOver || state.mode==='waves') return false; state.mode = 'free'; state.isOver = false; return true; }
 export function launch(state, angle, power = .7) {
-  if (state.isOver || state.isFlying || !Number.isFinite(angle) || !Number.isFinite(power)) return false;
+  if (state.isOver || state.isFlying || state.wave?.entry<WAVE_ENTRY || !Number.isFinite(angle) || !Number.isFinite(power)) return false;
   const seed = state.bodies[0], speed = 280 + Math.max(0, Math.min(1, power)) * 570;
   seed.vx = Math.cos(angle) * speed; seed.vy = Math.sin(angle) * speed;
   state.power.markers = powerPlan(state);
@@ -347,8 +360,9 @@ export function launch(state, angle, power = .7) {
   return true;
 }
 function scoreContact(state, body, collector, events) {
-  if(state.chain.includes(body.id)) return;
+  if(body.popped || state.chain.includes(body.id)) return;
   state.chain.push(body.id); const chain=state.chain.length;
+  if(state.mode==='waves'){body.popped=true;events.push({type:'pop',id:body.id,x:body.x,y:body.y,tone:body.tone,radius:body.radius});}
   skillContact(state,body,events);
   const points=chain*25+(state.banks>0?25:0);state.score+=points;state.bestChain=Math.max(state.bestChain,chain);
   events.push({type:'note',id:body.id,x:body.x,y:body.y,tone:body.tone,chain,points,seedId:collector.id,speed:Math.hypot(collector.vx,collector.vy)});
@@ -361,7 +375,13 @@ function scoreContact(state, body, collector, events) {
     if(blaster && skillFlags(state,'blaster').capstone && !blaster.reloaded) {blaster.ammo=skillConfig(state,'blaster').ammo;blaster.reloaded=true;events.push({type:'blaster-reload',x:state.bodies[0].x,y:state.bodies[0].y});}
     const seed=state.bodies[0];if(state.mode==='song-run'&&state.banks>=2)state.objective.bankBloom=true;state.blooms++;state.score+=500;if(state.mode==='challenge'||state.mode==='song-run'&&state.blooms===1)state.plucks++;
     events.push({type:'bloom',x:seed.x,y:seed.y,points:500,banks:state.banks});
-    for(const jelly of state.bodies.slice(1)) {const d=Math.max(1,Math.hypot(jelly.x-seed.x,jelly.y-seed.y));jelly.vx+=(jelly.x-seed.x)/d*120;jelly.vy+=(jelly.y-seed.y)/d*120;}
+    for(const bubble of liveBubbles(state)) {const d=Math.max(1,Math.hypot(bubble.x-seed.x,bubble.y-seed.y));bubble.vx+=(bubble.x-seed.x)/d*120;bubble.vy+=(bubble.y-seed.y)/d*120;}
+  }
+  // In pop mode Relay transfers its hit as a short pulse: its carrier no longer exists.
+  if(state.mode==='waves'&&relay?.armed.includes(body.id)&&!relay.spent.includes(body.id)){
+    relay.spent.push(body.id);
+    const target=liveBubbles(state).filter(b=>Math.hypot(b.x-body.x,b.y-body.y)<180).sort((a,b)=>Math.hypot(a.x-body.x,a.y-body.y)-Math.hypot(b.x-body.x,b.y-body.y)||a.id-b.id)[0];
+    if(target){const marker=state.power.markers.find(m=>m.target===target.id);if(marker)powerCollect(state,marker,state.bodies[0],target,1,0,events);events.push({type:'relay',fromX:body.x,fromY:body.y,x:target.x,y:target.y,id:target.id});scoreContact(state,target,state.bodies[0],events);}
   }
 }
 function powerCollect(state, marker, a, b, nx, ny, events) {
@@ -377,7 +397,7 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     const effect={kind, seconds:kind==='orbit'?3:kind==='pulse'?2.3:kind==='rewind'?7:5, targets:[]};
     if(kind==='relay') Object.assign(effect,{armed:[],spent:[],remaining:3});
     if(kind==='wake') effect.trail=[];
-    if(kind==='orbit') Object.assign(effect,{phase:0,satellites:state.bodies.slice(1).filter(body=>body!==b&&!state.chain.includes(body.id)).sort((a,c)=>Math.hypot(a.x-seed.x,a.y-seed.y)-Math.hypot(c.x-seed.x,c.y-seed.y)||a.id-c.id).slice(0,2).map(body=>body.id)});
+    if(kind==='orbit') Object.assign(effect,{phase:0,satellites:liveBubbles(state).filter(body=>body!==b&&!state.chain.includes(body.id)).sort((a,c)=>Math.hypot(a.x-seed.x,a.y-seed.y)-Math.hypot(c.x-seed.x,c.y-seed.y)||a.id-c.id).slice(0,2).map(body=>body.id)});
     if(kind==='rewind') Object.assign(effect,{returning:false,route:[]});
     if(kind==='pulse') { const beat=.75, delay=(beat-(state.tick*RULE.step)%beat)%beat;Object.assign(effect,{seconds:delay+1.5+RULE.step,next:1.5,remaining:3}); }
     state.effects.push(effect);
@@ -393,9 +413,9 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     const angle = Math.atan2(seed.y - b.y, seed.x - b.x), spin = Math.sign((seed.x - b.x) * seed.vy - (seed.y - b.y) * seed.vx) || 1;
     state.effects.push({ kind, seconds: Math.min(.85, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], anchor: b.id, angle, spin, radius: b.radius + RULE.seedRadius + 16 });
   } else if (kind === 'tether') {
-    const nearby = state.bodies.slice(1).filter(body => body !== b).sort((a, c) => Math.hypot(a.x - b.x, a.y - b.y) - Math.hypot(c.x - b.x, c.y - b.y) || a.id - c.id).slice(0, 2);
+    const nearby = liveBubbles(state).filter(body => body !== b).sort((a, c) => Math.hypot(a.x - b.x, a.y - b.y) - Math.hypot(c.x - b.x, c.y - b.y) || a.id - c.id).slice(0, 2);
     const linked = [b, ...nearby];
-    const links = linked.map((a, index) => { const c = linked[(index + 1) % 3]; return { a: a.id, b: c.id, length: Math.max(a.radius + c.radius + 6, Math.hypot(a.x - c.x, a.y - c.y) * .85), cooldown: index * .15 }; });
+    const links = linked.length<2?[]:linked.slice(0,linked.length===2?1:3).map((a, index) => { const c = linked[(index + 1) % linked.length]; return { a: a.id, b: c.id, length: Math.max(a.radius + c.radius + 6, Math.hypot(a.x - c.x, a.y - c.y) * .85), cooldown: index * .15 }; });
     state.effects.push({ kind, seconds: Math.min(4, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], links });
   } else if (kind === 'split') {
     // The fan leaves the contact, so all three seeds have a clear outward launch.
@@ -410,7 +430,7 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
   } else if (kind === 'magnet') {
     state.effects.push({ kind, seconds: 2.4, targets: [] });
   } else if (kind === 'lightning') {
-    const targets = state.bodies.slice(1).filter(body => body !== b).sort((a, b) =>
+    const targets = liveBubbles(state).filter(body => body !== b).sort((a, b) =>
       Number(state.chain.includes(a.id)) - Number(state.chain.includes(b.id)) ||
       Math.hypot(a.x - seed.x, a.y - seed.y) - Math.hypot(b.x - seed.x, b.y - seed.y) || a.id - b.id).slice(0, 3).map(body => body.id);
     state.effects.push({ kind, seconds: .09, targets });
@@ -422,7 +442,7 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
     seed.vx = -nx * 1150; seed.vy = -ny * 1150;
   } else if (kind === 'stasis') {
-    const targets = state.bodies.slice(1).filter(body => Math.hypot(body.x - b.x, body.y - b.y) < skillConfig(state,'stasis').reach);
+    const targets = liveBubbles(state).filter(body => Math.hypot(body.x - b.x, body.y - b.y) < skillConfig(state,'stasis').reach);
     for (const body of targets) {
       if (body === b) continue; // Finish the activating collision before applying its slow cap.
       const falloff = 1 - (Math.hypot(body.x - b.x, body.y - b.y) / RULE.powerRadius) ** 2;
@@ -431,15 +451,15 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: targets.map(body => body.id) });
   } else if (kind === 'swap') {
     const flags=skillFlags(state,'swap');
-    let candidates=state.bodies.slice(1).filter(body=>body!==b);
+    let candidates=liveBubbles(state).filter(body=>body!==b);
     if(!flags.legacy&&flags.foundation){const unhit=candidates.filter(b=>!state.chain.includes(b.id));if(unhit.length)candidates=unhit;}
     if(flags.a){const forward=candidates.filter(b=>(b.x-seed.x)*seed.vx+(b.y-seed.y)*seed.vy>0);if(forward.length)candidates=forward;}
-    const rank=body=>flags.b?Math.min(...state.bodies.slice(1).filter(b=>b!==body).map(b=>Math.hypot(b.x-body.x,b.y-body.y)-b.radius-body.radius)):Math.hypot(body.x-seed.x,body.y-seed.y);
-    const destination=candidates.sort((a,b)=>rank(b)-rank(a)||a.id-b.id)[0];
+    const rank=body=>flags.b?Math.min(...liveBubbles(state).filter(b=>b!==body).map(b=>Math.hypot(b.x-body.x,b.y-body.y)-b.radius-body.radius)):Math.hypot(body.x-seed.x,body.y-seed.y);
+    const destination=candidates.sort((a,b)=>rank(b)-rank(a)||a.id-b.id)[0]||b;
     const x = seed.x, y = seed.y;
     seed.x = destination.x; seed.y = destination.y; destination.x = x; destination.y = y;
     Object.assign(event, { exitX: seed.x, exitY: seed.y, destination: destination.id });
-  } else if(!state.build) for (const body of state.bodies.slice(1)) {
+  } else if(!state.build) for (const body of liveBubbles(state)) {
     if (body === b) continue;
     const dx = body.x - b.x, dy = body.y - b.y, distance = Math.hypot(dx, dy);
     if (distance < RULE.powerRadius) {
@@ -452,6 +472,8 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     }
   }
   skillActivate(state,kind,b,events);
+  if(state.mode==='waves'&&kind==='lightning'&&!effectGet(state,kind)?.targets.length){effectClear(state,events,kind);if(state.skillState)state.skillState.charged=null;}
+  if(state.mode==='waves'&&kind==='tether'&&!effectGet(state,kind)?.links.length)effectClear(state,events,kind);
   if(kind==='swap')skillTeleport(state,event.x,event.y,event.exitX,event.exitY,'swap');
   events.push(event);
   powerNext(state);
@@ -460,13 +482,15 @@ export function physicsStep(state) {
   if (state.isOver) return [];
   const dt = RULE.step, events = [], seed = state.bodies[0]; state.tick++;
   if (state.isFlying) state.flightAge = Math.min(RULE.flightSeconds, state.flightAge + dt);
+  if(waveEntryStep(state,dt))return events;
   skillStep(state,dt,events);
   effectStep(state, events);
   environmentStep(state,dt,skillTeleport,events);
-  const bodies = [...seedBodies(state), ...state.bodies.slice(1)];
+  const bodies = [...seedBodies(state), ...liveBubbles(state)];
   for (const body of bodies) {
     body.cooldown = Math.max(0, body.cooldown - dt);
     if (body.id === -3 || effectGet(state, 'orbit')?.satellites.includes(body.id) || body.id === 0 && (effectGet(state, 'slingshot') || effectGet(state,'rewind')?.returning)) continue;
+    if(state.mode==='waves'&&body.id>0){const speed=Math.hypot(body.vx,body.vy),target=waveConfig(state.wave.number).speed;if(speed>0&&speed<target&&!effectGet(state,'stasis')){body.vx*=1+dt*.65;body.vy*=1+dt*.65;}}
     if (body.id > 0) { body.vx += Math.cos(state.tick * .002 + body.id * 1.7) * 4 * dt; body.vy += Math.sin(state.tick * .0025 + body.id * 2.1) * 4 * dt; }
     const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? flightDrag(state.flightAge)*(effectGet(state,'comet')&&state.flightAge>3?skillConfig(state,'comet').lateDrag:1) : 3 : (effectGet(state, 'stasis')?.targets.includes(body.id)||regionFrozen(state,body.id)) ? 5 : .65) * dt);
     body.vx *= drag; body.vy *= drag;
@@ -507,7 +531,7 @@ export function physicsStep(state) {
     const effect = effectGet(state, 'portal');
     for (const [index, gate] of effect.gates.entries()) if (Math.hypot(seed.x - gate.x, seed.y - gate.y) < skillConfig(state,'portal').gateRadius + seed.radius) {
       const exit = effect.gates[1 - index], speed = Math.hypot(seed.vx, seed.vy);
-      if(skillFlags(state,'portal').b){const t=state.bodies.slice(1).filter(b=>!state.chain.includes(b.id)&&((b.x-exit.x)*seed.vx+(b.y-exit.y)*seed.vy)>0).sort((a,b)=>Math.hypot(a.x-exit.x,a.y-exit.y)-Math.hypot(b.x-exit.x,b.y-exit.y))[0];if(t){const a=Math.atan2(seed.vy,seed.vx),d=Math.atan2(Math.sin(Math.atan2(t.y-exit.y,t.x-exit.x)-a),Math.cos(Math.atan2(t.y-exit.y,t.x-exit.x)-a)),turn=Math.max(-.3,Math.min(.3,d));seed.vx=Math.cos(a+turn)*speed;seed.vy=Math.sin(a+turn)*speed;}}
+      if(skillFlags(state,'portal').b){const t=liveBubbles(state).filter(b=>!state.chain.includes(b.id)&&((b.x-exit.x)*seed.vx+(b.y-exit.y)*seed.vy)>0).sort((a,b)=>Math.hypot(a.x-exit.x,a.y-exit.y)-Math.hypot(b.x-exit.x,b.y-exit.y))[0];if(t){const a=Math.atan2(seed.vy,seed.vx),d=Math.atan2(Math.sin(Math.atan2(t.y-exit.y,t.x-exit.x)-a),Math.cos(Math.atan2(t.y-exit.y,t.x-exit.x)-a)),turn=Math.max(-.3,Math.min(.3,d));seed.vx=Math.cos(a+turn)*speed;seed.vy=Math.sin(a+turn)*speed;}}
       const nx = speed > .001 ? seed.vx / speed : 1, ny = speed > .001 ? seed.vy / speed : 0;
       const fromX = seed.x, fromY = seed.y;
       seed.x = exit.x + nx * (35 + seed.radius); seed.y = exit.y + ny * (35 + seed.radius); effect.cooldown = .45;
@@ -516,6 +540,7 @@ export function physicsStep(state) {
   }
   for (let pass = 0; pass < 3; pass++) for (let first = 0; first < bodies.length; first++) for (let second = first + 1; second < bodies.length; second++) {
     const a = bodies[first], b = bodies[second];
+    if(a.popped||b.popped)continue;
     if (a.id <= 0 && b.id <= 0 || a.id === 0 && effectGet(state, 'slingshot')) continue;
     if (effectGet(state,'orbit')?.satellites.some(id=>id===a.id||id===b.id)) continue;
     const dx = b.x - a.x, dy = b.y - a.y;
@@ -561,7 +586,7 @@ export function physicsStep(state) {
       if (a.id === -3) { velocityLimit(a); velocityLimit(b); }
       if (isFrozenContact || a.id === 0 && state.isFlying && effectGet(state, 'comet') && skillFlags(state,'comet').foundation) {
         // Frozen surfaces and Comet preserve the same incoming ricochet, applied only once.
-        // Only reflect when heading into the jelly; a jelly may catch an outgoing seed.
+        // Only reflect when heading into the bubble; a bubble may catch an outgoing seed.
         const toward = incomingX * nx + incomingY * ny;
         if (toward > 0) {
           a.vx = (incomingX - 2 * toward * nx) * .99;
@@ -604,7 +629,7 @@ export function physicsStep(state) {
     if(achieved) {state.objective.earned=true;state.objective.completed++;state.score+=200;events.push({type:'objective',index:goal,points:200,x:seed.x,y:seed.y});}
   }
   // Apply after every collision, bloom and power impulse so impacts cannot cancel Stasis.
-  for (const body of state.bodies.slice(1)) {
+  for (const body of liveBubbles(state)) {
     const frozen=effectGet(state,'stasis')?.targets.includes(body.id),region=regionFrozen(state,body.id);if(!frozen&&!region)continue;
     const speed=Math.hypot(body.vx,body.vy),limit=frozen?skillConfig(state,'stasis').speed:100;
     if(speed>limit){body.vx*=limit/speed;body.vy*=limit/speed;}
@@ -649,19 +674,20 @@ export function physicsStep(state) {
     const successful = state.chain.length >= RULE.bloomNotes, previousCapacity = state.power.capacity;
     state.power.capacity = successful ? Math.min(3, previousCapacity + 1) : 1;
     state.power.markers = [];
-    effectClear(state, events); state.isFlying = false; seed.vx = seed.vy = 0; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0) || state.mode==='song-run'&&state.plucks<=0;
+    effectClear(state, events); state.isFlying = false; seed.vx = seed.vy = 0; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0) || ['song-run','waves'].includes(state.mode)&&state.plucks<=0;
     state.lastShot={notes:state.chain.length,banks:state.banks,points:state.shotStart===null?null:state.score-state.shotStart,powers:state.power.used,bloom:successful,objective:state.objective.earned};
     if(state.objective.earned&&state.mode!=='song-run')state.objective.index++;
     events.push({ type: 'power-streak', successful, capacity: state.power.capacity, previousCapacity });
-    events.push({ type: gameWon(state) ? 'win' : state.isOver ? 'over' : 'rest', chain: state.chain.length });
+    if(state.mode==='waves'&&!liveBubbles(state).length){state.isOver=false;const points=250+state.plucks*100;state.score+=points;events.push({type:'wave-clear',number:state.wave.number,points,x:seed.x,y:seed.y});waveAdvance(state,events);}
+    else events.push({ type: gameWon(state) ? 'win' : state.isOver ? 'over' : 'rest', chain: state.chain.length });
   }
   return events;
 }
 export function saveValidate(input) {
-  if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free', 'song-run'].includes(input.mode)) return null;
+  if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free', 'song-run', 'waves'].includes(input.mode)) return null;
   const count=Array.isArray(input.bodies)?input.bodies.length-1:0;
   if(input.build!==undefined&&(!buildValidate(input.build)||count<12||count>20||!skillStateValid(input.skillState,count)))return null;
-  if(input.mode==='song-run'&&!input.build)return null;
+  if(['song-run','waves'].includes(input.mode)&&!input.build)return null;
   if(input.randomPowers!==undefined&&(input.randomPowers!==true||!input.build))return null;
   if(input.environment!==undefined&&!environmentValid(input.environment))return null;
   if (input.version >= 9 && (!Array.isArray(input.effects) || input.effects.length > 3 || input.effect !== undefined || input.effects.some(effect => !effect?.kind) || new Set(input.effects.map(effect => effect.kind)).size !== input.effects.length)) return null;
@@ -670,14 +696,17 @@ export function saveValidate(input) {
   for (const field of ['rng', 'tick', 'score', 'plucks', 'launches', 'blooms', 'bestChain', 'banks']) if (!Number.isSafeInteger(input[field]) || input[field] < 0) return null;
   if (input.rng < 1 || input.rng > 4294967295 || input.plucks > RULE.plucks || input.bestChain > count || !Number.isFinite(input.flightAge) || input.flightAge < 0 || input.flightAge > RULE.flightSeconds + RULE.step * 2) return null;
   if (typeof input.isFlying !== 'boolean' || typeof input.isOver !== 'boolean' || !Array.isArray(input.bodies) || (!input.build && input.bodies.length !== 15) || !Array.isArray(input.chain) || new Set(input.chain).size !== input.chain.length || input.chain.some(id => !Number.isInteger(id) || id < 1 || id > count)) return null;
+  if(!waveValid(input))return null;
   for (const [index, body] of input.bodies.entries()) {
     if (!body || body.id !== index || !Number.isInteger(body.tone) || body.tone < 0 || body.tone >= COLORS.length) return null;
     for (const field of ['x', 'y', 'vx', 'vy', 'radius', 'cooldown']) if (!Number.isFinite(body[field])) return null;
     const seedRadiusValid = input.version >= 7 && hasEffect('bubble') ? body.radius >= (hasEffect('split') ? 10 : 14) && body.radius <= (input.build?46.2:42) : input.version >= 7 && hasEffect('split') ? body.radius === 10 : body.radius === RULE.seedRadius;
     if ((index === 0 ? !seedRadiusValid : body.radius < 14 || body.radius > 52) || Math.abs(body.vx) > 3000 || Math.abs(body.vy) > 3000 || body.cooldown < 0 || body.cooldown > .1) return null;
-    if (body.x < RULE.inset + body.radius - 1 || body.x > RULE.width - RULE.inset - body.radius + 1 || body.y < RULE.inset + body.radius - 1 || body.y > RULE.height - RULE.inset - body.radius + 1) return null;
+    const arriving=input.mode==='waves'&&index>0&&input.wave.entry<WAVE_ENTRY;
+    if(arriving&&(body.x< -60||body.x>1020||body.y< -60||body.y>700))return null;
+    if (!arriving&&(body.x < RULE.inset + body.radius - 1 || body.x > RULE.width - RULE.inset - body.radius + 1 || body.y < RULE.inset + body.radius - 1 || body.y > RULE.height - RULE.inset - body.radius + 1)) return null;
   }
-  if (input.isOver && (!['challenge','song-run'].includes(input.mode) || (input.plucks !== 0 && input.blooms < RULE.goalBlooms) || input.isFlying)) return null;
+  if (input.isOver && (!['challenge','song-run','waves'].includes(input.mode) || (input.plucks !== 0 && input.blooms < RULE.goalBlooms) || input.isFlying)) return null;
   if (!input.isOver && !input.isFlying && input.mode !== 'free' && input.plucks === 0) return null;
   if (input.version === 3) {
     const ripple = input.ripple;
@@ -690,7 +719,7 @@ export function saveValidate(input) {
     if (input.version >= 9 && (!Number.isInteger(power.used) || power.used < 0 || power.used > 3 || !Number.isInteger(power.capacity) || power.capacity < 1 || power.capacity > 3 || input.isFlying && power.used > power.capacity || power.used > 0 && power.shot !== input.launches || effects.length > power.used)) return null;
     if (input.version >= 11) {
       const markers = power.markers;
-      if (!Array.isArray(markers) || markers.length !== (input.isFlying ? power.capacity - power.used : 0) || markers.some(marker => !marker || !powerKinds.includes(marker.kind) || !Number.isInteger(marker.target) || marker.target < 1 || marker.target > count)) return null;
+      if (!Array.isArray(markers) || (input.mode==='waves'? markers.length > (input.isFlying ? power.capacity-power.used : 0) : markers.length !== (input.isFlying ? power.capacity - power.used : 0)) || markers.some(marker => !marker || !powerKinds.includes(marker.kind) || !Number.isInteger(marker.target) || marker.target < 1 || marker.target > count || input.mode==='waves'&&input.bodies[marker.target].popped)) return null;
       if (new Set(markers.map(marker => marker.target)).size !== markers.length || new Set(markers.map(marker => marker.kind)).size !== markers.length || markers.some(marker => hasEffect(marker.kind))) return null;
     }
     if (input.version === 4) {
@@ -797,19 +826,19 @@ export function saveValidate(input) {
 }
 
 export const OBJECTIVES=Object.freeze([
-  {title:'Bank a Bloom',description:'Touch five different jellies and bounce off a wall in one pluck.',targets:{notes:5,banks:1},tip:'Aim toward a wall with jellies along the rebound path.'},
-  {title:'Seven-Note Run',description:'Touch seven different jellies in one pluck.',targets:{notes:7},tip:'Every new jelly counts, including contacts made by your powers.'},
-  {title:'Power Play',description:'Collect two powers and bounce off a wall in one pluck.',targets:{powers:2,banks:1},tip:'Build a bloom streak to begin a pluck with two or three power jellies.'}
+  {title:'Bank a Bloom',description:'Touch five different bubbles and bounce off a wall in one pluck.',targets:{notes:5,banks:1},tip:'Aim toward a wall with bubbles along the rebound path.'},
+  {title:'Seven-Note Run',description:'Touch seven different bubbles in one pluck.',targets:{notes:7},tip:'Every new bubble counts, including contacts made by your powers.'},
+  {title:'Power Play',description:'Collect two powers and bounce off a wall in one pluck.',targets:{powers:2,banks:1},tip:'Build a bloom streak to begin a pluck with two or three power bubbles.'}
 ]);
 export function objectiveProgress(state) {
   const index=state.objective.index%OBJECTIVES.length,definition=OBJECTIVES[index];
   if(state.mode==='song-run'){
-    const complete=state.objective.completed>0,kind=state.objective.index%3,roles=new Set(state.chain.map(jellyRole)).size;
-    const definition=kind===1?{title:'Three Voices',description:'Contact melody, bass and rhythm in one pluck.',target:3,value:roles,label:'musical roles'}:kind===2?{title:'Double-Bank Bloom',description:'Bounce off two walls before the fifth contact of a bloom.',target:1,value:Number(!!state.objective.bankBloom),label:'double-bank bloom'}:{title:'Seven-Note Run',description:'Touch seven different jellies in one pluck.',target:7,value:Math.min(7,state.chain.length),label:'jellies'};
+    const complete=state.objective.completed>0,kind=state.objective.index%3,roles=new Set(state.chain.map(bubbleRole)).size;
+    const definition=kind===1?{title:'Three Voices',description:'Contact melody, bass and rhythm in one pluck.',target:3,value:roles,label:'musical roles'}:kind===2?{title:'Double-Bank Bloom',description:'Bounce off two walls before the fifth contact of a bloom.',target:1,value:Number(!!state.objective.bankBloom),label:'double-bank bloom'}:{title:'Seven-Note Run',description:'Touch seven different bubbles in one pluck.',target:7,value:Math.min(7,state.chain.length),label:'bubbles'};
     const value=complete?definition.target:definition.value;return {...definition,tip:'Every collector counts. The bonus stays earned for this pool.',index:kind,steps:[{key:'notes',label:definition.label,target:definition.target,value}],progress:value/definition.target,complete,reward:200};
   }
   const values={notes:state.chain.length,banks:state.banks,powers:state.power.used};
-  const labels={notes:'jellies',banks:'wall bounce',powers:'powers'};
+  const labels={notes:'bubbles',banks:'wall bounce',powers:'powers'};
   const steps=Object.entries(definition.targets).map(([key,target])=>({key,label:labels[key],target,value:state.isFlying?Math.min(values[key],target):0}));
   return {...definition,index,steps,progress:steps.reduce((sum,step)=>sum+step.value/step.target,0)/steps.length,complete:state.isFlying&&state.objective.earned,reward:200};
 }

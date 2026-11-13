@@ -64,4 +64,6 @@ The Epic rarity icon is original artwork by Leviscus Tempris, licensed under the
 
 - [campaign](campaign.md) — A winding path of milestones ending at a flag.
 - [skill-tree](skill-tree.md) — One root branches into three rounded research nodes.
-- [player-skin](player-skin.md) — A jelly with an appearance sparkle.
+- [player-skin](player-skin.md) — A bubble with an appearance sparkle.
+
+- [Endless Waves](wave.md) — original game wave and bubble artwork.

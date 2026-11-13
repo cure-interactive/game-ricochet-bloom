@@ -4,7 +4,7 @@ Pause offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skill 
 
 ## Audio
 
-Settings → Audio contains the sound toggle, master volume and ambience volume. Both volume sliders start at 100%. Lower ambience to hear the contact and jelly sounds more prominently. Sound Check plays a short cue at your current sound and volume settings.
+Settings → Audio contains the sound toggle, master volume and ambience volume. Both volume sliders start at 100%. Lower ambience to hear the contact and bubble sounds more prominently. Sound Check plays a short cue at your current sound and volume settings.
 
 Audio begins after an interaction with the game. Leaving the page pauses the game and its sound; use Resume when you return. The music panel offers Glass, Velvet and Wood instrument palettes.
 

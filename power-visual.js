@@ -1,5 +1,5 @@
 // Presentation only: engine events supply impulses; active effects supply geometry.
-import { RULE, POWERS, effectGet, homingTarget } from './engine.js?v=ee2ad99d5c6262d550458a805ece6f85e3ed035e8547beb369aa6a1128985f22';
+import { RULE, POWERS, effectGet, homingTarget } from './engine.js?v=07969b6d92e08ed72ffc554ae24bd9217d6332cd51a913f52f8e52638bcab9dd';
 const TAU = Math.PI * 2;
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 function line(c, x, y, endX, endY) { c.beginPath(); c.moveTo(x, y); c.lineTo(endX, endY); c.stroke(); }
@@ -95,8 +95,8 @@ export class PowerVisual {
       for(const field of [skills.vortex,...skills.eddies].filter(e=>e&&e.seconds>0)){
         c.strokeStyle='#c4b6ff';const r=field===skills.vortex?85:45;c.beginPath();c.arc(field.x,field.y,r,time*.7,time*.7+Math.PI*1.6);c.stroke();arrow(c,field.x+Math.cos(time*.7)*r,field.y+Math.sin(time*.7)*r,time*.7-Math.PI/2,8);
       }
-      for(const id of skills.transfer.filter(id=>!skills.transferSpent.includes(id))){const b=game.bodies[id];c.strokeStyle=POWERS.impact.color;c.beginPath();c.arc(b.x,b.y,b.radius+6,0,TAU);c.stroke();}
-      if(skills.charged&&!skills.chargedSpent){const b=game.bodies[skills.charged];c.strokeStyle=POWERS.lightning.color;c.beginPath();c.moveTo(b.x-4,b.y-12);c.lineTo(b.x+4,b.y-1);c.lineTo(b.x-3,b.y+2);c.lineTo(b.x+4,b.y+13);c.stroke();}
+      for(const id of skills.transfer.filter(id=>!skills.transferSpent.includes(id))){const b=game.bodies[id];if(b.popped)continue;c.strokeStyle=POWERS.impact.color;c.beginPath();c.arc(b.x,b.y,b.radius+6,0,TAU);c.stroke();}
+      if(skills.charged&&!skills.chargedSpent&&!game.bodies[skills.charged].popped){const b=game.bodies[skills.charged];c.strokeStyle=POWERS.lightning.color;c.beginPath();c.moveTo(b.x-4,b.y-12);c.lineTo(b.x+4,b.y-1);c.lineTo(b.x-3,b.y+2);c.lineTo(b.x+4,b.y+13);c.stroke();}
       c.restore();
     }
     for (const cue of this.cues) {
@@ -208,7 +208,7 @@ export class PowerVisual {
     }
     const relay=effectGet(game,'relay');
     if(relay) for(const id of relay.armed.filter(id=>!relay.spent.includes(id))) {
-      const b=game.bodies[id];c.strokeStyle=POWERS.relay.color;c.globalAlpha=gentle?.4:.75;c.lineWidth=2;
+      const b=game.bodies[id];if(b.popped)continue;c.strokeStyle=POWERS.relay.color;c.globalAlpha=gentle?.4:.75;c.lineWidth=2;
       c.setLineDash([5,7]);c.beginPath();c.arc(b.x,b.y,b.radius+9,0,TAU);c.stroke();c.setLineDash([]);
     }
     const wake=effectGet(game,'wake');
@@ -230,7 +230,7 @@ export class PowerVisual {
       }
     }
     const orbit=effectGet(game,'orbit');
-    if(orbit) for(const id of orbit.satellites) {const b=game.bodies[id];c.strokeStyle=POWERS.orbit.color;c.globalAlpha=gentle?.3:.65;c.lineWidth=1.5;curve(c,seed,b,25);c.beginPath();c.arc(b.x,b.y,b.radius+5,0,TAU);c.stroke();}
+    if(orbit) for(const id of orbit.satellites) {const b=game.bodies[id];if(b.popped)continue;c.strokeStyle=POWERS.orbit.color;c.globalAlpha=gentle?.3:.65;c.lineWidth=1.5;curve(c,seed,b,25);c.beginPath();c.arc(b.x,b.y,b.radius+5,0,TAU);c.stroke();}
     const rewind=effectGet(game,'rewind');
     if(rewind) {const path=rewind.returning?rewind.route:game.flightPath;c.strokeStyle=POWERS.rewind.color;c.globalAlpha=gentle?.22:.5;c.lineWidth=2;c.setLineDash([4,8]);c.beginPath();let prev;
       for(let i=0;i<path.length;i+=3) {const p=path[i];if(!prev||Math.hypot(p.x-prev.x,p.y-prev.y)>100)c.moveTo(p.x,p.y);else c.lineTo(p.x,p.y);prev=p;} c.stroke();c.setLineDash([]);
@@ -244,7 +244,7 @@ export class PowerVisual {
       c.beginPath(); c.moveTo(seed.x - ny * width, seed.y + nx * width); c.lineTo(seed.x - nx * length, seed.y - ny * length); c.lineTo(seed.x + ny * width, seed.y - nx * width); c.closePath(); c.fill();
     }
     if (effectGet(game, 'magnet')) {
-      const targets = game.bodies.slice(1).filter(body => !game.chain.includes(body.id) && Math.hypot(body.x - seed.x, body.y - seed.y) < RULE.powerRadius)
+      const targets = game.bodies.slice(1).filter(body=>!body.popped).filter(body => !game.chain.includes(body.id) && Math.hypot(body.x - seed.x, body.y - seed.y) < RULE.powerRadius)
         .sort((a, b) => Math.hypot(a.x - seed.x, a.y - seed.y) - Math.hypot(b.x - seed.x, b.y - seed.y)).slice(0, gentle ? 3 : 6);
       c.strokeStyle = c.fillStyle = POWERS.magnet.color; c.lineWidth = 1.3;
       for (const body of targets) {
@@ -277,6 +277,7 @@ export class PowerVisual {
       c.stroke();
     }
     for (const link of effectGet(game, 'tether')?.links || []) {
+      if(game.bodies[link.a].popped||game.bodies[link.b].popped)continue;
       const a = game.bodies[link.a], b = game.bodies[link.b], distance = Math.hypot(b.x - a.x, b.y - a.y), tension = clamp((distance - link.length) / 55, 0, 1), bend = Math.max(0, link.length - distance) * .3;
       c.strokeStyle = c.fillStyle = POWERS.tether.color; c.globalAlpha = (gentle ? .25 : .35) + tension * .4; c.lineWidth = 1.5 + tension * 2; curve(c, a, b, bend);
       for (let i = 0; i < (gentle ? 1 : 3); i++) { const t = gentle ? .5 : (time * (1 + tension) + i / 3) % 1, p = curvePoint(a, b, bend, t); dot(c, p.x, p.y, 2 + tension * 2); }

@@ -169,7 +169,8 @@ body[data-menu-mode=home] #tree-sheet{height:var(--app-height,100dvh);max-height
  #main-menu .home-content{grid-template-rows:minmax(20px,1fr) max-content minmax(20px,1fr) max-content}
 }
 
-/* Keep the four destinations in pairs once their actual container can fit them. */
+/* Pair compact destinations; the wave entry explains the separate endless loop. */
+#home-waves{grid-column:1/-1}
 @container (min-width:320px){
  #main-menu .home-primary{grid-template-columns:repeat(2,minmax(0,1fr))}
  #home-continue{grid-column:1/-1}

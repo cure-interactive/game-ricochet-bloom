@@ -9,7 +9,7 @@ export const RARITIES = Object.freeze({
 export const SKILL_TYPES = Object.freeze({
  Motion: {icon:'motion',description:'Changes the player’s speed, rebounds or steering.'},
  Flow: {icon:'flow',description:'Creates currents and forces through the pool.'},
- Control: {icon:'control',description:'Changes how jellies move, gather or react.'},
+ Control: {icon:'control',description:'Changes how bubbles move, gather or react.'},
  Propagation: {icon:'propagation',description:'Extends contact through extra bodies, projectiles or chains.'},
  Navigation: {icon:'navigation',description:'Changes destinations, targeting or travel through the field.'}
 });

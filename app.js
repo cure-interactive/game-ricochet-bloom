@@ -1,25 +1,27 @@
+import { creditsMount } from './credit.js?v=170bdef571751bc8e989505f689f44c033e92251e2c953b80aa86e6e6a8d0d08';
+import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=91bdd921ed550b7501c923fff9a5b64cb99a50cc24eee3375556a1c1c0f4b953';
 import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
-import { wikiMount } from './wiki.js?v=5199effe1439bf86ff028bfc62503a8ff57bd69d3e435c090a1316437688911a';
+import { wikiMount } from './wiki.js?v=9c0d7fec9e9813b992796d6da642910fcbafee5f8f489d59cac9757387a6a974';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
-import { POOL_NAMES } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543efa29e2eada2632f613b604';
-import { freePlaySync } from './free-play.js?v=82b9dd49d40715d2e16e8af8a566a100c23026916c8966636a3c61483f8d3a01';
+import { POOL_NAMES } from './run.js?v=f46e437fcd893aaf9e4277a1ca9b56e1ec27ca75f1396d6c33557958bb850b33';
+import { freePlaySync, freePlayBuild } from './free-play.js?v=fc1159c7a02e4720e9b5977c574deec3922a565b10cfd631dde9619e02c65a05';
 import { fullscreenMount } from './fullscreen.js?v=e8c105c0bde8d63a2f68cb936534f947a78c62bdedc35b73614336e898cf848c';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=cab2af51800744b731cecae8c543ccc9b7d70eaf8ff6f8e1197a37089736916e';
-import { environmentRender, regionFrozen, trackGet } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
-import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
-import { progressionMount } from './progression-ui.js?v=f492f1ecf560364e154e8b36f0c0300df8230ab98da0ba575333d10e6ccbd133';
-import {assetURL} from './asset.js?v=c707b6464e4c06a82b9fdf579ad15c74beda68c3e5dcf5a68bcf1f654aea6cf7';
+import { gameMenuMount } from './game-menu.js?v=9c16d1df532990e276bf6b12bc8e28c8bfc4161f4dd2cf140c80d8d0119acf80';
+import { environmentRender, regionFrozen, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
+import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
+import { progressionMount } from './progression-ui.js?v=0c737d1fc1854590a280f6e15958512a2f64fa08886258a75ab433a6a00c6d1f';
+import {assetURL} from './asset.js?v=6bd4d1d7502ba20bf95bc75985c2a8694fbab62f24ccc87e2722225697137195';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
-import {songLibrarySetup} from './song-ui.js?v=6fbb3e2df26e7bf2f518604f207724d937ca62941b7169bc4a70efc6e6e55c02';
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=ee2ad99d5c6262d550458a805ece6f85e3ed035e8547beb369aa6a1128985f22';
-import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=d2672864e341bfa626d48ecf0896f80293efa380f1da26733d24fdfd24642877';
-import { PoolSound } from './sound.js?v=fe74b0036c36f321684fdc1c7a6572b1420f00904322142a4e1a99699588b7e6';
-import { musicProgress, musicPhrasePreview, JELLY_ROLES, jellyRole } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
-import { jellyCreate, jellyHit, jellyStep, jellyOutline, jellyFlow, jellyRipple } from './jelly.js?v=bd31003d62a0c49595da51b1cbe150b04cc6284fd19b78e11ff15c7b30380529';
-import { PowerVisual } from './power-visual.js?v=edb5b2cca4cd4e7b08bd21659ff403bb1bb9bd5b07b6ff33941b51b7f787b3dd';
+import {songLibrarySetup} from './song-ui.js?v=9570c749145bc3055e39d1d987de5b6a842c4588a7524de439490cbbe28f7d2b';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=07969b6d92e08ed72ffc554ae24bd9217d6332cd51a913f52f8e52638bcab9dd';
+import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=88b55650e88cc1e76301460af7c177178eb4e742e4acd96581ec607efcfa59ca';
+import { PoolSound } from './sound.js?v=42ce5dd1a6982ce5e7564daaf00d29fa63a6634487b921abb4417f086316414f';
+import { musicProgress, musicPhrasePreview, BUBBLE_ROLES, bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
+import { bubbleCreate, bubbleHit, bubbleStep, bubbleOutline, bubbleFlow, bubbleRipple } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
+import { PowerVisual } from './power-visual.js?v=dc034a6a889822da9bfcf702b4f0f9c4625860d73c3ea0412aac5c94279e4da2';
 viewportMount();
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
 let store = poolStoreRead(null), storageIsAvailable = true;
@@ -27,7 +29,7 @@ try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localSto
 let preferences = store.preferences, best = store.best, saved = store.pools[store.activeMode]?.game, savedMusic = store.pools[store.activeMode]?.music;
 let game = saved || gameCreate(new URL(location.href).searchParams.get('seed')?.slice(0, 32) || 'LAGOON', store.activeMode);
 let carrySong = false, portraitView = false, progression = null, navigation = null, physicsBatch = false;
-const modeName = mode => progression?.context==='challenge'?'Shared Challenge':mode==='song-run'?'Song Run':mode === 'free' ? 'Free play' : 'Challenge';
+const modeName = mode => progression?.context==='challenge'?'Shared Challenge':mode==='song-run'?'Song Run':mode==='waves'?'Endless Waves':mode === 'free' ? 'Free play' : 'Challenge';
 
 audio.musicRestore(savedMusic, game.blooms, game.launches);
 let assistedControls = preferences.assistedControls === true;
@@ -40,7 +42,7 @@ const powerIcons = Object.fromEntries(Object.keys(POWERS).map(kind => {
   const icon = new Image(); icon.src = new URL(assetURL(`./icon/power/${kind}.svg`), import.meta.url).href; return [kind, icon];
 }));
 // Role markings use the same SVG geometry as the musical legend.
-const roleIcons = Object.fromEntries(Object.keys(JELLY_ROLES).map(role => {
+const roleIcons = Object.fromEntries(Object.keys(BUBBLE_ROLES).map(role => {
   const icon = new Image(); icon.src = new URL(assetURL(`./icon/ui/${role}.svg`), import.meta.url).href; return [role, icon];
 }));
 for (const [kind, p] of Object.entries(POWERS)) {
@@ -65,12 +67,12 @@ function announce(text) { $('announcement').textContent = text; }
 function toast(text) { $('toast').textContent = text; $('toast').classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => $('toast').classList.remove('show'), 1600); announce(text); }
 async function audioUnlockAsync() { try { await audio.unlockAsync(); } catch { toast('Audio unavailable in this browser'); } }
 function membraneGet(body) {
-  if (!membranes.has(body.id)) membranes.set(body.id, jellyCreate());
+  if (!membranes.has(body.id)) membranes.set(body.id, bubbleCreate());
   return membranes.get(body.id);
 }
 function membraneHit(id, nx, ny, strength) {
   const body = id < 0 ? seedBodies(game).find(body => body.id === id) : game.bodies[id]; if (!body || isGentle) return;
-  jellyHit(membraneGet(body), body.radius, nx, ny, strength, !!effectGet(game, 'stasis')?.targets.includes(id));
+  bubbleHit(membraneGet(body), body.radius, nx, ny, strength, !!effectGet(game, 'stasis')?.targets.includes(id));
 }
 function eventHandle(event) {
   audio.eventPlay({ ...event, tick: game.tick });
@@ -79,6 +81,9 @@ function eventHandle(event) {
     scorePopups.push({ x: event.x, y: event.y, points: event.points, age: 0, isBloom: event.type === 'bloom', color: event.type === 'bloom' ? '#e1d4ff' : COLORS[event.tone] || '#e4ffcb' });
     if (scorePopups.length > 32) scorePopups.shift();
   }
+  if(event.type==='pop'){particleBurst(event.x,event.y,COLORS[event.tone],22);rings.push({x:event.x,y:event.y,radius:event.radius,life:.4,color:COLORS[event.tone],bloom:false,touched:new Set()});}
+  if(event.type==='wave-clear'){toast(`Wave ${event.number} cleared · +${event.points}`);}
+  if(event.type==='wave'){membranes.clear();powerVisual.clear();trails=[];connections=[];bolts=[];reunions=[];announce(`Wave ${event.number}. Five plucks to pop every bubble.`);save();}
   if (event.type === 'impact') { membraneHit(event.a, event.nx, event.ny, event.speed); membraneHit(event.b, -event.nx, -event.ny, event.speed); }
   if (event.type === 'blaster-hit') { membraneHit(event.id,-event.nx,-event.ny,650); particleBurst(event.x,event.y,POWERS.blaster.color,8); }
   if (event.type === 'blaster-fire') { membraneHit(0,event.nx,event.ny,180); save(); }
@@ -111,7 +116,7 @@ function eventHandle(event) {
     for (const point of [{ x: event.fromX, y: event.fromY }, event]) particleBurst(point.x, point.y, POWERS.portal.color, 18);
     toast('Through the portal · momentum intact.'); save();
   }
-  if (event.type === 'slingshot') { particleBurst(event.x, event.y, POWERS.slingshot.color, 18); toast(event.target ? 'Slingshot · heading for an unhit jelly.' : 'Slingshot · away you go.'); save(); }
+  if (event.type === 'slingshot') { particleBurst(event.x, event.y, POWERS.slingshot.color, 18); toast(event.target ? 'Slingshot · heading for an unhit bubble.' : 'Slingshot · away you go.'); save(); }
   if (event.type === 'reunite') {
     reunions = event.from.map(point => ({ ...point, life: .4 }));
     membranes.delete(-1); membranes.delete(-2); save();
@@ -213,8 +218,8 @@ function blobRender(body, dt, time) {
   const playback = audio.playbackLights.get(body.id);
   const replayGlow = playback ? Math.max(0, (playback.until - audio.context.currentTime) / .7) * (isGentle ? .18 : .7) : 0;
   const light = Math.max(membrane.glow, replayGlow);
-  jellyStep(membrane, body, dt, isGentle, isGentle ? undefined : jellyFlow(body, game.bodies), !isSeed && (!!effectGet(game, 'stasis')?.targets.includes(body.id)||regionFrozen(game,body.id)));
-  const points = jellyOutline(membrane, body).map(point => ({ x: Math.max(RULE.inset, Math.min(RULE.width - RULE.inset, point.x)), y: Math.max(RULE.inset, Math.min(RULE.height - RULE.inset, point.y)) }));
+  bubbleStep(membrane, body, dt, isGentle, isGentle ? undefined : bubbleFlow(body, game.bodies), !isSeed && (!!effectGet(game, 'stasis')?.targets.includes(body.id)||regionFrozen(game,body.id)));
+  const points = bubbleOutline(membrane, body).map(point => ({ x: Math.max(RULE.inset, Math.min(RULE.width - RULE.inset, point.x)), y: Math.max(RULE.inset, Math.min(RULE.height - RULE.inset, point.y)) }));
   const glow = context.createRadialGradient(body.x, body.y, radius * .3, body.x, body.y, radius * 2.8);
   glow.addColorStop(0, hue + (isPermeable ? '0c' : light > .2 ? '70' : isSeed ? '40' : '33')); glow.addColorStop(1, hue + '00');
   context.fillStyle = glow; context.beginPath(); context.arc(body.x, body.y, radius * 2.8, 0, Math.PI * 2); context.fill();
@@ -231,14 +236,14 @@ function blobRender(body, dt, time) {
   for (let index = 14; index <= 20; index++) { const point = points[index], x = body.x + (point.x - body.x) * .79, y = body.y + (point.y - body.y) * .79; if (index === 14) context.moveTo(x, y); else context.lineTo(x, y); }
   context.strokeStyle = isPermeable ? '#ffffff25' : '#ffffff70'; context.lineWidth = radius * .08; context.lineCap = 'round'; context.lineJoin = 'round'; context.stroke();
   if (!isSeed) {
-    // A pearly nucleus and drifting flecks make each jelly feel inhabited.
+    // A pearly nucleus and drifting flecks make each bubble feel inhabited.
     const x = body.x + membrane.core[0], y = body.y + radius * .1 + membrane.core[1];
     const nucleus = context.createRadialGradient(x, y, 0, x, y, radius * .34); nucleus.addColorStop(0, hue + (isPermeable ? '20' : 'd0')); nucleus.addColorStop(1, hue + '00'); context.fillStyle = nucleus; context.beginPath(); context.arc(x, y, radius * .34, 0, Math.PI * 2); context.fill();
     for (let index = 0; index < 5; index++) { const point = points[(index * 5 + body.id) % points.length]; context.beginPath(); context.arc(x + (point.x - body.x) * .45, y + (point.y - body.y) * .4, 1.4, 0, Math.PI * 2); context.fillStyle = hue + (isPermeable ? '25' : 'a0'); context.fill(); }
   }
   if (!isSeed && membrane.frost > .01) frostRender(body, points, skin, membrane.frost);
   if (isBubble) {
-    // Keep overlapping jellies visible through the pressure shell and its small core.
+    // Keep overlapping bubbles visible through the pressure shell and its small core.
     const coreRadius = effectGet(game, 'split') ? 10 : RULE.seedRadius;
     const core = context.createRadialGradient(body.x, body.y, 0, body.x, body.y, coreRadius * 1.5);
     core.addColorStop(0, '#ffffede0'); core.addColorStop(.5, '#ddfff4a0'); core.addColorStop(1, '#aaeaff00');
@@ -267,10 +272,10 @@ function blobRender(body, dt, time) {
   }
   const marker = powerMarkers(game).find(marker => marker.target === body.id);
   if(!isSeed) {
-    const role=jellyRole(body.id),icon=roleIcons[role],size=marker?18:Math.min(32,body.radius*1.25),y=marker?Math.min(body.radius*.68,body.radius-size*.5):0;
+    const role=bubbleRole(body.id),icon=roleIcons[role],size=marker?18:Math.min(32,body.radius*1.25),y=marker?Math.min(body.radius*.68,body.radius-size*.5):0;
     context.save();if(isPermeable)context.globalAlpha=.35;context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);
     if(icon.complete&&icon.naturalWidth)context.drawImage(icon,-size/2,y-size/2,size,size);
-    else {context.fillStyle='#e9ffed';context.font=`${size*.7}px Fredoka,sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(JELLY_ROLES[role].name[0],0,y);}
+    else {context.fillStyle='#e9ffed';context.font=`${size*.7}px Fredoka,sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(BUBBLE_ROLES[role].name[0],0,y);}
     context.restore();
   }
   if (marker) {
@@ -360,7 +365,7 @@ function render(now) {
   }
   connections = connections.filter(line => { line.life -= visualDelta; return line.life > 0; });
   if (!isGentle) for (const line of connections) { const a = game.bodies[line.from], b = game.bodies[line.to]; context.globalAlpha = line.life / 2.4; context.strokeStyle = line.color + '55'; context.lineWidth = .8; context.beginPath(); context.moveTo(a.x, a.y); context.quadraticCurveTo((a.x + b.x) / 2 + 15, (a.y + b.y) / 2 - 20, b.x, b.y); context.stroke(); context.globalAlpha = 1; }
-  for (const body of game.bodies.slice(1)) blobRender(body, visualDelta, time);
+  for (const body of liveBubbles(game)) blobRender(body, visualDelta, time);
   for (const body of seeds) { context.save(); if (body.id === -3) context.globalAlpha = .42; blobRender(body, visualDelta, time); context.restore(); }
   if (!game.isFlying && isStarted && !isPaused && !game.isOver) {
     const path=aimPreview(game,angle,power);
@@ -372,7 +377,7 @@ function render(now) {
   rings = rings.filter(ring => {
     ring.previousRadius = ring.radius; ring.life -= visualDelta; ring.radius = Math.max(8, ring.radius + visualDelta * (ring.kind ? (ring.kind === 'stasis' ? 0 : ring.kind === 'attract' ? -1 : 1) * ((['swap', 'comet', 'magnet', 'lightning', 'impact', 'tether', 'split', 'bubble', 'portal', 'echo', 'slingshot', 'drunk', 'wrap', 'homing'].includes(ring.kind) ? 150 : RULE.powerRadius) - 8) / 1.6 : ring.bloom ? 220 : 75));
     if (!isGentle && visualDelta > 0 && !['attract', 'stasis', 'swap', 'comet', 'magnet', 'lightning', 'impact', 'tether', 'split', 'bubble', 'portal', 'echo', 'slingshot', 'drunk', 'wrap', 'homing'].includes(ring.kind)) for (const body of game.bodies) {
-      const pulse = jellyRipple(ring, body);
+      const pulse = bubbleRipple(ring, body);
       if (pulse) membraneHit(body.id, pulse.nx, pulse.ny, pulse.strength);
     }
     return ring.life > 0;
@@ -414,17 +419,18 @@ function uiRender() {
   $('plucks').textContent = game.mode === 'free' ? '∞' : game.plucks; $('pluck-label').textContent = game.mode === 'free' ? 'FREE PLAY' : 'PLUCKS LEFT';
   $('pool-seed').textContent = `POOL / ${game.seed}`;
   progression?.profileIndicator();
-  $('chain-label').textContent = game.chain.length ? `${game.chain.length} NOTES ${game.chain.length >= 5 ? '· BEAUTIFUL.' : '· KEEP IT SINGING.'}` : 'FIVE DIFFERENT JELLIES. ONE BLOOM.';
+  $('chain-label').textContent = game.chain.length ? `${game.chain.length} NOTES ${game.chain.length >= 5 ? '· BEAUTIFUL.' : '· KEEP IT SINGING.'}` : 'FIVE DIFFERENT BUBBLES. ONE BLOOM.';
   $('note-meter').replaceChildren(...Array.from({ length: 5 }, (_, index) => { const item = document.createElement('i'); if (game.chain[index]) { item.className = 'active'; item.style.setProperty('--note', COLORS[game.bodies[game.chain[index]].tone]); } return item; }));
   $('note-meter').setAttribute('aria-label', `${game.chain.length} unique notes this pluck`);
   $('state-label').textContent = isPaused ? 'A QUIET MOMENT.' : game.isOver ? 'EVERY POOL HAS ITS OWN SONG.' : !isStarted ? 'YOUR NEXT LITTLE OBSESSION.' : game.isFlying ? game.flightAge >= RULE.flightSeconds ? 'SETTLING INTO THE POOL' : `FOLLOW THE LIGHT · ${Math.max(0, Math.ceil(RULE.flightSeconds - game.flightAge))}s` : 'PULL BACK. LET GO. LISTEN.';
-  $('goal-label').textContent = game.mode === 'free' ? 'Free play' : gameWon(game) ? 'Three blooms complete' : `Blooms ${Math.min(game.blooms, RULE.goalBlooms)} / ${RULE.goalBlooms}`;
-  $('goal-progress').hidden = game.mode === 'free'; $('goal-progress').max = RULE.goalBlooms; $('goal-progress').value = Math.min(game.blooms, RULE.goalBlooms);
+  $('goal-label').textContent = game.mode==='waves'?'Endless Waves':game.mode === 'free' ? 'Free play' : gameWon(game) ? 'Three blooms complete' : `Blooms ${Math.min(game.blooms, RULE.goalBlooms)} / ${RULE.goalBlooms}`;
+  $('goal-progress').setAttribute('aria-label','Blooms toward victory');$('goal-progress').hidden = game.mode === 'free'; $('goal-progress').max = RULE.goalBlooms; $('goal-progress').value = Math.min(game.blooms, RULE.goalBlooms);
   if(progression?.hud()) {$('goal-label').textContent=progression.hud();$('goal-progress').hidden=true;}
+  if(game.mode==='waves'){const left=liveBubbles(game).length,total=game.bodies.length-1;$('goal-label').textContent=`Wave ${game.wave.number} · ${left} / ${total} bubbles left`;$('goal-progress').hidden=false;$('goal-progress').setAttribute('aria-label','Bubbles popped this wave');$('goal-progress').max=total;$('goal-progress').value=total-left;$('state-label').textContent=game.wave.entry<WAVE_ENTRY?'BUBBLES INCOMING':left===0?'WAVE CLEARED · COASTING':game.isFlying?'POP EVERY BUBBLE':`${game.plucks} PLUCKS TO CLEAR THE BOARD`;Object.assign(canvas.dataset,{wave:String(game.wave.number),bubblesLeft:String(left),waveEntering:String(game.wave.entry<WAVE_ENTRY)});}
   bonusRender();
   $('palette').value=audio.music.palette;
   const shot=game.lastShot;
-  $('shot-result').textContent=game.isFlying?`${game.chain.length} unique notes · ${game.banks} banks · ${game.power.used} powers`:shot?`${shot.bloom?'Bloom!':shot.notes===4?'One jelly short of a bloom.':`${shot.notes} of 5 notes toward a bloom.`}${shot.points===null?' · Resumed shot':` +${shot.points}`} · ${shot.banks} banks · ${shot.powers} powers${shot.objective?' · Objective complete':''}`:'Aim for a wall bank. The dotted guide shows your first rebound; drifting jellies can change the path.';
+  $('shot-result').textContent=game.isFlying?`${game.chain.length} unique notes · ${game.banks} banks · ${game.power.used} powers`:shot?`${shot.bloom?'Bloom!':shot.notes===4?'One bubble short of a bloom.':`${shot.notes} of 5 notes toward a bloom.`}${shot.points===null?' · Resumed shot':` +${shot.points}`} · ${shot.banks} banks · ${shot.powers} powers${shot.objective?' · Objective complete':''}`:'Aim for a wall bank. The dotted guide shows your first rebound; drifting bubbles can change the path.';
   $('edge-idle').textContent=game.isFlying?'':game.launches?'Drag back for another pluck':'Drag back anywhere to pluck';
   const song = musicProgress(audio.music);
   $('song-stage').textContent = `${song.name}${audio.isMusicPlaying && !audio.isMuted && !audio.isPaused && audio.ambience ? audio.stage < song.stage ? ' · joining on the next bar' : audio.section !== song.name ? ` · ${audio.section}` : '' : ''}`;
@@ -451,19 +457,21 @@ function uiRender() {
   if ($('power-icon').dataset.kind !== kind) { $('power-icon').src = powerIcons[kind].src; $('power-icon').dataset.kind = kind; $('power-icon').style.setProperty('--power-color', p.color); }
   $('power-title').textContent = markers.length > 1 ? `${markers.length} powers · all in the pool` : available ? `${p.name} · activates on contact` : 'All powers collected';
   const choice=game.build?.find(x=>x.power===kind), description=choice?POWER_TREES[kind].nodes.filter((n,i)=>i===0||i===1&&choice.foundation||i===2&&choice.variants.includes('a')||i===3&&choice.variants.includes('b')||i===4&&choice.capstone).map(n=>n.description).join(' '):p.description;
-  $('power-status').textContent = markers.length > 1 ? `${markers.map(marker => POWERS[marker.kind].name).join(' + ')}. All marked jellies are ready now. Hit them in any order to activate.` : available ? `Hit the marked ${p.name} jelly with your seed. ${description}` : `All ${allowance} ${allowance === 1 ? 'power used' : 'powers used'} this pluck. The next set appears when this pluck ends.`;
+  $('power-status').textContent = markers.length > 1 ? `${markers.map(marker => POWERS[marker.kind].name).join(' + ')}. All marked bubbles are ready now. Hit them in any order to activate.` : available ? `Hit the marked ${p.name} bubble with your seed. ${description}` : `All ${allowance} ${allowance === 1 ? 'power used' : 'powers used'} this pluck. The next set appears when this pluck ends.`;
   Object.assign(canvas.dataset, { power: available ? 'ready' : 'used', powerKind: kind, powerTarget: String(first?.target || 0), powerMarkers: markers.map(marker => `${marker.kind}:${marker.target}`).join(','), powerOffer: power.offer, powerClaims: String(power.claims), powerUsed: String(used), powerAllowance: String(allowance) });
   const ammo=effectGet(game,'blaster')?.ammo||0;
-  $('shoot').disabled = !isStarted || isPaused || game.isOver || game.isFlying;
+  $('shoot').disabled = !isStarted || isPaused || game.isOver || game.isFlying || game.wave?.entry<WAVE_ENTRY;
   buttonLabel($('shoot'),'Pluck','play');
   if(ammo) $('shot-result').textContent=`Blaster · automatic · ${ammo} shots remaining`;
-  canvas.dataset.ammo=String(ammo);canvas.setAttribute('aria-label',ammo?'Blaster automatically aims and fires at unhit jellies. No input needed.':'Living pool. Drag to pluck. Arrow keys aim, up and down change power, Space launches.');
+  canvas.dataset.ammo=String(ammo);canvas.setAttribute('aria-label',ammo?'Blaster automatically aims and fires at unhit bubbles. No input needed.':'Living pool. Drag to pluck. Arrow keys aim, up and down change power, Space launches.');
   $('pause').disabled = !isStarted || game.isOver; buttonLabel($('pause'),'',isPaused?'play':'pause'); $('pause').setAttribute('aria-label', isPaused ? 'Resume game' : 'Pause game');
   $('over-overlay').hidden = !isStarted || !game.isOver || progression?.context==='run';
   if (game.isOver) { $('end-title').textContent = gameWon(game) ? 'You Made It Bloom.' : 'One More Ripple?'; $('end-label').textContent = gameWon(game) ? 'YOU WON · THREE BLOOMS' : 'OUT OF PLUCKS'; $('end-score').textContent = game.score.toLocaleString('en-US'); $('end-detail').textContent = `${game.blooms} / ${RULE.goalBlooms} blooms · ${game.launches} plucks used${gameWon(game) ? ' · Keep the song going below.' : ' · Reach three blooms to win.'}`; }
+  $('continue-free').hidden=game.mode==='waves';
+  if(game.mode==='waves'&&game.isOver){$('end-title').textContent='Endless Waves';$('end-label').textContent=`WAVE ${game.wave.number} · OUT OF PLUCKS`;$('end-detail').textContent=`${game.wave.number-1} waves cleared · Best wave ${Math.max(store.waveBest?.wave||1,game.wave.number)} · Best score ${Math.max(store.waveBest?.score||0,game.score).toLocaleString('en-US')}`;}
   // Read-only observability for live-browser QA. Never drives gameplay.
   canvas.dataset.gentle = String(isGentle);
-  canvas.dataset.jellyDeformation = Math.max(0, ...Array.from(membranes.values(), skin => Math.hypot(...skin.strain))).toFixed(3);
+  canvas.dataset.bubbleDeformation = Math.max(0, ...Array.from(membranes.values(), skin => Math.hypot(...skin.strain))).toFixed(3);
   Object.assign(canvas.dataset, { physicsTick: String(game.tick), flying: String(game.isFlying), score: String(game.score), seedX: game.bodies[0].x.toFixed(2), seedY: game.bodies[0].y.toFixed(2), chain: String(game.chain.length), audioState: audio.context?.state || 'locked', soundEvents: String(audio.eventCount), notes: String(noteCount), mode: game.mode, harmony: audio.harmony?.name || 'none', songChords: String(audio.music.history.length), songTheme: audio.music.theme.join(','), musicPending: String(audio.musicQueue.length), musicVoices: String(audio.phraseVoices.size), audioVoices: String(audio.voiceCount), harmonyPaused: String(audio.isPaused), musicPassage: String(audio.passage), musicSection: audio.section, musicStage: String(audio.stage), songStage: String(song.stage), songPlucks: String(audio.music.plucks), songBar: String(audio.music.bar), mediaState: audio.media.state, mediaReady: String(audio.media.ready), mediaArtwork: audio.media.artwork?.[0]?.src || '', hookNextBar: String(audio.music.evolution.nextBar), hookPending: String(!!audio.music.evolution.pending), phraseSteps: (audio.music.motifs.at(-1)?.steps || []).join(','), hookSteps: (audio.music.hook?.steps || []).join(','), phraseReplayCount: String(audio.playbackCount), phraseReplayIds: [...audio.playbackLights.keys()].join(','), ambience: String(audio.ambience) });
 }
 function phraseRender() {
@@ -471,8 +479,8 @@ function phraseRender() {
   const isAudible = audio.isMusicPlaying && audio.context?.state === 'running' && !audio.isMuted && !audio.isPaused && audio.volume > 0 && audio.ambience > 0;
   const count = phrase?.tones.length || 0;
   $('phrase-title').textContent = isLive ? `Your Phrase · Live · ${count} ${count === 1 ? 'Note' : 'Notes'}` : phrase ? `${audio.playbackPhrase ? audio.lastPlayback?.reply ? 'Your Phrase · Reply' : 'Your Melody' : 'Your Latest Phrase'} · ${count} ${count === 1 ? 'Note' : 'Notes'}` : 'Your Phrase';
-  $('phrase-status').textContent = isLive ? !isStarted ? 'Your unfinished phrase is saved. Return to keep playing.' : audio.isPaused ? 'Paused · your growing phrase is saved.' : phrase ? 'Each jelly adds a note. Your phrase is taking shape.' : 'Your new phrase starts with the first jelly.' : !phrase ? 'Pluck through the jellies. Listen for their reply.' : !isStarted ? 'Your phrase is saved. Return to hear it.' : audio.isPaused ? 'Paused · your phrase is saved.' : !isAudible ? 'Phrase saved · turn on sound and ambience to hear it.' : now < audio.replyUntil ? 'The pool is playing your phrase back.' : audio.music.reply ? 'Your phrase joins on the next bar.' : 'Follow the glowing jellies as your melody returns.';
-  $('phrase-choice').textContent=!audio.music.hook?'Hit three different jellies in one pluck to establish your melody.':audio.music.evolution.pending?'Your melody repeats. New notes will join at the next section.':'Your melody repeats and gradually absorbs new ideas.';
+  $('phrase-status').textContent = isLive ? !isStarted ? 'Your unfinished phrase is saved. Return to keep playing.' : audio.isPaused ? 'Paused · your growing phrase is saved.' : phrase ? 'Each bubble adds a note. Your phrase is taking shape.' : 'Your new phrase starts with the first bubble.' : !phrase ? 'Pluck through the bubbles. Listen for their reply.' : !isStarted ? 'Your phrase is saved. Return to hear it.' : audio.isPaused ? 'Paused · your phrase is saved.' : !isAudible ? 'Phrase saved · turn on sound and ambience to hear it.' : now < audio.replyUntil ? 'The pool is playing your phrase back.' : audio.music.reply ? 'Your phrase joins on the next bar.' : 'Follow the glowing bubbles as your melody returns.';
+  $('phrase-choice').textContent=!audio.music.hook?'Hit three different bubbles in one pluck to establish your melody.':audio.music.evolution.pending?'Your melody repeats. New notes will join at the next section.':'Your melody repeats and gradually absorbs new ideas.';
   const pattern = $('phrase-pattern'), pans = phrase?.pans || phrase?.ids.map(id=>audio.music.pans[id]??0) || [], key = JSON.stringify([isLive, phrase || null, pans]);
   pattern.dataset.live = String(isLive); pattern.dataset.noteCount = String(count);
   if (pattern.dataset.phrase !== key) {
@@ -497,13 +505,13 @@ function controlsRender() { $('button-controls').checked=assistedControls; docum
 function freePlayRefresh(){if(progression?.context==='legacy')freePlaySync(game,progression.state);}
 function shoot() { if(progression?.blocked)return; if(game.isFlying) return; if (!isStarted || isPaused || document.querySelector('dialog[open]')) return; freePlayRefresh(); audioUnlockAsync(); if (launch(game, angle, power)) { audio.eventPlay({ type: 'launch', x: game.bodies[0].x, y: game.bodies[0].y }); save(); uiRender(); } }
 function pauseSet(value) { if (!isStarted || game.isOver) return; isPaused = value; audio.pauseSet(value); dragCancel(); $('pause-overlay').hidden = !value; save(); uiRender(); if (!value) { audioUnlockAsync(); canvas.focus({ preventScroll: true }); } }
-function start() { freePlayRefresh(); navigation?.play(); audio.media.describe(game.seed); isStarted = true; isPaused = false; $('welcome').hidden = true; $('pause-overlay').hidden = true; if (game.mode!=='song-run' && audio.bloomCount !== game.blooms) audio.harmonySet(game.blooms); audio.pauseSet(false); audio.musicStart(); audioUnlockAsync(); save(); uiRender(); canvas.focus({ preventScroll: true }); }
+function start() { preferences.lastPlay=game.mode; freePlayRefresh(); navigation?.play(); audio.media.describe(game.seed); isStarted = true; isPaused = false; $('welcome').hidden = true; $('pause-overlay').hidden = true; if (game.mode!=='song-run' && audio.bloomCount !== game.blooms) audio.harmonySet(game.blooms); audio.pauseSet(false); audio.musicStart(); audioUnlockAsync(); save(); uiRender(); canvas.focus({ preventScroll: true }); }
 function loadPool(nextGame, music = null) {
   game = structuredClone(nextGame); audio.musicRestore(music, music?music.blooms:game.blooms, music?music.plucks:game.launches);
   membranes.clear(); powerVisual.clear(); trails = []; particles = []; rings = []; connections = []; bolts = []; reunions = []; scorePopups = []; dragCancel(); accumulator = 0;
   angle = -Math.PI / 2; power = .7; $('power').value = 70; clearTimeout(toastTimer); $('toast').classList.remove('show'); buttonLabel($('copy-result'),'Copy this result','copy'); start();
 }
-function newPool(seed, mode) { loadPool(gameCreate(seed, mode)); }
+function newPool(seed, mode) { loadPool(gameCreate(seed, mode,mode==='waves'?{build:freePlayBuild(progression.state),randomPowers:true}:{})); }
 function dialogOpen(continueSong = false) {
   if(progression?.context!=='legacy'){progression.campaign();return;}
   carrySong = continueSong;
@@ -519,6 +527,12 @@ function freePlay() {
   save();
   if (game.mode === 'free') { start(); return; }
   const entry = store.pools.free; loadPool(entry?.game || gameCreate(game.seed, 'free'), entry?.music);
+}
+function wavesPlay(){
+  if(progression?.context!=='legacy')progression.leave();save();
+  const entry=store.pools.waves;
+  if(entry&&!entry.game.isOver)loadPool(entry.game,entry.music);
+  else newPool('WAVES-'+Date.now().toString(36),'waves');
 }
 function carryToFree() {
   save(); const next = structuredClone(game), music = audio.musicSave();
@@ -605,6 +619,7 @@ $('audition').onclick = async () => {
 };
 $('motion').onchange = event => { isGentle = event.currentTarget.checked; if (isGentle) { particles = []; trails = []; } controlsRender(); save(); };
 $('stream').onchange = event => { isStream = event.currentTarget.checked; controlsRender(); save(); };
+creditsMount($('credits-dialog'));
 $('credits-open').onclick=()=>$('credits-dialog').showModal();
 $('button-controls').onchange=event=>{assistedControls=event.currentTarget.checked;controlsRender();save();};
 for(const name of ['powers','music','bonus']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
@@ -646,9 +661,9 @@ navigation=gameMenuMount({
   skin:()=>progression.skin,
   suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},
   resume:start,
-  freePlay,
-  info(){const s=progression.state;if(s.phase==='shop')return {resume:null};const next=s.phase==='interlude',pool=s.pool+(next?1:0);return {resume:{artwork:assetURL('artwork/'+s.track+'.svg'),detail:trackGet(s.track).name+' · '+(next?'Next: ':'')+'Pool '+(pool+1)+' — '+POOL_NAMES[pool]}};},
-  continue(){if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
+  freePlay, wavesPlay,
+  info(){const wave=store.pools.waves;if(preferences.lastPlay==='waves'&&wave&&!wave.game.isOver)return {resume:{artwork:assetURL('artwork/pool-512.png'),detail:`Endless Waves · Wave ${wave.game.wave.number} · ${wave.game.plucks} Plucks Left`}};const s=progression.state;if(s.phase==='shop')return {resume:null};const next=s.phase==='interlude',pool=s.pool+(next?1:0);return {resume:{artwork:assetURL('artwork/'+s.track+'.svg'),detail:trackGet(s.track).name+' · '+(next?'Next: ':'')+'Pool '+(pool+1)+' — '+POOL_NAMES[pool]}};},
+  continue(){if(preferences.lastPlay==='waves'&&store.pools.waves&&!store.pools.waves.game.isOver){wavesPlay();return;}if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
   open(screen){if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign('tracks');else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='wiki')wiki.open();else if(screen==='help')wiki.open('how-to-play');else $('settings-dialog').showModal();}
 });
 fullscreenMount(document,window);

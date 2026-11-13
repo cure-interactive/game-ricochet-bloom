@@ -1,11 +1,11 @@
-import { buildValidate } from './skill-effect.js?v=6783470d52e0982bd5d187dc8b0d26a9815b787acc3c581f5c2bd0321ccc393d';
-import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=72132af057dff2bd5109c48d8a7a7ad6fdf82a3a7eb75d52b4a209a490cfffb0';
-import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
-import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';
-import { gameCreate, saveValidate, RULE } from './engine.js?v=ee2ad99d5c6262d550458a805ece6f85e3ed035e8547beb369aa6a1128985f22';
-import { jellyRole, musicCreate, musicRunSection } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
+import { buildValidate } from './skill-effect.js?v=7832dd7c58ba0da9a3d69a6424a04dc4734479b27b6f3ea1f0810fcb589d59d5';
+import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=c9ff036f85fda07c94971bb9701dc181e070bf11984ca7b8b6cc458235afcef6';
+import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
+import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=9078c56cc1e0eae227105818494b7175ccc018790a79571c34d411819cb4a6f5';
+import { gameCreate, saveValidate, RULE } from './engine.js?v=07969b6d92e08ed72ffc554ae24bd9217d6332cd51a913f52f8e52638bcab9dd';
+import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 
-import { TRACKS, trackGet, trackEnvironment } from './track.js?v=57009a338150b0399594597f6a834d703dafefeb8088046d9e587aa1896fb5ed';
+import { TRACKS, trackGet, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 
 export const GAME_CATALOGUE=catalogueCreate(Object.entries(POWER_TREES).flatMap(([power,tree])=>tree.nodes.map(node=>power+'.'+node.key)));
 export const POOL_NAMES=['Intro','Verse','Build','Bridge','Finale'];
@@ -160,7 +160,7 @@ function resultRecord(s,outcome){
 export function progressionObserve(input,game,events,music=null){
   if(input.phase!=='run')return {state:input,message:null};
   const s=structuredClone(input),r=s.run;r.game=structuredClone(game);r.music=music;
-  for(const e of events){if(e.type==='note'&&!r.roles.includes(jellyRole(e.id)))r.roles.push(jellyRole(e.id));if(e.type==='power'&&s.powers.includes(e.kind)&&!r.activated.includes(e.kind))r.activated.push(e.kind);if(e.type==='bloom'&&e.banks>0)r.bankBloom=true;}
+  for(const e of events){if(e.type==='note'&&!r.roles.includes(bubbleRole(e.id)))r.roles.push(bubbleRole(e.id));if(e.type==='power'&&s.powers.includes(e.kind)&&!r.activated.includes(e.kind))r.activated.push(e.kind);if(e.type==='bloom'&&e.banks>0)r.bankBloom=true;}
   let message=null,outcome=null,record=null;
   if(events.some(e=>['rest','over','win'].includes(e.type))){
     if(poolGoalMet(s)){

@@ -1,5 +1,6 @@
+import { liveBubbles } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { waveFalloff, waveRadial } from './power-response.js?v=53b3f123d0f0c05341a1eb30cbf1c20f19b251c6a7e30ff0cc4921ddfff73338';
-import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
+import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
 
 // Resolved configuration belongs to physics; profile ownership stays outside it.
 export function buildValidate(build) {
@@ -42,7 +43,7 @@ export function skillConfig(state,power) {
 const effect=(s,k)=>s.effects.find(e=>e.kind===k);
 const limit=b=>{const v=Math.hypot(b.vx,b.vy);if(v>1600){b.vx*=1600/v;b.vy*=1600/v;}};
 export function pressure(state,x,y,radius,strength,kind='ripple',shape={}) {
-  for(const b of state.bodies.slice(1)) {
+  for(const b of liveBubbles(state)) {
     const dx=b.x-x,dy=b.y-y,d=Math.hypot(dx,dy);if(d<1||d>=radius)continue;
     let force=strength*waveFalloff(d,radius,shape);
     const radial=waveRadial(kind,d,radius,shape);
@@ -75,8 +76,8 @@ export function skillActivate(state,kind,body,events) {
   if(kind==='orbit')e.satellites=e.satellites.slice(0,c.count);
   if(kind==='relay'){e.remaining=c.count;if(c.b)e.seconds=7;}
   if(kind==='lightning') {
-    if(c.a||c.b) {const candidates=state.bodies.slice(1).filter(b=>b.id!==body.id&&!state.chain.includes(b.id));let chosen=[];while(chosen.length<c.count&&candidates.length){candidates.sort((a,b)=>{const dist=p=>Math.min(...(chosen.length?chosen:[body]).map(q=>Math.hypot(p.x-q.x,p.y-q.y)));return (c.a?-1:1)*(dist(a)-dist(b))||a.id-b.id;});chosen.push(candidates.shift());}if(chosen.length)e.targets=chosen.map(b=>b.id);}
-    e.targets=e.targets.slice(0,c.count);if(c.capstone)v.charged=e.targets[0];
+    if(c.a||c.b) {const candidates=liveBubbles(state).filter(b=>b.id!==body.id&&!state.chain.includes(b.id));let chosen=[];while(chosen.length<c.count&&candidates.length){candidates.sort((a,b)=>{const dist=p=>Math.min(...(chosen.length?chosen:[body]).map(q=>Math.hypot(p.x-q.x,p.y-q.y)));return (c.a?-1:1)*(dist(a)-dist(b))||a.id-b.id;});chosen.push(candidates.shift());}if(chosen.length)e.targets=chosen.map(b=>b.id);}
+    e.targets=e.targets.slice(0,c.count);if(c.capstone)v.charged=e.targets[0]??null;
   }
   if(kind==='pulse'){e.remaining=c.count;e.next=(c.count-1)*c.beat;e.seconds=e.next+.01;}
   if(kind==='tether'&&!c.foundation)e.links=e.links.slice(0,1);
@@ -100,8 +101,8 @@ export function skillWall(state,body,nx,ny,events) {
   const v=state.skillState;
   if(effect(state,'comet')&&skillFlags(state,'comet').a&&v.bankCharge){v.bankCharge=false;body.vx+=nx*150;body.vy+=ny*150;limit(body);}
   const c=effect(state,'comet')&&skillFlags(state,'comet').capstone,s=effect(state,'spring')&&skillFlags(state,'spring').capstone;
-  if((c||s)&&v.wallWaves<2){v.wallWaves++;for(const b of state.bodies.slice(1)){const d=Math.hypot(b.x-body.x,b.y-body.y);if(d<230){b.vx+=nx*260*(1-d/230);b.vy+=ny*260*(1-d/230);limit(b);}}events.push({type:'skill-wave',x:body.x,y:body.y});}
-  if(effect(state,'spring')&&skillFlags(state,'spring').b){const targets=state.bodies.slice(1).filter(b=>!state.chain.includes(b.id)&&((b.x-body.x)*body.vx+(b.y-body.y)*body.vy)>0).sort((a,b)=>Math.hypot(a.x-body.x,a.y-body.y)-Math.hypot(b.x-body.x,b.y-body.y));if(targets[0]){const t=targets[0],speed=Math.hypot(body.vx,body.vy),a=Math.atan2(body.vy,body.vx),d=Math.atan2(Math.sin(Math.atan2(t.y-body.y,t.x-body.x)-a),Math.cos(Math.atan2(t.y-body.y,t.x-body.x)-a)),turn=Math.max(-.2,Math.min(.2,d));body.vx=Math.cos(a+turn)*speed;body.vy=Math.sin(a+turn)*speed;}}
+  if((c||s)&&v.wallWaves<2){v.wallWaves++;for(const b of liveBubbles(state)){const d=Math.hypot(b.x-body.x,b.y-body.y);if(d<230){b.vx+=nx*260*(1-d/230);b.vy+=ny*260*(1-d/230);limit(b);}}events.push({type:'skill-wave',x:body.x,y:body.y});}
+  if(effect(state,'spring')&&skillFlags(state,'spring').b){const targets=liveBubbles(state).filter(b=>!state.chain.includes(b.id)&&((b.x-body.x)*body.vx+(b.y-body.y)*body.vy)>0).sort((a,b)=>Math.hypot(a.x-body.x,a.y-body.y)-Math.hypot(b.x-body.x,b.y-body.y));if(targets[0]){const t=targets[0],speed=Math.hypot(body.vx,body.vy),a=Math.atan2(body.vy,body.vx),d=Math.atan2(Math.sin(Math.atan2(t.y-body.y,t.x-body.x)-a),Math.cos(Math.atan2(t.y-body.y,t.x-body.x)-a)),turn=Math.max(-.2,Math.min(.2,d));body.vx=Math.cos(a+turn)*speed;body.vy=Math.sin(a+turn)*speed;}}
 }
 export function skillCollision(state,a,b,events,contact) {
   if(!state.build||!state.isFlying||a.id<=0||b.id<=0)return;
@@ -127,7 +128,7 @@ export function skillStep(state,dt,events) {
   if(v.vortex){const e=v.vortex,c=skillFlags(state,'vortex');e.seconds-=dt;if(c.capstone){e.x+=(seed.x-e.x)*Math.min(1,dt*5);e.y+=(seed.y-e.y)*Math.min(1,dt*5);}pressure(state,e.x,e.y,440,160*dt,'vortex',c);if(e.seconds<=0)v.vortex=null;}
   const portal=effect(state,'portal');if(portal&&skillFlags(state,'portal').capstone)for(const g of portal.gates)pressure(state,g.x,g.y,145,180*dt);
   const split=effect(state,'split');if(split&&skillFlags(state,'split').capstone&&split.seconds<.5)for(const b of split.shards){const d=Math.max(1,Math.hypot(seed.x-b.x,seed.y-b.y));b.vx+=(seed.x-b.x)/d*900*dt;b.vy+=(seed.y-b.y)/d*900*dt;limit(b);}
-  if(effect(state,'drunk')&&skillFlags(state,'drunk').capstone)for(const b of state.bodies.slice(1).filter(b=>!state.chain.includes(b.id)&&Math.hypot(b.x-seed.x,b.y-seed.y)<230).slice(0,3)){const speed=Math.max(1,Math.hypot(seed.vx,seed.vy)),f=Math.sin(state.tick*dt*Math.PI*2/.75)*180*dt;b.vx-=seed.vy/speed*f;b.vy+=seed.vx/speed*f;limit(b);}
+  if(effect(state,'drunk')&&skillFlags(state,'drunk').capstone)for(const b of liveBubbles(state).filter(b=>!state.chain.includes(b.id)&&Math.hypot(b.x-seed.x,b.y-seed.y)<230).slice(0,3)){const speed=Math.max(1,Math.hypot(seed.vx,seed.vy)),f=Math.sin(state.tick*dt*Math.PI*2/.75)*180*dt;b.vx-=seed.vy/speed*f;b.vy+=seed.vx/speed*f;limit(b);}
   // A crossing requires separated trail samples; adjacent samples never make an eddy.
   const wake=effect(state,'wake');if(wake&&skillFlags(state,'wake').capstone&&state.tick%12===0&&v.eddies.length<2){const p=wake.trail.at(-1);if(p&&wake.trail.some((q,i)=>i<wake.trail.length-24&&Math.hypot(p.x-q.x,p.y-q.y)<25)&&!v.eddies.some(e=>Math.hypot(e.x-p.x,e.y-p.y)<60))v.eddies.push({x:p.x,y:p.y,seconds:1});}
   for(const e of v.eddies){if(e.seconds>0){e.seconds=Math.max(0,e.seconds-dt);pressure(state,e.x,e.y,100,170*dt,'vortex');}}

@@ -1,12 +1,12 @@
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { menuBackgroundMount } from './menu-background.js?v=dc90e236e82e16d043e3b86fc273d8b13aaaa7010bab131e141620c15ed9e426';
+import { menuBackgroundMount } from './menu-background.js?v=b1b954d9f22345518810b179fdf4d872472426c9927c5a2b0bd1b3a29b989b43';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
   const home=document.createElement('section');home.id='main-menu';home.setAttribute('aria-label','Main Menu');
   const button=(id,label,icon,kind='')=>`<button type="button" id="${id}" class="${kind}">${iconHTML(icon)}<span>${label}</span></button>`;
-  home.innerHTML=`<div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><div class="home-actions"><nav class="home-primary" aria-label="Main game actions"><button type="button" id="home-continue" class="primary"><img class="continue-art" width="48" height="48" alt=""><span class="continue-copy"><span>Continue</span><small class="continue-detail"></small></span></button>${button('home-levels','Campaign','campaign','primary')}${button('home-free','Free Play','play')}${button('home-tree','Skill Tree','skill-tree')}<button type="button" id="home-skins"><span class="skin-preview home-skin" aria-hidden="true"><i></i></span><span>Player Skins</span></button></nav><nav class="home-secondary" aria-label="More game options">${button('home-wiki','Wiki','book')}${button('home-help','How to Play','book')}${button('home-settings','Settings','gear')}</nav></div></div>`;
+  home.innerHTML=`<div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><div class="home-actions"><nav class="home-primary" aria-label="Main game actions"><button type="button" id="home-continue" class="primary"><img class="continue-art" width="48" height="48" alt=""><span class="continue-copy"><span>Continue</span><small class="continue-detail"></small></span></button>${button('home-levels','Campaign','campaign','primary')}${button('home-free','Free Play','play')}${button('home-waves','Endless Waves','wave')}${button('home-tree','Skill Tree','skill-tree')}<button type="button" id="home-skins"><span class="skin-preview home-skin" aria-hidden="true"><i></i></span><span>Player Skins</span></button></nav><nav class="home-secondary" aria-label="More game options">${button('home-wiki','Wiki','book')}${button('home-help','How to Play','book')}${button('home-settings','Settings','gear')}</nav></div></div>`;
   const backdrop=document.createElement('div');backdrop.id='menu-background';backdrop.setAttribute('aria-hidden','true');
   backdrop.innerHTML='<canvas class="home-pool"></canvas>';
   document.body.append(backdrop,home);
@@ -28,6 +28,7 @@ export function gameMenuMount(host) {
   home.querySelector('#home-tree').onclick=()=>host.open('tree');
   home.querySelector('#home-skins').onclick=()=>host.open('skins');
   home.querySelector('#home-free').onclick=()=>host.freePlay();
+  home.querySelector('#home-waves').onclick=()=>host.wavesPlay();
   home.querySelector('#home-wiki').onclick=()=>host.open('wiki');
   home.querySelector('#home-help').onclick=()=>host.open('help');
   home.querySelector('#home-settings').onclick=()=>host.open('settings');

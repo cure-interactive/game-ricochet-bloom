@@ -1,15 +1,16 @@
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=60ecfff7399deee1dd55c124a32232b153dddffb6ac122d0758b6ac97c1f1e9b';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=7c6b2ee16663450952814ac4e888191c65aba61cd1df1d7307f1e900a7987ca1';
 
 export const WIKI_PAGES = Object.freeze({
-  contents: { title: 'Contents', url: './wiki/contents.md?v=bfde9e01ebb01ca359f2ff76d0a1433eee9d45c856219274608756a36cbc9491' },
+  waves: { title: 'Endless Waves', url: './wiki/waves.md?v=422a3ef6f62d27347dedb417bd9982cc19f354a117f11d3f413efef52687763a' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=13b9377838a3f2c196c8761cc19e197ade3bf3b3da48f278a210123876604d33' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=50eeb499e8ba7e3898c011480b7dd17f58f7c5454e8c7a8760f58fc5f34dfea5' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=683232b876e7dd2597c4220aeb457cd772a1ed4aca5ce3f015beea40cfacf718' },
-  campaign: { title: 'Campaign', url: './wiki/campaign.md?v=15b287b1ecd2c3f5b3ae723d422b398e91f8bbd68024c04e0c80f8f03785b840' },
-  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=891749b396c2c0e5c8912b5cbd9b3f4de418b2c52fd3464b79a9581a72d87409' },
-  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=5394df77188d0533ce46eee9efd4168a82f1004672b6dce9ea97434c42c84abb' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=b24f66ad0fec5ad08b80c3c26a9547de6a8612e746dc19d40a20b99bad293a59' }
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=f7b6f790202d953e7848bc63e86e30430fe6800bd9e48a723c9cd83d301c1d2d' },
+  campaign: { title: 'Campaign', url: './wiki/campaign.md?v=84833354cfcca54ee1dd35cf82f76c7a851bbaca4aabe9adfde7dab3849aacb6' },
+  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=deeaf3b71f2df3ef4084143c5ff7484a06ad960cd2b95e0e6d8e588f1eea6e90' },
+  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=b85852bdb54c07512a99bf9859a5331996520d77cde6ac51f1caaa5a1cd063f5' },
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=fafab985c72bc2ea0e445b393328660962ca193e5098c106fe7523e94893e531' }
 });
 const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const headingID = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -19,12 +20,13 @@ export function wikiTarget(href, current = 'wiki') {
   const page = match[1] ? match[1].slice(0, -3) : current;
   return Object.hasOwn(WIKI_PAGES, page) ? { page, anchor: match[2] || '' } : null;
 }
-function inline(text, current, section='') {
+function inline(text, current, section='', linkRender=null) {
   const pattern = /\[([^\]\n]+)\]\(([^\s)]+)\)|\*\*([^*\n]+)\*\*|`([^`\n]+)`/g;
   let html = '', cursor = 0;
   for (const m of text.matchAll(pattern)) {
     html += escape(text.slice(cursor, m.index));
     if (m[1]) {
+      if(linkRender){html+=linkRender(m[1],m[2]);cursor=m.index+m[0].length;continue;}
       const target = wikiTarget(m[2], current);
       html += target ? `<a href="${escape(WIKI_PAGES[target.page].url)}${target.anchor ? '#'+target.anchor : ''}" data-wiki-page="${target.page}" data-wiki-anchor="${target.anchor}">${wikiTopicIcon(target.page,target.anchor)}${escape(m[1])}</a>` : escape(m[1]);
     } else html += m[3] ? `<strong>${wikiStrongHTML(m[3],current,section,escape(m[3]))}</strong>` : `<code>${escape(m[4])}</code>`;
@@ -34,10 +36,10 @@ function inline(text, current, section='') {
 }
 // Bounded Markdown: no raw HTML, supplied images, embeds or executable URLs.
 // Decorative icons come exclusively from the shipped topic/catalogue allowlist.
-export function renderMarkdown(markdown, current = 'wiki') {
+export function renderMarkdown(markdown, current = 'wiki', linkRender=null) {
   const lines = markdown.replace(/\r\n?/g, '\n').split('\n'), html = [];
   let list = '', paragraph = [], credits = false, section='';
-  const flush = () => { if(paragraph.length){html.push(`<p>${inline(paragraph.join(' '),current,section)}</p>`);paragraph=[];} if(list){html.push(`</${list}>`);list='';} };
+  const flush = () => { if(paragraph.length){html.push(`<p>${inline(paragraph.join(' '),current,section,linkRender)}</p>`);paragraph=[];} if(list){html.push(`</${list}>`);list='';} };
   for (const line of lines) {
     const heading = /^(#{1,4}) (.+)$/.exec(line), item = /^(?:([-*])|\d+\.) (.+)$/.exec(line);
     if (heading) {
@@ -45,11 +47,11 @@ export function renderMarkdown(markdown, current = 'wiki') {
       if(heading[2]==='Attribution'){html.push('<details class="wiki-credits"><summary>Page Credits</summary>');credits=true;continue;}
       const level=heading[1].length;
       const id=headingID(heading[2]);if(level===2)section=id;
-      html.push(`<h${level} id="${id}">${credits?'':wikiTopicIcon(current,id)}${inline(heading[2],current,section)}</h${level}>`);
+      html.push(`<h${level} id="${id}">${credits?'':wikiTopicIcon(current,id)}${inline(heading[2],current,section,linkRender)}</h${level}>`);
     } else if(item) {
-      if(paragraph.length){html.push(`<p>${inline(paragraph.join(' '),current,section)}</p>`);paragraph=[];}
+      if(paragraph.length){html.push(`<p>${inline(paragraph.join(' '),current,section,linkRender)}</p>`);paragraph=[];}
       const kind=item[1]?'ul':'ol';if(list!==kind){if(list)html.push(`</${list}>`);list=kind;html.push(`<${kind}>`);}
-      html.push(`<li>${inline(item[2],current,section)}</li>`);
+      html.push(`<li>${inline(item[2],current,section,linkRender)}</li>`);
     } else if(!line.trim()) flush();
     else {if(list){html.push(`</${list}>`);list='';}paragraph.push(line.trim());}
   }

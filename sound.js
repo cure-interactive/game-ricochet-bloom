@@ -1,8 +1,8 @@
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=54c0e4fa3eab549d2e5ab1ff2eca9c9fb14a046e20c1345e853b451955c0697c';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
-import { PoolMedia } from './media.js?v=9083d27198946855bedcd887d2499657fedb28177dfc3f59bf0409f9b0ed530f';
-import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, musicPower, jellyRole } from './music.js?v=d5dac5f1b02219161582edf9cecbfddafda13f1e3b5ddbf1ae05e60829a0aadd';
+import { PoolMedia } from './media.js?v=919ea129493b278dc6e863b5a8b999ea0cfcacd0f55a0cda761294b57c8c36a8';
+import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, musicPower, bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export class PoolSound {
@@ -143,7 +143,7 @@ export class PoolSound {
   eventPlay(event) {
     const pan = poolPan(event.x, event.y, this.portrait);
     if (event.type === 'launch') musicLaunch(this.music);
-    if (['rest', 'win', 'over'].includes(event.type)) musicFinish(this.music);
+    if (['rest', 'win', 'over', 'wave-clear'].includes(event.type)) musicFinish(this.music);
     if (event.type === 'note') musicStrike(this.music, event.tone, event.tick, event.chain, event.id, (this.harmony?.notes[event.tone % 5] ?? [60, 62, 64, 67, 69][event.tone % 5]) + (event.chain > 3 ? 12 : 0), event.speed, pan);
     if (event.type === 'bloom') {musicBloom(this.music);if(event.banks>0)musicAccent(this.music);}
     if(event.type==='objective')musicAccent(this.music);
@@ -153,10 +153,12 @@ export class PoolSound {
     this.eventCount++;
     if (event.type === 'blaster-fire') { const pitch=this.notePitch(0)*2;this.tone(pitch*1.08,pitch,.09,.045,pan); }
     if (event.type === 'blaster-bank') this.tone(880,1320,.08,.06,pan);
+    if(event.type==='pop')this.tone(620,110,.09,.07,pan);
+    if(event.type==='wave-clear')[0,2,4].forEach((tone,i)=>this.tone(this.notePitch(tone),this.notePitch(tone),.7,.08,0,i*.14,'sine',true));
     if (event.type === 'launch') { this.tone(130, 520, .13, .25, pan); this.tone(65, 38, .18, .25, pan); }
     if (event.type === 'wall') this.tone(190 + Math.min(300, event.speed), 85, .16, .1, pan);
     if (event.type === 'impact') this.tone(event.bubble ? 120 : 100 + Math.min(200, event.speed), event.bubble ? 42 : 55, event.bubble ? .18 : .095, Math.min(.15, event.speed / 2500), pan);
-    if (event.type === 'note') { const gain = event.seedId < 0 ? .65 : 1; const pitch = this.notePitch(event.tone) * (jellyRole(event.id)==='bass'?.5:event.chain>3?2:1); this.tone(pitch * 2.2, pitch, .075, .23 * gain, pan); this.tone(pitch, pitch * .998, .65, .24 * gain, pan, .025, 'sine', true); this.tone(pitch * 2, pitch * 2, .32, .055 * gain, pan, .03, 'triangle', true); }
+    if (event.type === 'note') { const gain = event.seedId < 0 ? .65 : 1; const pitch = this.notePitch(event.tone) * (bubbleRole(event.id)==='bass'?.5:event.chain>3?2:1); this.tone(pitch * 2.2, pitch, .075, .23 * gain, pan); this.tone(pitch, pitch * .998, .65, .24 * gain, pan, .025, 'sine', true); this.tone(pitch * 2, pitch * 2, .32, .055 * gain, pan, .03, 'triangle', true); }
     if (event.type === 'note' || event.type === 'launch') { this.duckUntil = this.context.currentTime + .8; this.mixUpdate(); }
     if (event.type === 'power'&&!['echo','blaster'].includes(event.kind)) {
       const degrees = ({ ripple: [0, 2, 3], attract: [3, 2, 0], vortex: [0, 3, 2, 3], stasis: [3, 0], comet: [0, 2, 3, 5], swap: [0, 3, 0, 2], magnet: [5, 3, 2, 0], lightning: [], impact: [0, 0, 3], tether: [0, 2, 0], split: [0, 3, 5], bubble: [0, 3, 2], portal: [0, 5], echo: [3, 0, 3], slingshot: [0, 2], drunk: [0, 3, 2, 5, 3], homing: [0, 2, 5] })[event.kind] || [0, 2, 3];

@@ -1,8 +1,8 @@
-import { skillCurve } from './skill-curve.js?v=a372ff5d7dc840bd44022403579c42219188803e2dcf4d44fb0c62a60774482b';
-import { skillConfig } from './skill-effect.js?v=6783470d52e0982bd5d187dc8b0d26a9815b787acc3c581f5c2bd0321ccc393d';
-import { POWER_TREES } from './power-tree.js?v=c9a5802f7ef4e448c825a7917910994fd4d5dc8753c92d94db7b9abffaa78827';
-import { profilePurchase, unlockedResolve } from './profile.js?v=f884844be31760a0e8fa2f140e6b67a8238f29681b4d6e77a401fc7596d2d0e8';
-import { GAME_CATALOGUE as cat } from './run.js?v=4a6b36c1f1f885e0e63739e7ebfec31ec2f164543efa29e2eada2632f613b604';
+import { skillCurve } from './skill-curve.js?v=d525fd9667a3081e35524eb957b3f11625f3f6e4683cb259e620be985973a815';
+import { skillConfig } from './skill-effect.js?v=7832dd7c58ba0da9a3d69a6424a04dc4734479b27b6f3ea1f0810fcb589d59d5';
+import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
+import { profilePurchase, unlockedResolve } from './profile.js?v=9078c56cc1e0eae227105818494b7175ccc018790a79571c34d411819cb4a6f5';
+import { GAME_CATALOGUE as cat } from './run.js?v=f46e437fcd893aaf9e4277a1ca9b56e1ec27ca75f1396d6c33557958bb850b33';
 
 const on=value=>value?'On':'Off';
 const number=value=>Number(value.toFixed(2));
@@ -13,80 +13,80 @@ const degrees=value=>number(value*180/Math.PI)+'°';
 // Explain the gameplay meaning of each displayed variable, not an upgrade rating.
 const statDescription={
  'Wall Speed Retained':'Speed kept after a wall bounce. Higher means less momentum lost.',
- 'Bank Charge':'A new jelly hit charges an extra boost for the next wall bounce.',
+ 'Bank Charge':'A new bubble hit charges an extra boost for the next wall bounce.',
  'Late-Flight Drag':'Braking late in a pluck. Lower lets the player coast farther.',
- 'Wall Pressure Waves':'The first two powered wall bounces also push nearby jellies.',
- 'Push Strength':'How strongly player contact shoves a jelly.',
+ 'Wall Pressure Waves':'The first two powered wall bounces also push nearby bubbles.',
+ 'Push Strength':'How strongly player contact shoves a bubble.',
  'Push Shape':'Whether the shove follows your movement or spreads outward.',
- 'Collision Transfer':'The first two hit jellies can each pass on one extra shove.',
+ 'Collision Transfer':'The first two hit bubbles can each pass on one extra shove.',
  'Duration':'How long the effect remains active after triggering.',
  'Rebound Boost':'Extra speed added when the player rebounds from a wall.',
- 'Rebound Steering':'Gently turns wall rebounds toward an unhit jelly ahead.',
+ 'Rebound Steering':'Gently turns wall rebounds toward an unhit bubble ahead.',
  'Sway Width':'How far the sideways wobble bends the player’s movement.',
- 'Shared Sway':'Up to three nearby unhit jellies sway along with the player.',
- 'Reach':'How far from its center the effect can influence jellies.',
+ 'Shared Sway':'Up to three nearby unhit bubbles sway along with the player.',
+ 'Reach':'How far from its center the effect can influence bubbles.',
  'Peak Impulse':'The strongest instant push or pull the wave can apply.',
  'Falloff':'How the wave’s strength changes with distance from its center.',
  'Returning Wave':'A weaker inward wave follows the outward ripple.',
- 'Gathering Shape':'Whether attraction gathers jellies into a cluster or a loose ring.',
+ 'Gathering Shape':'Whether attraction gathers bubbles into a cluster or a loose ring.',
  'Outward Release':'A small outward wave follows the gathering pull.',
- 'Swirl Strength':'How strongly the vortex sets nearby jellies swirling.',
+ 'Swirl Strength':'How strongly the vortex sets nearby bubbles swirling.',
  'Sustained Swirl':'Keeps applying a brief swirl after the initial impulse.',
- 'Spiral Direction':'Whether swirling jellies drift inward, outward, or around the center.',
+ 'Spiral Direction':'Whether swirling bubbles drift inward, outward, or around the center.',
  'Moving Center':'The brief swirl follows the player until it ends or you teleport.',
- 'Pull Strength':'How strongly the magnet draws nearby unhit jellies toward you.',
- 'Hit-Jelly Release':'Pushes newly hit jellies outward to clear room for unhit ones.',
+ 'Pull Strength':'How strongly the magnet draws nearby unhit bubbles toward you.',
+ 'Hit-Bubble Release':'Pushes newly hit bubbles outward to clear room for unhit ones.',
  'Trail Reach':'How far the wake’s current extends from its trail.',
- 'Current Strength':'How strongly the wake carries nearby jellies along its trail.',
+ 'Current Strength':'How strongly the wake carries nearby bubbles along its trail.',
  'Crossing Eddies':'Crossing your trail creates brief swirls, up to two per pluck.',
  'Freeze Reach':'How far the initial frost spreads from its source.',
- 'Jelly Speed Limit':'The speed cap for frozen jellies. Lower keeps them slower.',
- 'Player Pressure':'Push from already-hit frozen jellies. Lower makes threading past them easier.',
- 'Frost Spread':'The first two frozen-jelly collisions can frost another jelly each.',
+ 'Bubble Speed Limit':'The speed cap for frozen bubbles. Lower keeps them slower.',
+ 'Player Pressure':'Push from already-hit frozen bubbles. Lower makes threading past them easier.',
+ 'Frost Spread':'The first two frozen-bubble collisions can frost another bubble each.',
  'Shell Radius':'The size of the player’s bubble shell.',
- 'Pressure':'How firmly overlapping jellies are pushed apart by the bubble.',
+ 'Pressure':'How firmly overlapping bubbles are pushed apart by the bubble.',
  'Breathing Radius':'Gently expands and contracts the bubble’s radius by 10%.',
- 'Linked Jellies':'How many jellies the tether can connect.',
- 'Playerward Pull':'How strongly tethered jellies drift toward the player.',
+ 'Linked Bubbles':'How many bubbles the tether can connect.',
+ 'Playerward Pull':'How strongly tethered bubbles drift toward the player.',
  'Link Stiffness':'How firmly stretched links return to their resting length.',
  'Release Impulse':'Releases stored link stretch as a bounded shove when the tether ends.',
- 'Satellites':'How many jellies can orbit the player.',
- 'Orbit Time':'How long captured jellies orbit before release.',
- 'Extra Orbit Radius':'Extra spacing added around the player for orbiting jellies.',
- 'Rotation':'How quickly orbiting jellies travel around the player.',
- 'Directed Release':'Biases released jellies toward the player’s current heading.',
+ 'Satellites':'How many bubbles can orbit the player.',
+ 'Orbit Time':'How long captured bubbles orbit before release.',
+ 'Extra Orbit Radius':'Extra spacing added around the player for orbiting bubbles.',
+ 'Rotation':'How quickly orbiting bubbles travel around the player.',
+ 'Directed Release':'Biases released bubbles toward the player’s current heading.',
  'Path Deviation':'How far the echo may wander from its recorded path.',
  'Elastic Response':'Lets the echo flex away from its path and spring back.',
- 'Unhit-Jelly Seeking':'Gently steers the echo toward nearby unhit jellies.',
+ 'Unhit-Bubble Seeking':'Gently steers the echo toward nearby unhit bubbles.',
  'Finish Queued Route':'Lets the echo finish its remaining route after the player stops.',
  'Side Seeds':'Extra player blobs launched alongside the main player.',
  'Launch Angle':'How widely the side blobs fan out from your direction of travel.',
  'Final Convergence':'Bends surviving side blobs back toward you before they expire.',
- 'Relay Carriers':'How many jellies can carry the relay effect.',
+ 'Relay Carriers':'How many bubbles can carry the relay effect.',
  'Transfer Window':'How long carriers have to pass the relay through a collision.',
- 'Recipient Push':'Adds a stronger shove to the jelly receiving a relay.',
+ 'Recipient Push':'Adds a stronger shove to the bubble receiving a relay.',
  'Additional Pass':'One successful relay can arm its recipient for one extra transfer.',
  'Path Memory':'How much recent travel is saved for rewinding.',
  'Playback Speed':'How quickly the stored path is retraced. Lower rewinds more slowly.',
  'Parallel Offset':'Shifts the return route beside the original path.',
  'Return-Bloom Wave':'A bloom earned during the return sends out one small push wave.',
- 'Strikes':'How many jellies the lightning sequence targets.',
+ 'Strikes':'How many bubbles the lightning sequence targets.',
  'Target Pattern':'Whether lightning prefers nearby, grouped, or separated targets.',
- 'Charged Relay':'The first struck jelly can pass one hit through a later collision.',
+ 'Charged Relay':'The first struck bubble can pass one hit through a later collision.',
  'Waves':'How many pressure waves fire during the pulse sequence.',
  'Wave Interval':'Time between waves. Lower makes them arrive more quickly.',
- 'Pressure Strength':'How strongly each pulse wave pushes nearby jellies.',
- 'Unhit-Biased Final Wave':'Places the last wave closer to a group of unhit jellies.',
- 'Destination':'How Swap chooses the jelly you exchange places with.',
- 'Departure Wave':'Pushes nearby jellies away from the spot you leave.',
+ 'Pressure Strength':'How strongly each pulse wave pushes nearby bubbles.',
+ 'Unhit-Biased Final Wave':'Places the last wave closer to a group of unhit bubbles.',
+ 'Destination':'How Swap chooses the bubble you exchange places with.',
+ 'Departure Wave':'Pushes nearby bubbles away from the spot you leave.',
  'Gate Radius':'The size of each portal entrance.',
- 'Exit Steering':'Steers you toward an unhit jelly when leaving a portal.',
- 'Gate Current':'Each active gate gently pushes nearby jellies outward.',
+ 'Exit Steering':'Steers you toward an unhit bubble when leaving a portal.',
+ 'Gate Current':'Each active gate gently pushes nearby bubbles outward.',
  'Look-Ahead':'How far ahead Homing searches for an unhit target.',
  'Turn Limit':'The fastest Homing can turn. Higher allows sharper corrections.',
  'Musical-Role Preference':'Favors a nearby target with a musical role the pool still needs.',
  'Wrapping Edges':'Which walls send the player through to the opposite side.',
- 'Arrival Pressure':'Gently clears nearby jellies away from your wrap exit.',
+ 'Arrival Pressure':'Gently clears nearby bubbles away from your wrap exit.',
  'Release Target':'How Slingshot chooses where to aim its automatic release.',
  'Second Orbit':'Hitting the chosen release target can trigger one shorter extra orbit.',
  'Magazine':'Shots available each time Blaster activates.',
@@ -107,13 +107,13 @@ export function powerVariables(build,power){
  case 'ripple':return {'Reach':c.reach,'Peak Impulse':c.force,'Falloff':c.a?'Concentrated':c.b?'Far Shore':'Standard',...finish('Returning Wave')};
  case 'attract':return {'Reach':c.reach,'Peak Impulse':c.force,'Gathering Shape':c.a?'Tight Group':c.b?'Loose Ring':'Standard',...finish('Outward Release')};
  case 'vortex':return {'Swirl Strength':c.force,'Sustained Swirl':on(c.foundation),'Spiral Direction':c.a?'Inward':c.b?'Outward':'Tangential',...finish('Moving Center')};
- case 'magnet':return {'Duration':seconds(c.duration),'Reach':c.reach,'Pull Strength':c.force,...finish('Hit-Jelly Release')};
+ case 'magnet':return {'Duration':seconds(c.duration),'Reach':c.reach,'Pull Strength':c.force,...finish('Hit-Bubble Release')};
  case 'wake':return {'Duration':seconds(c.duration),'Trail Reach':c.width,'Current Strength':c.force,...finish('Crossing Eddies')};
- case 'stasis':return {'Freeze Reach':c.reach,'Jelly Speed Limit':c.speed,'Player Pressure':scale(c.pressure),...finish('Frost Spread')};
+ case 'stasis':return {'Freeze Reach':c.reach,'Bubble Speed Limit':c.speed,'Player Pressure':scale(c.pressure),...finish('Frost Spread')};
  case 'bubble':return {'Shell Radius':c.size,'Pressure':scale(c.pressure),...finish('Breathing Radius')};
- case 'tether':return {'Linked Jellies':c.members,'Playerward Pull':c.pull,'Link Stiffness':c.spring,...finish('Release Impulse')};
+ case 'tether':return {'Linked Bubbles':c.members,'Playerward Pull':c.pull,'Link Stiffness':c.spring,...finish('Release Impulse')};
  case 'orbit':return {'Satellites':c.count,'Orbit Time':seconds(c.duration),'Extra Orbit Radius':c.reach,'Rotation':number(c.turn)+' rad/s',...finish('Directed Release')};
- case 'echo':return {'Path Deviation':c.leash,'Elastic Response':on(c.elastic),'Unhit-Jelly Seeking':on(c.seek),...finish('Finish Queued Route')};
+ case 'echo':return {'Path Deviation':c.leash,'Elastic Response':on(c.elastic),'Unhit-Bubble Seeking':on(c.seek),...finish('Finish Queued Route')};
  case 'split':return {'Side Seeds':c.count,'Launch Angle':degrees(c.fan),'Duration':seconds(c.duration),...finish('Final Convergence')};
  case 'relay':return {'Relay Carriers':c.count,'Transfer Window':seconds(c.duration),'Recipient Push':on(c.a),...finish('Additional Pass')};
  case 'rewind':return {'Path Memory':seconds(c.memory),'Playback Speed':scale(c.playbackRate),'Parallel Offset':on(c.b),...finish('Return-Bloom Wave')};
@@ -143,10 +143,10 @@ export function purchaseComparison(state,id){
  return {id,name:node.name,description:node.description,cost:node.seedCost,rows};
 }
 
-const countStats=new Set(['Linked Jellies','Satellites','Side Seeds','Relay Carriers','Strikes','Waves','Magazine','Pellets Per Shot','Wall Bounces']);
+const countStats=new Set(['Linked Bubbles','Satellites','Side Seeds','Relay Carriers','Strikes','Waves','Magazine','Pellets Per Shot','Wall Bounces']);
 // Direction describes this individual capability, not an overall build rating.
 // Style-only dimensions have no honest best endpoint, so keep their exact values as text.
-const lowerStats=new Set(['Late-Flight Drag','Jelly Speed Limit','Player Pressure','Playback Speed','Wave Interval']);
+const lowerStats=new Set(['Late-Flight Drag','Bubble Speed Limit','Player Pressure','Playback Speed','Wave Interval']);
 const choiceStats=new Set(['Sway Width','Launch Angle','Orbit Time']);
 const numeric=value=>typeof value==='number'?value:/^\d+(?:\.\d+)?(?: s|×|°|%| rad\/s)?$/.test(value)?parseFloat(value):null;
 export function statProgress(value,best,direction){
