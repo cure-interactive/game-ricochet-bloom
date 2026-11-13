@@ -1,16 +1,17 @@
 // Cumulative, versioned play receipts. A snapshot replaces the same session's
 // receipt, so restoring an older pool cannot pay for the same play twice.
 export const PLAY_REWARD = Object.freeze({ contacts: 6, bloom: 1, wave: 2, win: 3 });
+export const BONUS_TIERS = 5;
 export function earningId(crypto=globalThis.crypto){
   return crypto?.randomUUID?.()||`play-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
 }
 const integer=n=>Number.isSafeInteger(n)&&n>=0;
 const modes=['free','waves','challenge','song-run','reaction','cargo','outbreak'];
-export const earningAmount=e=>Math.floor(e.contacts/PLAY_REWARD.contacts)+e.blooms*PLAY_REWARD.bloom+e.waves*PLAY_REWARD.wave+e.wins*PLAY_REWARD.win;
+export const earningAmount=e=>Math.floor(e.contacts/PLAY_REWARD.contacts)+e.blooms*PLAY_REWARD.bloom+e.waves*PLAY_REWARD.wave+e.wins*PLAY_REWARD.win+(e.bonusPoints??0);
 export function earningValid(e,powers){
   const list=a=>Array.isArray(a)&&new Set(a).size===a.length&&a.every(p=>powers.includes(p));
   return !!e&&e.version===1&&typeof e.id==='string'&&/^[A-Za-z0-9_-]{1,80}$/.test(e.id)&&['normal','development'].includes(e.kind)&&modes.includes(e.mode)&&
-    ['contacts','blooms','waves','wins','shots','lastLaunch'].every(k=>integer(e[k]))&&e.contacts<=e.shots*20&&e.blooms<=e.shots&&e.waves<=e.shots&&e.wins<=1&&
+    ['contacts','blooms','waves','wins','shots','lastLaunch'].every(k=>integer(e[k]))&&e.contacts<=e.shots*20&&e.blooms<=e.shots&&e.waves<=e.shots&&e.wins<=1&&integer(e.bonusPoints??0)&&(e.bonusPoints??0)<=e.shots*BONUS_TIERS&&
     (e.mode==='waves'||e.waves===0)&&(['challenge','reaction','cargo','outbreak'].includes(e.mode)||e.wins===0)&&list(e.owned)&&list(e.used)&&e.used.every(p=>e.owned.includes(p))&&
     !!e.mastery&&typeof e.mastery==='object'&&!Array.isArray(e.mastery)&&Object.entries(e.mastery).every(([p,n])=>powers.includes(p)&&integer(n)&&n<=e.shots)&&integer(earningAmount(e));
 }
@@ -22,16 +23,18 @@ export function earningPrepare(game,kind,owned,id){
 export function earningPower(game,power){
   const e=game.earning;if(e&&e.owned.includes(power)&&!e.used.includes(power))e.used.push(power);
 }
-export function earningSettle(game,{wave=false,win=false}={}){
+export function earningSettle(game,{wave=false,win=false,bonus=0}={}){
+  if(!integer(bonus)||bonus>BONUS_TIERS)throw new RangeError('Invalid bonus difficulty');
   const e=game.earning;if(!e||e.lastLaunch>=game.launches)return;
   e.lastLaunch=game.launches;e.shots++;e.contacts+=game.chain.length;
   if(game.chain.length>=5)e.blooms++;
   if(wave)e.waves++;if(win)e.wins++;
+  if(bonus)e.bonusPoints=(e.bonusPoints??0)+bonus;
   if(game.chain.length>=3)for(const power of e.used)e.mastery[power]=(e.mastery[power]||0)+1;
   e.used=[];
 }
 export function earningSnapshot(e){
   // Flight bookkeeping is not part of the durable paid receipt.
   const {version,id,kind,mode,contacts,blooms,waves,wins,shots,mastery}=e;
-  return {version,id,kind,mode,contacts,blooms,waves,wins,shots,mastery:{...mastery}};
+  return {version,id,kind,mode,contacts,blooms,waves,wins,shots,mastery:{...mastery},...(e.bonusPoints!==undefined?{bonusPoints:e.bonusPoints}:{})};
 }

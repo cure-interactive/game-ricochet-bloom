@@ -1,31 +1,31 @@
-import { earningAmount } from './earning.js?v=1afa4d4bcc5833ee186a45acb741cf69d6b41a916791779352cdfa39c28efea4';
-import { trialMount } from './trial-ui.js?v=a401f526438a3a4f0a901acd617dd8e89de23ecb38524a6a49933bcda00f15fb';
-import { GAME_VERSION } from './version.js?v=f2fdbda18ba39b29655d4707c9a537f1f9b08a64ccb88d794da5f260ab23cbaa';
-import { powerSlots } from './power-ui.js?v=1c7f03c3186900d4bf0000552b73db4fee38a76e354e1e50cbf03309476099e3';
-import { creditsMount } from './credit.js?v=c38d4b4b718564795a06330711ff8342d5985f18151d99fb99befc7399957cf1';
+import { earningAmount } from './earning.js?v=dba3cae898a6c307e03c96ee0dcf04493997713a5080fb0914dd8d550b77a223';
+import { trialMount } from './trial-ui.js?v=b66b53a42439f4fff19ebe992706da4d262853622df9d1c033c44f5861f46d12';
+import { GAME_VERSION } from './version.js?v=61bd635507fdb0ef8bf67867d42ddf5da1350d4ea057da9a8338045dc25dbfb9';
+import { powerSlots } from './power-ui.js?v=10b06f6723055daa877306d36a466e71973367437f187ee1cfde2710cf16dc01';
+import { creditsMount } from './credit.js?v=195504fe192c4b7da9834c39478b1f31b5df2d0eb90a9e2844eb7c756204a798';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=91bdd921ed550b7501c923fff9a5b64cb99a50cc24eee3375556a1c1c0f4b953';
 import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
-import { wikiMount } from './wiki.js?v=9a775575f66f8c1fbd5d9d13da926a3e441df7d00227741fb8d655095c225917';
+import { wikiMount } from './wiki.js?v=f22881263fee9ee27662873ce56aa332f740932064c692bce8d9365be755e93e';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
-import { POOL_NAMES } from './run.js?v=e3c4f47443dc857f478874cd9dd084335cb1fa39d9c04b258ef874ef440ede4f';
-import { freePlaySync, freePlayBuild } from './free-play.js?v=b46fdbc8874a0234a1cb50f81180fb09b80ae3ae704546431685feea14b06d73';
+import { POOL_NAMES } from './run.js?v=437191b652f3ef1846b3b93a40c93dd41bd928f024b76961c39006eff07ba611';
+import { freePlaySync, freePlayBuild } from './free-play.js?v=00306e3fa986d67df6a127ddbb8ec6d3b8416cd0798a6215b3544daccd95b2d5';
 import { fullscreenMount } from './fullscreen.js?v=e8c105c0bde8d63a2f68cb936534f947a78c62bdedc35b73614336e898cf848c';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=30b4a9346756864852384ce958b105b83bddd4ee7c556b5072b8cee2d1e7b25a';
+import { gameMenuMount } from './game-menu.js?v=ec926218758e48c7190587fa72e11cef6b3706193be1f295565e2abb1122928c';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
-import { progressionMount } from './progression-ui.js?v=ecfe1dd89ae0969914a5b6d2e2e5c7044da1f7f7bfafbd5a908b0b80afbf3fd9';
+import { progressionMount } from './progression-ui.js?v=8ac48c3779e5b127f5bedb66de074f580fc3a84df2c45ba9b86a030aacdaad08';
 import {assetURL} from './asset.js?v=2735d6e4791659059212031525dc3ab0a7b33fac6602b1be6fd2fc97c6e90ff6';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 import {songLibrarySetup} from './song-ui.js?v=9570c749145bc3055e39d1d987de5b6a842c4588a7524de439490cbbe28f7d2b';
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=2db9fdcd9241ec8c083ee82e78844226085b2c177941e6192bbf566a363eaa97';
-import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=831f418764dcdab87df4526b604fc40e0664533fd89774cf75fc10b80c3f1b4c';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=2ded77f8f5ce0bbac52a4750b6cd110550fff564b6bea02a0872300f96abe514';
+import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=3841a4565b00c2de5936a174ed1421250e99b73e567950ddb86711ea4e4cf00b';
 import { PoolSound } from './sound.js?v=f732639abe76a022ea93aa990116fda311dcf6850eff1fffad1e7ce9553e8474';
 import { musicProgress, musicPhrasePreview, BUBBLE_ROLES, bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 import { bubbleCreate, bubbleHit, bubbleStep, bubbleOutline, bubbleFlow, bubbleRipple } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import { PowerVisual } from './power-visual.js?v=c9bf58a64c19bc4f7e229efbe28d800a95a3121ac4f47777b73f8d10e7b11c8f';
+import { PowerVisual } from './power-visual.js?v=ca949ed3e43f79b185618b6366656dc5018196e15eb18831a32efabafed6ee4e';
 viewportMount();
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
 let store = poolStoreRead(null), storageIsAvailable = true;
@@ -94,7 +94,7 @@ function eventHandle(event) {
   if (event.type === 'blaster-fire') { membraneHit(0,event.nx,event.ny,180); save(); }
   if (event.type === 'blaster-reload') toast('Bloom reload · magazine refilled');
   if (event.type === 'wall') membraneHit(event.id, -event.nx, -event.ny, event.speed);
-  if(event.type==='objective') {toast('Objective complete · +200 · a musical lift is on its way.');save();}
+  if(event.type==='objective') {toast(`Bonus complete · +${event.points} ${event.points===1?'Point':'Points'} when this pluck settles.`);save();}
   if (event.type === 'note') {
     noteCount++; membraneGet(game.bodies[event.id]).glow = 1;
     const previous = game.chain.length > 1 ? game.bodies[game.chain.at(-2)] : game.bodies[0];
@@ -400,17 +400,19 @@ function bonusRender() {
   const status=bonus.complete?'Complete! Next target after this pluck.':progress;
   $('bonus-title').textContent=bonus.title;
   $('bonus-status').textContent=status;
-  $('bonus-reward').replaceChildren(...(bonus.complete?[iconNode('check')]:[]),document.createTextNode('+200'));
+  const legacy=bonus.complete&&game.objective.rewardPoints===undefined;
+  const reward=legacy?'Completed':`+${bonus.reward} ${bonus.reward===1?'Point':'Points'}`;
+  $('bonus-reward').replaceChildren(...(bonus.complete?[iconNode('check')]:[]),document.createTextNode(reward));
   $('bonus-open').classList.toggle('is-complete',bonus.complete);
-  $('bonus-open').setAttribute('aria-label',`Bonus objective: ${bonus.title}. ${status} ${bonus.complete?'Earned':'Reward'} ${bonus.reward} points. View details.`);
+  $('bonus-open').setAttribute('aria-label',`Bonus objective: ${bonus.title}. Difficulty ${bonus.difficulty}. ${status} ${legacy?'Completed under previous reward rules.':`${bonus.complete?'Earned':'Reward'} ${reward}.`} View details.`);
   $('bonus-fill').style.width=`${bonus.progress*100}%`;
   $('bonus-dialog-title').textContent=bonus.title;
   $('bonus-description').textContent=bonus.description;
   $('bonus-tip').textContent=bonus.tip;
   $('bonus-count').textContent=`${game.objective.completed} completed`;
-  $('bonus-prize').replaceChildren(...(bonus.complete?[iconNode('check')]:[]),document.createTextNode(bonus.complete?'+200 earned':'+200 resonance'));
+  $('bonus-prize').replaceChildren(...(bonus.complete?[iconNode('check')]:[]),document.createTextNode(legacy?'Completed under previous reward rules':`Difficulty ${bonus.difficulty} · ${reward}${bonus.complete?' earned':''}`));
   $('bonus-next').textContent=game.mode==='song-run'?'New bonus in the next pool':OBJECTIVES[(bonus.index+1)%OBJECTIVES.length].title;
-  document.querySelector('.bonus-rules').textContent=game.mode==='song-run'?'One bonus per pool: +200 resonance once, and +1 Point if you clear the pool.':'Complete a target in one pluck for +200. The next objective begins after success.';
+  document.querySelector('.bonus-rules').textContent=`Earn 1 Point per difficulty level, banked when the pluck settles. Spend Points in the Skill Tree. ${game.mode==='song-run'?'One bonus per pool; no extra bonus payout at pool clear.':'The next objective begins after success.'}`;
   $('bonus-steps').replaceChildren(...bonus.steps.map(step=>{
     const row=document.createElement('div'),label=document.createElement('span'),meter=document.createElement('progress');
     label.append(...(step.value===step.target?[iconNode('check')]:[]),document.createTextNode(`${step.value} / ${step.target} ${step.label}`));
@@ -419,6 +421,7 @@ function bonusRender() {
   }));
 }
 function uiRender() {
+  $('points').textContent=(progression?.points??0).toLocaleString('en-US');
   if (game.mode === 'challenge') best = Math.max(best, game.score);
   $('score').textContent = game.score.toLocaleString('en-US');
   $('plucks').textContent = game.mode === 'free' ? '∞' : game.plucks; $('pluck-label').textContent = game.mode === 'free' ? 'FREE PLAY' : 'PLUCKS LEFT';
@@ -478,6 +481,7 @@ function uiRender() {
   Object.assign(canvas.dataset, { physicsTick: String(game.tick), flying: String(game.isFlying), score: String(game.score), seedX: game.bodies[0].x.toFixed(2), seedY: game.bodies[0].y.toFixed(2), chain: String(game.chain.length), audioState: audio.context?.state || 'locked', soundEvents: String(audio.eventCount), notes: String(noteCount), mode: game.mode, harmony: audio.harmony?.name || 'none', songChords: String(audio.music.history.length), songTheme: audio.music.theme.join(','), musicPending: String(audio.musicQueue.length), musicVoices: String(audio.phraseVoices.size), audioVoices: String(audio.voiceCount), harmonyPaused: String(audio.isPaused), musicPassage: String(audio.passage), musicSection: audio.section, musicStage: String(audio.stage), songStage: String(song.stage), songPlucks: String(audio.music.plucks), songBar: String(audio.music.bar), mediaState: audio.media.state, mediaReady: String(audio.media.ready), mediaArtwork: audio.media.artwork?.[0]?.src || '', hookNextBar: String(audio.music.evolution.nextBar), hookPending: String(!!audio.music.evolution.pending), phraseSteps: (audio.music.motifs.at(-1)?.steps || []).join(','), hookSteps: (audio.music.hook?.steps || []).join(','), phraseReplayCount: String(audio.playbackCount), phraseReplayIds: [...audio.playbackLights.keys()].join(','), ambience: String(audio.ambience) });
 }
 function phraseRender() {
+  if($('game-music-bar').hidden)return;
   const isLive = game.isFlying, phrase = isLive ? musicPhrasePreview(audio.music) : audio.playbackPhrase || audio.music.motifs.at(-1), now = audio.context?.currentTime ?? 0;
   const isAudible = audio.isMusicPlaying && audio.context?.state === 'running' && !audio.isMuted && !audio.isPaused && audio.volume > 0 && audio.ambience > 0;
   const count = phrase?.tones.length || 0;
@@ -663,7 +667,7 @@ for(const entry of Object.values(store.pools))if(entry&&!progression.settle(entr
 if(progression.state.run)progression.settle(progression.state.run.game,false);
 
 $('game-version').textContent='Version '+GAME_VERSION;
-trials=trialMount({sound:audio,unlock:audioUnlockAsync,save,kind:()=>progression.trialKind,reward:e=>progression.trialReward(e),screen:name=>navigation?.show(name),back:()=>navigation?.back(),legacy(mode){if(mode==='campaign')progression.campaign('tracks');else if(mode==='free')freePlay();else if(mode==='waves')wavesPlay();else {if(progression.context!=='legacy')progression.leave();save();const entry=store.pools.challenge;loadPool(entry?.game||gameCreate('LAGOON','challenge'),entry?.music);}}});
+trials=trialMount({sound:audio,unlock:audioUnlockAsync,save,kind:()=>progression.trialKind,points:()=>progression.points,reward:e=>progression.trialReward(e),screen:name=>navigation?.show(name),back:()=>navigation?.back(),legacy(mode){if(mode==='campaign')progression.campaign('tracks');else if(mode==='free')freePlay();else if(mode==='waves')wavesPlay();else {if(progression.context!=='legacy')progression.leave();save();const entry=store.pools.challenge;loadPool(entry?.game||gameCreate('LAGOON','challenge'),entry?.music);}}});
 
 const wiki=wikiMount({screen:()=>navigation?.show('wiki'),back:()=>navigation?.back()});
 navigation=gameMenuMount({

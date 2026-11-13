@@ -20,7 +20,7 @@ New runs give six plucks per pool. The first bloom adds one more. Your song deve
 
 ## Research Points and Powers
 
-Every game mode earns research Points from contacts and blooms. Clearing a Campaign pool earns additional research Points. Completing its bonus and finishing a track provide further rewards, including a first-clear reward. Spend research Points in the [Skill Tree](skill-tree.md). Your large in-pool score is a different measure; it is not your research balance.
+Every game mode earns research Points from contacts and blooms. A Campaign bonus pays **1 Point per difficulty level**: Three Voices pays 1, Seven-Note Run pays 2, and Double-Bank Bloom pays 3. The bonus banks when the shot settles, even if the pool later fails. Clearing a pool does not pay the bonus twice. Pool clears and track finishes provide separate rewards, including a first-clear reward. Spend research Points in the [Skill Tree](skill-tree.md). Your large in-pool score is a different measure; it is not your research balance.
 
 Activate an owned power in a shot hitting at least three bubbles to build its mastery in any mode. Successfully cleared Campaign pools also count. Three mastery uses satisfy a capstone requirement. Your unlocked powers appear randomly during play, with compatible researched upgrades applied automatically. There is no between-pool upgrade draft. Temporary upgrades already granted in an older saved run remain active until that run ends.
 

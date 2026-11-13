@@ -1,4 +1,4 @@
-import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=1afa4d4bcc5833ee186a45acb741cf69d6b41a916791779352cdfa39c28efea4';
+import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=dba3cae898a6c307e03c96ee0dcf04493997713a5080fb0914dd8d550b77a223';
 import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=c9ff036f85fda07c94971bb9701dc181e070bf11984ca7b8b6cc458235afcef6';
 
 export const PROFILE_VERSION = 1;
@@ -151,7 +151,7 @@ export function profilePlayReward(input,earning,catalogue=CATALOGUE){
   const profile=profileValidate(input,catalogue),event=rewardNormalize({type:'play',play:earning},catalogue);
   if(!profile||!event||event.play.kind!==profile.kind)return rejected('invalid-play-reward');
   const e=event.play,id=rewardKey(event),index=profile.rewards.findIndex(r=>r.id===id),old=index<0?null:profile.rewards[index];
-  if(old&&(old.event.play.mode!==e.mode||['contacts','blooms','waves','wins','shots'].some(k=>e[k]<old.event.play[k])||Object.entries(old.event.play.mastery).some(([p,n])=>(e.mastery[p]||0)<n)))return accepted(profile,{amount:0,duplicate:true});
+  if(old&&(old.event.play.mode!==e.mode||['contacts','blooms','waves','wins','shots','bonusPoints'].some(k=>(e[k]??0)<(old.event.play[k]??0))||Object.entries(old.event.play.mastery).some(([p,n])=>(e.mastery[p]||0)<n)))return accepted(profile,{amount:0,duplicate:true});
   if(Object.keys(e.mastery).some(p=>!own(profile.research,p+'.base')))return rejected('unowned-power');
   const total=earningAmount(e),amount=total-(old?.amount||0);
   if(old&&JSON.stringify(old.event)===JSON.stringify(event))return accepted(profile,{amount:0,duplicate:true});

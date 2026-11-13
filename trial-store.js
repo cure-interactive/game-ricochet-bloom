@@ -1,4 +1,4 @@
-import { trialValidate } from './trial.js?v=36063d9e90fd1a4bf71a10bd815952cddadaf55bcd32dfa41c64f0a3aa0f6ffc';
+import { trialValidate } from './trial.js?v=cbc58c6d0b89eeb2ea6d8c2c5cc2767348eb84bb021d12ce82e00224a7237df9';
 export const trialKey=(kind,mode)=>`ricochet-bloom-trial-v1-${kind}-${mode}`;
 export function trialRead(storage,kind,mode){
   try{const raw=storage.getItem(trialKey(kind,mode));if(!raw)return {ok:true,entry:null};const entry=JSON.parse(raw),game=trialValidate(entry.game);if(!game||game.kind!==kind||game.mode!==mode)return {ok:false,entry:null};return {ok:true,entry:{game,music:entry.music}};}catch{return {ok:false,entry:null};}

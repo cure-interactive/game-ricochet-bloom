@@ -9,11 +9,11 @@ export const WIKI_PAGES = Object.freeze({
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=e8be7695205f3a976d6e7024cdb3260dbf3153e125ea93e81cd69fc3d0eb2cc4' },
   contents: { title: 'Contents', url: './wiki/contents.md?v=04431c18e41a5e7b581b25a00b29a104bcecfa2af6b6a32ac3a3b22119c4f201' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=6fdbfcd7d9450de24916824523d50a7e0ddbf31ea99114d985c6d660f93f225f' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=f505ef9abee3fca370f14b12f2d7b19c32724514bf7b2b76e3b5c412c4fcd0d6' },
-  campaign: { title: 'Campaign', url: './wiki/campaign.md?v=dd28c4eefd1fca190b7bc676e30e255a246e147bbfca72bf925a5ec2d5dd65f1' },
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=73d2ac6e7fff71221d2f36d1f6791f160a16194581b4ade73a88d3db6eebb51f' },
+  campaign: { title: 'Campaign', url: './wiki/campaign.md?v=b24e0ced1c95efc4e67d93e113858fe4adf47099abb69daf70ea356f1af09cbb' },
   'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=653283fc611297eeecbae847532c8deedb6b9f89f5cedb67ad48bafb49cc5d54' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=7c896e9621172bb9a2c987053d1370ca5f689f686143013059b5d63b43f38230' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=050b84b312c085d1a127824b53f82027bc83ba0ab66ccecf93235d498624b73d' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=aac3d1cbae29c6da3db8be5f60ffb5e8355d1225cccae9b98b9351b79eb75bcb' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.
 export const WIKI_SOURCES = Object.freeze([

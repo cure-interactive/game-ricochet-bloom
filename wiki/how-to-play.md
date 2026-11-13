@@ -20,9 +20,10 @@ Campaign, Free Play, Endless Waves, Challenges and the three [experiments](exper
 - **Every bloom: +1 Point.**
 - **Every cleared wave: +2 Points.**
 - **A completed three-bloom Challenge or experiment objective: +3 Points.**
-- Campaign retains its additional pool, bonus, track-completion and first-clear rewards.
+- **Bonus challenges: +1 Point per difficulty level.** The current three tiers pay 1–3 Points, separately from contact and bloom rewards. Bank a Bloom and Three Voices are difficulty 1; Seven-Note Run is difficulty 2; Power Play and Double-Bank Bloom are difficulty 3.
+- Campaign retains its additional pool, track-completion and first-clear rewards. Its bonus pays once when the shot settles, even if the pool later fails; clearing the pool does not pay that bonus again.
 
-A short message shows Points banked and your available balance. Your pool's Resonance score remains separate. Reopening a save does not pay twice. Listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Campaign track completion to that profile.
+Every game mode displays your available **Points** balance during play, matching the Skill Tree for your current profile. Experiment modes also show Points earned in that run separately. The balance updates when rewards are saved. A short message shows Points banked and your available balance. Your pool's Resonance score remains separate. Reopening a save does not pay twice. Listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Campaign track completion to that profile.
 
 For power mastery, activate a power you own and hit at least **three different bubbles in that shot**. Each qualifying shot earns one mastery use; successful Campaign pools also count. Three uses meet a capstone's mastery requirement. You can earn every power and upgrade through Free Play or Waves; Campaign track and skin unlocks still come from Campaign completion.
 

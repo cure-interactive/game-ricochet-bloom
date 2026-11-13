@@ -1,17 +1,17 @@
-import { earningPrepare, earningId } from './earning.js?v=1afa4d4bcc5833ee186a45acb741cf69d6b41a916791779352cdfa39c28efea4';
-import { profilePlayReward, profileDevelopmentCopy } from './profile.js?v=c6193f5b78aa1b7b083af2a61bd361bc4bd29630e62ac6a78ae4914a996f0faa';
-import { developmentBarMount } from './development-bar.js?v=181dce74a6c678d17bc3bf56a544abf43f86d43f4a3425995c93deb94be38b6b';
+import { earningPrepare, earningId } from './earning.js?v=dba3cae898a6c307e03c96ee0dcf04493997713a5080fb0914dd8d550b77a223';
+import { profilePlayReward, profileDevelopmentCopy } from './profile.js?v=f09fdb22d84263dcb45cd1d7c9199cc83fc40768057dc69eedef848efd19db7a';
+import { developmentBarMount } from './development-bar.js?v=98e847cfe12a85f2e8e9ac3b033e03eb283299f8482b057cf6513e587c711c36';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
-import { campaignMount } from './campaign-ui.js?v=55c49e4dd7ed6b0357cfcde186dc083cb8d8f78ebbcf3ac1511ea909c67a427d';
-import { challengeEncode, challengeDecode } from './challenge.js?v=7fbdf091e799e46eaff095ca85709dc41c3dfa7f3e6f9b84c3026cd039f3ad2d';
+import { campaignMount } from './campaign-ui.js?v=4cc0c1ae701d33588f0e9391b8f3cfe23f30c45b4ae68665ba421a8f74dd2637';
+import { challengeEncode, challengeDecode } from './challenge.js?v=8fb72da56c741215cc1370cf395543782a21a0dd24cb1d010c536cdba1466d6f';
 import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=e3c4f47443dc857f478874cd9dd084335cb1fa39d9c04b258ef874ef440ede4f';
-import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=8ceb383e3779d82da1307a4c85e0ffea4dcd1e37765e194dca1be624646e5e94';
-import { gameCreate } from './engine.js?v=2db9fdcd9241ec8c083ee82e78844226085b2c177941e6192bbf566a363eaa97';
-import { treeMount } from './tree-ui.js?v=5033560a5ea5f4a1694fb07cb7193c11195b2d91620256478a098611ef9222f4';
+import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=437191b652f3ef1846b3b93a40c93dd41bd928f024b76961c39006eff07ba611';
+import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=4c8355caddd8f93fbc47ecc761e2afb759a78a662f227bb73d552a26908d73c0';
+import { gameCreate } from './engine.js?v=2ded77f8f5ce0bbac52a4750b6cd110550fff564b6bea02a0872300f96abe514';
+import { treeMount } from './tree-ui.js?v=48106d4e0b92c44f60b307d6d0703ed9691f6e8e82410b2156b1c17b7f7fc7a9';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
-import { skinMount } from './skin-ui.js?v=5fca3cc5aac40e1bc292701ff788040196687a6b1bbb5fc9d08dd984b15188d0';
+import { skinMount } from './skin-ui.js?v=f713a57b2bf04fcf2764a00e7bd7ac9dc99e07e3ef1f34f11c2ca2c296751568';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;
@@ -123,6 +123,8 @@ export function progressionMount(host){
   devRender();
   if(loaded.recovered)host.message('Recovered progression from your backup.');
   const api={
+    // Shared challenges pay the originating profile, not their temporary build.
+    get points(){return (suspended?.state||state).profile.wallet.seeds;},
     get trialKind(){return (suspended||{kind}).kind;},
     trialReward:earning=>settleEarning(earning,false),
     profileIndicator(){profileBar.set(kind,!!shared);},

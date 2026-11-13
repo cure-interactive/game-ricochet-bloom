@@ -1,4 +1,4 @@
-import { earningValid, earningPower, earningSettle } from './earning.js?v=1afa4d4bcc5833ee186a45acb741cf69d6b41a916791779352cdfa39c28efea4';
+import { BONUS_TIERS, earningValid, earningPower, earningSettle } from './earning.js?v=dba3cae898a6c307e03c96ee0dcf04493997713a5080fb0914dd8d550b77a223';
 import { liveBubbles, waveConfig, wavePrepare, waveEntryStep, waveValid, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { DRUNK_SECONDS, drunkSway, overlapResponse, magnetResponse } from './power-response.js?v=53b3f123d0f0c05341a1eb30cbf1c20f19b251c6a7e30ff0cc4921ddfff73338';
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
@@ -627,8 +627,8 @@ export function physicsStep(state) {
   }
   if(state.isFlying) blasterStep(state,events);
   if(state.isFlying && !state.objective.earned) {
-    const goal=state.objective.index%OBJECTIVES.length,achieved=objectiveProgress(state).progress===1;
-    if(achieved) {state.objective.earned=true;state.objective.completed++;state.score+=200;events.push({type:'objective',index:goal,points:200,x:seed.x,y:seed.y});}
+    const bonus=objectiveProgress(state);
+    if(bonus.progress===1) {state.objective.earned=true;state.objective.completed++;state.objective.rewardPoints=bonus.reward;state.objective.pendingPoints=bonus.reward;events.push({type:'objective',index:bonus.index,points:bonus.reward,x:seed.x,y:seed.y});}
   }
   // Apply after every collision, bloom and power impulse so impacts cannot cancel Stasis.
   for (const body of liveBubbles(state)) {
@@ -677,7 +677,8 @@ export function physicsStep(state) {
     state.power.capacity = successful ? Math.min(3, previousCapacity + 1) : 1;
     state.power.markers = [];
     effectClear(state, events); state.isFlying = false; seed.vx = seed.vy = 0; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0) || ['song-run','waves'].includes(state.mode)&&state.plucks<=0;
-    earningSettle(state,{wave:state.mode==='waves'&&!liveBubbles(state).length,win:gameWon(state)});
+    earningSettle(state,{wave:state.mode==='waves'&&!liveBubbles(state).length,win:gameWon(state),bonus:state.objective.pendingPoints??0});
+    state.objective.pendingPoints=0;
     state.lastShot={notes:state.chain.length,banks:state.banks,points:state.shotStart===null?null:state.score-state.shotStart,powers:state.power.used,bloom:successful,objective:state.objective.earned};
     if(state.objective.earned&&state.mode!=='song-run')state.objective.index++;
     events.push({ type: 'power-streak', successful, capacity: state.power.capacity, previousCapacity });
@@ -795,6 +796,8 @@ export function saveValidate(input) {
     const o=input.objective;
     if(!o||typeof o.enabled!=='boolean'||typeof o.earned!=='boolean'||!Number.isSafeInteger(o.index)||o.index<0||!Number.isSafeInteger(o.completed)||o.completed<0||(input.shotStart!==null&&(!Number.isSafeInteger(input.shotStart)||input.shotStart<0||input.shotStart>input.score)))return null;
     if(o.bankBloom!==undefined&&typeof o.bankBloom!=='boolean')return null;
+    if(o.rewardPoints!==undefined&&(!Number.isInteger(o.rewardPoints)||o.rewardPoints<1||o.rewardPoints>BONUS_TIERS||o.completed<1))return null;
+    if(o.pendingPoints!==undefined&&(!Number.isInteger(o.pendingPoints)||o.pendingPoints<0||o.pendingPoints>(o.rewardPoints??0)||o.pendingPoints>0&&(!input.isFlying||!o.earned)))return null;
     const shot=input.lastShot;
     if(shot!==null&&(!shot||!Number.isInteger(shot.notes)||shot.notes<0||shot.notes>count||!Number.isSafeInteger(shot.banks)||shot.banks<0||(shot.points!==null&&(!Number.isSafeInteger(shot.points)||shot.points<0))||!Number.isInteger(shot.powers)||shot.powers<0||shot.powers>3||typeof shot.bloom!=='boolean'||typeof shot.objective!=='boolean'))return null;
   }
@@ -830,21 +833,21 @@ export function saveValidate(input) {
 }
 
 export const OBJECTIVES=Object.freeze([
-  {title:'Bank a Bloom',description:'Touch five different bubbles and bounce off a wall in one pluck.',targets:{notes:5,banks:1},tip:'Aim toward a wall with bubbles along the rebound path.'},
-  {title:'Seven-Note Run',description:'Touch seven different bubbles in one pluck.',targets:{notes:7},tip:'Every new bubble counts, including contacts made by your powers.'},
-  {title:'Power Play',description:'Collect two powers and bounce off a wall in one pluck.',targets:{powers:2,banks:1},tip:'Build a bloom streak to begin a pluck with two or three power bubbles.'}
+  {title:'Bank a Bloom',difficulty:1,description:'Touch five different bubbles and bounce off a wall in one pluck.',targets:{notes:5,banks:1},tip:'Aim toward a wall with bubbles along the rebound path.'},
+  {title:'Seven-Note Run',difficulty:2,description:'Touch seven different bubbles in one pluck.',targets:{notes:7},tip:'Every new bubble counts, including contacts made by your powers.'},
+  {title:'Power Play',difficulty:3,description:'Collect two powers and bounce off a wall in one pluck.',targets:{powers:2,banks:1},tip:'Build a bloom streak to begin a pluck with two or three power bubbles.'}
 ]);
 export function objectiveProgress(state) {
   const index=state.objective.index%OBJECTIVES.length,definition=OBJECTIVES[index];
   if(state.mode==='song-run'){
     const complete=state.objective.completed>0,kind=state.objective.index%3,roles=new Set(state.chain.map(bubbleRole)).size;
-    const definition=kind===1?{title:'Three Voices',description:'Contact melody, bass and rhythm in one pluck.',target:3,value:roles,label:'musical roles'}:kind===2?{title:'Double-Bank Bloom',description:'Bounce off two walls before the fifth contact of a bloom.',target:1,value:Number(!!state.objective.bankBloom),label:'double-bank bloom'}:{title:'Seven-Note Run',description:'Touch seven different bubbles in one pluck.',target:7,value:Math.min(7,state.chain.length),label:'bubbles'};
-    const value=complete?definition.target:definition.value;return {...definition,tip:'Every collector counts. The bonus stays earned for this pool.',index:kind,steps:[{key:'notes',label:definition.label,target:definition.target,value}],progress:value/definition.target,complete,reward:200};
+    const definition=kind===1?{title:'Three Voices',difficulty:1,description:'Contact melody, bass and rhythm in one pluck.',target:3,value:roles,label:'musical roles'}:kind===2?{title:'Double-Bank Bloom',difficulty:3,description:'Bounce off two walls before the fifth contact of a bloom.',target:1,value:Number(!!state.objective.bankBloom),label:'double-bank bloom'}:{title:'Seven-Note Run',difficulty:2,description:'Touch seven different bubbles in one pluck.',target:7,value:Math.min(7,state.chain.length),label:'bubbles'};
+    const value=complete?definition.target:definition.value;return {...definition,tip:'Every collector counts. The bonus stays earned for this pool.',index:kind,steps:[{key:'notes',label:definition.label,target:definition.target,value}],progress:value/definition.target,complete,reward:definition.difficulty};
   }
   const values={notes:state.chain.length,banks:state.banks,powers:state.power.used};
   const labels={notes:'bubbles',banks:'wall bounce',powers:'powers'};
   const steps=Object.entries(definition.targets).map(([key,target])=>({key,label:labels[key],target,value:state.isFlying?Math.min(values[key],target):0}));
-  return {...definition,index,steps,progress:steps.reduce((sum,step)=>sum+step.value/step.target,0)/steps.length,complete:state.isFlying&&state.objective.earned,reward:200};
+  return {...definition,index,steps,progress:steps.reduce((sum,step)=>sum+step.value/step.target,0)/steps.length,complete:state.isFlying&&state.objective.earned,reward:definition.difficulty};
 }
 export function aimPreview(state,angle,power=.7) {
   const seed=state.bodies[0],dx=Math.cos(angle),dy=Math.sin(angle),edge=RULE.inset+seed.radius;
