@@ -1,4 +1,4 @@
-import { gameCreate, launch, physicsStep, RULE } from './engine.js?v=8f3aec315f5641fc3607ff24db94ba5aedb253a753d259fc501c3a6fe65cad8a';
+import { gameCreate, launch, physicsStep, RULE } from './engine.js?v=2db9fdcd9241ec8c083ee82e78844226085b2c177941e6192bbf566a363eaa97';
 
 // An attract-mode pool owns its state; it never receives a player's saved run.
 export function menuPoolCreate(){

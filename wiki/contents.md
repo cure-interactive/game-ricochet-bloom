@@ -11,6 +11,16 @@
 - [Build a Song](how-to-play.md#build-a-song)
 - [Controls](how-to-play.md#controls)
 
+## Play the Experiments
+
+- [Play the Experiments](experiments.md)
+- [Controls and Saves](experiments.md#controls-and-saves)
+- [Reaction Puzzle](experiments.md#reaction-puzzle)
+- [Cargo Rescue](experiments.md#cargo-rescue)
+- [Outbreak Containment](experiments.md#outbreak-containment)
+- [Points and Music](experiments.md#points-and-music)
+- [What to Test](experiments.md#what-to-test)
+
 ## Endless Waves
 
 - [Endless Waves](waves.md)

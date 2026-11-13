@@ -10,16 +10,16 @@ A new bubble earns 25 points multiplied by its place in the chain. Wall banks ad
 
 In Campaign, follow the goal displayed above the pool and finish before you run out of plucks. The first bloom in a pool earns one extra pluck. Your shot coasts to a stop before its result is resolved.
 
-Choose **Endless Waves** from the main menu for five plucks per wave: bubbles pop on their first hit, and clearing every bubble advances to a harder wave. See [Endless Waves](waves.md).
+Choose **Gamemodes → Endless Waves** from the main menu for five plucks per wave: bubbles pop on their first hit, and clearing every bubble advances to a harder wave. See [Endless Waves](waves.md).
 
 ## Points in Every Mode
 
-Campaign, Free Play, Endless Waves and Challenges all earn permanent **Points** for the Skill Tree. Points bank when your shot settles, even if you lose that run:
+Campaign, Free Play, Endless Waves, Challenges and the three [experiments](experiments.md) all earn permanent **Points** for the Skill Tree. Points bank when your shot settles, even if you lose that run:
 
 - **Every six scoring bubble contacts: +1 Point.** Partial progress carries between shots in the same pool or Waves run; a bubble counts once per shot.
 - **Every bloom: +1 Point.**
 - **Every cleared wave: +2 Points.**
-- **A completed three-bloom Challenge: +3 Points.**
+- **A completed three-bloom Challenge or experiment objective: +3 Points.**
 - Campaign retains its additional pool, bonus, track-completion and first-clear rewards.
 
 A short message shows Points banked and your available balance. Your pool's Resonance score remains separate. Reopening a save does not pay twice. Listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Campaign track completion to that profile.

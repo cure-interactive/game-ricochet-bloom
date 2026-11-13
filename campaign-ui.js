@@ -1,9 +1,9 @@
-import { gameCreate, objectiveProgress } from './engine.js?v=8f3aec315f5641fc3607ff24db94ba5aedb253a753d259fc501c3a6fe65cad8a';
+import { gameCreate, objectiveProgress } from './engine.js?v=2db9fdcd9241ec8c083ee82e78844226085b2c177941e6192bbf566a363eaa97';
 import { TRACKS, trackGet, LAYOUTS, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { campaignRestoration, campaignPoolAccess, POPULATIONS, POOL_NAMES, GOALS, completedTracks, unlockedTracks, progressionLoadout, GAME_CATALOGUE } from './run.js?v=2c3a5c55618222220cf91fe89401936e57fde9581f137341df26ea7a9f3e8ecc';
-import { profileSummary } from './profile.js?v=97ac100a92c9a7d558ac51c6da874fef4e1440ffe2a58ac08a0bfe480956ca86';
+import { campaignRestoration, campaignPoolAccess, POPULATIONS, POOL_NAMES, GOALS, completedTracks, unlockedTracks, progressionLoadout, GAME_CATALOGUE } from './run.js?v=e3c4f47443dc857f478874cd9dd084335cb1fa39d9c04b258ef874ef440ede4f';
+import { profileSummary } from './profile.js?v=c6193f5b78aa1b7b083af2a61bd361bc4bd29630e62ac6a78ae4914a996f0faa';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { assetURL } from './asset.js?v=6bd4d1d7502ba20bf95bc75985c2a8694fbab62f24ccc87e2722225697137195';
+import { assetURL } from './asset.js?v=2735d6e4791659059212031525dc3ab0a7b33fac6602b1be6fd2fc97c6e90ff6';
 import { SONG_STORAGE, SONG_LIMIT, songLibraryRead, songSnapshot } from './song.js?v=6909bc96a5ec9b3981c89dc4fca150ed64875600c1b66e18653e3eb51f74db45';
 
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

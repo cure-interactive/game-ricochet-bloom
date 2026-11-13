@@ -1,5 +1,5 @@
-import { unlockedResolve } from './profile.js?v=97ac100a92c9a7d558ac51c6da874fef4e1440ffe2a58ac08a0bfe480956ca86';
-import { GAME_CATALOGUE } from './run.js?v=2c3a5c55618222220cf91fe89401936e57fde9581f137341df26ea7a9f3e8ecc';
+import { unlockedResolve } from './profile.js?v=c6193f5b78aa1b7b083af2a61bd361bc4bd29630e62ac6a78ae4914a996f0faa';
+import { GAME_CATALOGUE } from './run.js?v=e3c4f47443dc857f478874cd9dd084335cb1fa39d9c04b258ef874ef440ede4f';
 import { skillStateCreate } from './skill-effect.js?v=7832dd7c58ba0da9a3d69a6424a04dc4734479b27b6f3ea1f0810fcb589d59d5';
 
 export function freePlayBuild(progress){

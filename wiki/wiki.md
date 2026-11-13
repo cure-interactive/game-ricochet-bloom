@@ -4,6 +4,9 @@ Make music, grow your powers, and clear the campaign. Choose a topic below. Use 
 
 ## Play
 
+- [Play the Experiments](experiments.md) — Reaction Puzzle, Cargo Rescue and Outbreak Containment.
+- [Endless Waves](waves.md) — clear each pool with limited shots.
+
 - [How to Play](how-to-play.md) — launching, blooms, contact powers and music.
 - [Campaign](campaign.md) — tracks, pool goals, rewards and progression.
 
@@ -18,10 +21,10 @@ Make music, grow your powers, and clear the campaign. Choose a topic below. Use 
 
 ## Development Workshop
 
-These pages contain ideas and experiments, not currently playable features.
+These pages preserve the workshop and playtest questions. Three bounded experiments are now playable; the broader ideas remain proposals.
 
 - [Development Concept](development-concept.md) — bubble and cellular mind map, emergent interactions, and research from other games.
-- [Game Modes to Try](game-modes.md) — proposed trial rules, recommended order and playtest questions.
+- [Game Modes to Try](game-modes.md) — trial design briefs, reserve ideas and playtest questions.
 
 ## Attribution
 

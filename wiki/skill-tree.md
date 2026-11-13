@@ -32,7 +32,7 @@ The power reference groups behaviors by **type**:
 
 Types describe behavior. They never partition the map or gate research. Each power and skill branches from a specific prerequisite whose effect leads naturally into it. For example, Impact’s Transfer leads to Relay, and Orbit’s Directed Release leads to Slingshot.
 
-Earn Points and power mastery in any playable mode; see [Points in Every Mode](how-to-play.md#points-in-every-mode).
+Earn Points in every playable mode. Campaign, Free Play, Waves and Challenge also train power mastery; the fixed-tool experiments do not. For reward rules, see [Points in Every Mode](how-to-play.md#points-in-every-mode).
 
 ## Read the Map
 

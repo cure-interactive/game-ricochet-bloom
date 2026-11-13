@@ -1,14 +1,14 @@
 # Game Modes to Try
 
-**Proposed experiments, not playable modes.** These are candidates for the developer to select before implementation. They test the [Development Concept](development-concept.md) with small, distinct loops. All numbers below are starting playtest values, not validated balance or approved release scope.
+**Design briefs and playtest questions.** The developer approved all three recommended experiments for v3.0.0. Reaction Puzzle, Cargo Rescue and Outbreak Containment are now playable through Main Menu → Gamemodes, with three layouts each. See [Play the Experiments](experiments.md) for implemented rules and controls. Pressure Survival and Reaction Lab remain proposals. Trial values are starting points, not validated balance.
 
 ## Current Baseline
 
 The shipped game already has drag-and-release launches, drifting circular bodies, wall banks, contact powers, generated music, persistence, Campaign, Free Play and [Endless Waves](waves.md). Waves already pops contacted bubbles and gives five plucks to clear each wave. It is an existing comparison mode, not a new proposal.
 
-General elemental payloads, interior maze walls, cargo delivery, outbreak sources, player health and enemies described below require new work. Existing powers named Bubble, Split, Drunk or Tether are not evidence that the workshop's general trapping, payload division, gas exposure or anchored-object systems exist.
+The trials now include interior walls, cargo delivery, outbreak sources and bounded infected motes. General elemental payloads, player health and the broader enemy roster still require new work. Existing powers named Bubble, Split, Drunk or Tether are not evidence that the workshop's general trapping, payload division, gas exposure or anchored-object systems exist.
 
-Before: the workshop is a broad collection of interactions, while the existing modes primarily reward contacts, blooms and clears. Proposed after: add one separately selectable trial at a time, with a complete objective, failure state and restart, then decide what deserves further development. This page does not change the current game or its saves.
+The workshop began as a broad collection of interactions. The three selected trials now each have a complete objective, failure state, restart and isolated board save. Their common Points rewards use the existing profile wallet. Playtesting will determine what deserves further development.
 
 ## Recommended Order
 
@@ -33,7 +33,7 @@ Working mode titles describe experiments; they are not final product names. Comp
 
 **Decision example:** take a safe bank shot or ignite a cluster that could clear several targets but push a hazard toward a healthy cell. Walls provide both routes and cover.
 
-**Needed work:** interior-wall collisions; object roles and finite reaction triggers; blast/cover rules; protected-object state; objective evaluation after settlement; an isolated trial save and restart. Existing impulse effects and Waves clearing are starting points, not a complete implementation.
+**Implemented boundary:** interior-wall collisions, finite blast chains and cover, protected cells, settlement-based objectives, separate saved continuation and restart. The wider elemental workshop remains future work.
 
 **Evidence to collect:** can a player predict the first reaction, explain a failure and deliberately reproduce a useful chain? Record shots used, restart count, distinct solutions and unintended chains. Treat unexplained wins as evidence of weak readability rather than automatically good emergence.
 
@@ -51,7 +51,7 @@ Working mode titles describe experiments; they are not final product names. Comp
 
 **Decision example:** send a sac through a narrow safe channel, or open a shorter path with a blast that could damage it. A current can carry the sac while the player handles another obstruction.
 
-**Needed work:** cargo identity and contact behavior; receiver detection; cargo integrity and loss accounting; visible current fields; compatible walls and barrier reactions; trial save and restart. Reuse Reaction Puzzle's relevant rules if that experiment is implemented first.
+**Implemented boundary:** cargo pushing, receiver detection, rupture and quota accounting, a visible current, walls and blast-breakable barriers, separate saved continuation and restart.
 
 **Evidence to collect:** unintended cargo pops, ability to explain current direction, recovery from a bad push, and whether careful transport feels rewarding or tedious. Test phone aiming and muted audio. Compare the same layout with and without the current to isolate its contribution.
 
@@ -67,13 +67,13 @@ Working mode titles describe experiments; they are not final product names. Comp
 
 **Smallest trial:** one chamber, two vents, one predictable pursuer behavior, the protected cell, a mud effect and one tested blast effect. Each open vent emits one visible queued mote per turn, up to six active motes total; when capped, production visibly pauses. Each mote moves a bounded distance toward the cell at the turn boundary. A contacting mote deals one damage and is consumed, avoiding repeated hidden damage ticks.
 
-**Proposed sealing rule:** pushing a compatible plug onto a vent seals it. Mud slows motes; blasts move plugs and motes. These are invented game rules. The player can solve the situation through positioning without a biological explanation or a large combat system.
+**Implemented sealing rule:** pushing a compatible plug onto a vent seals it. Mud slows motes; blasts push plugs and clear nearby motes. These are invented game rules. The player can solve the situation through positioning without a biological explanation or a large combat system.
 
 **Decision example:** seal the nearest vent immediately, or use one more emitted mote to start a reaction that clears the far side. The protected cell creates a reason not to trigger every possible explosion.
 
-**Needed work:** turn-boundary source and enemy updates; vents, plugs and sealing; protected-cell integrity; bounded pursuit; a non-stacking slow effect; preview cues; objective ordering; exact saved continuation. Use one canonical rule for an effect on every compatible object.
+**Implemented boundary:** turn-boundary spawning and pursuit, vents and plugs, cell integrity, one mud area, a visible next-turn explanation and capped-source labels, objective ordering and exact saved continuation. More detailed trajectory previews remain a possible improvement.
 
-**Resolution order to test:** finish the player's reaction, apply existing damage, stop on cell loss, recognize a completed containment objective, then advance surviving sources/enemies if a turn remains. Display the step that caused failure. A last-turn clear counts; no extra outbreak phase follows a completed objective.
+**Implemented resolution order:** finish the player's reaction, apply existing damage, stop on cell loss, recognize a completed containment objective, then advance surviving sources/enemies if a turn remains. Display the step that caused failure. A last-turn clear counts; no extra outbreak phase follows a completed objective.
 
 **Evidence to collect:** whether players use enemies or sources as tools, understand the next outbreak step, and distinguish an urgent threat from a harmless one. Record direct attacks, environmental defeats, vents sealed and cell damage.
 
@@ -97,9 +97,9 @@ Working mode titles describe experiments; they are not final product names. Comp
 
 The lab would offer a few known starting arrangements, single-step or slow inspection, reset, and a visible causal log such as contact, pop, release, push and merge. It has no progression rewards or competitive records. Its absence of a loss condition is intentional for debugging only.
 
-For playable trials, use the same available powers for every tester. Existing permanent research must not quietly change the experiment. Keep trials separate from Campaign, Free Play and Waves saves, wallets, mastery and records; restart only the selected trial. Existing player progress must remain intact.
+For playable trials, use the same available powers for every tester. Existing permanent research must not quietly change the experiment. Keep board saves and records separate from Campaign, Free Play and Waves; restart only the selected trial. The implemented trials pay into the common Points wallet using duplicate-safe receipts. Their fixed tools do not train permanent power mastery or consume existing progression.
 
-Start with three short layouts per recommended mode and an identical seed on retries. In shot-based trials, pause idle drift while aiming for reproducible comparisons; show the board state before release. This differs from current freely drifting play and needs explicit implementation if selected. Repeat tests later with live drift to assess whether timing adds useful skill.
+Start with three short layouts per recommended mode and an identical seed on retries. In shot-based trials, pause idle drift while aiming for reproducible comparisons; show the board state before release. This is implemented in the trials and differs from the original freely drifting modes. Repeat tests later with live drift to assess whether timing adds useful skill.
 
 Ask players to explain the goal before launching, predict one interaction, try a solution, explain the result and retry. Log completion, attempts, shots or time, failure cause, intended versus accidental reactions, and unexpected solutions. A small exploratory group can expose problems; it cannot establish broad audience preference.
 
@@ -107,13 +107,13 @@ Run one muted session and one with generated music. Music may improve feel, but 
 
 ## Scope and Implementation Decision
 
-The recommendation is to implement **Reaction Puzzle first**, then compare **Cargo Rescue**, then consider **Outbreak Containment**. Pressure Survival and mass-based growth remain reserves. A full cellular campaign should follow evidence from the trials rather than precede it.
+The original recommendation was to implement Reaction Puzzle first. The developer instead approved all three, and each is now available for comparison. Pressure Survival and mass-based growth remain reserves. A full cellular campaign should follow evidence from the trials rather than precede it.
 
-Each selected mode needs a separate implementation decision and its own acceptance boundary. The likely owners to inspect are the physics engine, mode/session state, input and menus, rendering, persistence, and the existing tests. This document does not prescribe a shared framework before the first rules have been tested.
+All nine selected layouts have successful simulation solutions, with checks for objective ordering, saved continuation, malformed saves and Points receipts. These establish mechanical completion, not player enjoyment or physical-device acceptance.
 
 Research connects the proposals to different player motives: Puzzle Bobble's grouping and supply, Bubble Bobble's containment, Bubble Ghost's protection, Osmos's resource tradeoff, FOAMSTARS's lasting terrain and Noita's systemic reactions. See the [verified source notes](development-concept.md#research-and-sources); these are design inspirations, not evidence that our modes are already fun.
 
-The remaining decision is which mode to authorize first and whether its initial objective and controls match the experience the developer wants. No new release number, permanent mode, multiplayer feature or campaign replacement is approved here.
+The next decision is which loop deserves refinement after playtesting. v3.0.0 is the approved first three-mode build. Permanent campaign expansion, multiplayer and Pressure Survival remain outside this implementation.
 
 ## Attribution
 
@@ -125,4 +125,4 @@ The developer's workshop and request for experimental modes; [Development Concep
 
 #### Codex on behalf of `leviscustempris`
 
-Proposed bounded mode experiments, distinguished prerequisites from existing behavior, and defined playtest questions and starting rules. All trial parameters remain untested hypotheses.
+Proposed bounded mode experiments, distinguished prerequisites from existing behavior, and defined playtest questions and starting rules. Updated the brief to distinguish the approved playable implementation from reserve ideas. Balance and human playtest gates remain open.

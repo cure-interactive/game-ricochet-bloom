@@ -1,36 +1,38 @@
-import { earningAmount } from './earning.js?v=2f965ae09a5d8088b1acfa928ba97255f48c4a259e0a5e401a0d6536120f847d';
-import { powerSlots } from './power-ui.js?v=fc065eb2c1cd11f4c3292a2a6ce3bac0865630fd917df7fe4e522eb743b5f35e';
-import { creditsMount } from './credit.js?v=a41c9ec04ff6061ed754a41f78388a1f1a4cf4e8b98b9130c7be58be23afb5a3';
+import { earningAmount } from './earning.js?v=1afa4d4bcc5833ee186a45acb741cf69d6b41a916791779352cdfa39c28efea4';
+import { trialMount } from './trial-ui.js?v=a401f526438a3a4f0a901acd617dd8e89de23ecb38524a6a49933bcda00f15fb';
+import { GAME_VERSION } from './version.js?v=f2fdbda18ba39b29655d4707c9a537f1f9b08a64ccb88d794da5f260ab23cbaa';
+import { powerSlots } from './power-ui.js?v=1c7f03c3186900d4bf0000552b73db4fee38a76e354e1e50cbf03309476099e3';
+import { creditsMount } from './credit.js?v=c38d4b4b718564795a06330711ff8342d5985f18151d99fb99befc7399957cf1';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=91bdd921ed550b7501c923fff9a5b64cb99a50cc24eee3375556a1c1c0f4b953';
 import { edgeBackMount } from './edge-back.js?v=ac3c3758aa11500fa6bdf67bbccd9dc9142af5ba79356fe683444f274350091d';
-import { wikiMount } from './wiki.js?v=c93fe1ef830f726abda32797e5426e5b508050a55206f91f03d70a6edac0cb74';
+import { wikiMount } from './wiki.js?v=9a775575f66f8c1fbd5d9d13da926a3e441df7d00227741fb8d655095c225917';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
-import { POOL_NAMES } from './run.js?v=2c3a5c55618222220cf91fe89401936e57fde9581f137341df26ea7a9f3e8ecc';
-import { freePlaySync, freePlayBuild } from './free-play.js?v=2dfdc83f4da2a15ff4f239801fd62d33070aaa8698021353c05672cc060db213';
+import { POOL_NAMES } from './run.js?v=e3c4f47443dc857f478874cd9dd084335cb1fa39d9c04b258ef874ef440ede4f';
+import { freePlaySync, freePlayBuild } from './free-play.js?v=b46fdbc8874a0234a1cb50f81180fb09b80ae3ae704546431685feea14b06d73';
 import { fullscreenMount } from './fullscreen.js?v=e8c105c0bde8d63a2f68cb936534f947a78c62bdedc35b73614336e898cf848c';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=ef79ae41ebc1c3431b5a68d7ec103245d6c650cbb13b38a9546ba3bd929214c6';
+import { gameMenuMount } from './game-menu.js?v=30b4a9346756864852384ce958b105b83bddd4ee7c556b5072b8cee2d1e7b25a';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
-import { progressionMount } from './progression-ui.js?v=6543a5edd8e9ab60a6278a8c3f7e100fd73cdb41fd3a18df7144f70e3005af81';
-import {assetURL} from './asset.js?v=6bd4d1d7502ba20bf95bc75985c2a8694fbab62f24ccc87e2722225697137195';
+import { progressionMount } from './progression-ui.js?v=ecfe1dd89ae0969914a5b6d2e2e5c7044da1f7f7bfafbd5a908b0b80afbf3fd9';
+import {assetURL} from './asset.js?v=2735d6e4791659059212031525dc3ab0a7b33fac6602b1be6fd2fc97c6e90ff6';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 import {songLibrarySetup} from './song-ui.js?v=9570c749145bc3055e39d1d987de5b6a842c4588a7524de439490cbbe28f7d2b';
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=8f3aec315f5641fc3607ff24db94ba5aedb253a753d259fc501c3a6fe65cad8a';
-import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=187a5943d1e0fdaa2f06390064259b60a20d86b307904509794487efffa05574';
-import { PoolSound } from './sound.js?v=42ce5dd1a6982ce5e7564daaf00d29fa63a6634487b921abb4417f086316414f';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=2db9fdcd9241ec8c083ee82e78844226085b2c177941e6192bbf566a363eaa97';
+import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet } from './storage.js?v=831f418764dcdab87df4526b604fc40e0664533fd89774cf75fc10b80c3f1b4c';
+import { PoolSound } from './sound.js?v=f732639abe76a022ea93aa990116fda311dcf6850eff1fffad1e7ce9553e8474';
 import { musicProgress, musicPhrasePreview, BUBBLE_ROLES, bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 import { bubbleCreate, bubbleHit, bubbleStep, bubbleOutline, bubbleFlow, bubbleRipple } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import { PowerVisual } from './power-visual.js?v=f77339303e7a456464f23b5ea735ac21361093e172ad36ae5cddd2122641aa06';
+import { PowerVisual } from './power-visual.js?v=c9bf58a64c19bc4f7e229efbe28d800a95a3121ac4f47777b73f8d10e7b11c8f';
 viewportMount();
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
 let store = poolStoreRead(null), storageIsAvailable = true;
 try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localStorage.getItem(LEGACY_STORAGE) ?? 'null')); } catch { storageIsAvailable = false; }
 let preferences = store.preferences, best = store.best, saved = store.pools[store.activeMode]?.game, savedMusic = store.pools[store.activeMode]?.music;
 let game = saved || gameCreate(new URL(location.href).searchParams.get('seed')?.slice(0, 32) || 'LAGOON', store.activeMode);
-let carrySong = false, portraitView = false, progression = null, navigation = null, physicsBatch = false;
+let carrySong = false, portraitView = false, progression = null, navigation = null, trials = null, physicsBatch = false;
 const modeName = mode => progression?.context==='challenge'?'Shared Challenge':mode==='song-run'?'Song Run':mode==='waves'?'Endless Waves':mode === 'free' ? 'Free play' : 'Challenge';
 
 audio.musicRestore(savedMusic, game.blooms, game.launches);
@@ -59,6 +61,7 @@ $('play-location').textContent = location.protocol === 'https:' ? '● ONLINE PL
 audio.settingsSet(Number.isFinite(preferences.volume) ? Math.max(0, Math.min(1, preferences.volume)) : audio.volume, preferences.muted === true);
 audio.ambienceSet(preferences.ambience);
 function save() {
+  if(trials?.active){trials.save();return;}
   if (game.mode === 'challenge') best = Math.max(best, game.score);
   if(!progression||progression.context==='legacy')poolStoreSet(store, game, audio.musicSave());
   else if(!physicsBatch)progression.checkpoint(game,audio.musicSave()); store.best = best; store.preferences = { volume: audio.volume, ambience: audio.ambience, muted: audio.isMuted, gentle: isGentle, stream: isStream, assistedControls };
@@ -638,11 +641,12 @@ lifecycleMount(document, window, () => {
 if (saved) { $('welcome-copy').textContent = `Your ${saved.mode === 'free' ? 'free-play' : 'challenge'} pool is saved. Pick up where you left off.`; buttonLabel($('start'),saved.isOver?'View your result':'Return to the pool','play'); }
 if (!storageIsAvailable) $('save-status').textContent = 'Save unavailable · keep this tab open';
 audio.media.actions(() => {
+  if(trials?.active){trials.pause(false);return;}
   if (document.hidden || audio.isMuted || !audio.volume || !audio.ambience) return;
   if (!isStarted) start();
   else if (!game.isOver) pauseSet(false);
   else { audio.pauseSet(false); audioUnlockAsync(); }
-}, () => { audio.pauseSet(true); if (isStarted && !game.isOver) pauseSet(true); });
+}, () => { if(trials?.active){trials.pause();return;}audio.pauseSet(true); if (isStarted && !game.isOver) pauseSet(true); });
 const songLibrary=songLibrarySetup(()=>({name:`${game.seed} · ${game.blooms} Blooms`,music:audio.musicSave()}),()=>progression.campaign('songs'));
 controlsRender(); uiRender(); requestAnimationFrame(render);
 if (['127.0.0.1', 'localhost', '[::1]'].includes(location.hostname)) {
@@ -658,6 +662,9 @@ progression=progressionMount({songsMount:(host,track)=>songLibrary.mount(host,tr
 for(const entry of Object.values(store.pools))if(entry&&!progression.settle(entry.game,false))break;
 if(progression.state.run)progression.settle(progression.state.run.game,false);
 
+$('game-version').textContent='Version '+GAME_VERSION;
+trials=trialMount({sound:audio,unlock:audioUnlockAsync,save,kind:()=>progression.trialKind,reward:e=>progression.trialReward(e),screen:name=>navigation?.show(name),back:()=>navigation?.back(),legacy(mode){if(mode==='campaign')progression.campaign('tracks');else if(mode==='free')freePlay();else if(mode==='waves')wavesPlay();else {if(progression.context!=='legacy')progression.leave();save();const entry=store.pools.challenge;loadPool(entry?.game||gameCreate('LAGOON','challenge'),entry?.music);}}});
+
 const wiki=wikiMount({screen:()=>navigation?.show('wiki'),back:()=>navigation?.back()});
 navigation=gameMenuMount({
   gentle:()=>isGentle,
@@ -667,7 +674,7 @@ navigation=gameMenuMount({
   freePlay, wavesPlay,
   info(){const wave=store.pools.waves;if(preferences.lastPlay==='waves'&&wave&&!wave.game.isOver)return {resume:{artwork:assetURL('artwork/pool-512.png'),detail:`Endless Waves · Wave ${wave.game.wave.number} · ${wave.game.plucks} Plucks Left`}};const s=progression.state;if(s.phase==='shop')return {resume:null};const next=s.phase==='interlude',pool=s.pool+(next?1:0);return {resume:{artwork:assetURL('artwork/'+s.track+'.svg'),detail:trackGet(s.track).name+' · '+(next?'Next: ':'')+'Pool '+(pool+1)+' — '+POOL_NAMES[pool]}};},
   continue(){if(preferences.lastPlay==='waves'&&store.pools.waves&&!store.pools.waves.game.isOver){wavesPlay();return;}if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
-  open(screen){if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign('tracks');else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='wiki')wiki.open();else if(screen==='help')wiki.open('how-to-play');else $('settings-dialog').showModal();}
+  open(screen){if(screen==='gamemodes')trials.gallery();else if(screen==='trial-setup')trials.setup();else if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign('tracks');else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='wiki')wiki.open();else if(screen==='help')wiki.open('how-to-play');else $('settings-dialog').showModal();}
 });
 fullscreenMount(document,window);
 edgeBackMount(document,window);

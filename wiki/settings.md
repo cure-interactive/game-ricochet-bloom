@@ -26,6 +26,8 @@ Development controls use a separate test profile. They can reset test progress, 
 
 [Back to Wiki](wiki.md).
 
+Settings → About shows the current game version, **3.0.0**.
+
 ## Screen Rotation
 
 The game supports portrait and landscape. Rotate your device to change the layout; browser toolbar changes do not rotate the pool. If Safari stays upright on iPhone, turn off Portrait Orientation Lock in Control Center. Safari’s Page Menu beside the address field belongs to the browser, not the game.

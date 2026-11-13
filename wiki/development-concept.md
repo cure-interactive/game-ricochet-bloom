@@ -1,6 +1,6 @@
 # Development Concept
 
-**Workshop proposal, not a description of playable features.** This page preserves the developer's bubble workshop and extends it with source-informed possibilities. No new theme, title, mode, enemy, health system or elemental rule is approved for implementation by appearing here. See [Game Modes to Try](game-modes.md) for small experiments that could test the ideas.
+**Workshop mind map.** This page preserves the developer's ideas and source-informed possibilities. Reaction Puzzle, Cargo Rescue and Outbreak Containment now test a bounded subset: see [Play the Experiments](experiments.md) for actual rules. The remaining ideas are proposals, not implemented behavior or approval by appearance here. [Game Modes to Try](game-modes.md) retains the design questions and future candidates.
 
 ## Direction and Boundaries
 

@@ -1,18 +1,19 @@
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=7c6b2ee16663450952814ac4e888191c65aba61cd1df1d7307f1e900a7987ca1';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=e927cb28a4ca47d90298b5b420a407c7a4d65b33969ad8d661985044cb7bb545';
 
 export const WIKI_PAGES = Object.freeze({
-  'development-concept': { title: 'Development Concept', url: './wiki/development-concept.md?v=f87d5cc129ac6e51237f66d53099c7a3915a21e609661700223aa330fdbf434b' },
-  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=82d6440e3310eae77f6b25f6ad6e92983576c8898be427d4ec3fbcf57ab81178' },
+  experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=35dee8314a93d56fa78ee3662e5f16c4812258d5bc73c8d14afe870d59ef8ec4' },
+  'development-concept': { title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
+  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=d9b7fdb68b0ba9a679cf7fbf29c07b47c78d76452548f6d78f35523f05d0a82f' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=e8be7695205f3a976d6e7024cdb3260dbf3153e125ea93e81cd69fc3d0eb2cc4' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=3c9f0d4f41b91859642ca036d629727abe8fba3e786d4f18864ddd5b2c812985' },
-  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=223e75f6739d1797358e58e6c18361419ea47aa8c1fdbc7370234b6a003ce918' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=7f8e99a2c6392ce4f27e8d620141cfbbd0df17e97b7b21c473c135b7b8393c31' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=04431c18e41a5e7b581b25a00b29a104bcecfa2af6b6a32ac3a3b22119c4f201' },
+  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=6fdbfcd7d9450de24916824523d50a7e0ddbf31ea99114d985c6d660f93f225f' },
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=f505ef9abee3fca370f14b12f2d7b19c32724514bf7b2b76e3b5c412c4fcd0d6' },
   campaign: { title: 'Campaign', url: './wiki/campaign.md?v=dd28c4eefd1fca190b7bc676e30e255a246e147bbfca72bf925a5ec2d5dd65f1' },
-  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=f3ce0903035dd43a181bdf015cdf4f6589249839cbd4e2c18881c684b9edc8ec' },
+  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=653283fc611297eeecbae847532c8deedb6b9f89f5cedb67ad48bafb49cc5d54' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=7c896e9621172bb9a2c987053d1370ca5f689f686143013059b5d63b43f38230' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=fafab985c72bc2ea0e445b393328660962ca193e5098c106fe7523e94893e531' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=050b84b312c085d1a127824b53f82027bc83ba0ab66ccecf93235d498624b73d' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.
 export const WIKI_SOURCES = Object.freeze([

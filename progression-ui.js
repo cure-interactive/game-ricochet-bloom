@@ -1,17 +1,17 @@
-import { earningPrepare, earningId } from './earning.js?v=2f965ae09a5d8088b1acfa928ba97255f48c4a259e0a5e401a0d6536120f847d';
-import { profilePlayReward, profileDevelopmentCopy } from './profile.js?v=97ac100a92c9a7d558ac51c6da874fef4e1440ffe2a58ac08a0bfe480956ca86';
+import { earningPrepare, earningId } from './earning.js?v=1afa4d4bcc5833ee186a45acb741cf69d6b41a916791779352cdfa39c28efea4';
+import { profilePlayReward, profileDevelopmentCopy } from './profile.js?v=c6193f5b78aa1b7b083af2a61bd361bc4bd29630e62ac6a78ae4914a996f0faa';
 import { developmentBarMount } from './development-bar.js?v=181dce74a6c678d17bc3bf56a544abf43f86d43f4a3425995c93deb94be38b6b';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
-import { campaignMount } from './campaign-ui.js?v=4e597b41189afb0b665ca367ee195264c2e66bcf4a380f88eee29fd2bc208d66';
-import { challengeEncode, challengeDecode } from './challenge.js?v=176c9355b4cd7738980244ae3267396c04652cbd073933889e144d3109e712fb';
+import { campaignMount } from './campaign-ui.js?v=55c49e4dd7ed6b0357cfcde186dc083cb8d8f78ebbcf3ac1511ea909c67a427d';
+import { challengeEncode, challengeDecode } from './challenge.js?v=7fbdf091e799e46eaff095ca85709dc41c3dfa7f3e6f9b84c3026cd039f3ad2d';
 import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=2c3a5c55618222220cf91fe89401936e57fde9581f137341df26ea7a9f3e8ecc';
-import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=62722ea130e35401ef607fd11353bc51ae5f0e02d1c13252e42ad0416931324c';
-import { gameCreate } from './engine.js?v=8f3aec315f5641fc3607ff24db94ba5aedb253a753d259fc501c3a6fe65cad8a';
-import { treeMount } from './tree-ui.js?v=d5a7e17bfe8a2cd15f7e5792fb9c20020e326f00a5f39843a1133c01a791cf73';
+import { unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=e3c4f47443dc857f478874cd9dd084335cb1fa39d9c04b258ef874ef440ede4f';
+import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=8ceb383e3779d82da1307a4c85e0ffea4dcd1e37765e194dca1be624646e5e94';
+import { gameCreate } from './engine.js?v=2db9fdcd9241ec8c083ee82e78844226085b2c177941e6192bbf566a363eaa97';
+import { treeMount } from './tree-ui.js?v=5033560a5ea5f4a1694fb07cb7193c11195b2d91620256478a098611ef9222f4';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
-import { skinMount } from './skin-ui.js?v=c0f8dc0941e5531086e861dc0467982e16cd4bf80c427e3d3bce3215f3cd932b';
+import { skinMount } from './skin-ui.js?v=5fca3cc5aac40e1bc292701ff788040196687a6b1bbb5fc9d08dd984b15188d0';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;
@@ -123,6 +123,8 @@ export function progressionMount(host){
   devRender();
   if(loaded.recovered)host.message('Recovered progression from your backup.');
   const api={
+    get trialKind(){return (suspended||{kind}).kind;},
+    trialReward:earning=>settleEarning(earning,false),
     profileIndicator(){profileBar.set(kind,!!shared);},
     get context(){return context;},get blocked(){return saveBlocked||context==='listening'||['run','challenge'].includes(context)&&state.phase!=='run';},get state(){return state;},
     skins:()=>skins.open(),tree:()=>tree.open(),campaign:view=>campaign.open(view),play:enterRun,leave,
