@@ -1,18 +1,37 @@
 # Game Modes to Try
 
-**150 experiment ideas, design briefs and playtest questions.** Browse the [Experiment Catalogue](#experiment-catalogue), [First Experiments to Compare](#first-experiments-to-compare) and [Experiment Guardrails](#experiment-guardrails). The developer approved all three recommended experiments for v3.0.0. Reaction Puzzle, Cargo Rescue and Outbreak Containment are now playable through Main Menu → Gamemodes, with three layouts each. See [Play the Experiments](experiments.md) for implemented rules and controls. Pressure Survival and Reaction Lab remain proposals. Trial values are starting points, not validated balance.
+**210 experiment ideas, grounded in the workshop mind map and game research.** Start with [Mind Map and Research Connections](#mind-map-and-research-connections) and [Direct Mind Map Experiments](#direct-mind-map-experiments). Browse the [Experiment Catalogue](#experiment-catalogue), [First Experiments to Compare](#first-experiments-to-compare) and [Experiment Guardrails](#experiment-guardrails). The developer approved all three recommended experiments for v3.0.0. Reaction Puzzle, Cargo Rescue and Outbreak Containment are now playable through Main Menu → Gamemodes, with three layouts each. See [Play the Experiments](experiments.md) for implemented rules and controls. Pressure Survival and Reaction Lab remain proposals. Trial values are starting points, not validated balance.
 
 ## Current Baseline
 
-The shipped game already has drag-and-release launches, drifting circular bodies, wall banks, contact powers, generated music, persistence, Campaign, Free Play and [Endless Waves](waves.md). Waves already pops contacted bubbles and gives five plucks to clear each wave. It is an existing comparison mode, not a new proposal.
+The shipped game already has drag-and-release launches, drifting circular bodies, wall banks, contact powers, generated music, persistence, Melody Journey, Free Play and [Endless Waves](waves.md). Waves already pops contacted bubbles and gives five plucks to clear each wave. It is an existing comparison mode, not a new proposal.
 
 The trials now include interior walls, cargo delivery, outbreak sources and bounded infected motes. General elemental payloads, player health and the broader enemy roster still require new work. Existing powers named Bubble, Split, Drunk or Tether are not evidence that the workshop's general trapping, payload division, gas exposure or anchored-object systems exist.
 
 The workshop began as a broad collection of interactions. The three selected trials now each have a complete objective, failure state, restart and isolated board save. Their common Points rewards use the existing profile wallet. Playtesting will determine what deserves further development.
 
+## Mind Map and Research Connections
+
+The [Development Concept mind map](development-concept.md#mind-map) is the design authority for this expansion. Its central loop is manipulating interacting objects, planning a consequence and adapting to the changed pool. The catalogue now has **210 ideas**: the broad 001–150 collection plus **60 direct workshop experiments, 151–210**. Read the direct experiments first when choosing the game's next direction. Stable numbers preserve the earlier catalogue; they do not rank priority.
+
+Use the mind map's independent dimensions when designing a board: **contents × movement constraint × trigger × result**, followed by an objective and one primary loss pressure. For example, tethered acid released by a fragment could free a captive; the same acid used carelessly could destroy its receiver. This is a game-design hypothesis, not real chemistry.
+
+The following source connections distinguish observed mechanics from our proposed adaptations. Primary descriptions were rechecked on November 13, 2026; this is source research, not hands-on testing.
+
+- **Capture, transport and deliberate release:** [Bubble Bobble 4 Friends](https://www.nintendo.com/en-gb/Games/Nintendo-Switch-games/Bubble-Bobble-4-Friends-The-Baron-is-Back--1679668.html) describes trapping opponents, bubble traversal and air currents. Our extension is reversible containment with useful or hazardous contents: **151–160**, **023**, **038** and **052**. It does not establish our top-down capture controls.
+- **Connectivity and supply:** [Puzzle Bobble Everybubble](https://www.taito.co.jp/en/PBEverybubble/gamemodes) describes matching groups, continuing supply and dropping groups. Our physical extensions are support release, split population control and source management: **168**, **181–190**, **191–200**. The reference does not require replacing the pool with a match-three grid.
+- **Readable hazard families and separate pressures:** [Pang Adventures](https://www.nintendo.com/us/store/products/pang-adventures-switch/) lists distinct ball effects and Tour, Score Attack and Panic formats. This motivates comparing finite puzzles with endurance using the same readable hazards: **041**, **050**, **061**, **171–180**. Split and merge rules originate in our workshop, not an assumed Pang rule.
+- **Preserve rather than pop:** [Bubble Ghost Remake](https://www.nintendo.com/us/store/products/bubble-ghost-remake-switch/) describes guiding and protecting a fragile bubble. Our extensions put valuable contents inside fragile containers: **021–030**, **151**, **157**, **160**, **201**. They retain our proposed launch-based control rather than copying its ghost movement.
+- **Growth with a cost:** [Osmos](https://www.osmos-game.hemispheregames.com/) describes absorption and propulsion that ejects mass. Our extensions make size, access and payload distribution competing needs: **101–103**, **161–170**, **206**. Nutrient triage is a separate workshop hypothesis, not an Osmos mechanic claim.
+- **Material that changes the route:** [FOAMSTARS](https://press.na.square-enix.com/FOAMSTARS) describes foam supporting movement, terrain building and defense. Our smaller-scale extensions are useful residue, mud routing and temporary cover: **031**, **057**, **109**, **175**, **190**, **198**, **207**. No 3D shooter or networking system is implied.
+- **Consistent material interactions:** [Noita](https://noitagame.com/) describes burning, melting, freezing, evaporation and environmental manipulation. Our object-level extensions combine payload release, constraints and interruption: **011–020**, **171–180**, **191–200**. Pixel simulation is unnecessary for testing those rules.
+
+**Fiction and priorities:** cellular names translate the same gameplay into membranes, nutrients, infected producers and tissue chambers; they make no biological claim. Music remains feedback and atmosphere. The music-led **081–090** group is an optional comparison, not the central direction. Multiplayer **121–140** remains later work. No-loss **090**, **141–147** and **150** are creative or diagnostic tools; they do not satisfy the mind map's requirement for an eventual game with a clear loss condition.
+
+
 ## Experiment Catalogue
 
-Here are **150 candidate experiments**, grouped by the decisions they ask players to make. These are original design hypotheses, not implemented features or approved production commitments. The seven existing comparison modes are Campaign, Free Play, Endless Waves, Challenge, Reaction Puzzle, Cargo Rescue and Outbreak Containment.
+The original broad collection contains **150 candidate experiments**, grouped by the decisions they ask players to make. These are original design hypotheses, not implemented features or approved production commitments. The seven existing comparison modes are Melody Journey, Free Play, Endless Waves, Challenge, Reaction Puzzle, Cargo Rescue and Outbreak Containment.
 
 Some entries are full mode concepts; others are ruleset variants or session formats. Try variants as options before giving each a permanent menu card. Pressure Survival and Reaction Lab retain detailed briefs below. Score Attack overlaps the existing limited-move design decision and does not settle it.
 
@@ -213,24 +232,119 @@ Some entries are full mode concepts; others are ruleset variants or session form
 - **149. Accessibility Trials — Rule:** Try equivalent untimed objectives using drag, sliders or keyboard; compare comfort and completion on identical rules.
 - **150. Rule Mixer — Platform:** Combine compatible goals, powers and modifiers; flag incompatible combinations and save a bounded custom recipe.
 
+## Direct Mind Map Experiments
+
+All sixty additions below need **System** work. Each combines explicit workshop mechanics with a clear success condition and primary loss pressure. Unless marked otherwise, use limited shots with frozen aiming; resolve the objective after reactions settle. Counts and budgets are test parameters, not settled balance. Entries may share mechanics, but differ in the decision or objective being tested.
+
+### Capture, Carry and Release
+
+Mind-map roots: [Trap, Pop, Transport and Release](development-concept.md#bubble-actions), [Enemies](development-concept.md#enemies). Research connections: Bubble Bobble's containment and Bubble Ghost's protection.
+
+- **151. Capture Transport Release — System:** Enclose a hazard, move it behind a wall and release it onto marked targets; clear them before shots run out.
+- **152. Prison Break — System:** Capture guards instead of killing them and move their containers away; escort all prisoners out within the launch budget.
+- **153. Gas Harvest — System:** Capture finite gas clouds and deliver their contents to collectors; meet the quota before a shot limit.
+- **154. Enemy Ammunition — System:** Trap a hostile spitter and transport it so its released projectiles open a barricade; reach the exit within eight turns.
+- **155. Living Key — System:** Carry a captured creature to a gate, then release it to activate the mechanism; escape before it wanders away for good.
+- **156. Catch the Fragments — System:** Place empty capture bubbles to intercept shrapnel and deliver the collected fragments within six shots.
+- **157. Nursery Transfer — System:** Move captured young organisms through predators, releasing them only inside a refuge; lose if too few survive.
+- **158. Temporary Prison — System:** Trap enemies in membranes that expire after a visible number of turns; clear an escape route before recapture becomes impossible.
+- **159. Containment Exchange — System:** Transfer contents between containers with different resistances; deliver the payload before the shared shot budget ends.
+- **160. Double Shell — System:** Pop an outer protective layer to fit a passage, preserve the inner cargo and reach its receiver within par.
+
+### Division, Fusion and Payload Accounting
+
+Mind-map roots: [Split and Merge](development-concept.md#bubble-actions), [finite contents and split budgets](development-concept.md#chain-reactions). Research connection: Osmos's size tradeoffs; exact fusion rules remain ours.
+
+- **161. Split-Gap Delivery — System:** Divide one payload to pass separate narrow channels, then deliver every portion within the shot limit.
+- **162. Weighted Sockets — System:** Split and merge masses until each receiver contains its exact required amount; solve within a fixed action budget.
+- **163. Merge Ram — System:** Fuse small bodies into a heavy ram, break a barrier and deliver the surviving mass before shots run out.
+- **164. Volatile Fusion — System:** Merge compatible payloads only at marked demolition sites; destroy every site without rupturing protected cargo.
+- **165. Divide the Threat — System:** Split a large hostile into smaller capturable bodies; contain all of them before the turn limit.
+- **166. Assembly Line — System:** Route incoming ingredients into prescribed merged products; complete an order before the finite supply is exhausted.
+- **167. Unequal Division — System:** Choose split proportions to send enough force down one route while preserving valuable mass on another; satisfy both goals within par.
+- **168. Population Ceiling — System:** Clear a quota through splitting and capture while keeping active body count below a visible maximum.
+- **169. Merge Chain Brake — System:** Fuse reactive bodies into an inert absorber to interrupt an approaching chain; protect the objective through the encounter.
+- **170. Cargo Dilution — System:** Merge hazardous contents with a finite neutral carrier until each shipment meets a displayed safe ratio, then deliver within the shot limit.
+
+### Elements, Status and Chain Interruption
+
+Mind-map roots: [Elements and Status Effects](development-concept.md#elements-and-status-effects), [Chain Reactions](development-concept.md#chain-reactions). Research connections: Noita's consistent interactions and Pang's readable hazard families.
+
+- **171. Shrapnel Relay — System:** Aim finite fragment bursts through successive carriers to reach a shielded target; complete the chain within the shot limit.
+- **172. Acid Key — System:** Release acid onto compatible locks while protecting non-resistant cargo; open and traverse the exit before shots run out.
+- **173. Steam Junction — System:** Merge specified steam-bearing payloads at a junction to push gates into alignment; reach the exit within par.
+- **174. Gas Corridor — System:** Capture or displace a cloud to open a safe passage; escort cargo through before its integrity is lost.
+- **175. Mud Dam — System:** Combine earth and water at a chosen bottleneck to redirect a current into cargo receivers within limited shots.
+- **176. Firebreak Sculptor — System:** Rearrange inert bodies and gaps to stop a gas ignition chain reaching a protected cell; survive one triggered cascade.
+- **177. Reagent Recovery — System:** Recover useful material after a reaction and reuse it on a second obstacle; complete both with a finite initial payload supply.
+- **178. Status Transfer — System:** Trap a slowing cloud and release it around enemies instead of the player; escort a convoy before enemies destroy its quota.
+- **179. Fragment Collector — System:** Break containers whose fragments become temporary tools, then use those tools to clear designated obstacles before shots expire.
+- **180. Reaction Interception — System:** Redirect a moving blast carrier, absorb its contents or place cover before its visible fuse ends; save every protected cell.
+
+### Sources as Resources
+
+Mind-map roots: [Bubble Sources](development-concept.md#bubble-sources), [Enemies](development-concept.md#enemies). Research connection: Puzzle Bobble's changing supply; feed, redirect and conversion rules are our extensions.
+
+- **181. Keep One Vent Open — System:** Harvest a dangerous source to obtain needed material, then seal it and complete a delivery before the turn limit.
+- **182. Feed the Producer — System:** Deliver different food payloads to control a source's next output; manufacture the required set within limited turns.
+- **183. Source Hijack — System:** Turn hostile outputs toward enemy barriers; reach the exit without destroying the source you need, within par.
+- **184. Source Timing — System:** Activate sources in a physical production schedule so their outputs meet and react at one location; complete a target chain within turns.
+- **185. Geyser Elevator — System:** Trigger an impact-driven jet to lift or carry cargo across a blocked route; deliver before the shot budget ends.
+- **186. Producer Protection — System:** Keep a useful producer alive until it supplies a quota while diverting harmful emissions from nearby sources.
+- **187. Supply Cut — System:** Starve an enemy nest by intercepting its incoming nutrients; disable every nest before the protected cell loses its health.
+- **188. Contaminated Factory — System:** Remove an infection from a producer so it emits useful contents again; restore the required outputs within eight turns.
+- **189. Portable Source — System:** Reposition one generator to serve several separated receivers; fill them all using its finite stock.
+- **190. Plug and Unplug — System:** Seal a source with mud, reopen it with a blast and time successive releases to complete a routing puzzle within par.
+
+### Anchors, Connections and Changing Routes
+
+Mind-map roots: [Independent Properties](development-concept.md#independent-properties), [Environment and Layout](development-concept.md#environment-and-layout). Research connections: Puzzle Bobble's connectivity, FOAMSTARS's lasting terrain and Noita's environmental effects.
+
+- **191. Anchor Release — System:** Dissolve selected tethers so a captive cluster drifts into a receiver; deliver its quota without exhausting shots.
+- **192. Support Collapse — System:** Remove a support to release many targets at once; catch required cargo while letting hazards fall into disposal zones.
+- **193. Pendulum Payload — System:** Time impacts on tethered explosive bubbles so they detonate beside barriers rather than cargo; clear within the shot limit.
+- **194. Track Switchyard — System:** Move rail-constrained bubbles through switchable junctions into matching bays before limited turns expire.
+- **195. Break the Right Link — System:** Sever one connection in an attachment chain to isolate a dangerous payload without losing the valuable cluster.
+- **196. Reactive Bumpers — System:** Use fixed bumpers that release finite effects on impact; chain their outputs to reach a protected target within par.
+- **197. Chamber Transfer — System:** Move incompatible contents through shared airlocks without allowing contact; deliver both quotas within the shot budget.
+- **198. Residue Route — System:** Leave mud or foam from earlier reactions to shape the final delivery path; deliver the last cargo within par.
+- **199. Wall Permeability — System:** Route fragments, gas and bodies through walls with clearly marked different blocking rules; reach all targets within shots.
+- **200. Shortcut Sacrifice — System:** Spend a useful payload to open a shortcut or preserve it for the long route; extract enough total value before fuel runs out.
+
+### Fictional Cellular Missions
+
+Mind-map root: [Cellular Campaign](development-concept.md#cellular-campaign). These are invented game rules translating the same interactions; biology is not evidence for their behavior.
+
+- **201. Nutrient Courier — System:** Deliver nutrient sacs to every starving cell before any cell's visible reserve reaches zero.
+- **202. Selective Membranes — System:** Change a carrier's allowed property to pass distinct membranes; deliver each payload without exceeding the turn budget.
+- **203. Nutrient Triage — System:** Allocate a finite nutrient stock between repairing tissue and activating tools; restore all required tissue before integrity runs out.
+- **204. Infected Producer Rescue — System:** Trap and remove an infection while preserving its host producer; restart useful production within the shot limit.
+- **205. Tissue Breach — System:** Move membrane fragments into a breach and fuse them into a seal before a protected chamber empties.
+- **206. Division Labor — System:** Divide a worker into smaller bodies for simultaneous switches, then reunite enough mass to escape within turns.
+- **207. Waste Clearance — System:** Package harmful residue into resistant sacs and escort it out before the chamber's contamination meter fills.
+- **208. Immune Decoys — System:** Mark disposable carriers to draw fictional immune pursuers away from a vulnerable shipment; deliver before its health runs out.
+- **209. Symbiotic Passage — System:** Feed a resident organism so it temporarily opens a route, then recover supplies to reach the next chamber within budget.
+- **210. Organ Recovery — System:** Solve a finite linked mission of supply, containment and repair using one shared nutrient reserve; restore every chamber before it is depleted.
+
+
 ## First Experiments to Compare
 
-**Before:** seven modes are playable, including three recent trials with open human playtest gates. We do not yet know whether more modes improve the game.
+**Before:** the first broad shortlist favored small changes to the shipped game. The developer's mind map instead centers capture, contents, split/merge tradeoffs, reactions, sources and changing routes. The existing three trials remain useful comparison baselines with open human playtest gates.
 
-**After, if selected:** prototype a small comparison set in the existing experiment hub. Keep the rest as a catalogue. These are recommendations, not approval to implement modes or replace current ones.
+**After, if selected:** use the following shortlist to test that direction, adding one core interaction at a time. Keep music supportive, retain launch controls initially and choose one primary loss pressure. These are recommendations, not implementation approval.
 
-- **001 One-Pluck Clear:** test repeatable precision; measure intentional improvement on the same board.
-- **004 Exact Chain:** test restraint instead of maximizing contacts; record overshoots and whether players understand them.
-- **012 Controlled Demolition:** reuse walls, blasts and fragile cargo; test deliberate cover use and recovery.
-- **021 Cargo Sorting:** test whether receiver choice adds interesting planning to transport.
-- **032 Source Priority:** test whether differing source schedules cause understandable changes in target order.
-- **061 Score Attack:** test fixed-build optimization; resolve its existing design decision before assigning progression rewards.
-- **073 Power Pair Trials:** compare different power pairs on identical geometry to see whether they produce different solutions.
-- **081 Melody Route:** test music as an objective with equally understandable visual information when muted.
-- **121 Same-Seed Duel:** test social replay interest through isolated local attempts without accounts or network services.
-- **144 Zen Clearing:** compare finite completion without punishment against the unlimited Free Play pool.
+- **151 Capture Transport Release:** one container, one hazardous payload and two useful release positions; test whether preserving a hazard creates deliberate choices. Compare with Cargo Rescue.
+- **191 Anchor Release:** three tethered clusters and a finite acid payload; test selecting which support to release rather than popping everything. Compare with Reaction Puzzle.
+- **175 Mud Dam:** one earth/water pairing and one current; test whether players deliberately reshape a delivery route. Compare with Cargo Rescue.
+- **181 Keep One Vent Open:** one capped source that supplies a required material; test the choice between harvesting and sealing. Compare with Outbreak Containment.
+- **163 Merge Ram:** one merge rule, a barrier and a narrow alternative; test whether bigger is useful without being universally better.
+- **161 Split-Gap Delivery:** one divided payload and two passages; test payload accounting and route planning before adding more split objects.
+- **171 Shrapnel Relay:** finite fragments, two carriers and a protected target; test whether players can predict and interrupt a multistep chain.
+- **203 Nutrient Triage:** one finite resource shared between repair and a tool; test a meaningful cellular decision without stacking health, currency and clocks.
+- **109 Foam Sculptor:** one persistent residue behavior and one delivery goal; test whether a previous shot creates a useful next-shot route.
+- **032 Source Priority:** vary the existing vents' visible output schedules; use this smaller comparison to test source decisions before building the richer source modes.
 
-Start with three boards per selected ruleset and a fixed build. Record completion, attempts, shots, failure cause, intentional versus accidental solutions and voluntary retries. Compare each with its closest existing mode, using similar target counts, music and session lengths where practical. Real-time, growth, editor and simultaneous multiplayer concepts should justify their essential mechanic before adding infrastructure.
+Begin with 151 or 191 if choosing a new central interaction; use 032 as a smaller baseline comparison. Do not implement all ten together. For each selected rule, make three short layouts with two plausible approaches. Record completion, attempts, failure cause, purposeful versus accidental reactions and voluntary retries. Ask players to predict the first links and explain later surprises. Reuse fixed builds and starts, test muted play, and compare against the nearest existing mode. These observations decide which idea grows into a mode; novelty and effect count alone do not.
 
 ## Experiment Guardrails
 
@@ -354,10 +468,10 @@ The next decision is which loop deserves refinement after playtesting. v3.0.0 is
 
 ### Sources
 
-The developer's workshop and request for experimental modes; [Development Concept research](development-concept.md#research-and-sources); the current [Waves guide](waves.md), [Campaign guide](campaign.md) and [How to Play](how-to-play.md).
+The developer's workshop and request for experimental modes; [Development Concept research](development-concept.md#research-and-sources); the current [Waves guide](waves.md), [Melody Journey guide](campaign.md) and [How to Play](how-to-play.md).
 
 ### Contributions
 
 #### Codex on behalf of `leviscustempris`
 
-Proposed bounded mode experiments, distinguished prerequisites from existing behavior, and defined playtest questions and starting rules. Updated the brief to distinguish the approved playable implementation from reserve ideas. Balance and human playtest gates remain open. Expanded the workshop with 150 grouped concepts, relative implementation dependencies, a ten-experiment comparison shortlist and explicit proposal boundaries. The expansion uses repository mechanics and the developer request, with no new external sources.
+Proposed bounded mode experiments, distinguished prerequisites from existing behavior, and defined playtest questions and starting rules. Updated the brief to distinguish the approved playable implementation from reserve ideas. Balance and human playtest gates remain open. Expanded the workshop with 150 grouped concepts, relative implementation dependencies, a ten-experiment comparison shortlist and explicit proposal boundaries. Added 60 direct mind-map experiments, traced their mechanics to the workshop and primary research, and revised priorities around systemic gameplay. Rechecked the seven linked primary game descriptions on November 13, 2026; proposed combinations remain our extrapolations.
