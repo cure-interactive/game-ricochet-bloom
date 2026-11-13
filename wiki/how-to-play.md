@@ -6,11 +6,25 @@
 2. Touch different bubbles to collect notes. Reach **five unique bubbles in one pluck** to make a bloom.
 3. Use wall bounces and moving bubbles to extend your chain. Each bubble counts once per pluck; hitting it again can still change your motion.
 
-A new bubble earns 25 points multiplied by its place in the chain. Wall banks add a scoring bonus, and a bloom adds 500. The bonus objective offers an additional target during play. These pool scores are separate from the research Points earned through campaign progress.
+A new bubble earns 25 points multiplied by its place in the chain. Wall banks add a scoring bonus, and a bloom adds 500. The bonus objective offers an additional target during play. These pool scores are separate from the persistent research Points earned in every playable mode.
 
 In Campaign, follow the goal displayed above the pool and finish before you run out of plucks. The first bloom in a pool earns one extra pluck. Your shot coasts to a stop before its result is resolved.
 
 Choose **Endless Waves** from the main menu for five plucks per wave: bubbles pop on their first hit, and clearing every bubble advances to a harder wave. See [Endless Waves](waves.md).
+
+## Points in Every Mode
+
+Campaign, Free Play, Endless Waves and Challenges all earn permanent **Points** for the Skill Tree. Points bank when your shot settles, even if you lose that run:
+
+- **Every six scoring bubble contacts: +1 Point.** Partial progress carries between shots in the same pool or Waves run; a bubble counts once per shot.
+- **Every bloom: +1 Point.**
+- **Every cleared wave: +2 Points.**
+- **A completed three-bloom Challenge: +3 Points.**
+- Campaign retains its additional pool, bonus, track-completion and first-clear rewards.
+
+A short message shows Points banked and your available balance. Your pool's Resonance score remains separate. Reopening a save does not pay twice. Listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Campaign track completion to that profile.
+
+For power mastery, activate a power you own and hit at least **three different bubbles in that shot**. Each qualifying shot earns one mastery use; successful Campaign pools also count. Three uses meet a capstone's mastery requirement. You can earn every power and upgrade through Free Play or Waves; Campaign track and skin unlocks still come from Campaign completion.
 
 ## Contact Powers
 

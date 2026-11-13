@@ -1,15 +1,15 @@
-import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=9aa4b328da3c10f28d510f0de809f6098b55b15ced6ab9150b283efffe427d89';
+import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=b4d4c76073b2d0efaaa1a8e2127a751770241916a33f05851615472996092df5';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=a2f2d28063a236c703442bfba9c353d475f4889a2281a87bc6d58932d67c7c58';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
 import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
-import { profilePurchase, profileSummary } from './profile.js?v=9078c56cc1e0eae227105818494b7175ccc018790a79571c34d411819cb4a6f5';
-import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=f46e437fcd893aaf9e4277a1ca9b56e1ec27ca75f1396d6c33557958bb850b33';
+import { profilePurchase, profileSummary } from './profile.js?v=59b143bc010948165c731b415d86caebcb0e51dc73986b677e69351cc6bed085';
+import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=ca4ec8955e4b5b1b7bf7fd817c32bddaa80a9060487d6b47c1044eafb5017526';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const button=(action,label,icon='add',extra='')=>`<button type="button" aria-label="${escape(label)}" data-tree-action="${action}" ${extra}>${iconHTML(icon)}<span>${label}</span></button>`;
-const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn more Points by clearing pools.','mastery':'Clear 3 pools with this power activated.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
+const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn Points in any game mode.','mastery':'Activate this power on 3 plucks that hit at least 3 bubbles. Campaign clears also count.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
 
 function statCurveHTML(curve,stats){
  const left=32,right=270,top=22,bottom=112;
@@ -74,7 +74,7 @@ function unlockBlocker(state,n,v){
  if(state.powerMode==='shared')return 'Unlock skills outside shared challenges.';
  const missing=[];
  if(state.phase!=='shop')missing.push('Research opens after this run.');
- if(!v.buy.ok)missing.push(v.buy.reason==='mastery'?`Clear ${Math.max(0,3-profileSummary(state.profile,cat).mastery[n.power])} more pools with ${POWER_TREES[n.power].name} activated.`:v.buy.reason==='insufficient-seeds'?`Need ${n.seedCost-state.profile.wallet.seeds} more Point${n.seedCost-state.profile.wallet.seeds===1?'':'s'}.`:(v.buy.reason==='family-gate'?powerUnlock(state,n.power)?.remaining:v.buy.reason==='prerequisite'?`Research ${cat.nodes[n.requires.find(id=>!state.profile.research[id])]?.name||POWER_TREES[n.power].name} first.`:reasonText[v.buy.reason])||v.buy.reason);
+ if(!v.buy.ok)missing.push(v.buy.reason==='mastery'?`Earn ${Math.max(0,3-profileSummary(state.profile,cat).mastery[n.power])} more mastery uses: activate ${POWER_TREES[n.power].name} and hit at least 3 bubbles in a pluck. Campaign clears also count.`:v.buy.reason==='insufficient-seeds'?`Need ${n.seedCost-state.profile.wallet.seeds} more Point${n.seedCost-state.profile.wallet.seeds===1?'':'s'}.`:(v.buy.reason==='family-gate'?powerUnlock(state,n.power)?.remaining:v.buy.reason==='prerequisite'?`Research ${cat.nodes[n.requires.find(id=>!state.profile.research[id])]?.name||POWER_TREES[n.power].name} first.`:reasonText[v.buy.reason])||v.buy.reason);
  return missing.join(' ');
 }
 // Every drawn upgrade edge comes from the same prerequisites as purchasing.

@@ -3,15 +3,28 @@ import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e
 import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=7c6b2ee16663450952814ac4e888191c65aba61cd1df1d7307f1e900a7987ca1';
 
 export const WIKI_PAGES = Object.freeze({
-  waves: { title: 'Endless Waves', url: './wiki/waves.md?v=422a3ef6f62d27347dedb417bd9982cc19f354a117f11d3f413efef52687763a' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=13b9377838a3f2c196c8761cc19e197ade3bf3b3da48f278a210123876604d33' },
-  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=50eeb499e8ba7e3898c011480b7dd17f58f7c5454e8c7a8760f58fc5f34dfea5' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=f7b6f790202d953e7848bc63e86e30430fe6800bd9e48a723c9cd83d301c1d2d' },
-  campaign: { title: 'Campaign', url: './wiki/campaign.md?v=84833354cfcca54ee1dd35cf82f76c7a851bbaca4aabe9adfde7dab3849aacb6' },
-  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=deeaf3b71f2df3ef4084143c5ff7484a06ad960cd2b95e0e6d8e588f1eea6e90' },
-  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=b85852bdb54c07512a99bf9859a5331996520d77cde6ac51f1caaa5a1cd063f5' },
+  'development-concept': { title: 'Development Concept', url: './wiki/development-concept.md?v=f87d5cc129ac6e51237f66d53099c7a3915a21e609661700223aa330fdbf434b' },
+  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=82d6440e3310eae77f6b25f6ad6e92983576c8898be427d4ec3fbcf57ab81178' },
+  waves: { title: 'Endless Waves', url: './wiki/waves.md?v=e8be7695205f3a976d6e7024cdb3260dbf3153e125ea93e81cd69fc3d0eb2cc4' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=3c9f0d4f41b91859642ca036d629727abe8fba3e786d4f18864ddd5b2c812985' },
+  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=223e75f6739d1797358e58e6c18361419ea47aa8c1fdbc7370234b6a003ce918' },
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=7f8e99a2c6392ce4f27e8d620141cfbbd0df17e97b7b21c473c135b7b8393c31' },
+  campaign: { title: 'Campaign', url: './wiki/campaign.md?v=dd28c4eefd1fca190b7bc676e30e255a246e147bbfca72bf925a5ec2d5dd65f1' },
+  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=f3ce0903035dd43a181bdf015cdf4f6589249839cbd4e2c18881c684b9edc8ec' },
+  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=7c896e9621172bb9a2c987053d1370ca5f689f686143013059b5d63b43f38230' },
   settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=fafab985c72bc2ea0e445b393328660962ca193e5098c106fe7523e94893e531' }
 });
+// Research citations are exact reviewed destinations, not arbitrary Markdown URLs.
+export const WIKI_SOURCES = Object.freeze([
+  'https://www.nintendo.com/en-gb/Games/Nintendo-Switch-games/Bubble-Bobble-4-Friends-The-Baron-is-Back--1679668.html',
+  'https://apps.apple.com/us/app/bubble-bobble-classic/id1497822213',
+  'https://www.taito.co.jp/en/PBEverybubble/gamemodes',
+  'https://www.nintendo.com/us/store/products/pang-adventures-switch/',
+  'https://www.nintendo.com/us/store/products/bubble-ghost-remake-switch/',
+  'https://www.osmos-game.hemispheregames.com/',
+  'https://press.na.square-enix.com/FOAMSTARS',
+  'https://noitagame.com/'
+]);
 const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const headingID = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 export function wikiTarget(href, current = 'wiki') {
@@ -28,7 +41,7 @@ function inline(text, current, section='', linkRender=null) {
     if (m[1]) {
       if(linkRender){html+=linkRender(m[1],m[2]);cursor=m.index+m[0].length;continue;}
       const target = wikiTarget(m[2], current);
-      html += target ? `<a href="${escape(WIKI_PAGES[target.page].url)}${target.anchor ? '#'+target.anchor : ''}" data-wiki-page="${target.page}" data-wiki-anchor="${target.anchor}">${wikiTopicIcon(target.page,target.anchor)}${escape(m[1])}</a>` : escape(m[1]);
+      html += target ? `<a href="${escape(WIKI_PAGES[target.page].url)}${target.anchor ? '#'+target.anchor : ''}" data-wiki-page="${target.page}" data-wiki-anchor="${target.anchor}">${wikiTopicIcon(target.page,target.anchor)}${escape(m[1])}</a>` : WIKI_SOURCES.includes(m[2]) ? `<a href="${escape(m[2])}" target="_blank" rel="noopener noreferrer">${escape(m[1])} (opens in new tab)</a>` : escape(m[1]);
     } else html += m[3] ? `<strong>${wikiStrongHTML(m[3],current,section,escape(m[3]))}</strong>` : `<code>${escape(m[4])}</code>`;
     cursor = m.index + m[0].length;
   }

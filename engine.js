@@ -1,3 +1,4 @@
+import { earningValid, earningPower, earningSettle } from './earning.js?v=15ac6910128a820d0c85313453904e364a56dc47fae0baa2dd4a9f0390ee5876';
 import { liveBubbles, waveConfig, wavePrepare, waveEntryStep, waveValid, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { DRUNK_SECONDS, drunkSway, overlapResponse, magnetResponse } from './power-response.js?v=53b3f123d0f0c05341a1eb30cbf1c20f19b251c6a7e30ff0cc4921ddfff73338';
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
@@ -347,7 +348,7 @@ function waveAdvance(state,events){
   Object.assign(state,next);events.push({type:'wave',number});
 }
 export const gameWon = state => state.mode === 'challenge' && state.isOver && state.blooms >= RULE.goalBlooms;
-export function continueFree(state) { if (!state.isOver || state.mode==='waves') return false; state.mode = 'free'; state.isOver = false; return true; }
+export function continueFree(state) { if (!state.isOver || state.mode==='waves') return false; delete state.earning; state.mode = 'free'; state.isOver = false; return true; }
 export function launch(state, angle, power = .7) {
   if (state.isOver || state.isFlying || state.wave?.entry<WAVE_ENTRY || !Number.isFinite(angle) || !Number.isFinite(power)) return false;
   const seed = state.bodies[0], speed = 280 + Math.max(0, Math.min(1, power)) * 570;
@@ -390,6 +391,7 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
   state.flightAge = 0;
   // Pluck-long effects follow the renewed flight; short-lived powers keep their own clocks.
   for (const effect of state.effects) if (['comet', 'impact', 'bubble', 'stasis', 'echo', 'blaster'].includes(effect.kind)) effect.seconds = RULE.flightSeconds;
+  earningPower(state,kind);
   const event = { type: 'power', kind, seedId: a.id, x: b.x, y: b.y };
   if(kind==='blaster') {
     const flags=skillConfig(state,'blaster');state.effects.push({kind,seconds:RULE.flightSeconds,targets:[],ammo:flags.ammo,cooldown:0,volley:0,hits:[],shots:[],reloaded:false});
@@ -675,6 +677,7 @@ export function physicsStep(state) {
     state.power.capacity = successful ? Math.min(3, previousCapacity + 1) : 1;
     state.power.markers = [];
     effectClear(state, events); state.isFlying = false; seed.vx = seed.vy = 0; state.isOver = state.mode === 'challenge' && (state.blooms >= RULE.goalBlooms || state.plucks <= 0) || ['song-run','waves'].includes(state.mode)&&state.plucks<=0;
+    earningSettle(state,{wave:state.mode==='waves'&&!liveBubbles(state).length,win:gameWon(state)});
     state.lastShot={notes:state.chain.length,banks:state.banks,points:state.shotStart===null?null:state.score-state.shotStart,powers:state.power.used,bloom:successful,objective:state.objective.earned};
     if(state.objective.earned&&state.mode!=='song-run')state.objective.index++;
     events.push({ type: 'power-streak', successful, capacity: state.power.capacity, previousCapacity });
@@ -685,6 +688,7 @@ export function physicsStep(state) {
 }
 export function saveValidate(input) {
   if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free', 'song-run', 'waves'].includes(input.mode)) return null;
+  if(input.earning!==undefined&&(!earningValid(input.earning,Object.keys(POWERS))||input.earning.mode!==input.mode||input.earning.lastLaunch>input.launches))return null;
   const count=Array.isArray(input.bodies)?input.bodies.length-1:0;
   if(input.build!==undefined&&(!buildValidate(input.build)||count<12||count>20||!skillStateValid(input.skillState,count)))return null;
   if(['song-run','waves'].includes(input.mode)&&!input.build)return null;

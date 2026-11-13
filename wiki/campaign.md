@@ -20,9 +20,9 @@ New runs give six plucks per pool. The first bloom adds one more. Your song deve
 
 ## Research Points and Powers
 
-Clearing a pool earns research Points. Completing its bonus and finishing a track provide further rewards, including a first-clear reward. Spend research Points in the [Skill Tree](skill-tree.md). Your large in-pool score is a different measure; it is not your research balance.
+Every game mode earns research Points from contacts and blooms. Clearing a Campaign pool earns additional research Points. Completing its bonus and finishing a track provide further rewards, including a first-clear reward. Spend research Points in the [Skill Tree](skill-tree.md). Your large in-pool score is a different measure; it is not your research balance.
 
-Use a power in a pool you successfully clear to build its mastery toward an Epic upgrade. Your unlocked powers appear randomly during play, with compatible researched upgrades applied automatically. There is no between-pool upgrade draft. Temporary upgrades already granted in an older saved run remain active until that run ends.
+Activate an owned power in a shot hitting at least three bubbles to build its mastery in any mode. Successfully cleared Campaign pools also count. Three mastery uses satisfy a capstone requirement. Your unlocked powers appear randomly during play, with compatible researched upgrades applied automatically. There is no between-pool upgrade draft. Temporary upgrades already granted in an older saved run remain active until that run ends.
 
 ## Continue or Start Again
 

@@ -16,6 +16,13 @@ Make music, grow your powers, and clear the campaign. Choose a topic below. Use 
 
 - [Sound, Settings & Saves](settings.md) — audio, accessibility, screen modes and backups.
 
+## Development Workshop
+
+These pages contain ideas and experiments, not currently playable features.
+
+- [Development Concept](development-concept.md) — bubble and cellular mind map, emergent interactions, and research from other games.
+- [Game Modes to Try](game-modes.md) — proposed trial rules, recommended order and playtest questions.
+
 ## Attribution
 
 ### Sources

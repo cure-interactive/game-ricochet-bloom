@@ -1,8 +1,8 @@
 import { buildValidate } from './skill-effect.js?v=7832dd7c58ba0da9a3d69a6424a04dc4734479b27b6f3ea1f0810fcb589d59d5';
 import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=c9ff036f85fda07c94971bb9701dc181e070bf11984ca7b8b6cc458235afcef6';
 import { POWER_TREES } from './power-tree.js?v=dbaa6fd695e15e784508ce3ba4c6ff1e3ff616c91294e4702f6a0f4725c3326e';
-import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=9078c56cc1e0eae227105818494b7175ccc018790a79571c34d411819cb4a6f5';
-import { gameCreate, saveValidate, RULE } from './engine.js?v=07969b6d92e08ed72ffc554ae24bd9217d6332cd51a913f52f8e52638bcab9dd';
+import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=59b143bc010948165c731b415d86caebcb0e51dc73986b677e69351cc6bed085';
+import { gameCreate, saveValidate, RULE } from './engine.js?v=f28bceff7b367d3b85ea2272715727d49be7a7969fb1b201d8b206a867317b78';
 import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
@@ -43,7 +43,7 @@ export function researchTarget(s,id=s.target) {
   if(!owned){
     const seeds=Math.max(0,n.seedCost-s.profile.wallet.seeds);if(seeds)needs.push(`${seeds} more Points`);
     for(const prerequisite of n.requires)if(!s.profile.research[prerequisite])needs.push(`Research ${GAME_CATALOGUE.nodes[prerequisite].name} first`);
-    if(n.masteryPools>mastery)needs.push(`${n.masteryPools-mastery} more cleared pools using ${POWER_TREES[n.power].name}`);
+    if(n.masteryPools>mastery)needs.push(`${n.masteryPools-mastery} more mastery uses of ${POWER_TREES[n.power].name}`);
   }
   return {id,name:n.name,owned,needs,text:owned?'Researched':needs.join(' · ')||'Ready to research between runs'};
 }

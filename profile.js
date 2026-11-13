@@ -1,3 +1,4 @@
+import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=15ac6910128a820d0c85313453904e364a56dc47fae0baa2dd4a9f0390ee5876';
 import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=c9ff036f85fda07c94971bb9701dc181e070bf11984ca7b8b6cc458235afcef6';
 
 export const PROFILE_VERSION = 1;
@@ -18,7 +19,9 @@ export function profileCreate(kind = 'normal') {
 }
 
 function rewardNormalize(event, catalogue) {
-  if (!object(event) || event.mode !== 'song-run') return null;
+  if (!object(event)) return null;
+  if(event.type==='play'){const e=event.play;if(!earningValid({...e,lastLaunch:e?.shots,owned:[],used:[]},Object.keys(catalogue.powers)))return null;return {type:'play',play:earningSnapshot(e)};}
+  if(event.mode !== 'song-run') return null;
   if (event.type === 'tutorial') return event.bloom === true ? { mode: event.mode, type: 'tutorial', bloom: true } : null;
   if (!['pool', 'victory', 'failure'].includes(event.type) || !runIdValid(event.runId) || !TRACKS.includes(event.trackId) ||
     ![3, 5].includes(event.poolCount) || (event.poolCount === 3 && event.trackId !== 'first-light')) return null;
@@ -37,7 +40,7 @@ function rewardNormalize(event, catalogue) {
   }
   return result;
 }
-function rewardKey(event) { return event.type === 'tutorial' ? 'tutorial' : `${event.runId}/${event.type === 'pool' ? 'pool/' + event.poolIndex : 'result'}`; }
+function rewardKey(event) { return event.type==='play'?'play/'+event.play.id:event.type === 'tutorial' ? 'tutorial' : `${event.runId}/${event.type === 'pool' ? 'pool/' + event.poolIndex : 'result'}`; }
 function rewardState(catalogue) {
   return { receipts: new Map(), runs: new Map(), completedTracks: new Set(),
     mastery: Object.fromEntries(Object.keys(catalogue.powers).map(key => [key, 0])) };
@@ -46,7 +49,8 @@ function rewardApply(state, event) {
   const id = rewardKey(event);
   if (state.receipts.has(id)) return null;
   let amount = REWARD.tutorial;
-  if (event.type !== 'tutorial') {
+  if(event.type==='play'){amount=earningAmount(event.play);for(const [power,n] of Object.entries(event.play.mastery))state.mastery[power]+=n;}
+  else if (event.type !== 'tutorial') {
     const run = state.runs.get(event.runId) || { trackId: event.trackId, poolCount: event.poolCount, clears: 0, terminal: false };
     if (run.trackId !== event.trackId || run.poolCount !== event.poolCount || run.terminal) return null;
     if (event.type === 'pool') {
@@ -89,7 +93,7 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
     (expectedKind !== null && input.kind !== expectedKind) || !integer(input.revision) || !object(input.wallet) ||
     Object.keys(input.wallet).length !== Object.keys(CURRENCIES).length || !integer(input.wallet.seeds) || !object(input.research)) return null;
   const summary = rewardsInspect(input.rewards, catalogue);
-  if (!summary) return null;
+  if (!summary||input.rewards.some(r=>r.event.type==='play'&&r.event.play.kind!==input.kind)) return null;
   const research = {};
   for (const [id, purchase] of Object.entries(input.research)) {
     const node = nodeGet(catalogue, id);
@@ -124,12 +128,12 @@ export function profilePurchase(input, id, catalogue = CATALOGUE) {
   profile.wallet.seeds -= node.seedCost; profile.research[id] = { paid: node.seedCost };
   return accepted(profile, { purchased: id, paid: node.seedCost });
 }
-// Call only from validated Song Run outcomes, never legacy score or idle time.
+// Campaign outcome bonuses are separate from common play earnings.
 // This is local consistency validation, not server-side anti-cheat.
 export function profileReward(input, event, catalogue = CATALOGUE) {
   const profile = profileValidate(input, catalogue), normalized = rewardNormalize(event, catalogue);
   if (!profile) return rejected('invalid-profile');
-  if (!normalized) return rejected('invalid-outcome');
+  if (!normalized||normalized.type==='play') return rejected('invalid-outcome');
   const summary = rewardsInspect(profile.rewards, catalogue), previous = summary.receipts.get(rewardKey(normalized));
   if (previous) return JSON.stringify(previous.event) === JSON.stringify(normalized)
     ? accepted(profile, { duplicate: true, receipt: structuredClone(previous) }) : rejected('reward-conflict');
@@ -141,10 +145,25 @@ export function profileReward(input, event, catalogue = CATALOGUE) {
   profile.wallet.seeds += receipt.amount; profile.rewards.push(receipt);
   return accepted(profile, { duplicate: false, receipt: structuredClone(receipt) });
 }
+// Paid totals only move forward. One compact receipt per pool/session, including
+// fractional contact progress and mastery, rather than an ever-growing shot log.
+export function profilePlayReward(input,earning,catalogue=CATALOGUE){
+  const profile=profileValidate(input,catalogue),event=rewardNormalize({type:'play',play:earning},catalogue);
+  if(!profile||!event||event.play.kind!==profile.kind)return rejected('invalid-play-reward');
+  const e=event.play,id=rewardKey(event),index=profile.rewards.findIndex(r=>r.id===id),old=index<0?null:profile.rewards[index];
+  if(old&&(old.event.play.mode!==e.mode||['contacts','blooms','waves','wins','shots'].some(k=>e[k]<old.event.play[k])||Object.entries(old.event.play.mastery).some(([p,n])=>(e.mastery[p]||0)<n)))return accepted(profile,{amount:0,duplicate:true});
+  if(Object.keys(e.mastery).some(p=>!own(profile.research,p+'.base')))return rejected('unowned-power');
+  const total=earningAmount(e),amount=total-(old?.amount||0);
+  if(old&&JSON.stringify(old.event)===JSON.stringify(event))return accepted(profile,{amount:0,duplicate:true});
+  if(!integer(profile.wallet.seeds+amount)||!advance(profile))return rejected('balance-overflow');
+  const receipt={id,event,amount:total};if(index<0)profile.rewards.push(receipt);else profile.rewards[index]=receipt;
+  profile.wallet.seeds+=amount;
+  return accepted(profile,{amount,duplicate:false});
+}
 export function profileDevelopmentCopy(input, catalogue = CATALOGUE) {
   const profile = profileValidate(input, catalogue);
   if (!profile) return null;
-  profile.kind = 'development'; return profile;
+  profile.kind = 'development';for(const r of profile.rewards)if(r.event.type==='play')r.event.play.kind='development'; return profile;
 }
 export function profileCurrencyGrant(input, currency, amount, catalogue = CATALOGUE) {
   const profile = profileValidate(input, catalogue, 'development');
