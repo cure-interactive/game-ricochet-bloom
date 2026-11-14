@@ -12,6 +12,18 @@ const rejected = reason => ({ ok: false, reason });
 const accepted = (profile, extra = {}) => ({ ok: true, profile, ...extra });
 const advance = profile => { if (!integer(profile.revision + 1)) return false; profile.revision++; return true; };
 const nodeGet = (catalogue,id) => typeof id==='string' ? catalogueNode(catalogue,id) : null;
+const playerNameValid = value => typeof value==='string' && value.length>=1 && value.length<=32 && value===value.trim() && !/[\u0000-\u001f\u007f]/.test(value);
+export const profileName = profile => profile?.name ?? 'Player';
+
+export function profileRename(input,name){
+  const profile=profileValidate(input);
+  if(!profile)return rejected('Invalid player profile.');
+  name=typeof name==='string'?name.trim():name;
+  if(!playerNameValid(name))return rejected('Use a player name from 1 to 32 characters.');
+  if(name===profileName(profile))return accepted(profile);
+  if(!advance(profile))return rejected('Profile revision limit reached.');
+  profile.name=name;return accepted(profile);
+}
 
 export function profileCreate(kind = 'normal') {
   if (!['normal', 'development'].includes(kind)) throw new TypeError('Invalid profile kind');
@@ -99,6 +111,7 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
     (expectedKind !== null && input.kind !== expectedKind) || !integer(input.revision) || !object(input.wallet) ||
     Object.keys(input.wallet).length !== Object.keys(CURRENCIES).length || !integer(input.wallet.seeds) || !object(input.research)) return null;
   if(input.playerResearch!==undefined&&!playerResearchValid(input.playerResearch))return null;
+  if(input.name!==undefined&&!playerNameValid(input.name))return null;
   const summary = rewardsInspect(input.rewards, catalogue);
   if (!summary||input.rewards.some(r=>r.event.type==='play'&&r.event.play.kind!==input.kind)) return null;
   const research = {};
@@ -115,7 +128,7 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
   const familyUnlocks=input.familyUnlocks===undefined?[...FAMILIES]:input.familyUnlocks;
   if(!unique(familyUnlocks)||familyUnlocks.some(f=>!FAMILIES.includes(f)))return null;
   return { version: PROFILE_VERSION, familyUnlocks:[...familyUnlocks], familyAccess:{...familyAccess}, kind: input.kind, revision: input.revision, wallet: { seeds: input.wallet.seeds },
-    research, ...(input.playerResearch===undefined?{}:{playerResearch:structuredClone(input.playerResearch)}), rewards: [...summary.receipts.values()] };
+    research, ...(input.name===undefined?{}:{name:input.name}), ...(input.playerResearch===undefined?{}:{playerResearch:structuredClone(input.playerResearch)}), rewards: [...summary.receipts.values()] };
 }
 export function profileSummary(input, catalogue = CATALOGUE) {
   const profile = profileValidate(input, catalogue);

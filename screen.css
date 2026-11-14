@@ -138,3 +138,7 @@ dialog select,dialog input:not([type]),dialog input[type=number],dialog input[ty
 #settings-dialog .display-heading{flex-wrap:wrap;gap:8px}
 #settings-dialog .display-heading h3{font-size:14px}
 #settings-dialog .local-badge{margin:0;font-size:9px;line-height:1.5}
+
+/* Keep keyboard controls readable at focus without restricting browser pinch zoom.
+   This deliberate floor also overrides smaller fonts in later component sheets. */
+input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=file]):not([type=color]):not([type=button]):not([type=submit]):not([type=reset]):not([type=hidden]),textarea,select,[contenteditable=true],[contenteditable=""],[contenteditable=plaintext-only]{font-size:max(16px,var(--keyboard-font-size,1em))!important}

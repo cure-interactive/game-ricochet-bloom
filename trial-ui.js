@@ -1,4 +1,4 @@
-import { gamemodeMount } from './gamemode-ui.js?v=d989ccd8b9a6e5776833b0701efa2624f592a8225e399411bbaba8e00a24b6d7';
+import { gamemodeMount } from './gamemode-ui.js?v=cf4b28648a17ad4f63ac09630ccb8566b10dcd4481d9574e9cf736695a189caa';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
 import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=e42ceb7e910836840823bc95f1a1b941bc0a67e9fca8e194f7fac697a662775f';
 import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';

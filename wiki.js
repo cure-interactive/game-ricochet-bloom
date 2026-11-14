@@ -5,7 +5,7 @@ import { iconHTML } from './ui-icon.js?v=4d4624a19042310239e24c63a77cac78d6ea021
 import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=66ff1f633c99f490c7b1ef20c46e881d4739f941c3478496e1e883a2f3eb5884';
 
 export const WIKI_PAGES = Object.freeze({
-  player: { title: 'Player', url: './wiki/player.md?v=42ed59db354a2b09d3d2df2ef941e0310545b2b54a14c1a6ee3115293de12d73' },
+  player: { title: 'Player', url: './wiki/player.md?v=fe6b860a08b6c152079a0025f9e6cbb4e0b111bcb500681e95f05ac2faa13ec9' },
   developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=ceb8c80d6bb5f809b39ba60740d24a5a704a1900198d00593c6d31669be04f07' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=67a32f6b27c927eac686a265dc68ce3a2d05d9c66004b15d272a640b76996752' },
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=688714c1fe057d6c0da78a5f38b32cd4bc3fe0e712812b248e9d7552b6c54daf' },
