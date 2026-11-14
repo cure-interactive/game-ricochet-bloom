@@ -4,7 +4,7 @@ import { menuBackgroundMount } from './menu-background.js?v=8e566b6618a527f80a47
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
-  const home=document.createElement('section');home.id='main-menu';home.setAttribute('aria-label','Main Menu');
+  const home=document.createElement('section');home.id='main-menu';home.inert=document.body.dataset.startup!==undefined&&document.body.dataset.startup!=='ready';home.setAttribute('aria-label','Main Menu');
   const button=(id,label,icon,kind='')=>buttonHTML(label,icon,{id,class:kind});
   home.innerHTML=`<div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><div class="home-actions"><nav class="home-primary" aria-label="Main game actions"><button type="button" id="home-continue" class="primary"><img class="continue-art" width="48" height="48" alt=""><span class="continue-copy"><span>Continue</span><small class="continue-detail"></small></span></button>${button('home-gamemodes','Gamemodes','grid','primary')}${button('home-tree','Skill Tree','skill-tree')}<button type="button" id="home-skins"><span class="skin-preview home-skin" aria-hidden="true"><i></i></span><span>Player Skins</span></button></nav><nav class="home-secondary" aria-label="More game options">${button('home-wiki','Wiki','book')}${button('home-help','How to Play','book')}${button('home-settings','Settings','gear')}</nav></div></div>`;
   const backdrop=document.createElement('div');backdrop.id='menu-background';backdrop.setAttribute('aria-hidden','true');
