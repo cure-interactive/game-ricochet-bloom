@@ -6,7 +6,7 @@ import { menuBackgroundMount } from './menu-background.js?v=8e566b6618a527f80a47
 export function gameMenuMount(host) {
   const home=document.createElement('section');home.id='main-menu';home.inert=document.body.dataset.startup!==undefined&&document.body.dataset.startup!=='ready';home.setAttribute('aria-label','Main Menu');
   const button=(id,label,icon,kind='')=>buttonHTML(label,icon,{id,class:kind});
-  home.innerHTML=`<div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><div class="home-actions"><nav class="home-primary" aria-label="Main game actions"><button type="button" id="home-continue" class="primary"><img class="continue-art" width="48" height="48" alt=""><span class="continue-copy"><span>Continue</span><small class="continue-detail"></small></span></button>${button('home-gamemodes','Gamemodes','grid','primary')}${button('home-stats','Player Stats','player-skin')}${button('home-tree','Skill Tree','skill-tree')}${button('home-skins','Player Skins','player-skin')}</nav><nav class="home-secondary" aria-label="More game options">${button('home-wiki','Wiki','book')}${button('home-help','How to Play','book')}${button('home-settings','Settings','gear')}</nav></div></div>`;
+  home.innerHTML=`<div class="home-content"><h1>Ricochet<br><span>Bloom</span></h1><div class="home-actions"><nav class="home-primary" aria-label="Main game actions"><button type="button" id="home-continue" class="primary"><img class="continue-art" width="48" height="48" alt=""><span class="continue-copy"><span>Continue</span><small class="continue-detail"></small></span></button>${button('home-gamemodes','Gamemodes','grid','primary')}${button('home-tree','Skill Tree','skill-tree')}${button('home-player','Player','player-skin')}</nav><nav class="home-secondary" aria-label="More game options">${button('home-wiki','Wiki','book')}${button('home-help','How to Play','book')}${button('home-settings','Settings','gear')}</nav></div></div>`;
   const backdrop=document.createElement('div');backdrop.id='menu-background';backdrop.setAttribute('aria-hidden','true');
   backdrop.innerHTML='<canvas class="home-pool"></canvas>';
   document.body.append(backdrop,home);
@@ -26,9 +26,8 @@ export function gameMenuMount(host) {
   function back(){const target=route.back();if(target===null)return;close();if(target==='play')host.resume();else if(target==='home')homeOpen();else {present(target);host.open(target);}}
   home.querySelector('#home-continue').onclick=()=>host.continue();
   home.querySelector('#home-gamemodes').onclick=()=>host.open('gamemodes');
-  home.querySelector('#home-stats').onclick=()=>host.open('stats');
   home.querySelector('#home-tree').onclick=()=>host.open('tree');
-  home.querySelector('#home-skins').onclick=()=>host.open('skins');
+  home.querySelector('#home-player').onclick=()=>host.open('player');
   home.querySelector('#home-wiki').onclick=()=>host.open('wiki');
   home.querySelector('#home-help').onclick=()=>host.open('help');
   home.querySelector('#home-settings').onclick=()=>host.open('settings');
