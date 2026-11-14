@@ -29,7 +29,7 @@
 
 :root body :is(dialog,#tree-dialog)>.screen-heading button>span:not(.ui-icon){display:inline;font-size:inherit}
 
-/* Default two-handed bars separate actions on the left from the title on the right.
-   The left-handed preference keeps its existing mirrored control placement. */
+/* Default bars keep Back/Close on the right, beside right-aligned titles.
+   Only the explicit left-handed preference mirrors sided controls. */
 :root body:not([data-left-handed=true]) :is(dialog,#tree-dialog)>.screen-heading>:is(.screen-heading-copy,h2){order:2;text-align:right}
-:root body:not([data-left-handed=true]) :is(dialog,#tree-dialog)>.screen-heading>button{order:-1}
+:root body:not([data-left-handed=true]) :is(dialog,#tree-dialog)>.screen-heading>button{order:3}
