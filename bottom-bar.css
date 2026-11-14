@@ -20,9 +20,9 @@
   padding-left: max(20px, env(safe-area-inset-left), calc((100vw - 1060px)/2));
   padding-right: max(20px, env(safe-area-inset-right), calc((100vw - 1060px)/2));
 }
-:root body dialog:has(> :is(.campaign-footer, .reward-footer)) > .screen-heading { margin-bottom: 12px; }
+:root body dialog:has(> :is(.campaign-footer, .reward-footer, .tree-map-hint)) > .screen-heading { margin-bottom: 12px; }
 @media(max-height:500px) {
-  :root body dialog:has(> :is(.campaign-footer, .reward-footer)) > .screen-heading { margin-bottom: 6px; }
+  :root body dialog:has(> :is(.campaign-footer, .reward-footer, .tree-map-hint)) > .screen-heading { margin-bottom: 6px; }
 }
 :root body #skin-dialog .skin-scroll,
 :root body #wiki-dialog .wiki-article { padding-bottom: 24px; }

@@ -7,7 +7,7 @@ import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-att
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=5ff229a31a77b92b75b6336e1bb1d7143a5c4a32922a4c4f10e12c8f11de9e18';
 import { earningAmount } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
 import { trialMount } from './trial-ui.js?v=97fb257e5ddd5255152be881dd53b9aecbcb2e7c7f766740ac31c6d91db61df7';
-import { GAME_VERSION } from './version.js?v=2a70bddf2a945ed7aecc1b13b2c24741b2343f9b2e9a6323c14a5988f3b68522';
+import { GAME_VERSION } from './version.js?v=a8f246f7e7beb43422f349fd10cfd82d4b042f1ead9c53454a863ede9eec2c1d';
 import { powerSlots } from './power-ui.js?v=f8c4306dc5078af6aec939b19356c123bafba47dc3331521794ed2b6b5366cfe';
 import { creditsMount } from './credit.js?v=f16c7c0d20416aa4e51dbfcb25456247987173ab0562e3ba29c2d80cc63bf4f4';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
@@ -22,7 +22,7 @@ import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f
 import { gameMenuMount } from './game-menu.js?v=a4ab8fa8932182776a64ccc06a45419e0087c26488b855804ada4a0cc819b1cb';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
-import { progressionMount } from './progression-ui.js?v=7120e068cdff2eeefd5319575f4a4848ae3e9981394ccad1ff933c799d3eac96';
+import { progressionMount } from './progression-ui.js?v=9cd11cb52a34e4069db2b2ced2afbb0070a293b045a1206023c2219330bb3539';
 import {assetURL} from './asset.js?v=b61b263cca739098e590874441ca93d7dd0d93530d85f7f90f10bc579dc815ae';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
