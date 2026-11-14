@@ -27,9 +27,8 @@
   }
   function onError(event) {
     if (event.target && event.target.id === 'game-module') report('A game file could not be loaded. Check your connection and retry.');
-    else if (event.message) report(event.message + (event.filename ? '\n' + event.filename.split('?')[0] + ':' + event.lineno : ''));
   }
-  function onRejection(event) { report(event.reason && event.reason.message || event.reason); }
+  function onFailure(event) { report(event.detail && event.detail.message || event.detail); }
   retry.onclick = function (event) {
     event.preventDefault();
     var url = new URL(location.href);
@@ -44,7 +43,7 @@
     message.textContent = 'The game is taking longer than expected. You can wait or retry. Retrying keeps your saved progress.';
   }, 15000);
   window.addEventListener('error', onError, true);
-  window.addEventListener('unhandledrejection', onRejection);
+  window.addEventListener('ricochet-startup-failed', onFailure);
   function finish() {
     if (complete) return;
     complete = true;
@@ -63,24 +62,24 @@
     ready = true;
     clearTimeout(timer);
     window.removeEventListener('error', onError, true);
-    window.removeEventListener('unhandledrejection', onRejection);
+    window.removeEventListener('ricochet-startup-failed', onFailure);
     panel.setAttribute('aria-busy', 'false');
     retry.hidden = true;
     document.getElementById('startup-report').hidden = true;
     document.getElementById('startup-diagnostics').hidden = true;
     title.textContent = 'Ricochet Bloom';
     message.textContent = 'Your pool is ready.';
-    // A cached load still gets a readable loading beat. Paint the actual menu
-    // before the crossfade, keeping it inert until both surfaces have settled.
+    var reduced = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || body.classList.contains('motion-reduced');
+    // Give cached loads a readable beat, then let the splash clear before the
+    // menu arrives. Keep input blocked until every entrance has settled.
     setTimeout(function () {
       requestAnimationFrame(function () { requestAnimationFrame(function () {
-        var reduced = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || body.classList.contains('motion-reduced');
         body.dataset.startupMotion = reduced ? 'reduced' : 'full';
         panel.inert = true;
         body.dataset.startup = 'entering';
         // A short opacity-only fade also works with Gentle/reduced motion.
-        exitTimer = setTimeout(finish, reduced ? 400 : 1100);
+        exitTimer = setTimeout(finish, reduced ? 450 : 2300);
       }); });
-    }, Math.max(0, 350 - (Date.now() - started)));
+    }, Math.max(0, (reduced ? 350 : 900) - (Date.now() - started)));
   }, { once: true });
 }());

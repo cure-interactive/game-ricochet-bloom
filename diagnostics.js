@@ -18,6 +18,9 @@
   window.addEventListener('unhandledrejection', function (event) {
     record('Unhandled rejection', event.reason && event.reason.message || event.reason || 'Unknown rejection');
   });
+  window.addEventListener('ricochet-startup-failed', function (event) {
+    record('Game startup failed', event.detail && event.detail.message || event.detail || 'Unknown module failure');
+  });
   function savedData() {
     var keys = ['ricochet-bloom-pool-v3', 'ricochet-bloom-pool-v2', 'ricochet-bloom-development-settings-v1'];
     ['normal', 'development'].forEach(function (kind) {

@@ -20,19 +20,19 @@ body[data-startup=loading]>:not(#startup):not(script),body[data-startup=failed]>
 body[data-startup=failed] .startup-bubbles,body[data-startup=failed] .startup-bubbles i{animation:none}
 body[data-startup=entering]>:not(#startup){pointer-events:none}
 body[data-startup=entering]>:not(#startup):not(#main-menu):not(#menu-background):not(script){visibility:hidden}
-body[data-startup=entering] #startup{animation:startup-exit .85s ease both}
-body[data-startup=entering] #menu-background{animation:startup-reveal .85s ease both}
-body[data-startup=entering] .home-content h1{animation:startup-arrive .6s .1s cubic-bezier(.2,.7,.2,1) both}
-body[data-startup=entering] .home-primary{animation:startup-arrive .6s .15s cubic-bezier(.2,.7,.2,1) both}
-body[data-startup=entering] .home-secondary{animation:startup-arrive .6s .2s cubic-bezier(.2,.7,.2,1) both}
+body[data-startup=entering] #startup{animation:startup-exit 2.1s ease both}
+body[data-startup=entering] #menu-background{animation:startup-reveal 1.4s ease both}
+body[data-startup=entering] .home-content h1{animation:startup-arrive .85s .95s cubic-bezier(.2,.7,.2,1) both}
+body[data-startup=entering] .home-primary{animation:startup-arrive .85s 1.05s cubic-bezier(.2,.7,.2,1) both}
+body[data-startup=entering] .home-secondary{animation:startup-arrive .85s 1.2s cubic-bezier(.2,.7,.2,1) both}
 @keyframes startup-drift{50%{transform:translateY(-7px)}}
 @keyframes startup-breathe{50%{transform:scale(1.07);opacity:.65}}
-@keyframes startup-exit{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.02)}}
+@keyframes startup-exit{0%{opacity:1;transform:scale(1)}45%,100%{opacity:0;transform:scale(1.02)}}
 @keyframes startup-fade-out{from{opacity:1}to{opacity:0}}
 @keyframes startup-reveal{from{opacity:0}to{opacity:1}}
 @keyframes startup-arrive{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.startup-bubbles,.startup-bubbles i{animation:none!important}}
 body.motion-reduced .startup-bubbles,body.motion-reduced .startup-bubbles i{animation:none!important}
-body[data-startup=entering][data-startup-motion=reduced] #startup{animation:startup-fade-out .18s ease both}
-body[data-startup=entering][data-startup-motion=reduced] :is(#menu-background,.home-content h1,.home-primary,.home-secondary){animation:startup-reveal .18s ease both}
+body[data-startup=entering][data-startup-motion=reduced] #startup{animation:startup-fade-out .25s ease both}
+body[data-startup=entering][data-startup-motion=reduced] :is(#menu-background,.home-content h1,.home-primary,.home-secondary){animation:startup-reveal .25s ease both}
 @media(max-height:450px){.startup-bubbles{transform:scale(.65);height:90px;animation:none}.startup-eyebrow{margin-top:10px}#startup h1{font-size:28px}#startup-message{margin-top:10px;font-size:14px}}
