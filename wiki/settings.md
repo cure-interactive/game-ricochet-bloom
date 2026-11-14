@@ -16,6 +16,10 @@ Show on-screen controls adds shot-control buttons and skill-tree camera controls
 
 Gentle Visuals reduces glow and motion intensity and is off by default. Stream View offers a wider pool layout on larger screens. Screen Mode explains the fullscreen or app-view options available on your current device; browser support differs.
 
+## Left-Handed Layout
+
+Back controls sit on the right by default. Enable **Settings → Accessibility → Left-Handed Layout** to place Back, Close, Pause, favorite stars and the Skill Tree legend on the left. The setting is remembered on this browser and applies to both Normal and Development profiles. Text, aiming and the left-edge Back gesture keep their normal direction.
+
 ## Saves and Backups
 
 Your pool, song and campaign progress save in this browser. They do not automatically transfer between devices or between the local, GitHub Pages and private hosted copies. Clearing website data can remove them.
@@ -26,7 +30,7 @@ Development controls use a separate test profile. They can reset test progress, 
 
 [Back to Wiki](wiki.md).
 
-Settings → About shows the current game version, **3.0.0**.
+Settings → About shows the currently installed game version.
 
 ## Screen Rotation
 

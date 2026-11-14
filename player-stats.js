@@ -7,7 +7,7 @@ import { scoreRead } from './score-attack-store.js?v=5ff229a31a77b92b75b6336e1bb
 import { experimentRead, experimentMedal, experimentLegacy } from './experiment-store.js?v=810950b4b346e69891a07dd81ecce1e27b3b738cda9dd2f73f1d169fbf62576a';
 import { experimentSetup } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
 import { trialMedal, MEDAL_NAMES } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { poolMedalRecords } from './storage.js?v=b0486b5e1c21ec227258e9e2560a61459aa28fc2fedb80eb91b582892904dfa5';
+import { poolMedalRecords } from './storage.js?v=0c1eaff4b15712ebe008629e3c6739de4f73c60d485809b164d27c63896a2d71';
 
 const counts=()=>Object.fromEntries(MEDAL_NAMES.map(name=>[name,0]));
 // Read-only projection. Every total retains its original save/profile boundary.

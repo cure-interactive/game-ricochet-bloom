@@ -1,6 +1,18 @@
 import { MEDAL_NAMES, medalHigher, medalEvaluate, poolConditions, poolMedalKey } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { saveValidate } from './engine.js?v=5d4ecf80115d71c18a5182dcc78d6161803b2652f17a3fcec1c5a48a149bedd8';
 export const STORAGE = 'ricochet-bloom-pool-v3', LEGACY_STORAGE = 'ricochet-bloom-pool-v2';
+// Settings must persist even when a trial owns gameplay saving. Merge only the
+// requested preferences into the latest raw save; never replace unreadable data.
+export function poolPreferencesWrite(storage, patch) {
+  try {
+    const raw = storage.getItem(STORAGE) ?? storage.getItem(LEGACY_STORAGE);
+    const stored = raw === null ? poolStoreRead(null) : JSON.parse(raw);
+    if (!stored || typeof stored !== 'object' || Array.isArray(stored)) return false;
+    stored.preferences = { ...stored.preferences, ...patch };
+    storage.setItem(STORAGE, JSON.stringify(stored));
+    return true;
+  } catch { return false; }
+}
 export function poolStoreRead(input) {
   const store = { version: 3, activeMode: 'challenge', pools: { challenge: null, free: null, waves:null }, waveBest:{wave:0,score:0}, best: 0, medals: {}, preferences: {} };
   if (!input || typeof input !== 'object') return store;
