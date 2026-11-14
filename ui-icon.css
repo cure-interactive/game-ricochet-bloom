@@ -56,7 +56,7 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 }
 @media(max-height:500px) and (min-width:600px){.power-dock>button>.ui-icon{display:none}.power-slots .ui-icon{width:13px;height:13px}.dock-tools>button{gap:5px}.ui-icon{width:16px;height:16px}}
 @media(max-width:359px){
- header,.stream-mode header{gap:4px;padding-inline:8px}.brand-icon{width:28px;height:28px}.pool-navigation button{font-size:10px;padding:7px 6px;white-space:nowrap}.pool-navigation .ui-icon{width:13px;height:13px}header #settings-open{width:34px;min-width:34px}
+ header{gap:4px;padding-inline:8px}.brand-icon{width:28px;height:28px}.pool-navigation button{font-size:10px;padding:7px 6px;white-space:nowrap}.pool-navigation .ui-icon{width:13px;height:13px}header #settings-open{width:34px;min-width:34px}
  .aim-controls input{width:42px}.compact{padding:10px 8px}.dock-tools>button,.dock-tools #music-open{min-width:32px;width:32px}.dock-tools{gap:3px}
 }
 

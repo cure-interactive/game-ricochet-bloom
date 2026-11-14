@@ -32,7 +32,7 @@
 :root body #development-dialog.standard-dialog > .dialog-heading h2 { flex: 1; }
 
 /* The field comes first; status and navigation sit beneath it. */
-body > main, .stream-mode > main {
+body > main {
   grid-template-rows: minmax(0,1fr) minmax(30px,auto) 44px 36px auto auto;
 }
 .pool-shell { grid-row: 1; }
@@ -45,14 +45,14 @@ body > main, .stream-mode > main {
 .goal-strip { grid-row: 6; }
 
 /* Normal play uses the space previously occupied by the Development music bar. */
-body > main:has(.phrase-panel[hidden]), .stream-mode > main:has(.phrase-panel[hidden]) {
+body > main:has(.phrase-panel[hidden]) {
   grid-template-rows: minmax(0,1fr) minmax(30px,auto) 44px auto auto;
 }
 main:has(.phrase-panel[hidden]) .control-strip { grid-row: 4; }
 main:has(.phrase-panel[hidden]) .goal-strip { grid-row: 5; }
 
 @media(max-height:500px) and (min-width:480px) and (orientation:landscape) {
-  body > main, .stream-mode > main { grid-template-rows: 44px 44px 36px minmax(0,1fr) auto auto; }
+  body > main { grid-template-rows: 44px 44px 36px minmax(0,1fr) auto auto; }
   .pool-shell { grid-row: 1/-1; }
   .power-dock { grid-row: 1; }
   .bonus-card { grid-row: 2; }
@@ -60,7 +60,7 @@ main:has(.phrase-panel[hidden]) .goal-strip { grid-row: 5; }
   .edge-feedback { grid-row: 4; }
   .goal-strip { grid-row: 5; }
   .control-strip { grid-row: 6; }
-  body > main:has(.phrase-panel[hidden]), .stream-mode > main:has(.phrase-panel[hidden]) {
+  body > main:has(.phrase-panel[hidden]) {
     grid-template-rows: 44px 44px minmax(0,1fr) auto auto;
   }
   main:has(.phrase-panel[hidden]) .edge-feedback { grid-row: 3; }

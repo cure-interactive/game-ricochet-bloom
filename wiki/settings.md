@@ -14,7 +14,7 @@ An available unchecked setting has a bright solid outline; checked settings are 
 
 Show on-screen controls adds shot-control buttons and skill-tree camera controls. It is off by default; touch gestures and keyboard controls remain available.
 
-Gentle Visuals reduces glow and motion intensity and is off by default. Stream View offers a wider pool layout on larger screens. Screen Mode explains the fullscreen or app-view options available on your current device; browser support differs.
+Gentle Visuals reduces glow and motion intensity and is off by default. Screen Mode explains the fullscreen or app-view options available on your current device; browser support differs.
 
 ## Left-Handed Layout
 
