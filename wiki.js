@@ -1,8 +1,8 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { screenHeader } from './screen-header.js?v=97e7bd37ef6eedf0b994bfdd65619d8772e5f7f1cbb1b236ef426b2bb37144f4';
+import { screenHeader } from './screen-header.js?v=f6cf1da8c75fd2c85c84ee337249ed26977448e1bf13375fe2c8e1a75a8d82af';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { iconHTML } from './ui-icon.js?v=4d4624a19042310239e24c63a77cac78d6ea0211b7729b424db194db73b5cb52';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=66ff1f633c99f490c7b1ef20c46e881d4739f941c3478496e1e883a2f3eb5884';
+import { iconHTML } from './ui-icon.js?v=a45b8b7529e9829c50cbaee84ed71f02e69362d8a4b87c41723a1409fa839d8b';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=368bf7d585e4838d569d8b6209264bd0d7eab7f468b6045d985e756a5002a065';
 
 export const WIKI_PAGES = Object.freeze({
   player: { title: 'Player', url: './wiki/player.md?v=fe6b860a08b6c152079a0025f9e6cbb4e0b111bcb500681e95f05ac2faa13ec9' },

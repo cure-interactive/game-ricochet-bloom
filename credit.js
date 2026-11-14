@@ -1,7 +1,7 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { assetURL } from './asset.js?v=c168b1bf74896095e10ba96f5c9cfb00449414ce901de7993bd725e00a9bbfea';
-import { renderMarkdown } from './wiki.js?v=61528cb463d9e031ffbc0e9384e86307fe60b9abbf442fef03d23f66a8ccd03b';
-import { buttonLabel } from './ui-icon.js?v=4d4624a19042310239e24c63a77cac78d6ea0211b7729b424db194db73b5cb52';
+import { renderMarkdown } from './wiki.js?v=f07659347dc16a96c9cc7fdb2e581393017af44ee5cb9748f58ed89cab51e1cc';
+import { buttonLabel } from './ui-icon.js?v=a45b8b7529e9829c50cbaee84ed71f02e69362d8a4b87c41723a1409fa839d8b';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 // Only shipped attribution/assets may navigate inside the viewer.
 export function creditTarget(href, current='icon/ui/INDEX.md') {

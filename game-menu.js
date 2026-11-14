@@ -1,6 +1,6 @@
-import { GAME_VERSION } from './version.js?v=7e52e3d5e2fb86ef5c0161818fbebdb0ae9f1c8bd86d53949f90235c77f0128e';
+import { GAME_VERSION } from './version.js?v=0977327ab5f65c6e8d5833c491ded3954929d94794243d58b40eb859500a7539';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { buttonHTML } from './ui-icon.js?v=4d4624a19042310239e24c63a77cac78d6ea0211b7729b424db194db73b5cb52';
+import { buttonHTML } from './ui-icon.js?v=a45b8b7529e9829c50cbaee84ed71f02e69362d8a4b87c41723a1409fa839d8b';
 import { menuBackgroundMount } from './menu-background.js?v=03e560143f6a3851b7897559ddd321d4a1e542d2282fd56d1ef79ca0f5e01662';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.

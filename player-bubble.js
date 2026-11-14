@@ -5,11 +5,13 @@ import {bubbleRender} from './bubble-render.js?v=997e50dee1966fa389f1522907cc5fc
 // preview keeps its existing input, focus, navigation and progression contract.
 export function registerPlayerBubble(win=window){
  if(win.customElements.get('player-bubble'))return;
+ let sequence=0;
  class PlayerBubble extends win.HTMLElement{
   connectedCallback(){
    if(this.canvas)return;
    this.membrane=bubbleCreate();this.body={x:39.2,y:39.2,radius:14,vx:0,vy:0};
    this.frame=0;this.last=0;this.visible=false;this.bounce=0;
+   this.phase=++sequence*2.4;this.age=0;this.nextRipple=1.1+(sequence%4)*.23;
    this.canvas=this.ownerDocument.createElement('canvas');this.canvas.setAttribute('aria-hidden','true');this.append(this.canvas);
    this.context=this.canvas.getContext('2d');
    this.media=win.matchMedia('(prefers-reduced-motion: reduce)');
@@ -44,14 +46,22 @@ export function registerPlayerBubble(win=window){
    this.frame=0;if(!this.isConnected||!this.visible||this.ownerDocument.hidden){this.reset();return;}
    if(this.reduced()){this.reset();return;}
    const dt=this.last?Math.min(.05,(time-this.last)/1000):1/60;this.last=time;
-   bubbleStep(this.membrane,this.body,dt);
+   this.age+=dt;
+   // In the pool, nearby motion and contacts keep the membrane alive. UI
+   // bubbles have no physical neighbours, so give that same spring model a
+   // bounded current and occasional small impacts instead of freezing it.
+   const angle=this.phase+this.age*1.7;
+   const flow={vx:34*Math.cos(angle),vy:28*Math.sin(angle*.83)};
+   if(this.age>=this.nextRipple){
+    bubbleHit(this.membrane,14,Math.cos(angle),Math.sin(angle),60);
+    this.nextRipple=this.age+1.35+.35*(1+Math.sin(angle));
+   }
+   bubbleStep(this.membrane,this.body,dt,false,flow);
    this.bounce*=Math.exp(-dt*5);
    // A small tethered hop for decorative icons; the large viewer owns its drag tether.
    this.style.transform=this.closest('.skin-preview-interactive')?'':`translateY(${(Math.sin(time*.018)*this.bounce*12).toFixed(3)}%)`;
    this.paint();
-   const active=this.body.vx||this.body.vy||Math.abs(this.bounce)>.002||
-    [...this.membrane.offset,...this.membrane.speed,...this.membrane.strain,...this.membrane.strainSpeed,...this.membrane.core,...this.membrane.coreSpeed].some(value=>Math.abs(value)>.002);
-   if(active)this.request();else this.reset();
+   this.request();
   }
   paint(){
    if(!this.context||!this.size)return;
