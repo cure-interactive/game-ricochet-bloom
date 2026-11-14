@@ -8,7 +8,7 @@ import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-att
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=8f14e045773ac1997893782ac36e79676579fd899416a885dd8bda65fa99e252';
 import { earningAmount } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
 import { trialMount } from './trial-ui.js?v=884168753b5d71403fb1953f90f221315e3110c1f5a24d1cf608d629de5b40ea';
-import { GAME_VERSION } from './version.js?v=d8847fec1995d5fcde1c77236f95491865cea1ded79fdcb34916ec2292e35b23';
+import { GAME_VERSION } from './version.js?v=5c7565807d4a57992cfa688376c57d510212da8fa54ace4a35884143d44585d8';
 import { powerSlots } from './power-ui.js?v=a3493a47ed122d5c3838f8d6f54c7b1164a57e5ea66f7e6ffcb98c7cabd354b5';
 import { creditsMount } from './credit.js?v=48a224612492a99074ea13c4cd76b466d0d74996e3122bcf8573777814c3be3d';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
@@ -20,7 +20,7 @@ import { POOL_NAMES } from './run.js?v=cc440fdabebe81d2a4eb7bbd3fb7e891f85544ca0
 import { freePlaySync, freePlayBuild } from './free-play.js?v=87df8ff1e1f52f208fb8a5d1691a37cbf1f42af5ed9dc79f0c4b76d9fba3d22b';
 import { fullscreenMount } from './fullscreen.js?v=e40951c52d4f5a1fba3468b2789a571e965e960fc744ff3fa904ade2dbced971';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=6b33c16a7b198d21f3bfcdb412e9bbe1c6c1e43a7c8286285bf5fcf16df435ca';
+import { gameMenuMount } from './game-menu.js?v=a00f40ccffdbcdc94295fe26d630f18680c509ff82907c0b1a880a98585ac4db';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
 import { progressionMount } from './progression-ui.js?v=492fbc320e18c81dabf103e87b8a45f793b5b3b938d1ba04b3b0fae532f7ac2d';

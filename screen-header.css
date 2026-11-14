@@ -29,7 +29,9 @@
 
 :root body :is(dialog,#tree-dialog)>.screen-heading button>span:not(.ui-icon){display:inline;font-size:inherit}
 
-/* Default bars keep Back/Close on the right, beside right-aligned titles.
-   Only the explicit left-handed preference mirrors sided controls. */
-:root body:not([data-left-handed=true]) :is(dialog,#tree-dialog)>.screen-heading>:is(.screen-heading-copy,h2){order:2;text-align:right}
-:root body:not([data-left-handed=true]) :is(dialog,#tree-dialog)>.screen-heading>button{order:3}
+/* Keep auxiliary controls, title and navigation in the same logical order in
+   both modes. Handedness reverses the row, so titles stay beside Back/Close
+   rather than being separated from them by wallets or view switches. */
+:root body :is(dialog,#tree-dialog)>.screen-heading>:is(.screen-heading-copy,h2){order:2;text-align:right}
+:root body :is(dialog,#tree-dialog)>.screen-heading>button{order:3}
+:root body[data-left-handed=true] :is(dialog,#tree-dialog)>.screen-heading>:is(.screen-heading-copy,h2){text-align:left}
