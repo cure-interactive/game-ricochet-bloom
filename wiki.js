@@ -1,7 +1,8 @@
-import { screenHeader } from './screen-header.js?v=b3d9b07c196b969e345063358159bcabb90c6ae99410d49934cf4b23eb185c73';
+import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
+import { screenHeader } from './screen-header.js?v=77da565ebb121a35c6d59cc8cacc807a866e5fdd0ed619af73057cb6a4b80823';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=f51be4b1ec2e8be609bb9e2a25d3e6cc8ed14cf0e06d2b13bb70566a6efe03d8';
+import { iconHTML } from './ui-icon.js?v=7e81246e997e2106001cc2f001032e68090a0c751f008678bd91820191a7979e';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=3ffb7dcb0bb7a569e8ab340817c8ee248dd123e44de34e6439df75e407227c7d';
 
 export const WIKI_PAGES = Object.freeze({
   medals: { title: 'Medals', url: './wiki/medals.md?v=c0e1bb2076f5fc938c878764747c5d531b8c6a0af77df92644351021bfd39f09' },
@@ -29,7 +30,6 @@ export const WIKI_SOURCES = Object.freeze([
   'https://press.na.square-enix.com/FOAMSTARS',
   'https://noitagame.com/'
 ]);
-const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const headingID = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 export function wikiTarget(href, current = 'wiki') {
   const match = /^(?:\.\/)?([a-z0-9-]+\.md)?(?:#([a-z0-9-]+))?$/.exec(href);

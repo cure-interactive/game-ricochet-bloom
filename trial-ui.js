@@ -1,98 +1,26 @@
+import { gamemodeMount } from './gamemode-ui.js?v=4607134bb91a7514e5d066a474d215f022ea4c60ea114bec59f1e31d1e92f837';
 import { experimentSetup } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=d767dcf801cfcc722a56d973f16e4175256525e7f4f6abe74e23e90a80e665f5';
-import { scoreConditions, trialConditions, trialEvidence, trialMedal, poolConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { screenHeader } from './screen-header.js?v=b3d9b07c196b969e345063358159bcabb90c6ae99410d49934cf4b23eb185c73';
-import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=57c00b5506f930fad7fb871e24aa2973cb86991447a43451a760cf7dadcc7ae1';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=4fccbcfa467ab558a8cfba26398ff7d1b89d650b0664c6af2ba633490cf7ad0c';
+import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
+import { screenHeader } from './screen-header.js?v=77da565ebb121a35c6d59cc8cacc807a866e5fdd0ed619af73057cb6a4b80823';
 import { songKeep } from './song.js?v=f967d4f585d3d5300be734f4ed6a4870e0de8c85450ff8f6bd9ad5fb49f1ae60';
 import { melodyDraw } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
-import { experimentArt } from './experiment-art.js?v=3122a3a41bebb8d9124ce486b6eac7fcbcbee35a9041fcd15de114d423abc0a1';
-import { experimentMount } from './experiment-ui.js?v=7e8b59877287caa461a1a4ac699684f10452d4f0a4a05731565ad360c31fea10';
 import { experimentRewarded, experimentGoal, EXPERIMENT_RECIPES } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
-import { experimentMedal, experimentRead, experimentFavourite, experimentSave, experimentWrite, experimentEmpty, experimentExport } from './experiment-store.js?v=810950b4b346e69891a07dd81ecce1e27b3b738cda9dd2f73f1d169fbf62576a';
-import { SCORE_BUDGETS, SCORE_DEFAULT, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
-import { scoreRead } from './score-attack-store.js?v=98b107ad3f4e9dac451513541bf8417fe619ed5e77542e660a5acc0d29b9944f';
+import { experimentMedal, experimentRead, experimentSave, experimentWrite, experimentEmpty, experimentExport } from './experiment-store.js?v=810950b4b346e69891a07dd81ecce1e27b3b738cda9dd2f73f1d169fbf62576a';
 import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=1142334db4d9446b27b412cbc5ad6d9c93bebb7180ae6b645ebcc92c561dd824';
 import { trialRead,trialWrite } from './trial-store.js?v=bd2acb3da3f6a1c42fc53da9e5191dafb3cacfb11142f16ba9063a137bee9449';
 import { earningAmount } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
-import { assetURL } from './asset.js?v=3cbfab492cc37c59b11a7e7ee1809773bc384873f2e900d7d5fa6526e0af4b91';
-import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-
-
-const art=mode=>assetURL(`artwork/mode/${mode}.svg`);
-const button=(id,label,icon='arrow-left')=>`<button type="button" id="${id}">${iconHTML(icon)}<span>${label}</span></button>`;
+import { buttonHTML } from './ui-icon.js?v=7e81246e997e2106001cc2f001032e68090a0c751f008678bd91820191a7979e';
+const button=(id,label,icon='arrow-left')=>buttonHTML(label,icon,{id});
 const color={'music-note':'#a4f4cf','beat-gate':'#eb9bcd','sound-hazard':'#ff8b91',instrument:'#f2d279',keeper:'#ff8b91',gate:'#9ce6cf',power:'#c4a7ff',payload:'#ffb56e',player:'#f6f5cf',target:'#ed82bd',blast:'#ffb56e',fire:'#ff765f',gas:'#cadb78',cell:'#a4f4cf',cargo:'#8edbff',plug:'#c6b4ff',vent:'#bf89e8',mote:'#ec8ed7',mud:'#bba18c',spike:'#fa8c91'};
 export function trialMount(host){
-  const menu=document.createElement('dialog');menu.id='gamemodes-dialog';menu.className='standard-dialog';menu.setAttribute('aria-labelledby','gamemodes-title');
-  menu.innerHTML=`${screenHeader({className:'dialog-heading',title:'Gamemodes',titleId:'gamemodes-title',back:button('gamemodes-back','Back')})}<div class="dialog-body mode-body"></div>`;
+  const modes=gamemodeMount({...host,start:enter});
   const play=document.createElement('dialog');play.id='trial-dialog';play.setAttribute('aria-labelledby','trial-title');
   play.innerHTML=`${screenHeader({className:'trial-heading',titleId:'trial-title',metaId:'trial-layout',back:button('trial-back','Back'),actions:button('trial-pause','Pause','pause')})}<div class="trial-scroll"><p id="trial-goal"></p><div id="trial-actions" class="trial-actions"></div><div class="trial-stats"><span class="trial-wallet" aria-label="Available Points for the Skill Tree">Points <strong id="trial-wallet">0</strong></span><strong id="trial-shots"></strong><span id="trial-status"></span><span id="trial-points"></span></div><details class="trial-medal-details"><summary id="trial-medal-summary">Medal Conditions</summary><div id="trial-medals"></div><p id="trial-medal-progress"></p></details><div class="trial-board"><canvas id="trial-canvas" width="900" height="600" tabindex="0" aria-label="Trial board. Drag backward and release to launch. Arrow keys aim, Space launches. Escape pauses."></canvas><div id="trial-overlay" hidden><strong id="trial-outcome"></strong><div id="trial-medal-result"></div><p id="trial-reason"></p>${button('trial-resume','Resume','play')}${button('trial-retry','Retry Same Setup','reset')}<button id="trial-review">Review / Change Setup</button>${button('trial-home','Main Menu','grid')}</div></div><p id="trial-alert" role="status" aria-live="polite"></p><button id="trial-save-retry" type="button" hidden>Retry Save</button><button id="trial-export" type="button" hidden>Export Pending Run</button><div class="trial-controls"><label>Aim <input id="trial-angle" type="range" min="-180" max="180" value="0"><output id="trial-angle-value">0°</output></label><label>Power <input id="trial-power" type="range" min="0" max="100" value="70"><output id="trial-power-value">70%</output></label>${button('trial-launch','Launch','play')}<button id="trial-release" hidden>Release Payload</button></div><p id="trial-legend" class="trial-legend"></p><details class="trial-help"><summary>Controls and Reaction Log</summary><p>Drag anywhere on the board, pull back, then release. Arrow keys aim; Up/Down change power; Space launches. The board waits while you aim. Escape pauses. Each experiment setup keeps a separate save. Retry uses the same layout and settings.</p><ol id="trial-log"></ol><p>These experiments use fixed environmental tools. Standard original trials earn Points; variations record results separately. Permanent power mastery is trained in the original modes.</p></details></div>`;
-  document.body.append(menu,play);
-  const $=id=>document.getElementById(id),canvas=$('trial-canvas'),ctx=canvas.getContext('2d'),content=menu.querySelector('.mode-body');
-  let game=null,selected='reaction',paused=false,blocked=false,angle=0,power=.7,drag=null,oldMusic=null,frame=0,last=0,accumulator=0,lastSaved=0,flashes=[],bestMedal=null;
+  document.body.append(play);
+  const $=id=>document.getElementById(id),canvas=$('trial-canvas'),ctx=canvas.getContext('2d');
+  let game=null,paused=false,blocked=false,angle=0,power=.7,drag=null,oldMusic=null,frame=0,last=0,accumulator=0,lastSaved=0,flashes=[],bestMedal=null;
   const active=()=>!!game&&play.open;
-  function showMenu(){if(!menu.open)menu.showModal();$('gamemodes-back').focus({preventScroll:true});}
-  const galleryState=new Map();
-  let rememberGallery=()=>{};
-  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const starArt='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.3.9-4.5 4.4 1.1 6.2-5.7-3-5.7 3 1.1-6.2L3.2 9.6l6.3-.9Z"/></svg>';
-  function gallery(view=''){
-    rememberGallery();
-    if(!['','favourites','development',...GAMEMODE_GROUPS.map(g=>'group:'+g.id)].includes(view))view='';
-    const state=galleryState.get(view)??{query:'',category:'',scroll:0};galleryState.set(view,state);
-    host.screen(view?'gamemodes:'+view:'gamemodes');
-    const group=GAMEMODE_GROUPS.find(g=>view==='group:'+g.id),title=group?.name??(view==='favourites'?'Favourites':view==='development'?'In Development':'Gamemodes');
-    $('gamemodes-title').textContent=title;
-    content.innerHTML=`<nav class="gamemode-navigation" aria-label="Gamemode navigation">${view?'<button id="gamemode-root">Gamemodes</button>':''}<button id="gamemode-favourites" aria-pressed="${view==='favourites'}">${starArt} Favourites</button><button id="gamemode-development" aria-pressed="${view==='development'}">In Development</button><button id="gamemode-notebook">Saved Runs & Notes</button></nav><p class="mode-intro">${group?escape(group.description):view==='favourites'?'Your starred games, ready to open directly.':view==='development'?'Explore ideas whose gameplay is still being built.':'Choose a game or explore a collection of related challenges.'}</p><div class="gamemode-filter"><label>Search All Gamemodes<input id="gamemode-search" type="search" placeholder="Name, mechanic or idea number" value="${escape(state.query)}"></label>${view==='development'?`<label>Category<select id="gamemode-category"><option value="">All categories</option>${GAMEMODE_CATEGORIES.map(m=>`<option value="${m.id}"${state.category===m.id?' selected':''}>${m.name}</option>`).join('')}</select></label>`:''}</div><p id="gamemode-count" class="gamemode-count" role="status" aria-live="polite"></p><div id="gamemode-list"></div><p id="gamemode-save-status" role="status"></p>`;
-    function card(e,favourites,readable){
-      const starred=favourites.includes(e.id),label=`${starred?'Unstar':'Star'} ${e.name}`;
-      return `<article class="mode-card-shell"><button type="button" class="mode-card" data-gamemode="${e.id}">${e.art?`<img src="${art(e.art)}" alt="" width="480" height="240">`:experimentArt(e.id)}<span><small class="mode-category">${GAMEMODE_CATEGORIES.find(c=>c.id===e.category)?.name??''}${/^\d/.test(e.id)?' · #'+e.id:''}</small><strong>${escape(e.name)}</strong><small>${escape(e.description)}</small><em>${e.playable?(e.route==='setup'?'Three Difficulty Levels':'Play & Settings'):'In Development · View Idea'}</em></span></button><button type="button" class="mode-star" data-favourite="${e.id}" aria-label="${escape(label)}" aria-pressed="${starred}" title="${escape(label)}" ${readable?'':'disabled'}>${starArt}</button></article>`;
-    }
-    function cards(){
-      const read=experimentRead(localStorage,host.kind()),favourites=read.library?.favourites??[],page=gamemodePage({view,query:state.query,category:state.category,favourites});
-      $('gamemode-count').textContent=state.query.trim()?`${page.entries.length} search result${page.entries.length===1?'':'s'} across all gamemodes`:page.groups.length?`${page.entries.length} games · ${page.groups.length} collections`:`${page.entries.length} ${view==='development'?'idea':'game'}${page.entries.length===1?'':'s'}`;
-      $('gamemode-save-status').textContent=read.ok?'':'Favourites could not be read. Your existing notebook is preserved.';
-      const sections=[true,false].map(playable=>{const entries=page.entries.filter(e=>e.playable===playable);return entries.length?`<section class="gamemode-group"><h3>${playable?'Play Now':'In Development'}</h3><div class="mode-grid">${entries.map(e=>card(e,favourites,read.ok)).join('')}</div></section>`:'';}).join('');
-      const collections=page.groups.length?`<section class="gamemode-group"><h3>Collections</h3><div class="mode-grid">${page.groups.map(g=>`<button type="button" class="mode-card" data-group="${g.id}">${experimentArt(g.art)}<span><strong>${g.name}</strong><small>${g.description}</small><em>${g.count} Playable Games · Explore</em></span></button>`).join('')}</div></section>`:'';
-      $('gamemode-list').innerHTML=sections+collections||`<p class="gamemode-empty">${view==='favourites'&&!state.query?'No favourites yet. Star a game using the button in the top-right corner of its card.':'No games match. Try another search or category.'}</p>`;
-      if(page.planned)$('gamemode-list').insertAdjacentHTML('beforeend',`<p>${page.planned} related ideas are still in development.</p>`);
-      for(const b of content.querySelectorAll('[data-gamemode]'))b.onclick=()=>{rememberGallery();const e=GAMEMODE_CARDS.find(e=>e.id===b.dataset.gamemode);if(e.route==='legacy'){if(e.id==='campaign'){menu.close();host.legacy(e.id);}else poolSetup(e.id);}else if(e.route==='destination')scoreSetup();else if(e.route==='setup')hub.setup(e.id);else hub.detail(e.id);};
-      for(const b of content.querySelectorAll('[data-group]'))b.onclick=()=>navigate('group:'+b.dataset.group);
-      for(const b of content.querySelectorAll('[data-favourite]'))b.onclick=()=>{
-        const id=b.dataset.favourite,scroll=content.scrollTop,result=experimentFavourite(localStorage,host.kind(),id);
-        if(!result.ok){$('gamemode-save-status').textContent='Could not save this favourite. Your existing notebook is preserved. Please try again.';return;}
-        cards();content.scrollTop=scroll;(content.querySelector(`[data-favourite="${id}"]`)??content.querySelector('[data-favourite]')??$('gamemode-favourites')).focus({preventScroll:true});
-        $('gamemode-save-status').textContent=result.active?'Added to Favourites.':'Removed from Favourites.';
-      };
-    }
-    function navigate(next){state.scroll=content.scrollTop;gallery(next);}
-    $('gamemode-root')?.addEventListener('click',()=>navigate(''));
-    $('gamemode-favourites').onclick=()=>navigate('favourites');
-    $('gamemode-development').onclick=()=>navigate('development');
-    $('gamemode-notebook').onclick=()=>{rememberGallery();hub.hub();};
-    $('gamemode-search').oninput=e=>{state.query=e.target.value;state.scroll=0;cards();};
-    $('gamemode-category')?.addEventListener('change',e=>{state.category=e.target.value;state.scroll=0;cards();});
-    cards();showMenu();content.scrollTop=state.scroll;
-    rememberGallery=()=>{state.scroll=content.scrollTop;rememberGallery=()=>{};};
-  }
-  function poolSetup(mode){
-    const card=GAMEMODE_CARDS.find(e=>e.id===mode),records=host.poolMedals(mode);host.screen('pool-setup:'+mode);$('gamemodes-title').textContent=card.name;
-    content.innerHTML=`<div class="mode-overview"><img src="${art(mode)}" alt="" width="480" height="240"><p>${escape(card.description)}</p></div>${medalConditionsHTML(poolConditions(mode))}<p>${mode==='waves'?'Every wave has its own medal. The entire clearing shot counts; remaining shots determine your tier.':mode==='free'?'Milestones use the current pool’s score and are awarded when a shot settles. Keep playing after Gold.':'Finish three blooms to earn a medal. Your final shot finishes before its result is recorded.'} Personal medals stay separate by pool seed and profile.</p>${records.length?`<details><summary>Earned Medals · ${records.length}</summary><ul>${records.map(r=>`<li>${medalBadge(r.medal)} · ${escape(r.seed)}${mode==='waves'?' · Wave '+r.wave:''}</li>`).join('')}</ul></details>`:'<p>No medals recorded yet.</p>'}<button id="pool-play" class="primary">Play ${card.name}</button>`;
-    $('pool-play').onclick=()=>{menu.close();host.legacy(mode);};showMenu();
-  }
-  let budget=SCORE_DEFAULT;
-  function scoreSetup(){
-    host.screen('score-setup');$('gamemodes-title').textContent='Score Attack';
-    content.innerHTML=`<div class="mode-overview"><img src="${art('score-attack')}" alt="" width="480" height="240"><div><p>Build chains, bank off walls and trigger blooms. Use every shot to chase your best score.</p><small>No countdown · No extra shots · Final shot finishes before scoring</small></div></div><div class="layout-grid" role="group" aria-label="Shot budget">${SCORE_BUDGETS.map(n=>`<button class="layout-card" data-budget="${n}" aria-pressed="${n===budget}"><strong>${n} Shots</strong><small>${n===5?'Quick Run':n===10?'Standard Run':'Long Run'}</small></button>`).join('')}</div><div id="score-setup-detail"></div>`;
-    for(const b of content.querySelectorAll('[data-budget]'))b.onclick=()=>{budget=Number(b.dataset.budget);scoreSetup();content.querySelector(`[data-budget="${budget}"]`).focus();};
-    const saved=scoreRead(localStorage,host.kind(),budget),targets=scoreTargets(budget),detail=$('score-setup-detail');
-    const medal=saved.best===null?null:scoreMedal(saved.best,budget);
-    detail.innerHTML=`${medalConditionsHTML(scoreConditions(targets,'Finish every shot'),medal)}<p>${saved.best===null?'No completed best yet':`Personal Best: ${saved.best.toLocaleString('en-US')}${medal?' · '+medal:''}`}</p><p>Points earned here are usable in the Skill Tree. Your researched skills are fixed when a run starts; new purchases apply to your next run. Each budget and profile keeps its own save and completed best. Runs begin with the same layout; bubbles drift while you aim.</p>`;
-    if(!saved.ok){const warning=document.createElement('p');warning.className='trial-warning';warning.textContent='This save could not be read. It is preserved until you explicitly replace it.';detail.append(warning);}
-    if(saved.entry&&!saved.entry.game.isOver){const b=document.createElement('button');b.className='primary';b.textContent=`Continue · ${saved.entry.game.plucks} Shots Left`;b.onclick=()=>{menu.close();host.scorePlay(budget,false);};detail.append(b);}
-    const start=document.createElement('button');start.className='primary';start.textContent=saved.entry&&!saved.entry.game.isOver?'Replace Saved Run':!saved.ok?'Replace Unreadable Save':`Start ${budget} Shots`;start.onclick=()=>{if((!saved.ok||saved.entry&&!saved.entry.game.isOver)&&!confirm(saved.ok?'Replace this budget’s saved run? Completed personal bests and earned Points are kept.':'Replace this unreadable save? Its personal best cannot be recovered. Your Skill Tree Points are kept.'))return;menu.close();host.scorePlay(budget,true);};detail.append(start);showMenu();
-  }
-  const hub=experimentMount({content,title:$('gamemodes-title'),show:showMenu,screen:host.screen,kind:host.kind,start:enter,destination:()=>{menu.close();scoreSetup();},modes:gallery,wiki:id=>{menu.close();host.wiki(id);}});
-  const setup=(id)=>hub.setup(id);
   function effects(events){for(const e of events){host.sound.eventPlay({...e,id:e.type==='note'?(e.id-1)%20+1:e.id});if(['blast','pop','damage','objective'].includes(e.type))flashes.push({...e,life:e.type==='blast'?.55:.3});}}
   function save(){
     if(!game)return true;let stored=false;
@@ -101,7 +29,7 @@ export function trialMount(host){
     const paid=stored&&(!experimentRewarded(game.setup)||host.reward(game.earning));blocked=!paid;
     if(blocked){paused=true;host.sound.pauseSet(true);$('trial-alert').textContent='Progress could not be saved. Play is paused; retry saving or export this run before leaving.';}return paid;
   }
-  function enter(next,music=null){host.save();menu.close();host.screen('trial');oldMusic=host.sound.musicSave();game=next;selected=game.mode;if(game.setup)hub.select(game.setup);paused=game.phase==='flight';blocked=false;bestMedal=null;drag=null;flashes=[];angle=0;power=.7;accumulator=0;last=performance.now();lastSaved=game.tick;
+  function enter(next,music=null){host.save();modes.close();host.screen('trial');oldMusic=host.sound.musicSave();game=next;if(game.setup)modes.select(game.setup);paused=game.phase==='flight';blocked=false;bestMedal=null;drag=null;flashes=[];angle=0;power=.7;accumulator=0;last=performance.now();lastSaved=game.tick;
     host.sound.musicRestore(music,game.earning.blooms,game.shots);host.sound.portrait=false;host.sound.media.describe(TRIAL_MODES[game.mode].name);host.sound.pauseSet(paused);host.sound.musicStart();host.unlock();play.showModal();save();renderUI();draw();canvas.focus({preventScroll:true});if(!frame)frame=requestAnimationFrame(loop);
   }
   function leave(toHome=false){if(!save()){renderUI();return;}host.sound.pauseSet(true);play.close();game=null;drag=null;host.sound.musicRestore(oldMusic,oldMusic?.blooms,oldMusic?.plucks);oldMusic=null;if(toHome===true)host.home();else host.back();}
@@ -162,10 +90,10 @@ export function trialMount(host){
   canvas.onkeydown=e=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key)){e.preventDefault();if(e.key===' ')launch();else {if(game.phase!=='aim'||paused)return;if(e.key==='ArrowLeft')angle-=Math.PI/36;if(e.key==='ArrowRight')angle+=Math.PI/36;if(e.key==='ArrowUp')power=Math.min(1,power+.05);if(e.key==='ArrowDown')power=Math.max(0,power-.05);angle=Math.atan2(Math.sin(angle),Math.cos(angle));renderUI();}}};
   $('trial-release').onclick=()=>{if(!paused&&!blocked&&trialRelease(game)){effects(game.events);save();renderUI();draw();}};
   $('trial-home').onclick=()=>leave(true);
-  $('trial-review').onclick=()=>{const id=game.setup?.experimentId??game.mode;leave();if(!game){hub.setup(id);content.querySelector('.experiment-review').open=true;}};
+  $('trial-review').onclick=()=>{const id=game.setup?.experimentId??game.mode;leave();if(!game){modes.review(id);}};
   $('trial-export').onclick=()=>{try{const read=experimentRead(localStorage,game.kind),pending=experimentSave(read.library??experimentEmpty(),game,host.sound.musicSave()),url=URL.createObjectURL(new Blob([experimentExport(pending,game.kind)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='ricochet-bloom-pending-experiment.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch{alert('The pending run could not be exported. Keep this tab open and retry saving.');}};
-  $('trial-angle').oninput=e=>{angle=Number(e.target.value)*Math.PI/180;renderUI();};$('trial-power').oninput=e=>{power=Number(e.target.value)/100;renderUI();};$('trial-launch').onclick=launch;$('trial-back').onclick=leave;$('trial-pause').onclick=()=>pause(!paused);$('trial-resume').onclick=()=>pause(false);$('trial-retry').onclick=retry;$('trial-save-retry').onclick=()=>{save();renderUI();};$('gamemodes-back').onclick=()=>{rememberGallery();menu.close();host.back();};
-  menu.addEventListener('cancel',e=>{e.preventDefault();rememberGallery();menu.close();host.back();});play.addEventListener('cancel',e=>{e.preventDefault();pause();});
+  $('trial-angle').oninput=e=>{angle=Number(e.target.value)*Math.PI/180;renderUI();};$('trial-power').oninput=e=>{power=Number(e.target.value)/100;renderUI();};$('trial-launch').onclick=launch;$('trial-back').onclick=leave;$('trial-pause').onclick=()=>pause(!paused);$('trial-resume').onclick=()=>pause(false);$('trial-retry').onclick=retry;$('trial-save-retry').onclick=()=>{save();renderUI();};
+  play.addEventListener('cancel',e=>{e.preventDefault();pause();});
   for(const event of ['pagehide','freeze'])window.addEventListener(event,()=>pause());document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
-  return {gallery,setup,hub:hub.hub,family:hub.family,detail:hub.detail,scoreSetup,poolSetup,save,pause,get active(){return active();}};
+  return {gallery:modes.gallery,setup:modes.setup,hub:modes.hub,family:modes.family,detail:modes.detail,scoreSetup:modes.scoreSetup,poolSetup:modes.poolSetup,save,pause,get active(){return active();}};
 }

@@ -2,7 +2,7 @@ import { gameCreate, launch, physicsStep, powerMarkers, seedBodies, RULE, COLORS
 import { GAME_CATALOGUE as cat } from './run.js?v=b47c3f885b07c46836252a6c8cfafb49f104739e6df184495226908f5faeb0f9';
 import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
 import { PowerVisual } from './power-visual.js?v=7c605ee8ddf6f5edb02e2fd181fce8813dc756c37d69b07cae750a366b927ebe';
-import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
+import { buttonHTML } from './ui-icon.js?v=7e81246e997e2106001cc2f001032e68090a0c751f008678bd91820191a7979e';
 
 export const BUILD_EXAMPLES=Object.freeze([
   {id:'bank',name:'Bank & Reply',powers:['comet','spring','echo'],nodes:['comet.foundation','spring.b','echo.a'],description:'Keep momentum, turn a rebound, then let Echo seek a missed bubble.'},
@@ -87,7 +87,7 @@ function studyReading(id,m){
 export function upgradePreviewMount(controller){
   const dialog=document.createElement('dialog');dialog.id='upgrade-preview';dialog.setAttribute('aria-label','Upgrade comparison');document.body.append(dialog);
   let id,side=true,game,studies,measures,visual=new PowerVisual(),frame=0,last=0,accumulator=0,ticks=0;
-  const button=(action,label,icon)=>`<button type="button" aria-label="${label}" data-preview="${action}">${iconHTML(icon)}<span>${label}</span></button>`;
+  const button=(action,label,icon)=>buttonHTML(label,icon,{'aria-label':label,'data-preview':action});
   function reset(){studies=[upgradeFixture(id,false),upgradeFixture(id,true)];measures=studies.map(g=>studyMeasure(g));game=studies[Number(side)];visual.clear();ticks=0;accumulator=0;last=0;dialog.querySelector('[role=status]').textContent=STUDY_SCENES[id]||'Same pool and launch. Only the upgrade changes.';draw();}
   function draw(){const canvas=dialog.querySelector('canvas'),c=canvas.getContext('2d');c.clearRect(0,0,960,640);c.fillStyle='#0c1929';c.fillRect(0,0,960,640);c.strokeStyle='#56767f';c.lineWidth=3;c.beginPath();c.roundRect(30,30,900,580,45);c.stroke();
     for(const b of game.bodies){c.save();c.fillStyle=b.id?COLORS[b.tone]:'#effff9';c.globalAlpha=b.id&&game.chain.includes(b.id)?.5:1;c.shadowColor=c.fillStyle;c.shadowBlur=controller.gentle?.()?0:18;c.beginPath();c.arc(b.x,b.y,b.radius,0,Math.PI*2);c.fill();c.restore();}

@@ -4,7 +4,7 @@ export const STORAGE = 'ricochet-bloom-pool-v3', LEGACY_STORAGE = 'ricochet-bloo
 export function poolStoreRead(input) {
   const store = { version: 3, activeMode: 'challenge', pools: { challenge: null, free: null, waves:null }, waveBest:{wave:0,score:0}, best: 0, medals: {}, preferences: {} };
   if (!input || typeof input !== 'object') return store;
-  if(input.medals&&typeof input.medals==='object'&&!Array.isArray(input.medals)){for(const [key,medal] of Object.entries(input.medals)){try{const [version,kind,mode,seed,wave]=JSON.parse(key);if(version===1&&['normal','development'].includes(kind)&&['free','challenge','waves'].includes(mode)&&typeof seed==='string'&&seed.length<=32&&Number.isSafeInteger(wave)&&wave>=0&&MEDAL_NAMES.includes(medal))store.medals[key]=medal;}catch{}}}
+  for(const record of poolMedalRecords(input))store.medals[record.key]=record.medal;
   store.best = Number.isSafeInteger(input.best) && input.best >= 0 ? input.best : 0;
   for(const key of ['wave','score'])if(Number.isSafeInteger(input.waveBest?.[key])&&input.waveBest[key]>=0)store.waveBest[key]=input.waveBest[key];
   store.preferences = input.preferences && typeof input.preferences === 'object' ? structuredClone(input.preferences) : {};
@@ -31,4 +31,18 @@ export function poolStoreSet(store, game, music) {
   store.activeMode = game.mode;
   if(game.mode==='waves'){store.waveBest??={wave:0,score:0};store.waveBest.wave=Math.max(store.waveBest.wave,game.wave.number);store.waveBest.score=Math.max(store.waveBest.score,game.score);}
   if (game.mode === 'challenge') store.best = Math.max(store.best, game.score);
+}
+
+// Consumers receive named fields, never the persistent tuple encoding.
+export function poolMedalRecords(store,filter={}) {
+ const medals=store?.medals;
+ if(!medals||typeof medals!=='object'||Array.isArray(medals))return [];
+ return Object.entries(medals).flatMap(([key,medal])=>{
+  try {
+   const [version,kind,mode,seed,wave]=JSON.parse(key);
+   if(version!==1||!['normal','development'].includes(kind)||!['free','challenge','waves'].includes(mode)||typeof seed!=='string'||seed.length>32||!Number.isSafeInteger(wave)||wave<0||!MEDAL_NAMES.includes(medal))return [];
+   const record={key,kind,mode,seed,wave,medal};
+   return Object.entries(filter).every(([field,value])=>record[field]===value)?[record]:[];
+  }catch{return [];}
+ });
 }

@@ -1,14 +1,14 @@
+import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { experimentMedal } from './experiment-store.js?v=810950b4b346e69891a07dd81ecce1e27b3b738cda9dd2f73f1d169fbf62576a';
-import { medalConditionsHTML } from './medal-ui.js?v=d767dcf801cfcc722a56d973f16e4175256525e7f4f6abe74e23e90a80e665f5';
+import { medalConditionsHTML } from './medal-ui.js?v=4fccbcfa467ab558a8cfba26398ff7d1b89d650b0664c6af2ba633490cf7ad0c';
 import { trialConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { melodyStages } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { EXPERIMENT_MODES, DIFFICULTIES, experimentMode } from './experiment-mode.js?v=8691672ebafa0ee909e0adfbe1058bb7a29634ac3aef011c8c8a34ad0b9eb1bf';
-import { experimentArt } from './experiment-art.js?v=3122a3a41bebb8d9124ce486b6eac7fcbcbee35a9041fcd15de114d423abc0a1';
+import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { EXPERIMENT_CATALOGUE, EXPERIMENT_FAMILIES } from './experiment-catalogue.js?v=46fd868b7899d3825edca249ee222d0822e27a53f260e03d7069491bca53ea1e';
 import { EXPERIMENT_RECIPES, EXPERIMENT_DESTINATIONS, EXPERIMENT_PRESETS, EXPERIMENT_VERDICTS, experimentSetup, experimentKey, experimentOptions, experimentGoal, experimentRewarded } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
 import { experimentRead, experimentFavourite, experimentWrite, experimentBest, experimentExport, experimentImport, experimentLegacy, experimentStoreKey, experimentEmpty } from './experiment-store.js?v=810950b4b346e69891a07dd81ecce1e27b3b738cda9dd2f73f1d169fbf62576a';
 import { TRIAL_MODES, trialCreate } from './trial.js?v=1142334db4d9446b27b412cbc5ad6d9c93bebb7180ae6b645ebcc92c561dd824';
-const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const label=s=>s.replaceAll('-',' ').replace(/\b\w/g,c=>c.toUpperCase());
 const entries=[...['reaction','cargo','outbreak'].map(id=>({id,...EXPERIMENT_RECIPES[id],kind:'core-mode',mechanics:{reaction:['hazard','chain','cell'],cargo:['cargo','wall'],outbreak:['vent','cell','turn']}[id],description:TRIAL_MODES[id].summary})),...EXPERIMENT_CATALOGUE];
 export function experimentMount(host){

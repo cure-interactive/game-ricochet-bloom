@@ -7,3 +7,8 @@ export function titleCase(text) {
   return !edge&&small.has(word.toLowerCase())?word.toLowerCase():word[0].toUpperCase()+word.slice(1);
  });
 }
+
+// Text and quoted attributes share one escaping boundary; markup stays explicit.
+export function escapeHTML(value) {
+ return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
