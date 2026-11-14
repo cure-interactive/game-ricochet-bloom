@@ -1,4 +1,5 @@
 /* SVG artwork stays external, with its adjacent provenance and complete notices. */
+[data-icon="stats"]{--ui-icon:url("./icon/ui/stats.svg?v=03f446cd7f2c58c2824dbe41290defb2f1983af43fcaf0001460baecacbe1061")}
 [data-icon="wave"]{--ui-icon:url("./icon/ui/wave.svg?v=c66ef8d77e1336a28e08f9884f5aa1de85e388ad6be8819c6df5837121cc75ee")}
 .ui-icon{display:inline-block;flex:none;width:18px;height:18px;background:currentColor;-webkit-mask:var(--ui-icon) center/contain no-repeat;mask:var(--ui-icon) center/contain no-repeat;vertical-align:middle;pointer-events:none}
 [data-icon="arrow-left"]{--ui-icon:url("./icon/ui/arrow-left.svg?v=256a8551d4fd5f731b7707d7b0772909f920822b6eac1041efe44eb3219dd1ee")}
