@@ -1,20 +1,22 @@
 import { playerUpgradeMount } from './player-upgrade-ui.js?v=c5d1bd3801c88bed63f67faf9fea3b2887478a7e3552a1c611331ce7cfe352a1';
+import { saveRecoveryMount } from './save-recovery-ui.js?v=c857d933e64fb058c31dbf3b707219ab5675f5f08cb3aa0b7c9a6c9e7f9fc93a';
+import { progressionResetUnreadable } from './progression-store.js?v=7e9d5324698da938cb9e7f40da28580bd5d8e96946aa60bc329bb652db2def9f';
 import { medalIcon } from './medal-ui.js?v=4fccbcfa467ab558a8cfba26398ff7d1b89d650b0664c6af2ba633490cf7ad0c';
 
 import { earningPrepare, earningId } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
-import { profilePlayReward, profileDevelopmentCopy } from './profile.js?v=0b05c511a8d50dfef71056cb28ebfcbc71df391bc08d7af6fd865a7ba33aeef2';
+import { profilePlayReward, profileDevelopmentCopy } from './profile.js?v=8b46ab3dd82c6cf494dd9495dde1302dd74763ae7b5a4f8a30664c783bd23497';
 import { developmentBarMount } from './development-bar.js?v=d84fcd8317a618eac245db4fa7d1668c4765e91de14d0b7cff8751039b176ec6';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { campaignMount } from './campaign-ui.js?v=13991eee0aa78a1b1501881c321e6aafba03cfff3f9b9b6e3749376eb4c7fb36';
-import { challengeEncode, challengeDecode } from './challenge.js?v=eff392ed59200837477fcdc2c366ebdfab6a99ac9b480d651b37052b4ad71229';
+import { campaignMount } from './campaign-ui.js?v=8d09f46b43d64d735f39c4d2bad5861b2fe7fd8923db4f078a01a560707772d9';
+import { challengeEncode, challengeDecode } from './challenge.js?v=383ae6b68786ba5d5084c8d4b441e28b488e36fecd9224852bd147190dba76e2';
 import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=eb1f706f689b3079fea4ecb6e90354a12c77a1b51e17ab05552d3f14403957b8';
-import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=195e6f351c31126d32020601be73a2c03ce1bd7b6be108f3eb8ff3bd2d5e9965';
+import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=8c5cad259a936425799e4ab42a618197c5a72e81e38a2264e6d19508d67b43c4';
+import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=7e9d5324698da938cb9e7f40da28580bd5d8e96946aa60bc329bb652db2def9f';
 import { gameCreate } from './engine.js?v=5d4ecf80115d71c18a5182dcc78d6161803b2652f17a3fcec1c5a48a149bedd8';
-import { treeMount } from './tree-ui.js?v=10916bd81d10226b3ffbd510f8c99246134b7440403763a3e19aeacfc5fc235c';
+import { treeMount } from './tree-ui.js?v=69ec483779fc95c564cd650970e8525c375763bba6ca43378d3bfef753c26566';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=7e81246e997e2106001cc2f001032e68090a0c751f008678bd91820191a7979e';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
-import { skinMount } from './skin-ui.js?v=ac4b44a325af9503a141883521f5c47072c240614739ab2c2422e59492eac4f6';
+import { skinMount } from './skin-ui.js?v=2aac72d1ff489bb2f6595961bd370b7e8c6682441f4893eb266ad71a6756da1d';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;
@@ -22,18 +24,36 @@ export function progressionMount(host){
   const profileBar=developmentBarMount();
   const $=id=>document.getElementById(id);
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
-  const warning=document.createElement('div');warning.className='save-warning';warning.hidden=!saveBlocked;warning.setAttribute('role','alert');warning.innerHTML='<span>Progress could not be read. Export a backup before replacing it.</span>'+button('save-export','Export backup','download')+button('save-retry','Retry save','reset');document.body.append(warning);
-  function exportBackup(){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(pendingEarningState||pending||state,null,2)],{type:'application/json'}));a.href=url;a.download=`ricochet-bloom-${shared?'shared':kind}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+  const readMessage=()=>loaded.problem==='unavailable'?'Browser storage could not be accessed. Retry when storage is available. Nothing has been replaced.':'This profile could not be read by this version of the game. Your original data has not been replaced. Export it for recovery or try loading again.';
+  let recoveryMessage=readMessage();
+  const recovery=saveRecoveryMount({status:()=>({blocked:saveBlocked,kind,message:recoveryMessage,pending:!!(pending||pendingEarning),canReset:!pending&&!pendingEarning&&!loaded.available&&loaded.problem==='invalid',canExport:loaded.available||!!pending||!!pendingEarning||loaded.recovery?.main!=null||loaded.recovery?.backup!=null,details:!loaded.available?Object.entries(loaded.recovery?.checks||{}).map(([k,v])=>k+': '+v).join('\n'):''}),exportBackup,retry:retrySave,reset:resetUnreadable});
+  function showRecovery(message){recoveryMessage=message;recovery.refresh();if(document.body.dataset.startup==='ready')recovery.open();}
+  function exportBackup(){
+    // An unreadable profile must export its exact source, never the empty fallback.
+    const value=!loaded.available?{...loaded.recovery,...(pendingEarning?{pendingEarning}:{}),...(pendingEarningState||pending?{pendingState:pendingEarningState||pending}:{})}:pendingEarningState||pending||state;
+    const a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));a.href=url;a.download=`ricochet-bloom-${shared?'shared':kind}${!loaded.available?'-recovery':''}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
   function commit(next,after=null){
+    if(!loaded.available&&!pending&&!pendingEarning)return {ok:false,reason:'Open Progress Recovery before replacing unreadable data.'};
     let r;
     if(shared){try{const valid=progressionValidate(next,'development');if(!valid)throw new Error('invalid');localStorage.setItem('ricochet-bloom-shared-v1',JSON.stringify({code:shared,state:valid}));r={ok:true,state:valid};}catch{r={ok:false,reason:'Shared Challenge could not be saved.'};}}
     else r=progressionWrite(localStorage,next);
-    if(r.ok){state=r.state;pending=null;pendingAfter=null;saveBlocked=false;warning.hidden=true;after?.();}
-    else {pending=structuredClone(next);pendingAfter=after;saveBlocked=true;warning.hidden=false;warning.firstElementChild.textContent=r.reason+' Play is paused. Export a backup or free storage and retry.';}
+    if(r.ok){state=r.state;loaded={state,available:true};pending=null;pendingAfter=null;saveBlocked=false;recovery.refresh();after?.();}
+    else {pending=structuredClone(next);pendingAfter=after;saveBlocked=true;showRecovery(r.reason+' Play is paused. Export a backup or free storage and retry.');}
     return r;
   }
-  $('save-export').onclick=exportBackup;
-  $('save-retry').onclick=()=>{if(pendingEarning){const after=earningAfter;if(settleEarning(pendingEarning)){earningAfter=null;after?.();}return;}if(pending)commit(pending,pendingAfter);else {const recovered=progressionRead(localStorage,kind);if(recovered.available){state=recovered.state;saveBlocked=false;warning.hidden=true;tree.refresh();}else if(confirm('Start a fresh profile? Existing unreadable data will be preserved in a recovery file first.')){try{const key='ricochet-bloom-progression-v1'+(kind==='development'?'-development':'');localStorage.setItem(key+'-unreadable',JSON.stringify({main:localStorage.getItem(key),backup:localStorage.getItem(key+'-backup')}));commit(state);}catch{warning.firstElementChild.textContent='Storage is unavailable. Export before closing.';}}}};
+  function retrySave(){
+    if(pendingEarning){const after=earningAfter;if(settleEarning(pendingEarning)){earningAfter=null;after?.();}return;}
+    if(pending){commit(pending,pendingAfter);return;}
+    const recovered=progressionRead(localStorage,kind);
+    if(recovered.available){loaded=recovered;state=recovered.state;saveBlocked=false;recovery.refresh();tree.refresh();}
+    else {if(recovered.problem!=='unavailable'||loaded.available)loaded=recovered;recoveryMessage=recovered.problem==='unavailable'?'Browser storage is still unavailable. Your saved data has not been replaced.':readMessage();recovery.refresh();}
+  }
+  function resetUnreadable(){
+    const result=progressionResetUnreadable(localStorage,kind);
+    if(result.ok){state=result.state;loaded={state,available:true};saveBlocked=false;tree.refresh();recovery.refresh();}
+    else {recoveryMessage=result.reason;recovery.refresh();}
+  }
 
   function settleEarning(earning,notify=true){
     if(pending||saveBlocked&&!pendingEarning)return false;
@@ -44,14 +64,14 @@ export function progressionMount(host){
     const earned=loadedOwner&&!loadedOwner.available?{ok:false,reason:'The earning profile could not be read.'}:profilePlayReward(input.profile,earning,GAME_CATALOGUE);
     const next=earned.ok?{...input,profile:earned.profile}:null;
     const saved=earned.ok?(earned.duplicate?{ok:true,state:input}:progressionWrite(localStorage,next)):earned;
-    if(!saved.ok){pendingEarning=structuredClone(earning);pendingEarningState=next;saveBlocked=true;warning.hidden=false;warning.firstElementChild.textContent='Points could not be saved. Play is paused. Free storage and retry.';return false;}
+    if(!saved.ok){pendingEarning=structuredClone(earning);pendingEarningState=next;saveBlocked=true;showRecovery('Points could not be saved. Play is paused. Free storage and retry.');return false;}
     if(owner==='suspended')suspended.state=saved.state;else if(owner==='current')state=saved.state;
-    pendingEarning=null;pendingEarningState=null;saveBlocked=false;warning.hidden=true;
+    pendingEarning=null;pendingEarningState=null;saveBlocked=false;recovery.refresh();
     if(!earned.duplicate&&earned.amount===0&&earning.contacts%6&&notify)host.message(`${earning.contacts%6}/6 Contacts Toward Your Next Point`);
     if(earned.amount>0&&notify)host.message(`+${earned.amount} Point${earned.amount===1?'':'s'} · ${saved.state.profile.wallet.seeds} Available in Skill Tree`);
     return true;
   }
-  function act(action){if(saveBlocked)return {ok:false,reason:'Resolve the save warning first.'};if(shared&&!['start','continue','abandon'].includes(action.type))return {ok:false,reason:'Shared challenges use the fixed supplied build.'};const input=structuredClone(state);if(shared&&action.type==='continue')input.route=shared.routes[input.pool+1];const r=progressionAct(input,action);if(!r.ok)return r;const saved=commit(r.state);return saved.ok?{...r,state}:saved;}
+  function act(action){if(saveBlocked)return {ok:false,reason:'Open Progress Recovery from the main menu or Settings.'};if(shared&&!['start','continue','abandon'].includes(action.type))return {ok:false,reason:'Shared challenges use the fixed supplied build.'};const input=structuredClone(state);if(shared&&action.type==='continue')input.route=shared.routes[input.pool+1];const r=progressionAct(input,action);if(!r.ok)return r;const saved=commit(r.state);return saved.ok?{...r,state}:saved;}
   const dev=document.createElement('dialog');dev.id='development-dialog';dev.className='standard-dialog';dev.setAttribute('aria-label','Development settings');
   dev.innerHTML=`<div class="dialog-heading screen-heading">${iconHTML('flask')}<h2>Development</h2>${button('dev-close','Close','close')}</div><div class="dialog-body"><p>Development mode, view toggles and the Points amount are remembered in this browser. Test progress is saved separately from normal progress.</p><p id="dev-status" role="status"></p><div class="dev-controls"><label class="setting-toggle"><input id="dev-switch" type="checkbox"><span>Development mode</span></label><label class="setting-toggle"><input id="dev-show-hidden-content" type="checkbox"><span>Show Hidden Tracks, Skills and Skins</span></label><small>Reveal hidden tracks, research and player skins in either profile. This does not unlock them.</small><label class="setting-toggle"><input id="dev-show-purchased-costs" type="checkbox"><span>Show Purchased Skill Costs</span></label><small>Show catalogue Points costs on owned skill nodes and cards in either profile.</small>${button('dev-seed','Copy normal progress into test profile','copy')}<p class="dev-help">These controls change only the Development profile.</p>${button('dev-max-progress','Maximize level progress','grid')}<small>Open every level and skin, and set Points to at least 10,000. Research is unchanged.</small>${button('dev-max','Max out skill tree','epic')}<small>Unlock all 25 powers, their upgrades and all player upgrades. Level progress is unchanged.</small>${button('dev-reset','Reset all test progress','reset')}<small>Clear test levels, research, currency, songs and the active test run.</small><section id="dev-reset-confirmation" class="tree-confirm" hidden aria-label="Confirm reset"><strong>Reset all Development progress?</strong><p>Test levels, research, Points, saved songs and the active test run will be reset. Normal progress stays unchanged.</p>${button('dev-reset-cancel','Keep test progress','arrow-left')}${button('dev-reset-confirm','Reset Development profile','reset')}</section><label>Points to add<input id="dev-amount" type="number" min="1" max="1000000" step="1" value="100"></label><div class="grant-presets">${[10,100,1000].map(n=>button('dev-add-'+n,'+'+n,'coin')).join('')}</div>${button('dev-grant','Add Points','coin')}</div><hr><p>Progress backup · selected profile only</p><div class="dialog-actions">${button('progress-export','Export backup','download')}<label class="file-button">${iconHTML('upload')} Import backup<input id="progress-import" type="file" accept="application/json,.json"></label></div></div>`;
   document.body.append(dev);$('dev-amount').value=String(developmentSettings.grantAmount);
@@ -70,7 +90,7 @@ export function progressionMount(host){
   }
   function treeAct(action){
     if(!suspended)return act(action);
-    if(saveBlocked)return {ok:false,reason:'Resolve the save warning first.'};
+    if(saveBlocked)return {ok:false,reason:'Open Progress Recovery from the main menu or Settings.'};
     const r=progressionAct(suspended.state,action);if(!r.ok)return r;
     const saved=progressionWrite(localStorage,r.state);
     if(saved.ok)suspended.state=saved.state;
@@ -94,13 +114,13 @@ export function progressionMount(host){
   dev.addEventListener('close',()=>{if(!dev.open&&!$('settings-dialog').open&&host.currentScreen?.()==='home')host.home?.();});
   $('dev-switch').onchange=()=>{
     const enabled=$('dev-switch').checked;
-    if(pending||pendingEarning){devRender();$('dev-status').textContent='Resolve the save warning before changing profiles.';return;}
+    if(pending||pendingEarning){devRender();$('dev-status').textContent='Resolve Progress Recovery before changing profiles.';return;}
     leave();
-    if(pending||pendingEarning){devRender();dev.showModal();$('dev-status').textContent='Resolve the save warning before changing profiles.';return;}
+    if(pending||pendingEarning){devRender();dev.showModal();$('dev-status').textContent='Resolve Progress Recovery before changing profiles.';return;}
     const saved=developmentSettingsWrite(localStorage,{...developmentSettings,enabled});
     if(!saved.ok){devRender();dev.showModal();$('dev-status').textContent=saved.reason;return;}
     developmentSettings=saved.settings;kind=enabled?'development':'normal';loaded=progressionRead(localStorage,kind);state=loaded.state;
-    saveBlocked=!loaded.available;warning.hidden=!saveBlocked;if(saveBlocked)warning.firstElementChild.textContent='Progress could not be read. Export a backup before replacing it.';
+    saveBlocked=!loaded.available;recoveryMessage=readMessage();recovery.refresh();
     tree.refresh();devRender();dev.showModal();
   };
   $('dev-show-hidden-content').onchange=()=>{
@@ -125,7 +145,7 @@ export function progressionMount(host){
   for(const amount of [10,100,1000])$('dev-add-'+amount).onclick=()=>{const r=act({type:'grant',amount});devRender();$('dev-status').textContent=r.ok?r.message:r.reason;tree.refresh();};
   for(const [id,type] of [['dev-max','max'],['dev-max-progress','max-progress'],['dev-grant','grant']])$(id).onclick=()=>{const r=act({type,amount:Number($('dev-amount').value)});devRender();$('dev-status').textContent=r.ok?r.message:r.reason;tree.refresh();};
   $('progress-export').onclick=exportBackup;
-  $('progress-import').onchange=async event=>{const file=event.target.files[0];if(!file)return;if(file.size>10_000_000){$('dev-status').textContent='Backup is too large.';return;}const text=await file.text();if(!confirm(`Replace this ${kind} profile with the selected backup? The current save becomes a backup.`))return;const r=progressionImport(localStorage,text,kind);if(r.ok){leave();state=r.state;tree.refresh();devRender();dev.showModal();}else $('dev-status').textContent=r.reason;event.target.value='';};
+  $('progress-import').onchange=async event=>{const file=event.target.files[0];if(!file)return;if(file.size>10_000_000){$('dev-status').textContent='Backup is too large.';return;}const text=await file.text();if(!confirm(`Replace this ${kind} profile with the selected backup? The current save becomes a backup.`))return;const r=progressionImport(localStorage,text,kind);if(r.ok){leave();state=r.state;loaded={state,available:true};saveBlocked=false;recovery.refresh();tree.refresh();devRender();dev.showModal();}else $('dev-status').textContent=r.reason;event.target.value='';};
   const targetRender=el=>{const t=researchTarget(state);el.textContent=t?`Next goal: ${t.name} · ${t.text}`:'';};
   $('run-skin').onclick=()=>{const r=act({type:'skin',skin:state.latest.track});if(r.ok)$('run-skin').lastElementChild.textContent='Skin equipped';};
   $('run-destination').onclick=()=>{const next=unlockedTracks(state).find(t=>!state.profile.rewards.some(r=>r.event.type==='victory'&&r.event.trackId===t.id));if(next)act({type:'track',track:next.id});close();campaign.open(next?'play':'songs');};
@@ -140,6 +160,7 @@ export function progressionMount(host){
     get trialKind(){return (suspended||{kind}).kind;},
     trialReward:earning=>settleEarning(earning,false),
     profileIndicator(){profileBar.set(kind,!!shared,['run','challenge','listening'].includes(context));},
+    recoveryNotice:recovery.notice,
     get context(){return context;},get blocked(){return saveBlocked||context==='listening'||['run','challenge'].includes(context)&&state.phase!=='run';},get state(){return state;},
     skins:()=>skins.open(),players:()=>players.open(),tree:()=>tree.open(),campaign:view=>campaign.open(view),play:enterRun,leave,
     get skin(){return state.skin==='original'?null:trackGet(state.skin)?.color;},

@@ -5,8 +5,8 @@ import { poolConditions, poolMedalKey, medalEvaluate } from './medal.js?v=cd0d61
 import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=5ff229a31a77b92b75b6336e1bb1d7143a5c4a32922a4c4f10e12c8f11de9e18';
 import { earningAmount } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
-import { trialMount } from './trial-ui.js?v=a43e5634a1895fcb9673817b865bfd994580706527c98e30c8803d063d854e6c';
-import { GAME_VERSION } from './version.js?v=7554369f5c557331fb9ed36e28ae98dd1bd49b4ea9de41b830a7883465b952ff';
+import { trialMount } from './trial-ui.js?v=dc56f2af6d93470d0ac468d260d45620db28093010e117bfcfeacb66a9f5054c';
+import { GAME_VERSION } from './version.js?v=e95dec48ccf68add34cc4cbed11d0e461e641cc4d0ef2c14eb6e893ffb62c45f';
 import { powerSlots } from './power-ui.js?v=740d7f3f36f4da49cd7198c6edb00bf78e8ffd99529f41b29dfe32c77598f44b';
 import { creditsMount } from './credit.js?v=c4046183d2832bfd89b418e62fc0f31c438ff69d93d20b503adc0750f974f22d';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
@@ -14,14 +14,14 @@ import { viewportMount } from './viewport.js?v=91bdd921ed550b7501c923fff9a5b64cb
 import { edgeBackMount } from './edge-back.js?v=54b2fd4df4f0c89884aad5e21ea057445593e142f0a42262f79b0964d63b6fa6';
 import { wikiMount } from './wiki.js?v=729df28ce2f38ed53e9fdeedc2714175043d62edbe6aba34c5fa0ffcffb341d2';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { POOL_NAMES } from './run.js?v=eb1f706f689b3079fea4ecb6e90354a12c77a1b51e17ab05552d3f14403957b8';
-import { freePlaySync, freePlayBuild } from './free-play.js?v=ab6d5f75a0ad0461b01449fdb1557b742f9c237d7dec057c297fbcd41c6658d5';
+import { POOL_NAMES } from './run.js?v=8c5cad259a936425799e4ab42a618197c5a72e81e38a2264e6d19508d67b43c4';
+import { freePlaySync, freePlayBuild } from './free-play.js?v=45ca8e1903d341bacd35391086a16d83f9349b9f4559aa4bd01495e576b61dca';
 import { fullscreenMount } from './fullscreen.js?v=0011717aaa92f510dacfcab6ab222ee5593e298cc8c6885cfb22ceb90859bdad';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=510a0a00c92d17dbcf124c496ad4368cd2d70b3bb0dfaef23cba7e9a3c225ddb';
+import { gameMenuMount } from './game-menu.js?v=160961f4999c590bd524f37278ec82ee6c131b537ee48e84a4f5d532398273d8';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
-import { progressionMount } from './progression-ui.js?v=a4225c8dadb74d1936d06e750327b53f8de62449dbc8efe6cc530296c41479f0';
+import { progressionMount } from './progression-ui.js?v=554eed90f85f2541215364bcadcf4b588cf06bfcbd1ec83bac939272ef0b9294';
 import {assetURL} from './asset.js?v=3cbfab492cc37c59b11a7e7ee1809773bc384873f2e900d7d5fa6526e0af4b91';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=7e81246e997e2106001cc2f001032e68090a0c751f008678bd91820191a7979e';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
@@ -704,6 +704,7 @@ trials=trialMount({poolMedals:mode=>poolMedalRecords(store,{kind:progression.tri
 
 const wiki=wikiMount({screen:()=>navigation?.show('wiki'),back:()=>navigation?.back()});
 navigation=gameMenuMount({
+  recoveryNotice:progression.recoveryNotice,
   gentle:()=>isGentle,
   skin:()=>progression.skin,
   suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},

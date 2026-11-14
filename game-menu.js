@@ -10,6 +10,7 @@ export function gameMenuMount(host) {
   const backdrop=document.createElement('div');backdrop.id='menu-background';backdrop.setAttribute('aria-hidden','true');
   backdrop.innerHTML='<canvas class="home-pool"></canvas>';
   document.body.append(backdrop,home);
+  if(host.recoveryNotice)home.querySelector('.home-actions').prepend(host.recoveryNotice);
   const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true);
   const route=pageHistory('home');let homeMode=true;
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());

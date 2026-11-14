@@ -189,8 +189,7 @@ export function unlockedResolve(input, selections, catalogue = CATALOGUE) {
   const equipped=[];
   for(const power of powers){
     const ids=Object.values(catalogue.nodes).filter(n=>n.power===power&&n.kind!=='base'&&available.has(n.id)).map(n=>n.id);
-    // Retain stable ordering for saved equipment; current power upgrades have no conflicts.
-    ids.sort((a,b)=>Number(selections.equipped.includes(b))-Number(selections.equipped.includes(a)));
+    // Canonical catalogue order keeps cumulative save migration idempotent.
     for(const id of ids)if(!catalogue.nodes[id].conflicts.some(other=>equipped.includes(other)))equipped.push(id);
   }
   return {ok:true,tuning:0,budget:0,bypass:false,equipped,powers:powers.map(power=>resolvePower(power,equipped,catalogue,true))};

@@ -2,7 +2,7 @@ import { PLAYER_UPGRADES, playerBuild } from './player-upgrade.js?v=fab6c92f134e
 import { buildValidate } from './skill-effect.js?v=b5d23aae0cfa214b54af02d69a6757f09caf11297ba245a50bf8b94dbdd4b93e';
 import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=b2330060a946840e4caf0bd604dd4001893829861e077d21e980d225f355dbf8';
 import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
-import { profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=0b05c511a8d50dfef71056cb28ebfcbc71df391bc08d7af6fd865a7ba33aeef2';
+import { profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=8b46ab3dd82c6cf494dd9495dde1302dd74763ae7b5a4f8a30664c783bd23497';
 import { gameCreate, saveValidate, RULE } from './engine.js?v=5d4ecf80115d71c18a5182dcc78d6161803b2652f17a3fcec1c5a48a149bedd8';
 import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 
@@ -197,7 +197,8 @@ export function progressionObserve(input,game,events,music=null){
 }
 
 // A saved pool keeps its exact configuration when new research is purchased.
-// Older saves without a purchase snapshot retain the original strict build check.
+// Before cumulative upgrades, these families selected one of two owned variants.
+const legacyExclusivePowers=new Set(['impact','drunk','ripple','attract','vortex','magnet','wake','stasis','bubble','tether','orbit','split','lightning','pulse','homing','wrap','slingshot']);
 function savedBuildMatches(state,build){
  if(!Array.isArray(build))return false;
  if(state.run?.buildBeforeResearch!==undefined){
@@ -210,5 +211,14 @@ function savedBuildMatches(state,build){
  const expected=progressionLoadout(state).powers;
  if(state.powerMode!=='unlocked')return canonical(build)===canonical(expected);
  const normalized=build.map(p=>({...p,foundation:GAME_CATALOGUE.powers[p.power].included.includes('foundation')||p.foundation}));
- return canonical(normalized)===canonical(expected);
+ if(canonical(normalized)===canonical(expected))return true;
+ // No release marker existed in these snapshots. Accept only the exact historic
+ // one-of-two difference; keep the physical pool frozen until its next boundary.
+ const legacy=normalized.length===expected.length&&normalized.every((p,i)=>{
+  const e=expected[i];
+  return p.power===e.power&&p.foundation===e.foundation&&p.capstone===e.capstone&&
+   (canonical(p.variants)===canonical(e.variants)||legacyExclusivePowers.has(p.power)&&p.variants.length===1&&e.variants.length===2&&e.variants.includes(p.variants[0]));
+ });
+ if(legacy)state.run.buildBeforeResearch=structuredClone(build);
+ return legacy;
 }
