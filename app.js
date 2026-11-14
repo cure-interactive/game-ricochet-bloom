@@ -9,22 +9,22 @@ import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-att
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=57c2f32c90cea1d5c2d2601973e60b0926e5a5b233f60ffc9fc543e5a7f7903e';
 import { earningAmount } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
 import { trialMount } from './trial-ui.js?v=80b5654749cb1b4f8f0b911846594ab3ac7557e7b3d696457f7546e6a71fc07f';
-import { GAME_VERSION } from './version.js?v=3176ba1b65d923af80974ce5d737a60d5aef732f27d7828a12827b2ae8beb768';
+import { GAME_VERSION } from './version.js?v=d26ee6588c16c5c9a3b3c8e726bd1f0b5f0076e207607f91bfa02c31562f6408';
 import { powerSlots } from './power-ui.js?v=9f81f72e92a838c8da2b79df39602af4e6dc5a5833721734b78d9bcde99c5f1d';
-import { creditsMount } from './credit.js?v=1ff3cc971da2ad365444c38dfac3c21ba3085f8851aedfabd1e3abff4af0bbbf';
+import { creditsMount } from './credit.js?v=1baebc75d634b15c6ca81f71500cb6c4278991f0abd6dc841cfd7bd19900507c';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=c76004d132b2ea92ec0cecf92a15fae0a4ec85781d19df28f70222f5ed78b04a';
 import { edgeBackMount } from './edge-back.js?v=0fcf216d1ae3fbd02ef73298696e6e6527bed750f07b2c58e748e86971312b71';
-import { wikiMount } from './wiki.js?v=c9abcbc8cd598f1b603b00ae447ccdd380030db09f1a824f63ae5519464311e7';
+import { wikiMount } from './wiki.js?v=41a703c300af30b4b44602331764b44e82c8be9985687e65e5f7b8af20e6287a';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { POOL_NAMES } from './run.js?v=761d66a7f48a89837bd270e75d2f2fc05b570ad32da442ce146863b3344310db';
 import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=2688950919d159815d3ffeb8bedaa0133731cda8f149bcf49906a2abc95845da';
 import { fullscreenMount } from './fullscreen.js?v=24d2782ab1e4be2d089cea603d419704b9473d8c76c1cf33f34d0a89c1f84471';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=b4c984e98138e022697d4c0e1afbdaf6b9fe0a799479932f6ee16db9a9bd8e30';
+import { gameMenuMount } from './game-menu.js?v=72cbabf8faf97aee42f2c7c2c333331ac9e41dc675ecab4ad7c6a3e8a6a812dc';
 import { environmentRender, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
-import { progressionMount } from './progression-ui.js?v=40ef8d23d25afe08e19be258a99de5cb28fea66dac6afee546f78b3ac284bca0';
+import { progressionMount } from './progression-ui.js?v=e57cbb7253fa96e9b9f5b5b5ed376ac1ebb205cd817db91c63a799ec041f2d85';
 import {assetURL} from './asset.js?v=d550b28d96684af605439d08505831edfd982d0886527d4831cff7ecdf4d0e66';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
@@ -598,6 +598,7 @@ const playerMenuScreen=playerMenuMount({get:()=>progression.state,profile:()=>pr
 const playerStatsScreen=playerStatsMount({get:()=>({...progression.statsProfile,storage:localStorage,poolStore:store}),screen:()=>navigation?.show('stats'),back:()=>navigation?.back(),open:destination=>destination==='upgrades'?progression.players():progression.tree()});
 navigation=gameMenuMount({
   recoveryNotice:progression.recoveryNotice,
+  help:progression.help,
   gentle:()=>isGentle,
   skin:()=>progression.skin,
   profile:()=>progression.statsProfile.state,
@@ -621,5 +622,5 @@ $('menu-wiki').onclick=()=>wiki.open();
 $('menu-help').onclick=()=>wiki.open('how-to-play');
 $('menu-settings').onclick=()=>$('settings-dialog').showModal();
 if($('tree-dialog').open)navigation.show('tree');
-window.ricochetDiagnostics?.setContext(()=>({initialized:true,mode:game.mode,progressAvailable:progression.statsProfile.available,poolAvailable:storageIsAvailable}));
+window.ricochetDiagnostics?.setContext(()=>({initialized:true,mode:game.mode,progressAvailable:progression.statsProfile.available,progressSave:progression.saveDiagnostics,poolAvailable:storageIsAvailable}));
 window.dispatchEvent(new Event('ricochet-ready'));

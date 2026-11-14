@@ -285,3 +285,5 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .skill-curve figcaption span::before{content:"";width:18px;border-top:2px solid #b4f2d8}
 .skill-curve figcaption .skill-curve-current::before{border-color:#b6c3d0;border-top-style:dashed}
 .skill-curve p{margin:6px 0 0;color:#a7bec8;font-size:10px;line-height:1.4}
+
+:is(#tree-dialog,#player-upgrade-dialog) .tree-status.sr-only:not(:empty){margin:0;padding:8px 16px;position:relative;width:auto;height:auto;clip:auto;clip-path:none;overflow:visible;color:#f5dfc8;font-size:14px;white-space:normal}

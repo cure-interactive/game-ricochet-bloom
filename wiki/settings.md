@@ -26,6 +26,12 @@ Back controls sit on the right by default. Enable **Settings → Accessibility �
 
 Use **Settings → Advanced → Copy Diagnostics** when reporting a problem. The same button appears when the game cannot start or loading takes longer than expected. It copies the game version, browser, screen size, loading state, recent errors and read-only save metadata. Saved-game contents are not included, and copying does not change your progress. If clipboard access is unavailable, a selected report appears so you can copy it manually.
 
+## Getting Help
+
+Tap **Get Help** on the main menu or in Settings. **Email Report** opens an email to **jamessteeleseeley@gmail.com** with your device details, diagnostics and game progress filled in; tap Send in your email app. The report includes your player name. **Share Report** opens your device’s sharing options; **Copy Report** lets you paste the same text into a message. No downloaded file is needed. Ordinary **Copy Diagnostics** still excludes save contents.
+
+If saving fails, the recovery panel offers these same actions and **Retry Save**. Keep the tab open so pending progress remains available. Do not clear browser data to troubleshoot.
+
 ## Saves and Backups
 
 Your pool, song and campaign progress save in this browser. They do not automatically transfer between devices or between the local, GitHub Pages and private hosted copies. Clearing website data can remove them.

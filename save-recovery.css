@@ -1,6 +1,6 @@
 .save-notice{display:flex;align-items:center;gap:12px;min-width:0;margin:0 0 16px;padding:12px 14px;border:1px solid #dfac8166;border-radius:14px;background:#283138;color:#f5dfc8;text-align:left}
 .save-notice>div{flex:1;min-width:0}.save-notice strong{font-size:15px;font-weight:500}.save-notice p{font-size:12px;line-height:1.4;margin:4px 0 0;color:#c9d2d7}
-.save-notice button,#save-recovery-dialog button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;max-width:100%;padding:10px 14px;border:1px solid #718a9766;border-radius:12px;background:#203947;color:#e3f5ef;font:inherit;cursor:pointer}
+.save-notice button,#save-recovery-dialog button,#support-dialog button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;max-width:100%;padding:10px 14px;border:1px solid #718a9766;border-radius:12px;background:#203947;color:#e3f5ef;font:inherit;cursor:pointer}
 .save-notice button{flex:none;font-size:14px}.save-notice[hidden]{display:none}
 #save-recovery-dialog .dialog-body{line-height:1.6;overflow-wrap:anywhere}
 #save-recovery-dialog .save-actions{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0}
@@ -11,3 +11,21 @@
 #save-recovery-dialog button:disabled{opacity:.5;cursor:default}
 body:has(#save-recovery-dialog[open]) #settings-dialog{visibility:hidden}
 body:has(#save-recovery-dialog[open]) #settings-dialog::backdrop{background:transparent;backdrop-filter:none}
+
+#support-dialog .dialog-body{line-height:1.6}
+.support-actions .save-actions{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}
+.support-actions .save-actions button{flex:1 1 140px;min-height:48px}
+.support-actions textarea{width:100%;min-height:100px;font-size:16px}
+.support-actions [data-diagnostics-status]:empty{display:none}
+#main-menu .home-support{margin:10px auto 0;min-height:44px;padding:8px 18px;background:transparent;border:0;color:#b8cece;font:inherit;font-size:14px;display:flex;align-items:center;gap:8px}
+#main-menu .home-support .ui-icon{width:18px;height:18px}
+
+#support-dialog .dialog-body{font-size:16px;padding:24px;max-width:640px;width:100%;margin-inline:auto}
+#support-dialog .support-actions{margin-block:24px;padding:16px;border:1px solid #718a9744;border-radius:16px;background:#14272fcc}
+#support-dialog .support-actions p:first-child{margin-top:0}
+#support-dialog [data-support-email],#save-recovery-dialog [data-support-email]{background:#b4f4db;color:#12372e}
+
+.support-actions .save-actions [data-support-email]{flex-basis:100%}
+
+#support-dialog .dialog-body p,#save-recovery-dialog .dialog-body p{font-size:16px;line-height:1.5}
+.support-recipient{overflow-wrap:anywhere;color:#b8cece}

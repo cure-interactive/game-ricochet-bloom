@@ -49,9 +49,10 @@ function archiveUnreadable(storage,kind,loaded){
   }catch{return {ok:false,reason:'The recovery copy could not be saved. Nothing has been replaced.'};}
 }
 export function progressionWrite(storage,input){
-  const kind=input?.profile?.kind,state=progressionValidate(input,kind);if(!state)return {ok:false,reason:'Progress could not be validated. Your previous save is safe.'};
-  try{const name=key(kind),previous=storage.getItem(name);let validPrevious=false;try{validPrevious=!!previous&&!!progressionValidate(JSON.parse(previous),kind);}catch{}if(validPrevious)storage.setItem(name+'-backup',previous);storage.setItem(name,JSON.stringify(state));return {ok:true,state};}
-  catch{return {ok:false,reason:'Saving is unavailable. Free some browser storage before changing progression.'};}
+  const kind=input?.profile?.kind,state=progressionValidate(input,kind);if(!state)return {ok:false,code:'invalid-progress',stage:'validation',reason:'The current progress could not be validated. Your previous save is safe. Keep this tab open and share a backup and diagnostics.'};
+  let stage='read';
+  try{const name=key(kind),previous=storage.getItem(name);let validPrevious=false;try{validPrevious=!!previous&&!!progressionValidate(JSON.parse(previous),kind);}catch{}if(validPrevious){stage='backup';storage.setItem(name+'-backup',previous);}stage='write';storage.setItem(name,JSON.stringify(state));return {ok:true,state};}
+  catch(error){const code=error?.name==='QuotaExceededError'?'storage-full':error?.name==='SecurityError'?'storage-blocked':'storage-write-failed';return {ok:false,code,stage,reason:code==='storage-full'?'Browser storage is full. Your previous save is safe. Keep this tab open, free storage and retry.':code==='storage-blocked'?'The browser blocked access to game storage. Keep this tab open and allow site storage before retrying.':'The browser could not save progress. Keep this tab open, export a backup and retry.'};}
 }
 export function progressionImport(storage,text,kind='normal'){
   let state;try{state=progressionValidate(JSON.parse(text),kind);}catch{}

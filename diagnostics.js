@@ -1,7 +1,7 @@
 // Classic, dependency-free recovery support: usable before the game can import.
 (function () {
   'use strict';
-  var errors = [], context = function () { return {}; };
+  var errors = [], context = function () { return {}; }, support = function () { return null; };
   function clean(value) {
     return String(value == null ? '' : value).replace(/https?:\/\/[^\s<>"')]+/g, function (text) {
       try { var url = new URL(text); return url.origin + url.pathname; } catch (_) { return '[URL]'; }
@@ -66,6 +66,9 @@
       'Game initialized: ' + (runtime.initialized === true),
       'Mode: ' + clean(runtime.mode || 'not initialized'),
       'Progress readable: ' + (typeof runtime.progressAvailable === 'boolean' ? runtime.progressAvailable : 'not checked'),
+      'Progress save blocked: ' + (runtime.progressSave ? runtime.progressSave.blocked : 'not checked'),
+      'Progress save pending: ' + (runtime.progressSave ? runtime.progressSave.pending : 'not checked'),
+      'Last progress save failure: ' + clean(runtime.progressSave && runtime.progressSave.lastFailure || 'none captured'),
       'Pool save available: ' + (typeof runtime.poolAvailable === 'boolean' ? runtime.poolAvailable : 'not checked'),
       'Left-handed layout: ' + (body.dataset.leftHanded === 'true'),
       '', 'Saved data (read-only JSON checks, not full game validation):', savedData(),
@@ -81,9 +84,14 @@
     if (copied) { area.hidden = true; button.focus(); }
     status.textContent = copied ? 'Diagnostics copied.' : 'Clipboard unavailable. Select and copy the report below.';
   }
-  function copy(button) {
+  function supportReport() {
+    var progress;
+    try { progress = JSON.stringify(support()); } catch (_) { progress = 'Progress snapshot unavailable.'; }
+    return report() + '\n\nSupport report: the following section includes player name and game progress, shared by the player.\n' + progress;
+  }
+  async function copy(button, text) {
     var group = button.closest('[data-diagnostics]'), status = group.querySelector('[data-diagnostics-status]');
-    var text = report();
+    text = text || report();
     group.querySelector('[data-diagnostics-report]').hidden = true;
     status.textContent = 'Copying diagnostics…';
     try {
@@ -93,9 +101,38 @@
     } catch (_) {}
     fallback(group, button, text);
   }
+  async function share(button) {
+    var group = button.closest('[data-diagnostics]'), status = group.querySelector('[data-diagnostics-status]');
+    var text = supportReport();
+    if (navigator.share) {
+      try {
+        await navigator.share({title:'Ricochet Bloom support report',text:text});
+        status.textContent = 'Report shared.'; return;
+      } catch (error) {
+        if (error && error.name === 'AbortError') { status.textContent = 'Sharing cancelled. Your progress is unchanged.'; return; }
+      }
+    }
+    await copy(button, text);
+    if (group.querySelector('[data-diagnostics-report]').hidden) status.textContent = 'Report copied. Paste it into your message.';
+  }
+  function email(button) {
+    var group = button.closest('[data-diagnostics]'), status = group.querySelector('[data-diagnostics-status]');
+    var text = supportReport();
+    location.href = 'mailto:jamessteeleseeley@gmail.com?subject=' + encodeURIComponent('Ricochet Bloom problem report') + '&body=' + encodeURIComponent(text);
+    status.textContent = 'In your email app, tap Send. If it did not open or the report is missing, use Copy Report and paste it into an email to jamessteeleseeley@gmail.com.';
+  }
   document.addEventListener('click', function (event) {
+    var emailButton = event.target.closest && event.target.closest('[data-support-email]');
+    if (emailButton) { email(emailButton); return; }
+    var shareButton = event.target.closest && event.target.closest('[data-support-share]');
+    if (shareButton) { share(shareButton); return; }
+    var supportButton = event.target.closest && event.target.closest('[data-support-copy]');
+    if (supportButton) { copy(supportButton, supportReport()).then(function () {
+      var group = supportButton.closest('[data-diagnostics]');
+      if (group.querySelector('[data-diagnostics-report]').hidden) group.querySelector('[data-diagnostics-status]').textContent = 'Report copied. Paste it into your message.';
+    }); return; }
     var button = event.target.closest && event.target.closest('[data-diagnostics-copy]');
     if (button) copy(button);
   });
-  window.ricochetDiagnostics = { report: report, copy: copy, setContext: function (read) { context = read; } };
+  window.ricochetDiagnostics = { report: report, copy: copy, share: share, email: email, supportReport: supportReport, setSupport: function (read) { support = read; }, setContext: function (read) { context = read; } };
 }());
