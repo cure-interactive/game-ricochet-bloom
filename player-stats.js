@@ -25,24 +25,24 @@ export function playerStats({state,available=true,kind=state?.profile?.kind,stor
   if(e.type==='victory')campaignWins++;
  }
  play.wins+=campaignWins;
- function group(name,values,ok=true){const tally=counts();for(const medal of values)if(MEDAL_NAMES.includes(medal)){tally[medal]++;medals[medal]++;}groups.push({name,counts:tally,available:ok});}
+ function group(name,values,ok=true,icon='gamepad'){const tally=counts();for(const medal of values)if(MEDAL_NAMES.includes(medal)){tally[medal]++;medals[medal]++;}groups.push({name,icon,counts:tally,available:ok});}
  const campaign=[false,true].map(relaxed=>{
   const records=(state.poolRecords||[]).filter(r=>r.relaxed===relaxed);
-  group('Melody Journey · '+(relaxed?'Relaxed':'Standard'),records.map(r=>poolMedal(r.pool,r.score)));
+  group('Melody Journey · '+(relaxed?'Relaxed':'Standard'),records.map(r=>poolMedal(r.pool,r.score)),true,'campaign');
   return {relaxed,cleared:records.length,total:TRACKS.length*5};
  });
  const scores=SCORE_BUDGETS.map(budget=>{const read=scoreRead(storage,kind,budget);if(!read.ok)issues.push(`${budget}-shot Score Attack`);return {budget,available:read.ok,best:read.best,medal:read.best===null?null:scoreMedal(read.best,budget)};});
- group('Score Attack',scores.map(r=>r.medal),scores.every(r=>r.available));
+ group('Score Attack',scores.map(r=>r.medal),scores.every(r=>r.available),'speedometer');
  const experiments=experimentRead(storage,kind);
  const records=experiments.library?.records??[];
  if(!experiments.ok)issues.push('Experiments');
- group('Experiments',records.map(r=>experimentMedal(experiments.library,r.setup)),experiments.ok);
+ group('Experiments',records.map(r=>experimentMedal(experiments.library,r.setup)),experiments.ok,'flask');
  const legacyNames={reaction:'Reaction Puzzle',cargo:'Cargo Rescue',outbreak:'Outbreak Containment'};
  for(const read of experimentLegacy(storage,kind)){
   if(!read.ok)issues.push(legacyNames[read.mode]);
-  group(legacyNames[read.mode]+' · Original Levels',Object.entries(read.entry?.medals??{}).map(([level,e])=>trialMedal(experimentSetup(read.mode,Number(level)),e)),read.ok);
+  group(legacyNames[read.mode]+' · Original Levels',Object.entries(read.entry?.medals??{}).map(([level,e])=>trialMedal(experimentSetup(read.mode,Number(level)),e)),read.ok,'flask');
  }
- for(const [mode,name] of [['free','Free Play'],['challenge','Challenge'],['waves','Endless Waves']])group(name,poolMedalRecords(poolStore,{kind,mode}).map(r=>r.medal));
+ for(const [mode,name] of [['free','Free Play'],['challenge','Challenge'],['waves','Endless Waves']])group(name,poolMedalRecords(poolStore,{kind,mode}).map(r=>r.medal),true,mode==='waves'?'wave':mode==='challenge'?'star':'gamepad');
  const research=Object.keys(GAME_CATALOGUE.nodes).filter(id=>!GAME_CATALOGUE.nodes[id].historical);
  return {available:true,kind,points:profile.wallet.seeds,earned,paid:[...Object.values(profile.research),...Object.values(profile.playerResearch??{})].reduce((sum,r)=>sum+r.paid,0),
   config:playerConfig(playerBuild(profile)),play,campaignClears,campaignWins,tracksCompleted:summary.completedTracks.length,tracksTotal:TRACKS.length,

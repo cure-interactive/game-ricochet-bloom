@@ -1,5 +1,5 @@
 import { playerMenuMount } from './player-menu.js?v=4c19f000869d08a08272387a74157a43d8fc78bbe924d34439ac5628f98563c9';
-import { playerStatsMount } from './player-stats-ui.js?v=722b562c2896485255afcf3254d785362295fb69e24b4ff0c27c2fc673c3be5e';
+import { playerStatsMount } from './player-stats-ui.js?v=b46d68d864d62f567f5af5f2b0bae31a75538e04d1dc75cf3579c1ea5da234a6';
 import { playerBuild, playerSync } from './player-upgrade.js?v=9483739a49b831a9c57dd285854e1bb23148947a97636d12caaebc2b619a776f';
 import { poolMedalRecord, poolMedalRecords } from './storage.js?v=2ea2bcc98d233a83ff07559d190903a9a4b26ac5a545e91856ab7256555c699b';
 import { medalIcon, medalBadge } from './medal-ui.js?v=559905246b3697fd9cf0a993d9c71ffe30b47a0c6d6cd3943a5b235d0faa31c8';
@@ -8,7 +8,7 @@ import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-att
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=ae1e6963b393352fcb67f1a22966f85f92c7f7441a134a2e98b3d09112c826c3';
 import { earningAmount } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
 import { trialMount } from './trial-ui.js?v=10f5c43fd9013f02990ccaa5a36647239b73d9b5e0f7bca506664053b09d30cb';
-import { GAME_VERSION } from './version.js?v=440c88babf976382dbf96c17b184ac6b4ffbe7a626e854c1a6604c3e2e78d7f1';
+import { GAME_VERSION } from './version.js?v=427e1eb66eb3976576289e5c2445b87b053965f4e94f204e98dc2aad210396a7';
 import { powerSlots } from './power-ui.js?v=d89f987da0bbb77d9e656cac43859e6e65fb273cc01639b6914472aa2f04d6d1';
 import { creditsMount } from './credit.js?v=044ed79fbe8afc95a94b239b4b372a5c5e82903a2d1a6f7f7669122a6dc33429';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
@@ -20,7 +20,7 @@ import { POOL_NAMES } from './run.js?v=411c261956952006f7b193b7cc9f1eece8c935da2
 import { freePlaySync, freePlayBuild } from './free-play.js?v=6f23a8f2c4f87b81d76a6147da1ce000ee3d551f2133746a1f778da9f0d38912';
 import { fullscreenMount } from './fullscreen.js?v=e40951c52d4f5a1fba3468b2789a571e965e960fc744ff3fa904ade2dbced971';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=8e90fc00dc89c230adfb6ee615f7469d0291549506d266a6d033bb43359e67e8';
+import { gameMenuMount } from './game-menu.js?v=b8112edeb457d46d347a6ad011db96ce32f41ff18455fbe0cb3ecc77ec6b940e';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
 import { progressionMount } from './progression-ui.js?v=070b4695268ab1885e88f77f769c8151d8e6a94b397e7c024312fd1f62795104';
