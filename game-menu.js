@@ -1,7 +1,7 @@
-import { GAME_VERSION } from './version.js?v=5c7565807d4a57992cfa688376c57d510212da8fa54ace4a35884143d44585d8';
+import { GAME_VERSION } from './version.js?v=6e842b8bfcbf7e88e321867d58600279cf8dd652e53b6c1a29dae507ca1e77d7';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { buttonHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
-import { menuBackgroundMount } from './menu-background.js?v=22d0f4877f5b546175077039ce7d2963f52e6cc5492b19c9463cfe8430a35c09';
+import { menuBackgroundMount } from './menu-background.js?v=a9fb35e52057923814f5b26d2be708a3ee54c1a3c9cecbd66169458df883b8ac';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {

@@ -75,7 +75,7 @@ export function menuPoolStep(pool,elapsed,autoplay=true,random=Math.random){
     }
     for(const point of pool.contacts.values()){
       for(const body of pool.game.bodies){
-        const falloff=Math.max(0,1-Math.hypot(body.x-point.x,body.y-point.y)/320);
+        const falloff=Math.max(0,1-Math.hypot(body.x-point.x,body.y-point.y)/160);
         if(falloff)repel(body,point,1400*falloff*falloff*RULE.step);
       }
     }
