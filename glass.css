@@ -101,7 +101,7 @@
 :root body #development-dialog .reading-card :is(p,small) { margin: 0; color: #c8d9e2; line-height: 1.6; }
 :root body :is(#development-dialog,#save-recovery-dialog,#support-dialog) > .dialog-body { max-width: 720px; width: 100%; margin-inline: auto; padding: 16px; }
 :root body :is(#save-recovery-dialog,#support-dialog) > .dialog-body { display: flex; flex-direction: column; gap: 16px; }
-:root body :is(#save-recovery-dialog,#support-dialog) .reading-card { flex: none; margin: 0; }
+:root body :is(#save-recovery-dialog,#support-dialog) .reading-card { flex: none; margin: 0; background: var(--reading-surface); }
 :root body .reading-card .support-recipient { color: #c8d9e2; }
 /* Other menu readers already have meaningful content groups. Their scrolling
    body is one reading card; existing nested controls keep their own material. */
