@@ -1,7 +1,7 @@
-import { GAME_VERSION } from './version.js?v=82c3a2217a7b210bd5ef4c7247ea73594d3a62a57733117ce928018c9c861406';
+import { GAME_VERSION } from './version.js?v=71088b17ec84678fcf42771da20c7061b554d2500b39379895a25686d4f02f55';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { buttonHTML } from './ui-icon.js?v=4d4624a19042310239e24c63a77cac78d6ea0211b7729b424db194db73b5cb52';
-import { menuBackgroundMount } from './menu-background.js?v=28ce58824f21418bb3845a50013275ad8741ef6ed1779a4f73f26d3c84432736';
+import { menuBackgroundMount } from './menu-background.js?v=a9232c4ce770e24081b10988fbbd303809e35c7e4a3ffd37959ce72301288f8e';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
@@ -12,10 +12,10 @@ export function gameMenuMount(host) {
   backdrop.innerHTML='<canvas class="home-pool"></canvas>';
   document.body.append(backdrop,home);
   if(host.recoveryNotice)home.querySelector('.home-actions').prepend(host.recoveryNotice);
-  const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true);
+  const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true,{profile:host.profile,skin:host.skin,audioSettings:host.audioSettings});
   const route=pageHistory('home');let homeMode=true;
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
-  function refresh(){background.powers(host.powers?.()||[]);document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
+  function refresh(){background.refresh();document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
   function present(name){
     route.visit(name);
     if((name.startsWith('gamemodes:')||name.startsWith('pool-setup:'))||['home','gamemodes','trial-setup','score-setup','experiment-hub','experiment-family','experiment-detail'].includes(name))homeMode=true;else if(['play','pause','trial'].includes(name))homeMode=false;

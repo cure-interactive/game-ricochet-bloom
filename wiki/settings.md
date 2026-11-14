@@ -8,6 +8,8 @@ Settings → Audio contains the sound toggle, master volume and ambience volume.
 
 Audio begins after an interaction with the game. Leaving the page pauses the game and its sound; use Resume when you return. The music panel offers Glass, Velvet and Wood instrument palettes.
 
+The main-menu background is a self-playing Free Play pool using your unlocked powers, player upgrades and equipped skin. It plays only its generated musical arrangement, without collision or power sound effects. Sound and Music Volume control it too. Menu play does not earn Points or change your saved game or song.
+
 ## Accessibility and Display
 
 An available unchecked setting has a bright solid outline; checked settings are mint. Disabled unchecked controls have a muted dashed outline. A disabled checked control retains its gray check, so its stored selection stays clear. Disabled controls cannot be changed until their requirement is met.

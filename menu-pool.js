@@ -1,33 +1,9 @@
-import { gameCreate, launch, physicsStep, powerActivate, RULE } from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
-import {buildValidate} from './skill-effect.js?v=6bc123e911039183cb33d2d4d4f01b63c8a5fdf57cf46b5e716d86a347906c28';
+import {gameCreate,launch,physicsStep,powerMarkers,RULE} from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
 
-// An attract-mode pool owns its state; it never receives a player's saved run.
-export function menuPoolCreate(build=[]){
-  if(build.length&&!buildValidate(build))throw new TypeError('Invalid menu power build');
-  const game=gameCreate('MENU BLOOM','free',build.length?{build}:{});
-  for(const body of game.bodies.slice(1)){body.vx*=5;body.vy*=5;}
-  return {game,wait:1.4,elapsed:0,pressure:[],contacts:new Map(),build:structuredClone(build),hits:0,activations:0,lastPower:null};
-}
-export function menuPoolPowersSet(pool,build){
-  if(JSON.stringify(pool.build)===JSON.stringify(build))return false;
-  Object.assign(pool,menuPoolCreate(build));return true;
-}
-export function menuPoolPowers(pool,events,random=Math.random){
-  const activated=[];
-  for(const event of events){
-    if(event.type!=='impact')continue;
-    pool.hits++;
-    if(pool.hits%5||!pool.build.length)continue;
-    const kind=pool.build[Math.min(pool.build.length-1,Math.max(0,Math.floor(random()*pool.build.length)))].power;
-    const target=pool.game.bodies.find(body=>body.id===(event.b>0?event.b:event.a)&&body.id>0);
-    if(!target)continue;
-    if(!pool.game.isFlying){const seed=pool.game.bodies[0];launch(pool.game,Math.atan2(target.y-seed.y,target.x-seed.x),.65);}
-    const output=powerActivate(pool.game,kind,target.id);
-    // Ordinary pickup markers must not introduce activations between fifth hits.
-    pool.game.power.markers=[];
-    if(output.some(e=>e.type==='power')){pool.activations++;pool.lastPower=kind;activated.push(...output);}
-  }
-  return activated;
+// Only the aiming decision and delay are menu-specific. The detached session
+// uses the normal Free Play launch, pickup, effect and collision rules.
+export function menuPoolCreate(game=gameCreate('MENU BLOOM','free')){
+ return {game,wait:1.4,elapsed:0,pressure:[],contacts:new Map(),hits:0,activations:0,lastPower:null};
 }
 export function menuPoolView(width,height){
   const portrait=height>width;
@@ -58,7 +34,7 @@ export function menuPoolHold(pool,id,point){
   if(Number.isFinite(point.x)&&Number.isFinite(point.y))pool.contacts.set(id,{x:point.x,y:point.y});
 }
 export function menuPoolRelease(pool,id){pool.contacts.delete(id);}
-export function menuPoolStep(pool,elapsed,autoplay=true,random=Math.random){
+export function menuPoolStep(pool,elapsed,autoplay=true){
   pool.elapsed+=Math.min(.05,Math.max(0,elapsed));
   const events=[];
   while(pool.elapsed>=RULE.step){
@@ -67,10 +43,10 @@ export function menuPoolStep(pool,elapsed,autoplay=true,random=Math.random){
       pool.wait-=RULE.step;
       if(pool.wait<=0){
         const seed=pool.game.bodies[0],targets=pool.game.bodies.slice(1);
-        const target=targets[(pool.game.launches*5+2)%targets.length];
-        launch(pool.game,Math.atan2(target.y-seed.y,target.x-seed.x),.65);
-        // Menu powers are triggered by the fifth impact, never ordinary pickups.
-        pool.game.power.markers=[];pool.wait=2.4;
+        const marker=powerMarkers(pool.game)[0];
+        const target=targets.find(body=>body.id===marker?.target)||targets[(pool.game.launches*5+2)%targets.length];
+        if(launch(pool.game,Math.atan2(target.y-seed.y,target.x-seed.x),.65))events.push({type:'launch',tick:pool.game.tick,x:seed.x,y:seed.y});
+        pool.wait=2.4;
       }
     }
     for(const point of pool.contacts.values()){
@@ -86,7 +62,8 @@ export function menuPoolStep(pool,elapsed,autoplay=true,random=Math.random){
     }
     pool.pressure=pool.pressure.filter(point=>point.age<1.25);
     const stepEvents=physicsStep(pool.game);
-    events.push(...stepEvents,...menuPoolPowers(pool,stepEvents,random));
+    for(const event of stepEvents){event.tick=pool.game.tick;if(event.type==='impact')pool.hits++;if(event.type==='power'){pool.activations++;pool.lastPower=event.kind;}}
+    events.push(...stepEvents);
   }
   return events;
 }

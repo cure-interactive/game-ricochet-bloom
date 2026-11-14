@@ -1,4 +1,4 @@
-import { bubbleRender } from './bubble-render.js?v=997e50dee1966fa389f1522907cc5fcd744d3bb3525669d3e306cec729fe9b34';
+import {poolBubbleRender,poolBubbleIcons} from './pool-bubble.js?v=d91dab27e50e91cdaceaaf9f26ec4685831623556a0c5a77bb1462e1c2492d5a';
 import { playerMenuMount } from './player-menu.js?v=eb569cadceef51cb76155659930233c79d3a8ff60db2ded079c0ecb89de7f978';
 import { playerStatsMount } from './player-stats-ui.js?v=c9d85334af3a9308e086ac033da76263ad6104413d6d5e67900345573293a3f6';
 import { playerBuild, playerSync } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
@@ -9,20 +9,20 @@ import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-att
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=57c2f32c90cea1d5c2d2601973e60b0926e5a5b233f60ffc9fc543e5a7f7903e';
 import { earningAmount } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
 import { trialMount } from './trial-ui.js?v=9269c681d1dcb195ea548e0c6baf0e15e819edbb25d57ae2c62cc44c9352b0a6';
-import { GAME_VERSION } from './version.js?v=82c3a2217a7b210bd5ef4c7247ea73594d3a62a57733117ce928018c9c861406';
+import { GAME_VERSION } from './version.js?v=71088b17ec84678fcf42771da20c7061b554d2500b39379895a25686d4f02f55';
 import { powerSlots } from './power-ui.js?v=a16e7955e05852ed192cc8ce2f47bf869c3f5fe00e6e810aa1a8a69763eb475d';
-import { creditsMount } from './credit.js?v=5f12f15002ebe0f4ae98921517fd97a3f8a59eeb85a699284577c979fe7f5e22';
+import { creditsMount } from './credit.js?v=3bbd6afbe7d56dd1569a3bd846ff14ca1ca13d0742b65bec260bfa3646ac40e4';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=c76004d132b2ea92ec0cecf92a15fae0a4ec85781d19df28f70222f5ed78b04a';
 import { edgeBackMount } from './edge-back.js?v=1333ff7c1ee04d8e2609a683292abf03e93ffc227190d751fef77d656d00bb12';
-import { wikiMount } from './wiki.js?v=d9052eec498400bb8faf9af03dbfeb19673d90a0f02e38ea734f8e00e3bfe462';
+import { wikiMount } from './wiki.js?v=b15d2db6091d0409d9da1d02799674bc619e997138e81e99c3b568a450864604';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { POOL_NAMES } from './run.js?v=04b8cff9f07dfc39e2493a128861d4d83e38a6177b0c2c8a1abb375176001004';
-import { freePlaySync, freePlayBuild } from './free-play.js?v=bd7478284691145d282da97d597e3186c4d0d637006c1fd9091081e0699842e7';
+import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=a80ef5e7746cc2ccfad26fc05592827028a08d4353735796d3c9c4656f587a93';
 import { fullscreenMount } from './fullscreen.js?v=051447beb73d8881066d4212a0ff37f748a6685ff7ba97cc7149de967da86c33';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=9a934c3990e5aa9ed36c74a573d2b0d7077691815304ca6b4716c01eaa0971b1';
-import { environmentRender, regionFrozen, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
+import { gameMenuMount } from './game-menu.js?v=277fd7ffeb9502c270dd4ddd5de1ce84230e9969c08cf8a1ab0c2d0b40f06889';
+import { environmentRender, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
 import { progressionMount } from './progression-ui.js?v=245789527391852b246c25b5ccfc96ac48787dbf4c6c61e4d088dfd08dbbadf4';
 import {assetURL} from './asset.js?v=c168b1bf74896095e10ba96f5c9cfb00449414ce901de7993bd725e00a9bbfea';
@@ -31,9 +31,9 @@ import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc
 import {songLibrarySetup} from './song-ui.js?v=7bd218be2c2fc158d6e42812d08e6fdcdc15bfdd03d0744e83f6d7823c7b7a68';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet, poolPreferencesWrite } from './storage.js?v=ddb84aea986a9f93582a75b5c9a98e7d1bf60a9e870308f6f5ccffe09140cc7b';
-import { PoolSound } from './sound.js?v=93cf0472671e44a09e0b8c7c94eef141b1c4576f62a17c065190b0598439523b';
-import { musicProgress, musicPhrasePreview, BUBBLE_ROLES, bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import { bubbleCreate, bubbleHit, bubbleStep, bubbleOutline, bubbleFlow, bubbleRipple } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
+import { PoolSound } from './sound.js?v=10fabc86b1fde4008ef8602d8b1188f6f8d05611a36c606d02a4de6121ee2d4a';
+import { musicProgress, musicPhrasePreview } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
+import { bubbleCreate, bubbleHit, bubbleRipple } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import { PowerVisual } from './power-visual.js?v=c1fa49a130dcf51e7d62ea8b27a6b927bc9a6dad0b11295f7beeead8e230b7e2';
 viewportMount();
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
@@ -52,13 +52,7 @@ let angle = -Math.PI / 2, power = .7, drag = null, previousTime = performance.no
 let trails = [], particles = [], rings = [], connections = [], bolts = [], reunions = [], scorePopups = [], toastTimer, frameCount = 0, noteCount = 0;
 const membranes = new Map();
 const powerVisual = new PowerVisual();
-const powerIcons = Object.fromEntries(Object.keys(POWERS).map(kind => {
-  const icon = new Image(); icon.src = new URL(assetURL(`./icon/power/${kind}.svg`), import.meta.url).href; return [kind, icon];
-}));
-// Role markings use the same SVG geometry as the musical legend.
-const roleIcons = Object.fromEntries(Object.keys(BUBBLE_ROLES).map(role => {
-  const icon = new Image(); icon.src = new URL(assetURL(`./icon/ui/${role}.svg`), import.meta.url).href; return [role, icon];
-}));
+const {powerIcons}=poolBubbleIcons();
 for (const [kind, p] of Object.entries(POWERS)) {
   const card = document.createElement('div'); card.className = 'power-card'; card.style.setProperty('--power-color', p.color);
   const icon = document.createElement('img'); icon.src = powerIcons[kind].src; icon.alt = ''; icon.width = icon.height = 36;
@@ -202,95 +196,10 @@ function scorePopupRender(dt, view, ratio) {
 function geometry() { const rect=canvas.getBoundingClientRect(); return {rect,...poolView(rect.width,rect.height,RULE.width,RULE.height,matchMedia('(orientation: portrait)').matches)}; }
 function resize() { const { rect } = geometry(), ratio = Math.min(2, devicePixelRatio || 1); canvas.width = Math.round(rect.width * ratio); canvas.height = Math.round(rect.height * ratio); }
 new ResizeObserver(resize).observe(canvas);
-// Frost is attached to the actual membrane and clipped inside its surface.
-function frostRender(body, points, skin, frost) {
-  const radius = body.radius;
-  context.save(); context.globalAlpha = frost * (isGentle ? .8 : 1);
-  const rim = context.createLinearGradient(body.x - radius, body.y - radius, body.x + radius, body.y + radius);
-  rim.addColorStop(0, '#f1fcffdd'); rim.addColorStop(.45, '#c5eeff99'); rim.addColorStop(1, '#83c9e875');
-  context.strokeStyle = rim; context.lineWidth = radius * .34; context.stroke(skin);
-  context.strokeStyle = '#f0fcffe0'; context.lineWidth = radius * .065; context.stroke(skin);
-  // Stable fine grains and short branching crystals, never flickering particles.
-  for (let index = 0; index < 72; index++) {
-    const segment = index % points.length, point = points[segment], next = points[(segment + 1) % points.length];
-    const fraction = ((index * 37 + body.id * 11) % 97) / 97, depth = .82 + ((index * 19 + body.id * 7) % 23) / 150;
-    const x = body.x + ((point.x + (next.x - point.x) * fraction) - body.x) * depth;
-    const y = body.y + ((point.y + (next.y - point.y) * fraction) - body.y) * depth;
-    context.fillStyle = index % 3 ? '#edfbff90' : '#ffffffd0';
-    context.beginPath(); context.arc(x, y, radius * (index % 4 ? .012 : .022), 0, Math.PI * 2); context.fill();
-  }
-  context.strokeStyle = '#e4f8ffb0'; context.lineWidth = radius * .018; context.lineCap = 'round';
-  for (let index = 0; index < points.length; index += 3) {
-    const point = points[index], dx = point.x - body.x, dy = point.y - body.y;
-    const x = body.x + dx * .94, y = body.y + dy * .94;
-    context.beginPath(); context.moveTo(x, y); context.lineTo(body.x + dx * .77, body.y + dy * .77);
-    context.moveTo(body.x + dx * .85, body.y + dy * .85); context.lineTo(x - dy * .06, y + dx * .06);
-    context.moveTo(body.x + dx * .85, body.y + dy * .85); context.lineTo(x + dy * .06, y - dx * .06); context.stroke();
-  }
-  context.restore();
-}
-function blobRender(body, dt, time) {
-  const membrane = membraneGet(body), isSeed = body.id <= 0, isBubble = body.id === 0 && !!effectGet(game, 'bubble'), hue = isSeed ? body.id === -3 ? POWERS.echo.color : body.id < 0 ? POWERS.split.color : isBubble ? POWERS.bubble.color : progression?.skin||'#f1f9d7' : COLORS[body.tone], radius = body.radius;
-  const isPermeable = !isSeed && frozenHit(game, body.id);
-  membrane.glow = Math.max(0, membrane.glow - dt * 1.4);
-  const playback = audio.playbackLights.get(body.id);
-  const replayGlow = playback ? Math.max(0, (playback.until - audio.context.currentTime) / .7) * (isGentle ? .18 : .7) : 0;
-  const light = Math.max(membrane.glow, replayGlow);
-  bubbleStep(membrane, body, dt, isGentle, isGentle ? undefined : bubbleFlow(body, game.bodies), !isSeed && (!!effectGet(game, 'stasis')?.targets.includes(body.id)||regionFrozen(game,body.id)));
-  const points = bubbleOutline(membrane, body).map(point => ({ x: Math.max(RULE.inset, Math.min(RULE.width - RULE.inset, point.x)), y: Math.max(RULE.inset, Math.min(RULE.height - RULE.inset, point.y)) }));
-  const skin = bubbleRender(context, body, points, hue, {isSeed,isBubble,isPermeable,light});
-  context.save(); context.clip(skin);
-  if (!isSeed) {
-    // A pearly nucleus and drifting flecks make each bubble feel inhabited.
-    const x = body.x + membrane.core[0], y = body.y + radius * .1 + membrane.core[1];
-    const nucleus = context.createRadialGradient(x, y, 0, x, y, radius * .34); nucleus.addColorStop(0, hue + (isPermeable ? '20' : 'd0')); nucleus.addColorStop(1, hue + '00'); context.fillStyle = nucleus; context.beginPath(); context.arc(x, y, radius * .34, 0, Math.PI * 2); context.fill();
-    for (let index = 0; index < 5; index++) { const point = points[(index * 5 + body.id) % points.length]; context.beginPath(); context.arc(x + (point.x - body.x) * .45, y + (point.y - body.y) * .4, 1.4, 0, Math.PI * 2); context.fillStyle = hue + (isPermeable ? '25' : 'a0'); context.fill(); }
-  }
-  if (!isSeed && membrane.frost > .01) frostRender(body, points, skin, membrane.frost);
-  if (isBubble) {
-    // Keep overlapping bubbles visible through the pressure shell and its small core.
-    const coreRadius = effectGet(game, 'split') ? 10 : RULE.seedRadius;
-    const core = context.createRadialGradient(body.x, body.y, 0, body.x, body.y, coreRadius * 1.5);
-    core.addColorStop(0, '#ffffede0'); core.addColorStop(.5, '#ddfff4a0'); core.addColorStop(1, '#aaeaff00');
-    context.fillStyle = core; context.beginPath(); context.arc(body.x, body.y, coreRadius * 1.5, 0, Math.PI * 2); context.fill();
-    // Pearly bands follow the existing soft-body outline, including impact flattening.
-    const pearl = context.createLinearGradient(body.x - radius, body.y - radius, body.x + radius, body.y + radius);
-    for (const [stop, color] of [[0, '#ffe4fd'], [.3, '#c4b2ff'], [.6, '#9ff9ee'], [1, '#fff4c0']]) pearl.addColorStop(stop, color);
-    context.strokeStyle = pearl; context.lineWidth = isGentle ? 2.5 : 4; context.globalAlpha = isGentle ? .55 : .85; context.stroke(skin);
-    context.lineWidth = 1.5; context.globalAlpha = .5;
-    for (const [start, end] of [[1, 8], [12, 18]]) {
-      context.beginPath();
-      for (let i = start; i <= end; i++) { const point = points[i], x = body.x + (point.x - body.x) * .88, y = body.y + (point.y - body.y) * .88; if (i === start) context.moveTo(x, y); else context.lineTo(x, y); }
-      context.stroke();
-    }
-  }
-  context.restore();
-  if (!isSeed && membrane.frost > .03 && (!effectGet(game, 'stasis') || effectGet(game, 'stasis').seconds < 1)) {
-    context.save(); context.fillStyle = '#d5f5ff';
-    for (let i = 0; i < (isGentle ? 2 : 6); i++) {
-      const phase = isGentle ? .3 : (time * .8 + i * .17 + body.id * .11) % 1, angle = i * Math.PI / 3 + body.id;
-      const distance = radius + 3 + phase * (isGentle ? 3 : 18);
-      context.globalAlpha = membrane.frost * (1 - phase) * (isGentle ? .3 : .65);
-      context.beginPath(); context.arc(body.x + Math.cos(angle) * distance, body.y + Math.sin(angle) * distance + phase * 8, 1.6 * (1 - phase) + .4, 0, Math.PI * 2); context.fill();
-    }
-    context.restore();
-  }
-  const marker = powerMarkers(game).find(marker => marker.target === body.id);
-  if(!isSeed) {
-    const role=bubbleRole(body.id),icon=roleIcons[role],size=marker?18:Math.min(32,body.radius*1.25),y=marker?Math.min(body.radius*.68,body.radius-size*.5):0;
-    context.save();if(isPermeable)context.globalAlpha=.35;context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);
-    if(icon.complete&&icon.naturalWidth)context.drawImage(icon,-size/2,y-size/2,size,size);
-    else {context.fillStyle='#e9ffed';context.font=`${size*.7}px Fredoka,sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(BUBBLE_ROLES[role].name[0],0,y);}
-    context.restore();
-  }
-  if (marker) {
-    const p = POWERS[marker.kind], icon = powerIcons[marker.kind], size = Math.min(52, body.radius * 1.25);
-    context.save(); context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);context.shadowColor = p.color; context.shadowBlur = isGentle ? 0 : 12;
-    if (icon.complete && icon.naturalWidth) context.drawImage(icon, -size / 2, -size / 2, size, size);
-    else { context.fillStyle = '#f3fff5'; context.font = '32px Arial'; context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillText(p.symbol, 0, 0); }
-    context.restore();
-  }
-  if (!isSeed && game.chain.includes(body.id)) { context.strokeStyle = hue + (isPermeable ? '28' : '88'); context.lineWidth = 1; context.beginPath(); for (const [index, point] of points.entries()) { const x = body.x + (point.x - body.x) * 1.1, y = body.y + (point.y - body.y) * 1.1; if (!index) context.moveTo(x, y); else context.lineTo(x, y); } context.closePath(); context.stroke(); }
+function blobRender(body,dt,time){
+ const playback=audio.playbackLights.get(body.id);
+ const replayGlow=playback?Math.max(0,(playback.until-audio.context.currentTime)/.7)*(isGentle?.18:.7):0;
+ poolBubbleRender(context,game,body,membraneGet(body),dt,time,{gentle:isGentle,skinColor:progression?.skin||'#f1f9d7',portrait:portraitView,replayGlow});
 }
 function render(now) {
   if (navigation && navigation.current !== 'play') { previousTime=now;accumulator=0;requestAnimationFrame(render);return; }
@@ -539,7 +448,7 @@ function freePlay() {
   if(progression?.context!=='legacy')progression.leave();
   save();
   if (game.mode === 'free') { start(); return; }
-  const entry = store.pools.free; loadPool(entry?.game || gameCreate(game.seed, 'free'), entry?.music);
+  const entry = store.pools.free; loadPool(entry?.game || freePlayCreate(game.seed,progression.state), entry?.music);
 }
 function wavesPlay(){
   if(progression?.context!=='legacy')progression.leave();save();
@@ -691,7 +600,8 @@ navigation=gameMenuMount({
   recoveryNotice:progression.recoveryNotice,
   gentle:()=>isGentle,
   skin:()=>progression.skin,
-  powers:()=>freePlayBuild(progression.statsProfile.state),
+  profile:()=>progression.statsProfile.state,
+  audioSettings:()=>({volume:audio.volume,ambience:audio.ambience,muted:audio.isMuted}),
   suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},
   resume:start,
   freePlay, wavesPlay,

@@ -19,7 +19,7 @@ export const WIKI_PAGES = Object.freeze({
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=7a28e512643ce0faf78d4f9020b8a6e8d56a536f4d64caa116560a40390460e3' },
   'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=3acd6d44547163b633a944abf088b1089a57018e9fbda57d7471b01347616e90' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=fdfe61d1691fced0483795dde874fa6adb22ed6ee9939e72afac3342e114d3c3' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=9bdef1563828c24239ec5db9bf850633858e94e56496215a45d986516abbf700' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=5d0a33c0da4d9e36636ef9ab3479c6ef45806f93a896c7d8952a3950c23a86ed' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.
 export const WIKI_SOURCES = Object.freeze([

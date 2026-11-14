@@ -6,7 +6,7 @@ import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish,
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export class PoolSound {
-  constructor() { this.media = new PoolMedia(); this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
+  constructor({media=true}={}) { this.media = media?new PoolMedia():null; this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
   get bloomCount() { return this.music.blooms; }
   get harmony() { const chord = this.activeChord ?? this.music.history.at(-1)?.chord; return chord === undefined || chord === null ? null : CHORDS[chord]; }
   musicSave() { return musicCreate(this.music, this.bloomCount); }
@@ -47,9 +47,9 @@ export class PoolSound {
       reverb.buffer = impulse; const room = context.createGain(); room.gain.value = .22;
       highpass.connect(reverb); reverb.connect(room); room.connect(this.musicOutput);
     }
-    this.media.prepare(audioContext, this.master);
-    this.media.update(this.isMusicPlaying && !this.isPaused && this.volume > 0 && this.ambience > 0);
-    this.media.retry();
+    this.media?.prepare(audioContext, this.master);
+    this.media?.update(this.isMusicPlaying && !this.isPaused && this.volume > 0 && this.ambience > 0);
+    this.media?.retry();
     await resuming;
     this.musicUpdate();
     return this.context.state === 'running';
@@ -73,7 +73,7 @@ export class PoolSound {
   musicStart() { this.isMusicPlaying = true; this.musicUpdate(); }
   ambienceSet(value) { this.ambience = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 1; if (!this.ambience) this.phraseClear(); this.mixUpdate(); }
   mixUpdate() {
-    this.media.update(!!this.context && this.context.state === 'running' && this.isMusicPlaying && !this.isMuted && !this.isPaused && this.volume > 0 && this.ambience > 0);
+    this.media?.update(!!this.context && this.context.state === 'running' && this.isMusicPlaying && !this.isMuted && !this.isPaused && this.volume > 0 && this.ambience > 0);
     if (!this.musicOutput) return;
     const now = this.context.currentTime;
     const level = this.isMuted || this.isPaused || !this.isMusicPlaying ? 0 : this.ambience * (now < this.duckUntil ? .6 : 1);
@@ -140,7 +140,7 @@ export class PoolSound {
     this.eventCount++;
     return true;
   }
-  eventPlay(event) {
+  eventPlay(event,{effects=true}={}) {
     const pan = poolPan(event.x, event.y, this.portrait);
     const explicitMidi=Number.isInteger(event.midi)&&event.midi>=48&&event.midi<=84&&[0,2,4,5,7,9,11].includes(event.midi%12)?event.midi:null;
     if (event.type === 'launch') musicLaunch(this.music);
@@ -150,7 +150,7 @@ export class PoolSound {
     if(event.type==='objective')musicAccent(this.music);
     if(event.type==='blaster-fire')musicPower(this.music,'blaster',pan);
     if(event.type==='power'&&event.kind==='echo')musicPower(this.music,'echo',pan);
-    if (!this.context || this.isMuted) return;
+    if (!effects || !this.context || this.isMuted) return;
     this.eventCount++;
     if (event.type === 'blaster-fire') { const pitch=this.notePitch(0)*2;this.tone(pitch*1.08,pitch,.09,.045,pan); }
     if (event.type === 'blaster-bank') this.tone(880,1320,.08,.06,pan);

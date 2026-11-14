@@ -1,12 +1,17 @@
+import {poolBubbleRender} from './pool-bubble.js?v=d91dab27e50e91cdaceaaf9f26ec4685831623556a0c5a77bb1462e1c2492d5a';
+import {freePlayCreate,freePlayBuild} from './free-play.js?v=a80ef5e7746cc2ccfad26fc05592827028a08d4353735796d3c9c4656f587a93';
+import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
+import {progressionCreate} from './run.js?v=04b8cff9f07dfc39e2493a128861d4d83e38a6177b0c2c8a1abb375176001004';
+import {menuMusicCreate} from './menu-music.js?v=efe27ce829a4d07bd2490c733ea6bd366ec070324dbd27492f0620139233c982';
 import {PowerVisual} from './power-visual.js?v=c1fa49a130dcf51e7d62ea8b27a6b927bc9a6dad0b11295f7beeead8e230b7e2';
-import { COLORS, RULE, POWERS, seedBodies, effectGet } from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
-import { bubbleCreate, bubbleHit, bubbleStep, bubbleOutline, bubbleFlow } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView, menuPoolPowersSet } from './menu-pool.js?v=362dbbcd4fa6559a03eaf428d2315a4812bbbd47ebc0f5cc776f32ac692e5bc9';
+import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
+import { bubbleCreate, bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
+import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=7ad269567cdd629f4796505360695356f102591a74757fa62553e87710dace77';
 
-export function menuBackgroundMount(canvas,gentle){
-  const ctx=canvas.getContext('2d'),pool=menuPoolCreate(),skins=new Map(),powerVisual=new PowerVisual();
+export function menuBackgroundMount(canvas,gentle,{profile=()=>progressionCreate(),skin=()=>'#f1f9d7',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
+  const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),skins=new Map(),powerVisual=new PowerVisual();
   const skinFor=body=>{if(!skins.has(body.id))skins.set(body.id,bubbleCreate());return skins.get(body.id);};
-  let active=false,frame=0,previous=0,rings=[];
+  let active=false,frame=0,previous=0,rings=[],signature='';
   function draw(dt){
     const width=canvas.clientWidth,height=canvas.clientHeight,dpr=Math.min(2,devicePixelRatio||1);
     if(!width||!height)return;
@@ -31,40 +36,40 @@ export function menuBackgroundMount(canvas,gentle){
     powerVisual.update(dt);powerVisual.render(ctx,pool.game,pool.game.tick*RULE.step,gentle());
     const bodies=[...seedBodies(pool.game),...pool.game.bodies.slice(1)];
     for(const body of bodies){
-      const skin=skinFor(body),color=body.id<=0?(body.id===-3?POWERS.echo.color:body.id<0?POWERS.split.color:'#f1f9d7'):COLORS[body.tone],r=body.radius;
-      bubbleStep(skin,body,dt,gentle(),bubbleFlow(body,bodies),body.id>0&&!!effectGet(pool.game,'stasis')?.targets.includes(body.id));skin.glow=Math.max(0,skin.glow-dt);
-      const glow=ctx.createRadialGradient(body.x,body.y,r*.2,body.x,body.y,r*3);
-      glow.addColorStop(0,color+(skin.glow>.1?'65':'28'));glow.addColorStop(1,color+'00');ctx.fillStyle=glow;ctx.beginPath();ctx.arc(body.x,body.y,r*3,0,Math.PI*2);ctx.fill();
-      const points=bubbleOutline(skin,body),path=new Path2D(),first=points[0],last=points.at(-1);
-      path.moveTo((first.x+last.x)/2,(first.y+last.y)/2);
-      points.forEach((p,i)=>{const next=points[(i+1)%points.length];path.quadraticCurveTo(p.x,p.y,(p.x+next.x)/2,(p.y+next.y)/2);});path.closePath();
-      const fill=ctx.createRadialGradient(body.x-r*.3,body.y-r*.35,0,body.x,body.y,r*1.1);
-      fill.addColorStop(0,body.id<=0?'#ffffed':color+'dd');fill.addColorStop(.5,color+'70');fill.addColorStop(1,color+'18');
-      ctx.fillStyle=fill;ctx.fill(path);ctx.strokeStyle=color+'bb';ctx.lineWidth=1.4;ctx.stroke(path);
-      ctx.fillStyle=color+'aa';ctx.beginPath();ctx.arc(body.x+skin.core[0],body.y+skin.core[1],r*.17,0,Math.PI*2);ctx.fill();
+      poolBubbleRender(ctx,pool.game,body,skinFor(body),dt,pool.game.tick*RULE.step,{gentle:gentle(),skinColor:skin(),portrait});
     }
     canvas.dataset.tick=String(pool.game.tick);
-    canvas.dataset.powerHits=String(pool.hits);canvas.dataset.powerActivations=String(pool.activations);canvas.dataset.lastPower=pool.lastPower||'';canvas.dataset.powerChoices=pool.build.map(p=>p.power).join(',');
+    canvas.dataset.effects=pool.game.effects.map(e=>e.kind).join(',');canvas.dataset.frozen=String(effectGet(pool.game,'stasis')?.targets.length||0);canvas.dataset.permeable=String(pool.game.bodies.filter(b=>b.id>0&&frozenHit(pool.game,b.id)).length);
+    musicDiagnostics();
+    canvas.dataset.powerHits=String(pool.hits);canvas.dataset.powerActivations=String(pool.activations);canvas.dataset.lastPower=pool.lastPower||'';canvas.dataset.powerChoices=pool.game.build.map(p=>p.power).join(',');
   }
   function animate(now){
     frame=0;if(!active||document.hidden)return;
     const dt=previous?Math.min(.05,(now-previous)/1000):0;
     if(!previous||dt>=1/30){
       previous=now;
-      for(const event of menuPoolStep(pool,dt*(gentle()?.45:.75))){
-        if(event.type==='impact')for(const [id,sign] of [[event.a,1],[event.b,-1]]){const body=seedBodies(pool.game).find(b=>b.id===id)||pool.game.bodies[id];if(body)bubbleHit(skinFor(body),body.radius,event.nx*sign,event.ny*sign,event.speed);}
-        powerVisual.event(event,pool.game);
+      for(const event of menuPoolStep(pool,dt)){
+        if(event.type==='impact')for(const [id,sign] of [[event.a,1],[event.b,-1]]){const body=seedBodies(pool.game).find(b=>b.id===id)||pool.game.bodies[id];if(body)bubbleHit(skinFor(body),body.radius,event.nx*sign,event.ny*sign,event.speed,!!effectGet(pool.game,'stasis')?.targets.includes(id));}
+        if(event.type==='wall'){const body=bodiesFor().find(b=>b.id===event.id);if(body)bubbleHit(skinFor(body),body.radius,-event.nx,-event.ny,event.speed,!!effectGet(pool.game,'stasis')?.targets.includes(body.id));}
+        powerVisual.event(event,pool.game);music.event(event);
         if(event.type==='note'&&pool.game.bodies[event.id])skinFor(pool.game.bodies[event.id]).glow=.9;
         if(event.type==='bloom'&&!gentle())rings.push({x:event.x,y:event.y,age:0});
       }
+      music.update(bodiesFor(),menuPoolView(canvas.clientWidth,canvas.clientHeight).portrait);
       draw(dt);
     }
     frame=requestAnimationFrame(animate);
   }
-  function sync(){cancelAnimationFrame(frame);frame=0;previous=0;if(active&&!document.hidden)frame=requestAnimationFrame(animate);}
+  const bodiesFor=()=>[...seedBodies(pool.game),...pool.game.bodies.slice(1)];
+  function musicDiagnostics(){if(music.diagnostics)for(const [key,value] of Object.entries(music.diagnostics))canvas.dataset['music'+key[0].toUpperCase()+key.slice(1)]=String(value);}
+  function sync(){music.active(active&&!document.hidden);musicDiagnostics(); cancelAnimationFrame(frame);frame=0;previous=0;if(active&&!document.hidden)frame=requestAnimationFrame(animate);}
   function clear(){pool.contacts.clear();canvas.dataset.contacts='0';}
   document.addEventListener('visibilitychange',()=>{clear();sync();});window.addEventListener('resize',()=>{clear();sync();});
-  const background={powers(build){if(menuPoolPowersSet(pool,build)){skins.clear();powerVisual.clear();rings=[];canvas.dataset.contacts='0';draw(0);}},show(value){if(active===value)return;clear();active=value;sync();},clear,
+  const background={refresh(){
+    const progress=profile(),next=JSON.stringify([freePlayBuild(progress),playerBuild(progress.profile)]);
+    if(signature===next)return;signature=next;
+    Object.assign(pool,menuPoolCreate(freePlayCreate('MENU BLOOM',progress)));skins.clear();powerVisual.clear();rings=[];music.reset();canvas.dataset.contacts='0';draw(0);
+  },show(value){if(active===value)return;clear();active=value;sync();},clear,
     contact(id,clientX,clientY,pulse=false){
       if(!active||document.hidden)return;
       const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;
@@ -76,6 +81,7 @@ export function menuBackgroundMount(canvas,gentle){
     for(const hit of menuPoolTap(pool,point)){bubbleHit(skinFor(pool.game.bodies[hit.id]),pool.game.bodies[hit.id].radius,hit.nx,hit.ny,hit.speed);skinFor(pool.game.bodies[hit.id]).glow=.8;}
     canvas.dataset.pulses=String(pool.pressure.length);draw(0);if(!frame)sync();
   }};
+  for(const event of ['pointerdown','keydown'])document.addEventListener(event,()=>{if(active&&!document.hidden)music.unlock();},{capture:true,passive:true});
   menuContactMount(background,document,window);
   return background;
 }
