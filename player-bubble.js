@@ -28,7 +28,7 @@ export function registerPlayerBubble(win=window){
    });this.intersection.observe(this);
    this.preferences=new win.MutationObserver(this.change);
    // Skin colors can be overridden on a reward button, preview or active profile.
-   for(let ancestor=this.parentElement;ancestor;ancestor=ancestor.parentElement)this.preferences.observe(ancestor,{attributes:true,attributeFilter:['class','style']});
+   for(let ancestor=this.parentElement;ancestor;ancestor=ancestor.parentElement)this.preferences.observe(ancestor,{attributes:true,attributeFilter:['class','style','aria-pressed','aria-selected']});
   }
   reduced(){return this.media.matches||this.ownerDocument.body.classList.contains('motion-reduced');}
   request(){if(!this.frame&&this.visible&&!this.ownerDocument.hidden&&this.isConnected)this.frame=win.requestAnimationFrame(time=>this.tick(time));}
@@ -68,8 +68,12 @@ export function registerPlayerBubble(win=window){
    const pixels=Math.ceil(this.size*2.8*Math.min(2,win.devicePixelRatio||1));
    if(this.canvas.width!==pixels||this.canvas.height!==pixels)this.canvas.width=this.canvas.height=pixels;
    const c=this.context;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pixels,pixels);c.setTransform(pixels/78.4,0,0,pixels/78.4,0,0);
-   const color=win.getComputedStyle(this).getPropertyValue('--skin-color').trim()||'#f1f9d7';
-   bubbleRender(c,this.body,bubbleOutline(this.membrane,this.body),color,{glowExtent:1.3});
+   const style=win.getComputedStyle(this),color=style.getPropertyValue('--skin-color').trim()||'#f1f9d7';
+   const skin=bubbleRender(c,this.body,bubbleOutline(this.membrane,this.body),color,{glowExtent:1.3});
+   if(style.getPropertyValue('--player-bubble-outline').trim()==='1'){
+    // Follow the actual membrane, keeping a 1.5 CSS-pixel edge at icon sizes.
+    c.strokeStyle=style.color;c.lineWidth=42/this.size;c.stroke(skin);
+   }
   }
   disconnectedCallback(){
    this.visible=false;this.reset();this.resize.disconnect();this.intersection.disconnect();this.preferences.disconnect();

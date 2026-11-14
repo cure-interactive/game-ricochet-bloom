@@ -33,6 +33,8 @@
    Screen navigation refreshes the inherited color for the active profile. */
 .ui-icon[data-icon="player-skin"]{--skin-color:var(--player-skin-color,#f1f9d7);-webkit-mask:none;mask:none;background:none;overflow:visible;position:relative}
 .home-primary .ui-icon[data-icon="player-skin"]{width:24px;height:24px}
+.ui-icon[data-icon="player-skin"]{--player-bubble-outline:0}
+:is([aria-pressed="true"],[aria-selected="true"])>.ui-icon[data-icon="player-skin"]{--player-bubble-outline:1}
 
 /* The outer control retains its stable hit target while the membrane deforms. */
 .skin-preview-interactive{padding:40px;min-height:280px;overflow:clip}
