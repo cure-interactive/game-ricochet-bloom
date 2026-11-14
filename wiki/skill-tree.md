@@ -1,10 +1,10 @@
-# Skill Tree
+# Skills
 
 ## Player Upgrades
 
-Open **Skill Tree** and switch between **Powers** and **Player** using the buttons in its navigation panel. The Player tree connects Your Player to the Sight, Launch and Rebound branches. Tap or click a node to read its effects, prerequisites and Points cost, then unlock it from the detail card. Drag to pan and pinch or scroll to zoom, just like the power tree. Keyboard users can move between nodes with arrow keys and open details with Enter or Space. Hovering does not open a card.
+Open **Player → Skills** to go straight to player upgrades, or open **Skills** from the main menu and switch between **Powers** and **Player** using the buttons in its navigation panel. The Player tree connects Your Player to the Sight, Launch and Rebound branches. Tap or click a node to read its effects, prerequisites and Points cost, then unlock it from the detail card. Drag to pan and pinch or scroll to zoom, just like the power tree. Keyboard users can move between nodes with arrow keys and open details with Enter or Space. Hovering does not open a card.
 
-Both trees use the same Points wallet. Purchases are permanent and cumulative; each second player upgrade requires the first in its branch, and every branch can be researched. **Your Build** shows your current player attributes and where upgrades apply. Existing purchases are preserved. Skins remain cosmetic.
+Both trees use the same Points wallet. Purchases are permanent and cumulative; each second player upgrade requires the first in its branch, and every branch can be researched. The **Your Player** root card shows your current player attributes and where upgrades apply. Existing purchases are preserved. Skins remain cosmetic.
 
 - **Sight:** Long Sight costs 8 Points and adds 180 units of aiming guide and 140 units after the first wall bounce. Deep Sight costs 18 Points and adds the same amounts again. The guide shows wall geometry; bubbles and powers can change the actual path.
 - **Launch:** The starting maximum is 800 units/second. Strong Launch costs 10 Points and raises it to 900. Greater Launch costs 22 Points and raises it to 1,000. The minimum stays 280, so gentle shots remain available.
@@ -26,7 +26,7 @@ Research costs Points earned in any game mode. Unpurchased skills show their cat
 
 Upgrade previews show before and after values together, including tradeoffs. Each stat has one bar or count strip: solid gray is the retained strength, mint diagonal stripes mark an improvement, and amber hatching marks a tradeoff. The improvement pattern also appears in count pips and the legend. These compare individual stats, not the overall value of a build; a style can improve one stat while weakening another. **Prerequisites → With Upgrade** means the preview includes research you still need; it does not describe your current build. Locked powers show their starting values under **On Unlock**. Active research shows **Current Power**, while inactive owned styles show a **Style Preview**. Every unowned skill card includes an Unlock button; it is enabled only when you can currently purchase it, with a reason shown when disabled.
 
-Purchases save immediately. In Melody Journey, research bought during a pool takes effect from the next pool so the current shot and its saved physics stay unchanged. Free Play and Endless Waves apply new research at the next shot boundary. Experiment layouts and shared challenges retain their fixed tools; opening the Skill Tree from a shared challenge spends your originating profile’s Points on permanent research for that profile. All researched upgrades activate together when the new build is applied. Each purchase adds to earlier upgrades; there are no A-or-B styles.
+Purchases save immediately. In Melody Journey, research bought during a pool takes effect from the next pool so the current shot and its saved physics stay unchanged. Free Play and Endless Waves apply new research at the next shot boundary. Experiment layouts and shared challenges retain their fixed tools; opening Skills from a shared challenge spends your originating profile’s Points on permanent research for that profile. All researched upgrades activate together when the new build is applied. Each purchase adds to earlier upgrades; there are no A-or-B styles.
 
 The final upgrade also needs three qualifying cleared pools in which that power was activated. Existing ownership is preserved when the game's tree changes.
 

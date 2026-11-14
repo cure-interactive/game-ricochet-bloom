@@ -4,7 +4,7 @@ Every playable gamemode has Bronze, Silver and Gold conditions. Open a gamemode 
 
 ## Earning and Keeping Medals
 
-A higher medal includes the lower tiers. Finite challenges must finish their objective; a failed or unfinished attempt earns no medal, even if a score target was reached. The whole final shot counts. Medals do not spend or replace Skill Tree Points.
+A higher medal includes the lower tiers. Finite challenges must finish their objective; a failed or unfinished attempt earns no medal, even if a score target was reached. The whole final shot counts. Medals do not spend or replace Points.
 
 Your best medal never goes down after a retry. Experiment records belong to the exact difficulty, preset and settings and travel with notebook exports. Normal and Development records are separate. Earlier saves are preserved; missing historical evidence is not invented. A retained completed experiment can establish its medal when opened again.
 

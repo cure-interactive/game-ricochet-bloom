@@ -1,4 +1,4 @@
-import { playerUpgradeMount } from './player-upgrade-ui.js?v=42e51dec23c21d40350b561ff8f26a7de3e9047838d44526f3f214d7a5d9c53b';
+import { playerUpgradeMount } from './player-upgrade-ui.js?v=9e92497b3157cc47a55505c3a3e0cf1e2793c52eddb2dd1c79e433a1ec1669ea';
 import { saveRecoveryMount } from './save-recovery-ui.js?v=22ca1b694e351eb79943b890a1c8470d3ddf6925355688b7f5b88b9ef82a9109';
 import { progressionResetUnreadable } from './progression-store.js?v=453d513c2d7181f8c4021044de3416164e1f39e8a75024fc8bcbf35ca69de1ba';
 import { medalIcon } from './medal-ui.js?v=559905246b3697fd9cf0a993d9c71ffe30b47a0c6d6cd3943a5b235d0faa31c8';
@@ -13,7 +13,7 @@ import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e7
 import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=89924fc248ac7dee4bed6dc9f898e94f3f74febad5979a15e2015f89ce53037d';
 import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=453d513c2d7181f8c4021044de3416164e1f39e8a75024fc8bcbf35ca69de1ba';
 import { gameCreate } from './engine.js?v=02c73cffdc63fec18e91d99c59bf41c2c5410e355e8d7052ca3a9fc9f0b134ec';
-import { treeMount } from './tree-ui.js?v=98c867edf07d2822519920ea6f2b978e5d90aaed3f4f54f1abcb44b04d4c6ffe';
+import { treeMount } from './tree-ui.js?v=79fe53d59de276b3be5eedb3c02fbf67ba1d7894c36a9fd13a860d8f625964c9';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
 import { skinMount } from './skin-ui.js?v=6e50176e92c3fa9e61381297b6c0c4272fc088a613292c0a2255a245f344a9f5';
@@ -68,7 +68,7 @@ export function progressionMount(host){
     if(owner==='suspended')suspended.state=saved.state;else if(owner==='current')state=saved.state;
     pendingEarning=null;pendingEarningState=null;saveBlocked=false;recovery.refresh();
     if(!earned.duplicate&&earned.amount===0&&earning.contacts%6&&notify)host.message(`${earning.contacts%6}/6 Contacts Toward Your Next Point`);
-    if(earned.amount>0&&notify)host.message(`+${earned.amount} Point${earned.amount===1?'':'s'} · ${saved.state.profile.wallet.seeds} Available in Skill Tree`);
+    if(earned.amount>0&&notify)host.message(`+${earned.amount} Point${earned.amount===1?'':'s'} · ${saved.state.profile.wallet.seeds} Available in Skills`);
     return true;
   }
   function act(action){if(saveBlocked)return {ok:false,reason:'Open Progress Recovery from the main menu or Settings.'};if(shared&&!['start','continue','abandon'].includes(action.type))return {ok:false,reason:'Shared challenges use the fixed supplied build.'};const input=structuredClone(state);if(shared&&action.type==='continue')input.route=shared.routes[input.pool+1];const r=progressionAct(input,action);if(!r.ok)return r;const saved=commit(r.state);return saved.ok?{...r,state}:saved;}
@@ -190,7 +190,7 @@ export function progressionMount(host){
       }});
     },
     medalHud(){if(!['run','challenge'].includes(context)||state.phase!=='run')return null;return {targets:POOL_MEDALS[state.pool],best:campaignPoolBest(state,state.track,state.pool)?.score??null};},
-    hud(){if(context==='listening')return 'LISTENING · Your saved song';if(['run','challenge'].includes(context))return state.run?`${shared?'SHARED · ':''}${POOL_NAMES[state.pool]} ${state.pool+1}/5 · ${goalRemaining(state)}`:'Run complete · open Skill Tree';return null;}
+    hud(){if(context==='listening')return 'LISTENING · Your saved song';if(['run','challenge'].includes(context))return state.run?`${shared?'SHARED · ':''}${POOL_NAMES[state.pool]} ${state.pool+1}/5 · ${goalRemaining(state)}`:'Run complete · open Skills';return null;}
   };
   return api;
 }

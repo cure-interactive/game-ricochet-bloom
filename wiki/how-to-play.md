@@ -6,7 +6,7 @@
 2. Touch different bubbles to build a chain. Reach **five unique bubbles in one shot** to make a bloom.
 3. Use wall bounces and moving bubbles to extend your chain. Each bubble counts once per shot; hitting it again can still change your motion.
 
-A new bubble earns 25 points multiplied by its place in the chain. Wall banks add a scoring bonus, and a bloom adds 500. The bonus objective offers an additional target during play. Score is separate from the persistent Points spent in the Skill Tree.
+A new bubble earns 25 points multiplied by its place in the chain. Wall banks add a scoring bonus, and a bloom adds 500. The bonus objective offers an additional target during play. Score is separate from the persistent Points spent in Skills.
 
 In Melody Journey, follow the goal displayed above the pool and finish before you run out of shots. The first bloom in a pool earns one extra shot. Your shot coasts to a stop before its result is resolved.
 
@@ -14,7 +14,7 @@ Choose **Gamemodes → Endless Waves** from the main menu for five shots per wav
 
 ## Points in Every Mode
 
-Melody Journey, Free Play, Endless Waves, Score Attack, Challenges and the original Standard Reaction Puzzle, Cargo Rescue and Outbreak Containment trials earn permanent **Points** for the Skill Tree. Experimental variations and custom setups record results without awarding Points; they still display your available balance. Points bank when your shot settles, even if you lose that run:
+Melody Journey, Free Play, Endless Waves, Score Attack, Challenges and the original Standard Reaction Puzzle, Cargo Rescue and Outbreak Containment trials earn permanent **Points** for Skills. Experimental variations and custom setups record results without awarding Points; they still display your available balance. Points bank when your shot settles, even if you lose that run:
 
 - **Every six scoring bubble contacts: +1 Point.** Partial progress carries between shots in the same pool or Waves run; a bubble counts once per shot.
 - **Every bloom: +1 Point.**
@@ -23,13 +23,13 @@ Melody Journey, Free Play, Endless Waves, Score Attack, Challenges and the origi
 - **Bonus challenges: +1 Point per difficulty level.** The current three tiers pay 1–3 Points, separately from contact and bloom rewards. Bank a Bloom and Three Voices are difficulty 1; Seven-Bubble Chain is difficulty 2; Power Play and Double-Bank Bloom are difficulty 3.
 - Melody Journey retains its additional pool, track-completion and first-clear rewards. Its bonus pays once when the shot settles, even if the pool later fails; clearing the pool does not pay that bonus again.
 
-Every game mode displays your available **Points** balance during play, matching the Skill Tree for your current profile. Experiment modes also show Points earned in that run separately. The balance updates when rewards are saved. A short message shows Points banked and your available balance. Your pool's Score remains separate. Reopening a save does not pay twice. Listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Melody Journey track completion to that profile.
+Every game mode displays your available **Points** balance during play, matching Skills for your current profile. Experiment modes also show Points earned in that run separately. The balance updates when rewards are saved. A short message shows Points banked and your available balance. Your pool's Score remains separate. Reopening a save does not pay twice. Listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Melody Journey track completion to that profile.
 
 For power mastery, activate a power you own and hit at least **three different bubbles in that shot**. Each qualifying shot earns one mastery use; successful Melody Journey pools also count. Three uses meet a capstone's mastery requirement. You can earn every power and upgrade through Free Play or Waves; Melody Journey track and skin unlocks still come from Melody Journey completion.
 
 ## Player Stats
 
-Open **Player Stats** from the main menu to see your researched launch speed, aiming-guide lengths, wall speed retention, Points, upgrades and recorded play totals. Links take you directly to Player Upgrades and the Skill Tree.
+Open **Player Stats** from the main menu to see your researched launch speed, aiming-guide lengths, wall speed retention, Points, upgrades and recorded play totals. Links take you directly to Player Upgrades and Skills.
 
 The screen also shows Melody Journey clears, separate 5/10/15-shot Score Attack bests, experiment results and Bronze/Silver/Gold records by gamemode. Standard and Relaxed campaign records stay separate. Each saved record counts only its best medal.
 

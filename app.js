@@ -1,5 +1,5 @@
-import { playerMenuMount } from './player-menu.js?v=2a55cc9476dc833b0438efe3c63627025478233dadeecc829eea414a7d833c80';
-import { playerStatsMount } from './player-stats-ui.js?v=a061eb5fa72aefe1378f2347fc5f2ec375fabb195c00cc2bc355fbc73b22610f';
+import { playerMenuMount } from './player-menu.js?v=2072ff4a963ea6d77ba7b47b14c547e33028a70bc1f241cd18aa3455dadd44c4';
+import { playerStatsMount } from './player-stats-ui.js?v=917ac21779b0b539ac4f947f8f021cfff31e3ffec81c0184e2f4117d22421e13';
 import { playerBuild, playerSync } from './player-upgrade.js?v=9483739a49b831a9c57dd285854e1bb23148947a97636d12caaebc2b619a776f';
 import { poolMedalRecord, poolMedalRecords } from './storage.js?v=b9035579812e648faf3c628628463a64419337c8bb8f7055f7f9d22c8d21cd0b';
 import { medalIcon, medalBadge } from './medal-ui.js?v=559905246b3697fd9cf0a993d9c71ffe30b47a0c6d6cd3943a5b235d0faa31c8';
@@ -7,23 +7,23 @@ import { poolConditions, poolMedalKey, medalEvaluate } from './medal.js?v=cd0d61
 import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=3c449d3171b17ecb2e3f00217f819c106a3ad5d9a072b2c97c5ac18aedec3997';
 import { earningAmount } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
-import { trialMount } from './trial-ui.js?v=85d51442bcbcabdc3a7339dbd5ba9f7666e1bebeb2cce55588054df577bebd24';
-import { GAME_VERSION } from './version.js?v=de2011f199006beba99b722775a74cfc1e7dac8ee224c166db7b215a0f54cf29';
+import { trialMount } from './trial-ui.js?v=a8fdd6cd34d48662c3c496b355c9eb647255e1f228eaebfcaeb7e22b8bc46149';
+import { GAME_VERSION } from './version.js?v=b4b525fbf3d9144d9bbab5a83efc0437add435f38b02c9a8aff0e547ca88d66c';
 import { powerSlots } from './power-ui.js?v=7078820c27cbf4d6966eb012486ab0f9dd3277f0261650d823a7943af4149b0e';
-import { creditsMount } from './credit.js?v=8cf460938de82ed9eb68663c0a8fc934bfbaea825028de0bc84619f69ddaa11f';
+import { creditsMount } from './credit.js?v=044ed79fbe8afc95a94b239b4b372a5c5e82903a2d1a6f7f7669122a6dc33429';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=c76004d132b2ea92ec0cecf92a15fae0a4ec85781d19df28f70222f5ed78b04a';
 import { edgeBackMount } from './edge-back.js?v=31626c255d21f25a591ae78c927ddddb02890524ffd6e7c964ca7e4cd86ee232';
-import { wikiMount } from './wiki.js?v=be8e08bc49f0cb08978d7fb914b7126ea59f81a4aa0f2e6d599d4ae38ea9bba2';
+import { wikiMount } from './wiki.js?v=1c0ee78e602b6d1a1ecc71b23e48246e75d3f7d81d17d101c1b0623eee12c1ac';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { POOL_NAMES } from './run.js?v=89924fc248ac7dee4bed6dc9f898e94f3f74febad5979a15e2015f89ce53037d';
 import { freePlaySync, freePlayBuild } from './free-play.js?v=2b9f7a8f7109ab6147948a73648a6908ecc0080dfabd081d56cc053e384d30ed';
 import { fullscreenMount } from './fullscreen.js?v=e40951c52d4f5a1fba3468b2789a571e965e960fc744ff3fa904ade2dbced971';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=1fc03ad0b2895d8142b51d87ae1abed173e559257a1af43f35bfed15f951cc1c';
+import { gameMenuMount } from './game-menu.js?v=d054b13740857188dcf634e414522582ed74864d4e58846be19e29bf59b37ff4';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
-import { progressionMount } from './progression-ui.js?v=5ae6287f4b19f345821e30197a42bd79dae21b1fb0b2b9cc5cff21a55552f4bd';
+import { progressionMount } from './progression-ui.js?v=48e464b41f56c6b2902dff2a83d8bac558d580b4ffd55bc6881501e91e46be57';
 import {assetURL} from './asset.js?v=b61b263cca739098e590874441ca93d7dd0d93530d85f7f90f10bc579dc815ae';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
@@ -424,7 +424,7 @@ function bonusRender() {
   $('bonus-count').textContent=`${game.objective.completed} completed`;
   $('bonus-prize').replaceChildren(...(bonus.complete?[iconNode('check')]:[]),document.createTextNode(legacy?'Completed under previous reward rules':`Difficulty ${bonus.difficulty} · ${reward}${bonus.complete?' earned':''}`));
   $('bonus-next').textContent=game.mode==='song-run'?'New bonus in the next pool':OBJECTIVES[(bonus.index+1)%OBJECTIVES.length].title;
-  document.querySelector('.bonus-rules').textContent=`Earn 1 Point per difficulty level, banked when the shot settles. Spend Points in the Skill Tree. ${game.mode==='song-run'?'One bonus per pool; no extra bonus payout at pool clear.':'The next objective begins after success.'}`;
+  document.querySelector('.bonus-rules').textContent=`Earn 1 Point per difficulty level, banked when the shot settles. Spend Points in Skills. ${game.mode==='song-run'?'One bonus per pool; no extra bonus payout at pool clear.':'The next objective begins after success.'}`;
   $('bonus-steps').replaceChildren(...bonus.steps.map(step=>{
     const row=document.createElement('div'),label=document.createElement('span'),meter=document.createElement('progress');
     label.append(...(step.value===step.target?[iconNode('check')]:[]),document.createTextNode(`${step.value} / ${step.target} ${step.label}`));
@@ -707,7 +707,7 @@ $('game-version').textContent='Version '+GAME_VERSION;
 trials=trialMount({poolMedals:mode=>poolMedalRecords(store,{kind:progression.trialKind,mode}),wiki:id=>wiki.open(/^\d{3}$/.test(id)?'game-modes':'experiments',/^\d{3}$/.test(id)?'experiment-'+id:''),scorePlay,sound:audio,unlock:audioUnlockAsync,save,kind:()=>progression.trialKind,points:()=>progression.points,reward:e=>progression.trialReward(e),screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),legacy(mode){if(mode==='campaign')progression.campaign('tracks');else if(mode==='free')freePlay();else if(mode==='waves')wavesPlay();else {if(progression.context!=='legacy')progression.leave();save();const entry=store.pools.challenge;loadPool(entry?.game||gameCreate('LAGOON','challenge'),entry?.music);}}});
 
 const wiki=wikiMount({screen:()=>navigation?.show('wiki'),back:()=>navigation?.back()});
-const playerMenuScreen=playerMenuMount({screen:()=>navigation?.show('player'),back:()=>navigation?.back(),open:destination=>destination==='skins'?progression.skins():playerStatsScreen.open()});
+const playerMenuScreen=playerMenuMount({screen:()=>navigation?.show('player'),back:()=>navigation?.back(),open:destination=>{if(destination==='skins')progression.skins();else if(destination==='stats')playerStatsScreen.open();else if(destination==='skills')progression.players();}});
 const playerStatsScreen=playerStatsMount({get:()=>({...progression.statsProfile,storage:localStorage,poolStore:store}),screen:()=>navigation?.show('stats'),back:()=>navigation?.back(),open:destination=>destination==='upgrades'?progression.players():progression.tree()});
 navigation=gameMenuMount({
   recoveryNotice:progression.recoveryNotice,

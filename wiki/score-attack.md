@@ -6,7 +6,7 @@ Choose **Gamemodes → Score Attack**. Pick 5, 10 or 15 shots; 10 is selected in
 
 There is no countdown. Bubbles drift while you aim. Blooms give score and Points but no extra shots. Three blooms do not end the run. Your last shot completes its entire flight and settles before the result is recorded.
 
-Each new run begins with the same pool layout. Your owned skills and active choices are fixed at the start of the attempt. Purchases remain available in the Skill Tree and apply to the next attempt.
+Each new run begins with the same pool layout. Your owned skills and active choices are fixed at the start of the attempt. Purchases remain available in Skills and apply to the next attempt.
 
 ## Score and Medals
 
@@ -20,7 +20,7 @@ Targets are inclusive. Finish every shot to record a best, even if your score is
 
 ## Points and Saves
 
-Score measures performance; **Points** are the spendable Skill Tree currency. The usual contact, bloom and difficulty-scaled bonus rewards apply, including power mastery. Score itself is not converted into Points, and simply finishing or restarting grants no extra payout.
+Score measures performance; **Points** are the spendable Skills currency. The usual contact, bloom and difficulty-scaled bonus rewards apply, including power mastery. Score itself is not converted into Points, and simply finishing or restarting grants no extra payout.
 
 Every budget keeps a separate resumable run and completed personal best. Normal and Development profiles are separate. Reloading can resume a flight without paying twice. Restarting replaces that budget's current run while preserving its completed best and earned Points. An unreadable save is preserved until you explicitly replace it; an unreadable best cannot be recovered by replacement.
 

@@ -6,7 +6,7 @@ A bubble physics game by Cure Interactive. Aim, bounce and chain contacts to cle
 
 ## Play and progress
 
-Open **Gamemodes** for Melody Journey, Free Play, Endless Waves, Score Attack, Challenge and experiments. **Continue** resumes saved play. **Skill Tree** and **Player Skins** have their own main-menu buttons; Wiki, How to Play and Settings provide help and options.
+Open **Gamemodes** for Melody Journey, Free Play, Endless Waves, Score Attack, Challenge and experiments. **Continue** resumes saved play. **Skills** opens power research, while **Player** contains **Skins**, **Stats** and a **Skills** shortcut to player research; Wiki, How to Play and Settings provide help and options.
 
 - **Melody Journey:** five tracks of five pools, finite shots, per-pool Bronze/Silver/Gold Score medals and a song that develops between pools.
 - **Score Attack:** 5, 10 or 15 shots, separate personal bests and score medals; blooms do not grant extra shots.
@@ -14,7 +14,7 @@ Open **Gamemodes** for Melody Journey, Free Play, Endless Waves, Score Attack, C
 - **Free Play:** an unlimited pool using owned powers. **Challenge:** reach three blooms before shots run out.
 - **Experiments:** distinct objectives and finite budgets. Implementation coverage is listed in the experiment guide; the 210-idea catalogue includes unfinished proposals.
 
-Points are permanent Skill Tree currency, separate from Score. Every mode displays the available wallet. The original Standard reaction/cargo/containment trials and continuous-physics modes earn Points; experimental/custom setups currently record results without awarding them. Purchases remain available during play, subject to prerequisites, mastery and affordability. Purchases are permanent, with no refunds or borrowed practice trials. All owned powers enter random offers, and compatible upgrades activate automatically. Blaster aims and fires automatically after contact.
+Points are permanent Skills currency, separate from Score. Every mode displays the available wallet. The original Standard reaction/cargo/containment trials and continuous-physics modes earn Points; experimental/custom setups currently record results without awarding them. Purchases remain available during play, subject to prerequisites, mastery and affordability. Purchases are permanent, with no refunds or borrowed practice trials. All owned powers enter random offers, and compatible upgrades activate automatically. Blaster aims and fires automatically after contact.
 
 The tree has one Ripple root and authored chains for 25 powers. Skill types describe behavior; they do not gate family access. Normal and Development progress remain separate. The Development controls are under **Settings → Advanced → Development & Backups**. Outside Melody Journey and saved-song listening, the music panel appears only when the bottom Development bar is expanded.
 
@@ -26,4 +26,4 @@ A bubble counts once per shot. Five different contacts make a bloom. Goals and s
 
 ## Guides
 
-[How to Play](wiki/how-to-play.md) · [Melody Journey](wiki/campaign.md) · [Score Attack](wiki/score-attack.md) · [Experiments](wiki/experiments.md) · [Skill Tree](wiki/skill-tree.md) · [Power-Ups](wiki/power-ups.md)
+[How to Play](wiki/how-to-play.md) · [Melody Journey](wiki/campaign.md) · [Score Attack](wiki/score-attack.md) · [Experiments](wiki/experiments.md) · [Skills](wiki/skill-tree.md) · [Power-Ups](wiki/power-ups.md)

@@ -85,7 +85,7 @@ Physical bodies wait while you aim. Melody Trials beat windows and call previews
 
 Pausing or leaving saves the full board and generated song, including an unfinished flight. Continuing a flight opens it paused. Original version-one trial saves remain under Earlier Trial Saves and retain their existing rules; new setups do not replace them. Starting another unfinished run for the exact same configuration asks before replacing it. Other configurations remain intact.
 
-The notebook is local to this browser, with separate Normal and Development profiles. **Notebook Backup and Storage** exports or imports that profile's setups, saves, results, favourites and feedback. Import replaces the notebook after confirmation and rejects a different profile or unsupported data. Legacy trial saves and Skill Tree progress remain separate. Export before clearing browser data.
+The notebook is local to this browser, with separate Normal and Development profiles. **Notebook Backup and Storage** exports or imports that profile's setups, saves, results, favourites and feedback. Import replaces the notebook after confirmation and rejects a different profile or unsupported data. Legacy trial saves and Skills progress remain separate. Export before clearing browser data.
 
 The notebook retains the latest 200 completed results and up to 64 saved configurations. At the save limit, an old completed save can be removed to make room; unfinished runs are preserved. If every slot is unfinished, finish a run or export and explicitly reset the notebook. Unreadable notebooks are preserved and block new writes until recovered or explicitly reset. A failed gameplay save pauses play and offers Retry Save and Export Pending Run.
 
@@ -125,9 +125,9 @@ After a result, choose **Review / Change Setup** to write a verdict and notes, o
 
 ## Points and Music
 
-Standard presets of Reaction Puzzle, Cargo Rescue and Outbreak Containment retain their existing Skill Tree rewards: one Point per six accumulated unique contacts, one for a chain of at least five contacts in a shot, and three for completing the objective. Rewards bank at shot boundaries, including losses; resuming the same receipt never pays twice. Earlier trial saves keep these rewards.
+Standard presets of Reaction Puzzle, Cargo Rescue and Outbreak Containment retain their existing Skills rewards: one Point per six accumulated unique contacts, one for a chain of at least five contacts in a shot, and three for completing the objective. Rewards bank at shot boundaries, including losses; resuming the same receipt never pays twice. Earlier trial saves keep these rewards.
 
-Other presets, Custom setups, the rule variations, Trick Shots and Capture Transport Release record experimental results without awarding Skill Tree Points. Fixed environmental tools keep existing research from changing a puzzle. Trials do not train permanent power mastery. Contact-generated music accompanies play; goals and the reaction log explain outcomes with sound muted.
+Other presets, Custom setups, the rule variations, Trick Shots and Capture Transport Release record experimental results without awarding Points. Fixed environmental tools keep existing research from changing a puzzle. Trials do not train permanent power mastery. Contact-generated music accompanies play; goals and the reaction log explain outcomes with sound muted.
 
 ## What to Test
 

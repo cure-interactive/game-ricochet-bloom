@@ -1,6 +1,6 @@
 # Sound, Settings & Saves
 
-Pause offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skill Tree and Player Skins from the Main Menu. Settings → About displays the Cure Interactive logo and game information, with access to Icon Credits.
+Pause offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skills and Player Skins from the Main Menu. Settings → About displays the Cure Interactive logo and game information, with access to Icon Credits.
 
 ## Audio
 
@@ -18,7 +18,7 @@ Gentle Visuals reduces glow and motion intensity and is off by default. Stream V
 
 ## Left-Handed Layout
 
-Back controls sit on the right by default. Enable **Settings → Accessibility → Left-Handed Layout** to place Back, Close, Pause, favorite stars and the Skill Tree legend on the left. The setting is remembered on this browser and applies to both Normal and Development profiles. Text, aiming and the left-edge Back gesture keep their normal direction.
+Back controls sit on the right by default. Enable **Settings → Accessibility → Left-Handed Layout** to place Back, Close, Pause, favorite stars and Skills legend on the left. The setting is remembered on this browser and applies to both Normal and Development profiles. Text, aiming and the left-edge Back gesture keep their normal direction.
 
 ## Copy Diagnostics
 

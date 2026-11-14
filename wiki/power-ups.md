@@ -2,7 +2,7 @@
 
 Contact with a marked bubble activates its power. The random pool includes powers you have unlocked; researched upgrades strengthen them automatically. Blaster aims and fires without extra player input.
 
-This reference is generated from the skill catalogue. The Skill Tree shows your current ownership, price and mastery progress.
+This reference is generated from the skill catalogue. Skills shows your current ownership, price and mastery progress.
 
 ## Find a Power
 

@@ -190,9 +190,11 @@ body[data-menu-mode=home] #tree-sheet{height:var(--app-height,100dvh);max-height
 #main-menu,#menu-background{height:var(--app-height,100dvh);bottom:auto}
 
 .player-menu-body{display:grid;align-content:center;flex:1}
-.player-menu-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;width:min(100%,560px);margin:auto}
+.player-menu-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:min(100%,740px);margin:auto}
 .player-menu-actions button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;min-height:160px;padding:24px;border:1px solid #789b9f55;border-radius:18px;background:#14272f;color:#d9eae6;font:inherit;font-size:21px;cursor:pointer}
 .player-menu-actions .ui-icon{width:48px;height:48px}
 @media(max-height:450px){.player-menu-actions button{min-height:100px;padding:14px;gap:10px}.player-menu-actions .ui-icon{width:32px;height:32px}}
 
 .home-content h1 .home-version{display:block;margin-top:12px;color:#aec3c8;font:500 11px/19px 'Fredoka',sans-serif;letter-spacing:.3px}
+
+@media(max-width:600px){.player-menu-actions{grid-template-columns:1fr}.player-menu-actions button{flex-direction:row;min-height:88px;padding:18px;gap:18px}.player-menu-actions .ui-icon{width:40px;height:40px}}

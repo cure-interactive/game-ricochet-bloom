@@ -16,7 +16,7 @@ Explore game modes, grow your powers, and chase your next goal. Choose a topic b
 
 ## Grow
 
-- [Skill Tree](skill-tree.md) — research, prerequisites and permanent upgrades.
+- [Skills](skill-tree.md) — research, prerequisites and permanent upgrades.
 - [Power-Ups](power-ups.md) — every power, its unlock requirement and upgrade chain.
 
 ## Make Yourself at Home

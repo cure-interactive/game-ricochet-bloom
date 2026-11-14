@@ -4,8 +4,8 @@ import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f10787
 import { assetURL } from './asset.js?v=b61b263cca739098e590874441ca93d7dd0d93530d85f7f90f10bc579dc815ae';
 import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=218a1fc1fa8c1cdd43c5553de2ba6e7ba689dabe9bff2350be7219df9e34fc7f';
 import { gamemodeGalleryMount } from './gamemode-gallery.js?v=6280222616e884f758b5828f50741534b6e4afa0bfb8dceb3a108aef526c1827';
-import { scoreAttackMount } from './score-attack-ui.js?v=2d17ece4e08d8d64930bbee5aa44b0e31e852d33acda13c199a905b3bdb78887';
-import { experimentMount } from './experiment-ui.js?v=cb2b3cb866cc3760b7460d995c7648a2636b9b95e0c294f495bb3bcaccae402a';
+import { scoreAttackMount } from './score-attack-ui.js?v=be8bcacfdd9dbdcc6132a6e5b6562c7a844b28e24a6277641db03478ba59e6d1';
+import { experimentMount } from './experiment-ui.js?v=41a651df92aafe08891b9732375da5f709e287049521c6a113f5717d1cf4d48e';
 import { poolConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=559905246b3697fd9cf0a993d9c71ffe30b47a0c6d6cd3943a5b235d0faa31c8';
 

@@ -64,9 +64,9 @@
 - [Research Points and Powers](campaign.md#research-points-and-powers)
 - [Continue or Start Again](campaign.md#continue-or-start-again)
 
-## Skill Tree
+## Skills
 
-- [Skill Tree](skill-tree.md)
+- [Skills](skill-tree.md)
 - [Player Upgrades](skill-tree.md#player-upgrades)
 - [One Connected Tree](skill-tree.md#one-connected-tree)
 - [Research and Activation](skill-tree.md#research-and-activation)
