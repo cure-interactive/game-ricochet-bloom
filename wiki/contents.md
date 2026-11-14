@@ -66,6 +66,7 @@
 ## Skill Tree
 
 - [Skill Tree](skill-tree.md)
+- [Player Upgrades](skill-tree.md#player-upgrades)
 - [One Connected Tree](skill-tree.md#one-connected-tree)
 - [Research and Activation](skill-tree.md#research-and-activation)
 - [Rarity and Type](skill-tree.md#rarity-and-type)

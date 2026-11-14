@@ -1,5 +1,15 @@
 # Skill Tree
 
+## Player Upgrades
+
+Open **Player Upgrades** from the Skill Tree to improve the player using the same Points wallet. Purchases are permanent and cumulative; each second upgrade requires the first in its branch. Skins remain cosmetic.
+
+- **Sight:** Long Sight costs 8 Points and adds 180 units of aiming guide and 140 units after the first wall bounce. Deep Sight costs 18 Points and adds the same amounts again. The guide shows wall geometry; bubbles and powers can change the actual path.
+- **Launch:** The starting maximum is 800 units/second. Strong Launch costs 10 Points and raises it to 900. Greater Launch costs 22 Points and raises it to 1,000. The minimum stays 280, so gentle shots remain available.
+- **Rebound:** Ordinary walls retain 94% of speed perpendicular to the wall. Elastic Shell costs 12 Points and raises this to 97%; Perfect Rebound costs 24 Points and raises it to 100%. Stronger power effects still apply, and ordinary flight drag still brings shots to rest. Physical Split seeds share this improvement.
+
+Free Play, Challenge and Endless Waves apply research between shots. Melody Journey applies it from the next pool. Score Attack fixes the build at the start of a new run. Saved shots keep their original behavior. Fixed puzzle trials and shared challenges keep their authored player rules, so personal upgrades cannot alter their challenge conditions.
+
 ## One Connected Tree
 
 **Ripple is your starting power.** Every other power and upgrade branches from it. You can eventually research every branch; choosing one does not permanently shut off the others.

@@ -1,3 +1,4 @@
+import { PLAYER_UPGRADES, playerResearchValid, playerUpgradeReason } from './player-upgrade.js?v=fab6c92f134e88ebe641c4be9b87d9e46b857905b117a20831b164d5181c0c23';
 import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
 import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=b2330060a946840e4caf0bd604dd4001893829861e077d21e980d225f355dbf8';
 
@@ -92,6 +93,7 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
   if (!object(input) || input.version !== PROFILE_VERSION || !['normal', 'development'].includes(input.kind) ||
     (expectedKind !== null && input.kind !== expectedKind) || !integer(input.revision) || !object(input.wallet) ||
     Object.keys(input.wallet).length !== Object.keys(CURRENCIES).length || !integer(input.wallet.seeds) || !object(input.research)) return null;
+  if(input.playerResearch!==undefined&&!playerResearchValid(input.playerResearch))return null;
   const summary = rewardsInspect(input.rewards, catalogue);
   if (!summary||input.rewards.some(r=>r.event.type==='play'&&r.event.play.kind!==input.kind)) return null;
   const research = {};
@@ -108,7 +110,7 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
   const familyUnlocks=input.familyUnlocks===undefined?[...FAMILIES]:input.familyUnlocks;
   if(!unique(familyUnlocks)||familyUnlocks.some(f=>!FAMILIES.includes(f)))return null;
   return { version: PROFILE_VERSION, familyUnlocks:[...familyUnlocks], familyAccess:{...familyAccess}, kind: input.kind, revision: input.revision, wallet: { seeds: input.wallet.seeds },
-    research, rewards: [...summary.receipts.values()] };
+    research, ...(input.playerResearch===undefined?{}:{playerResearch:structuredClone(input.playerResearch)}), rewards: [...summary.receipts.values()] };
 }
 export function profileSummary(input, catalogue = CATALOGUE) {
   const profile = profileValidate(input, catalogue);
@@ -225,4 +227,14 @@ function resolvePower(power,equipped,catalogue,includeBase){
  const effects=new Set(includeBase ? catalogue.powers[power].included : []);
  for(const id of equipped){const node=nodeGet(catalogue,id);if(node?.power===power)for(const effect of node.effects)effects.add(effect);}
  return {power,foundation:effects.has('foundation'),variants:['a','b'].filter(k=>effects.has(k)),capstone:effects.has('capstone')};
+}
+
+export function profilePlayerPurchase(input,id,catalogue=CATALOGUE) {
+ const profile=profileValidate(input,catalogue);
+ if(!profile)return rejected('Invalid saved profile.');
+ const reason=playerUpgradeReason(profile,id);if(reason)return rejected(reason);
+ if(!advance(profile))return rejected('revision-overflow');
+ const node=PLAYER_UPGRADES.find(n=>n.id===id);
+ profile.wallet.seeds-=node.cost;profile.playerResearch??={};profile.playerResearch[id]={paid:node.cost};
+ return accepted(profile,{purchased:id,paid:node.cost});
 }

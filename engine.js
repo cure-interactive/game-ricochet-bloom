@@ -1,3 +1,4 @@
+import { playerConfig, playerBuildValid } from './player-upgrade.js?v=fab6c92f134e88ebe641c4be9b87d9e46b857905b117a20831b164d5181c0c23';
 import { SCORE_BUDGETS, SCORE_DEFAULT, SCORE_SEED, scoreAttackValid } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { BONUS_TIERS, earningValid, earningPower, earningSettle } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
 import { liveBubbles, waveConfig, wavePrepare, waveEntryStep, waveValid, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
@@ -332,6 +333,7 @@ const WRAP_EDGES=Object.freeze(['left','right','top','bottom']), NO_WRAP_EDGES=O
 export function wrapEdges(state){return state.isFlying&&effectGet(state,'wrap')?.seconds>0?WRAP_EDGES:NO_WRAP_EDGES;}
 export function gameCreate(seed = 'LAGOON', mode = 'challenge', options = {}) {
   const state = { version: RULE.version, seed: String(seed).slice(0, 32), mode, rng: seedHash(seed), tick: 0, score: 0, plucks: RULE.plucks, launches: 0, blooms: 0, bestChain: 0, chain: [], banks: 0, flightAge: 0, isFlying: false, isOver: false, power: powerCreate(seed), effects: [], flightPath: [], objective:{enabled:true,index:0,completed:0,earned:false}, shotStart:0, lastShot:null, bodies: [{ id: 0, x: 480, y: 550, vx: 0, vy: 0, radius: RULE.seedRadius, tone: 0, cooldown: 0 }] };
+  if(options.playerBuild!==undefined){if(!playerBuildValid(options.playerBuild))throw new TypeError('Invalid player build');state.playerBuild=structuredClone(options.playerBuild);}
   const count = mode==='waves' ? waveConfig(options.wave||1).count : options.build && buildValidate(options.build) ? Math.max(12,Math.min(20,Math.trunc(options.population||14))) : 14;
   if(options.build) {if(!buildValidate(options.build))throw new TypeError('Invalid skill build');state.build=structuredClone(options.build);state.skillState=skillStateCreate();state.power.offer=state.build[0].power;state.plucks=options.relaxed?8:6;if(options.randomPowers){state.randomPowers=true;state.power.offer=randomOfferKinds(state)[0];}}
   if(state.build)state.power.target=(state.power.target-1)%count+1;
@@ -346,7 +348,7 @@ export function gameCreate(seed = 'LAGOON', mode = 'challenge', options = {}) {
   return state;
 }
 function waveAdvance(state,events){
-  const number=state.wave.number+1,next=gameCreate(state.seed,'waves',{build:state.build,randomPowers:true,wave:number});
+  const number=state.wave.number+1,next=gameCreate(state.seed,'waves',{build:state.build,randomPowers:true,wave:number,...(state.playerBuild?{playerBuild:state.playerBuild}:{})});
   for(const key of ['tick','score','launches','blooms','bestChain'])next[key]=state[key];
   next.objective.completed=state.objective.completed;next.objective.index=state.objective.index;
   next.power.claims=state.power.claims;next.power.capacity=state.power.capacity;
@@ -356,7 +358,7 @@ export const gameWon = state => state.mode === 'challenge' && state.isOver && st
 export function continueFree(state) { if (!state.isOver || ['waves','score-attack'].includes(state.mode)) return false; delete state.earning; state.mode = 'free'; state.isOver = false; return true; }
 export function launch(state, angle, power = .7) {
   if (state.isOver || state.isFlying || state.wave?.entry<WAVE_ENTRY || !Number.isFinite(angle) || !Number.isFinite(power)) return false;
-  const seed = state.bodies[0], speed = 280 + Math.max(0, Math.min(1, power)) * 570;
+  const seed = state.bodies[0], speed = 280 + Math.max(0, Math.min(1, power)) * (playerConfig(state.playerBuild).maxLaunch-280);
   seed.vx = Math.cos(angle) * speed; seed.vy = Math.sin(angle) * speed;
   state.power.markers = powerPlan(state);
   effectClear(state); state.isFlying = true; state.flightAge = 0; state.chain = []; state.flightPath = []; state.banks = 0; state.launches++; state.power.used = 0; state.shotStart=state.score;state.lastShot=null;if(state.mode!=='song-run')state.objective.earned=false;
@@ -522,7 +524,7 @@ export function physicsStep(state) {
         skillTeleport(state,fromX,fromY,body.x,body.y,'wrap');events.push({ type: 'wrap', id: body.id, fromX, fromY, x: body.x, y: body.y, nx, ny });
       }
     }
-    const restitution = body.id === 0 && effectGet(state, 'comet') ? skillConfig(state,'comet').wallRetention : .94;
+    const restitution = Math.max(body.id<=0?playerConfig(state.playerBuild).wallRetention:.94,body.id === 0 && effectGet(state, 'comet')?skillConfig(state,'comet').wallRetention:0);
     let speed = 0, normalX = 0, normalY = 0;
     if (body.x < left) { body.x = left; if (body.vx < 0) { speed = -body.vx; body.vx *= -restitution; normalX = 1; } }
     if (body.x > right) { body.x = right; if (body.vx > 0) { speed = body.vx; body.vx *= -restitution; normalX = -1; } }
@@ -695,6 +697,7 @@ export function physicsStep(state) {
 }
 export function saveValidate(input) {
   if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free', 'song-run', 'waves','score-attack'].includes(input.mode)) return null;
+  if(input.playerBuild!==undefined&&!playerBuildValid(input.playerBuild))return null;
   if(input.earning!==undefined&&(!earningValid(input.earning,Object.keys(POWERS))||input.earning.mode!==input.mode||input.earning.lastLaunch>input.launches))return null;
   const count=Array.isArray(input.bodies)?input.bodies.length-1:0;
   if(input.build!==undefined&&(!buildValidate(input.build)||count<12||count>20||!skillStateValid(input.skillState,count)))return null;
@@ -859,9 +862,9 @@ export function aimPreview(state,angle,power=.7) {
   const seed=state.bodies[0],dx=Math.cos(angle),dy=Math.sin(angle),edge=RULE.inset+seed.radius;
   const tx=Math.abs(dx)<1e-8?Infinity:((dx>0?RULE.width-edge:edge)-seed.x)/dx;
   const ty=Math.abs(dy)<1e-8?Infinity:((dy>0?RULE.height-edge:edge)-seed.y)/dy;
-  const distance=Math.min(tx,ty),limit=260+Math.max(0,Math.min(1,power))*500;
+  const distance=Math.min(tx,ty),limit=260+Math.max(0,Math.min(1,power))*500+playerConfig(state.playerBuild).guideExtra;
   const end={x:seed.x+dx*Math.min(distance,limit),y:seed.y+dy*Math.min(distance,limit)};
   const points=[{x:seed.x,y:seed.y},end];
-  if(distance<=limit) {const rx=tx<=ty?-dx:dx,ry=ty<=tx?-dy:dy;const nextX=Math.abs(rx)<1e-8?Infinity:((rx>0?RULE.width-edge:edge)-end.x)/rx,nextY=Math.abs(ry)<1e-8?Infinity:((ry>0?RULE.height-edge:edge)-end.y)/ry;const remaining=Math.max(0,Math.min(140,limit-distance,nextX,nextY));points.push({x:end.x+rx*remaining,y:end.y+ry*remaining});}
+  if(distance<=limit) {const rx=tx<=ty?-dx:dx,ry=ty<=tx?-dy:dy;const nextX=Math.abs(rx)<1e-8?Infinity:((rx>0?RULE.width-edge:edge)-end.x)/rx,nextY=Math.abs(ry)<1e-8?Infinity:((ry>0?RULE.height-edge:edge)-end.y)/ry;const remaining=Math.max(0,Math.min(playerConfig(state.playerBuild).bankGuide,limit-distance,nextX,nextY));points.push({x:end.x+rx*remaining,y:end.y+ry*remaining});}
   return points;
 }

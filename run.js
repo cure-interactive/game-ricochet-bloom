@@ -1,8 +1,9 @@
+import { PLAYER_UPGRADES, playerBuild } from './player-upgrade.js?v=fab6c92f134e88ebe641c4be9b87d9e46b857905b117a20831b164d5181c0c23';
 import { buildValidate } from './skill-effect.js?v=b5d23aae0cfa214b54af02d69a6757f09caf11297ba245a50bf8b94dbdd4b93e';
 import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=b2330060a946840e4caf0bd604dd4001893829861e077d21e980d225f355dbf8';
 import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
-import { profileCreate, profileValidate, profilePurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=89e8220f13dad09da78c045746c499d1a094fcfef7517e021b1a49b6cea6dc7e';
-import { gameCreate, saveValidate, RULE } from './engine.js?v=eba9789151dfd115dde6337ef3ba1ae79a36e123a8be36be33cc37bf33b1b121';
+import { profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=0b05c511a8d50dfef71056cb28ebfcbc71df391bc08d7af6fd865a7ba33aeef2';
+import { gameCreate, saveValidate, RULE } from './engine.js?v=5d4ecf80115d71c18a5182dcc78d6161803b2652f17a3fcec1c5a48a149bedd8';
 import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
@@ -99,7 +100,7 @@ export function progressionValidate(input,kind='normal') {
 function poolCreate(s,music=null){
   const previous=s.run,build=progressionLoadout(s).powers,seed=previous?.seed||s.seed;
   const environment=trackEnvironment(s.track,s.pool,s.route);
-  const game=gameCreate(`${seed}-${s.pool}-${s.route}`,'song-run',{build,randomPowers:s.powerMode==='unlocked'||s.powerMode==='shared'&&s.sharedVersion===2,population:POPULATIONS[s.pool],relaxed:s.relaxed,environment});
+  const game=gameCreate(`${seed}-${s.pool}-${s.route}`,'song-run',{build,randomPowers:s.powerMode==='unlocked'||s.powerMode==='shared'&&s.sharedVersion===2,population:POPULATIONS[s.pool],relaxed:s.relaxed,environment,...(s.powerMode==='shared'||!s.powerMode&&!s.profile.playerResearch?{}:{playerBuild:playerBuild(s.profile)})});
   game.power.capacity=previous?.game.power.capacity||1;
   music=musicCreate(music,music?.blooms||0);musicRunSection(music,s.pool,s.track);
   s.run={id:`run-${s.attempt}`,seed,track:s.track,roles:[],activated:[],bankBloom:false,music,game,launches:previous?.launches||0,score:previous?.score||0,bonuses:previous?.bonuses||0,routes:[...(previous?.routes||[]),s.route],offers:[],discovered:false,initial:previous?.initial||{seed,track:s.track,relaxed:s.relaxed,powers:[...s.powers],equipped:[...s.equipped],borrowed:[...s.borrowed]}};s.phase='run';
@@ -111,11 +112,14 @@ export function progressionAct(input,action){
   const cat=GAME_CATALOGUE,node=cat.nodes[action.id];let r,message='Updated.';
   const fail=reason=>({ok:false,reason});
   if(s.profile.kind==='development'&&action.type==='reset-progress')return {ok:true,state:progressionCreate('development'),message:'Development progress reset. Normal progress is unchanged.'};
-  if(s.phase==='run'&&!['abandon','pin','buy'].includes(action.type))return fail('Finish this pool before changing your build.');
+  if(s.phase==='run'&&!['abandon','pin','buy','buy-player'].includes(action.type))return fail('Finish this pool before changing your build.');
   switch(action.type){
     case 'pin':if(action.id!==null&&!node)return fail('Choose a research target.');s.target=action.id;message=action.id?'Research goal pinned.':'Research goal cleared.';break;
     case 'discover':return discoveryUse(s,action.id,action.remove||[]);
     case 'refund':return fail('Research purchases are permanent.');
+    case 'buy-player':
+      if(s.powerMode==='shared')return fail('Shared challenges use the fixed supplied build.');
+      r=profilePlayerPurchase(s.profile,action.id,cat);if(!r.ok)return r;s.profile=r.profile;message='Player upgrade unlocked. Applies at the next eligible shot, pool or new Score Attack run.';break;
     case 'buy':
       if(s.powerMode==='shared')return fail('Shared challenges use the fixed supplied build.');
       r=profilePurchase(s.profile,action.id,cat);if(!r.ok)return r;s.profile=r.profile;
@@ -148,7 +152,7 @@ export function progressionAct(input,action){
     case 'abandon':if(!s.run)return fail('No active run.');reward(s,{type:'failure',poolIndex:s.pool+(s.phase==='interlude'?1:0),blooms:0,abandoned:true});s.retry=s.run.initial;finish(s);message='Run ended. Earned Points and research remain.';break;
     case 'skin':if(action.skin!=='original'&&!completedTracks(s).includes(action.skin))return fail('Complete that track to unlock its skin.');s.skin=action.skin;break;
     case 'grant':r=profileCurrencyGrant(s.profile,'seeds',action.amount,cat);if(!r.ok)return r;s.profile=r.profile;message=`Added ${action.amount} development Points.`;break;
-    case 'max':if(s.profile.kind!=='development')return fail('Development only.');for(const id of Object.keys(cat.nodes))s.profile.research[id]??={paid:0};s.profile.revision++;s.profile.familyAccess=Object.fromEntries(Object.keys(s.profile.familyAccess).map(f=>[f,3]));s.bypass=true;s.equipped=Object.values(cat.nodes).filter(n=>n.kind!=='base'&&s.powers.includes(n.power)&&(!n.conflicts.length||n.effects.includes('a'))).map(n=>n.id);s.borrowed=[];syncUnlocked(s);if(s.phase==='interlude'){s.run.offers=[];s.run.discovered=true;}message=`All ${Object.keys(cat.powers).length} powers and ${Object.keys(cat.nodes).length} research nodes unlocked. Upgrades are active automatically.`;break;
+    case 'max':if(s.profile.kind!=='development')return fail('Development only.');for(const id of Object.keys(cat.nodes))s.profile.research[id]??={paid:0};s.profile.playerResearch=Object.fromEntries(PLAYER_UPGRADES.map(n=>[n.id,{paid:0}]));s.profile.revision++;s.profile.familyAccess=Object.fromEntries(Object.keys(s.profile.familyAccess).map(f=>[f,3]));s.bypass=true;s.equipped=Object.values(cat.nodes).filter(n=>n.kind!=='base'&&s.powers.includes(n.power)&&(!n.conflicts.length||n.effects.includes('a'))).map(n=>n.id);s.borrowed=[];syncUnlocked(s);if(s.phase==='interlude'){s.run.offers=[];s.run.discovered=true;}message=`All ${Object.keys(cat.powers).length} powers and ${Object.keys(cat.nodes).length} research nodes unlocked. Upgrades are active automatically.`;break;
     case 'max-progress':if(s.profile.kind!=='development')return fail('Development only.');s.developmentProgress=true;s.profile.wallet.seeds=Math.max(10000,s.profile.wallet.seeds);s.profile.revision++;message='All levels and skins open. 10,000 Points available. Songs and clear rewards are not fabricated.';break;
     case 'bypass':if(s.profile.kind!=='development')return fail('Development only.');s.bypass=!s.bypass;tidy(s);break;
     default:return fail('Unknown progression action.');
