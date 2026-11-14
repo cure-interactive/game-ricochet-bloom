@@ -55,6 +55,9 @@
 .gamemode-group{margin:20px 0 28px}.gamemode-group h3{font-size:17px;color:#cfe7e4;margin:0 0 12px}
 .mode-card-shell{position:relative;min-width:0;display:flex}
 .mode-card-shell>.mode-card{width:100%;height:100%}
+/* Reserve the full star target in the card header, above artwork and titles. */
+#gamemodes-dialog .mode-card>.mode-card-top{display:flex;align-items:center;min-height:56px;width:100%;padding:12px 58px 12px 18px}
+.mode-card-top .mode-category{min-width:0;overflow-wrap:anywhere}
 #gamemodes-dialog .mode-star{position:absolute;right:6px;top:6px;z-index:1;width:44px;height:44px;padding:9px;display:grid;place-items:center;border:0;border-radius:50%;color:#e5eff1;background:transparent;box-shadow:none}
 .mode-star svg{filter:drop-shadow(0 1px 2px #06121e);transition:transform .15s}
 #gamemodes-dialog .mode-star[aria-pressed="true"]{color:#ffda84}

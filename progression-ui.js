@@ -11,7 +11,7 @@ import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e7
 import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=eb1f706f689b3079fea4ecb6e90354a12c77a1b51e17ab05552d3f14403957b8';
 import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=195e6f351c31126d32020601be73a2c03ce1bd7b6be108f3eb8ff3bd2d5e9965';
 import { gameCreate } from './engine.js?v=5d4ecf80115d71c18a5182dcc78d6161803b2652f17a3fcec1c5a48a149bedd8';
-import { treeMount } from './tree-ui.js?v=88ef9913b9319b8dda11f388da7764864e45c0fd7bca97885e7a8d52b6bb0e8f';
+import { treeMount } from './tree-ui.js?v=10916bd81d10226b3ffbd510f8c99246134b7440403763a3e19aeacfc5fc235c';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=7e81246e997e2106001cc2f001032e68090a0c751f008678bd91820191a7979e';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
 import { skinMount } from './skin-ui.js?v=ac4b44a325af9503a141883521f5c47072c240614739ab2c2422e59492eac4f6';

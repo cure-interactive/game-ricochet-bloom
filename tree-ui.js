@@ -100,7 +100,7 @@ export function skillInfo(state,id,showPurchasedCosts=false){
 }
 export function treeMount(controller){
  const dialog=document.getElementById('tree-dialog');
- let state=controller.get(),selected='ripple.base',tip=null,tipId=null,leaveTimer=0,pinned=false,lastView=null;
+ let state=controller.get(),selected='ripple.base',tip=null,tipId=null,lastView=null;
  const fullLayout=treeLayout(POWER_TREES,cat.nodes),world={x:0,y:0,width:fullLayout.width,height:fullLayout.height};
  let layout=fullLayout,visiblePositions={};
  dialog.innerHTML=`${screenHeader({className:'tree-heading',title:'Skill Tree',back:button('back','Back','arrow-left'),actions:button('player','Player Upgrades','player-skin')+'<div class="tree-wallet-summary"></div>'})}<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected power tree"><div class="tree-map-stage"><button type="button" class="tree-legend" data-tree-action="legend" aria-expanded="false" aria-controls="tree-legend-content"><span class="tree-legend-title">${iconHTML('about')}<span>Legend</span><span class="tree-legend-close" aria-hidden="true">${iconHTML('close')}</span></span><span id="tree-legend-content" hidden><span class="rarity-legend">${Object.entries(RARITIES).map(([id,r])=>`<span class="rarity-key">${rarityIconHTML(id)}${r.name}</span>`).join('')}</span><span class="status-legend"><span class="legend-active">Active</span><span class="legend-owned">Owned</span><span class="legend-available">Available</span><span class="legend-locked">Locked</span></span><span class="tree-legend-hint">Tap to Collapse</span></span></button><div class="tree-map-scroll" tabindex="0" aria-label="Skill Tree map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom">85%</output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div><span class="tree-map-hint">Drag to move · Pinch or scroll to zoom</span></div></section></div><section id="skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="skill-tooltip-title" hidden></section>`;
@@ -110,8 +110,8 @@ export function treeMount(controller){
  tip=dialog.querySelector('.skill-tooltip');
  const status=message=>{dialog.querySelector('.tree-status').textContent=message;};
  function hideTooltip(restore=false){
-   clearTimeout(leaveTimer);const source=tipId&&mapElement.querySelector(`[data-node="${tipId}"]`);
-   tip.hidden=true;tipId=null;pinned=false;source?.setAttribute('aria-expanded','false');
+   const source=tipId&&mapElement.querySelector(`[data-node="${tipId}"]`);
+   tip.hidden=true;tipId=null;source?.setAttribute('aria-expanded','false');
    if(restore)surface.focus({preventScroll:true});
  }
  const camera=mapCameraMount(surface,world,(view,limits)=>{
@@ -146,7 +146,7 @@ export function treeMount(controller){
    selectionRender();if(dialog.open){camera.refresh();const point=layout.nodes[selected];if(point&&(point.x!==previous?.x||point.y!==previous?.y))camera.focus(point,camera.value.scale);}
  }
  function showTooltip(id){
-   clearTimeout(leaveTimer);const info=skillInfo(state,id,controller.showPurchasedCosts?.());
+   const info=skillInfo(state,id,controller.showPurchasedCosts?.());
    if(!info||!visiblePositions[id]){hideTooltip();return;}
    if(tipId===id&&!tip.hidden)return;
    hideTooltip();selected=id;selectionRender();
@@ -164,9 +164,9 @@ export function treeMount(controller){
  }
  function selectNode(id,keyboard=false){
    if(!visiblePositions[id])return;
-   if(tipId===id){if(pinned&&!keyboard)hideTooltip();else{pinned=true;if(keyboard)(tip.querySelector('.primary:not(:disabled)')||tip.querySelector('[data-tree-action=dismiss]')).focus();}return;}
+   if(tipId===id){hideTooltip(keyboard);return;}
    selected=id;selectionRender();camera.ensure(layout.nodes[id]);
-   showTooltip(id);pinned=true;if(keyboard)(tip.querySelector('.primary:not(:disabled)')||tip.querySelector('[data-tree-action=dismiss]')).focus();
+   showTooltip(id);if(keyboard)(tip.querySelector('.primary:not(:disabled)')||tip.querySelector('[data-tree-action=dismiss]')).focus();
  }
  function handle(event){
    const action=event.target.closest('[data-tree-action]')?.dataset.treeAction,node=event.target.closest('.skill-node');
@@ -187,12 +187,8 @@ export function treeMount(controller){
    if(action==='fit'){camera.fit();return;}if(action==='focus'){camera.focus(layout.nodes[selected],1);return;}
    if(!tip.contains(event.target))hideTooltip();
  }
- surface.addEventListener('pointerover',event=>{if(event.pointerType==='mouse'&&!event.buttons){const node=event.target.closest('.skill-node');if(node)showTooltip(node.dataset.node);}});
- surface.addEventListener('pointerout',event=>{if(event.pointerType==='mouse'&&event.target.closest('.skill-node')&&!event.target.closest('.skill-node').contains(event.relatedTarget)){clearTimeout(leaveTimer);if(!pinned)leaveTimer=setTimeout(()=>hideTooltip(),250);}});
- tip.addEventListener('pointerenter',()=>clearTimeout(leaveTimer));
- tip.addEventListener('pointerleave',event=>{if(event.pointerType==='mouse'){clearTimeout(leaveTimer);if(!pinned)leaveTimer=setTimeout(()=>hideTooltip(),250);}});
  dialog.addEventListener('pointerdown',event=>{if(!tip.contains(event.target)&&!event.target.closest('.skill-node'))hideTooltip();});
- surface.addEventListener('focusin',event=>{const node=event.target.closest('.skill-node');if(node&&node.matches(':focus-visible')){camera.ensure(layout.nodes[node.dataset.node]);showTooltip(node.dataset.node);}});
+ surface.addEventListener('focusin',event=>{const node=event.target.closest('.skill-node');if(node&&node.matches(':focus-visible')){camera.ensure(layout.nodes[node.dataset.node]);}});
  dialog.addEventListener('keydown',event=>{
    if(event.key==='Escape'&&!legendContent.hidden){event.preventDefault();event.stopPropagation();setLegend(false);legend.focus({preventScroll:true});return;}
    if(event.key==='Escape'&&!tip.hidden){event.preventDefault();event.stopPropagation();hideTooltip(true);return;}
