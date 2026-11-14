@@ -1,4 +1,4 @@
-import {PLAYER_UPGRADES,playerUpgradeReason} from './player-upgrade.js?v=0db2496c23b18e74e54be344eaee2dc299252cc10fd85a6e7e21834351d4c41c';
+import {PLAYER_UPGRADES,playerUpgradeReason} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import {researchLayout} from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
 const branches={player:{name:'Player'},Sight:{name:'Sight'},Launch:{name:'Launch'},Rebound:{name:'Rebound'}};
 // Use the power tree's prerequisite layout and discoverable research frontier.

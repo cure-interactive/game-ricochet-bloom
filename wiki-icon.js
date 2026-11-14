@@ -1,8 +1,8 @@
 import { iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 import { CATALOGUE } from './catalogue.js?v=41b471c37ef2d3e54b61ceb1967e63963fa935f4a0b48d5bb6eeeedc6069f66c';
 import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=e3770c80d22803605717da663e7d0740305b129db9573ae5bedbfcf21d1f319e';
-import { medalIcon } from './medal-ui.js?v=e3cf543cf4eac797d597f6fbf218f975e9a99dde2b6fb3211698fb29ed0f456e';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=277471c7615ca8b1396e70134a605d18e8d1c9278520c63f0ac23d8234b1765c';
+import { medalIcon } from './medal-ui.js?v=e42ceb7e910836840823bc95f1a1b941bc0a67e9fca8e194f7fac697a662775f';
 
 // Only known topics and catalogue identities produce decoration. Markdown never
 // supplies an image URL, raw SVG or icon name to the renderer.

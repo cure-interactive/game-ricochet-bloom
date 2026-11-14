@@ -2,7 +2,7 @@ import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f10787
 import { screenHeader } from './screen-header.js?v=8c1818ee2c0fd6b0a409cbf62a7a68979ad5f1b9778b9567b20f46abfd27dda7';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=a3825eb14e73f26aff0438af5481e5419ba43e2362f35259f1aa3b942e2b6dd0';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=efd04066c48749c284f356a6653bba9ff47cad69f07bdfe55f7d147e97ad3a05';
 
 export const WIKI_PAGES = Object.freeze({
   player: { title: 'Player', url: './wiki/player.md?v=42ed59db354a2b09d3d2df2ef941e0310545b2b54a14c1a6ee3115293de12d73' },

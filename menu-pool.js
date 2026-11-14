@@ -1,4 +1,4 @@
-import { gameCreate, launch, physicsStep, powerActivate, RULE } from './engine.js?v=2dd0f771b37dc76497de4916b6a40d2267fe82b6096fb3b47ff898d77220ee69';
+import { gameCreate, launch, physicsStep, powerActivate, RULE } from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
 import {buildValidate} from './skill-effect.js?v=6bc123e911039183cb33d2d4d4f01b63c8a5fdf57cf46b5e716d86a347906c28';
 
 // An attract-mode pool owns its state; it never receives a player's saved run.
