@@ -43,6 +43,16 @@ export function skillCardHTML(info,titleId){
  return `<div class="skill-tooltip-heading"><div class="skill-card-title"><h3 id="${escape(titleId)}">${escape(info.name)}</h3><span class="skill-type-pill"><span class="sr-only">Type: </span>${typeIconHTML(info.type)}${escape(info.type)}</span></div>${button('dismiss','Close','close')}</div><div class="skill-tooltip-body"><p>${escape(info.description)}</p>${info.stats?skillStatsHTML(info.stats):''}${info.unlock?'':`<p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>`}</div>${info.unlock?`<div class="skill-tooltip-action">${button('buy',`Unlock · ${info.unlock.cost} Points`,'lock',{class:'primary',disabled:!info.unlock.enabled,'aria-describedby':info.unlock.enabled?null:titleId+'-reason'})}${info.unlock.reason?`<p id="${escape(titleId)}-reason">${escape(info.unlock.reason)}</p>`:''}</div>`:info.canEquip?`<div class="skill-tooltip-action">${button('equip','Use This Style','check',{class:'primary'})}</div>`:''}`;
 }
 
+// Both trees share legend state and non-blocking outside dismissal.
+export function skillLegendMount(dialog){
+ const legend=dialog.querySelector('.tree-legend'),legendContent=dialog.querySelector('#'+legend.getAttribute('aria-controls'));
+ const setLegend=open=>{legend.setAttribute('aria-expanded',String(open));legendContent.hidden=!open;};
+ const dismiss=event=>{if(dialog.open&&!legendContent.hidden&&!legend.contains(event.target))setLegend(false);};
+ // Capture before map gestures can stop propagation; never consume the input.
+ dialog.ownerDocument.addEventListener('pointerdown',dismiss,true);
+ dialog.ownerDocument.addEventListener('click',dismiss,true);
+ return {legend,legendContent,setLegend};
+}
 export function showSkillCard({tip,source,stage,dialog,info,titleId}){
  const bounds=stage.getBoundingClientRect();
  tip.style.maxHeight=Math.max(44,bounds.height-16)+'px';tip.style.maxWidth=Math.max(0,bounds.width-16)+'px';

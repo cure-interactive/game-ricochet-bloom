@@ -1,5 +1,5 @@
-import {skillNodeHTML,skillLegendHTML,showSkillCard} from './skill-card.js?v=8d10334d9b345bdf328564a48d7df5d33a29c6b41be1cbad6e74cdd0e8194e0e';
-export {skillStatsHTML} from './skill-card.js?v=8d10334d9b345bdf328564a48d7df5d33a29c6b41be1cbad6e74cdd0e8194e0e';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=50d97020d1a08d22f9ca5ad874ef9813bc7283aee789e168a3dfccf24cae71b3';
+export {skillStatsHTML} from './skill-card.js?v=50d97020d1a08d22f9ca5ad874ef9813bc7283aee789e168a3dfccf24cae71b3';
 import { treeSwitchHTML, treeSwitchMount } from './tree-switch.js?v=cf60b0a2d4958066d4dc1d64cb60fb646500dfc7dca798d666902a1bbd4d90a7';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { screenHeader } from './screen-header.js?v=97e7bd37ef6eedf0b994bfdd65619d8772e5f7f1cbb1b236ef426b2bb37144f4';
@@ -85,8 +85,7 @@ export function treeMount(controller){
  dialog.innerHTML=`${screenHeader({icon:'skill-tree',className:'tree-heading',title:'Skills',back:button('back','Back','arrow-left'),actions:treeSwitchHTML('powers')+'<div class="tree-wallet-summary"></div>'})}<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected power tree"><div class="tree-map-stage">${skillLegendHTML('tree-legend-content')}<div class="tree-map-scroll" tabindex="0" aria-label="Skills map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom">85%</output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div></section></div><footer class="tree-map-hint">Drag to move · Pinch or scroll to zoom</footer><section id="skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="skill-tooltip-title" hidden></section>`;
  treeSwitchMount(dialog,'powers',()=>controller.players?.());
  const surface=dialog.querySelector('.tree-map-scroll'),mapElement=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage');
- const legend=dialog.querySelector('.tree-legend'),legendContent=dialog.querySelector('#tree-legend-content');
- function setLegend(open){legend.setAttribute('aria-expanded',String(open));legendContent.hidden=!open;}
+ const {legend,legendContent,setLegend}=skillLegendMount(dialog);
  tip=dialog.querySelector('.skill-tooltip');
  const status=message=>{dialog.querySelector('.tree-status').textContent=message;};
  function hideTooltip(restore=false){

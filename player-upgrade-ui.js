@@ -1,4 +1,4 @@
-import {skillNodeHTML,skillLegendHTML,showSkillCard} from './skill-card.js?v=8d10334d9b345bdf328564a48d7df5d33a29c6b41be1cbad6e74cdd0e8194e0e';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=50d97020d1a08d22f9ca5ad874ef9813bc7283aee789e168a3dfccf24cae71b3';
 import {playerSkillStats} from './player-skill-comparison.js?v=f2c8528179aa9bfa1fa90436a473766115b8941f2a0dbca1f77a43123130de5f';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {playerTreeGraph} from './player-tree.js?v=e1aec1649d653c93ca0b2c2829a934c771ced8ecffb65eb1115e09c4fec59af5';
@@ -16,8 +16,7 @@ export function playerUpgradeMount(host){
   `<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected player tree"><div class="tree-map-stage">${skillLegendHTML('player-legend-content')}<div class="tree-map-scroll" tabindex="0" aria-label="Player skill map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom"></output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div></section></div><footer class="tree-map-hint">Tap a skill for details · Drag to move · Pinch or scroll to zoom</footer><section id="player-skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="player-skill-title" hidden></section>`;
  document.body.append(dialog);
  const surface=dialog.querySelector('.tree-map-scroll'),map=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage'),tip=dialog.querySelector('.skill-tooltip');
- const legend=dialog.querySelector('.tree-legend'),legendContent=dialog.querySelector('#player-legend-content');
- function setLegend(open){legend.setAttribute('aria-expanded',String(open));legendContent.hidden=!open;}
+ const {legend,legendContent,setLegend}=skillLegendMount(dialog);
  let graph=playerTreeGraph(host.get(),host.showHiddenContent?.()),selected='player',tipId=null,lastView=null;
  const world={width:graph.width,height:graph.height};
  function hide(restore=false){tip.hidden=true;tipId=null;map.querySelectorAll('[aria-expanded=true]').forEach(n=>n.setAttribute('aria-expanded','false'));if(restore)map.querySelector(`[data-player-node="${selected}"]`)?.focus({preventScroll:true});}
