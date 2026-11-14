@@ -2,7 +2,7 @@ import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4
 
 // A presentation-only tether, shared by the two large skin viewers.
 export function skinPreviewHTML(name){
- return `<div class="skin-preview skin-preview-large skin-preview-interactive"><i role="button" tabindex="0" aria-label="${escapeHTML(name)} player preview. Drag or tap to bounce; arrow keys also move it."></i></div>`;
+ return `<div class="skin-preview skin-preview-large skin-preview-interactive"><i role="button" tabindex="0" aria-label="${escapeHTML(name)} player preview. Drag or tap to bounce; arrow keys also move it."><player-bubble></player-bubble></i></div>`;
 }
 export function skinSpringStep(state,seconds){
  const next={...state};
@@ -15,12 +15,13 @@ export function skinSpringStep(state,seconds){
 }
 export function skinPreviewMount(element,{gentle=()=>false}={}){
  const orb=element.querySelector('i'),doc=element.ownerDocument,win=doc.defaultView,media=win.matchMedia('(prefers-reduced-motion: reduce)');
+ const bubble=orb.querySelector('player-bubble');
  let state={x:0,y:0,vx:0,vy:0},pointer=null,frame=0,last=0,destroyed=false;
  const reduced=()=>gentle()||media.matches;
- function paint(){orb.style.transform=`translate(${state.x.toFixed(2)}px,${state.y.toFixed(2)}px)`;}
+ function paint(){bubble?.velocity?.(state.vx/(Math.max(1,orb.clientWidth)/28),state.vy/(Math.max(1,orb.clientWidth)/28));orb.style.transform=`translate(${state.x.toFixed(2)}px,${state.y.toFixed(2)}px)`;}
  function stop(){if(frame)win.cancelAnimationFrame(frame);frame=0;last=0;}
  function releaseCapture(){const id=pointer?.id;pointer=null;orb.classList.remove('is-dragging');if(id!==undefined&&orb.hasPointerCapture(id))orb.releasePointerCapture(id);}
- function reset(){stop();releaseCapture();state={x:0,y:0,vx:0,vy:0};paint();}
+ function reset(){stop();releaseCapture();bubble?.reset?.();state={x:0,y:0,vx:0,vy:0};paint();}
  function tick(time){
   frame=0;if(destroyed||doc.hidden||!element.isConnected){reset();return;}
   if(reduced()){reset();return;}
@@ -28,11 +29,11 @@ export function skinPreviewMount(element,{gentle=()=>false}={}){
   if(state.x||state.y||state.vx||state.vy)frame=win.requestAnimationFrame(tick);else last=0;
  }
  function animate(){if(reduced()){reset();return;}if(!frame)frame=win.requestAnimationFrame(tick);}
- function nudge(x=0,y=-1){stop();state={x:x*24,y:y*24,vx:0,vy:0};paint();animate();}
+ function nudge(x=0,y=-1){stop();if(!reduced())bubble?.kick?.(-x,-y);state={x:x*24,y:y*24,vx:0,vy:0};paint();animate();}
  function down(e){
   if(pointer||e.isPrimary===false||e.button!==0)return;
   e.preventDefault();stop();orb.focus({preventScroll:true});
-  pointer={id:e.pointerId,x:e.clientX,y:e.clientY,originX:state.x,originY:state.y,moved:false};
+  pointer={id:e.pointerId,x:e.clientX,y:e.clientY,originX:state.x,originY:state.y,lastX:e.clientX,lastY:e.clientY,moved:false};
   state.vx=state.vy=0;orb.setPointerCapture(e.pointerId);orb.classList.add('is-dragging');
  }
  function move(e){
@@ -41,6 +42,8 @@ export function skinPreviewMount(element,{gentle=()=>false}={}){
   if(Math.hypot(dx,dy)>4)pointer.moved=true;
   const x=pointer.originX+dx,y=pointer.originY+dy,limit=reduced()?10:Math.min(64,orb.clientWidth*.36),distance=Math.hypot(x,y),scale=distance?limit*Math.tanh(distance/limit)/distance:1;
   state={x:x*scale,y:y*scale,vx:0,vy:0};paint();
+  if(!reduced()){const dx=e.clientX-pointer.lastX,dy=e.clientY-pointer.lastY,d=Math.hypot(dx,dy);if(d>0)bubble?.kick?.(-dx/d,-dy/d,Math.min(160,d*12));}
+  pointer.lastX=e.clientX;pointer.lastY=e.clientY;
  }
  function up(e){if(e.pointerId!==pointer?.id)return;const moved=pointer.moved;releaseCapture();if(moved)animate();else nudge();}
  function cancel(e){if(e.pointerId===pointer?.id)reset();}

@@ -1,5 +1,6 @@
-import { playerMenuMount } from './player-menu.js?v=665ca3967c0c9dbd338d1dcec7360dd90a12166cba5826f12316b906f77a3f8b';
-import { playerStatsMount } from './player-stats-ui.js?v=679fd96ed777ca689bdf961111ce71973d717767bd12cb49fb09e48f6d730997';
+import { bubbleRender } from './bubble-render.js?v=997e50dee1966fa389f1522907cc5fcd744d3bb3525669d3e306cec729fe9b34';
+import { playerMenuMount } from './player-menu.js?v=eb569cadceef51cb76155659930233c79d3a8ff60db2ded079c0ecb89de7f978';
+import { playerStatsMount } from './player-stats-ui.js?v=c9d85334af3a9308e086ac033da76263ad6104413d6d5e67900345573293a3f6';
 import { playerBuild, playerSync } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import { poolMedalRecord, poolMedalRecords } from './storage.js?v=ddb84aea986a9f93582a75b5c9a98e7d1bf60a9e870308f6f5ccffe09140cc7b';
 import { medalIcon, medalBadge } from './medal-ui.js?v=e42ceb7e910836840823bc95f1a1b941bc0a67e9fca8e194f7fac697a662775f';
@@ -7,27 +8,27 @@ import { poolConditions, poolMedalKey, medalEvaluate } from './medal.js?v=cd0d61
 import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=57c2f32c90cea1d5c2d2601973e60b0926e5a5b233f60ffc9fc543e5a7f7903e';
 import { earningAmount } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
-import { trialMount } from './trial-ui.js?v=be56c3f16b57ef8f630b67b2011f56979c1daebeb49e60374b9c66802408acc7';
-import { GAME_VERSION } from './version.js?v=2e47f16503f42cd41139cb4918658f74ee6ed14af11878e2879027d82ee8afb5';
-import { powerSlots } from './power-ui.js?v=207b352314e37cbef66dde6c30aa5aa5bb75ea1aaee4fe603157a93b12b49610';
-import { creditsMount } from './credit.js?v=e014bc11353f68e3c1a74547398f934dfeda6f45b1355442e0e2b9a03d436d90';
+import { trialMount } from './trial-ui.js?v=9269c681d1dcb195ea548e0c6baf0e15e819edbb25d57ae2c62cc44c9352b0a6';
+import { GAME_VERSION } from './version.js?v=82c3a2217a7b210bd5ef4c7247ea73594d3a62a57733117ce928018c9c861406';
+import { powerSlots } from './power-ui.js?v=a16e7955e05852ed192cc8ce2f47bf869c3f5fe00e6e810aa1a8a69763eb475d';
+import { creditsMount } from './credit.js?v=5f12f15002ebe0f4ae98921517fd97a3f8a59eeb85a699284577c979fe7f5e22';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=c76004d132b2ea92ec0cecf92a15fae0a4ec85781d19df28f70222f5ed78b04a';
-import { edgeBackMount } from './edge-back.js?v=31626c255d21f25a591ae78c927ddddb02890524ffd6e7c964ca7e4cd86ee232';
-import { wikiMount } from './wiki.js?v=cc9e1a4dfd9c6c4e8d55f4ea153610aad029cfe6a133935062c6f66b3ec785f5';
+import { edgeBackMount } from './edge-back.js?v=1333ff7c1ee04d8e2609a683292abf03e93ffc227190d751fef77d656d00bb12';
+import { wikiMount } from './wiki.js?v=d9052eec498400bb8faf9af03dbfeb19673d90a0f02e38ea734f8e00e3bfe462';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { POOL_NAMES } from './run.js?v=04b8cff9f07dfc39e2493a128861d4d83e38a6177b0c2c8a1abb375176001004';
 import { freePlaySync, freePlayBuild } from './free-play.js?v=bd7478284691145d282da97d597e3186c4d0d637006c1fd9091081e0699842e7';
-import { fullscreenMount } from './fullscreen.js?v=e40951c52d4f5a1fba3468b2789a571e965e960fc744ff3fa904ade2dbced971';
+import { fullscreenMount } from './fullscreen.js?v=051447beb73d8881066d4212a0ff37f748a6685ff7ba97cc7149de967da86c33';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=90e6cf6c9f025acfa9fe93bb764f7330933cc02f66f891228aad0c4200faa065';
+import { gameMenuMount } from './game-menu.js?v=9a934c3990e5aa9ed36c74a573d2b0d7077691815304ca6b4716c01eaa0971b1';
 import { environmentRender, regionFrozen, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
-import { progressionMount } from './progression-ui.js?v=3528e48a6e25d1d2390d5351607decfdfc1e3d417f00967039706c93e08c11b4';
+import { progressionMount } from './progression-ui.js?v=245789527391852b246c25b5ccfc96ac48787dbf4c6c61e4d088dfd08dbbadf4';
 import {assetURL} from './asset.js?v=c168b1bf74896095e10ba96f5c9cfb00449414ce901de7993bd725e00a9bbfea';
-import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
+import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=4d4624a19042310239e24c63a77cac78d6ea0211b7729b424db194db73b5cb52';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
-import {songLibrarySetup} from './song-ui.js?v=149e9fb92cec2f6a7eaa8fb0a9d367a0711f9231ab28ee6ef3754fb3a7942aeb';
+import {songLibrarySetup} from './song-ui.js?v=7bd218be2c2fc158d6e42812d08e6fdcdc15bfdd03d0744e83f6d7823c7b7a68';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet, poolPreferencesWrite } from './storage.js?v=ddb84aea986a9f93582a75b5c9a98e7d1bf60a9e870308f6f5ccffe09140cc7b';
 import { PoolSound } from './sound.js?v=93cf0472671e44a09e0b8c7c94eef141b1c4576f62a17c065190b0598439523b';
@@ -237,21 +238,8 @@ function blobRender(body, dt, time) {
   const light = Math.max(membrane.glow, replayGlow);
   bubbleStep(membrane, body, dt, isGentle, isGentle ? undefined : bubbleFlow(body, game.bodies), !isSeed && (!!effectGet(game, 'stasis')?.targets.includes(body.id)||regionFrozen(game,body.id)));
   const points = bubbleOutline(membrane, body).map(point => ({ x: Math.max(RULE.inset, Math.min(RULE.width - RULE.inset, point.x)), y: Math.max(RULE.inset, Math.min(RULE.height - RULE.inset, point.y)) }));
-  const glow = context.createRadialGradient(body.x, body.y, radius * .3, body.x, body.y, radius * 2.8);
-  glow.addColorStop(0, hue + (isPermeable ? '0c' : light > .2 ? '70' : isSeed ? '40' : '33')); glow.addColorStop(1, hue + '00');
-  context.fillStyle = glow; context.beginPath(); context.arc(body.x, body.y, radius * 2.8, 0, Math.PI * 2); context.fill();
-  const skin = new Path2D();
-  const first = points[0], last = points.at(-1); skin.moveTo((first.x + last.x) / 2, (first.y + last.y) / 2);
-  for (let index = 0; index < points.length; index++) { const a = points[index], b = points[(index + 1) % points.length]; skin.quadraticCurveTo(a.x, a.y, (a.x + b.x) / 2, (a.y + b.y) / 2); }
-  skin.closePath();
-  const fill = context.createRadialGradient(body.x - radius * .35, body.y - radius * .4, 0, body.x, body.y, radius * 1.1);
-  fill.addColorStop(0, isPermeable ? hue + '18' : isBubble ? hue + '60' : isSeed ? '#ffffed' : hue + 'bb'); fill.addColorStop(.45, hue + (isPermeable ? '0a' : isBubble ? '28' : isSeed ? 'ee' : '6c')); fill.addColorStop(1, hue + (isPermeable ? '02' : isBubble ? '08' : '20'));
-  context.fillStyle = fill; context.strokeStyle = hue + (isPermeable ? '48' : 'c0'); context.lineWidth = isSeed ? 1.6 : 1.1; context.shadowColor = hue; context.shadowBlur = isPermeable ? 2 : (isSeed ? 15 : 7) + light * 20; context.fill(skin); context.stroke(skin); context.shadowBlur = 0;
+  const skin = bubbleRender(context, body, points, hue, {isSeed,isBubble,isPermeable,light});
   context.save(); context.clip(skin);
-  // Skin highlight follows the deformed upper-left rim instead of floating on a circle.
-  context.beginPath();
-  for (let index = 14; index <= 20; index++) { const point = points[index], x = body.x + (point.x - body.x) * .79, y = body.y + (point.y - body.y) * .79; if (index === 14) context.moveTo(x, y); else context.lineTo(x, y); }
-  context.strokeStyle = isPermeable ? '#ffffff25' : '#ffffff70'; context.lineWidth = radius * .08; context.lineCap = 'round'; context.lineJoin = 'round'; context.stroke();
   if (!isSeed) {
     // A pearly nucleus and drifting flecks make each bubble feel inhabited.
     const x = body.x + membrane.core[0], y = body.y + radius * .1 + membrane.core[1];

@@ -12,7 +12,6 @@
 #skin-dialog .skin-choice.is-locked{opacity:1;cursor:pointer;background:#101e30;color:#a7bacb;border-color:#2c4055}.skin-choice.is-locked .skin-preview{opacity:.55}
 .skin-choice strong{font-size:14px;font-weight:500}.skin-choice small{font-size:12px;line-height:1.4;text-align:center;color:#a6b9c7}.skin-choice-state{display:flex;align-items:center;gap:5px;font-size:11px;color:#b4cfce}.skin-choice-state .ui-icon{width:15px;height:15px}
 .skin-preview{height:52px;width:100%;display:grid;place-items:center}.skin-preview i{display:block;width:46px;height:46px}
-.skin-preview i,.ui-icon[data-icon="player-skin"]{border-radius:50%;border:1px solid var(--skin-color);background:radial-gradient(circle at 32% 25%,#ffffffe6 0%,var(--skin-color) 20%,#172f3d 78%);box-shadow:inset -5px -8px 14px #07101f77,0 0 24px color-mix(in srgb,var(--skin-color) 30%,transparent);position:relative}.skin-preview i:after,.ui-icon[data-icon="player-skin"]:after{content:'';position:absolute;inset:7px;border:1px solid #ffffff35;border-radius:50%}
 #skin-dialog button:focus-visible{outline:3px solid #eed496;outline-offset:3px}
 @media(max-width:600px){.skin-heading{padding:8px 12px;padding-top:max(8px,env(safe-area-inset-top));gap:12px}.skin-heading h2{font-size:20px}.skin-scroll{padding:16px 12px max(16px,var(--content-safe-bottom,env(safe-area-inset-bottom)))}.skin-grid{gap:10px}#skin-dialog .skin-choice{min-height:120px;padding:10px 6px;gap:6px}}
 
@@ -20,8 +19,7 @@
 .skin-scroll.is-detail{display:flex;flex-direction:column}
 .skin-detail{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;min-height:min-content;width:100%;max-width:440px;margin:auto}
 .skin-preview-large{flex:1;min-height:180px}
-.skin-preview-large i{width:clamp(140px,42vw,200px);height:clamp(140px,42vw,200px);box-shadow:inset -14px -20px 36px #07101f77,0 0 60px color-mix(in srgb,var(--skin-color) 30%,transparent)}
-.skin-preview-large i:after{inset:12%}
+.skin-preview-large i{width:clamp(140px,42vw,200px);height:clamp(140px,42vw,200px);position:relative}
 .skin-selection{flex:none;width:100%;padding:16px;border:1px solid #65828a66;border-radius:16px;background:var(--glass-control,#162c36)}
 #skin-dialog .skin-selection .setting-toggle{display:flex;width:100%;min-height:48px;font-size:17px;gap:12px;white-space:normal;color:#dceeea}
 .skin-selection .setting-toggle:has(input:disabled){cursor:default}
@@ -33,13 +31,16 @@
 
 /* Player actions use the equipped skin, never a symbolic player/duck mask.
    Screen navigation refreshes the inherited color for the active profile. */
-.ui-icon[data-icon="player-skin"]{--skin-color:var(--player-skin-color,#f1f9d7);-webkit-mask:none;mask:none;box-shadow:inset -3px -4px 7px #07101f77,0 0 12px color-mix(in srgb,var(--skin-color) 30%,transparent)}
-.ui-icon[data-icon="player-skin"]:after{inset:16%}
+.ui-icon[data-icon="player-skin"]{--skin-color:var(--player-skin-color,#f1f9d7);-webkit-mask:none;mask:none;background:none;overflow:visible;position:relative}
 .home-primary .ui-icon[data-icon="player-skin"]{width:24px;height:24px}
 
-/* Only explicit large preview surfaces are interactive. Button icons stay still. */
-.skin-preview-interactive{padding:40px;min-height:280px;overflow:visible}
+/* The outer control retains its stable hit target while the membrane deforms. */
+.skin-preview-interactive{padding:40px;min-height:280px;overflow:clip}
 .skin-preview-interactive i{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
 .skin-preview-interactive i.is-dragging{cursor:grabbing}
 .skin-preview-interactive i:focus-visible{outline:3px solid #eed496;outline-offset:12px}
 @media(max-height:500px) and (min-width:500px){.skin-preview-interactive{min-height:220px;padding:32px}}
+
+.skin-preview i{position:relative;border-radius:50%}
+player-bubble{display:block;position:absolute;inset:0;pointer-events:none}
+player-bubble canvas{position:absolute;display:block;width:280%;height:280%;left:-90%;top:-90%;aspect-ratio:1;background:transparent;pointer-events:none}
