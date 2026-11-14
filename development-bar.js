@@ -8,6 +8,16 @@ export function developmentBarMount(doc=document){
  const panel=doc.getElementById('game-music-bar');
  let active=false,campaign=false,expanded=false,stack=[...doc.querySelectorAll('dialog[open]')];
  const popover=typeof bar.showPopover==='function';
+ let reserved=0;
+ function measure(){
+  const height=active?bar.getBoundingClientRect().height:0;
+  if(!Number.isFinite(height)||height<0||height===reserved)return;
+  reserved=height;doc.documentElement.style.setProperty('--profile-bottom-space',`${height}px`);
+ }
+ // The top-layer bar cannot occupy normal flow. Reserve its actual border box
+ // once, in the shared viewport budget, rather than padding individual screens.
+ if(doc.defaultView.ResizeObserver)new doc.defaultView.ResizeObserver(measure).observe(bar);
+ else doc.defaultView.addEventListener('resize',measure,{passive:true});
  function disclosure(){
   const playing=doc.body.dataset.screen==='play'&&!!panel,available=active&&!campaign&&playing&&!stack.length;
   if(!active||!playing)expanded=false;
@@ -24,9 +34,10 @@ export function developmentBarMount(doc=document){
   disclosure();
   if(popover&&bar.matches(':popover-open'))bar.hidePopover();
   bar.hidden=!active;
-  if(!active)return;
+  if(!active){measure();return;}
   if(popover)bar.showPopover();
   else {const parent=stack.at(-1)||doc.body;if(bar.parentNode!==parent)parent.append(bar);}
+  measure();
  }
  const observer=new doc.defaultView.MutationObserver(records=>{
   let changed=false;

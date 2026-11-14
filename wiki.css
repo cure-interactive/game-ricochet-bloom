@@ -15,7 +15,7 @@
 .wiki-article p{margin:0 0 18px;font-size:16px;line-height:1.65}.wiki-article li{font-size:16px}.wiki-article ul,.wiki-article ol{padding-left:24px;margin:0 0 24px}.wiki-article li{margin:10px 0}.wiki-article a{color:#a8f0dd;text-decoration:underline;text-underline-offset:4px}.wiki-article a:hover{color:#fff}.wiki-article code{color:#d5c6ff}.wiki-credits{margin-top:40px;border-top:1px solid #31475b;padding-top:16px;color:#afbfcc;font-size:14px}.wiki-credits summary{cursor:pointer;min-height:44px}
 body[data-menu-mode=home] #wiki-dialog[open]{max-height:var(--app-height,100dvh)}
 body[data-menu-mode=home] .wiki-heading{padding-top:max(16px,env(safe-area-inset-top));padding-inline:max(16px,calc((100vw - 900px)/2))}
-.wiki-article{padding-bottom:max(28px,env(safe-area-inset-bottom))}
+.wiki-article{padding-bottom:max(28px,var(--content-safe-bottom,env(safe-area-inset-bottom)))}
 @media(max-width:480px){.wiki-heading{gap:8px;padding:12px}.wiki-heading button{padding:10px}.wiki-heading [data-wiki-back]>span:not(.ui-icon){display:none}.wiki-heading h2{font-size:19px}.wiki-article{padding:24px 20px}.home-secondary{flex-wrap:wrap}.home-secondary button{min-width:0}}
 .credit-page[hidden],#credits-dialog .dialog-body[hidden]{display:none!important}
 .credit-page .wiki-article{padding:12px 0;overflow:visible;max-width:100%;font-size:16px;line-height:1.65}

@@ -1,6 +1,7 @@
+:root{--app-height:max(0px,calc(var(--viewport-height,100dvh) - var(--profile-bottom-space,0px)))}
 /* The pool is the primary screen. Secondary actions belong to labelled dialogs. */
 html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
-body{height:var(--app-height,100dvh);display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+body{height:var(--app-height,100dvh);display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) var(--content-safe-bottom,env(safe-area-inset-bottom)) env(safe-area-inset-left)}
 [hidden]{display:none!important}
 .hud-balance{display:flex;align-items:center;gap:16px;min-width:0;max-width:45%}
 .hud-balance .points{color:var(--mint)}
