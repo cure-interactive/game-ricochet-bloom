@@ -16,7 +16,7 @@ Start with 12 bubbles. Every two waves adds one, up to 20. Each wave also makes 
 
 ## Powers and Music
 
-Only permanently unlocked powers and compatible researched upgrades enter your random power pool. A bloom increases your next shot's power allowance up to three, subject to the number of distinct unlocked powers and bubbles remaining.
+Only permanently unlocked powers and all researched upgrades enter your random power pool. A bloom increases your next shot's power allowance up to three, subject to the number of distinct unlocked powers and bubbles remaining.
 
 Main-player, Split, Echo and Blaster contacts pop bubbles. Lightning strikes pop their targets too. Relay sends a short hit pulse from a popped carrier to a nearby bubble, including its marked power. Pressure effects move bubbles; merely pushing one does not pop it.
 

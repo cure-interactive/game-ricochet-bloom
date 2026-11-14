@@ -1,6 +1,6 @@
 import { screenHeader } from './screen-header.js?v=b3d9b07c196b969e345063358159bcabb90c6ae99410d49934cf4b23eb185c73';
 import { TRACKS } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { completedTracks, unlockedTracks } from './run.js?v=e3fc5e08ab0c39705bfdd4d290e1761ea139fe39d29b006a8dab548acd2bdb38';
+import { completedTracks, unlockedTracks } from './run.js?v=0038d8de80ab8d3d62548b4a9cc4763c03dfc5b6815cf6dae7476ed2784424e7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const skins=[{id:'original',name:'Original',color:'#f1f9d7'},...TRACKS];

@@ -91,7 +91,7 @@ export const POWER_TREES = {
       "base"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Impact",
@@ -107,7 +107,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Focused Impact",
-        "description": "Narrow, stronger forward pushes suited to directing a bubble.",
+        "description": "Strengthen forward collision pushes without reducing the surrounding pressure wave.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -117,13 +117,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
         "name": "Broad Impact",
-        "description": "Weaker radial pushes around the contacted bubble, suited to opening clusters.",
+        "description": "Add a radial push around each contact while retaining forward collision strength.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -133,9 +131,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Transfer",
@@ -267,7 +263,7 @@ export const POWER_TREES = {
       "base"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Drunk",
@@ -293,13 +289,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
-        "name": "Wide Sway",
-        "description": "Larger sweeps for coverage, with lower turn acceleration to remain readable.",
+        "name": "Steady Sway",
+        "description": "Slow the sway cycle for smoother turns while keeping Narrow Sway active.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -309,9 +303,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Shared Sway",
@@ -357,7 +349,7 @@ export const POWER_TREES = {
       "base"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Ripple",
@@ -387,7 +379,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Strong Center",
-        "description": "Concentrate the impulse near the origin, opening a tight cluster.",
+        "description": "Increase the outward impulse throughout the ripple.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -397,13 +389,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
         "name": "Far Shore",
-        "description": "Flatter falloff, reaching more distant bubbles with weaker central force.",
+        "description": "Keep more outward strength toward the edge, adding to Strong Center.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -413,9 +403,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Returning Ripple",
@@ -443,7 +431,7 @@ export const POWER_TREES = {
       "base"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Attract",
@@ -473,7 +461,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Tight Group",
-        "description": "Stronger attraction with a soft inner spacing limit to prevent a pile of overlapping bodies.",
+        "description": "Strengthen attraction while leaving a small inner spacing gap.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -483,13 +471,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
-        "name": "Loose Ring",
-        "description": "Gather into a ring around the contact location, leaving a navigable center.",
+        "name": "Distant Gathering",
+        "description": "Keep more inward pull toward the edge without reversing the gathering direction.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -499,9 +485,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Release",
@@ -529,7 +513,7 @@ export const POWER_TREES = {
       "base"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Vortex",
@@ -559,7 +543,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Spiral In",
-        "description": "Add a small inward component.",
+        "description": "Add inward drift and strengthen the swirl.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -569,13 +553,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
-        "name": "Spiral Out",
-        "description": "Add a small outward component.",
+        "name": "Wide Spiral",
+        "description": "Extend the swirl and retain more strength near its edge, including inward drift when researched.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -585,9 +567,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Moving Center",
@@ -615,7 +595,7 @@ export const POWER_TREES = {
       "base"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Magnet",
@@ -631,7 +611,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Close Pull",
-        "description": "Stronger nearby pull and shorter reach.",
+        "description": "Strengthen attraction without shortening its reach.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -641,13 +621,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
         "name": "Distant Pull",
-        "description": "Wider reach and weaker force.",
+        "description": "Extend attraction reach without weakening its pull.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -657,9 +635,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Polarity",
@@ -705,7 +681,7 @@ export const POWER_TREES = {
       "base"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Wake",
@@ -720,8 +696,8 @@ export const POWER_TREES = {
         "conflicts": []
       },
       {
-        "name": "Narrow Jet",
-        "description": "Narrower trail with stronger directional force.",
+        "name": "Strong Jet",
+        "description": "Strengthen the trail current without narrowing it.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -731,13 +707,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
         "name": "Broad Current",
-        "description": "Wider trail with weaker force.",
+        "description": "Widen the current without reducing its strength.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -747,9 +721,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Crossing Currents",
@@ -795,7 +767,7 @@ export const POWER_TREES = {
       "foundation"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Stasis",
@@ -835,13 +807,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
         "name": "Thin Ice",
-        "description": "Retain more bubble motion, but reduce their outward pressure on the player for easier threading.",
+        "description": "Reduce pressure on the player while preserving the researched bubble speed limit.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -851,9 +821,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Frost Spread",
@@ -881,7 +849,7 @@ export const POWER_TREES = {
       "foundation"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Bubble",
@@ -911,7 +879,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Soft Bubble",
-        "description": "Weaker pressure on both sides; easier to envelop a cluster.",
+        "description": "Reduce the reaction on the player without weakening the outward bubble push.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -921,13 +889,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
         "name": "Firm Bubble",
-        "description": "Stronger outward bubble pressure and a slightly stronger player reaction; better at reorganizing the pool.",
+        "description": "Strengthen the outward push on bubbles without increasing the reaction on the player.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -937,9 +903,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Breathing Bubble",
@@ -967,7 +931,7 @@ export const POWER_TREES = {
       "foundation"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Tether",
@@ -997,7 +961,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Gathering Thread",
-        "description": "Stronger playerward drift with softer links.",
+        "description": "Strengthen drift toward the player without softening the links.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -1007,13 +971,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
         "name": "Elastic Thread",
-        "description": "Firmer links and stronger motion transfer, with the base drift unchanged.",
+        "description": "Strengthen links and collision transfer while preserving playerward drift.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1023,9 +985,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Release Knot",
@@ -1053,7 +1013,7 @@ export const POWER_TREES = {
       "foundation"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Orbit",
@@ -1082,8 +1042,8 @@ export const POWER_TREES = {
         "conflicts": []
       },
       {
-        "name": "Close Orbit",
-        "description": "Smaller radius and shorter gathering time.",
+        "name": "Quick Orbit",
+        "description": "Gather and release satellites sooner without shrinking the orbit.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -1093,13 +1053,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
         "name": "Wide Orbit",
-        "description": "Larger radius and slower rotation, sweeping more space.",
+        "description": "Widen the orbit without slowing its rotation or delaying release.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1109,9 +1067,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Directed Release",
@@ -1222,7 +1178,7 @@ export const POWER_TREES = {
       "foundation"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Split",
@@ -1262,13 +1218,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
-        "name": "Close Fan",
-        "description": "Tighter angles and slightly longer life for a focused route.",
+        "name": "Lasting Fan",
+        "description": "Keep side seeds alive longer without narrowing their launch angles.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1278,9 +1232,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Reunion",
@@ -1471,7 +1423,7 @@ export const POWER_TREES = {
       "foundation"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Lightning",
@@ -1511,13 +1463,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
-        "name": "Cluster",
-        "description": "Prefer nearby unhit targets for a local cascade.",
+        "name": "Strong Strike",
+        "description": "Increase the knockback of every strike while keeping Spread targeting.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1527,9 +1477,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Charged Relay",
@@ -1557,7 +1505,7 @@ export const POWER_TREES = {
       "foundation"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Pulse",
@@ -1586,8 +1534,8 @@ export const POWER_TREES = {
         "conflicts": []
       },
       {
-        "name": "Slow Pulse",
-        "description": "Longer spacing and stronger pressure.",
+        "name": "Strong Pulse",
+        "description": "Strengthen every pressure wave without slowing its cadence.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -1597,13 +1545,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
         "name": "Quick Pulse",
-        "description": "Shorter spacing and weaker pressure.",
+        "description": "Shorten the interval between waves without weakening them.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1613,9 +1559,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Shifting Center",
@@ -1815,7 +1759,7 @@ export const POWER_TREES = {
       "base"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Homing",
@@ -1830,8 +1774,8 @@ export const POWER_TREES = {
         "conflicts": []
       },
       {
-        "name": "Gentle Pursuit",
-        "description": "Lower turn rate and greater look-ahead, preserving bank routes.",
+        "name": "Long Pursuit",
+        "description": "Look farther ahead for unhit bubbles without reducing the turn rate.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -1841,13 +1785,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
         "name": "Close Pursuit",
-        "description": "Stronger turns and shorter look-ahead, favoring nearby clusters.",
+        "description": "Turn more strongly toward a target without shortening look-ahead.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1857,9 +1799,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Role Guidance",
@@ -1905,7 +1845,7 @@ export const POWER_TREES = {
       "base"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Wrap",
@@ -1920,8 +1860,8 @@ export const POWER_TREES = {
         "conflicts": []
       },
       {
-        "name": "Side Wrap",
-        "description": "Wrap only left and right edges; top and bottom remain bounceable.",
+        "name": "Departure Push",
+        "description": "Push nearby bubbles away from the departure point. All four edges remain usable.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -1931,13 +1871,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
-        "name": "End Wrap",
-        "description": "Wrap only top and bottom edges; left and right remain bounceable.",
+        "name": "Arrival Push",
+        "description": "Push nearby bubbles away from the exit. Adds to Departure Push; all four edges remain usable.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1947,13 +1885,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Arrival Field",
-        "description": "An outward push at the exit eases nearby bubbles aside. You can still choose all-edge, horizontal or vertical travel.",
+        "description": "Strengthen and widen the arrival push. All four edges remain usable.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -1995,7 +1931,7 @@ export const POWER_TREES = {
       "base"
     ],
     "uncertain": false,
-    "compatible": false,
+    "compatible": true,
     "nodes": [
       {
         "name": "Slingshot",
@@ -2010,8 +1946,8 @@ export const POWER_TREES = {
         "conflicts": []
       },
       {
-        "name": "Near Target",
-        "description": "Favor the nearest reachable forward target.",
+        "name": "Forward Target",
+        "description": "Prefer the nearest unhit target ahead when releasing.",
         "key": "a",
         "kind": "a",
         "effects": [
@@ -2021,13 +1957,11 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "b"
-        ]
+        "conflicts": []
       },
       {
-        "name": "Far Target",
-        "description": "Favor a farther target for crossing the pool.",
+        "name": "Strong Launch",
+        "description": "Increase release speed without replacing Forward Target or motion prediction.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -2037,9 +1971,7 @@ export const POWER_TREES = {
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
-        "conflicts": [
-          "a"
-        ]
+        "conflicts": []
       },
       {
         "name": "Second Orbit",

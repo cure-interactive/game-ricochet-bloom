@@ -1,6 +1,6 @@
 # Power-Ups
 
-Contact with a marked bubble activates its power. The random pool includes powers you have unlocked; researched compatible upgrades strengthen them automatically. Blaster aims and fires without extra player input.
+Contact with a marked bubble activates its power. The random pool includes powers you have unlocked; researched upgrades strengthen them automatically. Blaster aims and fires without extra player input.
 
 This reference is generated from the skill catalogue. The Skill Tree shows your current ownership, price and mastery progress.
 
@@ -43,8 +43,8 @@ Pull nearby bubbles toward the contact point with one gathering impulse.
 Upgrade in this order:
 
 - **Deep Attraction (Rare):** Increase useful reach by 20 percent.
-- **Tight Group (Rare):** Stronger attraction with a soft inner spacing limit to prevent a pile of overlapping bodies. Choose one gathering shape: tight group or loose ring.
-- **Loose Ring (Epic):** Gather into a ring around the contact location, leaving a navigable center. Choose one gathering shape: tight group or loose ring.
+- **Tight Group (Rare):** Strengthen attraction while leaving a small inner spacing gap.
+- **Distant Gathering (Epic):** Keep more inward pull toward the edge without reversing the gathering direction.
 - **Release (Legendary):** After the gathering phase, emit a modest outward release. This makes timing meaningful instead of holding the pool in a permanent clump. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -77,8 +77,8 @@ Retain this soft interaction at a modest shell size. There is no solid collision
 Upgrade in this order:
 
 - **Large Bubble (Rare):** Increase shell radius by 20 percent, while respecting the pool bounds.
-- **Soft Bubble (Epic):** Weaker pressure on both sides; easier to envelop a cluster. Choose one Bubble mode: Soft Bubble or Firm Bubble.
-- **Firm Bubble (Epic):** Stronger outward bubble pressure and a slightly stronger player reaction; better at reorganizing the pool. Choose one Bubble mode: Firm Bubble or Soft Bubble.
+- **Soft Bubble (Epic):** Reduce the reaction on the player without weakening the outward bubble push.
+- **Firm Bubble (Epic):** Strengthen the outward push on bubbles without increasing the reaction on the player.
 - **Breathing Bubble (Legendary):** Radius gently expands and contracts by 10 percent on the pulse. Contact still counts once per bubble, and radius changes never impart an instant bounce. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -110,8 +110,8 @@ Swerve smoothly for four seconds, aligning direction changes to the musical puls
 
 Upgrade in this order:
 
-- **Narrow Sway (Legendary):** Smaller lateral deviation for threading lanes. Choose one Drunk mode: Narrow Sway or Wide Sway.
-- **Wide Sway (Legendary):** Larger sweeps for coverage, with lower turn acceleration to remain readable. Choose one Drunk mode: Wide Sway or Narrow Sway.
+- **Narrow Sway (Legendary):** Smaller lateral deviation for threading lanes.
+- **Steady Sway (Legendary):** Slow the sway cycle for smoother turns while keeping Narrow Sway active.
 - **Shared Sway (Mythic):** Up to three nearby unhit bubbles sway sideways with the player. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -143,8 +143,8 @@ Five seconds of bounded forward seeking with visible target brackets.
 
 Upgrade in this order:
 
-- **Gentle Pursuit (Epic):** Lower turn rate and greater look-ahead, preserving bank routes. Choose one Homing mode: Gentle Pursuit or Close Pursuit.
-- **Close Pursuit (Epic):** Stronger turns and shorter look-ahead, favoring nearby clusters. Choose one Homing mode: Close Pursuit or Gentle Pursuit.
+- **Long Pursuit (Epic):** Look farther ahead for unhit bubbles without reducing the turn rate.
+- **Close Pursuit (Epic):** Turn more strongly toward a target without shortening look-ahead.
 - **Role Guidance (Legendary):** Prefer a still-needed musical role for this pool when a valid target of that role is within the normal forward cone; otherwise use normal targeting. Never turn backward automatically to satisfy a checklist. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -159,8 +159,8 @@ Strengthen the activating collision and later player contacts throughout this sh
 
 Upgrade in this order:
 
-- **Focused Impact (Epic):** Narrow, stronger forward pushes suited to directing a bubble. Choose one Impact mode: Focused Impact or Broad Impact.
-- **Broad Impact (Epic):** Weaker radial pushes around the contacted bubble, suited to opening clusters. Choose one Impact mode: Broad Impact or Focused Impact.
+- **Focused Impact (Epic):** Strengthen forward collision pushes without reducing the surrounding pressure wave.
+- **Broad Impact (Epic):** Add a radial push around each contact while retaining forward collision strength.
 - **Transfer (Legendary):** The first two newly contacted bubbles carry one additional physical shove into another bubble. This shove alone neither scores nor triggers another Impact transfer. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -176,8 +176,8 @@ Two strikes with clear target cues; retain the physical knockback role.
 Upgrade in this order:
 
 - **Third Strike (Epic):** Restore the third strike.
-- **Spread (Legendary):** Choose separated unhit targets for wider rearrangement. Choose one Lightning mode: Spread or Cluster.
-- **Cluster (Legendary):** Prefer nearby unhit targets for a local cascade. Choose one Lightning mode: Cluster or Spread.
+- **Spread (Legendary):** Choose separated unhit targets for wider rearrangement.
+- **Strong Strike (Legendary):** Increase the knockback of every strike while keeping Spread targeting.
 - **Charged Relay (Mythic):** The first struck bubble carries one Relay-like physical transfer into a different bubble. This can score or collect one marker only when that subsequent collision occurs; lightning flashes alone never award three free hits. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -192,8 +192,8 @@ Draw nearby unhit bubbles toward the moving player for 3.2 seconds.
 
 Upgrade in this order:
 
-- **Close Pull (Epic):** Stronger nearby pull and shorter reach. Choose one Magnet mode: Close Pull or Distant Pull.
-- **Distant Pull (Epic):** Wider reach and weaker force. Choose one Magnet mode: Distant Pull or Close Pull.
+- **Close Pull (Epic):** Strengthen attraction without shortening its reach.
+- **Distant Pull (Epic):** Extend attraction reach without weakening its pull.
 - **Polarity (Legendary):** Newly hit bubbles receive one small outward release, clearing the path for the unhit bodies still being drawn in. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -209,8 +209,8 @@ One satellite with its existing release behavior.
 Upgrade in this order:
 
 - **Twin Orbit (Epic):** Allow two satellites.
-- **Close Orbit (Legendary):** Smaller radius and shorter gathering time. Choose one Orbit mode: Close Orbit or Wide Orbit.
-- **Wide Orbit (Legendary):** Larger radius and slower rotation, sweeping more space. Choose one Orbit mode: Wide Orbit or Close Orbit.
+- **Quick Orbit (Legendary):** Gather and release satellites sooner without shrinking the orbit.
+- **Wide Orbit (Legendary):** Widen the orbit without slowing its rotation or delaying release.
 - **Directed Release (Mythic):** Bias release along the player's current heading instead of purely outward, with a visible release direction. Capturing a satellite does not itself score it. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -242,8 +242,8 @@ Two waves at independently seeded field positions.
 Upgrade in this order:
 
 - **Third Wave (Epic):** Restore the third wave.
-- **Slow Pulse (Legendary):** Longer spacing and stronger pressure. Choose one Pulse mode: Slow Pulse or Quick Pulse.
-- **Quick Pulse (Legendary):** Shorter spacing and weaker pressure. Choose one Pulse mode: Quick Pulse or Slow Pulse.
+- **Strong Pulse (Legendary):** Strengthen every pressure wave without slowing its cadence.
+- **Quick Pulse (Legendary):** Shorten the interval between waves without weakening them.
 - **Shifting Center (Mythic):** Bias the final wave toward a region with more unhit bubbles, with a visible pre-cue. It remains a field wave, never becomes a player-centered pulse. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -293,8 +293,8 @@ Send a pressure wave outward, pushing nearby bubbles away.
 Upgrade in this order:
 
 - **Wide Ripple (Rare):** Expand its reach by 20 percent without increasing center strength.
-- **Strong Center (Rare):** Concentrate the impulse near the origin, opening a tight cluster. Choose one pressure shape: strong center or far shore.
-- **Far Shore (Epic):** Flatter falloff, reaching more distant bubbles with weaker central force. Choose one pressure shape: strong center or far shore.
+- **Strong Center (Rare):** Increase the outward impulse throughout the ripple.
+- **Far Shore (Epic):** Keep more outward strength toward the edge, adding to Strong Center.
 - **Returning Ripple (Legendary):** One weaker inward wave follows after half a second. It moves bodies but cannot score or recursively create waves. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -309,8 +309,8 @@ Briefly orbit the contacted bubble, then automatically aim the release toward an
 
 Upgrade in this order:
 
-- **Near Target (Legendary):** Favor the nearest reachable forward target. Choose one Slingshot mode: Near Target or Far Target.
-- **Far Target (Legendary):** Favor a farther target for crossing the pool. Choose one Slingshot mode: Far Target or Near Target.
+- **Forward Target (Legendary):** Prefer the nearest unhit target ahead when releasing.
+- **Strong Launch (Legendary):** Increase release speed without replacing Forward Target or motion prediction.
 - **Second Orbit (Mythic):** One later contact with the specifically previewed release target can produce one shorter slingshot. The capstone supplies its own previewed target choice when no aiming upgrade is equipped; it works with the base alone. It cannot repeat a third time. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -326,8 +326,8 @@ One side seed for three seconds, with functional contact power activation from t
 Upgrade in this order:
 
 - **Twin Split (Rare):** Add the second side seed.
-- **Wide Fan (Epic):** Launch at wider opposing angles for coverage. Choose one Split mode: Wide Fan or Close Fan.
-- **Close Fan (Epic):** Tighter angles and slightly longer life for a focused route. Choose one Split mode: Close Fan or Wide Fan.
+- **Wide Fan (Epic):** Launch at wider opposing angles for coverage.
+- **Lasting Fan (Epic):** Keep side seeds alive longer without narrowing their launch angles.
 - **Reunion (Legendary):** Surviving side seeds bend toward the main player during their final half-second, allowing a converging finish without extra spawns. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -359,8 +359,8 @@ Frost a smaller area, slowing bubbles and stiffening their edges. Hit frozen bub
 Upgrade in this order:
 
 - **Deep Frost (Rare):** Freeze bubbles across a wider area: 440 units instead of 300.
-- **Firm Ice (Rare):** Lower the bubble speed cap, making the arrangement more stable. Choose one Stasis mode: Firm Ice or Thin Ice.
-- **Thin Ice (Epic):** Retain more bubble motion, but reduce their outward pressure on the player for easier threading. Choose one Stasis mode: Thin Ice or Firm Ice.
+- **Firm Ice (Rare):** Lower the bubble speed cap, making the arrangement more stable.
+- **Thin Ice (Epic):** Reduce pressure on the player while preserving the researched bubble speed limit.
 - **Frost Spread (Legendary):** The first two physical bubble-to-bubble contacts from a frozen bubble frost one additional body each. Spreading itself earns no hit or power pickup. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -371,7 +371,7 @@ Upgrade in this order:
 
 Exchange places with a distant unhit bubble when one exists, and keep moving.
 
-**Unlock:** research Side Wrap in Wrap, then buy this power.
+**Unlock:** research Departure Push in Wrap, then buy this power.
 
 Upgrade in this order:
 
@@ -392,8 +392,8 @@ Two linked bubbles, with a gentle playerward drift preserved as the power's iden
 Upgrade in this order:
 
 - **Third Thread (Rare):** Add the third bubble and full triangular linkage.
-- **Gathering Thread (Epic):** Stronger playerward drift with softer links. Choose one Tether mode: Gathering Thread or Elastic Thread.
-- **Elastic Thread (Epic):** Firmer links and stronger motion transfer, with the base drift unchanged. Choose one Tether mode: Elastic Thread or Gathering Thread.
+- **Gathering Thread (Epic):** Strengthen drift toward the player without softening the links.
+- **Elastic Thread (Epic):** Strengthen links and collision transfer while preserving playerward drift.
 - **Release Knot (Legendary):** When the effect expires, release stored stretch as one bounded impulse per member. No teleporting or stored-energy explosion. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -409,8 +409,8 @@ The tangential swirl.
 Upgrade in this order:
 
 - **Sustained Current (Rare):** Continue a weaker swirl for one second.
-- **Spiral In (Epic):** Add a small inward component. Choose one Vortex mode: Spiral In or Spiral Out.
-- **Spiral Out (Epic):** Add a small outward component. Choose one Vortex mode: Spiral Out or Spiral In.
+- **Spiral In (Epic):** Add inward drift and strengthen the swirl.
+- **Wide Spiral (Epic):** Extend the swirl and retain more strength near its edge, including inward drift when researched.
 - **Moving Center (Legendary):** A weak swirl follows the player for one second. Teleporting breaks the swirl. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -425,8 +425,8 @@ Leave a short-lived directional current along your path for five seconds.
 
 Upgrade in this order:
 
-- **Narrow Jet (Legendary):** Narrower trail with stronger directional force. Choose one Wake mode: Narrow Jet or Broad Current.
-- **Broad Current (Legendary):** Wider trail with weaker force. Choose one Wake mode: Broad Current or Narrow Jet.
+- **Strong Jet (Legendary):** Strengthen the trail current without narrowing it.
+- **Broad Current (Legendary):** Widen the current without reducing its strength.
 - **Crossing Currents (Mythic):** When two separated trail segments overlap, create one small eddy there. At most two eddies per shot, each lasting one second. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -441,9 +441,9 @@ Cross a pool edge to emerge on the opposite side, retaining velocity, for five s
 
 Upgrade in this order:
 
-- **Side Wrap (Legendary):** Wrap only left and right edges; top and bottom remain bounceable. Choose one Wrap mode: Side Wrap or End Wrap.
-- **End Wrap (Legendary):** Wrap only top and bottom edges; left and right remain bounceable. Choose one Wrap mode: End Wrap or Side Wrap.
-- **Arrival Field (Mythic):** An outward push at the exit eases nearby bubbles aside. You can still choose all-edge, horizontal or vertical travel. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
+- **Departure Push (Legendary):** Push nearby bubbles away from the departure point. All four edges remain usable.
+- **Arrival Push (Legendary):** Push nearby bubbles away from the exit. Adds to Departure Push; all four edges remain usable.
+- **Arrival Field (Mythic):** Strengthen and widen the arrival push. All four edges remain usable. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
 

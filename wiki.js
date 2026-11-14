@@ -1,20 +1,20 @@
 import { screenHeader } from './screen-header.js?v=b3d9b07c196b969e345063358159bcabb90c6ae99410d49934cf4b23eb185c73';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=ff13c913ea159840770d60cc237c4faafe230ad0f4516a86751a9c1e016115f9';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=5c32eee761d7dc5bc90540ed361c42dfa5d4b5c0ca80b08af335ff1386ef5cd6';
 
 export const WIKI_PAGES = Object.freeze({
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=c796cf233df050335221c960bcc72a57458ae2a894ced033931abf965473cf85' },
   experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=cad0af79b06c4dc945bbf55b341263b4909580ecfe25cdb418ffb55aed29845c' },
   'development-concept': { title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
-  waves: { title: 'Endless Waves', url: './wiki/waves.md?v=6c5ee268e6fda5b5673173f99462c1ea03dc1249b93a28b1e5a268d79c476c71' },
+  waves: { title: 'Endless Waves', url: './wiki/waves.md?v=58f2269f7def71ac57d360c1207a0fc7c7e887afac9ec062e3ef1c421595eb69' },
   contents: { title: 'Contents', url: './wiki/contents.md?v=116488b97bae1e73ba3122c912705481e446fd923e6052dda2c2949d9f03e531' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=5c63a6e310e5d7839c2620d9f13d918baea3a84c1292a19e495044bbcb0dcc64' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=69b2dc0dce78ce297b3fb2cc57ef61d90d5c65c8520b125bb6cfb63b6c712a67' },
-  campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=0c93b5ccf8eb8ceb5a0461e3fd289ddf60f4f1aff737b11a86b720aaaabbe865' },
-  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=38d0839877e5db1ed9e6c2aecc2d04d3e02fb5d2fa3c75481825b7ca0eb885b6' },
-  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=cd5caa5461891d4fb76bfb4866c359f3c8d00e882c09dad3644a1562868a4cad' },
+  campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=e3080dfc2d9ab977787dfac5fd75222a4c6cfcf2ba3d93a16beffcea027a413e' },
+  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=866cf3b302f812c33a204194f3240358bbfac80317eb906122038dea40c4670e' },
+  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=f251375e960054752df660355c35932b59b297cc656a915a9621974e20536f10' },
   settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=7896f3fde3261ceeb3fe62b96c80c91e673fd4fcbbe1b15d9d3e0d1d663d4185' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.

@@ -1,11 +1,11 @@
 import { screenHeader } from './screen-header.js?v=b3d9b07c196b969e345063358159bcabb90c6ae99410d49934cf4b23eb185c73';
-import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=8c6dcff7be68a798d4e1dbd0cb39fad9ae6360080a51c79f3c585aeb7ea63114';
+import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=e28b6fa5b5100d62c591045297ddfc2c2219e5ce60b484825645f5c5d54230a7';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=1771157dbfc5e04f5dbde62b932d65c17d4367d68b88bda104c7416f01808cd7';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=8efba758bbbd1a91a91bb2cb7d4e66e7f6ef8fa9bde74d02c3d20ae37751d604';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
-import { POWER_TREES } from './power-tree.js?v=ae74203c23b7477ea0f5b45ee783af270b4c6d633d374a8cb8779f9077fc7919';
-import { profilePurchase, profileSummary } from './profile.js?v=5932d3964e5f79555bdb95acb5af513e122c816380cced060178209d2312947b';
-import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=e3fc5e08ab0c39705bfdd4d290e1761ea139fe39d29b006a8dab548acd2bdb38';
+import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
+import { profilePurchase, profileSummary } from './profile.js?v=89e8220f13dad09da78c045746c499d1a094fcfef7517e021b1a49b6cea6dc7e';
+import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=0038d8de80ab8d3d62548b4a9cc4763c03dfc5b6815cf6dae7476ed2784424e7';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -32,7 +32,7 @@ function statVisual(row){
 export function skillStatsHTML(stats){
  const changed=stats.rows.filter(r=>r.changed&&r.kind!=='text'&&!r.curve);
  const legend=changed.length?`<p class="skill-stat-change-key">${changed.some(r=>r.progress>r.previousProgress)?'<span><i class="skill-stat-gain" aria-hidden="true"></i>Improvement</span>':''}${changed.some(r=>r.progress<r.previousProgress)?'<span><i class="skill-stat-loss" aria-hidden="true"></i>Tradeoff</span>':''}</p>`:'';
- return `<section class="skill-stats" aria-label="${escape(stats.heading)}"><h4>${escape(stats.heading)}</h4>${stats.compare?`<p class="skill-stat-key"><span>${escape(stats.beforeLabel)}</span><span aria-hidden="true">→</span><span>${escape(stats.afterLabel)}</span></p>`:''}${legend}<dl>${stats.rows.map(row=>`<div class="skill-stat ${row.changed?'is-changed':''}" data-change="${row.changed&&row.kind!=='text'?(row.progress>row.previousProgress?'gain':'loss'):'none'}"><dt>${escape(row.label)}</dt><dd>${row.changed?`<span class="skill-stat-before">${escape(row.before)}</span><span aria-hidden="true"> → </span><span class="sr-only"> to </span>`:''}<strong>${escape(row.after)}</strong></dd><dd class="skill-stat-description">${escape(row.description)}</dd>${row.curve?`<dd class="skill-stat-visual">${statCurveHTML(row.curve,stats)}</dd>`:row.kind!=='text'?`<dd class="skill-stat-visual">${statVisual(row)}</dd>`:''}</div>`).join('')}</dl>${stats.rows.some(r=>r.kind==='bar'&&!r.curve)?'<p class="skill-stat-note">Full bar = best value for this stat. Styles can trade strengths.</p>':''}</section>`;
+ return `<section class="skill-stats" aria-label="${escape(stats.heading)}"><h4>${escape(stats.heading)}</h4>${stats.compare?`<p class="skill-stat-key"><span>${escape(stats.beforeLabel)}</span><span aria-hidden="true">→</span><span>${escape(stats.afterLabel)}</span></p>`:''}${legend}<dl>${stats.rows.map(row=>`<div class="skill-stat ${row.changed?'is-changed':''}" data-change="${row.changed&&row.kind!=='text'?(row.progress>row.previousProgress?'gain':'loss'):'none'}"><dt>${escape(row.label)}</dt><dd>${row.changed?`<span class="skill-stat-before">${escape(row.before)}</span><span aria-hidden="true"> → </span><span class="sr-only"> to </span>`:''}<strong>${escape(row.after)}</strong></dd><dd class="skill-stat-description">${escape(row.description)}</dd>${row.curve?`<dd class="skill-stat-visual">${statCurveHTML(row.curve,stats)}</dd>`:row.kind!=='text'?`<dd class="skill-stat-visual">${statVisual(row)}</dd>`:''}</div>`).join('')}</dl>${stats.rows.some(r=>r.kind==='bar'&&!r.curve)?'<p class="skill-stat-note">Full bar = best value for this stat. Researched upgrades stack.</p>':''}</section>`;
 }
 
 // Explain the same gate used by purchases, beside the affected power.

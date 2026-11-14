@@ -1,11 +1,11 @@
 import { SCORE_BUDGETS, SCORE_DEFAULT, SCORE_SEED, scoreAttackValid } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { BONUS_TIERS, earningValid, earningPower, earningSettle } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
 import { liveBubbles, waveConfig, wavePrepare, waveEntryStep, waveValid, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
-import { DRUNK_SECONDS, drunkSway, overlapResponse, magnetResponse } from './power-response.js?v=53b3f123d0f0c05341a1eb30cbf1c20f19b251c6a7e30ff0cc4921ddfff73338';
+import { DRUNK_SECONDS, drunkSway, overlapResponse, magnetResponse } from './power-response.js?v=53825a2132c5ad509bdd8a251983587d3024f860edd302123036c23bc5fa89bd';
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=90a3e793542c39e354a665bbb96ae2105915367ee5f12c1f1a291426e0b632fb';
-export { skillFlags } from './skill-effect.js?v=90a3e793542c39e354a665bbb96ae2105915367ee5f12c1f1a291426e0b632fb';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=b5d23aae0cfa214b54af02d69a6757f09caf11297ba245a50bf8b94dbdd4b93e';
+export { skillFlags } from './skill-effect.js?v=b5d23aae0cfa214b54af02d69a6757f09caf11297ba245a50bf8b94dbdd4b93e';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
 export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: DRUNK_SECONDS, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
@@ -267,13 +267,13 @@ function effectStep(state, events) {
     effect.angle += effect.spin * 7 * RULE.step;
     if (effect.seconds === 0) {
       const flags=skillFlags(state,'slingshot'),candidates=liveBubbles(state).filter(body=>!state.chain.includes(body.id));
-      const forward=candidates.filter(b=>(b.x-seed.x)*seed.vx+(b.y-seed.y)*seed.vy>=0),pool=(flags.a||flags.b)&&forward.length?forward:candidates;
-      const target=(flags.legacy||flags.foundation||flags.a||flags.b||flags.capstone)?pool.sort((a,b)=>(flags.b?-1:1)*(Math.hypot(a.x-seed.x,a.y-seed.y)-Math.hypot(b.x-seed.x,b.y-seed.y))||a.id-b.id)[0]:null;
-      const lead=target&&(flags.legacy||flags.foundation)?Math.min(.25,Math.hypot(target.x-seed.x,target.y-seed.y)/1050):0;
+      const forward=candidates.filter(b=>(b.x-seed.x)*seed.vx+(b.y-seed.y)*seed.vy>=0),pool=flags.a&&forward.length?forward:candidates;
+      const target=(flags.legacy||flags.foundation||flags.a||flags.b||flags.capstone)?pool.sort((a,b)=>(Math.hypot(a.x-seed.x,a.y-seed.y)-Math.hypot(b.x-seed.x,b.y-seed.y))||a.id-b.id)[0]:null;
+      const lead=target&&(flags.legacy||flags.foundation)?Math.min(.25,Math.hypot(target.x-seed.x,target.y-seed.y)/config.speed):0;
       if(state.build&&flags.capstone&&!state.skillState.slingUsed)state.skillState.slingTarget=target?.id||0;
       const angle = target ? Math.atan2(Math.max(60, Math.min(580, target.y + target.vy * lead)) - seed.y,
         Math.max(60, Math.min(900, target.x + target.vx * lead)) - seed.x) : effect.angle + effect.spin * Math.PI / 2;
-      seed.vx = Math.cos(angle) * 1050; seed.vy = Math.sin(angle) * 1050;
+      seed.vx = Math.cos(angle) * config.speed; seed.vy = Math.sin(angle) * config.speed;
       events.push({ type: 'slingshot', x: seed.x, y: seed.y, target: target?.id || 0 });
     }
   }
@@ -318,7 +318,7 @@ function effectStep(state, events) {
     const body = state.bodies[effect.targets.shift()], dx = body.x - seed.x, dy = body.y - seed.y;
     const distance = Math.hypot(dx, dy), nx = distance > .001 ? dx / distance : 1, ny = distance > .001 ? dy / distance : 0;
     if(state.mode==='waves'){const marker=state.power.markers.find(m=>m.target===body.id);if(marker)powerCollect(state,marker,seed,body,nx,ny,events);scoreContact(state,body,seed,events);}
-    body.vx += nx * 850; body.vy += ny * 850; velocityLimit(body);
+    body.vx += nx * config.strength; body.vy += ny * config.strength; velocityLimit(body);
     events.push({ type: 'lightning', id: body.id, index: 3 - effect.targets.length, x: body.x, y: body.y, fromX: seed.x, fromY: seed.y, nx, ny });
     if (effect.targets.length) effect.seconds = .22;
   }
@@ -327,6 +327,9 @@ function effectStep(state, events) {
   }
 }
 function random(state) { let value = state.rng; value ^= value << 13; value ^= value >>> 17; value ^= value << 5; state.rng = value >>> 0; return state.rng / 4294967296; }
+// Physics and presentation share the currently traversable boundary. Research never removes an edge.
+const WRAP_EDGES=Object.freeze(['left','right','top','bottom']), NO_WRAP_EDGES=Object.freeze([]);
+export function wrapEdges(state){return state.isFlying&&effectGet(state,'wrap')?.seconds>0?WRAP_EDGES:NO_WRAP_EDGES;}
 export function gameCreate(seed = 'LAGOON', mode = 'challenge', options = {}) {
   const state = { version: RULE.version, seed: String(seed).slice(0, 32), mode, rng: seedHash(seed), tick: 0, score: 0, plucks: RULE.plucks, launches: 0, blooms: 0, bestChain: 0, chain: [], banks: 0, flightAge: 0, isFlying: false, isOver: false, power: powerCreate(seed), effects: [], flightPath: [], objective:{enabled:true,index:0,completed:0,earned:false}, shotStart:0, lastShot:null, bodies: [{ id: 0, x: 480, y: 550, vx: 0, vy: 0, radius: RULE.seedRadius, tone: 0, cooldown: 0 }] };
   const count = mode==='waves' ? waveConfig(options.wave||1).count : options.build && buildValidate(options.build) ? Math.max(12,Math.min(20,Math.trunc(options.population||14))) : 14;
@@ -507,10 +510,10 @@ export function physicsStep(state) {
     }
     body.x += body.vx * dt; body.y += body.vy * dt;
     const left = RULE.inset + body.radius, right = RULE.width - left, top = RULE.inset + body.radius, bottom = RULE.height - top;
-    if (body.id <= 0 && state.isFlying && effectGet(state, 'wrap')) {
-      const wrap=skillFlags(state,'wrap');
-      const nx = !wrap.legacy&&wrap.b&&!wrap.a ? 0 : body.x < left && body.vx < 0 ? 1 : body.x > right && body.vx > 0 ? -1 : 0;
-      const ny = !wrap.legacy&&wrap.a&&!wrap.b ? 0 : body.y < top && body.vy < 0 ? 1 : body.y > bottom && body.vy > 0 ? -1 : 0;
+    const edges=wrapEdges(state);
+    if (body.id <= 0 && edges.length) {
+      const nx = edges.includes('left') && body.x < left && body.vx < 0 ? 1 : edges.includes('right') && body.x > right && body.vx > 0 ? -1 : 0;
+      const ny = edges.includes('top') && body.y < top && body.vy < 0 ? 1 : edges.includes('bottom') && body.y > bottom && body.vy > 0 ? -1 : 0;
       if (nx || ny) {
         const fromX = Math.max(left, Math.min(right, body.x)), fromY = Math.max(top, Math.min(bottom, body.y));
         // Carry the overshoot across each crossed edge, including diagonal corners.
@@ -577,7 +580,8 @@ export function physicsStep(state) {
       const pressure = 2400 * skillConfig(state,'bubble').pressure * overlapResponse(depth) * dt * (effectGet(state, 'impact') ? 1.8 : 1);
       b.vx += nx * pressure; b.vy += ny * pressure; velocityLimit(b);
       // A light reaction bends/slows the player gradually instead of ricocheting.
-      a.vx -= nx * pressure * .18; a.vy -= ny * pressure * .18; velocityLimit(a);
+      const reaction=skillConfig(state,'bubble').reaction/skillConfig(state,'bubble').pressure;
+      a.vx -= nx * pressure * .18 * reaction; a.vy -= ny * pressure * .18 * reaction; velocityLimit(a);
     }
     const inverseA = a.id === -3 ? .55 : a.id <= 0 ? 1 : 900 / (a.radius * a.radius), inverseB = 900 / (b.radius * b.radius), inverseSum = inverseA + inverseB;
     const correction = Math.max(0, solidTarget - distance - .01) * .92 / inverseSum;

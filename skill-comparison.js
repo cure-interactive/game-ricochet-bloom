@@ -1,8 +1,8 @@
-import { skillCurve } from './skill-curve.js?v=dab90a1026a2abcc2e8d0388cf0af387d7d7e9d9f9fd6d8f7a0c87e63ace54a4';
-import { skillConfig } from './skill-effect.js?v=90a3e793542c39e354a665bbb96ae2105915367ee5f12c1f1a291426e0b632fb';
-import { POWER_TREES } from './power-tree.js?v=ae74203c23b7477ea0f5b45ee783af270b4c6d633d374a8cb8779f9077fc7919';
-import { profilePurchase, unlockedResolve } from './profile.js?v=5932d3964e5f79555bdb95acb5af513e122c816380cced060178209d2312947b';
-import { GAME_CATALOGUE as cat } from './run.js?v=e3fc5e08ab0c39705bfdd4d290e1761ea139fe39d29b006a8dab548acd2bdb38';
+import { skillCurve } from './skill-curve.js?v=7431e97af224e20e1c41316468a4f351bb4e22d248f8213e3c95a8529567ff69';
+import { skillConfig } from './skill-effect.js?v=b5d23aae0cfa214b54af02d69a6757f09caf11297ba245a50bf8b94dbdd4b93e';
+import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
+import { profilePurchase, unlockedResolve } from './profile.js?v=89e8220f13dad09da78c045746c499d1a094fcfef7517e021b1a49b6cea6dc7e';
+import { GAME_CATALOGUE as cat } from './run.js?v=0038d8de80ab8d3d62548b4a9cc4763c03dfc5b6815cf6dae7476ed2784424e7';
 
 const on=value=>value?'On':'Off';
 const number=value=>Number(value.toFixed(2));
@@ -17,18 +17,24 @@ const statDescription={
  'Late-Flight Drag':'Braking late in a shot. Lower lets the player coast farther.',
  'Wall Pressure Waves':'The first two powered wall bounces also push nearby bubbles.',
  'Push Strength':'How strongly player contact shoves a bubble.',
- 'Push Shape':'Whether the shove follows your movement or spreads outward.',
+ 'Push Shape':'Forward contact push, plus an outward wave when Broad Impact is researched.',
  'Collision Transfer':'The first two hit bubbles can each pass on one extra shove.',
  'Duration':'How long the effect remains active after triggering.',
  'Rebound Boost':'Extra speed added when the player rebounds from a wall.',
  'Rebound Steering':'Gently turns wall rebounds toward an unhit bubble ahead.',
+ 'Sway Period':'Length of the sway cycle compared with the base cycle. Longer means smoother turns.',
+ 'Player Reaction':'Reaction on the player from the bubble shell. Lower bends your path less.',
+ 'Strike Strength':'Knockback applied to each lightning target.',
+ 'Departure Pressure':'Outward push near the edge you leave through.',
+ 'Arrival Radius':'Distance reached by the outward push at your exit.',
+ 'Release Speed':'Speed of the automatic Slingshot launch.',
  'Sway Width':'How far the sideways wobble bends the player’s movement.',
  'Shared Sway':'Up to three nearby unhit bubbles sway along with the player.',
  'Reach':'How far from its center the effect can influence bubbles.',
  'Peak Impulse':'The strongest instant push or pull the wave can apply.',
  'Falloff':'How the wave’s strength changes with distance from its center.',
  'Returning Wave':'A weaker inward wave follows the outward ripple.',
- 'Gathering Shape':'Whether attraction gathers bubbles into a cluster or a loose ring.',
+ 'Gathering Shape':'Inner spacing and sustained pull toward the edge of the gathering area.',
  'Outward Release':'A small outward wave follows the gathering pull.',
  'Swirl Strength':'How strongly the vortex sets nearby bubbles swirling.',
  'Sustained Swirl':'Keeps applying a brief swirl after the initial impulse.',
@@ -71,7 +77,7 @@ const statDescription={
  'Parallel Offset':'Shifts the return route beside the original path.',
  'Return-Bloom Wave':'A bloom earned during the return sends out one small push wave.',
  'Strikes':'How many bubbles the lightning sequence targets.',
- 'Target Pattern':'Whether lightning prefers nearby, grouped, or separated targets.',
+ 'Target Pattern':'Whether lightning prefers nearby or separated targets.',
  'Charged Relay':'The first struck bubble can pass one hit through a later collision.',
  'Waves':'How many pressure waves fire during the pulse sequence.',
  'Wave Interval':'Time between waves. Lower makes them arrive more quickly.',
@@ -101,29 +107,29 @@ export function powerVariables(build,power){
  const c=skillConfig({build},power),finish=label=>({[label]:on(c.capstone)});
  switch(power){
  case 'comet':return {'Wall Speed Retained':number(c.wallRetention*100)+'%','Bank Charge':on(c.a),'Late-Flight Drag':scale(c.lateDrag),...finish('Wall Pressure Waves')};
- case 'impact':return {'Push Strength':scale(c.pushScale),'Push Shape':c.b?'Radial':'Forward',...finish('Collision Transfer')};
+ case 'impact':return {'Push Strength':scale(c.pushScale),'Push Shape':c.b?'Forward + Radial':'Forward',...finish('Collision Transfer')};
  case 'spring':return {'Duration':seconds(c.duration),'Rebound Boost':scale(c.reboundScale),'Rebound Steering':on(c.b),...finish('Wall Pressure Waves')};
- case 'drunk':return {'Sway Width':scale(c.swayScale),...finish('Shared Sway')};
- case 'ripple':return {'Reach':c.reach,'Peak Impulse':c.force,'Falloff':c.a?'Concentrated':c.b?'Far Shore':'Standard',...finish('Returning Wave')};
- case 'attract':return {'Reach':c.reach,'Peak Impulse':c.force,'Gathering Shape':c.a?'Tight Group':c.b?'Loose Ring':'Standard',...finish('Outward Release')};
- case 'vortex':return {'Swirl Strength':c.force,'Sustained Swirl':on(c.foundation),'Spiral Direction':c.a?'Inward':c.b?'Outward':'Tangential',...finish('Moving Center')};
+ case 'drunk':return {'Sway Width':scale(c.swayScale),'Sway Period':scale(c.swayPeriod),...finish('Shared Sway')};
+ case 'ripple':return {'Reach':c.reach,'Peak Impulse':c.force,'Falloff':c.b?'Far Shore':'Standard',...finish('Returning Wave')};
+ case 'attract':return {'Reach':c.reach,'Peak Impulse':c.force,'Gathering Shape':c.a&&c.b?'Tight + Distant':c.a?'Tight Group':c.b?'Distant Gathering':'Standard',...finish('Outward Release')};
+ case 'vortex':return {'Swirl Strength':c.force,'Reach':c.reach,'Sustained Swirl':on(c.foundation),'Spiral Direction':c.a?'Inward':'Tangential',...finish('Moving Center')};
  case 'magnet':return {'Duration':seconds(c.duration),'Reach':c.reach,'Pull Strength':c.force,...finish('Hit-Bubble Release')};
  case 'wake':return {'Duration':seconds(c.duration),'Trail Reach':c.width,'Current Strength':c.force,...finish('Crossing Eddies')};
  case 'stasis':return {'Freeze Reach':c.reach,'Bubble Speed Limit':c.speed,'Player Pressure':scale(c.pressure),...finish('Frost Spread')};
- case 'bubble':return {'Shell Radius':c.size,'Pressure':scale(c.pressure),...finish('Breathing Radius')};
+ case 'bubble':return {'Shell Radius':c.size,'Pressure':scale(c.pressure),'Player Reaction':scale(c.reaction),...finish('Breathing Radius')};
  case 'tether':return {'Linked Bubbles':c.members,'Playerward Pull':c.pull,'Link Stiffness':c.spring,...finish('Release Impulse')};
  case 'orbit':return {'Satellites':c.count,'Orbit Time':seconds(c.duration),'Extra Orbit Radius':c.reach,'Rotation':number(c.turn)+' rad/s',...finish('Directed Release')};
  case 'echo':return {'Path Deviation':c.leash,'Elastic Response':on(c.elastic),'Unhit-Bubble Seeking':on(c.seek),...finish('Finish Queued Route')};
  case 'split':return {'Side Seeds':c.count,'Launch Angle':degrees(c.fan),'Duration':seconds(c.duration),...finish('Final Convergence')};
  case 'relay':return {'Relay Carriers':c.count,'Transfer Window':seconds(c.duration),'Recipient Push':on(c.a),...finish('Additional Pass')};
  case 'rewind':return {'Path Memory':seconds(c.memory),'Playback Speed':scale(c.playbackRate),'Parallel Offset':on(c.b),...finish('Return-Bloom Wave')};
- case 'lightning':return {'Strikes':c.count,'Target Pattern':c.a?'Separated':c.b?'Clustered':'Nearest Unhit',...finish('Charged Relay')};
+ case 'lightning':return {'Strikes':c.count,'Strike Strength':c.strength,'Target Pattern':c.a?'Separated':'Nearest Unhit',...finish('Charged Relay')};
  case 'pulse':return {'Waves':c.count,'Wave Interval':seconds(c.beat),'Pressure Strength':c.force,...finish('Unhit-Biased Final Wave')};
  case 'swap':return {'Destination':c.a&&c.b?'Forward, Open-Space Unhit':c.a?'Forward Unhit':c.b?'Open-Space Unhit':'Distant Unhit',...finish('Departure Wave')};
  case 'portal':return {'Duration':seconds(c.duration),'Gate Radius':c.gateRadius,'Exit Steering':on(c.b),...finish('Gate Current')};
  case 'homing':return {'Duration':seconds(c.duration),'Look-Ahead':c.reach,'Turn Limit':number(c.turn)+' rad/s',...finish('Musical-Role Preference')};
- case 'wrap':return {'Duration':seconds(c.duration),'Wrapping Edges':c.a?'Left / Right':c.b?'Top / Bottom':'All',...finish('Arrival Pressure')};
- case 'slingshot':return {'Release Target':c.a?'Nearest Forward':c.b?'Farthest Forward':'Nearest Unhit',...finish('Second Orbit')};
+ case 'wrap':return {'Duration':seconds(c.duration),'Wrapping Edges':'All','Departure Pressure':c.departure,'Arrival Pressure':c.arrival,'Arrival Radius':c.arrivalRadius};
+ case 'slingshot':return {'Release Target':c.a?'Nearest Forward':'Nearest Unhit','Release Speed':c.speed,...finish('Second Orbit')};
  case 'blaster':return {'Magazine':c.ammo,'Pellets Per Shot':c.offsets.length,'Wall Bounces':c.bounces,...finish('Bloom Reload')};
  default:throw new Error('Missing power variables: '+power);
  }
@@ -146,7 +152,7 @@ export function purchaseComparison(state,id){
 const countStats=new Set(['Linked Bubbles','Satellites','Side Seeds','Relay Carriers','Strikes','Waves','Magazine','Pellets Per Shot','Wall Bounces']);
 // Direction describes this individual capability, not an overall build rating.
 // Style-only dimensions have no honest best endpoint, so keep their exact values as text.
-const lowerStats=new Set(['Late-Flight Drag','Bubble Speed Limit','Player Pressure','Playback Speed','Wave Interval']);
+const lowerStats=new Set(['Late-Flight Drag','Bubble Speed Limit','Player Pressure','Player Reaction','Playback Speed','Wave Interval']);
 const choiceStats=new Set(['Sway Width','Launch Angle','Orbit Time']);
 const numeric=value=>typeof value==='number'?value:/^\d+(?:\.\d+)?(?: s|×|°|%| rad\/s)?$/.test(value)?parseFloat(value):null;
 export function statProgress(value,best,direction){
@@ -172,7 +178,7 @@ function statRanges(power){
  ranges.set(power,result);return result;
 }
 
-// Read-only previews use the same resolver as purchases, including conflicting styles.
+// Read-only previews use the same resolver as purchases, including all researched upgrades.
 // Missing prerequisites are previewed explicitly; they are never granted to the save.
 export function skillStats(state,id){
  const node=cat.nodes[id];if(!node)return null;

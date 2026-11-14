@@ -1,5 +1,5 @@
 // Presentation only: engine events supply impulses; active effects supply geometry.
-import { RULE, POWERS, effectGet, homingTarget } from './engine.js?v=3edc2fac5b45d04025b867cc6557d36846c4255efb1c387a4163c5d1fb595b69';
+import { RULE, POWERS, effectGet, homingTarget, wrapEdges } from './engine.js?v=9983b6710a023e8374d73e263273735a24ef836bdb93fbcd94384a4710e9d3bd';
 const TAU = Math.PI * 2;
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 function line(c, x, y, endX, endY) { c.beginPath(); c.moveTo(x, y); c.lineTo(endX, endY); c.stroke(); }
@@ -216,14 +216,18 @@ export class PowerVisual {
       const p=wake.trail[i];c.strokeStyle=POWERS.wake.color;c.globalAlpha=(1-p.age/1.8)*(gentle?.2:.5);c.lineWidth=2;
       line(c,p.x-p.nx*18,p.y-p.ny*18,p.x+p.nx*12,p.y+p.ny*12);arrow(c,p.x+p.nx*12,p.y+p.ny*12,Math.atan2(p.ny,p.nx),6);
     }
-    const wrap = effectGet(game, 'wrap');
+    const edges=wrapEdges(game), wrap = edges.length ? effectGet(game, 'wrap') : null;
     const springCues = this.cues.filter(cue => cue.kind === 'spring'), springActive = !!effectGet(game, 'spring') && !wrap;
-    if (springActive || springCues.length) springWall(c, springCues, gentle, springActive);
+    if (!wrap && (springActive || springCues.length)) springWall(c, springCues, gentle, springActive);
     if (wrap) {
       const fade = Math.min(1, wrap.seconds / .5), inset = RULE.inset + 6;
       c.strokeStyle = POWERS.wrap.color; c.globalAlpha = (gentle ? .25 : .5) * fade; c.lineWidth = 2;
-      c.setLineDash([4, 16]); c.beginPath(); c.roundRect(inset, inset, RULE.width - inset * 2, RULE.height - inset * 2, 40); c.stroke(); c.setLineDash([]);
-      for (const [x, y, nx, ny] of [[inset, RULE.height / 2, -1, 0], [RULE.width - inset, RULE.height / 2, 1, 0], [RULE.width / 2, inset, 0, -1], [RULE.width / 2, RULE.height - inset, 0, 1]]) {
+      c.setLineDash([4, 16]); c.beginPath();
+      const right=RULE.width-inset,bottom=RULE.height-inset;
+      for(const [edge,x1,y1,x2,y2] of [['left',inset,inset,inset,bottom],['right',right,inset,right,bottom],['top',inset,inset,right,inset],['bottom',inset,bottom,right,bottom]])if(edges.includes(edge)){c.moveTo(x1,y1);c.lineTo(x2,y2);}
+      c.stroke(); c.setLineDash([]);
+      for (const [edge,x, y, nx, ny] of [['left',inset, RULE.height / 2, -1, 0], ['right',RULE.width - inset, RULE.height / 2, 1, 0], ['top',RULE.width / 2, inset, 0, -1], ['bottom',RULE.width / 2, RULE.height - inset, 0, 1]]) {
+        if(!edges.includes(edge))continue;
         const travel = gentle ? 12 : 8 + ((5 - wrap.seconds) * 24) % 20;
         c.globalAlpha = (gentle ? .45 : .85) * fade;
         for (let i = 0; i < 2; i++) arrow(c, x - nx * (travel + i * 12), y - ny * (travel + i * 12), Math.atan2(ny, nx), 8);

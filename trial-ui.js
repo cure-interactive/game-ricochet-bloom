@@ -1,5 +1,5 @@
 import { screenHeader } from './screen-header.js?v=b3d9b07c196b969e345063358159bcabb90c6ae99410d49934cf4b23eb185c73';
-import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=99e41d0b4b8898299b938a128fa13bfefa127190e72f8c9ab61461141c001004';
+import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=de6049bb34069fab51586b458261e703c6d6ddae40e03c47e951dd14eb27f726';
 import { songKeep } from './song.js?v=f967d4f585d3d5300be734f4ed6a4870e0de8c85450ff8f6bd9ad5fb49f1ae60';
 import { melodyDraw } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { experimentArt } from './experiment-art.js?v=3122a3a41bebb8d9124ce486b6eac7fcbcbee35a9041fcd15de114d423abc0a1';
@@ -7,11 +7,11 @@ import { experimentMount } from './experiment-ui.js?v=20bb3cd1d0446f538878a8cf4f
 import { experimentRewarded, experimentGoal, EXPERIMENT_RECIPES } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
 import { experimentRead, experimentFavourite, experimentSave, experimentWrite, experimentEmpty, experimentExport } from './experiment-store.js?v=46e3d9a9ca8fe076b8f7236c25ea854f8e95b89628f352cbe0ae41ec56c83a81';
 import { SCORE_BUDGETS, SCORE_DEFAULT, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
-import { scoreRead } from './score-attack-store.js?v=818806d3208b92737e856f74449dbd9f0421e26d62587d05493451302c7ca822';
+import { scoreRead } from './score-attack-store.js?v=d5b81c255f475f7c018ea424977b105c78f9408f33721ec25ebab6382ae32ec1';
 import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=1142334db4d9446b27b412cbc5ad6d9c93bebb7180ae6b645ebcc92c561dd824';
 import { trialRead,trialWrite } from './trial-store.js?v=24ceed76d9888cbd13210f5716988b7adb37492ad0ff3aa6b2157afccdeb98fa';
 import { earningAmount } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
-import { assetURL } from './asset.js?v=b3d67cd59b1fb1de0bb8b884bdbe9342d63123b048ea238da59ff590cd8dd959';
+import { assetURL } from './asset.js?v=deda6170fc62c1c44c600f1b5f142bcb0e1c1169ee70a860edd9e8cbe394e7d5';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 

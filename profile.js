@@ -1,5 +1,5 @@
 import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
-import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=2f0e783d4a74eaed9c0ed69f87836b6810e08fb2036ca409c2db691e094654ce';
+import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=b2330060a946840e4caf0bd604dd4001893829861e077d21e980d225f355dbf8';
 
 export const PROFILE_VERSION = 1;
 const integer = value => Number.isSafeInteger(value) && value >= 0;
@@ -176,7 +176,7 @@ export function profileCurrencyGrant(input, currency, amount, catalogue = CATALO
 }
 
 // A resolved loadout contains behavior selections, never mutable wallet/research.
-// Campaign research is automatically active. Only incompatible styles need a choice.
+// Campaign research is cumulative and automatically active.
 export function unlockedResolve(input, selections, catalogue = CATALOGUE) {
   const profile=profileValidate(input,catalogue);
   if(!profile||!unique(selections?.borrowed)||!unique(selections?.equipped))return rejected('invalid-profile');
@@ -187,7 +187,7 @@ export function unlockedResolve(input, selections, catalogue = CATALOGUE) {
   const equipped=[];
   for(const power of powers){
     const ids=Object.values(catalogue.nodes).filter(n=>n.power===power&&n.kind!=='base'&&available.has(n.id)).map(n=>n.id);
-    // Keep the selected style; a freshly researched conflicting style becomes selected by run.js.
+    // Retain stable ordering for saved equipment; current power upgrades have no conflicts.
     ids.sort((a,b)=>Number(selections.equipped.includes(b))-Number(selections.equipped.includes(a)));
     for(const id of ids)if(!catalogue.nodes[id].conflicts.some(other=>equipped.includes(other)))equipped.push(id);
   }

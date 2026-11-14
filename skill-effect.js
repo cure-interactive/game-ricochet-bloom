@@ -1,6 +1,6 @@
 import { liveBubbles } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
-import { waveFalloff, waveRadial } from './power-response.js?v=53b3f123d0f0c05341a1eb30cbf1c20f19b251c6a7e30ff0cc4921ddfff73338';
-import { POWER_TREES } from './power-tree.js?v=ae74203c23b7477ea0f5b45ee783af270b4c6d633d374a8cb8779f9077fc7919';
+import { waveFalloff, waveRadial } from './power-response.js?v=53825a2132c5ad509bdd8a251983587d3024f860edd302123036c23bc5fa89bd';
+import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
 
 // Resolved configuration belongs to physics; profile ownership stays outside it.
 export function buildValidate(build) {
@@ -13,26 +13,29 @@ export function skillFlags(state,power) {
 export function skillConfig(state,power) {
   const f=skillFlags(state,power),c={...f};
   switch(power) {
-    case 'magnet': Object.assign(c,{duration:f.legacy?2.4:f.foundation?3.2:2.4,reach:f.a?300:f.b?570:440,force:f.a?1750:f.b?950:1300});break;
-    case 'homing': Object.assign(c,{duration:f.foundation?5:3,reach:f.a?450:f.b?260:360,turn:f.a?2.2:f.b?4.8:3.4});break;
-    case 'bubble': Object.assign(c,{size:f.foundation?42:35,pressure:f.a?.65:f.b?1.4:1});break;
-    case 'stasis': Object.assign(c,{reach:f.foundation?440:300,speed:f.a?65:f.b?145:100,pressure:f.b?.55:1});break;
+    case 'magnet': Object.assign(c,{duration:f.legacy?2.4:f.foundation?3.2:2.4,reach:f.b?570:440,force:f.a?1750:1300});break;
+    case 'homing': Object.assign(c,{duration:f.foundation?5:3,reach:f.a?450:360,turn:f.b?4.8:3.4});break;
+    case 'bubble': Object.assign(c,{size:f.foundation?42:35,pressure:f.b?1.4:1,reaction:f.a?.65:1});break;
+    case 'stasis': Object.assign(c,{reach:f.foundation?440:300,speed:f.a?65:100,pressure:f.b?.55:1});break;
     case 'echo': Object.assign(c,{leash:f.b?70:f.legacy||f.foundation?48:f.a?32:14,seek:f.legacy||f.a,elastic:f.legacy||f.foundation});break;
-    case 'tether': Object.assign(c,{members:f.foundation?3:2,pull:f.a?360:240,spring:f.a?4.5:f.b?10:7});break;
-    case 'split': Object.assign(c,{count:f.foundation?2:1,fan:f.a?.95:f.b?.32:.65,duration:f.b?3.5:3});break;
-    case 'orbit': Object.assign(c,{count:f.foundation?2:1,duration:f.a?2.2:3,reach:f.a?20:f.b?60:35,turn:f.b?2.6:3.5});break;
+    case 'tether': Object.assign(c,{members:f.foundation?3:2,pull:f.a?360:240,spring:f.b?10:7});break;
+    case 'split': Object.assign(c,{count:f.foundation?2:1,fan:f.a?.95:.65,duration:f.b?3.5:3});break;
+    case 'orbit': Object.assign(c,{count:f.foundation?2:1,duration:f.a?2.2:3,reach:f.b?60:35,turn:3.5});break;
     case 'spring': case 'wake': case 'portal': case 'wrap': Object.assign(c,{duration:f.foundation?5:3});break;
-    case 'pulse': Object.assign(c,{count:f.foundation?3:2,beat:f.a?1:f.b?.5:.75,force:f.a?850:f.b?550:720});break;
+    case 'pulse': Object.assign(c,{count:f.foundation?3:2,beat:f.b?.5:.75,force:f.a?850:720});break;
     case 'lightning': case 'relay': Object.assign(c,{count:f.foundation?3:power==='relay'?1:2});break;
   }
   // These values also drive purchase comparisons; physics and UI share one owner.
   switch(power){
-    case 'ripple': case 'attract': case 'vortex': Object.assign(c,{reach:440*(f.foundation&&power!=='vortex'?1.2:1),force:640*(f.a?1.25:f.b?.85:1)});break;
+    case 'ripple': case 'attract': case 'vortex': Object.assign(c,{reach:440*((f.foundation&&power!=='vortex')||(power==='vortex'&&f.b)?1.2:1),force:640*(f.a?1.25:1)});break;
     case 'comet': Object.assign(c,{wallRetention:f.foundation?.99:.94,lateDrag:f.b?.5:1});break;
-    case 'impact': c.pushScale=f.a?1.35:f.b?.7:1;break;
+    case 'impact': c.pushScale=f.a?1.35:1;break;
     case 'spring': c.reboundScale=f.a?1.3:1;break;
-    case 'drunk': c.swayScale=f.a?.55:f.b?1.35:1;break;
-    case 'wake': Object.assign(c,{width:f.a?16:f.b?44:28,force:f.a?1450:f.b?700:1000});break;
+    case 'drunk': Object.assign(c,{swayScale:f.a?.55:1,swayPeriod:f.b?1.5:1});break;
+    case 'wake': Object.assign(c,{width:f.b?44:28,force:f.a?1450:1000});break;
+    case 'lightning': c.strength=f.b?1100:850;break;
+    case 'slingshot': c.speed=f.b?1200:1050;break;
+    case 'wrap': Object.assign(c,{departure:f.a?150:0,arrival:f.capstone?230:f.b?150:0,arrivalRadius:f.capstone?240:180});break;
     case 'portal': c.gateRadius=f.a?44:30;break;
     case 'relay': c.duration=f.b?7:5;break;
     case 'rewind': Object.assign(c,{memory:f.foundation?2:1,playbackRate:f.a?.5:1});break;
@@ -76,7 +79,7 @@ export function skillActivate(state,kind,body,events) {
   if(kind==='orbit')e.satellites=e.satellites.slice(0,c.count);
   if(kind==='relay'){e.remaining=c.count;if(c.b)e.seconds=7;}
   if(kind==='lightning') {
-    if(c.a||c.b) {const candidates=liveBubbles(state).filter(b=>b.id!==body.id&&!state.chain.includes(b.id));let chosen=[];while(chosen.length<c.count&&candidates.length){candidates.sort((a,b)=>{const dist=p=>Math.min(...(chosen.length?chosen:[body]).map(q=>Math.hypot(p.x-q.x,p.y-q.y)));return (c.a?-1:1)*(dist(a)-dist(b))||a.id-b.id;});chosen.push(candidates.shift());}if(chosen.length)e.targets=chosen.map(b=>b.id);}
+    if(c.a) {const candidates=liveBubbles(state).filter(b=>b.id!==body.id&&!state.chain.includes(b.id));let chosen=[];while(chosen.length<c.count&&candidates.length){candidates.sort((a,b)=>{const dist=p=>Math.min(...(chosen.length?chosen:[body]).map(q=>Math.hypot(p.x-q.x,p.y-q.y)));return (c.a?-1:1)*(dist(a)-dist(b))||a.id-b.id;});chosen.push(candidates.shift());}if(chosen.length)e.targets=chosen.map(b=>b.id);}
     e.targets=e.targets.slice(0,c.count);if(c.capstone)v.charged=e.targets[0]??null;
   }
   if(kind==='pulse'){e.remaining=c.count;e.next=(c.count-1)*c.beat;e.seconds=e.next+.01;}
@@ -117,7 +120,7 @@ export function skillTeleport(state,fromX,fromY,x,y,kind) {
   if(!state.build)return;
   state.skillState.teleport++;state.skillState.vortex=null;
   if(kind==='swap'&&skillFlags(state,kind).capstone)pressure(state,fromX,fromY,220,200);
-  if(kind==='wrap'&&skillFlags(state,kind).capstone)pressure(state,x,y,180,150);
+  if(kind==='wrap'){const c=skillConfig(state,kind);if(c.departure)pressure(state,fromX,fromY,180,c.departure);if(c.arrival)pressure(state,x,y,c.arrivalRadius,c.arrival);}
 }
 export function skillStep(state,dt,events) {
   if(!state.build||!state.isFlying)return;
@@ -125,7 +128,7 @@ export function skillStep(state,dt,events) {
   // The power window can expire before the player finishes coasting.
   v.total=Math.min(32,v.total+dt);
   for(const d of v.delayed){d.seconds-=dt;if(d.seconds<=0){pressure(state,d.x,d.y,d.radius,230,d.kind);events.push({type:'skill-wave',x:d.x,y:d.y});}}v.delayed=v.delayed.filter(d=>d.seconds>0);
-  if(v.vortex){const e=v.vortex,c=skillFlags(state,'vortex');e.seconds-=dt;if(c.capstone){e.x+=(seed.x-e.x)*Math.min(1,dt*5);e.y+=(seed.y-e.y)*Math.min(1,dt*5);}pressure(state,e.x,e.y,440,160*dt,'vortex',c);if(e.seconds<=0)v.vortex=null;}
+  if(v.vortex){const e=v.vortex,c=skillConfig(state,'vortex');e.seconds-=dt;if(c.capstone){e.x+=(seed.x-e.x)*Math.min(1,dt*5);e.y+=(seed.y-e.y)*Math.min(1,dt*5);}pressure(state,e.x,e.y,c.reach,c.force*.25*dt,'vortex',c);if(e.seconds<=0)v.vortex=null;}
   const portal=effect(state,'portal');if(portal&&skillFlags(state,'portal').capstone)for(const g of portal.gates)pressure(state,g.x,g.y,145,180*dt);
   const split=effect(state,'split');if(split&&skillFlags(state,'split').capstone&&split.seconds<.5)for(const b of split.shards){const d=Math.max(1,Math.hypot(seed.x-b.x,seed.y-b.y));b.vx+=(seed.x-b.x)/d*900*dt;b.vy+=(seed.y-b.y)/d*900*dt;limit(b);}
   if(effect(state,'drunk')&&skillFlags(state,'drunk').capstone)for(const b of liveBubbles(state).filter(b=>!state.chain.includes(b.id)&&Math.hypot(b.x-seed.x,b.y-seed.y)<230).slice(0,3)){const speed=Math.max(1,Math.hypot(seed.vx,seed.vy)),f=Math.sin(state.tick*dt*Math.PI*2/.75)*180*dt;b.vx-=seed.vy/speed*f;b.vy+=seed.vx/speed*f;limit(b);}

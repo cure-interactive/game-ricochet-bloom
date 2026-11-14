@@ -1,5 +1,5 @@
-import { skillConfig } from './skill-effect.js?v=90a3e793542c39e354a665bbb96ae2105915367ee5f12c1f1a291426e0b632fb';
-import { DRUNK_SECONDS, waveFalloff, waveRadial, overlapResponse, magnetResponse, drunkSway } from './power-response.js?v=53b3f123d0f0c05341a1eb30cbf1c20f19b251c6a7e30ff0cc4921ddfff73338';
+import { skillConfig } from './skill-effect.js?v=b5d23aae0cfa214b54af02d69a6757f09caf11297ba245a50bf8b94dbdd4b93e';
+import { DRUNK_SECONDS, waveFalloff, waveRadial, overlapResponse, magnetResponse, drunkSway } from './power-response.js?v=53825a2132c5ad509bdd8a251983587d3024f860edd302123036c23bc5fa89bd';
 
 // One explanatory graph per power, replacing only the relevant stat's meter.
 // Axes describe inputs and responses, never an upgrade score or a predicted route.
@@ -7,10 +7,10 @@ function specification(power) {
  const distance={xLabel:'Distance From Center',xMax:528,xEnd:'528',yMin:0,yMax:125,yLabel:'Strength (% of Base)',note:'Distance in pool units; strength before the speed cap.'};
  switch(power){
  case 'ripple':return {...distance,label:'Falloff',yLabel:'Outward Push (% of Base)'};
- case 'attract':return {...distance,label:'Gathering Shape',yMin:-125,yLabel:'Out + / In − (% of Base)',note:'Example: a bubble of radius 24. Tight Group stops pulling near its center; Loose Ring reverses direction.'};
- case 'vortex':return {...distance,label:'Swirl Strength',yLabel:'Swirl (% of Base)',note:'Tangential push with distance; inward/outward drift is separate.'};
+ case 'attract':return {...distance,label:'Gathering Shape',yMin:-125,yLabel:'Out + / In − (% of Base)',note:'Example: a bubble of radius 24. Tight Group stops pulling near its center; Distant Gathering sustains inward pull farther out.'};
+ case 'vortex':return {...distance,label:'Swirl Strength',yLabel:'Swirl (% of Base)',note:'Tangential push with distance; inward drift is separate.'};
  case 'magnet':return {...distance,label:'Pull Strength',xMax:570,xEnd:'570',yMax:140,yLabel:'Pull (% of Base)',note:'Unhit bubble, radius 24; player radius 14. Pull stops on overlap and outside reach.'};
- case 'bubble':return {label:'Pressure',xLabel:'Shell Overlap',xMax:1,xEnd:'100%',yMin:0,yMax:140,yLabel:'Bubble Push (% of Base)',note:'Deeper overlap pushes harder. Without Impact; the player receives an 18% reaction.'};
+ case 'bubble':return {label:'Pressure',xLabel:'Shell Overlap',xMax:1,xEnd:'100%',yMin:0,yMax:140,yLabel:'Bubble Push (% of Base)',note:'Deeper overlap pushes harder. Without Impact; the player reaction is shown separately.'};
  case 'stasis':return {label:'Player Pressure',xLabel:'Overlap With Frozen Bubble',xMax:1,xEnd:'100%',yMin:0,yMax:100,yLabel:'Pressure (% of Base)',note:'After the frozen bubble is hit. Lower pressure bends your path less; speed is preserved.'};
  case 'tether':return {label:'Playerward Pull',xLabel:'Gap From Player Surface',xMax:240,xEnd:'240',yMin:0,yMax:150,yLabel:'Pull (% of Base)',note:'Gap in pool units. Pull eases in, then levels off at a gap of 180.'};
  case 'drunk':return {label:'Sway Width',xLabel:'Time Since Activation',xMax:DRUNK_SECONDS,xEnd:DRUNK_SECONDS+' s',yMin:-70,yMax:70,yLabel:'Heading Offset (°)',note:'Side-to-side heading offset, not a predicted flight path. Speed stays unchanged.'};
@@ -33,7 +33,7 @@ export function skillCurveValue(power,c,x){
 export function skillCurve(power,beforeBuild,afterBuild,labels={before:'Current',after:'With Upgrade'}){
  const spec=specification(power);if(!spec)return null;
  const after=skillConfig({build:afterBuild},power),before=beforeBuild?.some(p=>p.power===power)?skillConfig({build:beforeBuild},power):null;
- // Include both sides of discontinuities instead of rounding a ring reversal or range cutoff.
+ // Include both sides of discontinuities instead of rounding an inner spacing gap or range cutoff.
  const xs=new Set(Array.from({length:161},(_,i)=>i/160*spec.xMax));
  for(const c of [before,after].filter(Boolean))for(const x of [c.reach,c.reach*.48,54,38,180])if(x>0&&x<=spec.xMax){xs.add(x);xs.add(Math.max(0,x-.0001));xs.add(Math.min(spec.xMax,x+.0001));}
  const sample=c=>[...xs].sort((a,b)=>a-b).map(x=>[x,skillCurveValue(power,c,x)]);
