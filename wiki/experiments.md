@@ -13,26 +13,24 @@ Press the star at the top-right of a game card to add it to **Favourites** witho
 The 210 catalogue ideas use 18 categories for browsing and related simulation code. Categories are not playable replacements for their individual gamemodes. Coverage below is generated from the actual registry; the full implementation is still in progress.
 
 <!-- BEGIN MODE COVERAGE -->
-| Category | Implemented Catalogue Ideas | Difficulty Levels Used by Its Gamemodes |
-| --- | --- | --- |
-| Trick Shots | 10/10 | First Line · Bank and Bend · The Final Pocket |
-| Reaction Puzzle | 1/20 | First Spark · Firebreak · Chain of Islands |
-| Cargo Rescue | 1/10 | Open Water · Narrow Passage · The Long Way |
-| Outbreak Containment | 1/10 | First Response · Crossfire · Quarantine |
-| Pressure Survival | 0/10 — In Development | Planned: Breathing Room · Closing In · Last Refuge |
-| Pool Engineer | 0/20 — In Development | Planned: Open Channel · Crossed Paths · The Switchyard |
-| Score Attack | 1/10 | Planned: Clean Break · Risk and Reward · High Stakes |
-| Power Expedition | 0/10 — In Development | Planned: First Choice · Trade-Off · Final Build |
-| Melody Trials | 10/10 | First Phrase · Two Voices · Full Arrangement |
-| Memory Pool | 0/10 — In Development | Planned: Remember Three · Hidden Route · Final Deduction |
-| Living Pool | 0/20 — In Development | Planned: One Cell · Shared Resources · The Whole Organ |
-| Pool Adventures | 0/10 — In Development | Planned: The Entrance · The Detour · The Escape |
-| Pool Duel | 0/10 — In Development | Planned: First Round · Contested Ground · The Decider |
-| Together | 0/10 — In Development | Planned: Meet in the Middle · Separate Roles · One Last Chance |
-| Pool Workshop | 0/10 — In Development | Planned: First Creation · Working System · The Showcase |
-| Capture and Release | 1/10 | Around the Wall · Lower Passage · The Return |
-| Split and Merge | 0/10 — In Development | Planned: Two Halves · Unequal Shares · Exact Balance |
-| Source Works | 0/10 — In Development | Planned: First Output · Supply Chain · The Factory |
+- **Trick Shots:** 10/10 catalogue ideas implemented. Difficulty levels: First Line · Bank and Bend · The Final Pocket.
+- **Reaction Puzzle:** 1/20 catalogue ideas implemented. Difficulty levels: First Spark · Firebreak · Chain of Islands.
+- **Cargo Rescue:** 1/10 catalogue ideas implemented. Difficulty levels: Open Water · Narrow Passage · The Long Way.
+- **Outbreak Containment:** 1/10 catalogue ideas implemented. Difficulty levels: First Response · Crossfire · Quarantine.
+- **Pressure Survival:** 0/10 catalogue ideas implemented — In Development. Planned levels: Breathing Room · Closing In · Last Refuge.
+- **Pool Engineer:** 0/20 catalogue ideas implemented — In Development. Planned levels: Open Channel · Crossed Paths · The Switchyard.
+- **Score Attack:** 1/10 catalogue ideas implemented. Planned levels: Clean Break · Risk and Reward · High Stakes.
+- **Power Expedition:** 0/10 catalogue ideas implemented — In Development. Planned levels: First Choice · Trade-Off · Final Build.
+- **Melody Trials:** 10/10 catalogue ideas implemented. Difficulty levels: First Phrase · Two Voices · Full Arrangement.
+- **Memory Pool:** 0/10 catalogue ideas implemented — In Development. Planned levels: Remember Three · Hidden Route · Final Deduction.
+- **Living Pool:** 0/20 catalogue ideas implemented — In Development. Planned levels: One Cell · Shared Resources · The Whole Organ.
+- **Pool Adventures:** 0/10 catalogue ideas implemented — In Development. Planned levels: The Entrance · The Detour · The Escape.
+- **Pool Duel:** 0/10 catalogue ideas implemented — In Development. Planned levels: First Round · Contested Ground · The Decider.
+- **Together:** 0/10 catalogue ideas implemented — In Development. Planned levels: Meet in the Middle · Separate Roles · One Last Chance.
+- **Pool Workshop:** 0/10 catalogue ideas implemented — In Development. Planned levels: First Creation · Working System · The Showcase.
+- **Capture and Release:** 1/10 catalogue ideas implemented. Difficulty levels: Around the Wall · Lower Passage · The Return.
+- **Split and Merge:** 0/10 catalogue ideas implemented — In Development. Planned levels: Two Halves · Unequal Shares · Exact Balance.
+- **Source Works:** 0/10 catalogue ideas implemented — In Development. Planned levels: First Output · Supply Chain · The Factory.
 <!-- END MODE COVERAGE -->
 
 **Challenge Library** is an optional searchable index, not a required step before playing. Browse the illustrated mode overview or search all 210 ideas and the three original rule sets. Filter by gamemode, kind, implementation or local playtest verdict. Every challenge has a graphic thumbnail. Proposed challenges have descriptions and notes but no Start button.
@@ -146,3 +144,5 @@ Ricochet Bloom's authored trial engine, experiment catalogue, setup rules and no
 #### Codex on behalf of `leviscustempris`
 
 Implemented and documented the experiment hub, stable catalogue IDs, versioned setups, notebook, controlled variations and capture prototype. Human playtest verdicts remain separate from automated verification.
+
+See [Medals](medals.md) for every gamemode and level’s conditions.

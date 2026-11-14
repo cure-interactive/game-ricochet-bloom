@@ -24,13 +24,11 @@ Standard runs give six shots per pool; Relaxed gives eight. The first bloom adds
 
 All 25 levels have these targets for their respective pool:
 
-| Pool | Bronze | Silver | Gold |
-| --- | ---: | ---: | ---: |
-| Intro | 875 | 1,100 | 1,400 |
-| Verse | 875 | 1,250 | 1,600 |
-| Build | 1,750 | 2,500 | 3,500 |
-| Bridge | 900 | 1,250 | 1,600 |
-| Finale | 1,750 | 2,750 | 4,000 |
+- **Intro pool:** Bronze 875, Silver 1,100, Gold 1,400.
+- **Verse pool:** Bronze 875, Silver 1,250, Gold 1,600.
+- **Build pool:** Bronze 1,750, Silver 2,500, Gold 3,500.
+- **Bridge pool:** Bronze 900, Silver 1,250, Gold 1,600.
+- **Finale pool:** Bronze 1,750, Silver 2,750, Gold 4,000.
 
 You must also clear the pool's gameplay goal to earn a medal. The full final shot counts before the result is graded, including a successful last available shot. The HUD shows targets during play; the selected level shows its best score and medal. Best results are separate for Standard and Relaxed. Fewer shots break an equal-score tie. Older saves retain their progress and songs, but their track totals cannot reconstruct individual level scores; those levels show “not recorded yet” until cleared again.
 
@@ -61,3 +59,5 @@ Ricochet Bloom gameplay, campaign, progression and audio source in this release.
 #### Codex on behalf of `leviscustempris`
 
 Authored and checked against the game implementation.
+
+See [Medals](medals.md) for every gamemode and level’s conditions.

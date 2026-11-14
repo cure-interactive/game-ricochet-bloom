@@ -1,11 +1,11 @@
 import { screenHeader } from './screen-header.js?v=b3d9b07c196b969e345063358159bcabb90c6ae99410d49934cf4b23eb185c73';
-import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=e28b6fa5b5100d62c591045297ddfc2c2219e5ce60b484825645f5c5d54230a7';
+import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=e93fd54ee183fc2aa767a012a26ce4e7a8dbf342a83ff7913f1ee71c549621f6';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=8efba758bbbd1a91a91bb2cb7d4e66e7f6ef8fa9bde74d02c3d20ae37751d604';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=ff294c0970fbafb90543291b5f25add2a14cf7c86c35d1df61a8b8b1e7f9648a';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
 import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
 import { profilePurchase, profileSummary } from './profile.js?v=89e8220f13dad09da78c045746c499d1a094fcfef7517e021b1a49b6cea6dc7e';
-import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=0038d8de80ab8d3d62548b4a9cc4763c03dfc5b6815cf6dae7476ed2784424e7';
+import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=b47c3f885b07c46836252a6c8cfafb49f104739e6df184495226908f5faeb0f9';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 
 const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

@@ -1,17 +1,19 @@
+import { medalIcon } from './medal-ui.js?v=d767dcf801cfcc722a56d973f16e4175256525e7f4f6abe74e23e90a80e665f5';
+
 import { earningPrepare, earningId } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
 import { profilePlayReward, profileDevelopmentCopy } from './profile.js?v=89e8220f13dad09da78c045746c499d1a094fcfef7517e021b1a49b6cea6dc7e';
 import { developmentBarMount } from './development-bar.js?v=d84fcd8317a618eac245db4fa7d1668c4765e91de14d0b7cff8751039b176ec6';
 import { titleCase } from './ui-text.js?v=2c84fa9359b3450499aad40d6bf02d804236b14edac3b33e3e2738480818319a';
-import { campaignMount } from './campaign-ui.js?v=96c9464a6a840d869c6fc683075d5e5cbbc79fad0982dd4759f3746d122ff212';
-import { challengeEncode, challengeDecode } from './challenge.js?v=d9f35d5ab9d20f62de182145b0546c9dbc327e7e0b2bf5ee07fbdbc881c61d7f';
+import { campaignMount } from './campaign-ui.js?v=6bb630f835fc63df7fee51b1dea2574d2eec9b7fc1af1e890eeb2997469309aa';
+import { challengeEncode, challengeDecode } from './challenge.js?v=0ce27519af15d43d3b7bcbc1c3928907d5f7d94410cffdc364e6e6b53ce9046f';
 import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=0038d8de80ab8d3d62548b4a9cc4763c03dfc5b6815cf6dae7476ed2784424e7';
-import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=2152e401eb3d46629b2ca0288004d2c0e79ebbddc879fb85194a0bba64da8358';
-import { gameCreate } from './engine.js?v=9983b6710a023e8374d73e263273735a24ef836bdb93fbcd94384a4710e9d3bd';
-import { treeMount } from './tree-ui.js?v=de1d395e346e2570840ee03cd7769a279f5d15b1d7b46893360005291b7349cb';
+import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=b47c3f885b07c46836252a6c8cfafb49f104739e6df184495226908f5faeb0f9';
+import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=024e2a696188befb0136073239aa6f1d94acc65b789c17da557731f070bd9b22';
+import { gameCreate } from './engine.js?v=eba9789151dfd115dde6337ef3ba1ae79a36e123a8be36be33cc37bf33b1b121';
+import { treeMount } from './tree-ui.js?v=903d41af1c17d7b9af58cddc74a6153eedf57efbe3acf38913fc882f1fa0d923';
 import { iconHTML } from './ui-icon.js?v=6eefd3a5e72d754fea063666baf3166c1c88b5e72db4ab97072da15565143b81';
 const button=(id,label,icon='play')=>`<button id="${id}" type="button">${iconHTML(icon)}<span>${label}</span></button>`;
-import { skinMount } from './skin-ui.js?v=769ae3a04faa610c7ee9e234201e1303b2c5d6481a517d6d793007d87c886081';
+import { skinMount } from './skin-ui.js?v=8c012764d0aa3fa5737b697318072ba901d3fea9b358116d70c64cc732935ac2';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;
@@ -151,7 +153,8 @@ export function progressionMount(host){
         if(r.record?.music)host.runMusic?.(r.record.music);
         $('run-result-title').textContent=titleCase(shared?'Shared Challenge · '+r.message:r.message);
         $('run-result-copy').textContent=r.outcome==='clear'?`Next: ${POOL_NAMES[state.pool+1]}. Your song continues with the powers and upgrades already active.`:r.outcome==='victory'?`Track award: ${r.record.medal} · ${r.record.launches} plucks · ${r.record.bonuses}/5 bonuses. Song saved in ${CAMPAIGN_NAME}.`:'Your unfinished song is saved. Retry the track or unlock more powers before your next attempt.';
-        if(r.poolResult){const p=r.poolResult,medal=poolMedal(p.pool,p.score);$('run-result-copy').textContent=`${POOL_NAMES[p.pool]} · ${medal||'Completed'} · ${p.score.toLocaleString('en-US')} Score · ${p.shots} ${p.shots===1?'shot':'shots'}. `+$('run-result-copy').textContent;}
+        $('run-result-title').querySelector('.medal-icon')?.remove();
+        if(r.poolResult){const p=r.poolResult,medal=poolMedal(p.pool,p.score);$('run-result-title').insertAdjacentHTML('afterbegin',medalIcon(medal));$('run-result-copy').textContent=`${POOL_NAMES[p.pool]} · ${medal||'Completed'} · ${p.score.toLocaleString('en-US')} Score · ${p.shots} ${p.shots===1?'shot':'shots'}. `+$('run-result-copy').textContent;}
         $('run-listen').hidden=!r.record?.music;$('run-retry').hidden=r.outcome!=='failure'||!!shared;
         $('run-next').lastElementChild.textContent='Continue to '+POOL_NAMES[state.pool+1];
         const won=r.outcome==='victory'&&!shared;$('run-next').hidden=r.outcome!=='clear';$('run-destination').classList.add('primary');$('run-next').classList.add('primary');$('run-skin').hidden=!won;$('run-destination').hidden=!won;

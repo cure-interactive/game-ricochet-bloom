@@ -1,0 +1,15 @@
+.medal-icon{width:32px;height:40px;object-fit:contain;flex:0 0 auto;vertical-align:middle;filter:drop-shadow(0 2px 3px #0006)}
+.medal-badge{display:inline-flex;align-items:center;gap:.4rem;vertical-align:middle}
+.medal-conditions{list-style:none;margin:.7rem 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem}
+.medal-conditions li{display:flex;align-items:center;gap:.55rem;min-width:0;padding:.65rem;border:1px solid #ffffff1a;border-radius:12px;background:#09152399;color:#e6edf6}
+.medal-conditions strong,.medal-conditions small{display:block}
+.medal-conditions small{font-size:.78rem;line-height:1.4;color:#becbd8;margin-top:.2rem}
+.medal-conditions .is-reached{border-color:#ace8a96b;background:#12362988}
+.hud-medals .medal-icon{width:20px;height:24px;margin-right:.2rem}
+.hud-medals [data-medal]{display:inline-flex;align-items:center;gap:.2rem}
+.trial-medal-details{margin:.35rem 0 .65rem}.trial-medal-details summary{cursor:pointer;color:#cedced;font-size:.85rem}
+.trial-medal-details p{font-size:.8rem;margin:.35rem 0}
+.pool-medal-targets .medal-conditions{width:100%}
+@media(max-width:540px){.medal-conditions{grid-template-columns:1fr;gap:.35rem}.medal-conditions li{padding:.45rem .65rem}.medal-conditions .medal-icon{width:27px;height:33px}.medal-conditions small{margin-top:0}}
+
+.wave-medal-summary{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;max-height:120px;overflow:auto;font-size:.8rem}.wave-medal-summary .medal-icon{width:20px;height:24px}

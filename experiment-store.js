@@ -1,7 +1,8 @@
+import { trialEvidence, trialMedal, medalEvidenceValid, medalRank } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { experimentValidate, experimentKey, EXPERIMENT_VERDICTS } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
 import { EXPERIMENT_CATALOGUE } from './experiment-catalogue.js?v=46fd868b7899d3825edca249ee222d0822e27a53f260e03d7069491bca53ea1e';
 import { trialValidate } from './trial.js?v=1142334db4d9446b27b412cbc5ad6d9c93bebb7180ae6b645ebcc92c561dd824';
-import { trialRead } from './trial-store.js?v=24ceed76d9888cbd13210f5716988b7adb37492ad0ff3aa6b2157afccdeb98fa';
+import { trialRead } from './trial-store.js?v=bd2acb3da3f6a1c42fc53da9e5191dafb3cacfb11142f16ba9063a137bee9449';
 const ids=new Set([...EXPERIMENT_CATALOGUE.map(e=>e.id),'reaction','cargo','outbreak']);
 const favouriteIds=new Set([...ids,'campaign','free','waves','challenge']);
 export const experimentStoreKey=kind=>`ricochet-bloom-experiments-v1-${kind}`;
@@ -20,12 +21,13 @@ export function experimentLibraryValidate(value,kind){
     const keys=new Set();
     for(const entry of v.saves){const g=trialValidate(entry.game);if(!g?.setup||g.kind!==kind||entry.key!==experimentKey(g.setup)||keys.has(entry.key))return null;keys.add(entry.key);entry.game=g;}
     const runs=new Set();
-    for(const r of v.results){if(!experimentValidate(r.setup)||!text(r.id,80)||!r.id||runs.has(r.id)||!['won','lost'].includes(r.outcome)||!Number.isInteger(r.shots)||r.shots<0||r.shots>r.setup.settings.shots||!Number.isSafeInteger(r.at)||r.at<0||r.reason!==undefined&&!text(r.reason,150))return null;runs.add(r.id);}
+    for(const r of v.results){if(!experimentValidate(r.setup)||!text(r.id,80)||!r.id||runs.has(r.id)||!['won','lost'].includes(r.outcome)||!Number.isInteger(r.shots)||r.shots<0||r.shots>r.setup.settings.shots||!Number.isSafeInteger(r.at)||r.at<0||r.reason!==undefined&&!text(r.reason,150))return null;if(r.medalEvidence!==undefined&&(!medalEvidenceValid(r.medalEvidence)||r.medalEvidence.complete!==Number(r.outcome==='won')||r.medalEvidence.shots!==r.shots))return null;runs.add(r.id);}
     // Initial notebooks had only recent results. Promote those once without
     // inventing outcomes; future writes retain totals beyond the history window.
     if(v.records===undefined){v.records=[];for(const r of v.results)record(v,r);}
     if(!Array.isArray(v.records)||v.records.length>2000||new Set(v.records.map(r=>r.key)).size!==v.records.length)return null;
     for(const r of v.records)if(!experimentValidate(r.setup)||r.key!==experimentKey(r.setup)||!Number.isSafeInteger(r.attempts)||r.attempts<1||!Number.isSafeInteger(r.wins)||r.wins<0||r.wins>r.attempts||(r.wins===0?r.best!==null:!Number.isInteger(r.best)||r.best<1||r.best>r.setup.settings.shots))return null;
+    for(const r of v.records)if(r.medalEvidence!==undefined&&(!medalEvidenceValid(r.medalEvidence)||!r.medalEvidence.complete||r.medalEvidence.shots>r.setup.settings.shots||!r.wins))return null;
     const reviewed=new Set();
     for(const r of v.reviews){if(!ids.has(r.id)||reviewed.has(r.id)||!EXPERIMENT_VERDICTS.includes(r.verdict)||!text(r.note,2000)||!Number.isSafeInteger(r.at)||r.at<0)return null;reviewed.add(r.id);}
     return v;
@@ -54,16 +56,18 @@ export function experimentSave(library,game,music,at=Date.now()){
   next.saves=next.saves.filter(s=>s.key!==key);
   if(next.saves.length>=64){const i=next.saves.findIndex(s=>['won','lost'].includes(s.game.phase));if(i<0)throw Error('64 unfinished setups: finish a run or export and reset the notebook.');next.saves.splice(i,1);}
   next.saves.push(entry);
-  if(['won','lost'].includes(game.phase)&&!alreadyComplete&&!next.results.some(r=>r.id===game.id)){const result={id:game.id,setup:structuredClone(game.setup),outcome:game.phase,reason:game.reason,shots:game.shots,at};next.results.push(result);record(next,result);}
+  if(['won','lost'].includes(game.phase)&&!alreadyComplete&&!next.results.some(r=>r.id===game.id)){const result={id:game.id,setup:structuredClone(game.setup),outcome:game.phase,reason:game.reason,shots:game.shots,medalEvidence:trialEvidence(game),at};next.results.push(result);record(next,result);}
+  if(game.phase==='won'){const r=next.records.find(r=>r.key===key),e=trialEvidence(game);if(r&&medalRank(trialMedal(game.setup,e))>medalRank(r.medalEvidence?trialMedal(r.setup,r.medalEvidence):null))r.medalEvidence=e;}
   next.results=next.results.slice(-200);return next;
 }
 export function experimentBest(library,setup){
   const r=library.records.find(r=>r.key===experimentKey(setup));return r?{attempts:r.attempts,wins:r.wins,best:r.best}:{attempts:0,wins:0,best:null};
 }
+export function experimentMedal(library,setup){const r=library.records.find(r=>r.key===experimentKey(setup));return r?.medalEvidence?trialMedal(setup,r.medalEvidence):null;}
 function record(library,result){
   const key=experimentKey(result.setup);let r=library.records.find(r=>r.key===key);
   if(!r){r={key,setup:structuredClone(result.setup),attempts:0,wins:0,best:null};library.records.push(r);}
-  r.attempts++;if(result.outcome==='won'){r.wins++;r.best=Math.min(r.best??Infinity,result.shots);}
+  r.attempts++;if(result.outcome==='won'){r.wins++;r.best=Math.min(r.best??Infinity,result.shots);if(result.medalEvidence&&medalRank(trialMedal(r.setup,result.medalEvidence))>medalRank(r.medalEvidence?trialMedal(r.setup,r.medalEvidence):null))r.medalEvidence=structuredClone(result.medalEvidence);}
 }
 // Older saves remain in their original keys and retain their version-one physics.
 export const experimentLegacy=(storage,kind)=>['reaction','cargo','outbreak'].map(mode=>({mode,...trialRead(storage,kind,mode)}));

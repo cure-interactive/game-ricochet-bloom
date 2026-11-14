@@ -4,6 +4,8 @@ Explore game modes, grow your powers, and chase your next goal. Choose a topic b
 
 ## Play
 
+- [Medals](medals.md) — Bronze, Silver and Gold conditions for every playable mode and level.
+
 - [Score Attack](score-attack.md) — 5, 10 or 15 shots, personal bests and score medals.
 
 - [Play the Experiments](experiments.md) — families, configurable trials, capture, results and the 210-idea catalogue.
@@ -23,7 +25,7 @@ Explore game modes, grow your powers, and chase your next goal. Choose a topic b
 
 ## Development Workshop
 
-These pages preserve the workshop and playtest questions. Three bounded experiments are now playable; the broader ideas remain proposals.
+These pages preserve the workshop and playtest questions. The playable experiments have authored levels and medal conditions; the broader ideas remain proposals.
 
 - [Development Concept](development-concept.md) — bubble and cellular mind map, emergent interactions, and research from other games.
 - [Game Modes to Try](game-modes.md) — trial design briefs, reserve ideas and playtest questions.

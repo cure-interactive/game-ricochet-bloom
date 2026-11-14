@@ -2,6 +2,18 @@
 
 [Wiki Overview](wiki.md)
 
+## Medals
+
+- [Medals and Every Level’s Conditions](medals.md)
+- [Earning and Keeping Medals](medals.md#earning-and-keeping-medals)
+- [Melody Journey Medal Conditions](medals.md#melody-journey)
+- [Score Attack Medal Conditions](medals.md#score-attack)
+- [Challenge Medal Conditions](medals.md#challenge)
+- [Free Play Medal Conditions](medals.md#free-play)
+- [Endless Waves Medal Conditions](medals.md#endless-waves)
+- [Experiment Level Medal Conditions](medals.md#experiment-levels)
+- [Ideas in Development](medals.md#ideas-in-development)
+
 ## How to Play
 
 - [How to Play](how-to-play.md)

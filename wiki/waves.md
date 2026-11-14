@@ -27,3 +27,5 @@ Your score and evolving song continue between waves. Melody Journey, Free Play a
 The game saves your wave, remaining bubbles, moves, current flight and musical memory. When Waves was last played, Continue identifies the saved wave and its remaining shots. The Endless Waves button resumes an unfinished wave run; after a game over it starts a new one.
 
 The results screen shows the highest wave reached and best score saved in this browser. These are local records, not an online leaderboard.
+
+See [Medals](medals.md) for every gamemode and level’s conditions.

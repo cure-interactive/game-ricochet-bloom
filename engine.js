@@ -688,7 +688,7 @@ export function physicsStep(state) {
     state.lastShot={notes:state.chain.length,banks:state.banks,points:state.shotStart===null?null:state.score-state.shotStart,powers:state.power.used,bloom:successful,objective:state.objective.earned};
     if(state.objective.earned&&state.mode!=='song-run')state.objective.index++;
     events.push({ type: 'power-streak', successful, capacity: state.power.capacity, previousCapacity });
-    if(state.mode==='waves'&&!liveBubbles(state).length){state.isOver=false;const points=250+state.plucks*100;state.score+=points;events.push({type:'wave-clear',number:state.wave.number,points,x:seed.x,y:seed.y});waveAdvance(state,events);}
+    if(state.mode==='waves'&&!liveBubbles(state).length){state.isOver=false;const points=250+state.plucks*100;state.score+=points;events.push({type:'wave-clear',number:state.wave.number,shots:5-state.plucks,points,x:seed.x,y:seed.y});waveAdvance(state,events);}
     else events.push({ type: gameWon(state) ? 'win' : state.isOver ? 'over' : 'rest', chain: state.chain.length });
   }
   return events;
