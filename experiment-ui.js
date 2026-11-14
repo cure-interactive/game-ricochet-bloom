@@ -1,13 +1,13 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { experimentMedal } from './experiment-store.js?v=21abe314b92929e1fee78f66ea7f254a29bb198d8dca3b496a43ce0802920eb0';
-import { medalConditionsHTML } from './medal-ui.js?v=e42ceb7e910836840823bc95f1a1b941bc0a67e9fca8e194f7fac697a662775f';
+import { experimentMedal } from './experiment-store.js?v=218363fa0a9e14c62261cda9b5068f3603a57a699adb96c3fe166aad06603baa';
+import { medalConditionsHTML } from './medal-ui.js?v=2de85a5d119ff2e038d0f73f7f0bfba8de0fd0bc7f8fcb706c93de67d9e12122';
 import { trialConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { melodyStages } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { EXPERIMENT_MODES, DIFFICULTIES, experimentMode } from './experiment-mode.js?v=8691672ebafa0ee909e0adfbe1058bb7a29634ac3aef011c8c8a34ad0b9eb1bf';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { EXPERIMENT_CATALOGUE, EXPERIMENT_FAMILIES } from './experiment-catalogue.js?v=46fd868b7899d3825edca249ee222d0822e27a53f260e03d7069491bca53ea1e';
 import { EXPERIMENT_RECIPES, EXPERIMENT_DESTINATIONS, EXPERIMENT_PRESETS, EXPERIMENT_VERDICTS, experimentSetup, experimentKey, experimentOptions, experimentGoal, experimentRewarded } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { experimentRead, experimentFavourite, experimentWrite, experimentBest, experimentExport, experimentImport, experimentLegacy, experimentStoreKey, experimentEmpty } from './experiment-store.js?v=21abe314b92929e1fee78f66ea7f254a29bb198d8dca3b496a43ce0802920eb0';
+import { experimentRead, experimentFavourite, experimentWrite, experimentBest, experimentExport, experimentImport, experimentLegacy, experimentStoreKey, experimentEmpty } from './experiment-store.js?v=218363fa0a9e14c62261cda9b5068f3603a57a699adb96c3fe166aad06603baa';
 import { TRIAL_MODES, trialCreate } from './trial.js?v=78629f1adb03a46502ce6c7c856e1fba00434d29e18d851f58925af761770f62';
 const label=s=>s.replaceAll('-',' ').replace(/\b\w/g,c=>c.toUpperCase());
 const entries=[...['reaction','cargo','outbreak'].map(id=>({id,...EXPERIMENT_RECIPES[id],kind:'core-mode',mechanics:{reaction:['hazard','chain','cell'],cargo:['cargo','wall'],outbreak:['vent','cell','turn']}[id],description:TRIAL_MODES[id].summary})),...EXPERIMENT_CATALOGUE];

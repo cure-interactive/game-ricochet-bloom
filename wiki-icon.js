@@ -1,8 +1,8 @@
 import { iconHTML } from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
 import { CATALOGUE } from './catalogue.js?v=41b471c37ef2d3e54b61ceb1967e63963fa935f4a0b48d5bb6eeeedc6069f66c';
 import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=848e79680ae647b2655051152cc0c0c13e3f1a0fd0fd3af8f5aae80014a957c1';
-import { medalIcon } from './medal-ui.js?v=e42ceb7e910836840823bc95f1a1b941bc0a67e9fca8e194f7fac697a662775f';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=859b65d3d9ddbb95f3039dfbb37a2af9adb594c95e43083047eabe3d1a8b899a';
+import { medalIcon } from './medal-ui.js?v=2de85a5d119ff2e038d0f73f7f0bfba8de0fd0bc7f8fcb706c93de67d9e12122';
 
 // Only known topics and catalogue identities produce decoration. Markdown never
 // supplies an image URL, raw SVG or icon name to the renderer.
@@ -23,7 +23,7 @@ const topics={
  'results-and-feedback':'list','points-and-music':'coin','what-to-test':'check','every-shot-counts':'control-gun','points-and-saves':'coin',
  'clear-the-board':'wave','harder-waves':'wave','powers-and-music':'power','saves-and-records':'bookmark',
  skills:'skill-tree',player:'player-skin','player-viewer':'player-skin',skins:'player-skin',stats:'stats','player-stats':'stats','player-upgrades':'skill-tree',
- 'points-in-every-mode':'coin','left-handed-layout':'hand-left','copy-diagnostics':'copy',
+ 'points-in-every-mode':'coin','points':'coin','drift':'wave','left-handed-layout':'hand-left','copy-diagnostics':'copy',
  developer:'flask','development-concept':'flask','game-modes-to-try':'flask','economy-tuning':'coin','playtest-method':'check',workshop:'flask','development-tools':'gear'
 };
 const wrap=html=>html?`<span class="wiki-icon" aria-hidden="true">${html}</span>`:'';

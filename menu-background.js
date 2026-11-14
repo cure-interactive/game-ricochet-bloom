@@ -1,14 +1,14 @@
-import {poolBubbleRender} from './pool-bubble.js?v=4e76e6fe8d8a8a5ee211cc3669204a47f4e99c77be659f9ae52e2584c0219d96';
+import {poolBubbleRender} from './pool-bubble.js?v=8b97af0450a015c00563acbcfe9a07b5ea04bcd9affb853ba45125d618a07256';
 import {freePlayCreate,freePlayBuild} from './free-play.js?v=2688950919d159815d3ffeb8bedaa0133731cda8f149bcf49906a2abc95845da';
 import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import {progressionCreate} from './run.js?v=761d66a7f48a89837bd270e75d2f2fc05b570ad32da442ce146863b3344310db';
-import {menuMusicCreate} from './menu-music.js?v=a6b7bd75f4f066363605da06df15a09cdf12bf37d99208bac428a72e3d1258d2';
+import {menuMusicCreate} from './menu-music.js?v=762395ad9af8e952134f04c40c1bd255b594ab2f9c971f8dce0b16150274dc6e';
 import {PowerVisual} from './power-visual.js?v=c1fa49a130dcf51e7d62ea8b27a6b927bc9a6dad0b11295f7beeead8e230b7e2';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
 import { bubbleCreate, bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=48b76dd1d40593dc4eaab04bd8396bbb6ade750f70482ae3097f8a481b9db36c';
 
-export function menuBackgroundMount(canvas,gentle,{profile=()=>progressionCreate(),skin=()=>'#f1f9d7',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
+export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),skins=new Map(),powerVisual=new PowerVisual();
   const skinFor=body=>{if(!skins.has(body.id))skins.set(body.id,bubbleCreate());return skins.get(body.id);};
   let active=false,frame=0,previous=0,rings=[],signature='';
@@ -36,7 +36,7 @@ export function menuBackgroundMount(canvas,gentle,{profile=()=>progressionCreate
     powerVisual.update(dt);powerVisual.render(ctx,pool.game,pool.game.tick*RULE.step,gentle());
     const bodies=[...seedBodies(pool.game),...pool.game.bodies.slice(1)];
     for(const body of bodies){
-      poolBubbleRender(ctx,pool.game,body,skinFor(body),dt,pool.game.tick*RULE.step,{gentle:gentle(),skinColor:skin(),portrait,markings:false});
+      poolBubbleRender(ctx,pool.game,body,skinFor(body),dt,pool.game.tick*RULE.step,{gentle:gentle(),skinColor:skin(),portrait,markings:false,powerMarkings:powerMarkings()});
     }
     canvas.dataset.tick=String(pool.game.tick);
     canvas.dataset.effects=pool.game.effects.map(e=>e.kind).join(',');canvas.dataset.frozen=String(effectGet(pool.game,'stasis')?.targets.length||0);canvas.dataset.permeable=String(pool.game.bodies.filter(b=>b.id>0&&frozenHit(pool.game,b.id)).length);

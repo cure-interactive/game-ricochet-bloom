@@ -5,7 +5,8 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## How to Play
 
 - [How to Play](how-to-play.md)
-- [Points in Every Mode](how-to-play.md#points-in-every-mode)
+- [Drift](how-to-play.md#drift)
+- [Points](how-to-play.md#points)
 - [Pull, Release, Bloom](how-to-play.md#pull-release-bloom)
 - [Player Stats](how-to-play.md#player-stats)
 - [Contact Powers](how-to-play.md#contact-powers)

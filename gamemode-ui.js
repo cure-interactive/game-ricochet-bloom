@@ -1,13 +1,13 @@
 import { screenHeader } from './screen-header.js?v=883c141deaf0d60097c4b99c555371897614dfd0bde5d3229b4a41e5450222e0';
 import { buttonHTML } from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { assetURL } from './asset.js?v=c168b1bf74896095e10ba96f5c9cfb00449414ce901de7993bd725e00a9bbfea';
-import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=038104802594b21c8bdd5c4d4db408691a810b962e8a15956699700c3ebc2748';
-import { gamemodeGalleryMount } from './gamemode-gallery.js?v=1bad8270c71d17a94ea62849da8a758da66967180517826c702315b78ca18440';
-import { scoreAttackMount } from './score-attack-ui.js?v=c50a30518ac5f72769f0db94f41060f8d2b71fda09f3c1034e1a7682295a12ec';
-import { experimentMount } from './experiment-ui.js?v=1f517414e1550a66faf1fe43da4255c563df41af49efd7e07fca0e2912fb2b42';
+import { assetURL } from './asset.js?v=d550b28d96684af605439d08505831edfd982d0886527d4831cff7ecdf4d0e66';
+import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=d185b654444d8865033f10814afc2d3053a6d8cee35694ca19e4693a13ce9ae6';
+import { gamemodeGalleryMount } from './gamemode-gallery.js?v=e3bfa4f2072d4ebd57b23954811324a76c71504fb5b9adc295c66a85367c2468';
+import { scoreAttackMount } from './score-attack-ui.js?v=ac191adecdc268cac1039fbd85a97dfb617cb5f6f37ea42255ad95d9200f7512';
+import { experimentMount } from './experiment-ui.js?v=91c5207510ecc3d911def29feea26470fdf96f5b53eb68eebcebbf55886dfb9f';
 import { poolConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=e42ceb7e910836840823bc95f1a1b941bc0a67e9fca8e194f7fac697a662775f';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=2de85a5d119ff2e038d0f73f7f0bfba8de0fd0bc7f8fcb706c93de67d9e12122';
 
 // Dialog composition and destination routing. Each child receives only the
 // content slot, profile/storage access and navigation callbacks it uses.
@@ -21,6 +21,7 @@ export function gamemodeMount(host) {
   function showMenu(){if(!menu.open)menu.showModal();$('gamemodes-back').focus({preventScroll:true});}
   const gallery=gamemodeGalleryMount({content,heading,storage,screen:host.screen,kind:host.kind,show:showMenu,notebook:()=>hub.hub(),open(card){
     if(card.route==='legacy'){if(card.id==='campaign'){menu.close();host.legacy(card.id);}else poolSetup(card.id);}
+    else if(card.route==='casual'){menu.close();host.drift();}
     else if(card.route==='destination')score.open();
     else if(card.route==='setup')hub.setup(card.id);
     else hub.detail(card.id);

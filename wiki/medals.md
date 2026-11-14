@@ -1,6 +1,6 @@
 # Medals
 
-Every playable gamemode has **Bronze**, **Silver** and **Gold** conditions. Open a gamemode or level to see its exact conditions before playing. The medal icons have one, two and three engraved bars, as well as different colours.
+Every scoring gamemode has **Bronze**, **Silver** and **Gold** conditions. Drift is a casual pool without medals or rewards. Open a gamemode or level to see its exact conditions before playing. The medal icons have one, two and three engraved bars, as well as different colours.
 
 ## Earning and Keeping Medals
 

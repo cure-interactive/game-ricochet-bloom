@@ -10,7 +10,7 @@ export function developmentBarMount(doc=document){
  const popover=typeof bar.showPopover==='function';
  let reserved=0;
  function measure(){
-  const height=active?bar.getBoundingClientRect().height:0;
+  const height=active&&!bar.hidden?bar.getBoundingClientRect().height:0;
   if(!Number.isFinite(height)||height<0||height===reserved)return;
   reserved=height;doc.documentElement.style.setProperty('--profile-bottom-space',`${height}px`);
  }
@@ -33,8 +33,9 @@ export function developmentBarMount(doc=document){
   stack=stack.filter(d=>d.open&&d.isConnected);
   disclosure();
   if(popover&&bar.matches(':popover-open'))bar.hidePopover();
-  bar.hidden=!active;
-  if(!active){measure();return;}
+  const visible=active&&!['drift','drift-pause'].includes(doc.body.dataset.screen);
+  bar.hidden=!visible;
+  if(!visible){measure();return;}
   if(popover)bar.showPopover();
   else {const parent=stack.at(-1)||doc.body;if(bar.parentNode!==parent)parent.append(bar);}
   measure();

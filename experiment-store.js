@@ -4,7 +4,7 @@ import { EXPERIMENT_CATALOGUE } from './experiment-catalogue.js?v=46fd868b7899d3
 import { trialValidate } from './trial.js?v=78629f1adb03a46502ce6c7c856e1fba00434d29e18d851f58925af761770f62';
 import { trialRead } from './trial-store.js?v=c49f919a2cf7f2cfe6a089967fa1fc619997490010e1e44cb5a8cd502aec8de6';
 const ids=new Set([...EXPERIMENT_CATALOGUE.map(e=>e.id),'reaction','cargo','outbreak']);
-const favouriteIds=new Set([...ids,'campaign','free','waves','challenge']);
+const favouriteIds=new Set([...ids,'campaign','free','waves','challenge','drift']);
 export const experimentStoreKey=kind=>`ricochet-bloom-experiments-v1-${kind}`;
 export const experimentEmpty=()=>({version:1,favourites:[],recent:[],setups:[],records:[],saves:[],results:[],reviews:[],lastSetup:null});
 const text=(v,max)=>typeof v==='string'&&v.length<=max;

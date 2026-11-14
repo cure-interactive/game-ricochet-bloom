@@ -7,6 +7,7 @@ const assets = {
   "artwork/mode/campaign.svg": "./artwork/mode/campaign.svg?v=df56071e95984679f36db403b90071d1a938fb541edac2cba83391336d3670d0",
   "artwork/mode/cargo.svg": "./artwork/mode/cargo.svg?v=61f6f49e5f2f42e6ed952043493325065d6b14b06aec9dfe1b59bb8bfe9ce373",
   "artwork/mode/challenge.svg": "./artwork/mode/challenge.svg?v=42a4b19d4f877c37d623fb2bb004390e2f50eefad5771df62644a6baf56d29d6",
+  "artwork/mode/drift.svg": "./artwork/mode/drift.svg?v=477f418a8c7abfd7e3cb6d863a1730c09ab039d7bdf47edbbef4961d43bd032c",
   "artwork/mode/free.svg": "./artwork/mode/free.svg?v=6bb0ff05520f4738de5ef1a2ee4e2e146295f9f7f867f88f28ed9f16dd196d60",
   "artwork/mode/outbreak.svg": "./artwork/mode/outbreak.svg?v=eb08ba8903e4b9c276768a84a1fdc15e76d077e5321f2828d3891cf73ee66882",
   "artwork/mode/reaction.svg": "./artwork/mode/reaction.svg?v=9b74c9515beecd9b3e43fd5b0bedd463f17d283558645d1a32113e047d6807b4",

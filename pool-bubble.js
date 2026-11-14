@@ -3,7 +3,7 @@ import {bubbleStep,bubbleOutline,bubbleFlow} from './bubble.js?v=385baeaa905192a
 import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers} from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
 import {regionFrozen} from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import {BUBBLE_ROLES,bubbleRole} from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import {assetURL} from './asset.js?v=c168b1bf74896095e10ba96f5c9cfb00449414ce901de7993bd725e00a9bbfea';
+import {assetURL} from './asset.js?v=d550b28d96684af605439d08505831edfd982d0886527d4831cff7ecdf4d0e66';
 let sharedIcons;
 export function poolBubbleIcons(){
  return sharedIcons??=Object.fromEntries([['powerIcons','power',Object.keys(POWERS)],['roleIcons','ui',Object.keys(BUBBLE_ROLES)]].map(([name,folder,kinds])=>[name,Object.fromEntries(kinds.map(kind=>{const icon=new Image();icon.src=new URL(assetURL(`./icon/${folder}/${kind}.svg`),import.meta.url).href;return [kind,icon];}))]));
@@ -35,8 +35,8 @@ function frostRender(context,body, points, skin, frost,isGentle) {
   }
   context.restore();
 }
-export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGentle=false,skinColor='#f1f9d7',portrait:portraitView=false,replayGlow=0,markings=true,icons=null}={}) {
-  const {powerIcons,roleIcons}=markings?(icons||poolBubbleIcons()):{};
+export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGentle=false,skinColor='#f1f9d7',portrait:portraitView=false,replayGlow=0,markings=true,powerMarkings=markings,icons=null}={}) {
+  const {powerIcons,roleIcons}=markings||powerMarkings?(icons||poolBubbleIcons()):{};
   const isSeed = body.id <= 0, isBubble = body.id === 0 && !!effectGet(game, 'bubble'), hue = isSeed ? body.id === -3 ? POWERS.echo.color : body.id < 0 ? POWERS.split.color : isBubble ? POWERS.bubble.color : (skinColor||'#f1f9d7') : COLORS[body.tone], radius = body.radius;
   const isPermeable = !isSeed && frozenHit(game, body.id);
   membrane.glow = Math.max(0, membrane.glow - dt * 1.4);
@@ -88,7 +88,7 @@ export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGe
     else {context.fillStyle='#e9ffed';context.font=`${size*.7}px Fredoka,sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(BUBBLE_ROLES[role].name[0],0,y);}
     context.restore();
   }
-  if (markings&&marker) {
+  if (powerMarkings&&marker) {
     const p = POWERS[marker.kind], icon = powerIcons[marker.kind], size = Math.min(52, body.radius * 1.25);
     context.save(); context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);context.shadowColor = p.color; context.shadowBlur = isGentle ? 0 : 12;
     if (icon.complete && icon.naturalWidth) context.drawImage(icon, -size / 2, -size / 2, size, size);

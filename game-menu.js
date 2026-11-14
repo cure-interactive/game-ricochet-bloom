@@ -1,7 +1,9 @@
-import { GAME_VERSION } from './version.js?v=1b58bed65cabfc9c76ed023a1d8172b65e179be808d573fe509b656d40052413';
+import { GAME_VERSION } from './version.js?v=de74a49e6ba74efbfd59ba1daf2ce5efc2293622b9cd42d94eb4e263d43f96ca';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { buttonHTML } from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
-import { menuBackgroundMount } from './menu-background.js?v=e14647f2a544b0d85cb8f97f8e49c43014c6e1df3f46200ba235ac7a162497ff';
+import { menuBackgroundMount } from './menu-background.js?v=60c40798e1dbb6061eec4b0612c093fc70fd86847b67ed704819ce692376e3c9';
+
+import { driftMount } from './drift-ui.js?v=15b7020e57b3eebde5191afa150eabe5677f95966a0ed912286846f7bc548e9c';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
@@ -12,14 +14,15 @@ export function gameMenuMount(host) {
   backdrop.innerHTML='<canvas class="home-pool"></canvas>';
   document.body.append(backdrop,home);
   if(host.recoveryNotice)home.querySelector('.home-actions').prepend(host.recoveryNotice);
-  const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true,{profile:host.profile,skin:host.skin,audioSettings:host.audioSettings});
   const route=pageHistory('home');let homeMode=true;
+  const drift=driftMount({pause:()=>present('drift-pause'),resume:()=>present('drift'),modes:()=>{close();host.open('gamemodes');},home:()=>homeOpen()});
+  const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true,{profile:host.profile,skin:host.skin,audioSettings:host.audioSettings,powerMarkings:()=>route.current==='drift'||route.current==='drift-pause'});
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
   function refresh(){background.refresh();document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
   function present(name){
     route.visit(name);
-    if((name.startsWith('gamemodes:')||name.startsWith('pool-setup:'))||['home','gamemodes','trial-setup','score-setup','experiment-hub','experiment-family','experiment-detail'].includes(name))homeMode=true;else if(['play','pause','trial'].includes(name))homeMode=false;
-    document.body.dataset.screen=name;document.body.dataset.menuMode=homeMode?'home':'play';home.hidden=name!=='home';backdrop.hidden=!homeMode;background.show(homeMode);
+    if((name.startsWith('gamemodes:')||name.startsWith('pool-setup:'))||['drift','drift-pause','home','gamemodes','trial-setup','score-setup','experiment-hub','experiment-family','experiment-detail'].includes(name))homeMode=true;else if(['play','pause','trial'].includes(name))homeMode=false;
+    document.body.dataset.screen=name;document.body.dataset.menuMode=name==='drift'||name==='drift-pause'?'drift':homeMode?'home':'play';home.hidden=name!=='home';backdrop.hidden=!homeMode;background.show(homeMode&&name!=='drift-pause');drift.show(name);
     document.querySelector('body>main').inert=name!=='play';
     if(name!=='play')host.suspend();refresh();
   }
@@ -35,5 +38,5 @@ export function gameMenuMount(host) {
   // Settings can switch profiles without a page-history transition.
   document.addEventListener('close',()=>{if(homeMode)refresh();},true);
   refresh();present('home');
-  return {home:homeOpen,back,show:present,pause(){close();present('pause');host.open('pause');},play(){close();route.reset('play');present('play');},get current(){return route.current;}};
+  return {home:homeOpen,back,show:present,drift(){close();present('drift');},pause(){close();present('pause');host.open('pause');},play(){close();route.reset('play');present('play');},get current(){return route.current;}};
 }
