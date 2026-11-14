@@ -190,17 +190,19 @@ body[data-menu-mode=home] #tree-sheet{height:var(--app-height,100dvh);max-height
 #main-menu,#menu-background{height:var(--app-height,100dvh);bottom:auto}
 
 /* The equipped player is the focus; destinations remain ordinary buttons. */
-.player-menu-body{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(240px,.65fr);align-items:center;gap:clamp(24px,5vw,72px);flex:1;width:min(100%,1100px);margin:auto;padding:32px}
+.player-menu-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;gap:clamp(24px,5vw,72px);flex:1;width:min(100%,1100px);margin:auto;padding:32px}
 .player-viewer{display:flex;flex-direction:column;align-items:center;min-width:0;text-align:center}
 .player-viewer-preview{width:100%;height:clamp(260px,44vh,420px);display:grid;place-items:center;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--skin-color) 8%,transparent),transparent 68%)}
 .player-viewer-preview .skin-preview-large{width:100%;height:100%;min-height:0}
 .player-viewer-preview .skin-preview-large i{width:clamp(160px,24vw,240px);height:clamp(160px,24vw,240px)}
 .player-viewer-name{font-size:26px;font-weight:500;margin:12px 0 4px}.player-viewer-caption{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#a5c7c4;margin:0}.player-viewer-hint{font-size:13px;color:#96aeb8;margin:18px 0 0}
-.player-menu-actions{display:grid;gap:14px;width:100%}
-.player-menu-actions button{display:flex;align-items:center;gap:18px;min-height:88px;padding:20px 24px;border:1px solid #789b9f55;border-radius:18px;background:#14272f;color:#d9eae6;font:inherit;font-size:21px;cursor:pointer;text-align:left}
+.player-menu-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%;container:player-actions/inline-size}
+.player-menu-actions [data-player-open="skills"]{grid-column:1/-1}
+@container player-actions (max-width:16rem){.player-menu-actions button{grid-column:1/-1}}
+.player-menu-actions button{display:flex;align-items:center;justify-content:center;gap:10px;min-width:0;min-height:88px;padding:20px 12px;border:1px solid #789b9f55;border-radius:18px;background:#14272f;color:#d9eae6;font:inherit;font-size:21px;cursor:pointer;text-align:left}
 .player-menu-actions .ui-icon{width:36px;height:36px;flex:none}
 .player-menu-actions button:hover{background:#1e3b41}.player-menu-actions button:focus-visible{outline:3px solid #eed496;outline-offset:3px}
-@media(max-width:650px){.player-menu-body{display:flex;flex-direction:column;gap:24px;padding:16px 22px 24px}.player-viewer{width:100%;flex:1;justify-content:center}.player-viewer-preview{height:clamp(230px,34vh,340px)}.player-menu-actions{gap:10px}.player-menu-actions button{min-height:64px;padding:12px 18px;font-size:18px}.player-menu-actions .ui-icon{width:30px;height:30px}.player-viewer-name{font-size:23px;margin-top:0}.player-viewer-hint{margin-top:12px}}
-@media(max-height:500px) and (min-width:651px){.player-menu-body{padding:14px 32px;gap:32px}.player-viewer-preview{height:200px}.player-viewer-preview .skin-preview-large i{width:140px;height:140px}.player-viewer-name{font-size:20px;margin:0}.player-viewer-hint{margin-top:8px}.player-menu-actions button{min-height:64px;padding:12px 18px}}
+@media(max-width:650px){.player-menu-body{display:flex;flex-direction:column;gap:24px;padding:16px 22px 24px}.player-viewer{width:100%;flex:1;justify-content:center}.player-viewer-preview{height:clamp(230px,34vh,340px)}.player-menu-actions{gap:10px}.player-menu-actions button{min-height:64px;padding:12px 12px;font-size:18px}.player-menu-actions .ui-icon{width:30px;height:30px}.player-viewer-name{font-size:23px;margin-top:0}.player-viewer-hint{margin-top:12px}}
+@media(max-height:500px) and (min-width:651px){.player-menu-body{padding:14px 32px;gap:32px}.player-viewer-preview{height:200px}.player-viewer-preview .skin-preview-large i{width:140px;height:140px}.player-viewer-name{font-size:20px;margin:0}.player-viewer-hint{margin-top:8px}.player-menu-actions button{min-height:64px;padding:12px 12px}}
 
 .home-content h1 .home-version{display:block;margin-top:12px;color:#aec3c8;font:500 11px/19px 'Fredoka',sans-serif;letter-spacing:.3px}
