@@ -26,15 +26,15 @@ export function powerUnlock(state,power){
 // Ownership, availability and equipment are separate facts, including on a fresh save.
 export function upgradeState(state,id){
  const n=cat.nodes[id],owned=!!state.profile.research[id],borrowed=state.borrowed.includes(id),equipped=state.equipped.includes(id),buy=profilePurchase(state.profile,id,cat);
- let label,icon='coin';
- if(equipped){label=borrowed?'Active · this run':'Active';icon='check';}
- else if(owned){label=n.kind==='base'&&state.powers.includes(n.power)?'In random pool':'Owned';icon='check';}
- else if(borrowed){label='Loan · not equipped';icon='clock';}
- else if(buy.ok){label=`Available · ${n.seedCost} Points`;icon='add';}
+ let label,statusIcon='coin';
+ if(equipped){label=borrowed?'Active · this run':'Active';statusIcon='check';}
+ else if(owned){label=n.kind==='base'&&state.powers.includes(n.power)?'In random pool':'Owned';statusIcon='check';}
+ else if(borrowed){label='Loan · not equipped';statusIcon='clock';}
+ else if(buy.ok){label=`Available · ${n.seedCost} Points`;statusIcon='add';}
  else if(buy.reason==='insufficient-seeds'){label=`${n.seedCost} Points · need ${n.seedCost-state.profile.wallet.seeds} more`;}
- else {label=buy.reason==='mastery'?'Needs mastery':buy.reason==='prerequisite'?`Research ${cat.nodes[n.requires.find(id=>!state.profile.research[id])]?.name||POWER_TREES[n.power].name} first`:powerUnlock(state,n.power)?.remaining||'Play to unlock';icon='lock';}
+ else {label=buy.reason==='mastery'?'Needs mastery':buy.reason==='prerequisite'?`Research ${cat.nodes[n.requires.find(id=>!state.profile.research[id])]?.name||POWER_TREES[n.power].name} first`:powerUnlock(state,n.power)?.remaining||'Play to unlock';statusIcon='lock';}
  const canUnlock=!owned&&state.powerMode!=='shared'&&buy.ok;
- return {owned,borrowed,equipped,buy,label,icon,canUnlock,dimmed:!owned&&!canUnlock};
+ return {owned,borrowed,equipped,buy,label,statusIcon,canUnlock,dimmed:!owned&&!canUnlock};
 }
 export function researchBlocker(state,id){
  const n=cat.nodes[id],v=upgradeState(state,id);

@@ -36,3 +36,10 @@
 .ui-icon[data-icon="player-skin"]{--skin-color:var(--player-skin-color,#f1f9d7);-webkit-mask:none;mask:none;box-shadow:inset -3px -4px 7px #07101f77,0 0 12px color-mix(in srgb,var(--skin-color) 30%,transparent)}
 .ui-icon[data-icon="player-skin"]:after{inset:16%}
 .home-primary .ui-icon[data-icon="player-skin"]{width:24px;height:24px}
+
+/* Only explicit large preview surfaces are interactive. Button icons stay still. */
+.skin-preview-interactive{padding:40px;min-height:280px;overflow:visible}
+.skin-preview-interactive i{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
+.skin-preview-interactive i.is-dragging{cursor:grabbing}
+.skin-preview-interactive i:focus-visible{outline:3px solid #eed496;outline-offset:12px}
+@media(max-height:500px) and (min-width:500px){.skin-preview-interactive{min-height:220px;padding:32px}}
