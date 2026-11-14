@@ -6,7 +6,7 @@ import { CAMPAIGN_NAME } from './run.js?v=761d66a7f48a89837bd270e75d2f2fc05b570a
 // Stable individual destinations remain searchable beneath curated collections.
 export const GAMEMODE_CARDS=Object.freeze([
   {id:'campaign',name:CAMPAIGN_NAME,description:'Build your song across five tracks. Chase a medal in every pool.',category:'original',art:'campaign',route:'legacy',playable:true},
-  {id:'drift',name:'Drift',description:'A self-playing bubble pool. Tap to stir the bubbles and enjoy your unlocked powers. No Points or medals.',category:'original',art:'drift',route:'casual',playable:true},
+  {id:'drift',name:'Casual',description:'A self-playing bubble pool. Tap to stir the bubbles and enjoy your unlocked powers. No Points or medals.',category:'original',art:'drift',route:'casual',playable:true},
   {id:'free',name:'Free Play',description:'An open pool for your unlocked powers.',category:'original',art:'free',route:'legacy',playable:true},
   {id:'waves',name:'Endless Waves',description:'Clear the pool before your shots run out.',category:'original',art:'waves',route:'legacy',playable:true},
   {id:'challenge',name:'Challenge',description:'Reach three blooms before your shots run out.',category:'original',art:'challenge',route:'legacy',playable:true},

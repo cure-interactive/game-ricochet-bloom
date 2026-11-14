@@ -5,7 +5,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## How to Play
 
 - [How to Play](how-to-play.md)
-- [Drift](how-to-play.md#drift)
+- [Casual](how-to-play.md#casual)
 - [Points](how-to-play.md#points)
 - [Pull, Release, Bloom](how-to-play.md#pull-release-bloom)
 - [Player Stats](how-to-play.md#player-stats)

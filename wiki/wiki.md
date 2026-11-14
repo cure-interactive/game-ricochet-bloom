@@ -9,7 +9,7 @@ Find a guide for your next game, your player or your progress. Use Back or swipe
 
 ## Play
 
-- [Drift: a casual, self-playing pool](how-to-play.md#drift)
+- [Casual: a casual, self-playing pool](how-to-play.md#casual)
 - [Melody Journey](campaign.md) — musical tracks, pool goals and campaign progress.
 - [Endless Waves](waves.md) — clear each pool before your shots run out.
 - [Score Attack](score-attack.md) — 5, 10 or 15 shots to chase your best score.

@@ -23,7 +23,7 @@ const topics={
  'results-and-feedback':'list','points-and-music':'coin','what-to-test':'check','every-shot-counts':'control-gun','points-and-saves':'coin',
  'clear-the-board':'wave','harder-waves':'wave','powers-and-music':'power','saves-and-records':'bookmark',
  skills:'skill-tree',player:'player-skin','player-viewer':'player-skin',skins:'player-skin',stats:'stats','player-stats':'stats','player-upgrades':'skill-tree',
- 'points-in-every-mode':'coin','points':'coin','drift':'wave','left-handed-layout':'hand-left','copy-diagnostics':'copy',
+ 'points-in-every-mode':'coin','points':'coin','drift':'wave','casual':'wave','left-handed-layout':'hand-left','copy-diagnostics':'copy',
  developer:'flask','development-concept':'flask','game-modes-to-try':'flask','economy-tuning':'coin','playtest-method':'check',workshop:'flask','development-tools':'gear'
 };
 const wrap=html=>html?`<span class="wiki-icon" aria-hidden="true">${html}</span>`:'';

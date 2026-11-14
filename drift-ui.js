@@ -3,10 +3,10 @@ import { screenHeader } from './screen-header.js?v=883c141deaf0d60097c4b99c55537
 
 // Presentation only: the shared menu pool owns simulation and ambient audio.
 export function driftMount(host,doc=document){
- const controls=doc.createElement('section');controls.id='drift-controls';controls.hidden=true;controls.setAttribute('aria-label','Drift');
- controls.innerHTML=buttonHTML('','pause',{id:'drift-pause','aria-label':'Pause Drift',title:'Pause Drift'});
+ const controls=doc.createElement('section');controls.id='drift-controls';controls.hidden=true;controls.setAttribute('aria-label','Casual');
+ controls.innerHTML=buttonHTML('','pause',{id:'drift-pause','aria-label':'Pause Casual',title:'Pause Casual'});
  const panel=doc.createElement('dialog');panel.id='drift-dialog';panel.setAttribute('aria-labelledby','drift-title');
- panel.innerHTML=`${screenHeader({title:'Drift Paused',titleId:'drift-title',icon:'pause',back:buttonHTML('Close','close',{id:'drift-close'})})}<div class="drift-actions"><p>No Points or medals. Just enjoy the pool.</p>${buttonHTML('Resume','play',{id:'drift-resume',class:'primary'})}${buttonHTML('Gamemodes','grid',{id:'drift-modes'})}${buttonHTML('Main Menu','grid',{id:'drift-home'})}</div>`;
+ panel.innerHTML=`${screenHeader({title:'Casual Paused',titleId:'drift-title',icon:'pause',back:buttonHTML('Close','close',{id:'drift-close'})})}<div class="drift-actions"><p>No Points or medals. Just enjoy the pool.</p>${buttonHTML('Resume','play',{id:'drift-resume',class:'primary'})}${buttonHTML('Gamemodes','grid',{id:'drift-modes'})}${buttonHTML('Main Menu','grid',{id:'drift-home'})}</div>`;
  doc.body.append(controls,panel);
  const pause=controls.querySelector('#drift-pause');let screen='';
  pause.onclick=host.pause;

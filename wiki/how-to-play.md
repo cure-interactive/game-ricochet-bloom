@@ -12,13 +12,13 @@ In Melody Journey, follow the goal displayed above the pool and finish before yo
 
 Choose **Gamemodes → Endless Waves** from the main menu for five shots per wave: bubbles pop on their first hit, and clearing every bubble advances to a harder wave. See [Endless Waves](waves.md).
 
-## Drift
+## Casual
 
-Drift is a casual, self-playing pool with the same enlarged bubbles, player and power effects as the main-menu background. Tap or hold to stir the pool. Every five hits brings a power from your unlocked powers, with its icon shown inside a bubble. The music is the pool's composed ambient arrangement.
+Casual is a casual, self-playing pool with the same enlarged bubbles, player and power effects as the main-menu background. Tap or hold to stir the pool. Every five hits brings a power from your unlocked powers, with its icon shown inside a bubble. The music is the pool's composed ambient arrangement.
 
 The only play control is the floating **Pause** button, placed on your preferred hand's side. Pause freezes the pool and music; Resume continues it. Press P or Escape to pause with a keyboard. From Pause, return to Gamemodes or Main Menu.
 
-Drift earns **no Points, medals, mastery or campaign progress**. It never replaces your saved game. There is no score target, shot limit or loss condition.
+Casual earns **no Points, medals, mastery or campaign progress**. It never replaces your saved game. There is no score target, shot limit or loss condition.
 
 ## Points
 
@@ -31,7 +31,7 @@ Every scoring gamemode and playable experiment preset earns permanent **Points**
 
 Research prices and action awards aim for about two average purchases per five minutes of typical play. There is no timed payout, cooldown or purchase limit: misses and waiting earn nothing, and better play can earn faster. Different skills have different costs. Existing balances and owned upgrades are preserved; new prices apply to future purchases.
 
-Every scoring game mode displays your available **Points** balance during play, matching Skills for your current profile. Experiment modes also show Points earned in that run separately. The balance updates when rewards are saved. A short message shows Points banked and your available balance. Your pool's Score remains separate. Reopening a save does not pay twice. Drift, listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Melody Journey track completion to that profile.
+Every scoring game mode displays your available **Points** balance during play, matching Skills for your current profile. Experiment modes also show Points earned in that run separately. The balance updates when rewards are saved. A short message shows Points banked and your available balance. Your pool's Score remains separate. Reopening a save does not pay twice. Casual, listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Melody Journey track completion to that profile.
 
 For power mastery, activate a power you own and hit at least **three different bubbles in that shot**. Each qualifying shot earns one mastery use; successful Melody Journey pools also count. Three uses meet a capstone's mastery requirement. You can earn every power and upgrade through Free Play or Waves; Melody Journey track and skin unlocks still come from Melody Journey completion.
 
