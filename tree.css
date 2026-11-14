@@ -1,9 +1,9 @@
 /* One connected research tree with compact purchase tooltips. */
-#tree-dialog{width:min(1500px,100%);height:var(--app-height,100dvh);max-width:100%;max-height:var(--app-height,100dvh);margin:auto;padding:0;border:0;background:#0b1423;color:#e4f0f3;overflow:hidden}
-#tree-dialog[open]{display:flex;flex-direction:column}#tree-dialog::backdrop,#tree-sheet::backdrop{background:#030a16bd;backdrop-filter:blur(5px)}
-:is(#tree-dialog,#tree-sheet) button,:is(#tree-dialog,#tree-sheet) select{font:inherit;font-size:14px;min-height:44px;border:1px solid #3c5365;border-radius:10px;background:#16283a;color:#e4f0f3;padding:10px 12px;display:inline-flex;align-items:center;justify-content:center;gap:9px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
-:is(#tree-dialog,#tree-sheet) button:focus-visible,:is(#tree-dialog,#tree-sheet) select:focus-visible{outline:3px solid #e6cb89;outline-offset:2px}:is(#tree-dialog,#tree-sheet) button:disabled{opacity:.45;cursor:not-allowed}:is(#tree-dialog,#tree-sheet) button.primary{background:#b4f2d8;color:#12332e;border-color:#b4f2d8}:is(#tree-dialog,#tree-sheet) .ui-icon{width:20px;height:20px;flex:none}
-#tree-dialog .tree-heading{display:flex;align-items:center;gap:12px;padding:12px 18px;padding-top:max(12px,env(safe-area-inset-top));background:#0e1c2b;border-bottom:1px solid #34485b;flex:none;margin:0;width:100%;max-width:none;font:inherit;letter-spacing:normal}#tree-dialog .tree-heading h2{font-size:21px;margin:0;font-weight:600}.tree-wallet-summary{margin-left:auto;display:flex;flex-direction:column;gap:3px;align-items:flex-end}.tree-wallet-summary strong{display:flex;align-items:center;gap:5px;color:#b4efd8;font-size:16px}.tree-wallet-summary small{font-size:13px;color:#b8cad3}
+:is(#tree-dialog,#player-upgrade-dialog){width:min(1500px,100%);height:var(--app-height,100dvh);max-width:100%;max-height:var(--app-height,100dvh);margin:auto;padding:0;border:0;background:#0b1423;color:#e4f0f3;overflow:hidden}
+:is(#tree-dialog,#player-upgrade-dialog)[open]{display:flex;flex-direction:column}:is(#tree-dialog,#player-upgrade-dialog)::backdrop,#tree-sheet::backdrop{background:#030a16bd;backdrop-filter:blur(5px)}
+:is(#tree-dialog,#player-upgrade-dialog,#tree-sheet) button,:is(#tree-dialog,#player-upgrade-dialog,#tree-sheet) select{font:inherit;font-size:14px;min-height:44px;border:1px solid #3c5365;border-radius:10px;background:#16283a;color:#e4f0f3;padding:10px 12px;display:inline-flex;align-items:center;justify-content:center;gap:9px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+:is(#tree-dialog,#player-upgrade-dialog,#tree-sheet) button:focus-visible,:is(#tree-dialog,#player-upgrade-dialog,#tree-sheet) select:focus-visible{outline:3px solid #e6cb89;outline-offset:2px}:is(#tree-dialog,#player-upgrade-dialog,#tree-sheet) button:disabled{opacity:.45;cursor:not-allowed}:is(#tree-dialog,#player-upgrade-dialog,#tree-sheet) button.primary{background:#b4f2d8;color:#12332e;border-color:#b4f2d8}:is(#tree-dialog,#player-upgrade-dialog,#tree-sheet) .ui-icon{width:20px;height:20px;flex:none}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-heading{display:flex;align-items:center;gap:12px;padding:12px 18px;padding-top:max(12px,env(safe-area-inset-top));background:#0e1c2b;border-bottom:1px solid #34485b;flex:none;margin:0;width:100%;max-width:none;font:inherit;letter-spacing:normal}:is(#tree-dialog,#player-upgrade-dialog) .tree-heading h2{font-size:21px;margin:0;font-weight:600}.tree-wallet-summary{margin-left:auto;display:flex;flex-direction:column;gap:3px;align-items:flex-end}.tree-wallet-summary strong{display:flex;align-items:center;gap:5px;color:#b4efd8;font-size:16px}.tree-wallet-summary small{font-size:13px;color:#b8cad3}
 .tree-status,.tree-sheet-status{margin:0;padding:10px 16px;background:#183e38;color:#d4f8e9;font-size:14px;line-height:1.45}.tree-status:empty,.tree-sheet-status:empty{display:none}.tree-workspace{display:grid;grid-template-columns:minmax(0,1fr) 340px;flex:1;min-height:0}.tree-map-section{display:flex;flex-direction:column;min-width:0;min-height:0}.tree-target{width:100%;padding:8px 14px;border-bottom:1px solid #314559}.tree-target:empty{display:none}.tree-target button{width:100%;text-align:left;justify-content:flex-start!important;background:#173c37!important}.tree-target small{display:block;font-size:13px;color:#c0dcd4;margin-top:3px}
 .tree-detail{display:flex;flex-direction:column;min-height:0;background:#101f30;border-left:1px solid #3b5364;overflow:hidden}.tree-detail-body{padding:20px;flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}.tree-detail-title{display:flex;align-items:center;gap:12px}.tree-detail-title img{width:38px;height:38px}.tree-detail-title small{font-size:13px;color:#aac8d1}.tree-detail-title h3{font-size:24px;line-height:1.2;margin:5px 0}.upgrade-state{display:flex;gap:7px;align-items:center;font-size:14px;color:#b5efda}.tree-description{font-size:16px;line-height:1.55}.tree-cost{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;padding:12px 0;font-size:14px;color:#bfd4db}.tree-requirement{font-size:14px;line-height:1.5;padding:12px;background:#192f41;border-radius:10px}.tree-secondary{display:flex;gap:8px;margin:16px 0}.tree-secondary button{flex:1;min-width:0}.tree-detail details{font-size:14px;line-height:1.5;border-top:1px solid #3c5265;padding:12px 0}.tree-detail summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:#b5cdd4}.tree-detail summary::after{content:'⌄';margin-left:auto}.tree-detail details[open] summary::after{content:'⌃'}.tree-purchase{flex:none;background:#122b35;border-top:1px solid #4d716c;padding:12px 18px max(12px,env(safe-area-inset-bottom));display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0;width:100%;max-width:none;font:inherit;letter-spacing:normal;text-align:left}.tree-purchase>p{font-size:14px;line-height:1.45;margin:0;width:100%;color:#c5dbdd}.tree-purchase>p:empty{display:none}.tree-purchase>button{flex:1}.tree-purchase select{min-width:0;flex:1}.tree-purchase .build-ready{display:flex;justify-content:center;gap:9px;padding:8px;color:#b5f3d8}.tree-confirm{border:1px solid #c7bd86;background:#343528;border-radius:12px;padding:14px;margin-top:12px;font-size:14px;line-height:1.5}.tree-confirm button{margin:4px}
 #tree-sheet{width:100%;max-width:760px;height:min(780px,calc(var(--app-height,100dvh) * 0.94));max-height:calc(var(--app-height,100dvh) * 0.94);margin:auto auto 0;padding:0;overflow:hidden;border:1px solid #4b6475;border-radius:20px 20px 0 0;background:#101f30;color:#e4f0f3}#tree-sheet[open]{display:flex;flex-direction:column}.tree-sheet-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #395568;font:inherit;width:100%;max-width:none;margin:0}.tree-sheet-heading>span{font-size:14px;color:#bad0d9}#tree-sheet .tree-detail{flex:1;border:0}#tree-sheet .tree-detail-body{padding:16px}
@@ -31,16 +31,16 @@
 
 
 
-#tree-dialog .skill-node{position:absolute;left:var(--node-x);top:var(--node-y);transform:translate(-50%,-32px);width:160px;max-width:none;min-height:116px;display:flex;flex-direction:column;gap:4px;padding:0;border:0;border-radius:12px;background:transparent;text-align:center;justify-content:flex-start;align-items:center;font-size:13px;z-index:1;cursor:pointer}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node{position:absolute;left:var(--node-x);top:var(--node-y);transform:translate(-50%,-32px);width:160px;max-width:none;min-height:116px;display:flex;flex-direction:column;gap:4px;padding:0;border:0;border-radius:12px;background:transparent;text-align:center;justify-content:flex-start;align-items:center;font-size:13px;z-index:1;cursor:pointer}
 
-#tree-dialog .skill-branch{width:100%;justify-content:flex-start;text-align:left;margin:0 0 12px;background:#1b2638;border-color:#665b43;font-size:13px}.skill-branch small{display:block;font-size:11px;color:#bbced7;margin-top:3px}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-branch{width:100%;justify-content:flex-start;text-align:left;margin:0 0 12px;background:#1b2638;border-color:#665b43;font-size:13px}.skill-branch small{display:block;font-size:11px;color:#bbced7;margin-top:3px}
 .skill-orb{grid-column:1;grid-row:1 / span 3;justify-self:center;align-self:center}
-#tree-dialog .skill-node>strong,#tree-dialog .skill-node>small{grid-column:2}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node>strong,:is(#tree-dialog,#player-upgrade-dialog) .skill-node>small{grid-column:2}
 
 
-#tree-dialog .skill-branch{width:100%;justify-content:flex-start;text-align:left;margin:0 0 12px;background:#1b2638;border-color:#665b43;font-size:13px}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-branch{width:100%;justify-content:flex-start;text-align:left;margin:0 0 12px;background:#1b2638;border-color:#665b43;font-size:13px}
 .skill-branch small{display:block;font-size:11px;color:#bbced7;margin-top:3px}
-#tree-dialog .skill-branch.is-open{border-color:#365b51;background:#122c2b}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-branch.is-open{border-color:#365b51;background:#122c2b}
 
 .skill-orb{position:relative;display:grid;place-items:center;width:50px;height:50px;flex:none;border:2px solid #4a6278;border-radius:50%;background:radial-gradient(circle at 35% 25%,#213e54,#101c2f 75%);color:#b9ccd6;box-shadow:0 0 0 4px #0d1929}
 .skill-orb>img{width:30px;height:30px;filter:none!important;opacity:1!important}
@@ -59,36 +59,36 @@
 .skill-node.is-available>small{color:#edcf94}
 :is(.skill-node,.skill-card-icon).is-locked .skill-orb{border-style:dashed;color:#7e94ab}
 .skill-node.is-borrowed .skill-badge{color:#e2c59a;border-color:#d5ba87}
-#tree-dialog .skill-node[aria-pressed=true] .skill-orb{outline:2px solid #fff2c7;outline-offset:4px}
-#tree-dialog .skill-node:focus-visible{outline:2px solid #fff2c7;outline-offset:3px}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node[aria-pressed=true] .skill-orb{outline:2px solid #fff2c7;outline-offset:4px}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node:focus-visible{outline:2px solid #fff2c7;outline-offset:3px}
 
-#tree-dialog .skill-node .skill-orb{width:56px;height:56px;margin:0}#tree-dialog .skill-node.is-base .skill-orb{width:64px;height:64px}
-#tree-dialog .skill-node>strong{font-size:14px;max-width:156px;line-height:1.2}#tree-dialog .skill-node.is-base>strong{font-size:16px}#tree-dialog .skill-node>small{font-size:12px;max-width:156px}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node .skill-orb{width:56px;height:56px;margin:0}:is(#tree-dialog,#player-upgrade-dialog) .skill-node.is-base .skill-orb{width:64px;height:64px}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node>strong{font-size:14px;max-width:156px;line-height:1.2}:is(#tree-dialog,#player-upgrade-dialog) .skill-node.is-base>strong{font-size:16px}:is(#tree-dialog,#player-upgrade-dialog) .skill-node>small{font-size:12px;max-width:156px}
 /* Power silhouettes and real prerequisite paths carry the map hierarchy. */
 
 
 /* Reserve label clearance for the outer ring and the low rarity badge. */
-#tree-dialog .skill-node{width:116px;min-height:94px;gap:14px;transform:translate(-50%,-28px)}
-#tree-dialog .skill-node .skill-orb{width:48px;height:48px}#tree-dialog .skill-node.is-base .skill-orb{width:64px;height:64px;margin-top:-8px}
-#tree-dialog .skill-node>strong{font-size:12px;max-width:116px}#tree-dialog .skill-node.is-base>strong{font-size:15px}#tree-dialog .skill-node>small{font-size:10px}
-#tree-dialog .skill-node>.skill-node-cost{display:inline-flex;align-items:center;gap:4px;margin-top:-11px;font-size:11px;line-height:13px;white-space:nowrap}
-#tree-dialog .skill-node-cost .ui-icon{width:12px;height:12px;flex:none}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node{width:116px;min-height:94px;gap:14px;transform:translate(-50%,-28px)}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node .skill-orb{width:48px;height:48px}:is(#tree-dialog,#player-upgrade-dialog) .skill-node.is-base .skill-orb{width:64px;height:64px;margin-top:-8px}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node>strong{font-size:12px;max-width:116px}:is(#tree-dialog,#player-upgrade-dialog) .skill-node.is-base>strong{font-size:15px}:is(#tree-dialog,#player-upgrade-dialog) .skill-node>small{font-size:10px}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node>.skill-node-cost{display:inline-flex;align-items:center;gap:4px;margin-top:-11px;font-size:11px;line-height:13px;white-space:nowrap}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node-cost .ui-icon{width:12px;height:12px;flex:none}
 .skill-orb>img{width:25px;height:25px}:is(.skill-node,.skill-card-icon).is-base .skill-orb>img{width:34px;height:34px}
 .skill-node.is-locked{opacity:.75}.skill-node.is-route .skill-orb{border-color:#c3b485}.skill-node.is-route>strong{color:#f1dfb0}
 .tree-world-links path.is-route{stroke:#efcf86;stroke-width:4;stroke-dasharray:none;filter:drop-shadow(0 0 4px #e9bc5444)}
 .tree-world-links .is-locked:not(.is-route){opacity:.85;stroke:#6b8ba2;stroke-width:4}
 .bridge-label{font-size:12px;stroke-width:4px}:is(.skill-node,.skill-card-icon).is-capstone .skill-orb{border-radius:10px;box-shadow:0 0 0 3px #171d32,0 0 0 5px #75628d66}
-#tree-dialog .skill-node[aria-pressed=true] .skill-orb{outline:2px solid #fff0b6;outline-offset:5px;box-shadow:0 0 25px #e7c77b40}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node[aria-pressed=true] .skill-orb{outline:2px solid #fff0b6;outline-offset:5px;box-shadow:0 0 25px #e7c77b40}
 @media(max-width:760px){#tree-sheet{height:min(580px,calc(var(--app-height,100dvh) * 0.65));max-height:calc(var(--app-height,100dvh) * 0.65)}#tree-sheet::backdrop{background:#020a1644;backdrop-filter:none;-webkit-backdrop-filter:none}}
 .tree-camera-controls{position:relative;flex:none;align-self:center;margin:8px 0;display:flex;align-items:center;gap:8px;max-width:calc(100% - 16px);padding:6px;background:#101f30ee;border:1px solid #496478;border-radius:14px;box-shadow:0 8px 24px #0005;z-index:3}
-#tree-dialog .tree-camera-controls button{min-width:44px;height:44px;padding:8px;font-size:12px;white-space:nowrap;gap:5px}.tree-zoom{width:38px;flex:none;font-size:12px;text-align:center;color:#c1d8d7}
-#tree-dialog [data-tree-action=zoom-in]>span:last-child{display:none}#tree-dialog [data-tree-action=zoom-out]{font-size:26px}.tree-map-hint{position:relative;order:1;flex:none;text-align:center;margin:0;min-height:28px;font-size:11px;line-height:18px;color:#b1c8d2;background:#0b1926db;padding:5px 10px;border-radius:12px;pointer-events:none}
-@media(max-width:760px){#tree-dialog [data-tree-action=focus]>span:last-child{display:none}.tree-camera-controls{margin:8px 0}}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-camera-controls button{min-width:44px;height:44px;padding:8px;font-size:12px;white-space:nowrap;gap:5px}.tree-zoom{width:38px;flex:none;font-size:12px;text-align:center;color:#c1d8d7}
+:is(#tree-dialog,#player-upgrade-dialog) [data-tree-action=zoom-in]>span:last-child{display:none}:is(#tree-dialog,#player-upgrade-dialog) [data-tree-action=zoom-out]{font-size:26px}.tree-map-hint{position:relative;order:1;flex:none;text-align:center;margin:0;min-height:28px;font-size:11px;line-height:18px;color:#b1c8d2;background:#0b1926db;padding:5px 10px;border-radius:12px;pointer-events:none}
+@media(max-width:760px){:is(#tree-dialog,#player-upgrade-dialog) [data-tree-action=focus]>span:last-child{display:none}.tree-camera-controls{margin:8px 0}}
 @media(max-width:760px){
- #tree-dialog .tree-heading{padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top));gap:8px}
- #tree-dialog .tree-heading h2{font-size:18px}
- #tree-dialog .tree-heading>button{width:44px;padding:10px}
- #tree-dialog .tree-heading>button span:last-child{display:none}
+ :is(#tree-dialog,#player-upgrade-dialog) .tree-heading{padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top));gap:8px}
+ :is(#tree-dialog,#player-upgrade-dialog) .tree-heading h2{font-size:18px}
+ :is(#tree-dialog,#player-upgrade-dialog) .tree-heading>button{width:44px;padding:10px}
+ :is(#tree-dialog,#player-upgrade-dialog) .tree-heading>button span:last-child{display:none}
  .tree-wallet-summary strong{font-size:14px}.tree-wallet-summary small{font-size:10px}
  .tree-workspace{display:flex;flex-direction:column}.tree-workspace>.tree-detail{display:none}
  .tree-map-section{flex:1}
@@ -96,7 +96,7 @@
  .tree-target button{font-size:12px;min-height:38px;padding:6px 10px}.tree-target small{font-size:10px}
  .tree-secondary button{padding:10px 8px}.tree-detail-title h3{font-size:23px}.tree-description{font-size:16px}
 }
-@media(max-width:350px){#tree-dialog .tree-heading{gap:5px}.tree-wallet-summary strong{font-size:12px}.tree-wallet-summary small{font-size:9px}.tree-secondary{flex-direction:column}.skill-node>strong{font-size:11px}}
+@media(max-width:350px){:is(#tree-dialog,#player-upgrade-dialog) .tree-heading{gap:5px}.tree-wallet-summary strong{font-size:12px}.tree-wallet-summary small{font-size:9px}.tree-secondary{flex-direction:column}.skill-node>strong{font-size:11px}}
 /* Campaign uses the viewport for content, with only a compact fixed header/footer. */
 #campaign-dialog {width:min(960px,100%);height:min(850px,var(--app-height,100dvh));max-height:var(--app-height,100dvh);padding:0;overflow:hidden;}
 #campaign-dialog[open] {display:flex;flex-direction:column;}
@@ -162,13 +162,13 @@
 #reward-dialog .reward-heading,#reward-dialog .reward-footer{width:100%;max-width:none;margin:0;letter-spacing:normal;text-align:left;font:inherit}#reward-dialog .reward-footer button{font-size:14px;flex:1}#reward-dialog .reward-budget{display:flex;align-items:center;gap:7px}.reward-budget .ui-icon{width:16px;height:16px;flex:none}#reward-dialog .reward-heading{justify-content:space-between}.reward-card>div:last-child button{font-size:13px!important}.reward-power img{width:24px;height:24px}
 
 /* Map chrome occupies its own rows so it never covers upgrade nodes. */
-#tree-dialog,#tree-sheet,#reward-dialog{scrollbar-gutter:auto}
+:is(#tree-dialog,#player-upgrade-dialog),#tree-sheet,#reward-dialog{scrollbar-gutter:auto}
 #development-dialog .dialog-heading{grid-template-columns:minmax(0,1fr) auto;row-gap:8px}
 #development-dialog .dialog-heading>.ui-icon{display:none}
 #development-dialog .dialog-heading h2{font-size:clamp(18px,5vw,28px);overflow-wrap:normal;word-break:normal}
 #development-dialog .dialog-heading button{padding:9px 8px;font-size:13px}
-@media(max-width:350px){.tree-camera-controls{gap:6px;padding:4px}#tree-dialog .tree-camera-controls button{padding:8px 6px}.tree-zoom{width:32px}}
-@media(max-height:500px) and (orientation:landscape){.tree-map-hint{display:none}.tree-camera-controls{margin:4px 0}#tree-dialog .tree-heading{min-height:54px;padding-block:5px}}
+@media(max-width:350px){.tree-camera-controls{gap:6px;padding:4px}:is(#tree-dialog,#player-upgrade-dialog) .tree-camera-controls button{padding:8px 6px}.tree-zoom{width:32px}}
+@media(max-height:500px) and (orientation:landscape){.tree-map-hint{display:none}.tree-camera-controls{margin:4px 0}:is(#tree-dialog,#player-upgrade-dialog) .tree-heading{min-height:54px;padding-block:5px}}
 
 @media(max-width:350px){#development-dialog{padding:16px}}
 
@@ -179,22 +179,22 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .skill-traits{display:flex;flex-wrap:wrap;gap:10px 18px;margin:14px 0 18px;font-size:13px;color:#dce5ec}
 .skill-trait{display:inline-flex;align-items:center;gap:7px;line-height:1.4}
 .skill-trait img{width:22px;height:22px;flex:none;object-fit:contain}
-#tree-dialog :is(.skill-node,.skill-card-icon) .skill-orb{border-color:var(--rarity-color);color:#edf4f7;background:radial-gradient(circle at 35% 25%,color-mix(in srgb,var(--rarity-color) 24%,#192738),#101a29 80%);box-shadow:0 0 0 4px #0d1929}
-#tree-dialog :is(.skill-node,.skill-card-icon).is-active .skill-orb{background:radial-gradient(circle at 35% 25%,color-mix(in srgb,var(--rarity-color) 55%,#192738),#101a29 85%);box-shadow:0 0 0 4px #0d1929,0 0 18px color-mix(in srgb,var(--rarity-color) 40%,transparent)}
-#tree-dialog :is(.skill-node,.skill-card-icon).is-available .skill-orb{border-width:3px;box-shadow:0 0 0 4px #0d1929,0 0 0 5px #a8b7c6}
-#tree-dialog :is(.skill-node,.skill-card-icon).is-route .skill-orb{border-color:var(--rarity-color)}
-#tree-dialog :is(.skill-node[aria-pressed=true],.skill-card-icon) .skill-orb{outline:2px solid #f3f7fa;outline-offset:5px}
-#tree-dialog .skill-node>strong,#tree-dialog .skill-node.is-route>strong{color:#e5edf3}
-#tree-dialog .skill-node>small{color:#bccad4}
-#tree-dialog .skill-badge{background:#132131;border-color:#91a3b3;color:#e7eef3}
+:is(#tree-dialog,#player-upgrade-dialog) :is(.skill-node,.skill-card-icon) .skill-orb{border-color:var(--rarity-color);color:#edf4f7;background:radial-gradient(circle at 35% 25%,color-mix(in srgb,var(--rarity-color) 24%,#192738),#101a29 80%);box-shadow:0 0 0 4px #0d1929}
+:is(#tree-dialog,#player-upgrade-dialog) :is(.skill-node,.skill-card-icon).is-active .skill-orb{background:radial-gradient(circle at 35% 25%,color-mix(in srgb,var(--rarity-color) 55%,#192738),#101a29 85%);box-shadow:0 0 0 4px #0d1929,0 0 18px color-mix(in srgb,var(--rarity-color) 40%,transparent)}
+:is(#tree-dialog,#player-upgrade-dialog) :is(.skill-node,.skill-card-icon).is-available .skill-orb{border-width:3px;box-shadow:0 0 0 4px #0d1929,0 0 0 5px #a8b7c6}
+:is(#tree-dialog,#player-upgrade-dialog) :is(.skill-node,.skill-card-icon).is-route .skill-orb{border-color:var(--rarity-color)}
+:is(#tree-dialog,#player-upgrade-dialog) :is(.skill-node[aria-pressed=true],.skill-card-icon) .skill-orb{outline:2px solid #f3f7fa;outline-offset:5px}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node>strong,:is(#tree-dialog,#player-upgrade-dialog) .skill-node.is-route>strong{color:#e5edf3}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node>small{color:#bccad4}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-badge{background:#132131;border-color:#91a3b3;color:#e7eef3}
 .skill-rarity{position:absolute;left:-8px;bottom:-5px;width:22px;height:22px;display:grid;place-items:center;background:#0b1423;border-radius:6px}
 .skill-rarity .rarity-icon{width:20px;height:20px}
-#tree-dialog .tree-world-links path{stroke:var(--rarity-color);opacity:.75;filter:none}
-#tree-dialog .tree-world-links path.is-active{stroke:var(--rarity-color);stroke-width:4;opacity:1}
-#tree-dialog .tree-world-links path.is-route{stroke:var(--rarity-color);stroke-width:5;opacity:1;filter:drop-shadow(0 0 3px var(--rarity-color))}
-#tree-dialog .tree-world-links path.is-locked:not(.is-route){stroke:var(--rarity-color);stroke-width:3;opacity:.65}
-#tree-dialog .tree-legend{position:absolute;z-index:5;top:12px;right:12px;display:block;box-sizing:border-box;width:max-content;max-width:calc(100% - 24px);max-height:calc(100% - 56px);overflow:auto;overscroll-behavior:contain;padding:10px 12px;text-align:left;line-height:1.35;border-radius:14px;cursor:pointer}
-#tree-dialog .tree-legend[aria-expanded=true]{width:300px}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-world-links path{stroke:var(--rarity-color);opacity:.75;filter:none}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-world-links path.is-active{stroke:var(--rarity-color);stroke-width:4;opacity:1}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-world-links path.is-route{stroke:var(--rarity-color);stroke-width:5;opacity:1;filter:drop-shadow(0 0 3px var(--rarity-color))}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-world-links path.is-locked:not(.is-route){stroke:var(--rarity-color);stroke-width:3;opacity:.65}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-legend{position:absolute;z-index:5;top:12px;right:12px;display:block;box-sizing:border-box;width:max-content;max-width:calc(100% - 24px);max-height:calc(100% - 56px);overflow:auto;overscroll-behavior:contain;padding:10px 12px;text-align:left;line-height:1.35;border-radius:14px;cursor:pointer}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-legend[aria-expanded=true]{width:300px}
 .tree-legend-title{display:flex;align-items:center;gap:9px;font-weight:600}
 .tree-legend-close{display:none;margin-left:auto}
 .tree-legend[aria-expanded=true] .tree-legend-close{display:flex}
@@ -214,18 +214,18 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 #reward-dialog .reward-card{border-color:var(--rarity-color)}
 
 /* Purchase information stays anchored to its node; there is no detail pane or sheet. */
-#tree-dialog .tree-workspace{grid-template-columns:minmax(0,1fr)}
-#tree-dialog .tree-status.sr-only{padding:0;margin:0}
-#tree-dialog .skill-tooltip{position:absolute;z-index:10;box-sizing:border-box;display:flex;flex-direction:column;padding:12px;border:1px solid #688779;border-radius:14px;background:#102430;box-shadow:0 8px 28px #0008;overflow:hidden;overscroll-behavior:contain;touch-action:pan-y;color:#e8f1f2;font-size:13px;line-height:1.45}
-#tree-dialog .skill-tooltip[hidden]{display:none}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-workspace{grid-template-columns:minmax(0,1fr)}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-status.sr-only{padding:0;margin:0}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip{position:absolute;z-index:10;box-sizing:border-box;display:flex;flex-direction:column;padding:12px;border:1px solid #688779;border-radius:14px;background:#102430;box-shadow:0 8px 28px #0008;overflow:hidden;overscroll-behavior:contain;touch-action:pan-y;color:#e8f1f2;font-size:13px;line-height:1.45}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip[hidden]{display:none}
 .skill-tooltip-heading{flex:none;display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:12px}
 .skill-card-title{flex:1;min-width:0;overflow-wrap:anywhere}
 .skill-card-title .skill-type-pill{margin:7px 0 0}
 .skill-card-icon{display:grid;place-items:center;width:64px;height:64px;flex:none}
-#tree-dialog .skill-card-icon .skill-orb{width:48px;height:48px;margin:0}
-#tree-dialog .skill-card-icon.is-base .skill-orb{width:64px;height:64px}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-card-icon .skill-orb{width:48px;height:48px;margin:0}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-card-icon.is-base .skill-orb{width:64px;height:64px}
 .skill-tooltip-heading h3{font-size:17px;line-height:1.2;margin:0}
-#tree-dialog .skill-tooltip-heading button{flex:none;width:44px;min-height:44px;padding:10px;background:transparent;border:0}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip-heading button{flex:none;width:44px;min-height:44px;padding:10px;background:transparent;border:0}
 .skill-tooltip-heading button span:last-child{display:none}
 .skill-type-pill{display:inline-flex;align-items:center;gap:6px;max-width:100%;box-sizing:border-box;margin:3px 0 9px;padding:3px 9px;border:1px solid #aac5d044;border-radius:999px;background:#a8c9d515;color:#d3e4ec;font-size:11px;line-height:18px}
 .skill-type-pill .type-icon{width:16px;height:16px;flex:none}
@@ -267,8 +267,8 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .skill-tooltip-body{min-height:0;overflow:auto;overscroll-behavior:contain;touch-action:pan-y}
 .skill-tooltip-action{flex:none;padding-top:12px;border-top:1px solid #aac5d033}
 .skill-tooltip-action>p{font-size:12px;line-height:1.4;margin:8px 0 0;color:#bed2dc}
-#tree-dialog .skill-tooltip-action>.primary{width:100%;margin:0;min-height:44px}
-#tree-dialog .skill-node.is-unavailable{opacity:.45;filter:saturate(.55)}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip-action>.primary{width:100%;margin:0;min-height:44px}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node.is-unavailable{opacity:.45;filter:saturate(.55)}
 
 /* Curves explain response over distance/time; they are not better/worse meters. */
 .skill-curve{margin:3px 0 0;min-width:0;padding:8px 8px 7px;border:1px solid #a8c9d526;border-radius:10px;background:#8cbbca08}

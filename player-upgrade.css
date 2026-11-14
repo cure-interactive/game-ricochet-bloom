@@ -1,13 +1,7 @@
-#player-upgrade-dialog>.player-upgrade-body{max-width:none;width:100%;box-sizing:border-box;padding-inline:max(20px,calc((100vw - 1000px)/2))}
-.player-upgrade-intro{display:flex;gap:20px;align-items:center}.player-upgrade-emblem{font-size:64px;color:var(--mint)}.player-upgrade-emblem .ui-icon{width:1em;height:1em}.player-upgrade-wallet{font-size:1.5rem;color:var(--mint);margin:0}.player-upgrade-wallet span{font-size:.9rem;color:var(--muted)}
-.player-upgrade-stats{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0}.player-upgrade-stats>div{flex:1;min-width:140px;padding:14px;background:#142735;border-radius:14px}.player-upgrade-stats dt{font-size:.8rem;color:var(--muted)}.player-upgrade-stats dd{font-size:1.5rem;margin:8px 0 0;color:var(--mint)}
-.player-upgrade-status:empty{display:none}.player-upgrade-status{padding:12px;border:1px solid var(--mint);border-radius:12px}.player-upgrade-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.player-upgrade-branch h3{margin:8px 0 12px}.player-upgrade-branch ol{list-style:none;padding:0;margin:0;display:grid;gap:12px}.player-upgrade-card{padding:18px;border:1px solid #ffffff20;border-radius:16px;background:#102330}.player-upgrade-card h4{display:flex;gap:10px;justify-content:space-between;margin:0;font-size:1.1rem}.player-upgrade-card p{font-size:.9rem;line-height:1.5;min-height:6em}.player-upgrade-card small{display:block;margin-top:10px;color:var(--muted)}.player-upgrade-card button{width:100%;min-height:44px}.player-upgrade-card.is-owned{border-color:#a4f4cf70}.player-upgrade-owned{font-size:.9rem;color:var(--mint)}.player-upgrade-rules{margin-top:22px}.player-upgrade-rules summary{min-height:44px;cursor:pointer}.player-upgrade-rules p{line-height:1.5}
-@media(max-width:700px){.player-upgrade-grid{grid-template-columns:1fr}.player-upgrade-card p{min-height:0}.player-upgrade-stats{gap:8px}.player-upgrade-stats>div{min-width:100px}.player-upgrade-intro{gap:12px}.player-upgrade-emblem{font-size:46px}}
-
-@media(max-width:600px){
- :root body #tree-dialog>.tree-heading{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px}
- :root body #tree-dialog>.tree-heading>[data-tree-action=back]{grid-column:3;grid-row:1}
- :root body #tree-dialog>.tree-heading>.screen-heading-copy{grid-column:2;grid-row:1}
- :root body #tree-dialog>.tree-heading>.tree-wallet-summary{grid-column:1;grid-row:1}
- :root body #tree-dialog>.tree-heading>[data-tree-action=player]{grid-column:1/-1;grid-row:2;width:100%}
-}
+/* Player branches use the shared map, node, camera and detail-card styles. */
+#player-upgrade-dialog{--navigation-width:1460px}
+#player-upgrade-dialog .player-tree-icon>.ui-icon{width:32px;height:32px}
+#player-upgrade-dialog .skill-tooltip-heading h3{flex:1}
+.player-build-stats{display:grid;grid-template-columns:1fr auto;gap:8px}
+.player-build-stats dt{color:#b8d0d3}.player-build-stats dd{margin:0;color:#b4f2d8;font-weight:600}
+body[data-left-handed=true] :is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip-heading{flex-direction:row-reverse}

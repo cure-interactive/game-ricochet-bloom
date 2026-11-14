@@ -1,0 +1,15 @@
+/* Both tree views share category navigation and the same handed Back layout. */
+.tree-switch{display:flex;gap:6px;padding:4px;border:1px solid #759aa340;border-radius:14px;background:#08192580}
+:root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading .tree-switch button{border:0;background:transparent;min-height:44px;padding:10px 14px}
+:root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading .tree-switch button[aria-pressed=true]{background:#b4f2d8;color:#12332e}
+:root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading .tree-switch button>span:not(.ui-icon){display:inline}
+@media(max-width:600px){
+ :root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px}
+ :root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>[data-tree-action=back]{grid-column:3;grid-row:1}
+ :root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>.screen-heading-copy{grid-column:2;grid-row:1}
+ :root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>.tree-wallet-summary{grid-column:1;grid-row:1}
+ :root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>.tree-switch{grid-column:1/-1;grid-row:2;width:100%}
+ :root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading .tree-switch button{flex:1}
+ :root body[data-left-handed=true] :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>[data-tree-action=back]{grid-column:1}
+ :root body[data-left-handed=true] :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>.tree-wallet-summary{grid-column:3}
+}

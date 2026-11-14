@@ -8,7 +8,7 @@
   padding-bottom: max(12px, env(safe-area-inset-bottom));
 }
 :root body[data-menu-mode=home] dialog[open],
-:root body :is(#tree-dialog, #campaign-dialog, #skin-dialog, #reward-dialog)[open] {
+:root body :is(#tree-dialog, #player-upgrade-dialog, #campaign-dialog, #skin-dialog, #reward-dialog)[open] {
   padding-top: env(safe-area-inset-top);
 }
 /* Full-width action surfaces form the bottom edge, below floating navigation.
@@ -87,7 +87,7 @@ body[data-development=true][data-development-disclosure=true]{--profile-bar-heig
 body[data-development=true] #main-menu{padding-bottom:var(--profile-bottom-space)}
 :root body[data-development=true] dialog[open]{top:0;bottom:var(--profile-bottom-space);max-height:calc(var(--app-height,100dvh) - var(--profile-bottom-space) - 16px)}
 :root body[data-development=true][data-menu-mode=home] :is(dialog,#tree-dialog)[open],
-:root body[data-development=true] :is(#tree-dialog,#campaign-dialog,#skin-dialog,#reward-dialog)[open]{inset:0 0 var(--profile-bottom-space);height:calc(var(--app-height,100dvh) - var(--profile-bottom-space));max-height:calc(var(--app-height,100dvh) - var(--profile-bottom-space))}
+:root body[data-development=true] :is(#tree-dialog,#player-upgrade-dialog,#campaign-dialog,#skin-dialog,#reward-dialog)[open]{inset:0 0 var(--profile-bottom-space);height:calc(var(--app-height,100dvh) - var(--profile-bottom-space));max-height:calc(var(--app-height,100dvh) - var(--profile-bottom-space))}
 
 /* Development owns the outermost edge and safe area; action bars meet it. */
 :root body[data-development=true] :is(dialog, #tree-dialog) > :is(.campaign-footer, .reward-footer) { padding-bottom: 12px; }

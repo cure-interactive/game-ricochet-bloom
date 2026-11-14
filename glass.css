@@ -63,12 +63,12 @@
 :root body .skin-choice.is-equipped { background-color: rgb(30 78 65 / 70%); }
 :root body .skin-choice.is-locked { background-color: rgb(15 29 44 / 70%); }
 
-:root body :is(.overlay, #welcome, #tree-dialog .skill-tooltip, #tree-dialog .tree-legend, .tree-camera-controls, .tree-map-hint) {
+:root body :is(.overlay, #welcome, :is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip, :is(#tree-dialog,#player-upgrade-dialog) .tree-legend, .tree-camera-controls, .tree-map-hint) {
   background: var(--glass-panel);
   -webkit-backdrop-filter: var(--glass-filter);
   backdrop-filter: var(--glass-filter);
 }
-:root body :is(#tree-dialog .skill-tooltip, #tree-dialog .tree-legend, .tree-camera-controls) {
+:root body :is(:is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip, :is(#tree-dialog,#player-upgrade-dialog) .tree-legend, .tree-camera-controls) {
   border-color: var(--glass-edge);
   box-shadow: inset 0 1px 0 #e5fff01a, 0 12px 36px #0005;
 }

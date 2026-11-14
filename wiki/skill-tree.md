@@ -2,7 +2,9 @@
 
 ## Player Upgrades
 
-Open **Player Upgrades** from the Skill Tree to improve the player using the same Points wallet. Purchases are permanent and cumulative; each second upgrade requires the first in its branch. Skins remain cosmetic.
+Open **Skill Tree** and switch between **Powers** and **Player** using the buttons in its navigation panel. The Player tree connects Your Player to the Sight, Launch and Rebound branches. Tap or click a node to read its effects, prerequisites and Points cost, then unlock it from the detail card. Drag to pan and pinch or scroll to zoom, just like the power tree. Keyboard users can move between nodes with arrow keys and open details with Enter or Space. Hovering does not open a card.
+
+Both trees use the same Points wallet. Purchases are permanent and cumulative; each second player upgrade requires the first in its branch, and every branch can be researched. **Your Build** shows your current player attributes and where upgrades apply. Existing purchases are preserved. Skins remain cosmetic.
 
 - **Sight:** Long Sight costs 8 Points and adds 180 units of aiming guide and 140 units after the first wall bounce. Deep Sight costs 18 Points and adds the same amounts again. The guide shows wall geometry; bubbles and powers can change the actual path.
 - **Launch:** The starting maximum is 800 units/second. Strong Launch costs 10 Points and raises it to 900. Greater Launch costs 22 Points and raises it to 1,000. The minimum stays 280, so gentle shots remain available.

@@ -1,14 +1,14 @@
 /* Mirror controls, never reading direction, artwork or gameplay coordinates. */
-:root body[data-left-handed=true] :is(dialog,#tree-dialog)>.screen-heading{flex-direction:row-reverse}
+:root body[data-left-handed=true] :is(dialog,#tree-dialog,#player-upgrade-dialog)>.screen-heading{flex-direction:row-reverse}
 :root body[data-left-handed=true] dialog .close{float:left;left:0;right:auto;margin-left:-12px;margin-right:0}
-:root body[data-left-handed=true] :is(dialog,#tree-dialog)>.screen-heading .close{margin:0}
+:root body[data-left-handed=true] :is(dialog,#tree-dialog,#player-upgrade-dialog)>.screen-heading .close{margin:0}
 body[data-left-handed=true] #gamemodes-dialog .mode-star{left:6px;right:auto}
 body[data-left-handed=true] #gamemodes-dialog .mode-card>.mode-card-top{padding-left:58px;padding-right:18px}
-body[data-left-handed=true] #tree-dialog .tree-legend{left:12px;right:auto}
+body[data-left-handed=true] :is(#tree-dialog,#player-upgrade-dialog) .tree-legend{left:12px;right:auto}
 body[data-left-handed=true] .pool-shell>.hud{flex-direction:row-reverse}
 body[data-left-handed=true] .hud .pluck{padding-left:48px;padding-right:0}
 body[data-left-handed=true] .hud .pluck button{left:0;right:auto}
 @media(max-width:600px){
- :root body[data-left-handed=true] #tree-dialog>.tree-heading>[data-tree-action=back]{grid-column:1}
- :root body[data-left-handed=true] #tree-dialog>.tree-heading>.tree-wallet-summary{grid-column:3}
+ :root body[data-left-handed=true] :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>[data-tree-action=back]{grid-column:1}
+ :root body[data-left-handed=true] :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>.tree-wallet-summary{grid-column:3}
 }

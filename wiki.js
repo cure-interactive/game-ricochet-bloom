@@ -15,7 +15,7 @@ export const WIKI_PAGES = Object.freeze({
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=ee2b8881d45b9d07c5d8dce0740cd5b7dd57e92c87d4d7eacfe66369bd54f4a8' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=e9f1088acaa199f3f089fd52ce39216c4d274f28a9018a8ab0e69c196de8bdf1' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=9bf3a78b05348619526cfaae5f78ccdac80abfb3e412208c0e96be5764876416' },
-  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=2a93ba7362cc6f2c3f031dd1bc1b3aa17c76139aa2eaf9d69cd614d1d0d0f53a' },
+  'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=caf888496d0fc9c08ac9efaf0e16c0c027492af8c806dbeaf384727f9bedf538' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=f251375e960054752df660355c35932b59b297cc656a915a9621974e20536f10' },
   settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=ca186bd81296dd755d28b2813498f55777c32f222a0347449bf46425490212aa' }
 });
