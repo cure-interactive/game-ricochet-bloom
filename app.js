@@ -6,7 +6,7 @@ import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-att
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=5ff229a31a77b92b75b6336e1bb1d7143a5c4a32922a4c4f10e12c8f11de9e18';
 import { earningAmount } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
 import { trialMount } from './trial-ui.js?v=28a15e44cab574c0269d188e2121ceeb1690a1249e7c149de804a8a783b12148';
-import { GAME_VERSION } from './version.js?v=00bebd2c1b8ed6586d2557ec584dc4532e7a777b7261e6e2192d8e287a49e6fd';
+import { GAME_VERSION } from './version.js?v=c3d452128f273afb80f2b8e3341142292a96d3e50092ff2ffa0a1cfe6e2d705c';
 import { powerSlots } from './power-ui.js?v=740d7f3f36f4da49cd7198c6edb00bf78e8ffd99529f41b29dfe32c77598f44b';
 import { creditsMount } from './credit.js?v=c4046183d2832bfd89b418e62fc0f31c438ff69d93d20b503adc0750f974f22d';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
