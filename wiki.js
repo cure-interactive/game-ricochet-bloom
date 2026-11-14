@@ -2,7 +2,7 @@ import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f10787
 import { screenHeader } from './screen-header.js?v=b12f4a7f643a7ebc5d8945f2671aead3040da9be729bee110404af53f14e24e0';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=da9353d7b220448e34f715834c1fe4ca36cd8bef92a399b144fec0d56897dfbe';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=4781e2c4345be57b2b762f923e4169a538e2544447e752f4fe2de108268e3fdb';
 
 export const WIKI_PAGES = Object.freeze({
   medals: { title: 'Medals', url: './wiki/medals.md?v=c0e1bb2076f5fc938c878764747c5d531b8c6a0af77df92644351021bfd39f09' },

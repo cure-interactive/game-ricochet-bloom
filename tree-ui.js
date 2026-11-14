@@ -1,39 +1,17 @@
+import {skillNodeHTML,skillLegendHTML,showSkillCard} from './skill-card.js?v=74e1d54c9fb41702a057df1f74cf0d92940d2f4d9df3ee5bab7e5dc0d0876c91';
+export {skillStatsHTML} from './skill-card.js?v=74e1d54c9fb41702a057df1f74cf0d92940d2f4d9df3ee5bab7e5dc0d0876c91';
 import { treeSwitchHTML, treeSwitchMount } from './tree-switch.js?v=46e11becd200614c3e4abd19bfaeb47b3863fe7a36fe0637a50f2a057bd33b3a';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { screenHeader } from './screen-header.js?v=b12f4a7f643a7ebc5d8945f2671aead3040da9be729bee110404af53f14e24e0';
-import { purchaseComparison, skillStats, tooltipPosition } from './skill-comparison.js?v=87d6fb2611413eb5abde2f85f577864043f616471e7bdc4c903738053c451fae';
+import { purchaseComparison, skillStats } from './skill-comparison.js?v=d906b14eaf8c1806bffd0856ede555240e415e41cd337331a1c6c433b7afd085';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=3ebb94658d716e91d33273009c75df5064c23ece248714b5feaa9e80ce5af851';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
 import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
-import { profilePurchase, profileSummary } from './profile.js?v=8b46ab3dd82c6cf494dd9495dde1302dd74763ae7b5a4f8a30664c783bd23497';
-import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=8c5cad259a936425799e4ab42a618197c5a72e81e38a2264e6d19508d67b43c4';
+import { profilePurchase, profileSummary } from './profile.js?v=1ea1f375cbce19893275eb111e5332fa7e4f80bfd6ce219b63a8cc1cf096da39';
+import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=89924fc248ac7dee4bed6dc9f898e94f3f74febad5979a15e2015f89ce53037d';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 const button=(action,label,icon='add',attributes={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attributes});
 const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn Points in any game mode.','mastery':'Activate this power on 3 shots that hit at least 3 bubbles. Melody Journey clears also count.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
-
-function statCurveHTML(curve,stats){
- const left=32,right=270,top=22,bottom=112;
- const x=v=>left+v/curve.xMax*(right-left),y=v=>bottom-(v-curve.yMin)/(curve.yMax-curve.yMin)*(bottom-top);
- const path=points=>points.map(([a,b],i)=>`${i?'L':'M'}${x(a).toFixed(2)},${y(b).toFixed(2)}`).join(' ');
- const zero=y(0),caption=curve.changed?`<span class="skill-curve-current">${escape(stats.beforeLabel)}</span><span class="skill-curve-upgrade">${escape(stats.afterLabel)}</span>`:'<span class="skill-curve-value">'+escape(stats.compare?stats.afterLabel:stats.heading)+'</span>';
- return `<figure class="skill-curve"><svg viewBox="0 0 280 148" role="img" aria-label="${escape(curve.summary)}"><text class="skill-curve-axis-title" x="32" y="11">${escape(curve.yLabel)}</text><path class="skill-curve-grid" d="M32 22H270 M32 67H270 M32 112H270"/><path class="skill-curve-axis" d="M32 22V112H270 M32 ${zero}H270"/><text x="26" y="26" text-anchor="end">${curve.yMax}</text><text x="26" y="115" text-anchor="end">${curve.yMin}</text>${curve.yMin<0?`<text x="26" y="${zero+4}" text-anchor="end">0</text>`:''}${curve.previous?`<path class="skill-curve-before" d="${path(curve.previous)}"/>`:''}<path class="skill-curve-after" d="${path(curve.points)}"/><text x="32" y="127">0</text><text x="270" y="127" text-anchor="end">${escape(curve.xEnd)}</text><text x="151" y="144" text-anchor="middle">${escape(curve.xLabel)}</text></svg><figcaption>${caption}</figcaption><p>${escape(curve.note)}</p></figure>`;
-}
-
-function statVisual(row){
- const value=row.progress,before=row.changed?row.previousProgress:value,kept=Math.min(before,value),extent=Math.max(before,value),change=value>before?'gain':'loss';
- const fill=row.kind==='count'?Array.from({length:row.max},(_,i)=>`<i class="${i<Math.round(kept*row.max)?'filled':i<Math.round(extent*row.max)?'skill-stat-'+change:''}"></i>`).join(''):
-   `<i style="width:${kept*100}%"></i>${row.changed?`<i class="skill-stat-${change}" style="width:${(extent-kept)*100}%"></i>`:''}`;
- const bar=`<span class="skill-stat-${row.kind}" aria-hidden="true">${fill}</span>`;
- if(row.kind!=='bar')return bar;
- const partial=value<1,formatted=String(row.after),best=String(row.after).replace(/^[\d.]+/,String(row.best));
- return `<span class="sr-only">${row.direction==='lower'?'Lower':'Higher'} is better. Best: ${escape(best)}</span><span class="skill-stat-meter" aria-hidden="true"><span class="skill-stat-labels ${partial&&value>.75?'is-tight':''} ${row.changed?'is-'+change:''}" style="--fill:${value*100}%;--value-width:${formatted.length+.5}ch">${partial?`<span class="skill-stat-endpoint">${escape(formatted)}</span>`:''}<span class="skill-stat-max">Best ${escape(best)}</span></span>${bar}</span>`;
-}
-export function skillStatsHTML(stats){
- const changed=stats.rows.filter(r=>r.changed&&r.kind!=='text'&&!r.curve);
- const legend=changed.length?`<p class="skill-stat-change-key">${changed.some(r=>r.progress>r.previousProgress)?'<span><i class="skill-stat-gain" aria-hidden="true"></i>Improvement</span>':''}${changed.some(r=>r.progress<r.previousProgress)?'<span><i class="skill-stat-loss" aria-hidden="true"></i>Tradeoff</span>':''}</p>`:'';
- return `<section class="skill-stats" aria-label="${escape(stats.heading)}"><h4>${escape(stats.heading)}</h4>${stats.compare?`<p class="skill-stat-key"><span>${escape(stats.beforeLabel)}</span><span aria-hidden="true">→</span><span>${escape(stats.afterLabel)}</span></p>`:''}${legend}<dl>${stats.rows.map(row=>`<div class="skill-stat ${row.changed?'is-changed':''}" data-change="${row.changed&&row.kind!=='text'?(row.progress>row.previousProgress?'gain':'loss'):'none'}"><dt>${escape(row.label)}</dt><dd>${row.changed?`<span class="skill-stat-before">${escape(row.before)}</span><span aria-hidden="true"> → </span><span class="sr-only"> to </span>`:''}<strong>${escape(row.after)}</strong></dd><dd class="skill-stat-description">${escape(row.description)}</dd>${row.curve?`<dd class="skill-stat-visual">${statCurveHTML(row.curve,stats)}</dd>`:row.kind!=='text'?`<dd class="skill-stat-visual">${statVisual(row)}</dd>`:''}</div>`).join('')}</dl>${stats.rows.some(r=>r.kind==='bar'&&!r.curve)?'<p class="skill-stat-note">Full bar = best value for this stat. Researched upgrades stack.</p>':''}</section>`;
-}
 
 // Explain the same gate used by purchases, beside the affected power.
 export function powerUnlock(state,power){
@@ -104,7 +82,7 @@ export function treeMount(controller){
  let state=controller.get(),selected='ripple.base',tip=null,tipId=null,lastView=null;
  const fullLayout=treeLayout(POWER_TREES,cat.nodes),world={x:0,y:0,width:fullLayout.width,height:fullLayout.height};
  let layout=fullLayout,visiblePositions={};
- dialog.innerHTML=`${screenHeader({className:'tree-heading',title:'Skill Tree',back:button('back','Back','arrow-left'),actions:treeSwitchHTML('powers')+'<div class="tree-wallet-summary"></div>'})}<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected power tree"><div class="tree-map-stage"><button type="button" class="tree-legend" data-tree-action="legend" aria-expanded="false" aria-controls="tree-legend-content"><span class="tree-legend-title">${iconHTML('about')}<span>Legend</span><span class="tree-legend-close" aria-hidden="true">${iconHTML('close')}</span></span><span id="tree-legend-content" hidden><span class="rarity-legend">${Object.entries(RARITIES).map(([id,r])=>`<span class="rarity-key">${rarityIconHTML(id)}${r.name}</span>`).join('')}</span><span class="status-legend"><span class="legend-active">Active</span><span class="legend-owned">Owned</span><span class="legend-available">Available</span><span class="legend-locked">Locked</span></span><span class="tree-legend-hint">Tap to Collapse</span></span></button><div class="tree-map-scroll" tabindex="0" aria-label="Skill Tree map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom">85%</output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div></section></div><footer class="tree-map-hint">Drag to move · Pinch or scroll to zoom</footer><section id="skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="skill-tooltip-title" hidden></section>`;
+ dialog.innerHTML=`${screenHeader({className:'tree-heading',title:'Skill Tree',back:button('back','Back','arrow-left'),actions:treeSwitchHTML('powers')+'<div class="tree-wallet-summary"></div>'})}<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected power tree"><div class="tree-map-stage">${skillLegendHTML('tree-legend-content')}<div class="tree-map-scroll" tabindex="0" aria-label="Skill Tree map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom">85%</output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div></section></div><footer class="tree-map-hint">Drag to move · Pinch or scroll to zoom</footer><section id="skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="skill-tooltip-title" hidden></section>`;
  treeSwitchMount(dialog,'powers',()=>controller.players?.());
  const surface=dialog.querySelector('.tree-map-scroll'),mapElement=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage');
  const legend=dialog.querySelector('.tree-legend'),legendContent=dialog.querySelector('#tree-legend-content');
@@ -128,11 +106,9 @@ export function treeMount(controller){
    for(const path of mapElement.querySelectorAll('.tree-world-links path'))path.classList.toggle('is-route',route.has(path.dataset.from)&&route.has(path.dataset.to));
  }
  function nodeButton(n){
-   const base=n.kind==='base',active=n.equipped||base&&state.powers.includes(n.power),available=n.canUnlock,locked=!n.owned&&!n.borrowed&&!available;
+   const base=n.kind==='base',active=n.equipped||base&&state.powers.includes(n.power),available=n.canUnlock;
    const cost=skillCost(state,n.id,controller.showPurchasedCosts?.());
-   const badge=n.borrowed?'clock':active||n.owned?'check':locked?'lock':null;
-   const label=active?'Active':n.owned?'Owned':available?'Available to Purchase':n.borrowed?'Borrowed':'Locked';
-   return `<button type="button" data-node="${n.id}" data-kind="${n.kind}" data-rarity="${n.rarity}" class="skill-node ${base?'is-base':''} ${n.kind==='capstone'?'is-capstone':''} ${n.owned?'is-owned':''} ${n.dimmed?'is-unavailable':''} ${active?'is-active':''} ${available?'is-available':''} ${locked?'is-locked':''} ${n.borrowed?'is-borrowed':''}" style="--rarity-color:${RARITIES[n.rarity].color};--node-x:${layout.nodes[n.id].x}px;--node-y:${layout.nodes[n.id].y}px" aria-label="${escape(n.name+', '+label+(cost===null?'':', Cost: '+cost+' Points'))}" aria-pressed="${selected===n.id}" aria-haspopup="dialog" aria-controls="skill-tooltip" aria-expanded="false"><span class="skill-orb">${skillIconHTML(n)}<span class="skill-rarity" aria-hidden="true">${rarityIconHTML(n.rarity)}</span>${badge?'<i class="skill-badge">'+iconHTML(badge)+'</i>':''}</span><strong>${escape(n.name)}</strong>${cost===null?'':`<small class="skill-node-cost">${iconHTML('coin')}<span>${cost} Points</span></small>`}</button>`;
+   return skillNodeHTML(n,{position:layout.nodes[n.id],selected:selected===n.id,active,available,cost});
  }
  function render(){
    hideTooltip();
@@ -152,17 +128,8 @@ export function treeMount(controller){
    if(!info||!visiblePositions[id]){hideTooltip();return;}
    if(tipId===id&&!tip.hidden)return;
    hideTooltip();selected=id;selectionRender();
-   const source=mapElement.querySelector(`[data-node="${id}"]`),bounds=stage.getBoundingClientRect();
-   tip.style.maxHeight=Math.max(44,bounds.height-16)+'px';tip.style.maxWidth=Math.max(0,bounds.width-16)+'px';
-   tip.innerHTML=`<div class="skill-tooltip-heading"><div class="skill-card-title"><h3 id="skill-tooltip-title">${escape(info.name)}</h3><span class="skill-type-pill"><span class="sr-only">Type: </span>${typeIconHTML(info.type)}${escape(info.type)}</span></div>${button('dismiss','Close','close')}</div><div class="skill-tooltip-body"><p>${escape(info.description)}</p>${info.stats?skillStatsHTML(info.stats):''}${info.unlock?'':`<p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>`}</div>${info.unlock?`<div class="skill-tooltip-action">${button('buy',`Unlock · ${info.unlock.cost} Points`,'lock',{class:'primary',disabled:!info.unlock.enabled,'aria-describedby':info.unlock.enabled?null:'skill-unlock-reason'})}${info.unlock.reason?`<p id="skill-unlock-reason">${escape(info.unlock.reason)}</p>`:''}</div>`:info.canEquip?`<div class="skill-tooltip-action">${button('equip','Use This Style','check',{class:'primary'})}</div>`:''}`;
-   // Mirror the selected node's actual artwork and badges; the card shares its paint rules.
-   const cardIcon=document.createElement('span');
-   cardIcon.className=source.className.replace('skill-node','skill-card-icon');cardIcon.setAttribute('aria-hidden','true');
-   cardIcon.style.setProperty('--rarity-color',source.style.getPropertyValue('--rarity-color'));
-   cardIcon.append(source.querySelector('.skill-orb').cloneNode(true));tip.querySelector('.skill-tooltip-heading').prepend(cardIcon);
-   tip.hidden=false;tipId=id;source.setAttribute('aria-expanded','true');
-   const size=tip.getBoundingClientRect(),position=tooltipPosition(source.getBoundingClientRect(),bounds,size.width,size.height),origin=dialog.getBoundingClientRect();
-   tip.style.left=position.left-origin.left+'px';tip.style.top=position.top-origin.top+'px';
+   const source=mapElement.querySelector(`[data-node="${id}"]`);
+   showSkillCard({tip,source,stage,dialog,info,titleId:'skill-tooltip-title'});tipId=id;
  }
  function selectNode(id,keyboard=false){
    if(!visiblePositions[id])return;

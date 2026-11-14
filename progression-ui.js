@@ -1,22 +1,22 @@
-import { playerUpgradeMount } from './player-upgrade-ui.js?v=86f228c91c0024b72e42097446dedbf1a9e45c269223b057c7dd8b208bed2c81';
+import { playerUpgradeMount } from './player-upgrade-ui.js?v=42e51dec23c21d40350b561ff8f26a7de3e9047838d44526f3f214d7a5d9c53b';
 import { saveRecoveryMount } from './save-recovery-ui.js?v=22ca1b694e351eb79943b890a1c8470d3ddf6925355688b7f5b88b9ef82a9109';
-import { progressionResetUnreadable } from './progression-store.js?v=7e9d5324698da938cb9e7f40da28580bd5d8e96946aa60bc329bb652db2def9f';
+import { progressionResetUnreadable } from './progression-store.js?v=453d513c2d7181f8c4021044de3416164e1f39e8a75024fc8bcbf35ca69de1ba';
 import { medalIcon } from './medal-ui.js?v=559905246b3697fd9cf0a993d9c71ffe30b47a0c6d6cd3943a5b235d0faa31c8';
 
 import { earningPrepare, earningId } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
-import { profilePlayReward, profileDevelopmentCopy } from './profile.js?v=8b46ab3dd82c6cf494dd9495dde1302dd74763ae7b5a4f8a30664c783bd23497';
+import { profilePlayReward, profileDevelopmentCopy } from './profile.js?v=1ea1f375cbce19893275eb111e5332fa7e4f80bfd6ce219b63a8cc1cf096da39';
 import { developmentBarMount } from './development-bar.js?v=b0a9cd790c798450cb10b29aef25140fc2e6c33d64c54683da93b2db844c8b3b';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { campaignMount } from './campaign-ui.js?v=339000b804d3eaaefb03e6f6ce7c18c89851dc5744aa012a132bb04ddfc0887b';
-import { challengeEncode, challengeDecode } from './challenge.js?v=383ae6b68786ba5d5084c8d4b441e28b488e36fecd9224852bd147190dba76e2';
+import { campaignMount } from './campaign-ui.js?v=793aaf21d153358da13ea09d123eea48a328398d7f53088fa75d12645390b7a6';
+import { challengeEncode, challengeDecode } from './challenge.js?v=9a065a7d9ec5d80f539cac785a6558a1017f020afa50441cbe386099ef629de8';
 import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=8c5cad259a936425799e4ab42a618197c5a72e81e38a2264e6d19508d67b43c4';
-import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=7e9d5324698da938cb9e7f40da28580bd5d8e96946aa60bc329bb652db2def9f';
-import { gameCreate } from './engine.js?v=5d4ecf80115d71c18a5182dcc78d6161803b2652f17a3fcec1c5a48a149bedd8';
-import { treeMount } from './tree-ui.js?v=8bdf03134c6be17a0277d70ef1d13fc58ffcceef2a663ff898778f4f2d399021';
+import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=89924fc248ac7dee4bed6dc9f898e94f3f74febad5979a15e2015f89ce53037d';
+import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=453d513c2d7181f8c4021044de3416164e1f39e8a75024fc8bcbf35ca69de1ba';
+import { gameCreate } from './engine.js?v=02c73cffdc63fec18e91d99c59bf41c2c5410e355e8d7052ca3a9fc9f0b134ec';
+import { treeMount } from './tree-ui.js?v=98c867edf07d2822519920ea6f2b978e5d90aaed3f4f54f1abcb44b04d4c6ffe';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
-import { skinMount } from './skin-ui.js?v=cecb8055b7ec7487c1a14a06dd10bac12f797ee1412e7593ad3a64f59b61219f';
+import { skinMount } from './skin-ui.js?v=6e50176e92c3fa9e61381297b6c0c4272fc088a613292c0a2255a245f344a9f5';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;
@@ -96,7 +96,7 @@ export function progressionMount(host){
     if(saved.ok)suspended.state=saved.state;
     return saved.ok?{...r,state:saved.state}:saved;
   }
-  const players=playerUpgradeMount({powers:()=>tree.open(),showPurchasedCosts:()=>developmentSettings.showPurchasedCosts,get:()=>suspended?.state||state,act:treeAct,screen:()=>host.screen?.('player-upgrades'),back:()=>host.back?.()});
+  const players=playerUpgradeMount({showHiddenContent:()=>developmentSettings.showHiddenContent,powers:()=>tree.open(),showPurchasedCosts:()=>developmentSettings.showPurchasedCosts,get:()=>suspended?.state||state,act:treeAct,screen:()=>host.screen?.('player-upgrades'),back:()=>host.back?.()});
   tree=treeMount({players:()=>players.open(),get:()=>suspended?.state||state,showHiddenContent:()=>developmentSettings.showHiddenContent,showPurchasedCosts:()=>developmentSettings.showPurchasedCosts,act:treeAct,open,screen:()=>host.screen?.('tree'),back:()=>host.back?.()});
   const skins=skinMount({get:()=>state,showHiddenContent:()=>developmentSettings.showHiddenContent,act,screen:()=>host.screen?.('skins'),back:()=>host.back?.()});
   const listen=(record,seconds=0)=>{clearTimeout(listenTimer);host.save();context='listening';listening={campaign:seconds>0,track:record.track};close();back.hidden=false;back.lastElementChild.textContent=seconds?'Stop preview':'Leave listening';const listeningGame=gameCreate(record.seed,'free');listeningGame.blooms=record.music.blooms;listeningGame.launches=record.music.plucks;host.play(listeningGame,record.music);host.message('Listening to '+trackGet(record.track).name+'. Leave listening to return to your saved run.');if(seconds)listenTimer=setTimeout(()=>{if(context==='listening'&&host.currentScreen?.()==='play'){leave();campaign.open('play',record.track);}},seconds*1000);};

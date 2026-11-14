@@ -1,16 +1,16 @@
-import {PLAYER_UPGRADES,playerUpgradeReason} from './player-upgrade.js?v=fab6c92f134e88ebe641c4be9b87d9e46b857905b117a20831b164d5181c0c23';
-const branches={Sight:{icon:'eye',color:'#a4e6d2'},Launch:{icon:'speedometer',color:'#e9c18a'},Rebound:{icon:'reset',color:'#b8b0ef'}};
-// Draw exactly the same prerequisite edges that govern permanent purchases.
-export function playerTreeGraph(state){
+import {PLAYER_UPGRADES,playerUpgradeReason} from './player-upgrade.js?v=9483739a49b831a9c57dd285854e1bb23148947a97636d12caaebc2b619a776f';
+import {researchLayout} from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
+const branches={player:{name:'Player'},Sight:{name:'Sight'},Launch:{name:'Launch'},Rebound:{name:'Rebound'}};
+// Use the power tree's prerequisite layout and discoverable research frontier.
+export function playerTreeGraph(state,showAll=false){
  const profile=state.profile,owned=profile.playerResearch??{};
- const nodes=[{id:'player',name:'Your Player',x:240,y:80,icon:'player-skin',color:'#d2f3df',owned:true,cost:null,reason:null}];
- const depth=id=>{const n=PLAYER_UPGRADES.find(n=>n.id===id);return n.requires?depth(n.requires)+1:1;};
- const names=Object.keys(branches);
+ const nodes=[{id:'player',name:'Your Player',power:'player',kind:'base',requires:null,icon:'player-skin',type:'Motion',rarity:'common',owned:true,cost:null,reason:null}];
  for(const n of PLAYER_UPGRADES){
   const has=Object.hasOwn(owned,n.id),reason=state.powerMode==='shared'?'Shared challenges use their fixed build.':playerUpgradeReason(profile,n.id);
-  nodes.push({...n,...branches[n.branch],x:80+names.indexOf(n.branch)*160,y:80+depth(n.id)*175,owned:has,reason,canBuy:!has&&!reason});
+  if(showAll||has||state.powerMode!=='shared'&&(!n.requires||Object.hasOwn(owned,n.requires)))
+   nodes.push({...n,power:n.branch,kind:'upgrade',owned:has,reason,canBuy:!has&&!reason,dimmed:!has&&!!reason});
  }
- const byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
- const edges=PLAYER_UPGRADES.map(n=>{const from=byId[n.requires||'player'],to=byId[n.id],start=from.y+(from.id==='player'?102:78),mid=(start+to.y-28)/2;return {from:from.id,to:to.id,path:`M${from.x} ${start} V${mid} H${to.x} V${to.y-28}`};});
- return {width:480,height:550,nodes,byId,edges};
+ const layout=researchLayout(branches,nodes.map(n=>({...n,requires:n.id==='player'?[]:[n.requires||'player']})));
+ for(const n of nodes)Object.assign(n,{x:layout.nodes[n.id].x,y:layout.nodes[n.id].y});
+ return {width:layout.width,height:layout.height,nodes,byId:Object.fromEntries(nodes.map(n=>[n.id,n])),edges:layout.edges};
 }

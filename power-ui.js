@@ -1,4 +1,4 @@
-import { POWERS, powerAllowance, powerMarkers } from './engine.js?v=5d4ecf80115d71c18a5182dcc78d6161803b2652f17a3fcec1c5a48a149bedd8';
+import { POWERS, powerAllowance, powerMarkers } from './engine.js?v=02c73cffdc63fec18e91d99c59bf41c2c5410e355e8d7052ca3a9fc9f0b134ec';
 import { assetURL } from './asset.js?v=b61b263cca739098e590874441ca93d7dd0d93530d85f7f90f10bc579dc815ae';
 import { iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 

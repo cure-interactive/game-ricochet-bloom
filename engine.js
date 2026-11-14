@@ -1,4 +1,4 @@
-import { playerConfig, playerBuildValid } from './player-upgrade.js?v=fab6c92f134e88ebe641c4be9b87d9e46b857905b117a20831b164d5181c0c23';
+import { playerConfig, playerBuildValid, playerLaunchSpeed, playerGuideLength } from './player-upgrade.js?v=9483739a49b831a9c57dd285854e1bb23148947a97636d12caaebc2b619a776f';
 import { SCORE_BUDGETS, SCORE_DEFAULT, SCORE_SEED, scoreAttackValid } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { BONUS_TIERS, earningValid, earningPower, earningSettle } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
 import { liveBubbles, waveConfig, wavePrepare, waveEntryStep, waveValid, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
@@ -358,7 +358,7 @@ export const gameWon = state => state.mode === 'challenge' && state.isOver && st
 export function continueFree(state) { if (!state.isOver || ['waves','score-attack'].includes(state.mode)) return false; delete state.earning; state.mode = 'free'; state.isOver = false; return true; }
 export function launch(state, angle, power = .7) {
   if (state.isOver || state.isFlying || state.wave?.entry<WAVE_ENTRY || !Number.isFinite(angle) || !Number.isFinite(power)) return false;
-  const seed = state.bodies[0], speed = 280 + Math.max(0, Math.min(1, power)) * (playerConfig(state.playerBuild).maxLaunch-280);
+  const seed = state.bodies[0], speed = playerLaunchSpeed(state.playerBuild,power);
   seed.vx = Math.cos(angle) * speed; seed.vy = Math.sin(angle) * speed;
   state.power.markers = powerPlan(state);
   effectClear(state); state.isFlying = true; state.flightAge = 0; state.chain = []; state.flightPath = []; state.banks = 0; state.launches++; state.power.used = 0; state.shotStart=state.score;state.lastShot=null;if(state.mode!=='song-run')state.objective.earned=false;
@@ -862,7 +862,7 @@ export function aimPreview(state,angle,power=.7) {
   const seed=state.bodies[0],dx=Math.cos(angle),dy=Math.sin(angle),edge=RULE.inset+seed.radius;
   const tx=Math.abs(dx)<1e-8?Infinity:((dx>0?RULE.width-edge:edge)-seed.x)/dx;
   const ty=Math.abs(dy)<1e-8?Infinity:((dy>0?RULE.height-edge:edge)-seed.y)/dy;
-  const distance=Math.min(tx,ty),limit=260+Math.max(0,Math.min(1,power))*500+playerConfig(state.playerBuild).guideExtra;
+  const distance=Math.min(tx,ty),limit=playerGuideLength(state.playerBuild,power);
   const end={x:seed.x+dx*Math.min(distance,limit),y:seed.y+dy*Math.min(distance,limit)};
   const points=[{x:seed.x,y:seed.y},end];
   if(distance<=limit) {const rx=tx<=ty?-dx:dx,ry=ty<=tx?-dy:dy;const nextX=Math.abs(rx)<1e-8?Infinity:((rx>0?RULE.width-edge:edge)-end.x)/rx,nextY=Math.abs(ry)<1e-8?Infinity:((ry>0?RULE.height-edge:edge)-end.y)/ry;const remaining=Math.max(0,Math.min(playerConfig(state.playerBuild).bankGuide,limit-distance,nextX,nextY));points.push({x:end.x+rx*remaining,y:end.y+ry*remaining});}

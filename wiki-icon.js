@@ -1,7 +1,7 @@
 import { iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 import { CATALOGUE } from './catalogue.js?v=b2330060a946840e4caf0bd604dd4001893829861e077d21e980d225f355dbf8';
 import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=3ebb94658d716e91d33273009c75df5064c23ece248714b5feaa9e80ce5af851';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=18da00c67ed30f0ba7a7d95cd1c45883ed1b09ffbfc187e5f004c9cf996974ec';
 
 // Only known topics and catalogue identities produce decoration. Markdown never
 // supplies an image URL, raw SVG or icon name to the renderer.
