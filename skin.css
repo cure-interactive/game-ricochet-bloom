@@ -11,7 +11,8 @@
 #skin-dialog .skin-choice.is-equipped{border-color:#b1edd6;background:#173b37;box-shadow:inset 0 0 0 1px #b1edd655}
 #skin-dialog .skin-choice.is-locked{opacity:1;cursor:pointer;background:#101e30;color:#a7bacb;border-color:#2c4055}.skin-choice.is-locked .skin-preview{opacity:.55}
 .skin-choice strong{font-size:14px;font-weight:500}.skin-choice small{font-size:12px;line-height:1.4;text-align:center;color:#a6b9c7}.skin-choice-state{display:flex;align-items:center;gap:5px;font-size:11px;color:#b4cfce}.skin-choice-state .ui-icon{width:15px;height:15px}
-.skin-preview{height:52px;width:100%;display:grid;place-items:center}.skin-preview i{display:block;width:46px;height:46px;border-radius:50%;border:1px solid var(--skin-color);background:radial-gradient(circle at 32% 25%,#ffffffe6 0%,var(--skin-color) 20%,#172f3d 78%);box-shadow:inset -5px -8px 14px #07101f77,0 0 24px color-mix(in srgb,var(--skin-color) 30%,transparent);position:relative}.skin-preview i:after{content:'';position:absolute;inset:7px;border:1px solid #ffffff35;border-radius:50%}
+.skin-preview{height:52px;width:100%;display:grid;place-items:center}.skin-preview i{display:block;width:46px;height:46px}
+.skin-preview i,.ui-icon[data-icon="player-skin"]{border-radius:50%;border:1px solid var(--skin-color);background:radial-gradient(circle at 32% 25%,#ffffffe6 0%,var(--skin-color) 20%,#172f3d 78%);box-shadow:inset -5px -8px 14px #07101f77,0 0 24px color-mix(in srgb,var(--skin-color) 30%,transparent);position:relative}.skin-preview i:after,.ui-icon[data-icon="player-skin"]:after{content:'';position:absolute;inset:7px;border:1px solid #ffffff35;border-radius:50%}
 #skin-dialog button:focus-visible{outline:3px solid #eed496;outline-offset:3px}
 @media(max-width:600px){.skin-heading{padding:8px 12px;padding-top:max(8px,env(safe-area-inset-top));gap:12px}.skin-heading h2{font-size:20px}.skin-scroll{padding:16px 12px max(16px,env(safe-area-inset-bottom))}.skin-grid{gap:10px}#skin-dialog .skin-choice{min-height:120px;padding:10px 6px;gap:6px}}
 
@@ -30,7 +31,8 @@
 .skin-scroll.is-detail>.skin-status{flex:none;text-align:center;margin:0}
 @media(max-height:500px) and (min-width:500px){.skin-detail{flex-direction:row;max-width:680px;gap:24px;padding:12px 0}.skin-preview-large{flex:none;width:42%;height:180px}.skin-preview-large i{width:140px;height:140px}.skin-selection{flex:1}}
 
-/* The main-menu button previews the equipped skin using the picker material. */
-.home-primary .home-skin{width:26px;height:26px;flex:none}
-.home-primary .home-skin i{width:24px;height:24px;box-shadow:inset -3px -4px 7px #07101f77,0 0 12px color-mix(in srgb,var(--skin-color) 30%,transparent)}
-.home-primary .home-skin i:after{inset:4px}
+/* Player actions use the equipped skin, never a symbolic player/duck mask.
+   Screen navigation refreshes the inherited color for the active profile. */
+.ui-icon[data-icon="player-skin"]{--skin-color:var(--player-skin-color,#f1f9d7);-webkit-mask:none;mask:none;box-shadow:inset -3px -4px 7px #07101f77,0 0 12px color-mix(in srgb,var(--skin-color) 30%,transparent)}
+.ui-icon[data-icon="player-skin"]:after{inset:16%}
+.home-primary .ui-icon[data-icon="player-skin"]{width:24px;height:24px}

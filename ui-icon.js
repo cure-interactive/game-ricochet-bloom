@@ -1,5 +1,6 @@
 import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-// Decorative SVG masks share one renderer so changing labels preserves their icons.
+// Decorative icons share one renderer. player-skin uses the equipped skin
+// material in skin.css, never an SVG mask or a duck/player glyph.
 export function iconHTML(name) {
   return `<span class="ui-icon" data-icon="${escapeHTML(name)}" aria-hidden="true"></span>`;
 }

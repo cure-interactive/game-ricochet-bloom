@@ -2,9 +2,9 @@ import {playerBuild,playerConfig} from './player-upgrade.js?v=fab6c92f134e88ebe6
 import {playerTreeGraph} from './player-tree.js?v=5091a8e71f9c7639a54f3e9237981fd6463a342a2d9d040ac73af413d6988b63';
 import {mapCameraMount,nearestMapNode} from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
 import {tooltipPosition} from './skill-comparison.js?v=87d6fb2611413eb5abde2f85f577864043f616471e7bdc4c903738053c451fae';
-import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=b3d80c99bafd8984775ac4141e0f81d17b1bc252d217d85a61d2870fc045bbd9';
+import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=46e11becd200614c3e4abd19bfaeb47b3863fe7a36fe0637a50f2a057bd33b3a';
 import {screenHeader} from './screen-header.js?v=b12f4a7f643a7ebc5d8945f2671aead3040da9be729bee110404af53f14e24e0';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=7e81246e997e2106001cc2f001032e68090a0c751f008678bd91820191a7979e';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 import {escapeHTML as escape} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});

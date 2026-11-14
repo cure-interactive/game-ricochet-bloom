@@ -1,13 +1,13 @@
 import { screenHeader } from './screen-header.js?v=b12f4a7f643a7ebc5d8945f2671aead3040da9be729bee110404af53f14e24e0';
-import { buttonHTML } from './ui-icon.js?v=7e81246e997e2106001cc2f001032e68090a0c751f008678bd91820191a7979e';
+import { buttonHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { assetURL } from './asset.js?v=3cbfab492cc37c59b11a7e7ee1809773bc384873f2e900d7d5fa6526e0af4b91';
+import { assetURL } from './asset.js?v=b61b263cca739098e590874441ca93d7dd0d93530d85f7f90f10bc579dc815ae';
 import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=f7afc7b27ebaaa3b1f38bd313d1fae25e80d1acb653913471d81b89b76ae7d0a';
-import { gamemodeGalleryMount } from './gamemode-gallery.js?v=61bd7f541d2e96c06f54da6f4a4ea07ce8a79c3efda4e5f76fa8c866effae1a2';
-import { scoreAttackMount } from './score-attack-ui.js?v=01cef9138914a4542fd28a46b1c0adf0beae8134caa2ee01a7a310e6b569001e';
-import { experimentMount } from './experiment-ui.js?v=626a98e142578f6843fa97762fa9b9b7d0d088921c19101768a1af63fc8791a7';
+import { gamemodeGalleryMount } from './gamemode-gallery.js?v=b454f43451b76ebe4c9960b2dab956e56066038d7f4672d46a8d7d47fa9f92bb';
+import { scoreAttackMount } from './score-attack-ui.js?v=b25711f29e10f76e3b6d73372370437c0b423bf1a48e7051280fb038c51cf43e';
+import { experimentMount } from './experiment-ui.js?v=cb2b3cb866cc3760b7460d995c7648a2636b9b95e0c294f495bb3bcaccae402a';
 import { poolConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=4fccbcfa467ab558a8cfba26398ff7d1b89d650b0664c6af2ba633490cf7ad0c';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=559905246b3697fd9cf0a993d9c71ffe30b47a0c6d6cd3943a5b235d0faa31c8';
 
 // Dialog composition and destination routing. Each child receives only the
 // content slot, profile/storage access and navigation callbacks it uses.
