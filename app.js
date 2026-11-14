@@ -2,7 +2,7 @@ import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-att
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=818806d3208b92737e856f74449dbd9f0421e26d62587d05493451302c7ca822';
 import { earningAmount } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
 import { trialMount } from './trial-ui.js?v=4959f0437a85c890964475d60efa686255ca95e8cdda15964cb3e4a018e70129';
-import { GAME_VERSION } from './version.js?v=3faf2d340bcc015e9daac18831004541cbf726d54c9dd9c4cbce1035b8f13868';
+import { GAME_VERSION } from './version.js?v=2a29e7adbb0e6141c995b25ae4b57db514d19959ad0a10ee46af8755a1e1222e';
 import { powerSlots } from './power-ui.js?v=63edd186e7ecbe97486a45c065d6be34a4c27c52ed6521faf750c1c75c482174';
 import { creditsMount } from './credit.js?v=dd0fbcac54b73993c824abd82e6ef13d5915c860862eed869179d1e1aadbb159';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
@@ -713,3 +713,4 @@ $('menu-wiki').onclick=()=>wiki.open();
 $('menu-help').onclick=()=>wiki.open('how-to-play');
 $('menu-settings').onclick=()=>$('settings-dialog').showModal();
 if($('tree-dialog').open)navigation.show('tree');
+window.dispatchEvent(new Event('ricochet-ready'));

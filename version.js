@@ -1,2 +1,2 @@
-// Exact release number approved by the developer. Changes need fresh approval.
-export const GAME_VERSION = '3.6.0';
+// Minor and patch versions are delegated for this project; major changes require approval.
+export const GAME_VERSION = '3.6.1';

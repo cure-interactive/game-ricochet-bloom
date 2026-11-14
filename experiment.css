@@ -39,13 +39,13 @@
 .experiment-configuration{border:1px solid #59737c66;border-radius:18px;padding:14px 18px;margin:18px 0;background:#10263555}
 @media(max-width:600px){.experiment-overview-compact{grid-template-columns:110px 1fr;gap:12px}.experiment-overview-compact h3{font-size:18px}.experiment-level-choice{gap:7px}.experiment-level-choice strong{font-size:12px}.experiment-start-row button{width:100%}.experiment-start-row>span{width:100%}}
 
-.gamemode-filter{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;padding:16px;border:1px solid #668b9b55;border-radius:18px;background:#102b36b8}
+.gamemode-filter{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
 .gamemode-filter label{display:grid;gap:8px;min-width:0;font-size:13px;color:#bcd6db}
 .gamemode-filter input,.gamemode-filter select{width:100%;min-width:0;min-height:46px;padding:10px 12px;border:1px solid #6e95a477;border-radius:12px;background:#112d3b;color:#e5f3ef;font:inherit}
 .gamemode-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0 22px}.gamemode-toolbar p{margin:0;color:#bcd6db}
 .gamemode-group{margin-bottom:32px}.gamemode-group h3{font-size:23px;margin:10px 0 16px}.gamemode-group h3 small{font-size:14px;color:#a8c4cc;margin-left:8px}
 .gamemode-group>p,.gamemode-empty{font-size:14px;line-height:1.6;color:#bcd6db}.mode-card .mode-category{font-size:11px;color:#a9dfd1}
-@media(max-width:600px){.gamemode-filter{grid-template-columns:1fr 1fr;padding:12px}.gamemode-filter label:first-child{grid-column:1/-1}.gamemode-toolbar{align-items:flex-start;flex-direction:column}.gamemode-toolbar button{width:100%}}
+@media(max-width:600px){.gamemode-filter{grid-template-columns:1fr 1fr}.gamemode-filter label:first-child{grid-column:1/-1}.gamemode-toolbar{align-items:flex-start;flex-direction:column}.gamemode-toolbar button{width:100%}}
 
 .gamemode-navigation{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
 .gamemode-navigation button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px}
@@ -55,10 +55,12 @@
 .gamemode-group{margin:20px 0 28px}.gamemode-group h3{font-size:17px;color:#cfe7e4;margin:0 0 12px}
 .mode-card-shell{position:relative;min-width:0;display:flex}
 .mode-card-shell>.mode-card{width:100%;height:100%}
-.mode-star{position:absolute;right:9px;top:9px;z-index:1;width:44px;height:44px;padding:9px;display:grid;place-items:center;border:1px solid #9bb8c7a0;border-radius:50%;color:#e5eff1;background:#102333ed;box-shadow:0 2px 9px #0005}
-.mode-star:hover{background:#284352;border-color:#f4d798;color:#ffe2a6}
-.mode-star[aria-pressed="true"]{color:#ffda84;border-color:#e8c478;background:#3d3526f5}
+#gamemodes-dialog .mode-star{position:absolute;right:6px;top:6px;z-index:1;width:44px;height:44px;padding:9px;display:grid;place-items:center;border:0;border-radius:50%;color:#e5eff1;background:transparent;box-shadow:none}
+.mode-star svg{filter:drop-shadow(0 1px 2px #06121e);transition:transform .15s}
+#gamemodes-dialog .mode-star[aria-pressed="true"]{color:#ffda84}
 .mode-star[aria-pressed="true"] svg{fill:currentColor}
-.mode-star:focus-visible{outline:3px solid #fff;outline-offset:3px}
-.mode-star:disabled{opacity:.5;cursor:not-allowed}
-@media(max-width:600px){.gamemode-filter{grid-template-columns:1fr}.gamemode-navigation{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.gamemode-navigation button{width:100%;min-width:0;padding:10px 6px;font-size:12px;line-height:1.3;white-space:normal}}
+#gamemodes-dialog .mode-star:focus-visible{outline:2px solid #fff;outline-offset:1px}
+#gamemodes-dialog .mode-star:disabled{opacity:.5;cursor:not-allowed}
+@media(hover:hover){#gamemodes-dialog .mode-star:hover{color:#ffe2a6}.mode-star:hover svg{transform:scale(1.1)}}
+@media(prefers-reduced-motion:reduce){.mode-star svg{transition:none}}
+@media(max-width:600px){.gamemode-filter{grid-template-columns:1fr}.gamemode-navigation{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.gamemode-navigation button{width:100%;min-width:0;padding:10px 6px;font-size:12px;line-height:1.3;white-space:normal}.gamemode-navigation button:last-child:nth-child(odd){grid-column:1/-1}}
