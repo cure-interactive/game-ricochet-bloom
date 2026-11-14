@@ -18,7 +18,8 @@ function repel(body,point,force){
   const nx=d>.01?dx/d:Math.cos(angle),ny=d>.01?dy/d:Math.sin(angle);
   body.vx+=nx*force;body.vy+=ny*force;
   const speed=Math.hypot(body.vx,body.vy);if(speed>1100){body.vx*=1100/speed;body.vy*=1100/speed;}
-  return {id:body.id,nx,ny,speed:force};
+  // The membrane normal faces the contact; it is opposite the outward push.
+  return {id:body.id,nx:-nx,ny:-ny,speed:force};
 }
 export function menuPoolTap(pool,point){
   if(!Number.isFinite(point.x)||!Number.isFinite(point.y))return [];

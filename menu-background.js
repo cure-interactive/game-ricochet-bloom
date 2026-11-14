@@ -6,7 +6,7 @@ import {menuMusicCreate} from './menu-music.js?v=a6b7bd75f4f066363605da06df15a09
 import {PowerVisual} from './power-visual.js?v=c1fa49a130dcf51e7d62ea8b27a6b927bc9a6dad0b11295f7beeead8e230b7e2';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
 import { bubbleCreate, bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=7ad269567cdd629f4796505360695356f102591a74757fa62553e87710dace77';
+import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=48b76dd1d40593dc4eaab04bd8396bbb6ade750f70482ae3097f8a481b9db36c';
 
 export function menuBackgroundMount(canvas,gentle,{profile=()=>progressionCreate(),skin=()=>'#f1f9d7',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),skins=new Map(),powerVisual=new PowerVisual();
