@@ -361,6 +361,7 @@ export function launch(state, angle, power = .7) {
   const seed = state.bodies[0], speed = playerLaunchSpeed(state.playerBuild,power);
   seed.vx = Math.cos(angle) * speed; seed.vy = Math.sin(angle) * speed;
   state.power.markers = powerPlan(state);
+  delete state.power.collected;
   effectClear(state); state.isFlying = true; state.flightAge = 0; state.chain = []; state.flightPath = []; state.banks = 0; state.launches++; state.power.used = 0; state.shotStart=state.score;state.lastShot=null;if(state.mode!=='song-run')state.objective.earned=false;
   if(state.build)state.skillState=skillStateCreate();
   if (state.mode !== 'free') state.plucks--;
@@ -404,7 +405,9 @@ export function powerActivate(state,kind,targetId){
 }
 function powerCollect(state, marker, a, b, nx, ny, events) {
   const dt=RULE.step,seed=state.bodies[0];
-  const kind = marker.kind; state.power.markers = state.power.markers.filter(item => item !== marker); state.power.shot = state.launches; state.power.used++;
+  const kind = marker.kind; state.power.markers = state.power.markers.filter(item => item !== marker); state.power.shot = state.launches;
+  // Keep pickup identity after its effect expires, including saved flights.
+  (state.power.collected??=Array(state.power.used).fill(null)).push(kind);state.power.used++;
   state.flightAge = 0;
   // Pluck-long effects follow the renewed flight; short-lived powers keep their own clocks.
   for (const effect of state.effects) if (['comet', 'impact', 'bubble', 'stasis', 'echo', 'blaster'].includes(effect.kind)) effect.seconds = RULE.flightSeconds;
@@ -743,6 +746,7 @@ export function saveValidate(input) {
     if (input.version >= 9 && (!Number.isInteger(power.used) || power.used < 0 || power.used > 3 || !Number.isInteger(power.capacity) || power.capacity < 1 || power.capacity > 3 || input.isFlying && power.used > power.capacity || power.used > 0 && power.shot !== input.launches || effects.length > power.used)) return null;
     if (input.version >= 11) {
       const markers = power.markers;
+      if(power.collected!==undefined&&(!Array.isArray(power.collected)||power.collected.length!==power.used||power.collected.some(kind=>kind!==null&&!powerKinds.includes(kind))))return null;
       const remaining=input.isFlying?Math.max(0,Math.min(power.capacity,offeredKinds(input).length)-power.used):0;
       if (!Array.isArray(markers) || (input.mode==='waves'? markers.length > remaining : markers.length !== remaining) || markers.some(marker => !marker || !powerKinds.includes(marker.kind) || !Number.isInteger(marker.target) || marker.target < 1 || marker.target > count || input.mode==='waves'&&input.bodies[marker.target].popped)) return null;
       if (new Set(markers.map(marker => marker.target)).size !== markers.length || new Set(markers.map(marker => marker.kind)).size !== markers.length || markers.some(marker => hasEffect(marker.kind))) return null;

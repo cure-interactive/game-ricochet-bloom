@@ -1,12 +1,12 @@
-import {poolBubbleRender} from './pool-bubble.js?v=1e144bbbd426cc65890e0c8f804827ff36dde6a5c95c7597d22d706bba03a429';
-import {freePlayCreate,freePlayBuild} from './free-play.js?v=e1a545087560bf0a53820d2578c3f200b5e01f39d1822fe270e4d06c43e89ee4';
+import {poolBubbleRender} from './pool-bubble.js?v=4e2673d4eb6e05394df114eef4d6da25854b5d9b4bd23c64eea1e02adef8bc91';
+import {freePlayCreate,freePlayBuild} from './free-play.js?v=51cc2bb1d463740f66a9c004070e3108a9a15426dd26dd639573304836a9e45e';
 import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
-import {progressionCreate} from './run.js?v=74de39fe01a1546550fa244f53a940c5cc229d87a3504273ee2c7670d2c8c4dd';
+import {progressionCreate} from './run.js?v=86c0281b5c2ac66b243e3701cfee06940691c206000f4756729d9d580eedbd76';
 import {menuMusicCreate} from './menu-music.js?v=762395ad9af8e952134f04c40c1bd255b594ab2f9c971f8dce0b16150274dc6e';
-import {PowerVisual} from './power-visual.js?v=0938aa0ee118c989c115232a5cef6ecc1d2bf38ffcbe5e97077d44a79f139cbc';
-import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=b1d1413bc287c32c16aece271eecd01b25e105285dbba57cdc5ec62fc43db36b';
+import {PowerVisual} from './power-visual.js?v=eeb0c04fe56cf4cfa5027f027cf8c026440c51763e55fe640e714ad7296d2211';
+import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=22d89394af99da05710e30583f742f7d86a2cf848172bee65c6f573a179a0574';
 import { bubbleCreate, bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=55645738d8dcb9990bcb954d79721376333f0639012a8e38fa3a40f417fbeb4f';
+import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=2757b98c0f31bcff0fe376d40910c1e36597a79a2b8e4b0b2b5bec7747bd7b09';
 
 export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),skins=new Map(),powerVisual=new PowerVisual();

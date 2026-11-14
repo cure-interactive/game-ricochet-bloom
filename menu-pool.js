@@ -1,4 +1,4 @@
-import {gameCreate,launch,physicsStep,powerMarkers,RULE} from './engine.js?v=b1d1413bc287c32c16aece271eecd01b25e105285dbba57cdc5ec62fc43db36b';
+import {gameCreate,launch,physicsStep,powerMarkers,RULE} from './engine.js?v=22d89394af99da05710e30583f742f7d86a2cf848172bee65c6f573a179a0574';
 
 // Only the aiming decision and delay are menu-specific. The detached session
 // uses the normal Free Play launch, pickup, effect and collision rules.
