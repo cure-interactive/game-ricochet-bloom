@@ -1,4 +1,4 @@
-import {poolBubbleRender,poolBubbleIcons} from './pool-bubble.js?v=d91dab27e50e91cdaceaaf9f26ec4685831623556a0c5a77bb1462e1c2492d5a';
+import {poolBubbleRender,poolBubbleIcons} from './pool-bubble.js?v=4e76e6fe8d8a8a5ee211cc3669204a47f4e99c77be659f9ae52e2584c0219d96';
 import { playerMenuMount } from './player-menu.js?v=2f5f66261b8c6d764f848c09153108f52652cacbcaf9bbe7cc70e09477b69dad';
 import { playerStatsMount } from './player-stats-ui.js?v=cf73f014b998d3ef90db1a776c84d72bc963795a2a6f56d22b913b0be3d75a85';
 import { playerBuild, playerSync } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
@@ -9,7 +9,7 @@ import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-att
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=57c2f32c90cea1d5c2d2601973e60b0926e5a5b233f60ffc9fc543e5a7f7903e';
 import { earningAmount } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
 import { trialMount } from './trial-ui.js?v=af8722f425b35ccfb2931206be70d5c724d4cdccf0b4bc9c583f27af1ae1026c';
-import { GAME_VERSION } from './version.js?v=6373dae4464b0ea57411a567b7a8b5551ee7c4a4ebeb7fa387e201e43966a8e1';
+import { GAME_VERSION } from './version.js?v=42024f9d8c14791243fcd365dedca7c74406ad96ea4c99d45f08ef15915674b5';
 import { powerSlots } from './power-ui.js?v=a16e7955e05852ed192cc8ce2f47bf869c3f5fe00e6e810aa1a8a69763eb475d';
 import { creditsMount } from './credit.js?v=67270fdcf6fc8c56744aef4827603fa84694ffc624617893dc0b71116e8a7106';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
@@ -21,7 +21,7 @@ import { POOL_NAMES } from './run.js?v=761d66a7f48a89837bd270e75d2f2fc05b570ad32
 import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=2688950919d159815d3ffeb8bedaa0133731cda8f149bcf49906a2abc95845da';
 import { fullscreenMount } from './fullscreen.js?v=051447beb73d8881066d4212a0ff37f748a6685ff7ba97cc7149de967da86c33';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=d201f6892352db947c2cc8cc5f960195b94a197b3e559fb1d03f4a72f6941468';
+import { gameMenuMount } from './game-menu.js?v=7a070802060ba3e3269f97b46ffaa9b0731e996f31274cf4ce9beec878bbf17c';
 import { environmentRender, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
 import { progressionMount } from './progression-ui.js?v=ca5303d974eaa8a0c951685ec33932d915a40a740b59e1cb21c848afaa25c282';

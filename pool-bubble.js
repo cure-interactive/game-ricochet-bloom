@@ -35,8 +35,8 @@ function frostRender(context,body, points, skin, frost,isGentle) {
   }
   context.restore();
 }
-export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGentle=false,skinColor='#f1f9d7',portrait:portraitView=false,replayGlow=0,icons=poolBubbleIcons()}={}) {
-  const {powerIcons,roleIcons}=icons;
+export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGentle=false,skinColor='#f1f9d7',portrait:portraitView=false,replayGlow=0,markings=true,icons=null}={}) {
+  const {powerIcons,roleIcons}=markings?(icons||poolBubbleIcons()):{};
   const isSeed = body.id <= 0, isBubble = body.id === 0 && !!effectGet(game, 'bubble'), hue = isSeed ? body.id === -3 ? POWERS.echo.color : body.id < 0 ? POWERS.split.color : isBubble ? POWERS.bubble.color : (skinColor||'#f1f9d7') : COLORS[body.tone], radius = body.radius;
   const isPermeable = !isSeed && frozenHit(game, body.id);
   membrane.glow = Math.max(0, membrane.glow - dt * 1.4);
@@ -81,14 +81,14 @@ export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGe
     context.restore();
   }
   const marker = powerMarkers(game).find(marker => marker.target === body.id);
-  if(!isSeed) {
+  if(markings&&!isSeed) {
     const role=bubbleRole(body.id),icon=roleIcons[role],size=marker?18:Math.min(32,body.radius*1.25),y=marker?Math.min(body.radius*.68,body.radius-size*.5):0;
     context.save();if(isPermeable)context.globalAlpha=.35;context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);
     if(icon.complete&&icon.naturalWidth)context.drawImage(icon,-size/2,y-size/2,size,size);
     else {context.fillStyle='#e9ffed';context.font=`${size*.7}px Fredoka,sans-serif`;context.textAlign='center';context.textBaseline='middle';context.fillText(BUBBLE_ROLES[role].name[0],0,y);}
     context.restore();
   }
-  if (marker) {
+  if (markings&&marker) {
     const p = POWERS[marker.kind], icon = powerIcons[marker.kind], size = Math.min(52, body.radius * 1.25);
     context.save(); context.translate(body.x,body.y);if(portraitView)context.rotate(-Math.PI/2);context.shadowColor = p.color; context.shadowBlur = isGentle ? 0 : 12;
     if (icon.complete && icon.naturalWidth) context.drawImage(icon, -size / 2, -size / 2, size, size);

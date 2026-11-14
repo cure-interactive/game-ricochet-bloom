@@ -1,4 +1,4 @@
-import {poolBubbleRender} from './pool-bubble.js?v=d91dab27e50e91cdaceaaf9f26ec4685831623556a0c5a77bb1462e1c2492d5a';
+import {poolBubbleRender} from './pool-bubble.js?v=4e76e6fe8d8a8a5ee211cc3669204a47f4e99c77be659f9ae52e2584c0219d96';
 import {freePlayCreate,freePlayBuild} from './free-play.js?v=2688950919d159815d3ffeb8bedaa0133731cda8f149bcf49906a2abc95845da';
 import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import {progressionCreate} from './run.js?v=761d66a7f48a89837bd270e75d2f2fc05b570ad32da442ce146863b3344310db';
@@ -36,7 +36,7 @@ export function menuBackgroundMount(canvas,gentle,{profile=()=>progressionCreate
     powerVisual.update(dt);powerVisual.render(ctx,pool.game,pool.game.tick*RULE.step,gentle());
     const bodies=[...seedBodies(pool.game),...pool.game.bodies.slice(1)];
     for(const body of bodies){
-      poolBubbleRender(ctx,pool.game,body,skinFor(body),dt,pool.game.tick*RULE.step,{gentle:gentle(),skinColor:skin(),portrait});
+      poolBubbleRender(ctx,pool.game,body,skinFor(body),dt,pool.game.tick*RULE.step,{gentle:gentle(),skinColor:skin(),portrait,markings:false});
     }
     canvas.dataset.tick=String(pool.game.tick);
     canvas.dataset.effects=pool.game.effects.map(e=>e.kind).join(',');canvas.dataset.frozen=String(effectGet(pool.game,'stasis')?.targets.length||0);canvas.dataset.permeable=String(pool.game.bodies.filter(b=>b.id>0&&frozenHit(pool.game,b.id)).length);
