@@ -29,16 +29,15 @@
 
 :root body :is(dialog,#tree-dialog)>.screen-heading button>span:not(.ui-icon){display:inline;font-size:inherit}
 
-/* Keep auxiliary controls, title and navigation in the same logical order in
-   both modes. Handedness reverses the row, so titles stay beside Back/Close
-   rather than being separated from them by wallets or view switches. */
-:root body :is(dialog,#tree-dialog)>.screen-heading>:is(.screen-heading-copy,h2){order:2;text-align:right}
+/* Titles occupy the edge opposite Back/Close. Auxiliary controls stay between
+   them; handedness mirrors the row and title alignment together. */
+:root body :is(dialog,#tree-dialog)>.screen-heading>:is(.screen-heading-copy,h2){order:-1;text-align:left}
 :root body :is(dialog,#tree-dialog)>.screen-heading>button{order:3}
-:root body[data-left-handed=true] :is(dialog,#tree-dialog)>.screen-heading>:is(.screen-heading-copy,h2){text-align:left}
+:root body[data-left-handed=true] :is(dialog,#tree-dialog)>.screen-heading>:is(.screen-heading-copy,h2){text-align:right}
 
 .screen-heading-title{display:flex;align-items:center;gap:8px;min-width:0}
 .screen-heading-title>h2{min-width:0;overflow-wrap:anywhere}
-:root body :is(dialog,#tree-dialog)>.screen-heading .screen-heading-title{justify-content:flex-end}
+:root body :is(dialog,#tree-dialog)>.screen-heading .screen-heading-title{justify-content:flex-start}
 :root body :is(dialog,#tree-dialog)>.screen-heading .screen-heading-title>h2{flex:0 1 auto}
-:root body[data-left-handed=true] :is(dialog,#tree-dialog)>.screen-heading .screen-heading-title{justify-content:flex-start}
+:root body[data-left-handed=true] :is(dialog,#tree-dialog)>.screen-heading .screen-heading-title{justify-content:flex-end}
 .preview-heading>.screen-heading-title{flex:1}
