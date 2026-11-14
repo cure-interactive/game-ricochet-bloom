@@ -1,7 +1,7 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { assetURL } from './asset.js?v=b61b263cca739098e590874441ca93d7dd0d93530d85f7f90f10bc579dc815ae';
 import { renderMarkdown } from './wiki.js?v=9b4729646810b205ef4129ba64e9b8923ffe435c9fb5c07eaf58ac6847ade276';
-import { iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
+import { buttonLabel } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 // Only shipped attribution/assets may navigate inside the viewer.
 export function creditTarget(href, current='icon/ui/INDEX.md') {
@@ -41,20 +41,19 @@ export function creditMarkdown(source,current) {
 export function creditsMount(dialog) {
   const original=dialog.querySelector('.dialog-body'),page=document.createElement('div');
   page.className='dialog-body credit-page';page.hidden=true;
-  page.innerHTML=`<button type="button" class="quiet" data-credit-back>${iconHTML('arrow-left')}<span>Back to Credits</span></button><article class="wiki-article" aria-label="Icon credits" tabindex="0"></article>`;
+  page.innerHTML=`<article class="wiki-article" aria-label="Icon credits" tabindex="0"></article>`;
   dialog.append(page);
-  const article=page.querySelector('article'),history=pageHistory('index');let request=null,current=null;
+  const article=page.querySelector('article'),dismiss=dialog.querySelector('[data-close]'),history=pageHistory('index');let request=null,current=null;
   async function load(name,remember=true){
     const target=creditTarget(name,'index.html');if(!target)return;
-    if(remember)history.visit(name);current=name;request?.abort();const active=new AbortController();request=active;
+    if(remember)history.visit(name);current=name;buttonLabel(dismiss,'Back','arrow-left');dismiss.setAttribute('aria-label','Back to Credits');dismiss.onclick=back;request?.abort();const active=new AbortController();request=active;
     original.hidden=true;page.hidden=false;article.innerHTML='<p role="status">Loading Credits…</p>';page.scrollTop=0;
     try{const response=await fetch(target.url,{signal:active.signal});if(!response.ok)throw new Error('Unavailable');const source=await response.text();
       if(request!==active||!dialog.open)return;article.innerHTML=creditMarkdown(source,name);article.focus({preventScroll:true});
     }catch{if(!active.signal.aborted&&dialog.open)article.innerHTML='<p role="alert">Credits could not load.</p><button type="button" class="quiet" data-credit-retry>Try Again</button>';}
   }
-  function reset(){request?.abort();history.reset('index');current=null;page.hidden=true;original.hidden=false;}
+  function reset(){request?.abort();history.reset('index');current=null;page.hidden=true;original.hidden=false;buttonLabel(dismiss,'Close','close');dismiss.setAttribute('aria-label','Close icon credits');dismiss.onclick=()=>dialog.close();}
   function back(){const name=history.back();if(name&&name!=='index')load(name,false);else reset();}
-  page.querySelector('[data-credit-back]').onclick=back;
   dialog.addEventListener('click',event=>{
     if(event.target.closest('[data-credit-retry]')){load(current,false);return;}
     const a=event.target.closest('a');if(!a)return;

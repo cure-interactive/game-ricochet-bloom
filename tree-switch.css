@@ -12,4 +12,8 @@
  :root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading .tree-switch button{flex:1}
  :root body[data-left-handed=true] :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>[data-tree-action=back]{grid-column:1}
  :root body[data-left-handed=true] :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>.tree-wallet-summary{grid-column:3}
+ :root body:not([data-left-handed=true]) :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading{grid-template-columns:auto auto minmax(0,1fr)}
+ :root body:not([data-left-handed=true]) :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>[data-tree-action=back]{grid-column:1}
+ :root body:not([data-left-handed=true]) :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>.tree-wallet-summary{grid-column:2}
+ :root body:not([data-left-handed=true]) :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading>.screen-heading-copy{grid-column:3}
 }

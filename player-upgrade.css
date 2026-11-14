@@ -5,3 +5,5 @@
 .player-build-stats{display:grid;grid-template-columns:1fr auto;gap:8px}
 .player-build-stats dt{color:#b8d0d3}.player-build-stats dd{margin:0;color:#b4f2d8;font-weight:600}
 body[data-left-handed=true] :is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip-heading{flex-direction:row-reverse}
+body:not([data-left-handed=true]) :is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip-heading>:is(.skill-card-title,h3){order:1;text-align:right}
+body:not([data-left-handed=true]) #player-upgrade-dialog .skill-tooltip-heading>.player-tree-icon{order:2}
