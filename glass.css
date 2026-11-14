@@ -86,3 +86,39 @@
 @media (hover: hover) {
   :root body #main-menu :is(.home-primary, .home-secondary) button:hover { border-color: #b4f4db80; }
 }
+
+/* Prose always has a stable card behind it, independent of passing bubbles.
+   These are opaque on purpose: blur/transparency must not set text contrast. */
+:root { --reading-surface: #132431; --reading-edge: #63828c66; }
+:root body .reading-card {
+  padding: 18px; border: 1px solid var(--reading-edge); border-radius: 18px;
+  background: var(--reading-surface); color: #dce9ee; overflow-wrap: anywhere;
+  box-shadow: 0 8px 24px #0002;
+}
+:root body .reading-card > :first-child { margin-top: 0; }
+:root body .reading-card > :last-child { margin-bottom: 0; }
+:root body #development-dialog .reading-card { display: grid; gap: 14px; }
+:root body #development-dialog .reading-card :is(p,small) { margin: 0; color: #c8d9e2; line-height: 1.6; }
+:root body :is(#development-dialog,#save-recovery-dialog,#support-dialog) > .dialog-body { max-width: 720px; width: 100%; margin-inline: auto; padding: 16px; }
+:root body :is(#save-recovery-dialog,#support-dialog) > .dialog-body { display: flex; flex-direction: column; gap: 16px; }
+:root body :is(#save-recovery-dialog,#support-dialog) .reading-card { flex: none; margin: 0; }
+:root body .reading-card .support-recipient { color: #c8d9e2; }
+/* Other menu readers already have meaningful content groups. Their scrolling
+   body is one reading card; existing nested controls keep their own material. */
+:root body dialog:not(.hud-info-card):not(#development-dialog):not(#save-recovery-dialog):not(#support-dialog) > :is(.dialog-body,.campaign-scroll,.wiki-article,.skin-scroll,.credit-page) {
+  background: var(--reading-surface); border: 1px solid var(--reading-edge);
+  border-radius: 20px; width: calc(100% - 28px); max-width: 1060px;
+  margin: 10px auto 12px; padding: 20px; min-width: 0;
+}
+/* The compact HUD has two reading cards without taking more play-area height. */
+body > main > :is(.hud,.hud-actions) { background: var(--reading-surface); border-radius: 12px; box-shadow: inset 0 0 0 1px var(--reading-edge); padding-inline: 8px; }
+#main-menu .home-support { background: var(--reading-surface); border: 1px solid var(--reading-edge); border-radius: 12px; }
+@media(max-width:380px) {
+  :root body .reading-card { padding: 14px; }
+  :root body dialog:not(.hud-info-card):not(#development-dialog):not(#save-recovery-dialog):not(#support-dialog) > :is(.dialog-body,.campaign-scroll,.wiki-article,.skin-scroll,.credit-page) { padding: 16px; }
+}
+
+:root body #development-dialog .reading-card p { font-size: 16px; }
+:root body #development-dialog .reading-card :is(small,.setting-toggle) { font-size: 14px; }
+
+:root body #wiki-dialog > .wiki-article, :root body #settings-dialog > .dialog-body, :root body #credits-dialog > :is(.dialog-body,.credit-page) { max-width: 760px; }
