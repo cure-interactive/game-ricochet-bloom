@@ -4,7 +4,7 @@ Pause offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skills
 
 ## Audio
 
-Settings → Audio contains the sound toggle, master volume and ambience volume. Both volume sliders start at 100%. Lower ambience to hear the contact and bubble sounds more prominently. Sound Check plays a short cue at your current sound and volume settings.
+Settings → Audio contains the sound toggle, master volume and ambience volume. Both volume sliders start at 100%. Lower ambience to hear the contact and bubble sounds more prominently. Sound Check plays three gameplay notes: low, medium, then full strength, at your current master volume. It uses the same note sound and output path as gameplay, works while paused, and does not depend on the ambience slider or change your song. Overlapping gameplay sounds can still make the overall mix louder than a single note.
 
 Audio begins after an interaction with the game. Leaving the page pauses the game and its sound; use Resume when you return. The music panel offers Glass, Velvet and Wood instrument palettes.
 

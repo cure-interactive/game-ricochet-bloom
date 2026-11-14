@@ -9,19 +9,19 @@ import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-att
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=57c2f32c90cea1d5c2d2601973e60b0926e5a5b233f60ffc9fc543e5a7f7903e';
 import { earningAmount } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
 import { trialMount } from './trial-ui.js?v=af8722f425b35ccfb2931206be70d5c724d4cdccf0b4bc9c583f27af1ae1026c';
-import { GAME_VERSION } from './version.js?v=42024f9d8c14791243fcd365dedca7c74406ad96ea4c99d45f08ef15915674b5';
+import { GAME_VERSION } from './version.js?v=d6c066146033e1cfa1489c5b88fa3325975f9a134a9183151a53621f28d941d7';
 import { powerSlots } from './power-ui.js?v=a16e7955e05852ed192cc8ce2f47bf869c3f5fe00e6e810aa1a8a69763eb475d';
-import { creditsMount } from './credit.js?v=67270fdcf6fc8c56744aef4827603fa84694ffc624617893dc0b71116e8a7106';
+import { creditsMount } from './credit.js?v=f2622e7008fb83ee6f4d1a94bb2cb03e253382b0c07a58754133a3583cc96df6';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=c76004d132b2ea92ec0cecf92a15fae0a4ec85781d19df28f70222f5ed78b04a';
 import { edgeBackMount } from './edge-back.js?v=1333ff7c1ee04d8e2609a683292abf03e93ffc227190d751fef77d656d00bb12';
-import { wikiMount } from './wiki.js?v=c6e04b8f852e18884bd9ab661d402a9a500b98268cb28c368440c1a2b6a7ba25';
+import { wikiMount } from './wiki.js?v=61528cb463d9e031ffbc0e9384e86307fe60b9abbf442fef03d23f66a8ccd03b';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { POOL_NAMES } from './run.js?v=761d66a7f48a89837bd270e75d2f2fc05b570ad32da442ce146863b3344310db';
 import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=2688950919d159815d3ffeb8bedaa0133731cda8f149bcf49906a2abc95845da';
 import { fullscreenMount } from './fullscreen.js?v=051447beb73d8881066d4212a0ff37f748a6685ff7ba97cc7149de967da86c33';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=7a070802060ba3e3269f97b46ffaa9b0731e996f31274cf4ce9beec878bbf17c';
+import { gameMenuMount } from './game-menu.js?v=eb796b5c4d3078408608b66d3d5955a7620488bb42272ec75d84d224c650a1ca';
 import { environmentRender, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
 import { progressionMount } from './progression-ui.js?v=ca5303d974eaa8a0c951685ec33932d915a40a740b59e1cb21c848afaa25c282';
@@ -31,7 +31,7 @@ import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc
 import {songLibrarySetup} from './song-ui.js?v=7bd218be2c2fc158d6e42812d08e6fdcdc15bfdd03d0744e83f6d7823c7b7a68';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet, poolPreferencesWrite } from './storage.js?v=ddb84aea986a9f93582a75b5c9a98e7d1bf60a9e870308f6f5ccffe09140cc7b';
-import { PoolSound } from './sound.js?v=10fabc86b1fde4008ef8602d8b1188f6f8d05611a36c606d02a4de6121ee2d4a';
+import { PoolSound, SOUND_CHECK_SECONDS } from './sound.js?v=27270c3c27ba76fd082f0630013b41d300f40bb8998c7761fbe346319fea76d1';
 import { musicProgress, musicPhrasePreview } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 import { bubbleCreate, bubbleHit, bubbleRipple } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import { PowerVisual } from './power-visual.js?v=c1fa49a130dcf51e7d62ea8b27a6b927bc9a6dad0b11295f7beeead8e230b7e2';
@@ -541,8 +541,8 @@ $('audition').onclick = async () => {
     if (!await audio.unlockAsync()) throw new Error('Audio is not running');
     if (!audio.audition()) { status.textContent='Sound check is busy. Try again in a moment.'; return; }
     buttonLabel(button,'Playing test notes…','music-note');
-    status.textContent='Playing three notes at your Volume setting.';
-    await new Promise(resolve=>setTimeout(resolve,1200));
+    status.textContent='Playing low → medium → full-strength gameplay notes at your Volume setting.';
+    await new Promise(resolve=>setTimeout(resolve,SOUND_CHECK_SECONDS*1000));
     status.textContent='Test finished. Tap Sound check to replay.';
   } catch { status.textContent='Audio could not start. Tap Sound check to try again.'; }
   finally { button.disabled=false; buttonLabel(button,'Sound check','play'); }

@@ -5,6 +5,7 @@ import { PoolMedia } from './media.js?v=819011b6b874c3773ee3ab27d094b6179763df14
 import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, musicPower, bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
+export const SOUND_CHECK_SECONDS = 2.8;
 export class PoolSound {
   constructor({media=true}={}) { this.media = media?new PoolMedia():null; this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
   get bloomCount() { return this.music.blooms; }
@@ -126,6 +127,11 @@ export class PoolSound {
     oscillator.start(start); oscillator.stop(start + duration + .02); this.voiceCount++;
     oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); stereo.disconnect(); this.phraseVoices.delete(voice); this.voiceCount--; };
   }
+  contactNote(pitch, level=1, pan=0, offset=0, options={}) {
+    this.tone(pitch * 2.2, pitch, .075, .23 * level, pan, offset, 'sine', false, false, options);
+    this.tone(pitch, pitch * .998, .65, .24 * level, pan, offset + .025, 'sine', true, false, options);
+    this.tone(pitch * 2, pitch * 2, .32, .055 * level, pan, offset + .03, 'triangle', true, false, options);
+  }
   strengthChange(previous, next) {
     if (!Number.isFinite(previous) || !Number.isFinite(next)) return false;
     const from = Math.round(Math.max(0, Math.min(1, previous)) * 20);
@@ -160,7 +166,7 @@ export class PoolSound {
     if (event.type === 'wall') this.tone(190 + Math.min(300, event.speed), 85, .16, .1, pan);
     if (event.type === 'impact') this.tone(event.bubble ? 120 : 100 + Math.min(200, event.speed), event.bubble ? 42 : 55, event.bubble ? .18 : .095, Math.min(.15, event.speed / 2500), pan);
     if(event.type==='music-cue'&&explicitMidi!==null){const pitch=440*2**((explicitMidi-69)/12);this.tone(pitch,pitch,.45,.18,pan,0,'sine',true);}
-    if (event.type === 'note') { const gain = event.seedId < 0 ? .65 : 1; const pitch = explicitMidi!==null?440*2**((explicitMidi-69)/12):this.notePitch(event.tone) * (bubbleRole(event.id)==='bass'?.5:event.chain>3?2:1); this.tone(pitch * 2.2, pitch, .075, .23 * gain, pan); this.tone(pitch, pitch * .998, .65, .24 * gain, pan, .025, 'sine', true); this.tone(pitch * 2, pitch * 2, .32, .055 * gain, pan, .03, 'triangle', true); }
+    if (event.type === 'note') { const gain = event.seedId < 0 ? .65 : 1; const pitch = explicitMidi!==null?440*2**((explicitMidi-69)/12):this.notePitch(event.tone) * (bubbleRole(event.id)==='bass'?.5:event.chain>3?2:1); this.contactNote(pitch,gain,pan); }
     if (event.type === 'note' || event.type === 'launch') { this.duckUntil = this.context.currentTime + .8; this.mixUpdate(); }
     if (event.type === 'power'&&!['echo','blaster'].includes(event.kind)) {
       const degrees = ({ ripple: [0, 2, 3], attract: [3, 2, 0], vortex: [0, 3, 2, 3], stasis: [3, 0], comet: [0, 2, 3, 5], swap: [0, 3, 0, 2], magnet: [5, 3, 2, 0], lightning: [], impact: [0, 0, 3], tether: [0, 2, 0], split: [0, 3, 5], bubble: [0, 3, 2], portal: [0, 5], echo: [3, 0, 3], slingshot: [0, 2], drunk: [0, 3, 2, 5, 3], homing: [0, 2, 5] })[event.kind] || [0, 2, 3];
@@ -194,11 +200,13 @@ export class PoolSound {
     if (event.type === 'over') [523.25, 392, 329.63, 261.63].forEach((pitch, index) => this.tone(pitch, pitch, .75, .15, 0, index * .12, 'sine', true));
   }
   audition() {
-    if (!this.context || this.context.state !== 'running' || this.isMuted || !this.volume || this.voiceCount > 43 || this.context.currentTime < this.auditionUntil) return false;
-    this.auditionUntil = this.context.currentTime + 1.2;
+    if (!this.context || this.context.state !== 'running' || this.isMuted || !this.volume || this.voiceCount > 37 || this.context.currentTime < this.auditionUntil) return false;
+    this.auditionUntil = this.context.currentTime + SOUND_CHECK_SECONDS;
     // A finite UI cue bypasses only pause, never mute or master volume. It must
     // not start the composer or advance the player's saved song from a menu.
-    [0, 2, 3].forEach((degree, index) => { const pitch = this.notePitch(degree); this.tone(pitch, pitch, .5, .12, 0, index * .16, 'sine', true, false, { allowPaused: true }); });
+    // Use one pitch and the real contact-note envelope so only loudness changes.
+    // The final note is the full-strength player contact, through the same mixer.
+    [.25, .6, 1].forEach((level,index)=>this.contactNote(440,level,0,index*.9,{allowPaused:true}));
     return true;
   }
 }
