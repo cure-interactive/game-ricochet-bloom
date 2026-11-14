@@ -11,13 +11,13 @@ export const WIKI_PAGES = Object.freeze({
   'development-concept': { title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=a53a529bb9aaf9d1f91bba9a69607cc33434ce936f00b7a4cbaafc1393857616' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=ad9ffbc1bd758ad915eac4e7b65f744269dfada59ebecb1ac4629cf6125ff382' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=9227c2653550ccbbe02c87d353a342ae20a06737ca0171cbf766f6e615335781' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=ee2b8881d45b9d07c5d8dce0740cd5b7dd57e92c87d4d7eacfe66369bd54f4a8' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=e9f1088acaa199f3f089fd52ce39216c4d274f28a9018a8ab0e69c196de8bdf1' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=9bf3a78b05348619526cfaae5f78ccdac80abfb3e412208c0e96be5764876416' },
   'skill-tree': { title: 'Skill Tree', url: './wiki/skill-tree.md?v=2a93ba7362cc6f2c3f031dd1bc1b3aa17c76139aa2eaf9d69cd614d1d0d0f53a' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=f251375e960054752df660355c35932b59b297cc656a915a9621974e20536f10' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=a2fe5e8d096ab1714544bab1303474e6bc878583e2409b589a92a8fc2fab660d' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=ca186bd81296dd755d28b2813498f55777c32f222a0347449bf46425490212aa' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.
 export const WIKI_SOURCES = Object.freeze([

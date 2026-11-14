@@ -110,6 +110,7 @@
 - [Accessibility and Display](settings.md#accessibility-and-display)
 - [Left-Handed Layout](settings.md#left-handed-layout)
 - [Screen Rotation](settings.md#screen-rotation)
+- [Copy Diagnostics](settings.md#copy-diagnostics)
 - [Saves and Backups](settings.md#saves-and-backups)
 
 ## Development Concept

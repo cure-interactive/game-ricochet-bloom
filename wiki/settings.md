@@ -20,6 +20,10 @@ Gentle Visuals reduces glow and motion intensity and is off by default. Stream V
 
 Back controls sit on the right by default. Enable **Settings → Accessibility → Left-Handed Layout** to place Back, Close, Pause, favorite stars and the Skill Tree legend on the left. The setting is remembered on this browser and applies to both Normal and Development profiles. Text, aiming and the left-edge Back gesture keep their normal direction.
 
+## Copy Diagnostics
+
+Use **Settings → Advanced → Copy Diagnostics** when reporting a problem. The same button appears when the game cannot start or loading takes longer than expected. It copies the game version, browser, screen size, loading state, recent errors and read-only save metadata. Saved-game contents are not included, and copying does not change your progress. If clipboard access is unavailable, a selected report appears so you can copy it manually.
+
 ## Saves and Backups
 
 Your pool, song and campaign progress save in this browser. They do not automatically transfer between devices or between the local, GitHub Pages and private hosted copies. Clearing website data can remove them.

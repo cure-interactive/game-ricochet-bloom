@@ -18,6 +18,7 @@
     body.dataset.startup = 'failed';
     panel.setAttribute('aria-busy', 'false');
     retry.hidden = false;
+    document.getElementById('startup-diagnostics').hidden = false;
     title.textContent = 'The Game Could Not Start';
     message.textContent = 'Retry loading the game. Your saved progress stays on this browser. If this happens again, share the details below.';
     details.textContent = String(error || 'A game file could not be loaded.') + '\n' + navigator.userAgent;
@@ -38,6 +39,7 @@
     if (ready || failed) return;
     retry.hidden = false;
     title.textContent = 'Still Loading';
+    document.getElementById('startup-diagnostics').hidden = false;
     message.textContent = 'The game is taking longer than expected. You can wait or retry. Retrying keeps your saved progress.';
   }, 15000);
   window.addEventListener('error', onError, true);
@@ -64,6 +66,7 @@
     panel.setAttribute('aria-busy', 'false');
     retry.hidden = true;
     document.getElementById('startup-report').hidden = true;
+    document.getElementById('startup-diagnostics').hidden = true;
     title.textContent = 'Ricochet Bloom';
     message.textContent = 'Your pool is ready.';
     // Let the initialized menu and its canvas paint before their entrance.
