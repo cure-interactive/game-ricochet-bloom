@@ -84,11 +84,18 @@
     if (copied) { area.hidden = true; button.focus(); }
     status.textContent = copied ? 'Diagnostics copied.' : 'Clipboard unavailable. Select and copy the report below.';
   }
-  function supportReport() {
-    var progress;
-    try { progress = JSON.stringify(support()); } catch (_) { progress = 'Progress snapshot unavailable.'; }
-    return report() + '\n\nSupport report: the following section includes player name and game progress, shared by the player.\n' + progress;
+  function supportDetails() {
+    var snapshot, progress, name = 'Player';
+    try {
+      snapshot = support();
+      var value = snapshot && snapshot.playerName;
+      if (typeof value === 'string') name = value.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 32) || name;
+      progress = JSON.stringify(snapshot);
+    } catch (_) { progress = 'Progress snapshot unavailable.'; }
+    var subject = 'Ricochet Bloom — Support Report — ' + name;
+    return {subject:subject,text:subject + '\n\n' + report() + '\n\nSupport report: the following section includes player name and game progress, shared by the player.\n' + progress};
   }
+  function supportReport() { return supportDetails().text; }
   async function copy(button, text) {
     var group = button.closest('[data-diagnostics]'), status = group.querySelector('[data-diagnostics-status]');
     text = text || report();
@@ -103,10 +110,10 @@
   }
   async function share(button) {
     var group = button.closest('[data-diagnostics]'), status = group.querySelector('[data-diagnostics-status]');
-    var text = supportReport();
+    var details = supportDetails(), text = details.text;
     if (navigator.share) {
       try {
-        await navigator.share({title:'Ricochet Bloom support report',text:text});
+        await navigator.share({title:details.subject,text:text});
         status.textContent = 'Report shared.'; return;
       } catch (error) {
         if (error && error.name === 'AbortError') { status.textContent = 'Sharing cancelled. Your progress is unchanged.'; return; }
@@ -117,9 +124,9 @@
   }
   function email(button) {
     var group = button.closest('[data-diagnostics]'), status = group.querySelector('[data-diagnostics-status]');
-    var text = supportReport();
-    location.href = 'mailto:jamessteeleseeley@gmail.com?subject=' + encodeURIComponent('Ricochet Bloom problem report') + '&body=' + encodeURIComponent(text);
-    status.textContent = 'In your email app, tap Send. If it did not open or the report is missing, use Copy Report and paste it into an email to jamessteeleseeley@gmail.com.';
+    var details = supportDetails();
+    location.href = 'mailto:main@cureinteractive.com?subject=' + encodeURIComponent(details.subject) + '&body=' + encodeURIComponent(details.text);
+    status.textContent = 'In your email app, tap Send. If it did not open or the report is missing, use Copy Report and email main@cureinteractive.com with the subject: ' + details.subject;
   }
   document.addEventListener('click', function (event) {
     var emailButton = event.target.closest && event.target.closest('[data-support-email]');

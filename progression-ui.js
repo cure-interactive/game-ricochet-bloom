@@ -1,11 +1,11 @@
 import { screenHeader } from './screen-header.js?v=883c141deaf0d60097c4b99c555371897614dfd0bde5d3229b4a41e5450222e0';
 import { playerUpgradeMount } from './player-upgrade-ui.js?v=645142ef5e1722c80d36c5b0cf4b1c87beb5033f7adf0bf7ffa85ec064a926b9';
-import { saveRecoveryMount } from './save-recovery-ui.js?v=1fdc6cebc1a672fcb5bf7db1975e2002862202595620f509a8c5371d4d4b09d9';
+import { saveRecoveryMount } from './save-recovery-ui.js?v=9853420acf36df078feaad977e4c78772bbf2a80b07f549db326bee5d429781f';
 import { progressionResetUnreadable } from './progression-store.js?v=9569377eba3adc832b8df001110de74d3d4562491311f6bdbb90a9d4ab2a4a14';
 import { medalIcon } from './medal-ui.js?v=dfdcfbb8db30dfb246fae78172550b2d7cd09d02d7dd4dc49fb082d1ec307b91';
 
 import { earningPrepare, earningId } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { profilePlayReward, profileDevelopmentCopy, profileRename } from './profile.js?v=158288c80ff606a4bc820da33ab77138b46da32e904b28186088233dd839191d';
+import { profilePlayReward, profileDevelopmentCopy, profileRename, profileName } from './profile.js?v=158288c80ff606a4bc820da33ab77138b46da32e904b28186088233dd839191d';
 import { developmentBarMount } from './development-bar.js?v=e8a4107c18e63972339e4ebbcbb4b5515eaf0f1157c1701ebc1f6654895338bd';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { campaignMount } from './campaign-ui.js?v=cafd1bbf9b00427d4fa44ab6e2a0329183e5210c6194f63cf6ca6e83873e5e47';
@@ -33,7 +33,7 @@ export function progressionMount(host){
     // An unreadable profile must export its exact source, never the empty fallback.
     return !loaded.available?{...loaded.recovery,...(pendingEarning?{pendingEarning}:{}),...(pendingEarningState||pending?{pendingState:pendingEarningState||pending}:{})}:pendingEarningState||pending||state;
   }
-  window.ricochetDiagnostics?.setSupport(()=>({profile:kind,progress:backupValue(),...(pending||pendingEarningState?{lastSaved:state}:{}),pendingEarning,saveFailure:lastSaveFailure}));
+  window.ricochetDiagnostics?.setSupport(()=>({playerName:profileName((suspended?.state||pendingEarningState||pending||state).profile),profile:kind,progress:backupValue(),...(pending||pendingEarningState?{lastSaved:state}:{}),pendingEarning,saveFailure:lastSaveFailure}));
   function exportBackup(){
     const value=backupValue();
     const a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));a.href=url;a.download=`ricochet-bloom-${shared?'shared':kind}${!loaded.available?'-recovery':''}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
