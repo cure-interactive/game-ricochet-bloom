@@ -1,37 +1,39 @@
-import {poolBubbleRender,poolBubbleIcons} from './pool-bubble.js?v=4e2673d4eb6e05394df114eef4d6da25854b5d9b4bd23c64eea1e02adef8bc91';
+import {hudCardsMount} from './hud-help.js?v=81ef7f41ac7f035bdeed67225d65591316ca1a1db62a88ac0867dd74d5b56874';
+import { hudMedal, hudMedalRender } from './hud-medal.js?v=0973032b0352ebce23b9b03276a36d62e075b545d0832bdb768b0b119506e578';
+import {poolBubbleRender,poolBubbleIcons} from './pool-bubble.js?v=e3ccaa09f50846ec2d1ac9618c95e2f2f63f3fea6b8444e965d6a92e0fea0246';
 import { playerMenuMount } from './player-menu.js?v=2d7ac51c835f7667575b5fa92a12a945ba3d94265420eba9ae879d430ac02262';
-import { playerStatsMount } from './player-stats-ui.js?v=edb8c2965181a4558ae60e0f0f8bb3eb64def552fffdf2e00249bd1d56090b8a';
+import { playerStatsMount } from './player-stats-ui.js?v=7e6cd5c9a5198960c1abca973f15d5d641cedd44d430f24065a0b3009ed29e4c';
 import { playerBuild, playerSync } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import { poolMedalRecord, poolMedalRecords } from './storage.js?v=ac8e78dac357b01d39939277328785b6a02b8e4a372fa7b966193d0ce48866a5';
-import { medalIcon, medalBadge } from './medal-ui.js?v=2de85a5d119ff2e038d0f73f7f0bfba8de0fd0bc7f8fcb706c93de67d9e12122';
-import { poolConditions, poolMedalKey, medalEvaluate } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
+import { medalIcon, medalBadge } from './medal-ui.js?v=dfdcfbb8db30dfb246fae78172550b2d7cd09d02d7dd4dc49fb082d1ec307b91';
+import { poolConditions, poolMedalKey, medalEvaluate, scoreConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=59821f0f2371afef6e96faf86c00f0614aa3eb31f0bb970906dd020f9bc6dd49';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { trialMount } from './trial-ui.js?v=8e9a530d124ced4ca7b0feb41824310f8a32afc49972fe5998b89af85f0dc270';
-import { GAME_VERSION } from './version.js?v=5a6ab72939f6aecd4ce92f2d14982e0f17d6d0dc8c654e320de76b9faffe8030';
-import { powerSlots } from './power-ui.js?v=a0e6e8453c4c1e4cd3a94a22a653cd46bc7e6a3ffee7006d9f1550a23852ec5b';
-import { creditsMount } from './credit.js?v=bc1fa057dddf729068385eeaa622bf193c759e3c784152bd3500c9f354a8dffe';
+import { trialMount } from './trial-ui.js?v=c831497b5fafd9e99b60a0e9adf2bb3d4800ea077b186f7d913624f44647e373';
+import { GAME_VERSION } from './version.js?v=23794faa06925cdac9c9731de38dfe2b301e5ec34668e775a9bd862a9236b51e';
+import { powerSlots } from './power-ui.js?v=845fbcb658c0ef80d304d4006fb1272f949dd2300e2098b211b60f0ad228cf98';
+import { creditsMount } from './credit.js?v=a4d71b5644d563e132667eb07efa75e67412792e878218f56898951541aa667a';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=c76004d132b2ea92ec0cecf92a15fae0a4ec85781d19df28f70222f5ed78b04a';
 import { edgeBackMount } from './edge-back.js?v=0fcf216d1ae3fbd02ef73298696e6e6527bed750f07b2c58e748e86971312b71';
-import { wikiMount } from './wiki.js?v=6e3718e5dc458997387cc312725fbc3356087dcec208d627fb58cadd5108291c';
+import { wikiMount } from './wiki.js?v=0b71630e292305d90ac9603e166179ac3e1355dcbd0b8e8efacff43a10285143';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { POOL_NAMES } from './run.js?v=86c0281b5c2ac66b243e3701cfee06940691c206000f4756729d9d580eedbd76';
 import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=51cc2bb1d463740f66a9c004070e3108a9a15426dd26dd639573304836a9e45e';
 import { fullscreenMount } from './fullscreen.js?v=24d2782ab1e4be2d089cea603d419704b9473d8c76c1cf33f34d0a89c1f84471';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=1550594624d19744f61bc0269e19dc14a1bf360eee595e7e0a0ce975b9927b76';
+import { gameMenuMount } from './game-menu.js?v=65328dbde7f8687896f6e7a2c56801d81436095ebdf3989a38b42ba57b45e4db';
 import { environmentRender, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
-import { progressionMount } from './progression-ui.js?v=f8dbedf15e94b66479078b85ebb396b74745e01c3be2a6bf02c03d12e8bf490a';
-import {assetURL} from './asset.js?v=d550b28d96684af605439d08505831edfd982d0886527d4831cff7ecdf4d0e66';
+import { progressionMount } from './progression-ui.js?v=1f2c652c99eb8605350c9b13ba55ebded37942492b49805c8a518d6ace2791eb';
+import {assetURL} from './asset.js?v=439fe17f2cfeb3966893a76b09c7088b37c8b5c56215b31299603cee669a109b';
 import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 import {songLibrarySetup} from './song-ui.js?v=4c63f881674618507b6620f80e39462ba9e911c3ea00a502e6c3484931b0d008';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=22d89394af99da05710e30583f742f7d86a2cf848172bee65c6f573a179a0574';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet, poolPreferencesWrite } from './storage.js?v=ac8e78dac357b01d39939277328785b6a02b8e4a372fa7b966193d0ce48866a5';
-import { PoolSound, SOUND_CHECK_SECONDS } from './sound.js?v=1c0c9ccaa648e198d69bf0f4b282d5ccd1dbbc00d51951cab43ad15ac9f44f3c';
+import { PoolSound, SOUND_CHECK_SECONDS } from './sound.js?v=c158b3600cee0315056b36c216c9ae3f68f5d0810f50150813c30e301a4c15ab';
 import { musicProgress, musicPhrasePreview } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 import { bubbleCreate, bubbleHit, bubbleRipple } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import { PowerVisual } from './power-visual.js?v=eeb0c04fe56cf4cfa5027f027cf8c026440c51763e55fe640e714ad7296d2211';
@@ -324,17 +326,20 @@ function uiRender() {
   $('points').textContent=(progression?.points??0).toLocaleString('en-US');
   if (game.mode === 'challenge') best = Math.max(best, game.score);
   $('score').textContent = game.score.toLocaleString('en-US');
-  $('plucks').textContent = game.mode === 'free' ? '∞' : game.plucks; $('pluck-label').textContent = game.mode === 'free' ? 'FREE PLAY' : 'SHOTS LEFT';
+  $('plucks').textContent = game.mode === 'free' ? '∞' : game.plucks; $('pluck-label').textContent = game.mode === 'free' ? '' : 'SHOTS';
   $('pool-seed').textContent = `POOL / ${game.seed}`;
   progression?.profileIndicator();
+  let medalEarned=null;
   const medal=game.mode==='score-attack'?{targets:scoreTargets(game.attack.budget),best:scoreRead(localStorage,game.attack.kind,game.attack.budget).best}:progression?.medalHud();$('pool-medals').hidden=!medal;
-  if(medal){for(const el of $('pool-medals').querySelectorAll('[data-medal]')){const name=el.dataset.medal,target=medal.targets[name];el.innerHTML=medalIcon(name)+`<span>${game.score>=target?'✓ ':''}${name} ${target.toLocaleString('en-US')}</span>`;el.classList.toggle('is-reached',game.score>=target);} $('pool-best-score').textContent=medal.best===null?'Clear the goal to earn a medal':`Best ${medal.best.toLocaleString('en-US')} · clear the goal to earn a medal`;}
+  if(medal){medalEarned=medalEvaluate(scoreConditions(medal.targets),{complete:1,score:medal.best??-1});for(const el of $('pool-medals').querySelectorAll('[data-medal]')){const name=el.dataset.medal,target=medal.targets[name];el.innerHTML=medalIcon(name)+`<span>${game.score>=target?'✓ ':''}${name} ${target.toLocaleString('en-US')}</span>`;el.classList.toggle('is-reached',game.score>=target);} $('pool-best-score').textContent=medal.best===null?'Clear the goal to earn a medal':`Best ${medal.best.toLocaleString('en-US')} · clear the goal to earn a medal`;}
   if(game.mode==='score-attack')$('pool-best-score').textContent=medal.best===null?'Finish every shot to record your score':`Best ${medal.best.toLocaleString('en-US')} · ${game.attack.budget}-shot runs`;
   if(!medal&&poolConditions(game.mode)){
     $('pool-medals').hidden=false;const conditions=poolConditions(game.mode),earned=store.medals?.[poolMedalKey(game,game.earning?.kind??progression?.trialKind??'normal')];
-    for(const el of $('pool-medals').querySelectorAll('[data-medal]')){const c=conditions.find(c=>c.name===el.dataset.medal);el.innerHTML=medalIcon(c.name)+`<span>${c.name} · ${c.metric==='score'?c.target.toLocaleString('en-US'):c.metric==='complete'?'Clear':c.target+' shots'}</span>`;el.title=c.text;el.classList.toggle('is-reached',!!earned&&['Bronze','Silver','Gold'].indexOf(earned)>=['Bronze','Silver','Gold'].indexOf(c.name));}
+    medalEarned=earned??null;
+    for(const el of $('pool-medals').querySelectorAll('[data-medal]')){const c=conditions.find(c=>c.name===el.dataset.medal);el.innerHTML=medalIcon(c.name)+`<span>${c.name} · ${c.text}</span>`;el.title=c.text;el.classList.toggle('is-reached',!!earned&&['Bronze','Silver','Gold'].indexOf(earned)>=['Bronze','Silver','Gold'].indexOf(c.name));}
     $('pool-best-score').textContent=(earned?'Best: '+earned+' · ':'')+(game.mode==='waves'?`Wave ${game.wave.number}: clear every bubble` : game.mode==='free'?'Score milestones · awarded after a shot settles':'Make 3 blooms · the full final shot counts');
   }
+  hudMedalRender($('medals-open'),hudMedal(medal?scoreConditions(medal.targets,game.mode==='song-run'?'Clear the pool':'Finish the run'):poolConditions(game.mode),{score:game.score,shots:game.mode==='waves'?5-game.plucks:game.launches,earned:medalEarned}));
   $('end-medal').innerHTML=game.isOver?medalBadge(game.mode==='score-attack'?scoreMedal(game.score,game.attack.budget):game.mode==='challenge'&&gameWon(game)?medalEvaluate(poolConditions('challenge'),{complete:1,shots:game.launches}):null):'';
   $('chain-label').textContent = game.chain.length ? `${game.chain.length} CONTACTS ${game.chain.length >= 5 ? '· BEAUTIFUL.' : '· KEEP THE CHAIN GOING.'}` : 'FIVE DIFFERENT BUBBLES. ONE BLOOM.';
   $('note-meter').replaceChildren(...Array.from({ length: 5 }, (_, index) => { const item = document.createElement('i'); if (game.chain[index]) { item.className = 'active'; item.style.setProperty('--note', COLORS[game.bodies[game.chain[index]].tone]); } return item; }));
@@ -345,6 +350,8 @@ function uiRender() {
   if(progression?.hud()) {$('goal-label').textContent=progression.hud();$('goal-progress').hidden=true;}
   if(game.mode==='waves'){const left=liveBubbles(game).length,total=game.bodies.length-1;$('goal-label').textContent=`Wave ${game.wave.number} · ${left} / ${total} bubbles left`;$('goal-progress').hidden=false;$('goal-progress').setAttribute('aria-label','Bubbles popped this wave');$('goal-progress').max=total;$('goal-progress').value=total-left;$('state-label').textContent=game.wave.entry<WAVE_ENTRY?'BUBBLES INCOMING':left===0?'WAVE CLEARED · COASTING':game.isFlying?'POP EVERY BUBBLE':`${game.plucks} SHOTS TO CLEAR THE BOARD`;Object.assign(canvas.dataset,{wave:String(game.wave.number),bubblesLeft:String(left),waveEntering:String(game.wave.entry<WAVE_ENTRY)});}
   if(game.mode==='score-attack'){$('goal-label').textContent=`Score Attack · ${game.attack.budget} Shots`;$('goal-progress').hidden=false;$('goal-progress').max=game.attack.budget;$('goal-progress').value=game.launches-(game.isFlying?1:0);$('goal-progress').setAttribute('aria-label','Shots completed');$('state-label').textContent=isPaused?'PAUSED':game.isOver?'RUN COMPLETE':game.isFlying?'SHOT IN MOTION':'BUILD CHAINS. BANK. BLOOM.';$('chain-label').textContent=game.chain.length?`${game.chain.length} UNIQUE CONTACTS`:'FIVE DIFFERENT BUBBLES. ONE BLOOM.';}
+  document.querySelector('.goal-strip').hidden=progression?.context!=='listening'&&(game.mode==='free'||game.mode==='score-attack');
+  $('menu-mode').textContent=game.mode==='song-run'?`Melody Journey · ${progression?.hud()??''}`:game.mode==='free'?'Free Play':game.mode==='score-attack'?`Score Attack · ${game.attack.budget} shots`:game.mode==='waves'?$('goal-label').textContent:'Three Blooms';
   bonusRender();
   $('palette').value=audio.music.palette;
   const shot=game.lastShot;
@@ -426,7 +433,7 @@ function controlsRender() { $('left-handed').checked=preferences.leftHanded===tr
 function freePlayRefresh(){if(progression?.context==='legacy'){freePlaySync(game,progression.state);playerSync(game,progression.state.profile);}}
 function shoot() { if(progression?.blocked)return; if(game.isFlying) return; if (!isStarted || isPaused || document.querySelector('dialog[open]')) return; freePlayRefresh(); audioUnlockAsync(); if(!progression.prepareShot(game))return; if (launch(game, angle, power)) { audio.eventPlay({ type: 'launch', x: game.bodies[0].x, y: game.bodies[0].y }); save(); uiRender(); } }
 function pauseSet(value) { if (!isStarted || game.isOver) return; isPaused = value; audio.pauseSet(value); dragCancel(); $('pause-overlay').hidden = !value; save(); uiRender(); if (!value) { audioUnlockAsync(); canvas.focus({ preventScroll: true }); } }
-function start() { preferences.lastPlay=game.mode;if(game.attack)preferences.scoreBudget=game.attack.budget; freePlayRefresh(); navigation?.play(); audio.media.describe(game.seed); isStarted = true; isPaused = false; $('welcome').hidden = true; $('pause-overlay').hidden = true; if (game.mode!=='song-run' && audio.bloomCount !== game.blooms) audio.harmonySet(game.blooms); audio.pauseSet(false); audio.musicStart(); audioUnlockAsync(); save(); uiRender(); canvas.focus({ preventScroll: true }); }
+function start() { preferences.lastPlay=game.mode;if(game.attack)preferences.scoreBudget=game.attack.budget; freePlayRefresh(); navigation?.play(); audio.media.describe(game.seed); isStarted = true; isPaused = false; $('welcome').hidden = true; $('pause-overlay').hidden = true; if (game.mode!=='song-run' && audio.bloomCount !== game.blooms) audio.harmonySet(game.blooms); audio.pauseSet(false); audio.musicStart(); audioUnlockAsync(); save(); uiRender(); if(!game.launches)toast('Drag back and release to launch'); canvas.focus({ preventScroll: true }); }
 function loadPool(nextGame, music = null) {
   game = structuredClone(nextGame); progression?.settle(game,false); audio.musicRestore(music, music?music.blooms:game.blooms, music?music.plucks:game.launches);
   membranes.clear(); powerVisual.clear(); trails = []; particles = []; rings = []; connections = []; bolts = []; reunions = []; scorePopups = []; dragCancel(); accumulator = 0;
@@ -552,7 +559,8 @@ creditsMount($('credits-dialog'));
 $('credits-open').onclick=()=>$('credits-dialog').showModal();
 $('left-handed').onchange=event=>{preferences.leftHanded=event.currentTarget.checked;store.preferences.leftHanded=preferences.leftHanded;controlsRender();$('left-handed-status').textContent=poolPreferencesWrite(localStorage,{leftHanded:preferences.leftHanded})?'':'Layout changed for this session. This browser could not save the preference.';};
 $('button-controls').onchange=event=>{assistedControls=event.currentTarget.checked;controlsRender();save();};
-for(const name of ['powers','music','bonus']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
+hudCardsMount(()=>({score:game.score,points:progression?.points??0,shots:game.plucks,mode:game.mode,contacts:game.chain.length}));
+for(const name of ['powers','music','bonus','medals']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
 $('retry').onclick = () => dialogOpen();
 $('result-home').onclick=()=>{if(save())navigation.home();else toast('Your result could not be saved. Keep this tab open and try Main Menu again.');};
 $('seed-form').onsubmit = event => { event.preventDefault(); const seed = $('seed-input').value.trim(); if (!seed) return; $('new-dialog').close(); if (carrySong) carryToFree(); else newPool(seed, game.mode); };

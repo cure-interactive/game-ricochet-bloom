@@ -2,7 +2,7 @@ import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f10787
 import { screenHeader } from './screen-header.js?v=883c141deaf0d60097c4b99c555371897614dfd0bde5d3229b4a41e5450222e0';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=a507a9b1f1dda2fb0c5f2dc6486e0ca505ce472ba1046ba1c8fb6e3bf3e1d86f';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=6ec5dfd49a1ac77b9434ddf2475e3d62f78a32be961ec09144300cf44ef6e2b5';
 
 export const WIKI_PAGES = Object.freeze({
   player: { title: 'Player', url: './wiki/player.md?v=fe6b860a08b6c152079a0025f9e6cbb4e0b111bcb500681e95f05ac2faa13ec9' },
@@ -15,7 +15,7 @@ export const WIKI_PAGES = Object.freeze({
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=bcc53ccc28d9448fac1a1999a369dd0894c4055ec043e93d2617ada4021b42af' },
   contents: { title: 'Contents', url: './wiki/contents.md?v=e0e64c4ecd4f312b29ca38e43d250d8fd16feb97be462c9acbefc68448b642c3' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=96e18105bd6505aecd380d016a9f4302aac41b6753d54fc54e28fa54462624dd' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=f8483e08ea741e799b8a4a6f100d1fb00aa7f9619fc54b9e91a3b6ac469e70a4' },
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=375ea4718b612307715df0784c3d2e6fcec08d2e2912429e7912d63aad414436' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=7a28e512643ce0faf78d4f9020b8a6e8d56a536f4d64caa116560a40390460e3' },
   'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=54a35271d8c0a9996059e5630c3420246405ea1b9c1c324b0e98f402f3eb1445' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=fdfe61d1691fced0483795dde874fa6adb22ed6ee9939e72afac3342e114d3c3' },

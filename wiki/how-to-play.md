@@ -57,6 +57,8 @@ Melody Journey shows its music panel during play. In other modes, activate the D
 
 ## Controls
 
+The compact HUD keeps score, spendable Points, shots, power slots, chain dots and the bonus reward below the pool. Tap any HUD item for an information card. Score and Points explain their different roles; shots explain the budget; chain dots show bloom progress. The medal lists every condition, power slots explain the current powers, and the checkmarked challenge flag opens the bonus objective with progress and its Points reward. Tap outside a card, press Escape or use Close to dismiss it. Pause floats in the pool corner and follows Left-Handed Layout.
+
 - Touch or mouse: drag and release in the pool.
 - Keyboard: left/right arrows aim, up/down arrows change shot strength, Space launches, and P pauses.
 - Optional buttons: Settings → Accessibility → Show on-screen controls.

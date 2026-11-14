@@ -31,41 +31,67 @@
 :root body #development-dialog.standard-dialog > .dialog-heading { display: flex; }
 :root body #development-dialog.standard-dialog > .dialog-heading h2 { flex: 1; }
 
-/* The field comes first; status and navigation sit beneath it. */
-body > main {
-  grid-template-rows: minmax(0,1fr) minmax(30px,auto) 44px 36px auto auto;
+/* The pool gets all remaining height; two compact rows hold live information. */
+body > main, body > main:has(.phrase-panel[hidden]) {
+  grid-template-columns: minmax(0,1fr);
+  grid-template-rows: minmax(0,1fr) auto auto auto auto;
+  gap: 4px; padding: 0 10px 6px;
 }
-.pool-shell { grid-row: 1; }
-.pool-shell > .hud { order: 1; border-top: 1px solid #38516a55; }
-.pool-shell > .hud-medals { order: 2; }
-.edge-feedback { grid-row: 2; }
-.power-dock, .bonus-card { grid-row: 3; }
-.phrase-panel { grid-row: 4; }
-.control-strip { grid-row: 5; }
-.goal-strip { grid-row: 6; }
-
-/* Normal play uses the space previously occupied by the Development music bar. */
-body > main:has(.phrase-panel[hidden]) {
-  grid-template-rows: minmax(0,1fr) minmax(30px,auto) 44px auto auto;
+.pool-shell { grid-column: 1; grid-row: 1; position: relative; overflow: hidden; }
+body > main > .hud { pointer-events: auto; grid-column: 1; grid-row: 2; display: flex; gap: 10px; min-height: 44px; padding: 0 4px; }
+.hud-balance { display: flex; gap: 14px; flex: 1; max-width: none; }
+.hud-balance .score { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; flex-wrap: nowrap; }
+.hud-balance .run-score strong, .hud-balance .points strong { font-size: 17px; line-height: 1.1; overflow-wrap: normal; }
+.hud-balance .run-score .label, .hud .label { font-size: 8px; }
+.hud .pluck, body[data-left-handed=true] .hud .pluck { padding: 0; display: flex; flex-direction: column; gap: 1px; }
+.hud .pluck strong { font-size: 17px; }
+.pool-shell > #pause { position: absolute; z-index: 4; top: 8px; right: 8px; left: auto; width: 44px; height: 44px; min-height: 44px; padding: 10px; border: 1px solid #7b9faf66; border-radius: 14px; background: #122837d9; color: #d9f3ed; }
+body[data-left-handed=true] .pool-shell > #pause { left: 8px; right: auto; }
+.pool-shell > .goal-strip { position: absolute; z-index: 2; top: 10px; left: 10px; right: 62px; width: fit-content; max-width: calc(100% - 76px); min-height: 22px; margin: 0; padding: 4px 8px; border-radius: 10px; background: #0d202ad9; font-size: 10px; line-height: 1.35; pointer-events: none; }
+.pool-shell > .goal-strip button { pointer-events: auto; }
+body[data-left-handed=true] .pool-shell > .goal-strip { left: 62px; right: 10px; }
+.goal-strip progress { width: 32px; }
+.pool-shell > .edge-feedback { position: absolute; z-index: 3; left: 12px; right: 12px; bottom: 10px; min-height: 0; height: 30px; pointer-events: none; }
+.edge-feedback #edge-idle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.edge-feedback .toast { border-radius: 12px; background: #0c2028e8; padding: 4px 8px; font-size: 11px; }
+.hud-actions { grid-row: 3; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 4px; }
+.hud-actions .power-dock { flex: none; width: 94px; min-height: 44px; }
+.hud-actions .power-dock > button > .ui-icon { display: none; }
+.hud-actions .power-dock > button > span:not(.ui-icon) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.hud-actions .melody { flex: 1; min-width: 45px; position: static; width: auto; transform: none; }
+.hud-actions .melody > div { justify-content: center; }
+.hud-actions .bonus-card { flex: none; width: 114px; min-height: 44px; gap: 7px; padding: 4px 0 5px 8px; }
+.hud-actions .bonus-emblem { display: flex!important; }
+.hud-actions .bonus-emblem .ui-icon { width: 17px; height: 17px; }
+.hud-actions .bonus-copy { flex: 1; }
+.hud-actions .bonus-eyebrow { font-size: 0; letter-spacing: 0; }
+.hud-actions #bonus-reward { font-size: 11px; white-space: nowrap; }
+.hud-actions #bonus-title, .hud-actions #bonus-status { display: none; }
+.hud-actions .bonus-arrow { display: none; }
+.hud-medal { display: flex; align-items: center; justify-content: center; gap: 4px; min-height: 44px; min-width: 70px; padding: 4px 0 4px 6px; background: transparent; border: 0; font-size: 11px; white-space: nowrap; }
+.hud-medal .medal-icon { width: 22px; height: 27px; }
+#medals-dialog .pool-medal-targets { display: grid; gap: 18px; justify-content: stretch; padding: 0; }
+#medals-dialog .pool-medal-targets > [data-medal] { display: flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 16px; }
+#medals-dialog .pool-medal-targets small { text-align: left; font-size: 13px; line-height: 1.6; }
+body > main .phrase-panel { grid-column: 1; grid-row: 4; min-height: 32px; }
+body > main .control-strip, main:has(.phrase-panel[hidden]) .control-strip { grid-column: 1; grid-row: 5; }
+@media(max-width:350px) {
+  body > main > .hud { gap: 6px; }
+  .hud-balance { gap: 8px; }
+  .hud-balance .run-score strong, .hud-balance .points strong { font-size: 14px; }
+  .hud-actions { gap: 6px; }
+  .hud-actions .bonus-card { width: 104px; }
 }
-main:has(.phrase-panel[hidden]) .control-strip { grid-row: 4; }
-main:has(.phrase-panel[hidden]) .goal-strip { grid-row: 5; }
-
 @media(max-height:500px) and (min-width:480px) and (orientation:landscape) {
-  body > main { grid-template-rows: 44px 44px 36px minmax(0,1fr) auto auto; }
-  .pool-shell { grid-row: 1/-1; }
-  .power-dock { grid-row: 1; }
-  .bonus-card { grid-row: 2; }
-  .phrase-panel { grid-row: 3; }
-  .edge-feedback { grid-row: 4; }
-  .goal-strip { grid-row: 5; }
-  .control-strip { grid-row: 6; }
-  body > main:has(.phrase-panel[hidden]) {
-    grid-template-rows: 44px 44px minmax(0,1fr) auto auto;
-  }
-  main:has(.phrase-panel[hidden]) .edge-feedback { grid-row: 3; }
-  main:has(.phrase-panel[hidden]) .goal-strip { grid-row: 4; }
-  main:has(.phrase-panel[hidden]) .control-strip { grid-row: 5; }
+  body > main, body > main:has(.phrase-panel[hidden]) { max-width: 1200px; grid-template-columns: minmax(0,1fr) 210px; grid-template-rows: auto auto auto minmax(0,1fr) auto; gap: 6px 10px; }
+  .pool-shell { grid-column: 1; grid-row: 1/-1; }
+  body > main > .hud { grid-column: 2; grid-row: 1; flex-wrap: wrap; }
+  .hud-balance { flex-basis: 140px; }
+  .hud-actions { grid-column: 2; grid-row: 2; flex-wrap: wrap; }
+  .hud-actions .bonus-card { width: 100%; border-left: 0; }
+  body > main .phrase-panel { grid-column: 2; grid-row: 3; }
+  body > main .control-strip, main:has(.phrase-panel[hidden]) .control-strip { grid-column: 2; grid-row: 5; }
+  .aim-controls { flex-wrap: wrap; }
 }
 @media(max-height:500px) {
   :root body :is(dialog, #tree-dialog) > :is(.dialog-heading, .campaign-heading, .tree-heading, .skin-heading, .wiki-heading, .reward-heading) {
@@ -77,7 +103,7 @@ main:has(.phrase-panel[hidden]) .goal-strip { grid-row: 5; }
 /* The bottom profile strip is a touch-sized disclosure only during gameplay. */
 body[data-development=true]{--content-safe-bottom:0px}
 #development-profile-bar{position:fixed;inset:auto 0 0;margin:0;width:100%;max-width:none;box-sizing:border-box;height:auto;min-height:calc(20px + env(safe-area-inset-bottom));padding:0 max(8px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(8px,env(safe-area-inset-left));border:0;box-shadow:inset 0 1px #e5c58b40;border-radius:0;background:#27271ff5;color:#e6d3ac;font:500 11px/19px 'Fredoka',sans-serif;letter-spacing:.3px;text-align:center;z-index:10000;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-#development-profile-bar>button{display:block;width:100%;height:44px;min-height:44px;padding:0 12px;border:0;border-radius:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit;text-align:center;cursor:pointer}
+#development-profile-bar>button{display:block;width:100%;height:28px;min-height:28px;padding:0 12px;border:0;border-radius:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit;text-align:center;cursor:pointer}
 #development-profile-bar>button::after{content:'▴';margin-left:10px}
 #development-profile-bar>button[aria-expanded=true]::after{content:'▾'}
 #development-profile-bar>button:focus-visible{outline:2px solid #e6d3ac;outline-offset:-3px}
@@ -89,3 +115,18 @@ body[data-development=true]{--content-safe-bottom:0px}
 
 /* Development owns the outermost edge and safe area; action bars meet it. */
 :root body[data-development=true] :is(dialog, #tree-dialog) > :is(.campaign-footer, .reward-footer) { padding-bottom: 12px; }
+
+/* Compact information keeps its tap target, with native modal focus and Escape. */
+.hud [data-hud-help], .hud-actions [data-hud-help] { background: transparent; border: 0; border-radius: 8px; padding: 0; min-width: 44px; min-height: 44px; color: inherit; }
+.hud [data-hud-help=points] { color: var(--mint); }
+.hud-actions .bonus-emblem { background: transparent; border: 0; box-shadow: none; }
+.hud-actions .bonus-emblem .ui-icon { width: 23px; height: 23px; }
+:root body dialog.hud-info-card[open] { position: fixed; inset: 0; display: flex; flex-direction: column; width: min(380px,calc(100% - 28px)); height: fit-content; max-height: calc(var(--app-height,100dvh) - 32px); margin: auto; padding: 0; border: 1px solid var(--glass-edge); border-radius: 22px; overflow: hidden; }
+:root body dialog.hud-info-card > .dialog-body { flex: 0 1 auto; min-height: 0; overflow: auto; padding: 20px; }
+:root body dialog.hud-info-card > .dialog-heading { width: auto; flex: none; margin: 0; padding: 10px 14px; border-radius: 0; }
+:root body dialog.hud-info-card .screen-heading-title h2 { font-size: 20px; }
+.hud-info-card p { font-size: 14px; line-height: 1.6; }
+.hud-help-value { display: block; color: var(--mint); font-size: 28px; line-height: 1.2; }
+.hud-help-chain { display: flex; gap: 10px; margin: 18px 0; }
+.hud-help-chain i { width: 20px; height: 20px; border-radius: 50%; background: #718b9f33; border: 1px solid #aac6ca66; }
+.hud-help-chain i.active { background: var(--mint); box-shadow: 0 0 12px #9ff5df55; }

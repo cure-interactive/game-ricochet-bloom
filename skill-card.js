@@ -1,6 +1,6 @@
 import {escapeHTML as escape} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import {skillIconHTML,rarityIconHTML,typeIconHTML} from './skill-icon.js?v=859b65d3d9ddbb95f3039dfbb37a2af9adb594c95e43083047eabe3d1a8b899a';
+import {skillIconHTML,rarityIconHTML,typeIconHTML} from './skill-icon.js?v=805f65e99fef1588c325abf1caeaf8dcae9affda2cc09c442e81631176720fa6';
 import {buttonHTML,iconHTML} from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
 import {tooltipPosition} from './skill-comparison.js?v=10c784b28bc38cff35665bd1d27f44f43c140eab1cdff25d040b78a8cd1fe136';
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
