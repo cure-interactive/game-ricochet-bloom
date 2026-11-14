@@ -2,19 +2,20 @@ import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f10787
 import { screenHeader } from './screen-header.js?v=b12f4a7f643a7ebc5d8945f2671aead3040da9be729bee110404af53f14e24e0';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=0e18ae6114b8d5fa65804a78c4cc7e44c97373ed2989c0d47760e43b9f224451';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=43106e4d533419b9f1bd690f3fc1b5d66c08ae74f20d19ec90c5cca57ac7bc77';
 
 export const WIKI_PAGES = Object.freeze({
+  player: { title: 'Player', url: './wiki/player.md?v=42ed59db354a2b09d3d2df2ef941e0310545b2b54a14c1a6ee3115293de12d73' },
   developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=ceb8c80d6bb5f809b39ba60740d24a5a704a1900198d00593c6d31669be04f07' },
-  medals: { title: 'Medals', url: './wiki/medals.md?v=6ad6f404b6d3440ce771beb2501e730bc767709bea66c668fba96cfbd41334a8' },
+  medals: { title: 'Medals', url: './wiki/medals.md?v=67a32f6b27c927eac686a265dc68ce3a2d05d9c66004b15d272a640b76996752' },
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=688714c1fe057d6c0da78a5f38b32cd4bc3fe0e712812b248e9d7552b6c54daf' },
   experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=2925dacfbb1be75a34b46fe3cec9074a5e78b169a558c1a8299ea528a7e635b1' },
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=43d206ad19f209d6294446e0ce643914d29f9d57bde7e04c329fa510a6adb431' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=87b782a5f3fd8d58d9e4dd1ee4be0e16bca7a04b0083d4b88e128aac4b8ef7d6' },
-  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=aa85ee47db1a46b216eebd4a7d8a84a83e9c264242323c6364658867a9e727a6' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=d03e23be2397cfa4949bdf37269710f2876a2bb4d5493d0b22e6f2bdf5d923eb' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=d05b8f8ca943275eba7e3232ac293b93a337b54c2c403dc1a44ebdead9ae5dac' },
+  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=1161fa2f74a099461fb48e81531d015f9b05d6f713da5ce0bcd8068df46aa190' },
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=1e1acd1cf9c575c37ee79a9d2a98b2bb834189e7c6d075984d819e0f09cd6a4f' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=7a28e512643ce0faf78d4f9020b8a6e8d56a536f4d64caa116560a40390460e3' },
   'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=3acd6d44547163b633a944abf088b1089a57018e9fbda57d7471b01347616e90' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=fdfe61d1691fced0483795dde874fa6adb22ed6ee9939e72afac3342e114d3c3' },
@@ -79,16 +80,19 @@ export const wikiPageAvailable=(page,development=false)=>Object.hasOwn(WIKI_PAGE
 export function renderWikiPage(source,page,development=false){
   if(!wikiPageAvailable(page,development))return '';
   const visible=source.replace(/<!-- development -->([\s\S]*?)<!-- \/development -->/g,(_,body)=>development?body:'');
-  return renderMarkdown(visible,page,(label,href)=>{
+  const html=renderMarkdown(visible,page,(label,href)=>{
     const target=wikiTarget(href,page);
     if(target&&!wikiPageAvailable(target.page,development))return '';
     // Reuse the exact bounded-link renderer and its reviewed source allowlist.
     return inline(`[${label}](${href})`,page);
   });
+  // Contents groups retain the authored headings and links. Native disclosures
+  // provide touch/keyboard access without another navigation or search model.
+  return page==='contents'?html.split(/(?=<h2 )/).map(part=>part.replace(/^(<h2 [\s\S]*?<\/h2>)([\s\S]*)$/, '<details class="wiki-topic-group"><summary>$1</summary>$2</details>')).join('\n'):html;
 }
 export function wikiMount(host) {
   const dialog=document.createElement('dialog');dialog.id='wiki-dialog';dialog.setAttribute('aria-labelledby','wiki-title');
-  dialog.innerHTML=`${screenHeader({className:'wiki-heading',title:'Wiki',titleId:'wiki-title',back:`<button type="button" data-wiki-back aria-label="Back">${iconHTML('arrow-left')}<span>Back</span></button>`,actions:`<button type="button" data-wiki-contents>${iconHTML('book')}<span>Contents</span></button>`})}<article class="wiki-article" tabindex="0" aria-label="Wiki page"></article>`;
+  dialog.innerHTML=`${screenHeader({className:'wiki-heading',title:'Wiki',titleId:'wiki-title',back:`<button type="button" data-wiki-back aria-label="Back">${iconHTML('arrow-left')}<span>Back</span></button>`,actions:`<button type="button" data-wiki-contents>${iconHTML('list')}<span>Contents</span></button>`})}<article class="wiki-article" tabindex="0" aria-label="Wiki page"></article>`;
   document.body.append(dialog);
   const article=dialog.querySelector('article'), title=dialog.querySelector('h2'), contents=dialog.querySelector('[data-wiki-contents]');
   let current={page:'wiki',anchor:''}, request=null;const history=pageHistory(current,target=>target.page);
@@ -97,7 +101,7 @@ export function wikiMount(host) {
   async function load(target, remember=true) {
     if(!available(target.page)){target={page:'wiki',anchor:''};history.reset(target);remember=false;}
     if(remember)history.visit(target);current=target;request?.abort();const active=new AbortController();request=active;
-    title.textContent=WIKI_PAGES[target.page].title;contents.hidden=target.page==='contents';
+    title.textContent=WIKI_PAGES[target.page].title;contents.hidden=target.page==='contents';article.setAttribute('data-wiki-view',target.page);
     article.setAttribute('aria-busy','true');article.innerHTML='<p role="status">Loading page…</p>';article.scrollTop=0;
     try {
       const response=await fetch(WIKI_PAGES[target.page].url,{cache:'no-cache',signal:active.signal});

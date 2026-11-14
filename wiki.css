@@ -23,3 +23,18 @@ body[data-menu-mode=home] .wiki-heading{padding-top:max(16px,env(safe-area-inset
 .credit-page summary{cursor:pointer;padding:14px 0;color:var(--mint)}
 .credit-page a{overflow-wrap:anywhere}
 .credit-page h1{font-size:26px}.credit-page h2{font-size:21px}.credit-page h3{font-size:18px}
+
+/* Overview cards and native Contents disclosures share the existing guide
+   links; the authored Markdown remains the navigation source. */
+.wiki-article[data-wiki-view=wiki]>ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;list-style:none;padding:0}
+.wiki-article[data-wiki-view=wiki]>ul>li{margin:0;padding:12px 16px;border:1px solid #789b9f40;border-radius:14px;background:#142b3bd9;font-size:14px;color:#b8cbd3;line-height:1.5}
+.wiki-article[data-wiki-view=wiki]>ul>li>a{display:block;min-height:44px;padding:8px 0;font-size:18px;line-height:1.4;text-decoration:none;font-weight:500}
+.wiki-topic-group{margin:12px 0;border:1px solid #789b9f40;border-radius:14px;background:#142b3bd9;overflow:hidden}
+.wiki-topic-group>summary{cursor:pointer;min-height:52px;padding:13px 16px;color:#b3f0dc}
+.wiki-topic-group>summary>h2{display:inline;margin:0;font-size:20px;line-height:1.4}
+.wiki-topic-group[open]>summary{border-bottom:1px solid #789b9f30}
+.wiki-topic-group>ul{list-style:none;padding:8px 16px;margin:0}
+.wiki-topic-group>ul>li{margin:0}
+.wiki-topic-group>ul>li>a{min-height:44px;padding:8px 0}
+.wiki-article a:focus-visible,.wiki-topic-group>summary:focus-visible{outline:3px solid #ffe4a1;outline-offset:2px;border-radius:4px}
+@media(max-width:540px){.wiki-article[data-wiki-view=wiki]>ul{grid-template-columns:1fr}.wiki-topic-group>summary>h2{font-size:18px}}

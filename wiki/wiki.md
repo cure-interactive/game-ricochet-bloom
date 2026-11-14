@@ -1,32 +1,34 @@
 # Ricochet Bloom Wiki
 
-Explore game modes, grow your powers, and chase your next goal. Choose a topic below. Use Back or swipe right from the left edge to return. Revisiting a page trims your return path, so Back never cycles through the same pages. Use [Contents](contents.md) for the complete topic and section index.
+Find a guide for your next game, your player or your progress. Use Back or swipe from the left edge to return.
+
+## Start Here
+
+- [How to Play](how-to-play.md) — launching, scoring, Points and controls.
+- [Contents](contents.md) — open a topic to jump straight to a section.
 
 ## Play
 
-- [Medals](medals.md) — Bronze, Silver and Gold conditions for every playable mode and level.
-
-- [Score Attack](score-attack.md) — 5, 10 or 15 shots, personal bests and score medals.
-
-- [Play the Experiments](experiments.md) — families, configurable trials, capture, results and the 210-idea catalogue.
-- [Endless Waves](waves.md) — clear each pool with limited shots.
-
-- [How to Play](how-to-play.md) — launching, blooms, contact powers and music.
-- [Campaign](campaign.md) — tracks, pool goals, rewards and progression.
+- [Melody Journey](campaign.md) — musical tracks, pool goals and campaign progress.
+- [Endless Waves](waves.md) — clear each pool before your shots run out.
+- [Score Attack](score-attack.md) — 5, 10 or 15 shots to chase your best score.
+- [Play the Experiments](experiments.md) — find games, choose settings and learn each playable family.
 
 ## Grow
 
-- [Skills](skill-tree.md) — research, prerequisites and permanent upgrades.
-- [Power-Ups](power-ups.md) — every power, its unlock requirement and upgrade chain.
+- [Player](player.md) — your equipped skin, appearance, Stats and Player Skills.
+- [Skills](skill-tree.md) — spend Points on cumulative player and power upgrades.
+- [Power-Ups](power-ups.md) — every power and its upgrade chain.
+- [Medals](medals.md) — Bronze, Silver and Gold conditions for every mode and level.
 
 ## Make Yourself at Home
 
-- [Sound, Settings & Saves](settings.md) — audio, accessibility, screen modes and backups.
+- [Sound, Settings & Saves](settings.md) — audio, accessibility, backups and diagnostics.
 
 <!-- development -->
 ## Developer
 
-- [Developer](developer.md) - economy tuning, playtest guidance, the concept workshop and future-mode briefs.
+- [Developer](developer.md) — tuning, playtesting, tools and the concept workshop.
 
 <!-- /development -->
 ## Attribution

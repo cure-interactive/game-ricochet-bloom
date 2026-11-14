@@ -1,18 +1,6 @@
 # Table of Contents
 
-[Wiki Overview](wiki.md)
-
-## Medals
-
-- [Medals and Every Level’s Conditions](medals.md)
-- [Earning and Keeping Medals](medals.md#earning-and-keeping-medals)
-- [Melody Journey Medal Conditions](medals.md#melody-journey)
-- [Score Attack Medal Conditions](medals.md#score-attack)
-- [Challenge Medal Conditions](medals.md#challenge)
-- [Free Play Medal Conditions](medals.md#free-play)
-- [Endless Waves Medal Conditions](medals.md#endless-waves)
-- [Experiment Level Medal Conditions](medals.md#experiment-levels)
-- [Ideas in Development](medals.md#ideas-in-development)
+Open a topic to find its guide and section links. [Wiki Overview](wiki.md) groups guides by what you want to do.
 
 ## How to Play
 
@@ -24,45 +12,13 @@
 - [Build a Song](how-to-play.md#build-a-song)
 - [Controls](how-to-play.md#controls)
 
-## Play the Experiments
+## Player
 
-- [Play the Experiments](experiments.md)
-- [Find and Favourite Games](experiments.md#find-and-favourite-games)
-- [Three Levels and Settings](experiments.md#three-levels-and-settings)
-- [Trick Shots](experiments.md#trick-shots)
-- [Melody Trials](experiments.md#melody-trials)
-- [Controls and Saves](experiments.md#controls-and-saves)
-- [Reaction Puzzle](experiments.md#reaction-puzzle)
-- [Cargo Rescue](experiments.md#cargo-rescue)
-- [Outbreak Containment](experiments.md#outbreak-containment)
-- [Capture Transport Release](experiments.md#capture-transport-release)
-- [Results and Feedback](experiments.md#results-and-feedback)
-- [Points and Music](experiments.md#points-and-music)
-- [What to Test](experiments.md#what-to-test)
-
-## Score Attack
-
-- [Score Attack](score-attack.md)
-- [Every Shot Counts](score-attack.md#every-shot-counts)
-- [Score and Medals](score-attack.md#score-and-medals)
-- [Points and Saves](score-attack.md#points-and-saves)
-
-## Endless Waves
-
-- [Endless Waves](waves.md)
-- [Clear the Board](waves.md#clear-the-board)
-- [Harder Waves](waves.md#harder-waves)
-- [Powers and Music](waves.md#powers-and-music)
-- [Saves and Records](waves.md#saves-and-records)
-
-## Melody Journey
-
-- [Melody Journey](campaign.md)
-- [Score Medals in Every Pool](campaign.md#score-medals-in-every-pool)
-- [Choose a Track](campaign.md#choose-a-track)
-- [Five Pools per Run](campaign.md#five-pools-per-run)
-- [Research Points and Powers](campaign.md#research-points-and-powers)
-- [Continue or Start Again](campaign.md#continue-or-start-again)
+- [Player](player.md)
+- [Player Viewer](player.md#player-viewer)
+- [Skins](player.md#skins)
+- [Stats](player.md#stats)
+- [Skills](player.md#skills)
 
 ## Skills
 
@@ -102,6 +58,58 @@
 - [Vortex](power-ups.md#vortex)
 - [Wake](power-ups.md#wake)
 - [Wrap](power-ups.md#wrap)
+
+## Medals
+
+- [Medals and Every Level’s Conditions](medals.md)
+- [Earning and Keeping Medals](medals.md#earning-and-keeping-medals)
+- [Melody Journey Medal Conditions](medals.md#melody-journey)
+- [Score Attack Medal Conditions](medals.md#score-attack)
+- [Challenge Medal Conditions](medals.md#challenge)
+- [Free Play Medal Conditions](medals.md#free-play)
+- [Endless Waves Medal Conditions](medals.md#endless-waves)
+- [Experiment Level Medal Conditions](medals.md#experiment-levels)
+- [Ideas in Development](medals.md#ideas-in-development)
+
+## Melody Journey
+
+- [Melody Journey](campaign.md)
+- [Score Medals in Every Pool](campaign.md#score-medals-in-every-pool)
+- [Choose a Track](campaign.md#choose-a-track)
+- [Five Pools per Run](campaign.md#five-pools-per-run)
+- [Research Points and Powers](campaign.md#research-points-and-powers)
+- [Continue or Start Again](campaign.md#continue-or-start-again)
+
+## Endless Waves
+
+- [Endless Waves](waves.md)
+- [Clear the Board](waves.md#clear-the-board)
+- [Harder Waves](waves.md#harder-waves)
+- [Powers and Music](waves.md#powers-and-music)
+- [Saves and Records](waves.md#saves-and-records)
+
+## Score Attack
+
+- [Score Attack](score-attack.md)
+- [Every Shot Counts](score-attack.md#every-shot-counts)
+- [Score and Medals](score-attack.md#score-and-medals)
+- [Points and Saves](score-attack.md#points-and-saves)
+
+## Play the Experiments
+
+- [Play the Experiments](experiments.md)
+- [Find and Favourite Games](experiments.md#find-and-favourite-games)
+- [Three Levels and Settings](experiments.md#three-levels-and-settings)
+- [Trick Shots](experiments.md#trick-shots)
+- [Melody Trials](experiments.md#melody-trials)
+- [Controls and Saves](experiments.md#controls-and-saves)
+- [Reaction Puzzle](experiments.md#reaction-puzzle)
+- [Cargo Rescue](experiments.md#cargo-rescue)
+- [Outbreak Containment](experiments.md#outbreak-containment)
+- [Capture Transport Release](experiments.md#capture-transport-release)
+- [Results and Feedback](experiments.md#results-and-feedback)
+- [Points and Music](experiments.md#points-and-music)
+- [What to Test](experiments.md#what-to-test)
 
 ## Sound, Settings & Saves
 

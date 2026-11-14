@@ -29,11 +29,7 @@ For power mastery, activate a power you own and hit at least **three different b
 
 ## Player Stats
 
-Open **Player → Stats** to see your researched launch speed, aiming-guide lengths, wall speed retention, Points, upgrades and recorded play totals. Overview, Records and Medals group your information, with links to Player Skills and Power Skills.
-
-The screen also shows Melody Journey clears, separate 5/10/15-shot Score Attack bests, experiment results and Bronze/Silver/Gold records by gamemode. Standard and Relaxed campaign records stay separate. Each saved record counts only its best medal.
-
-Stats belong to the selected Normal or Development profile in this browser. Older play may not have been recorded, and unreadable records appear as unavailable. Development grants and unlocks are not counted as earned Points or completed tracks. The displayed attributes describe your researched build; active runs and fixed challenges can retain a different build.
+Open **Player → Stats** for your build, play totals, records and medals. The [Player guide](player.md) covers the viewer, Skins, Stats and Player Skills.
 
 ## Contact Powers
 
@@ -45,7 +41,7 @@ Only powers you have unlocked are included in the random pool. Research expands 
 
 ## Build a Song
 
-shots collect melodic ideas; blooms add harmony and musical layers. Bubble markings identify **melody**, **bass** and **rhythm**. Hits on those bubbles influence their part as it becomes available.
+Shots collect melodic ideas; blooms add harmony and musical layers. Bubble markings identify **melody**, **bass** and **rhythm**. Hits on those bubbles influence their part as it becomes available.
 
 Three different bubbles establish a recurring melody. Later notes develop the music over time rather than replacing it after every collision. A short answering phrase plays after a shot, and the arrangement continues between shots. New musical layers join on the beat.
 
