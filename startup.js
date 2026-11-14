@@ -1,6 +1,15 @@
 // A classic script keeps recovery available even when a game module cannot load.
 (function () {
   'use strict';
+  // Apply before modules load, including menus, dialogs and startup recovery.
+  window.addEventListener('contextmenu', function (event) { event.preventDefault(); }, true);
+  ['pointerdown', 'pointerup', 'mousedown', 'mouseup', 'auxclick'].forEach(function (type) {
+    window.addEventListener(type, function (event) {
+      if (event.button !== 2) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, true);
+  });
   var panel = document.getElementById('startup');
   var title = document.getElementById('startup-title');
   var message = document.getElementById('startup-message');
