@@ -8,6 +8,7 @@
   var retry = document.getElementById('startup-retry');
   var body = document.body;
   var exitTimer;
+  var started = Date.now();
   var complete = false;
   var ready = false;
   var failed = false;
@@ -55,7 +56,7 @@
     if (home) home.inert = false;
   }
   panel.addEventListener('animationend', function (event) {
-    if (event.target === panel && event.animationName === 'startup-exit') finish();
+    if (event.target === panel && (event.animationName === 'startup-exit' || event.animationName === 'startup-fade-out')) finish();
   });
   window.addEventListener('ricochet-ready', function () {
     if (ready) return;
@@ -69,15 +70,17 @@
     document.getElementById('startup-diagnostics').hidden = true;
     title.textContent = 'Ricochet Bloom';
     message.textContent = 'Your pool is ready.';
-    // Let the initialized menu and its canvas paint before their entrance.
-    requestAnimationFrame(function () { requestAnimationFrame(function () {
-      if ((window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || body.classList.contains('motion-reduced')) {
-        finish(); return;
-      }
-      panel.inert = true;
-      body.dataset.startup = 'entering';
-      // Also settle if animations are disabled or their completion event is lost.
-      exitTimer = setTimeout(finish, 900);
-    }); });
+    // A cached load still gets a readable loading beat. Paint the actual menu
+    // before the crossfade, keeping it inert until both surfaces have settled.
+    setTimeout(function () {
+      requestAnimationFrame(function () { requestAnimationFrame(function () {
+        var reduced = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || body.classList.contains('motion-reduced');
+        body.dataset.startupMotion = reduced ? 'reduced' : 'full';
+        panel.inert = true;
+        body.dataset.startup = 'entering';
+        // A short opacity-only fade also works with Gentle/reduced motion.
+        exitTimer = setTimeout(finish, reduced ? 400 : 1100);
+      }); });
+    }, Math.max(0, 350 - (Date.now() - started)));
   }, { once: true });
 }());
