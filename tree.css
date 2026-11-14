@@ -216,7 +216,7 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 /* Purchase information stays anchored to its node; there is no detail pane or sheet. */
 :is(#tree-dialog,#player-upgrade-dialog) .tree-workspace{grid-template-columns:minmax(0,1fr)}
 :is(#tree-dialog,#player-upgrade-dialog) .tree-status.sr-only{padding:0;margin:0}
-:is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip{position:absolute;z-index:10;box-sizing:border-box;display:flex;flex-direction:column;padding:12px;border:1px solid #688779;border-radius:14px;background:#102430;box-shadow:0 8px 28px #0008;overflow:hidden;overscroll-behavior:contain;touch-action:pan-y;color:#e8f1f2;font-size:13px;line-height:1.45}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip{width:max-content;position:absolute;z-index:10;box-sizing:border-box;display:flex;flex-direction:column;padding:12px;border:1px solid #688779;border-radius:14px;background:#102430;box-shadow:0 8px 28px #0008;overflow:hidden;overscroll-behavior:contain;touch-action:pan-y;color:#e8f1f2;font-size:13px;line-height:1.45}
 :is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip[hidden]{display:none}
 .skill-tooltip-heading{flex:none;display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:12px}
 .skill-card-title{flex:1;min-width:0;overflow-wrap:anywhere}

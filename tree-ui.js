@@ -153,7 +153,7 @@ export function treeMount(controller){
    if(tipId===id&&!tip.hidden)return;
    hideTooltip();selected=id;selectionRender();
    const source=mapElement.querySelector(`[data-node="${id}"]`),bounds=stage.getBoundingClientRect();
-   tip.style.maxHeight=Math.max(44,bounds.height-16)+'px';tip.style.width=Math.min(330,bounds.width-16)+'px';
+   tip.style.maxHeight=Math.max(44,bounds.height-16)+'px';tip.style.maxWidth=Math.max(0,bounds.width-16)+'px';
    tip.innerHTML=`<div class="skill-tooltip-heading"><div class="skill-card-title"><h3 id="skill-tooltip-title">${escape(info.name)}</h3><span class="skill-type-pill"><span class="sr-only">Type: </span>${typeIconHTML(info.type)}${escape(info.type)}</span></div>${button('dismiss','Close','close')}</div><div class="skill-tooltip-body"><p>${escape(info.description)}</p>${info.stats?skillStatsHTML(info.stats):''}${info.unlock?'':`<p>${escape(info.status)}${info.blocker?'<br>'+escape(info.blocker):''}</p>`}</div>${info.unlock?`<div class="skill-tooltip-action">${button('buy',`Unlock · ${info.unlock.cost} Points`,'lock',{class:'primary',disabled:!info.unlock.enabled,'aria-describedby':info.unlock.enabled?null:'skill-unlock-reason'})}${info.unlock.reason?`<p id="skill-unlock-reason">${escape(info.unlock.reason)}</p>`:''}</div>`:info.canEquip?`<div class="skill-tooltip-action">${button('equip','Use This Style','check',{class:'primary'})}</div>`:''}`;
    // Mirror the selected node's actual artwork and badges; the card shares its paint rules.
    const cardIcon=document.createElement('span');
