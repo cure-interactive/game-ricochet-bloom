@@ -35,3 +35,10 @@
 :root body :is(dialog,#tree-dialog)>.screen-heading>:is(.screen-heading-copy,h2){order:2;text-align:right}
 :root body :is(dialog,#tree-dialog)>.screen-heading>button{order:3}
 :root body[data-left-handed=true] :is(dialog,#tree-dialog)>.screen-heading>:is(.screen-heading-copy,h2){text-align:left}
+
+.screen-heading-title{display:flex;align-items:center;gap:8px;min-width:0}
+.screen-heading-title>h2{min-width:0;overflow-wrap:anywhere}
+:root body :is(dialog,#tree-dialog)>.screen-heading .screen-heading-title{justify-content:flex-end}
+:root body :is(dialog,#tree-dialog)>.screen-heading .screen-heading-title>h2{flex:0 1 auto}
+:root body[data-left-handed=true] :is(dialog,#tree-dialog)>.screen-heading .screen-heading-title{justify-content:flex-start}
+.preview-heading>.screen-heading-title{flex:1}

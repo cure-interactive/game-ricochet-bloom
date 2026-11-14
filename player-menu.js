@@ -1,13 +1,13 @@
-import {skinOptions} from './skin-ui.js?v=cd6e9849fb4a5ab1274be06c059e546ec2484757dba8d989c725f2e5d0e4a0bb';
+import {skinOptions} from './skin-ui.js?v=0cdbb75d4aa16eee9edac9eb20c6389f961a9687424554635297c41f3df2d608';
 import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=20b9a6e6dcb6c0b1f5182adc72ed0282dd864528b6ea26ed11621b0dca8ee442';
-import { screenHeader } from './screen-header.js?v=b12f4a7f643a7ebc5d8945f2671aead3040da9be729bee110404af53f14e24e0';
+import { screenHeader } from './screen-header.js?v=8c1818ee2c0fd6b0a409cbf62a7a68979ad5f1b9778b9567b20f46abfd27dda7';
 import { buttonHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 
 // Player destinations share the game's existing screen history and profile.
 export function playerMenuMount(host){
  let preview=null;
  const dialog=document.createElement('dialog');dialog.id='player-menu-dialog';dialog.className='standard-dialog';dialog.setAttribute('aria-labelledby','player-menu-title');
- dialog.innerHTML=screenHeader({className:'dialog-heading',title:'Player',titleId:'player-menu-title',back:buttonHTML('Back','arrow-left',{'data-player-back':true})})+`<div class="dialog-body player-menu-body"><section class="player-viewer"><div class="player-viewer-preview"></div><h3 class="player-viewer-name"></h3><p class="player-viewer-caption">Equipped Skin</p><p class="player-viewer-hint">Drag or tap your player</p></section><nav class="player-menu-actions" aria-label="Player options">${buttonHTML('Skins','player-skin',{'data-player-open':'skins'})}${buttonHTML('Stats','stats',{'data-player-open':'stats'})}${buttonHTML('Skills','skill-tree',{'data-player-open':'skills'})}</nav></div>`;
+ dialog.innerHTML=screenHeader({icon:'player-skin',className:'dialog-heading',title:'Player',titleId:'player-menu-title',back:buttonHTML('Back','arrow-left',{'data-player-back':true})})+`<div class="dialog-body player-menu-body"><section class="player-viewer"><div class="player-viewer-preview"></div><h3 class="player-viewer-name"></h3><p class="player-viewer-caption">Equipped Skin</p><p class="player-viewer-hint">Drag or tap your player</p></section><nav class="player-menu-actions" aria-label="Player options">${buttonHTML('Skins','player-skin',{'data-player-open':'skins'})}${buttonHTML('Stats','stats',{'data-player-open':'stats'})}${buttonHTML('Skills','skill-tree',{'data-player-open':'skills'})}</nav></div>`;
  document.body.append(dialog);const back=dialog.querySelector('[data-player-back]');
  back.onclick=()=>host.back();dialog.addEventListener('cancel',e=>{e.preventDefault();host.back();});
  dialog.addEventListener('click',e=>{const destination=e.target.closest('[data-player-open]')?.dataset.playerOpen;if(destination)host.open(destination);});

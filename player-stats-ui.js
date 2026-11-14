@@ -1,5 +1,5 @@
 import { playerStats } from './player-stats.js?v=d24ca73a5e67db1b2b267c24de11f3c023d8983ac0127d05d04922012ce7b6d1';
-import { screenHeader } from './screen-header.js?v=b12f4a7f643a7ebc5d8945f2671aead3040da9be729bee110404af53f14e24e0';
+import { screenHeader } from './screen-header.js?v=8c1818ee2c0fd6b0a409cbf62a7a68979ad5f1b9778b9567b20f46abfd27dda7';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 import { medalIcon } from './medal-ui.js?v=e3cf543cf4eac797d597f6fbf218f975e9a99dde2b6fb3211698fb29ed0f456e';
 import { MEDAL_NAMES } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
@@ -32,7 +32,7 @@ export function playerStatsHTML(s,view='overview'){
 export function playerStatsMount(host){
  let view='overview';
  const dialog=document.createElement('dialog');dialog.id='player-stats-dialog';dialog.className='standard-dialog';dialog.setAttribute('aria-labelledby','player-stats-title');
- dialog.innerHTML=screenHeader({className:'dialog-heading',title:'Player Stats',titleId:'player-stats-title',back:buttonHTML('Back','arrow-left',{'data-stats-back':true})})+'<div class="dialog-body player-stats-body"></div>';
+ dialog.innerHTML=screenHeader({icon:'stats',className:'dialog-heading',title:'Player Stats',titleId:'player-stats-title',back:buttonHTML('Back','arrow-left',{'data-stats-back':true})})+'<div class="dialog-body player-stats-body"></div>';
  document.body.append(dialog);const content=dialog.querySelector('.player-stats-body'),back=dialog.querySelector('[data-stats-back]');
  back.onclick=()=>host.back();dialog.addEventListener('cancel',e=>{e.preventDefault();host.back();});
  dialog.addEventListener('click',e=>{const section=e.target.closest('[data-stats-view]');if(section){view=selectedView(section.dataset.statsView);for(const button of content.querySelectorAll('[data-stats-view]'))button.setAttribute('aria-pressed',String(button.dataset.statsView===view));for(const panel of content.querySelectorAll('.stats-panel'))panel.hidden=panel.id!=='stats-panel-'+view;content.scrollTop=0;return;}const destination=e.target.closest('[data-stats-open]')?.dataset.statsOpen;if(destination)host.open(destination);});

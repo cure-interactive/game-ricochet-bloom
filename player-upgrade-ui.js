@@ -4,7 +4,7 @@ import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97
 import {playerTreeGraph} from './player-tree.js?v=4425f75b6e85f8d3e680615a42b7c4f03592dfc057684fdc6e530ef5c2349296';
 import {mapCameraMount,nearestMapNode} from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
 import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=8c82aad10559d5628d22c1c92a67ea540f32d3f5266ec61312711ecc99ce89db';
-import {screenHeader} from './screen-header.js?v=b12f4a7f643a7ebc5d8945f2671aead3040da9be729bee110404af53f14e24e0';
+import {screenHeader} from './screen-header.js?v=8c1818ee2c0fd6b0a409cbf62a7a68979ad5f1b9778b9567b20f46abfd27dda7';
 import {buttonHTML,iconHTML} from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
@@ -12,7 +12,7 @@ const rules='Every purchased upgrade stacks permanently. Open pools apply purcha
 
 export function playerUpgradeMount(host){
  const dialog=document.createElement('dialog');dialog.id='player-upgrade-dialog';dialog.setAttribute('aria-label','Player Skills');
- dialog.innerHTML=screenHeader({className:'tree-heading',title:'Skills',back:button('back','Back','arrow-left'),actions:treeSwitchHTML('player')+'<div class="tree-wallet-summary"></div>'})+
+ dialog.innerHTML=screenHeader({icon:'skill-tree',className:'tree-heading',title:'Skills',back:button('back','Back','arrow-left'),actions:treeSwitchHTML('player')+'<div class="tree-wallet-summary"></div>'})+
   `<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected player tree"><div class="tree-map-stage">${skillLegendHTML('player-legend-content')}<div class="tree-map-scroll" tabindex="0" aria-label="Player skill map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom"></output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div></section></div><footer class="tree-map-hint">Tap a skill for details · Drag to move · Pinch or scroll to zoom</footer><section id="player-skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="player-skill-title" hidden></section>`;
  document.body.append(dialog);
  const surface=dialog.querySelector('.tree-map-scroll'),map=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage'),tip=dialog.querySelector('.skill-tooltip');
