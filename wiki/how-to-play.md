@@ -27,6 +27,14 @@ Every game mode displays your available **Points** balance during play, matching
 
 For power mastery, activate a power you own and hit at least **three different bubbles in that shot**. Each qualifying shot earns one mastery use; successful Melody Journey pools also count. Three uses meet a capstone's mastery requirement. You can earn every power and upgrade through Free Play or Waves; Melody Journey track and skin unlocks still come from Melody Journey completion.
 
+## Player Stats
+
+Open **Player Stats** from the main menu to see your researched launch speed, aiming-guide lengths, wall speed retention, Points, upgrades and recorded play totals. Links take you directly to Player Upgrades and the Skill Tree.
+
+The screen also shows Melody Journey clears, separate 5/10/15-shot Score Attack bests, experiment results and Bronze/Silver/Gold records by gamemode. Standard and Relaxed campaign records stay separate. Each saved record counts only its best medal.
+
+Stats belong to the selected Normal or Development profile in this browser. Older play may not have been recorded, and unreadable records appear as unavailable. Development grants and unlocks are not counted as earned Points or completed tracks. The displayed attributes describe your researched build; active runs and fixed challenges can retain a different build.
+
 ## Contact Powers
 
 Hit a marked bubble to trigger its power. You do not need another button. **Blaster aims and fires automatically.** Collecting a power refreshes your flight time; powered motion gradually settles afterward.

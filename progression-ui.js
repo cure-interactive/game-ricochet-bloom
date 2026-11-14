@@ -158,6 +158,7 @@ export function progressionMount(host){
     // Shared challenges pay the originating profile, not their temporary build.
     get points(){return (suspended?.state||state).profile.wallet.seeds;},
     get trialKind(){return (suspended||{kind}).kind;},
+    get statsProfile(){return {state:suspended?.state||state,available:loaded.available,kind:(suspended||{kind}).kind};},
     trialReward:earning=>settleEarning(earning,false),
     profileIndicator(){profileBar.set(kind,!!shared,['run','challenge','listening'].includes(context));},
     recoveryNotice:recovery.notice,

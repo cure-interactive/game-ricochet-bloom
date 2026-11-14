@@ -19,6 +19,7 @@
 - [How to Play](how-to-play.md)
 - [Points in Every Mode](how-to-play.md#points-in-every-mode)
 - [Pull, Release, Bloom](how-to-play.md#pull-release-bloom)
+- [Player Stats](how-to-play.md#player-stats)
 - [Contact Powers](how-to-play.md#contact-powers)
 - [Build a Song](how-to-play.md#build-a-song)
 - [Controls](how-to-play.md#controls)
