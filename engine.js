@@ -392,6 +392,16 @@ function scoreContact(state, body, collector, events) {
     if(target){const marker=state.power.markers.find(m=>m.target===target.id);if(marker)powerCollect(state,marker,state.bodies[0],target,1,0,events);events.push({type:'relay',fromX:body.x,fromY:body.y,x:target.x,y:target.y,id:target.id});scoreContact(state,target,state.bodies[0],events);}
   }
 }
+// Explicit activation for isolated simulations, using the same power rules as pickups.
+// Replacing an already active kind keeps repeated demonstrations bounded.
+export function powerActivate(state,kind,targetId){
+  const target=state.bodies.find(body=>body.id===targetId&&body.id>0&&!body.popped);
+  if(!state.isFlying||!Object.hasOwn(POWERS,kind)||!target||state.build&&!state.build.some(p=>p.power===kind))return [];
+  const seed=state.bodies[0],dx=target.x-seed.x,dy=target.y-seed.y,distance=Math.hypot(dx,dy),events=[];
+  effectClear(state,events,kind);
+  powerCollect(state,{kind,target:targetId},seed,target,distance?dx/distance:1,distance?dy/distance:0,events);
+  return events;
+}
 function powerCollect(state, marker, a, b, nx, ny, events) {
   const dt=RULE.step,seed=state.bodies[0];
   const kind = marker.kind; state.power.markers = state.power.markers.filter(item => item !== marker); state.power.shot = state.launches; state.power.used++;

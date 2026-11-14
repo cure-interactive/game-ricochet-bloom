@@ -1,5 +1,5 @@
 // Presentation only: engine events supply impulses; active effects supply geometry.
-import { RULE, POWERS, effectGet, homingTarget, wrapEdges } from './engine.js?v=02c73cffdc63fec18e91d99c59bf41c2c5410e355e8d7052ca3a9fc9f0b134ec';
+import { RULE, POWERS, effectGet, homingTarget, wrapEdges, blasterTarget } from './engine.js?v=3b9ada69404ca401cc1667101eb21e039da45569b0b0649dd3d5507088e85f21';
 const TAU = Math.PI * 2;
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 function line(c, x, y, endX, endY) { c.beginPath(); c.moveTo(x, y); c.lineTo(endX, endY); c.stroke(); }
@@ -296,6 +296,15 @@ export class PowerVisual {
       const stretch = Math.hypot(echo.ghost.x - echo.follow.x, echo.ghost.y - echo.follow.y);
       if (stretch > 1) { c.globalAlpha = gentle ? .4 : .65; c.lineWidth = 1.5; curve(c, echo.follow, echo.ghost, Math.min(10, stretch * .3)); dot(c, echo.follow.x, echo.follow.y, 2.5); }
     }
+  const blaster=effectGet(game,'blaster');
+  if(blaster) {
+    c.save();c.fillStyle=POWERS.blaster.color;c.strokeStyle=POWERS.blaster.color;c.lineCap='round';c.lineWidth=3;
+    c.shadowColor=POWERS.blaster.color;c.shadowBlur=gentle?0:10;
+    const target=blaster.ammo?blasterTarget(game):null;if(target){c.globalAlpha=.45;c.beginPath();c.arc(game.bodies[target.id].x,game.bodies[target.id].y,game.bodies[target.id].radius+9,0,Math.PI*2);c.stroke();c.globalAlpha=1;}
+    for(const shot of blaster.shots) {c.beginPath();c.moveTo(shot.x-shot.vx*.014,shot.y-shot.vy*.014);c.lineTo(shot.x,shot.y);c.stroke();c.beginPath();c.arc(shot.x,shot.y,4,0,Math.PI*2);c.fill();}
+    for(let i=0;i<blaster.ammo;i++) {const a=-Math.PI/2+(i-(blaster.ammo-1)/2)*.38;c.beginPath();c.arc(seed.x+Math.cos(a)*(seed.radius+13),seed.y+Math.sin(a)*(seed.radius+13),3,0,Math.PI*2);c.fill();}
+    c.restore();
+  }
     c.restore();
   }
 }

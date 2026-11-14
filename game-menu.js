@@ -1,7 +1,7 @@
-import { GAME_VERSION } from './version.js?v=6dbd021d09f1aa55b6718c64c569505ce04bc6ddc65322788ecbae87adf938d2';
+import { GAME_VERSION } from './version.js?v=440c88babf976382dbf96c17b184ac6b4ffbe7a626e854c1a6604c3e2e78d7f1';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { buttonHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
-import { menuBackgroundMount } from './menu-background.js?v=2a8ea7fb44d26fb49e1e1fa347ddd7fce5cc18b3a771a3ebf78da228f1a86ee8';
+import { menuBackgroundMount } from './menu-background.js?v=c62c60d656e34a7201adc6ccafcc49acc8307f02faed9864c24e8befbdd1bd25';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
@@ -15,7 +15,7 @@ export function gameMenuMount(host) {
   const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true);
   const route=pageHistory('home');let homeMode=true;
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
-  function refresh(){document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
+  function refresh(){background.powers(host.powers?.()||[]);document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
   function present(name){
     route.visit(name);
     if((name.startsWith('gamemodes:')||name.startsWith('pool-setup:'))||['home','gamemodes','trial-setup','score-setup','experiment-hub','experiment-family','experiment-detail'].includes(name))homeMode=true;else if(['play','pause','trial'].includes(name))homeMode=false;

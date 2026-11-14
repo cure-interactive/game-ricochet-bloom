@@ -1,10 +1,33 @@
-import { gameCreate, launch, physicsStep, RULE } from './engine.js?v=02c73cffdc63fec18e91d99c59bf41c2c5410e355e8d7052ca3a9fc9f0b134ec';
+import { gameCreate, launch, physicsStep, powerActivate, RULE } from './engine.js?v=3b9ada69404ca401cc1667101eb21e039da45569b0b0649dd3d5507088e85f21';
+import {buildValidate} from './skill-effect.js?v=b5d23aae0cfa214b54af02d69a6757f09caf11297ba245a50bf8b94dbdd4b93e';
 
 // An attract-mode pool owns its state; it never receives a player's saved run.
-export function menuPoolCreate(){
-  const game=gameCreate('MENU BLOOM','free');
+export function menuPoolCreate(build=[]){
+  if(build.length&&!buildValidate(build))throw new TypeError('Invalid menu power build');
+  const game=gameCreate('MENU BLOOM','free',build.length?{build}:{});
   for(const body of game.bodies.slice(1)){body.vx*=5;body.vy*=5;}
-  return {game,wait:1.4,elapsed:0,pressure:[],contacts:new Map()};
+  return {game,wait:1.4,elapsed:0,pressure:[],contacts:new Map(),build:structuredClone(build),hits:0,activations:0,lastPower:null};
+}
+export function menuPoolPowersSet(pool,build){
+  if(JSON.stringify(pool.build)===JSON.stringify(build))return false;
+  Object.assign(pool,menuPoolCreate(build));return true;
+}
+export function menuPoolPowers(pool,events,random=Math.random){
+  const activated=[];
+  for(const event of events){
+    if(event.type!=='impact')continue;
+    pool.hits++;
+    if(pool.hits%5||!pool.build.length)continue;
+    const kind=pool.build[Math.min(pool.build.length-1,Math.max(0,Math.floor(random()*pool.build.length)))].power;
+    const target=pool.game.bodies.find(body=>body.id===(event.b>0?event.b:event.a)&&body.id>0);
+    if(!target)continue;
+    if(!pool.game.isFlying){const seed=pool.game.bodies[0];launch(pool.game,Math.atan2(target.y-seed.y,target.x-seed.x),.65);}
+    const output=powerActivate(pool.game,kind,target.id);
+    // Ordinary pickup markers must not introduce activations between fifth hits.
+    pool.game.power.markers=[];
+    if(output.some(e=>e.type==='power')){pool.activations++;pool.lastPower=kind;activated.push(...output);}
+  }
+  return activated;
 }
 export function menuPoolView(width,height){
   const portrait=height>width;
@@ -35,7 +58,7 @@ export function menuPoolHold(pool,id,point){
   if(Number.isFinite(point.x)&&Number.isFinite(point.y))pool.contacts.set(id,{x:point.x,y:point.y});
 }
 export function menuPoolRelease(pool,id){pool.contacts.delete(id);}
-export function menuPoolStep(pool,elapsed,autoplay=true){
+export function menuPoolStep(pool,elapsed,autoplay=true,random=Math.random){
   pool.elapsed+=Math.min(.05,Math.max(0,elapsed));
   const events=[];
   while(pool.elapsed>=RULE.step){
@@ -46,7 +69,7 @@ export function menuPoolStep(pool,elapsed,autoplay=true){
         const seed=pool.game.bodies[0],targets=pool.game.bodies.slice(1);
         const target=targets[(pool.game.launches*5+2)%targets.length];
         launch(pool.game,Math.atan2(target.y-seed.y,target.x-seed.x),.65);
-        // Quiet basic ricochets keep the menu readable; no power HUD is needed.
+        // Menu powers are triggered by the fifth impact, never ordinary pickups.
         pool.game.power.markers=[];pool.wait=2.4;
       }
     }
@@ -62,7 +85,8 @@ export function menuPoolStep(pool,elapsed,autoplay=true){
       point.age+=RULE.step;
     }
     pool.pressure=pool.pressure.filter(point=>point.age<1.25);
-    events.push(...physicsStep(pool.game));
+    const stepEvents=physicsStep(pool.game);
+    events.push(...stepEvents,...menuPoolPowers(pool,stepEvents,random));
   }
   return events;
 }

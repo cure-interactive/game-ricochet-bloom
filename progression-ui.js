@@ -1,22 +1,22 @@
-import { playerUpgradeMount } from './player-upgrade-ui.js?v=9e92497b3157cc47a55505c3a3e0cf1e2793c52eddb2dd1c79e433a1ec1669ea';
+import { playerUpgradeMount } from './player-upgrade-ui.js?v=e99f1756ed5bfe80808c2ce0809533827c08b5c39f1e69399be47d05634b2253';
 import { saveRecoveryMount } from './save-recovery-ui.js?v=22ca1b694e351eb79943b890a1c8470d3ddf6925355688b7f5b88b9ef82a9109';
-import { progressionResetUnreadable } from './progression-store.js?v=453d513c2d7181f8c4021044de3416164e1f39e8a75024fc8bcbf35ca69de1ba';
+import { progressionResetUnreadable } from './progression-store.js?v=b405cf1b1f6a9b5e3e075174a545281a0061770ea6aab7cb2cca67cd8fef48cf';
 import { medalIcon } from './medal-ui.js?v=559905246b3697fd9cf0a993d9c71ffe30b47a0c6d6cd3943a5b235d0faa31c8';
 
 import { earningPrepare, earningId } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
 import { profilePlayReward, profileDevelopmentCopy } from './profile.js?v=1ea1f375cbce19893275eb111e5332fa7e4f80bfd6ce219b63a8cc1cf096da39';
 import { developmentBarMount } from './development-bar.js?v=b0a9cd790c798450cb10b29aef25140fc2e6c33d64c54683da93b2db844c8b3b';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { campaignMount } from './campaign-ui.js?v=793aaf21d153358da13ea09d123eea48a328398d7f53088fa75d12645390b7a6';
-import { challengeEncode, challengeDecode } from './challenge.js?v=9a065a7d9ec5d80f539cac785a6558a1017f020afa50441cbe386099ef629de8';
+import { campaignMount } from './campaign-ui.js?v=1693674006936ea64bab10ab4af853a0d0df626dd68918733b38c1469a450981';
+import { challengeEncode, challengeDecode } from './challenge.js?v=9c0d09b49c625b1c8fd95ec81331ab3ace0e35a4d47a34b71f8a4929b5d5edcc';
 import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=89924fc248ac7dee4bed6dc9f898e94f3f74febad5979a15e2015f89ce53037d';
-import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=453d513c2d7181f8c4021044de3416164e1f39e8a75024fc8bcbf35ca69de1ba';
-import { gameCreate } from './engine.js?v=02c73cffdc63fec18e91d99c59bf41c2c5410e355e8d7052ca3a9fc9f0b134ec';
-import { treeMount } from './tree-ui.js?v=4319d055ebcf3b19f3906a2cdf27b046db552cd65a3adacd9d0b334116a9762a';
+import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=411c261956952006f7b193b7cc9f1eece8c935da229cf56d447fb82fd2db000c';
+import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=b405cf1b1f6a9b5e3e075174a545281a0061770ea6aab7cb2cca67cd8fef48cf';
+import { gameCreate } from './engine.js?v=3b9ada69404ca401cc1667101eb21e039da45569b0b0649dd3d5507088e85f21';
+import { treeMount } from './tree-ui.js?v=2cd319cfe5337a3618de5582b9030070d429c5f40c33f013d4daaab212f86cf1';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
-import { skinMount } from './skin-ui.js?v=d3af01831643993d074b7eaccca3454dd47eafffc27b6098c21cad58ed4db2f1';
+import { skinMount } from './skin-ui.js?v=cf7b942816cb8b507a0cc9360dcba128ba745d5bed84ec44263a930dd49c4a72';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;

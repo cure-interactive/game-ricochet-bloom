@@ -1,4 +1,4 @@
-import {skinOptions} from './skin-ui.js?v=d3af01831643993d074b7eaccca3454dd47eafffc27b6098c21cad58ed4db2f1';
+import {skinOptions} from './skin-ui.js?v=cf7b942816cb8b507a0cc9360dcba128ba745d5bed84ec44263a930dd49c4a72';
 import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=20b9a6e6dcb6c0b1f5182adc72ed0282dd864528b6ea26ed11621b0dca8ee442';
 import { screenHeader } from './screen-header.js?v=b12f4a7f643a7ebc5d8945f2671aead3040da9be729bee110404af53f14e24e0';
 import { buttonHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
