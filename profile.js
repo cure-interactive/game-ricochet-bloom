@@ -1,5 +1,5 @@
 import { PLAYER_UPGRADES, playerResearchValid, playerUpgradeReason } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
-import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
+import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=41b471c37ef2d3e54b61ceb1967e63963fa935f4a0b48d5bb6eeeedc6069f66c';
 
 export const PROFILE_VERSION = 1;
@@ -111,6 +111,7 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
     (expectedKind !== null && input.kind !== expectedKind) || !integer(input.revision) || !object(input.wallet) ||
     Object.keys(input.wallet).length !== Object.keys(CURRENCIES).length || !integer(input.wallet.seeds) || !object(input.research)) return null;
   if(input.playerResearch!==undefined&&!playerResearchValid(input.playerResearch))return null;
+  if(input.playGeneration!==undefined&&!integer(input.playGeneration))return null;
   if(input.name!==undefined&&!playerNameValid(input.name))return null;
   const summary = rewardsInspect(input.rewards, catalogue);
   if (!summary||input.rewards.some(r=>r.event.type==='play'&&r.event.play.kind!==input.kind)) return null;
@@ -128,7 +129,7 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
   const familyUnlocks=input.familyUnlocks===undefined?[...FAMILIES]:input.familyUnlocks;
   if(!unique(familyUnlocks)||familyUnlocks.some(f=>!FAMILIES.includes(f)))return null;
   return { version: PROFILE_VERSION, familyUnlocks:[...familyUnlocks], familyAccess:{...familyAccess}, kind: input.kind, revision: input.revision, wallet: { seeds: input.wallet.seeds },
-    research, ...(input.name===undefined?{}:{name:input.name}), ...(input.playerResearch===undefined?{}:{playerResearch:structuredClone(input.playerResearch)}), rewards: [...summary.receipts.values()] };
+    research, ...(input.playGeneration===undefined?{}:{playGeneration:input.playGeneration}), ...(input.name===undefined?{}:{name:input.name}), ...(input.playerResearch===undefined?{}:{playerResearch:structuredClone(input.playerResearch)}), rewards: [...summary.receipts.values()] };
 }
 export function profileSummary(input, catalogue = CATALOGUE) {
   const profile = profileValidate(input, catalogue);
@@ -172,6 +173,8 @@ export function profileReward(input, event, catalogue = CATALOGUE) {
 export function profilePlayReward(input,earning,catalogue=CATALOGUE){
   const profile=profileValidate(input,catalogue),event=rewardNormalize({type:'play',play:earning},catalogue);
   if(!profile||!event||event.play.kind!==profile.kind)return rejected('invalid-play-reward');
+  if((event.play.generation??0)<(profile.playGeneration??0))return accepted(profile,{amount:0,duplicate:true,retired:true});
+  if((event.play.generation??0)>(profile.playGeneration??0))return rejected('invalid-play-generation');
   const e=event.play,id=rewardKey(event),index=profile.rewards.findIndex(r=>r.id===id),old=index<0?null:profile.rewards[index];
   if(old?.event.play.version===2&&(e.version!==2||JSON.stringify(e.legacy)!==JSON.stringify(old.event.play.legacy)||e.productiveShots<old.event.play.productiveShots))return accepted(profile,{amount:0,duplicate:true});
   if(old?.event.play.version===1&&e.version===2){
@@ -179,7 +182,12 @@ export function profilePlayReward(input,earning,catalogue=CATALOGUE){
     if(!base||['contacts','blooms','waves','wins','shots','bonusPoints'].some(k=>base[k]<(prior[k]??0)))return rejected('invalid-legacy-baseline');
   }
   if(old&&(old.event.play.mode!==e.mode||['contacts','blooms','waves','wins','shots','bonusPoints'].some(k=>(e[k]??0)<(old.event.play[k]??0))||Object.entries(old.event.play.mastery).some(([p,n])=>(e.mastery[p]||0)<n)))return accepted(profile,{amount:0,duplicate:true});
-  if(Object.keys(e.mastery).some(p=>!own(profile.research,p+'.base')))return rejected('unowned-power');
+  if(Object.keys(e.mastery).some(p=>!own(profile.research,p+'.base'))){
+    // Before reset generations existed, a Development reset could leave an old
+    // pool alive. Retire its reward without restoring Points or removed powers.
+    if(profile.kind==='development'&&profile.playGeneration===undefined&&e.generation===undefined)return accepted(profile,{amount:0,duplicate:true,retired:true});
+    return rejected('unowned-power');
+  }
   const total=earningAmount(e),amount=total-(old?.amount||0);
   if(old&&JSON.stringify(old.event)===JSON.stringify(event))return accepted(profile,{amount:0,duplicate:true});
   if(!integer(profile.wallet.seeds+amount)||!advance(profile))return rejected('balance-overflow');

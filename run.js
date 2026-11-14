@@ -2,8 +2,8 @@ import { PLAYER_UPGRADES, playerBuild } from './player-upgrade.js?v=2f8094123653
 import { buildValidate } from './skill-effect.js?v=6bc123e911039183cb33d2d4d4f01b63c8a5fdf57cf46b5e716d86a347906c28';
 import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=41b471c37ef2d3e54b61ceb1967e63963fa935f4a0b48d5bb6eeeedc6069f66c';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
-import { profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=949a2b3900c5567be5390d6c1b0174be5fa8cc4c7a2aad535b856bd343160163';
-import { gameCreate, saveValidate, RULE } from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
+import { profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=158288c80ff606a4bc820da33ab77138b46da32e904b28186088233dd839191d';
+import { gameCreate, saveValidate, RULE } from './engine.js?v=b1d1413bc287c32c16aece271eecd01b25e105285dbba57cdc5ec62fc43db36b';
 import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
@@ -111,7 +111,11 @@ export function progressionAct(input,action){
   const s=progressionValidate(input,input.profile?.kind);if(!s)return {ok:false,reason:'Invalid saved progression.'};
   const cat=GAME_CATALOGUE,node=cat.nodes[action.id];let r,message='Updated.';
   const fail=reason=>({ok:false,reason});
-  if(s.profile.kind==='development'&&action.type==='reset-progress')return {ok:true,state:progressionCreate('development'),message:'Development progress reset. Normal progress is unchanged.'};
+  if(s.profile.kind==='development'&&action.type==='reset-progress'){
+    const generation=(s.profile.playGeneration??0)+1;if(!Number.isSafeInteger(generation))return fail('Profile reset limit reached.');
+    const state=progressionCreate('development');state.profile.playGeneration=generation;
+    return {ok:true,state,message:'Development progress reset. Normal progress is unchanged.'};
+  }
   if(s.phase==='run'&&!['abandon','pin','buy','buy-player'].includes(action.type))return fail('Finish this pool before changing your build.');
   switch(action.type){
     case 'pin':if(action.id!==null&&!node)return fail('Choose a research target.');s.target=action.id;message=action.id?'Research goal pinned.':'Research goal cleared.';break;

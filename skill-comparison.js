@@ -1,8 +1,8 @@
 import { skillCurve } from './skill-curve.js?v=2a61a9787a65ef0c7f3c09db8093a51fb9876b7affc50f905ca77c1dc81b9813';
 import { skillConfig } from './skill-effect.js?v=6bc123e911039183cb33d2d4d4f01b63c8a5fdf57cf46b5e716d86a347906c28';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
-import { profilePurchase, unlockedResolve } from './profile.js?v=949a2b3900c5567be5390d6c1b0174be5fa8cc4c7a2aad535b856bd343160163';
-import { GAME_CATALOGUE as cat } from './run.js?v=761d66a7f48a89837bd270e75d2f2fc05b570ad32da442ce146863b3344310db';
+import { profilePurchase, profileDevelopmentCopy, unlockedResolve } from './profile.js?v=158288c80ff606a4bc820da33ab77138b46da32e904b28186088233dd839191d';
+import { GAME_CATALOGUE as cat } from './run.js?v=74de39fe01a1546550fa244f53a940c5cc229d87a3504273ee2c7670d2c8c4dd';
 
 const on=value=>value?'On':'Off';
 const number=value=>Number(value.toFixed(2));
@@ -187,9 +187,9 @@ export function skillStats(state,id){
  let beforeBuild=null,afterBuild=current.powers;
  let before=null,after=powerVariables(current.powers,node.power),heading='Current Power',beforeLabel='Current',afterLabel='With Upgrade';
  if(!active){
-   const profile=structuredClone(state.profile);let missing=false;
-   // The detached preview can describe mastery-locked effects without earning them.
-   profile.kind='development';
+   // The detached development copy must also convert receipt ownership;
+   // changing kind alone invalidates profiles with normal-play rewards.
+   const profile=profileDevelopmentCopy(state.profile,cat);let missing=false;
    function prerequisite(key){
      for(const parent of cat.nodes[key].requires)prerequisite(parent);
      if(!Object.hasOwn(profile.research,key)){profile.research[key]={paid:0};missing=true;}

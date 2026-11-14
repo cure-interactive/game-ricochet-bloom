@@ -1,7 +1,7 @@
 import { melodyCreate, melodyPlayer, melodyClock, melodyLaunch, melodyTouch, melodyDestinations, melodySettle, melodyOutcome, melodyAction, melodyStatus, melodyValid } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { precisionCreate, precisionLaunch, precisionTouch, precisionDrag, precisionWrap, precisionBank, precisionOutcome, precisionSettle, precisionStatus, precisionValid, precisionAction } from './precision.js?v=fe3f5f9fbfc5e54cc353d2bd4dd10fcabc5bdff5850a4977b2c3ce3ad7a96ee3';
 import { experimentValidate, experimentSetup, EXPERIMENT_RECIPES } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { earningId, earningValid, earningUpgrade } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
+import { earningId, earningValid, earningUpgrade } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 
 // A trial has a frozen aiming phase and a finite physical shot. Campaign's
 // continuously drifting pool is a different simulation contract.
@@ -20,6 +20,12 @@ const moving=b=>b.active&&!b.fixed;
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 const integer=n=>Number.isSafeInteger(n)&&n>=0;
 function body(id,kind,x,y,options={}){return {id,kind,x,y,vx:0,vy:0,r:kind==='player'?16:kind==='cell'?24:20,active:true,fixed:!['player','cargo','plug','mote'].includes(kind),hp:kind==='cell'?3:1,...options};}
+export function trialForGeneration(game,generation=0){
+  if((game.earning.generation??0)===generation)return game;
+  const fresh=trialCreate(game.mode,game.layout,game.kind,undefined,game.setup);
+  if(generation)fresh.earning.generation=generation;
+  return fresh;
+}
 export function trialCreate(mode,layout=0,kind='normal',id=earningId(),setup=null){
   if(mode==='music'&&!setup)setup=experimentSetup('081',layout);
   if(mode==='precision'&&!setup)setup=experimentSetup('001',layout);

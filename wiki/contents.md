@@ -120,6 +120,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 - [Left-Handed Layout](settings.md#left-handed-layout)
 - [Screen Rotation](settings.md#screen-rotation)
 - [Copy Diagnostics](settings.md#copy-diagnostics)
+- [Getting Help](settings.md#getting-help)
 - [Saves and Backups](settings.md#saves-and-backups)
 
 <!-- development -->

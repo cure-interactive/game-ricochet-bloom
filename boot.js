@@ -1,5 +1,5 @@
 // Only failure of the game module graph is terminal. Other early errors remain
 // available in diagnostics without replacing a successfully starting game.
-import('./app.js?v=41341b493fc2abee71c2efea8de10e240210a42685e3619e5017dce9dd7e01d2').catch(function (error) {
+import('./app.js?v=bedb93f97017b11774ca3d33ee81ecc2331338aac9b3e2ca1ff148194b677f95').catch(function (error) {
   window.dispatchEvent(new CustomEvent('ricochet-startup-failed', { detail: error }));
 });

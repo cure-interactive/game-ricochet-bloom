@@ -1,4 +1,4 @@
-import { gamemodeMount } from './gamemode-ui.js?v=92981078f8553543c81ffe802e59e27c528ae845980a2fb7983aa4722f0fad13';
+import { gamemodeMount } from './gamemode-ui.js?v=4cceb7864b6c733abdebab63c0c7b0f0d8c3a6a26675c9b7bd79e6b50634dce4';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
 import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=2de85a5d119ff2e038d0f73f7f0bfba8de0fd0bc7f8fcb706c93de67d9e12122';
 import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
@@ -6,10 +6,10 @@ import { screenHeader } from './screen-header.js?v=883c141deaf0d60097c4b99c55537
 import { songKeep } from './song.js?v=f967d4f585d3d5300be734f4ed6a4870e0de8c85450ff8f6bd9ad5fb49f1ae60';
 import { melodyDraw } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { experimentRewarded, experimentGoal, EXPERIMENT_RECIPES } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { experimentMedal, experimentRead, experimentSave, experimentWrite, experimentEmpty, experimentExport } from './experiment-store.js?v=218363fa0a9e14c62261cda9b5068f3603a57a699adb96c3fe166aad06603baa';
-import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=78629f1adb03a46502ce6c7c856e1fba00434d29e18d851f58925af761770f62';
-import { trialRead,trialWrite } from './trial-store.js?v=c49f919a2cf7f2cfe6a089967fa1fc619997490010e1e44cb5a8cd502aec8de6';
-import { earningAmount } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
+import { experimentMedal, experimentRead, experimentSave, experimentWrite, experimentEmpty, experimentExport } from './experiment-store.js?v=a4909f1034df6319e26855ffe0381e4a156c2a079185019eb96c93e553a1c4f5';
+import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialForGeneration,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=41dcf26ae54ee012572d2be70947d77e1c69db8ae45fad8fb954e237657f3118';
+import { trialRead,trialWrite } from './trial-store.js?v=270f39a7072ef8529f0a9aa32b5019b5f2560e8f2ce2f7b2a073bb0622396577';
+import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 import { buttonHTML } from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
 const button=(id,label,icon='arrow-left')=>buttonHTML(label,icon,{id});
 const color={'music-note':'#a4f4cf','beat-gate':'#eb9bcd','sound-hazard':'#ff8b91',instrument:'#f2d279',keeper:'#ff8b91',gate:'#9ce6cf',power:'#c4a7ff',payload:'#ffb56e',player:'#f6f5cf',target:'#ed82bd',blast:'#ffb56e',fire:'#ff765f',gas:'#cadb78',cell:'#a4f4cf',cargo:'#8edbff',plug:'#c6b4ff',vent:'#bf89e8',mote:'#ec8ed7',mud:'#bba18c',spike:'#fa8c91'};
@@ -29,7 +29,7 @@ export function trialMount(host){
     const paid=stored&&(!experimentRewarded(game.setup)||host.reward(game.earning));blocked=!paid;
     if(blocked){paused=true;host.sound.pauseSet(true);$('trial-alert').textContent='Progress could not be saved. Play is paused; retry saving or export this run before leaving.';}return paid;
   }
-  function enter(next,music=null){host.save();modes.close();host.screen('trial');oldMusic=host.sound.musicSave();game=next;if(game.setup)modes.select(game.setup);paused=game.phase==='flight';blocked=false;bestMedal=null;drag=null;flashes=[];angle=0;power=.7;accumulator=0;last=performance.now();lastSaved=game.tick;
+  function enter(next,music=null){const current=trialForGeneration(next,host.generation?.()??0);if(current!==next){next=current;music=null;}host.save();modes.close();host.screen('trial');oldMusic=host.sound.musicSave();game=next;if(game.setup)modes.select(game.setup);paused=game.phase==='flight';blocked=false;bestMedal=null;drag=null;flashes=[];angle=0;power=.7;accumulator=0;last=performance.now();lastSaved=game.tick;
     host.sound.musicRestore(music,game.earning.blooms,game.shots);host.sound.portrait=false;host.sound.media.describe(TRIAL_MODES[game.mode].name);host.sound.pauseSet(paused);host.sound.musicStart();host.unlock();play.showModal();save();renderUI();draw();canvas.focus({preventScroll:true});if(!frame)frame=requestAnimationFrame(loop);
   }
   function leave(toHome=false){if(!save()){renderUI();return;}host.sound.pauseSet(true);play.close();game=null;drag=null;host.sound.musicRestore(oldMusic,oldMusic?.blooms,oldMusic?.plucks);oldMusic=null;if(toHome===true)host.home();else host.back();}

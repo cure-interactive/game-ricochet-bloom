@@ -26,14 +26,15 @@ function economyValid(e){
 }
 export function earningValid(e,powers){
   const list=a=>Array.isArray(a)&&new Set(a).size===a.length&&a.every(p=>powers.includes(p));
-  return !!e&&economyValid(e)&&typeof e.id==='string'&&/^[A-Za-z0-9_-]{1,80}$/.test(e.id)&&['normal','development'].includes(e.kind)&&modes.includes(e.mode)&&
+  return !!e&&economyValid(e)&&(e.generation===undefined||integer(e.generation))&&typeof e.id==='string'&&/^[A-Za-z0-9_-]{1,80}$/.test(e.id)&&['normal','development'].includes(e.kind)&&modes.includes(e.mode)&&
     ['contacts','blooms','waves','wins','shots','lastLaunch'].every(k=>integer(e[k]))&&e.contacts<=e.shots*20&&e.blooms<=e.shots&&e.waves<=e.shots&&e.wins<=1&&integer(e.bonusPoints??0)&&(e.bonusPoints??0)<=e.shots*BONUS_TIERS&&
     (e.mode==='waves'||e.waves===0)&&(['challenge','reaction','cargo','outbreak','capture','precision','music'].includes(e.mode)||e.wins===0)&&list(e.owned)&&list(e.used)&&e.used.every(p=>e.owned.includes(p))&&
     !!e.mastery&&typeof e.mastery==='object'&&!Array.isArray(e.mastery)&&Object.entries(e.mastery).every(([p,n])=>powers.includes(p)&&integer(n)&&n<=e.shots)&&integer(earningAmount(e));
 }
-export function earningPrepare(game,kind,owned,id){
+export function earningPrepare(game,kind,owned,id,generation=0){
   if(game.isFlying)return;
-  if(!game.earning||game.earning.kind!==kind||game.earning.mode!==game.mode)game.earning={version:2,productiveShots:0,id,kind,mode:game.mode,contacts:0,blooms:0,waves:0,wins:0,shots:0,lastLaunch:game.launches,mastery:{},owned:[],used:[]};
+  const stale=game.earning&&((game.earning.generation??0)!==generation||kind==='development'&&Object.keys(game.earning.mastery).some(p=>!owned.includes(p)));
+  if(!game.earning||stale||game.earning.kind!==kind||game.earning.mode!==game.mode)game.earning={version:2,productiveShots:0,id,kind,mode:game.mode,...(generation?{generation}:{}),contacts:0,blooms:0,waves:0,wins:0,shots:0,lastLaunch:game.launches,mastery:{},owned:[],used:[]};
   earningUpgrade(game.earning);
   game.earning.owned=[...owned];game.earning.used=[];
 }
@@ -55,5 +56,5 @@ export function earningSettle(game,{wave=false,win=false,bonus=0}={}){
 export function earningSnapshot(e){
   // Flight bookkeeping is not part of the durable paid receipt.
   const {version,id,kind,mode,contacts,blooms,waves,wins,shots,mastery}=e;
-  return {version,id,kind,mode,contacts,blooms,waves,wins,shots,mastery:{...mastery},...(e.bonusPoints!==undefined?{bonusPoints:e.bonusPoints}:{}),...(version===2?{productiveShots:e.productiveShots,...(e.legacy?{legacy:{...e.legacy}}:{})}:{})};
+  return {version,id,kind,mode,contacts,blooms,waves,wins,shots,mastery:{...mastery},...(e.generation===undefined?{}:{generation:e.generation}),...(e.bonusPoints!==undefined?{bonusPoints:e.bonusPoints}:{}),...(version===2?{productiveShots:e.productiveShots,...(e.legacy?{legacy:{...e.legacy}}:{})}:{})};
 }

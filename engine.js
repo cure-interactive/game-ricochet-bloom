@@ -1,6 +1,6 @@
 import { playerConfig, playerBuildValid, playerLaunchSpeed, playerGuideLength } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import { SCORE_BUDGETS, SCORE_DEFAULT, SCORE_SEED, scoreAttackValid } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
-import { BONUS_TIERS, earningValid, earningPower, earningSettle } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
+import { BONUS_TIERS, earningValid, earningPower, earningSettle } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 import { liveBubbles, waveConfig, wavePrepare, waveEntryStep, waveValid, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { DRUNK_SECONDS, drunkSway, overlapResponse, magnetResponse } from './power-response.js?v=53825a2132c5ad509bdd8a251983587d3024f860edd302123036c23bc5fa89bd';
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
@@ -47,8 +47,8 @@ export function powerAllowance(state) { return state.power.capacity; }
 // The preview and flight share one allocation; contacts only remove existing markers.
 function powerPlan(state, count = powerAllowance(state)) {
   const markers = [], power = state.power, kinds=state.randomPowers?randomOfferKinds(state):offeredKinds(state);
-  for (let index = 0; index < count; index++) {
-    if(state.mode==='waves' && (index>=liveBubbles(state).length || index>=kinds.length))break;
+  for (let index = 0; index < count && index < kinds.length; index++) {
+    if(state.mode==='waves' && index>=liveBubbles(state).length)break;
     const kind = kinds[((state.randomPowers?0:Math.max(0,kinds.indexOf(power.offer))) + index) % kinds.length];
     const candidates = liveBubbles(state).filter(body => body.id !== power.target && !markers.some(marker => marker.target === body.id));
     const unhit = candidates.filter(body => !state.chain.includes(body.id));
@@ -743,7 +743,8 @@ export function saveValidate(input) {
     if (input.version >= 9 && (!Number.isInteger(power.used) || power.used < 0 || power.used > 3 || !Number.isInteger(power.capacity) || power.capacity < 1 || power.capacity > 3 || input.isFlying && power.used > power.capacity || power.used > 0 && power.shot !== input.launches || effects.length > power.used)) return null;
     if (input.version >= 11) {
       const markers = power.markers;
-      if (!Array.isArray(markers) || (input.mode==='waves'? markers.length > (input.isFlying ? power.capacity-power.used : 0) : markers.length !== (input.isFlying ? power.capacity - power.used : 0)) || markers.some(marker => !marker || !powerKinds.includes(marker.kind) || !Number.isInteger(marker.target) || marker.target < 1 || marker.target > count || input.mode==='waves'&&input.bodies[marker.target].popped)) return null;
+      const remaining=input.isFlying?Math.max(0,Math.min(power.capacity,offeredKinds(input).length)-power.used):0;
+      if (!Array.isArray(markers) || (input.mode==='waves'? markers.length > remaining : markers.length !== remaining) || markers.some(marker => !marker || !powerKinds.includes(marker.kind) || !Number.isInteger(marker.target) || marker.target < 1 || marker.target > count || input.mode==='waves'&&input.bodies[marker.target].popped)) return null;
       if (new Set(markers.map(marker => marker.target)).size !== markers.length || new Set(markers.map(marker => marker.kind)).size !== markers.length || markers.some(marker => hasEffect(marker.kind))) return null;
     }
     if (input.version === 4) {

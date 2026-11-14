@@ -1,23 +1,23 @@
 import { screenHeader } from './screen-header.js?v=883c141deaf0d60097c4b99c555371897614dfd0bde5d3229b4a41e5450222e0';
-import { playerUpgradeMount } from './player-upgrade-ui.js?v=2e60a1b70200463716a132409c5856404d8912b989b3188af3e9a44b2bf214e5';
+import { playerUpgradeMount } from './player-upgrade-ui.js?v=2104d1546b497550f097d6dcca355105b0843f7c5d2fe6220dd2c60b3be75105';
 import { saveRecoveryMount } from './save-recovery-ui.js?v=61f4dcfb8c2465e750be421d3c9a36d8170b7344bc423db1e794954445c2f0b9';
-import { progressionResetUnreadable } from './progression-store.js?v=53887ea4f82fe31c62f1c4a9606c543a2654fd70aabd4e4da500f375c70f629a';
+import { progressionResetUnreadable } from './progression-store.js?v=188acc37f3e08561cd9bff986472a99c4a4e9f1a2abfa9d49d275000a2b5888a';
 import { medalIcon } from './medal-ui.js?v=2de85a5d119ff2e038d0f73f7f0bfba8de0fd0bc7f8fcb706c93de67d9e12122';
 
-import { earningPrepare, earningId } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
-import { profilePlayReward, profileDevelopmentCopy, profileRename } from './profile.js?v=949a2b3900c5567be5390d6c1b0174be5fa8cc4c7a2aad535b856bd343160163';
+import { earningPrepare, earningId } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
+import { profilePlayReward, profileDevelopmentCopy, profileRename } from './profile.js?v=158288c80ff606a4bc820da33ab77138b46da32e904b28186088233dd839191d';
 import { developmentBarMount } from './development-bar.js?v=e8a4107c18e63972339e4ebbcbb4b5515eaf0f1157c1701ebc1f6654895338bd';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { campaignMount } from './campaign-ui.js?v=3722f93a541977373dd55bf5cc2e0e1e6b8365bf87d7d4bea4ad5745a63fc354';
-import { challengeEncode, challengeDecode } from './challenge.js?v=48535151a3037fc1588b32bfead795390ddd37cafa1d537c7b1cdb2c61eea7c4';
+import { campaignMount } from './campaign-ui.js?v=d4a03eab1292f1e9124d47c41a46827f7825ea071649c57827c33af76920d973';
+import { challengeEncode, challengeDecode } from './challenge.js?v=021d48469f401bf4efd9ea7f84dfc6edc5fb4a5e4050d68e7f4c7503966e9b04';
 import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=761d66a7f48a89837bd270e75d2f2fc05b570ad32da442ce146863b3344310db';
-import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=53887ea4f82fe31c62f1c4a9606c543a2654fd70aabd4e4da500f375c70f629a';
-import { gameCreate } from './engine.js?v=458c79aff3093649ea2afe0eb37b7e12985acd4da09001bc1a5dcaa8a869557d';
-import { treeMount } from './tree-ui.js?v=500955c9e67d0b34778523f493522ba5007113169e67030284a453de6faaef15';
+import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=74de39fe01a1546550fa244f53a940c5cc229d87a3504273ee2c7670d2c8c4dd';
+import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=188acc37f3e08561cd9bff986472a99c4a4e9f1a2abfa9d49d275000a2b5888a';
+import { gameCreate } from './engine.js?v=b1d1413bc287c32c16aece271eecd01b25e105285dbba57cdc5ec62fc43db36b';
+import { treeMount } from './tree-ui.js?v=a166dde46346030408846d39f418588cf1aead90bf1470062885cce3eedb7a4b';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
-import { skinMount } from './skin-ui.js?v=783de86e37e9b5a7d5f9eaa85e0816af5a8064a763c614a71c500a37e0d2136c';
+import { skinMount } from './skin-ui.js?v=2e237353bf409321210ee6053084cd8e9bcc0a38f11796c3150d2435a8cd99ca';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;
@@ -145,7 +145,7 @@ export function progressionMount(host){
   $('dev-reset').onclick=()=>{$('dev-reset-confirmation').hidden=false;$('dev-reset-cancel').focus();$('dev-reset-confirmation').scrollIntoView({block:'nearest'});};
   $('dev-reset-cancel').onclick=()=>{$('dev-reset-confirmation').hidden=true;$('dev-reset').focus();};
   $('dev-reset-confirm').onclick=()=>{const r=act({type:'reset-progress'});if(r.ok){context='legacy';listening=null;back.hidden=true;host.restoreLegacy();host.home?.();dev.showModal();}devRender();tree.refresh();$('dev-status').textContent=r.ok?r.message:r.reason;$('dev-reset').focus();};
-  $('dev-seed').onclick=()=>{const normal=progressionRead(localStorage,'normal').state;normal.profile=profileDevelopmentCopy(normal.profile,GAME_CATALOGUE);if(normal.run?.game.earning)normal.run.game.earning.kind='development';normal.bypass=false;const r=commit(normal);devRender();tree.refresh();$('dev-status').textContent=r.ok?'Normal progress copied. Your normal profile remains unchanged.':r.reason;};
+  $('dev-seed').onclick=()=>{const normal=progressionRead(localStorage,'normal').state;normal.profile=profileDevelopmentCopy(normal.profile,GAME_CATALOGUE);normal.profile.playGeneration=(state.profile.playGeneration??0)+1;if(normal.run?.game.earning){normal.run.game.earning.kind='development';normal.run.game.earning.generation=normal.profile.playGeneration;}normal.bypass=false;const r=commit(normal);devRender();tree.refresh();$('dev-status').textContent=r.ok?'Normal progress copied. Your normal profile remains unchanged.':r.reason;};
   for(const amount of [10,100,1000])$('dev-add-'+amount).onclick=()=>{const r=act({type:'grant',amount});devRender();$('dev-status').textContent=r.ok?r.message:r.reason;tree.refresh();};
   for(const [id,type] of [['dev-max','max'],['dev-max-progress','max-progress'],['dev-grant','grant']])$(id).onclick=()=>{const r=act({type,amount:Number($('dev-amount').value)});devRender();$('dev-status').textContent=r.ok?r.message:r.reason;tree.refresh();};
   $('progress-export').onclick=exportBackup;
@@ -164,6 +164,7 @@ export function progressionMount(host){
     // Shared challenges pay the originating profile, not their temporary build.
     get points(){return (suspended?.state||state).profile.wallet.seeds;},
     get trialKind(){return (suspended||{kind}).kind;},
+    get trialGeneration(){return (suspended?.state||state).profile.playGeneration??0;},
     get statsProfile(){return {state:suspended?.state||state,available:loaded.available,kind:(suspended||{kind}).kind};},
     trialReward:earning=>settleEarning(earning,false),
     profileIndicator(){profileBar.set(kind,!!shared,['run','challenge','listening'].includes(context));},
@@ -183,7 +184,7 @@ export function progressionMount(host){
     },
     skins:()=>skins.open(),players:()=>players.open(),tree:()=>tree.open(),campaign:view=>campaign.open(view),play:enterRun,leave,
     get skin(){return state.skin==='original'?null:trackGet(state.skin)?.color;},
-    prepareShot(game){if(context==='listening'||saveBlocked)return false;const owner=suspended||{state,kind};earningPrepare(game,owner.kind,Object.keys(owner.state.profile.research).filter(id=>id.endsWith('.base')).map(id=>id.slice(0,-5)),earningId());return true;},
+    prepareShot(game){if(context==='listening'||saveBlocked)return false;const owner=suspended||{state,kind};earningPrepare(game,owner.kind,Object.keys(owner.state.profile.research).filter(id=>id.endsWith('.base')).map(id=>id.slice(0,-5)),earningId(),owner.state.profile.playGeneration??0);return true;},
     settle(game,notify=true){return pendingEarning?false:context==='listening'?true:settleEarning(game.earning,notify);},
     checkpoint(game,music){if(['run','challenge'].includes(context)&&state.phase==='run'){const next=structuredClone(state);next.run.game=structuredClone(game);next.run.music=music;return commit(next).ok;}return true;},
     observe(game,events,music){
