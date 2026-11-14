@@ -1,6 +1,6 @@
 import { liveBubbles } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { waveFalloff, waveRadial } from './power-response.js?v=53825a2132c5ad509bdd8a251983587d3024f860edd302123036c23bc5fa89bd';
-import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
+import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
 
 // Resolved configuration belongs to physics; profile ownership stays outside it.
 export function buildValidate(build) {

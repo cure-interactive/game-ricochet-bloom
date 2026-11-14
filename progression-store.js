@@ -1,4 +1,4 @@
-import { progressionCreate, progressionValidate } from './run.js?v=411c261956952006f7b193b7cc9f1eece8c935da229cf56d447fb82fd2db000c';
+import { progressionCreate, progressionValidate } from './run.js?v=cc440fdabebe81d2a4eb7bbd3fb7e891f85544ca0cdecf5fe40ef089b5c4d3fb';
 export const PROGRESSION_KEY='ricochet-bloom-progression-v1';
 export const DEVELOPMENT_SETTINGS_KEY='ricochet-bloom-development-settings-v1';
 const developmentDefaults=()=>({version:1,enabled:false,grantAmount:100,showHiddenContent:false,showPurchasedCosts:false});

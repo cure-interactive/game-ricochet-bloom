@@ -58,7 +58,7 @@ export function experimentKey(s){
   if(!experimentValidate(s))throw Error('Invalid experiment setup');
   return `${s.experimentId}:r${s.rulesVersion}:l${s.layout}:${s.preset}:`+Object.keys(s.settings).sort().map(k=>`${k}=${s.settings[k]}`).join(',');
 }
-export const experimentRewarded=s=>!s||(['reaction','cargo','outbreak'].includes(s.experimentId)&&s.preset==='standard');
+export const experimentRewarded=s=>!s||!!experimentValidate(s);
 export function experimentGoal(s){
   const r=EXPERIMENT_RECIPES[s.experimentId],o=s.settings;
   if(r.mode==='music')return MELODY_RULES[s.experimentId].goal;

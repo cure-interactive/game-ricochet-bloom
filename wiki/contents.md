@@ -113,6 +113,15 @@
 - [Copy Diagnostics](settings.md#copy-diagnostics)
 - [Saves and Backups](settings.md#saves-and-backups)
 
+<!-- development -->
+## Developer
+
+- [Developer](developer.md)
+- [Economy Tuning](developer.md#economy-tuning)
+- [Playtest Method](developer.md#playtest-method)
+- [Workshop](developer.md#workshop)
+- [Development Tools](developer.md#development-tools)
+
 ## Development Concept
 
 - [Development Concept](development-concept.md)
@@ -168,3 +177,5 @@
 - [Pressure Survival](game-modes.md#pressure-survival)
 - [Reaction Lab and Playtest Method](game-modes.md#reaction-lab-and-playtest-method)
 - [Scope and Implementation Decision](game-modes.md#scope-and-implementation-decision)
+
+<!-- /development -->

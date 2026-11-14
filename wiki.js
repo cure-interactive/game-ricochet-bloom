@@ -2,20 +2,21 @@ import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f10787
 import { screenHeader } from './screen-header.js?v=b12f4a7f643a7ebc5d8945f2671aead3040da9be729bee110404af53f14e24e0';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { iconHTML } from './ui-icon.js?v=6065f2f855289781d664b0eef7a36edf88e6224fb7ef06fcec05e7e37df696b5';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=4781e2c4345be57b2b762f923e4169a538e2544447e752f4fe2de108268e3fdb';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=0e18ae6114b8d5fa65804a78c4cc7e44c97373ed2989c0d47760e43b9f224451';
 
 export const WIKI_PAGES = Object.freeze({
+  developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=ceb8c80d6bb5f809b39ba60740d24a5a704a1900198d00593c6d31669be04f07' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=6ad6f404b6d3440ce771beb2501e730bc767709bea66c668fba96cfbd41334a8' },
-  'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=0c9eb317faa4b32207d0d494608cfc884a586ae60a40cd09c5a26a10109b4120' },
-  experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=abf777fd28d0a3fa9dca7f18023e9894a801b479c6dfc8cab79375aa5cf9ca72' },
-  'development-concept': { title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
-  'game-modes': { title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
-  waves: { title: 'Endless Waves', url: './wiki/waves.md?v=ab95919279dd0698a80aa9825a7ee76c32c50e333187addd8faa8752f68b59bf' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=e25476e53afa110ee4652377f4225a560425bb6a71eca8ac55100cd9ee702395' },
-  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=9ff6d78556aa8abe012936788e46e4cd04c0f9fd3c5e11fb393f9469b6a91f3f' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=4c3f8fff2c014e1c0fd477ec6298b9fd45ffa7cbe2d054c1f6237a05a182f286' },
-  campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=60fe1c6ebaea0a2d1092449411dfd3432011ae62961ebd29a33e08d4c2467353' },
-  'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=eb06d3897c99517ae3f94bd70b4d848021916ccdc5ec1af2c23a01966ab49bd4' },
+  'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=688714c1fe057d6c0da78a5f38b32cd4bc3fe0e712812b248e9d7552b6c54daf' },
+  experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=2925dacfbb1be75a34b46fe3cec9074a5e78b169a558c1a8299ea528a7e635b1' },
+  'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
+  'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
+  waves: { title: 'Endless Waves', url: './wiki/waves.md?v=43d206ad19f209d6294446e0ce643914d29f9d57bde7e04c329fa510a6adb431' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=87b782a5f3fd8d58d9e4dd1ee4be0e16bca7a04b0083d4b88e128aac4b8ef7d6' },
+  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=aa85ee47db1a46b216eebd4a7d8a84a83e9c264242323c6364658867a9e727a6' },
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=d03e23be2397cfa4949bdf37269710f2876a2bb4d5493d0b22e6f2bdf5d923eb' },
+  campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=7a28e512643ce0faf78d4f9020b8a6e8d56a536f4d64caa116560a40390460e3' },
+  'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=3acd6d44547163b633a944abf088b1089a57018e9fbda57d7471b01347616e90' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=fdfe61d1691fced0483795dde874fa6adb22ed6ee9939e72afac3342e114d3c3' },
   settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=64f0c9ebbdb2018d122a23596751082c72a28f6dcbae7e2d492aad305d8218cf' }
 });
@@ -74,6 +75,17 @@ export function renderMarkdown(markdown, current = 'wiki', linkRender=null) {
   }
   flush();if(credits)html.push('</details>');return html.join('\n');
 }
+export const wikiPageAvailable=(page,development=false)=>Object.hasOwn(WIKI_PAGES,page)&&(!WIKI_PAGES[page].development||development===true);
+export function renderWikiPage(source,page,development=false){
+  if(!wikiPageAvailable(page,development))return '';
+  const visible=source.replace(/<!-- development -->([\s\S]*?)<!-- \/development -->/g,(_,body)=>development?body:'');
+  return renderMarkdown(visible,page,(label,href)=>{
+    const target=wikiTarget(href,page);
+    if(target&&!wikiPageAvailable(target.page,development))return '';
+    // Reuse the exact bounded-link renderer and its reviewed source allowlist.
+    return inline(`[${label}](${href})`,page);
+  });
+}
 export function wikiMount(host) {
   const dialog=document.createElement('dialog');dialog.id='wiki-dialog';dialog.setAttribute('aria-labelledby','wiki-title');
   dialog.innerHTML=`${screenHeader({className:'wiki-heading',title:'Wiki',titleId:'wiki-title',back:`<button type="button" data-wiki-back aria-label="Back">${iconHTML('arrow-left')}<span>Back</span></button>`,actions:`<button type="button" data-wiki-contents>${iconHTML('book')}<span>Contents</span></button>`})}<article class="wiki-article" tabindex="0" aria-label="Wiki page"></article>`;
@@ -81,7 +93,9 @@ export function wikiMount(host) {
   const article=dialog.querySelector('article'), title=dialog.querySelector('h2'), contents=dialog.querySelector('[data-wiki-contents]');
   let current={page:'wiki',anchor:''}, request=null;const history=pageHistory(current,target=>target.page);
   function position(anchor){const heading=anchor&&article.querySelector('#'+anchor);if(heading)heading.scrollIntoView({block:'start'});else article.scrollTop=0;}
+  const available=page=>wikiPageAvailable(page,host.development?.()===true);
   async function load(target, remember=true) {
+    if(!available(target.page)){target={page:'wiki',anchor:''};history.reset(target);remember=false;}
     if(remember)history.visit(target);current=target;request?.abort();const active=new AbortController();request=active;
     title.textContent=WIKI_PAGES[target.page].title;contents.hidden=target.page==='contents';
     article.setAttribute('aria-busy','true');article.innerHTML='<p role="status">Loading page…</p>';article.scrollTop=0;
@@ -89,7 +103,8 @@ export function wikiMount(host) {
       const response=await fetch(WIKI_PAGES[target.page].url,{cache:'no-cache',signal:active.signal});
       if(!response.ok)throw new Error('Page unavailable');const source=await response.text();
       if(request!==active||!dialog.open)return;
-      article.innerHTML=renderMarkdown(source,target.page);article.removeAttribute('aria-busy');position(target.anchor);article.focus({preventScroll:true});
+      if(!available(target.page)){const home={page:'wiki',anchor:''};history.reset(home);load(home,false);return;}
+      article.innerHTML=renderWikiPage(source,target.page,host.development?.()===true);article.removeAttribute('aria-busy');position(target.anchor);article.focus({preventScroll:true});
     } catch(error) {
       if(active.signal.aborted||request!==active||!dialog.open)return;
       article.removeAttribute('aria-busy');article.innerHTML='<p role="alert">This wiki page couldn’t load. Check your connection and try again.</p><button type="button" data-wiki-retry>Try Again</button>';
@@ -102,7 +117,7 @@ export function wikiMount(host) {
   dialog.addEventListener('close',()=>{request?.abort();});
   article.addEventListener('click',event=>{
     const link=event.target.closest('[data-wiki-page]');
-    if(link){event.preventDefault();const target={page:link.dataset.wikiPage,anchor:link.dataset.wikiAnchor};if(target.page===current.page)position(target.anchor);else load(target);}
+    if(link){event.preventDefault();const target={page:link.dataset.wikiPage,anchor:link.dataset.wikiAnchor};if(!available(target.page))load({page:'wiki',anchor:''});else if(target.page===current.page)position(target.anchor);else load(target);}
     else if(event.target.closest('[data-wiki-retry]'))load(current,false);
   });
   return {open(page='wiki',anchor=''){

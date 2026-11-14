@@ -14,14 +14,14 @@ Choose **Gamemodes → Endless Waves** from the main menu for five shots per wav
 
 ## Points in Every Mode
 
-Melody Journey, Free Play, Endless Waves, Score Attack, Challenges and the original Standard Reaction Puzzle, Cargo Rescue and Outbreak Containment trials earn permanent **Points** for Skills. Experimental variations and custom setups record results without awarding Points; they still display your available balance. Points bank when your shot settles, even if you lose that run:
+Every playable gamemode and experiment preset earns permanent **Points** for Skills. Points bank when the shot settles, including a failed final shot:
 
-- **Every six scoring bubble contacts: +1 Point.** Partial progress carries between shots in the same pool or Waves run; a bubble counts once per shot.
-- **Every bloom: +1 Point.**
-- **Every cleared wave: +2 Points.**
-- **A completed three-bloom Challenge or experiment objective: +3 Points.**
-- **Bonus challenges: +1 Point per difficulty level.** The current three tiers pay 1–3 Points, separately from contact and bloom rewards. Bank a Bloom and Three Voices are difficulty 1; Seven-Bubble Chain is difficulty 2; Power Play and Double-Bank Bloom are difficulty 3.
-- Melody Journey retains its additional pool, track-completion and first-clear rewards. Its bonus pays once when the shot settles, even if the pool later fails; clearing the pool does not pay that bonus again.
+- **Melody Journey, Free Play, Endless Waves, Score Attack and Challenge: +5 Points per productive shot.** Touch at least one bubble or complete the goal. More contacts, blooms and cleared waves do not stack extra base Points.
+- **Reaction Puzzle, Cargo Rescue and Outbreak Containment: +3 Points per productive shot.** Their shorter shots use a smaller award.
+- **Trick Shots, Melody Trials and Capture Transport Release: +4 Points per productive shot.**
+- **Bonus challenges: +1 Point per difficulty level.** The current challenges pay 1–3 Points, with support for five tiers. They bank once at rest. Campaign pool and track clears do not add another currency payout.
+
+Research prices and action awards aim for about two average purchases per five minutes of typical play. There is no timed payout, cooldown or purchase limit: misses and waiting earn nothing, and better play can earn faster. Different skills have different costs. Existing balances and owned upgrades are preserved; new prices apply to future purchases.
 
 Every game mode displays your available **Points** balance during play, matching Skills for your current profile. Experiment modes also show Points earned in that run separately. The balance updates when rewards are saved. A short message shows Points banked and your available balance. Your pool's Score remains separate. Reopening a save does not pay twice. Listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Melody Journey track completion to that profile.
 
@@ -29,7 +29,7 @@ For power mastery, activate a power you own and hit at least **three different b
 
 ## Player Stats
 
-Open **Player Stats** from the main menu to see your researched launch speed, aiming-guide lengths, wall speed retention, Points, upgrades and recorded play totals. Links take you directly to Player Upgrades and Skills.
+Open **Player → Stats** to see your researched launch speed, aiming-guide lengths, wall speed retention, Points, upgrades and recorded play totals. Overview, Records and Medals group your information, with links to Player Skills and Power Skills.
 
 The screen also shows Melody Journey clears, separate 5/10/15-shot Score Attack bests, experiment results and Bronze/Silver/Gold records by gamemode. Standard and Relaxed campaign records stay separate. Each saved record counts only its best medal.
 

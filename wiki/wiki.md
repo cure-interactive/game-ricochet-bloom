@@ -23,13 +23,12 @@ Explore game modes, grow your powers, and chase your next goal. Choose a topic b
 
 - [Sound, Settings & Saves](settings.md) — audio, accessibility, screen modes and backups.
 
-## Development Workshop
+<!-- development -->
+## Developer
 
-These pages preserve the workshop and playtest questions. The playable experiments have authored levels and medal conditions; the broader ideas remain proposals.
+- [Developer](developer.md) - economy tuning, playtest guidance, the concept workshop and future-mode briefs.
 
-- [Development Concept](development-concept.md) — bubble and cellular mind map, emergent interactions, and research from other games.
-- [Game Modes to Try](game-modes.md) — trial design briefs, reserve ideas and playtest questions.
-
+<!-- /development -->
 ## Attribution
 
 ### Sources

@@ -1,6 +1,6 @@
-import { unlockedResolve } from './profile.js?v=1ea1f375cbce19893275eb111e5332fa7e4f80bfd6ce219b63a8cc1cf096da39';
-import { GAME_CATALOGUE } from './run.js?v=411c261956952006f7b193b7cc9f1eece8c935da229cf56d447fb82fd2db000c';
-import { skillStateCreate } from './skill-effect.js?v=b5d23aae0cfa214b54af02d69a6757f09caf11297ba245a50bf8b94dbdd4b93e';
+import { unlockedResolve } from './profile.js?v=03135a7e384bee9ced392b53013ac9b1d30322c335516a5135a553ae01bb76a3';
+import { GAME_CATALOGUE } from './run.js?v=cc440fdabebe81d2a4eb7bbd3fb7e891f85544ca0cdecf5fe40ef089b5c4d3fb';
+import { skillStateCreate } from './skill-effect.js?v=6bc123e911039183cb33d2d4d4f01b63c8a5fdf57cf46b5e716d86a347906c28';
 
 export function freePlayBuild(progress){
   const equipped=progress.equipped.filter(id=>Object.hasOwn(progress.profile.research,id));

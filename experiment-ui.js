@@ -1,14 +1,14 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { experimentMedal } from './experiment-store.js?v=810950b4b346e69891a07dd81ecce1e27b3b738cda9dd2f73f1d169fbf62576a';
+import { experimentMedal } from './experiment-store.js?v=21abe314b92929e1fee78f66ea7f254a29bb198d8dca3b496a43ce0802920eb0';
 import { medalConditionsHTML } from './medal-ui.js?v=559905246b3697fd9cf0a993d9c71ffe30b47a0c6d6cd3943a5b235d0faa31c8';
 import { trialConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { melodyStages } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { EXPERIMENT_MODES, DIFFICULTIES, experimentMode } from './experiment-mode.js?v=8691672ebafa0ee909e0adfbe1058bb7a29634ac3aef011c8c8a34ad0b9eb1bf';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { EXPERIMENT_CATALOGUE, EXPERIMENT_FAMILIES } from './experiment-catalogue.js?v=46fd868b7899d3825edca249ee222d0822e27a53f260e03d7069491bca53ea1e';
-import { EXPERIMENT_RECIPES, EXPERIMENT_DESTINATIONS, EXPERIMENT_PRESETS, EXPERIMENT_VERDICTS, experimentSetup, experimentKey, experimentOptions, experimentGoal, experimentRewarded } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
-import { experimentRead, experimentFavourite, experimentWrite, experimentBest, experimentExport, experimentImport, experimentLegacy, experimentStoreKey, experimentEmpty } from './experiment-store.js?v=810950b4b346e69891a07dd81ecce1e27b3b738cda9dd2f73f1d169fbf62576a';
-import { TRIAL_MODES, trialCreate } from './trial.js?v=1142334db4d9446b27b412cbc5ad6d9c93bebb7180ae6b645ebcc92c561dd824';
+import { EXPERIMENT_RECIPES, EXPERIMENT_DESTINATIONS, EXPERIMENT_PRESETS, EXPERIMENT_VERDICTS, experimentSetup, experimentKey, experimentOptions, experimentGoal, experimentRewarded } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
+import { experimentRead, experimentFavourite, experimentWrite, experimentBest, experimentExport, experimentImport, experimentLegacy, experimentStoreKey, experimentEmpty } from './experiment-store.js?v=21abe314b92929e1fee78f66ea7f254a29bb198d8dca3b496a43ce0802920eb0';
+import { TRIAL_MODES, trialCreate } from './trial.js?v=78629f1adb03a46502ce6c7c856e1fba00434d29e18d851f58925af761770f62';
 const label=s=>s.replaceAll('-',' ').replace(/\b\w/g,c=>c.toUpperCase());
 const entries=[...['reaction','cargo','outbreak'].map(id=>({id,...EXPERIMENT_RECIPES[id],kind:'core-mode',mechanics:{reaction:['hazard','chain','cell'],cargo:['cargo','wall'],outbreak:['vent','cell','turn']}[id],description:TRIAL_MODES[id].summary})),...EXPERIMENT_CATALOGUE];
 export function experimentMount(host){

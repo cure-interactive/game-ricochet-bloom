@@ -1,5 +1,5 @@
-import { gameCreate, launch, physicsStep, powerActivate, RULE } from './engine.js?v=3b9ada69404ca401cc1667101eb21e039da45569b0b0649dd3d5507088e85f21';
-import {buildValidate} from './skill-effect.js?v=b5d23aae0cfa214b54af02d69a6757f09caf11297ba245a50bf8b94dbdd4b93e';
+import { gameCreate, launch, physicsStep, powerActivate, RULE } from './engine.js?v=2dd0f771b37dc76497de4916b6a40d2267fe82b6096fb3b47ff898d77220ee69';
+import {buildValidate} from './skill-effect.js?v=6bc123e911039183cb33d2d4d4f01b63c8a5fdf57cf46b5e716d86a347906c28';
 
 // An attract-mode pool owns its state; it never receives a player's saved run.
 export function menuPoolCreate(build=[]){

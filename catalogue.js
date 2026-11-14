@@ -1,4 +1,4 @@
-import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
+import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
 // Progression definitions are not a claim that an engine behavior is implemented.
 // The engine integration must explicitly advertise supported node IDs.
 export const CURRENCIES = Object.freeze({ seeds: Object.freeze({ name: 'Points' }) });

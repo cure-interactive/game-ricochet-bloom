@@ -20,7 +20,7 @@ Only permanently unlocked powers and all researched upgrades enter your random p
 
 Main-player, Split, Echo and Blaster contacts pop bubbles. Lightning strikes pop their targets too. Relay sends a short hit pulse from a popped carrier to a nearby bubble, including its marked power. Pressure effects move bubbles; merely pushing one does not pop it.
 
-Your score and evolving song continue between waves. Melody Journey, Free Play and Waves keep separate pools. Waves earns permanent Points: one per six scoring contacts, one per bloom and two per cleared wave. Earnings bank after every shot, including a failed final shot. An owned power activated during a shot hitting at least three bubbles gains a mastery use. See [Points in Every Mode](how-to-play.md#points-in-every-mode).
+Your score and evolving song continue between waves. Melody Journey, Free Play and Waves keep separate pools. Waves earns permanent Points: five per productive settled shot, plus any completed difficulty bonus. Contacts, blooms and wave clears do not stack additional base awards. Earnings bank after every shot, including a failed final shot. An owned power activated during a shot hitting at least three bubbles gains a mastery use. See [Points in Every Mode](how-to-play.md#points-in-every-mode).
 
 ## Saves and Records
 

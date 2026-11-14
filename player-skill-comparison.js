@@ -1,4 +1,4 @@
-import {PLAYER_UPGRADES,playerBuild,playerConfig,playerLaunchSpeed,playerGuideLength} from './player-upgrade.js?v=9483739a49b831a9c57dd285854e1bb23148947a97636d12caaebc2b619a776f';
+import {PLAYER_UPGRADES,playerBuild,playerConfig,playerLaunchSpeed,playerGuideLength} from './player-upgrade.js?v=0db2496c23b18e74e54be344eaee2dc299252cc10fd85a6e7e21834351d4c41c';
 const maximum=playerConfig({version:1,sight:2,launch:2,rebound:2});
 const specs=[
  {key:'guideExtra',branch:'Sight',label:'Extra Guide Length',description:'Additional aiming distance before walls or geometry limit the preview.',unit:' units'},

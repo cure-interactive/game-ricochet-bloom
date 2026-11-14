@@ -17,7 +17,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "common",
@@ -31,7 +31,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -45,7 +45,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -59,7 +59,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -73,7 +73,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -99,7 +99,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "rare",
@@ -113,7 +113,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -127,7 +127,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -141,7 +141,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -185,7 +185,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "rare",
@@ -199,7 +199,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -213,7 +213,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -227,7 +227,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -271,7 +271,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "epic",
@@ -285,7 +285,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -299,7 +299,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -313,7 +313,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "mythic",
@@ -357,7 +357,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "common",
@@ -371,7 +371,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -385,7 +385,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -399,7 +399,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -413,7 +413,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -439,7 +439,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "common",
@@ -453,7 +453,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -467,7 +467,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -481,7 +481,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -495,7 +495,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -521,7 +521,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "rare",
@@ -535,7 +535,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -549,7 +549,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -563,7 +563,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -577,7 +577,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -603,7 +603,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "rare",
@@ -617,7 +617,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -631,7 +631,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -645,7 +645,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -689,7 +689,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "epic",
@@ -703,7 +703,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -717,7 +717,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -731,7 +731,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "mythic",
@@ -775,7 +775,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "common",
@@ -789,7 +789,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -803,7 +803,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -817,7 +817,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -831,7 +831,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -857,7 +857,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "rare",
@@ -871,7 +871,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -885,7 +885,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -899,7 +899,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -913,7 +913,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -939,7 +939,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "rare",
@@ -953,7 +953,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -967,7 +967,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -981,7 +981,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -995,7 +995,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -1021,7 +1021,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1035,7 +1035,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1049,7 +1049,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1063,7 +1063,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1077,7 +1077,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "mythic",
@@ -1104,7 +1104,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "common",
@@ -1118,7 +1118,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -1132,7 +1132,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -1146,7 +1146,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1160,7 +1160,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -1186,7 +1186,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "rare",
@@ -1200,7 +1200,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -1214,7 +1214,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1228,7 +1228,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1242,7 +1242,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -1268,7 +1268,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "rare",
@@ -1282,7 +1282,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -1296,7 +1296,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1310,7 +1310,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1324,7 +1324,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -1349,7 +1349,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1363,7 +1363,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1377,7 +1377,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1391,7 +1391,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1405,7 +1405,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "mythic",
@@ -1431,7 +1431,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1445,7 +1445,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1459,7 +1459,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1473,7 +1473,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1487,7 +1487,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "mythic",
@@ -1513,7 +1513,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1527,7 +1527,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1541,7 +1541,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1555,7 +1555,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1569,7 +1569,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "mythic",
@@ -1595,7 +1595,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "common",
@@ -1609,7 +1609,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -1623,7 +1623,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1637,7 +1637,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -1681,7 +1681,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "rare",
@@ -1695,7 +1695,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1709,7 +1709,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1723,7 +1723,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -1767,7 +1767,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "rare",
@@ -1781,7 +1781,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1795,7 +1795,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1809,7 +1809,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",
@@ -1853,7 +1853,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1867,7 +1867,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1881,7 +1881,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1895,7 +1895,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "mythic",
@@ -1939,7 +1939,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "epic",
@@ -1953,7 +1953,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1967,7 +1967,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "legendary",
@@ -1981,7 +1981,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "mythic",
@@ -2025,7 +2025,7 @@ export const POWER_TREES = {
         "key": "base",
         "kind": "base",
         "effects": [],
-        "seedCost": 4,
+        "seedCost": 40,
         "tuningCost": 0,
         "masteryPools": 0,
         "rarity": "common",
@@ -2039,7 +2039,7 @@ export const POWER_TREES = {
         "effects": [
           "foundation"
         ],
-        "seedCost": 3,
+        "seedCost": 30,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -2053,7 +2053,7 @@ export const POWER_TREES = {
         "effects": [
           "a"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "rare",
@@ -2067,7 +2067,7 @@ export const POWER_TREES = {
         "effects": [
           "b"
         ],
-        "seedCost": 5,
+        "seedCost": 50,
         "tuningCost": 1,
         "masteryPools": 0,
         "rarity": "epic",
@@ -2081,7 +2081,7 @@ export const POWER_TREES = {
         "effects": [
           "capstone"
         ],
-        "seedCost": 8,
+        "seedCost": 80,
         "tuningCost": 2,
         "masteryPools": 3,
         "rarity": "legendary",

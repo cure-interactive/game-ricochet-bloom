@@ -1,7 +1,7 @@
 import { melodyCreate, melodyPlayer, melodyClock, melodyLaunch, melodyTouch, melodyDestinations, melodySettle, melodyOutcome, melodyAction, melodyStatus, melodyValid } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { precisionCreate, precisionLaunch, precisionTouch, precisionDrag, precisionWrap, precisionBank, precisionOutcome, precisionSettle, precisionStatus, precisionValid, precisionAction } from './precision.js?v=fe3f5f9fbfc5e54cc353d2bd4dd10fcabc5bdff5850a4977b2c3ce3ad7a96ee3';
-import { experimentValidate, experimentSetup, EXPERIMENT_RECIPES } from './experiment.js?v=09c5c1a420167e74a8d503604cf362e056a4708773247dbe20745db8766748a0';
-import { earningId, earningValid } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
+import { experimentValidate, experimentSetup, EXPERIMENT_RECIPES } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
+import { earningId, earningValid, earningUpgrade } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
 
 // A trial has a frozen aiming phase and a finite physical shot. Campaign's
 // continuously drifting pool is a different simulation contract.
@@ -60,7 +60,7 @@ export function trialCreate(mode,layout=0,kind='normal',id=earningId(),setup=nul
     if(layout===2)walls.push({x:325,y:140,w:18,h:95,breakable:false,active:true});
   }
   const game={version:setup?2:1,...(setup?{setup:structuredClone(setup),explosions:0}:{}),...(mode==='capture'?{payloadState:'waiting'}:{}),mode,layout,kind,id,tick:0,age:0,phase:'aim',shots:0,hit:[],bodies,walls,receiver,current,zones:[],nextId:next,delivered:0,lost:0,popped:0,sealed:0,reason:'',events:[],log:[],
-    earning:{version:1,id,kind,mode,contacts:0,blooms:0,waves:0,wins:0,shots:0,lastLaunch:0,mastery:{},owned:[],used:[]}};
+    earning:{version:2,productiveShots:0,id,kind,mode,contacts:0,blooms:0,waves:0,wins:0,shots:0,lastLaunch:0,mastery:{},owned:[],used:[]}};
   if(mode==='precision')precisionCreate(game);if(mode==='music')melodyCreate(game);return game;
 }
 export const trialShots=g=>g.setup?.settings.shots??TRIAL_MODES[g.mode].shots;
@@ -169,7 +169,7 @@ function settle(g){
   let result=outcome(g);
   if(!result&&g.mode==='outbreak'){outbreakTurn(g);result=outcome(g);}
   g.phase=result?result[0]:'aim';g.reason=result?.[1]||'Choose your next shot.';
-  const e=g.earning;e.shots=g.shots;e.lastLaunch=g.shots;e.contacts+=Math.min(20,g.hit.length);if(g.hit.length>=5){e.blooms++;event(g,'bloom',g.bodies[0],{banks:0});}if(g.phase==='won')e.wins=1;
+  const e=g.earning;earningUpgrade(e);if(g.hit.length||g.phase==='won')e.productiveShots++;e.shots=g.shots;e.lastLaunch=g.shots;e.contacts+=Math.min(20,g.hit.length);if(g.hit.length>=5){e.blooms++;event(g,'bloom',g.bodies[0],{banks:0});}if(g.phase==='won')e.wins=1;
   event(g,g.phase==='won'?'win':g.phase==='lost'?'over':'rest',g.bodies[0]);
 }
 export function trialLaunch(g,angle,power=.7){

@@ -1,4 +1,4 @@
-import { skillConfig } from './skill-effect.js?v=b5d23aae0cfa214b54af02d69a6757f09caf11297ba245a50bf8b94dbdd4b93e';
+import { skillConfig } from './skill-effect.js?v=6bc123e911039183cb33d2d4d4f01b63c8a5fdf57cf46b5e716d86a347906c28';
 import { DRUNK_SECONDS, waveFalloff, waveRadial, overlapResponse, magnetResponse, drunkSway } from './power-response.js?v=53825a2132c5ad509bdd8a251983587d3024f860edd302123036c23bc5fa89bd';
 
 // One explanatory graph per power, replacing only the relevant stat's meter.

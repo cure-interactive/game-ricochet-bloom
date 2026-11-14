@@ -1,9 +1,9 @@
-import { PLAYER_UPGRADES, playerBuild } from './player-upgrade.js?v=9483739a49b831a9c57dd285854e1bb23148947a97636d12caaebc2b619a776f';
-import { buildValidate } from './skill-effect.js?v=b5d23aae0cfa214b54af02d69a6757f09caf11297ba245a50bf8b94dbdd4b93e';
-import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=b2330060a946840e4caf0bd604dd4001893829861e077d21e980d225f355dbf8';
-import { POWER_TREES } from './power-tree.js?v=9fda938ef3e82ce596579a6bd292edca93bb30ccd3efb174b1a25b7d418fa895';
-import { profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=1ea1f375cbce19893275eb111e5332fa7e4f80bfd6ce219b63a8cc1cf096da39';
-import { gameCreate, saveValidate, RULE } from './engine.js?v=3b9ada69404ca401cc1667101eb21e039da45569b0b0649dd3d5507088e85f21';
+import { PLAYER_UPGRADES, playerBuild } from './player-upgrade.js?v=0db2496c23b18e74e54be344eaee2dc299252cc10fd85a6e7e21834351d4c41c';
+import { buildValidate } from './skill-effect.js?v=6bc123e911039183cb33d2d4d4f01b63c8a5fdf57cf46b5e716d86a347906c28';
+import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=41b471c37ef2d3e54b61ceb1967e63963fa935f4a0b48d5bb6eeeedc6069f66c';
+import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
+import { profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=03135a7e384bee9ced392b53013ac9b1d30322c335516a5135a553ae01bb76a3';
+import { gameCreate, saveValidate, RULE } from './engine.js?v=2dd0f771b37dc76497de4916b6a40d2267fe82b6096fb3b47ff898d77220ee69';
 import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
@@ -105,7 +105,7 @@ function poolCreate(s,music=null){
   music=musicCreate(music,music?.blooms||0);musicRunSection(music,s.pool,s.track);
   s.run={id:`run-${s.attempt}`,seed,track:s.track,roles:[],activated:[],bankBloom:false,music,game,launches:previous?.launches||0,score:previous?.score||0,bonuses:previous?.bonuses||0,routes:[...(previous?.routes||[]),s.route],offers:[],discovered:false,initial:previous?.initial||{seed,track:s.track,relaxed:s.relaxed,powers:[...s.powers],equipped:[...s.equipped],borrowed:[...s.borrowed]}};s.phase='run';
 }
-function reward(s,event){const result=profileReward(s.profile,{mode:'song-run',runId:s.run?.id,trackId:s.track,poolCount:5,...event},GAME_CATALOGUE);if(!result.ok)throw new Error(result.reason);s.profile=result.profile;return result.receipt?.amount||0;}
+function reward(s,event){const result=profileReward(s.profile,{mode:'song-run',runId:s.run?.id,trackId:s.track,poolCount:5,...event,economy:2},GAME_CATALOGUE);if(!result.ok)throw new Error(result.reason);s.profile=result.profile;return result.receipt?.amount||0;}
 function finish(s){s.phase='shop';s.pool=0;s.run=null;s.borrowed=[];s.route=0;if(s.powerMode!=='shared')syncUnlocked(s);tidy(s);}
 export function progressionAct(input,action){
   const s=progressionValidate(input,input.profile?.kind);if(!s)return {ok:false,reason:'Invalid saved progression.'};

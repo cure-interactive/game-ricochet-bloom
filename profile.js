@@ -1,6 +1,6 @@
-import { PLAYER_UPGRADES, playerResearchValid, playerUpgradeReason } from './player-upgrade.js?v=9483739a49b831a9c57dd285854e1bb23148947a97636d12caaebc2b619a776f';
-import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=408b9cb571894b109f7df2643c488476ddad89967db77e8d677dfcca3957c9f0';
-import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=b2330060a946840e4caf0bd604dd4001893829861e077d21e980d225f355dbf8';
+import { PLAYER_UPGRADES, playerResearchValid, playerUpgradeReason } from './player-upgrade.js?v=0db2496c23b18e74e54be344eaee2dc299252cc10fd85a6e7e21834351d4c41c';
+import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=95a3b4796136fdaeecc73effb73229085d826719b7179b769a0c3482f2e13e20';
+import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=41b471c37ef2d3e54b61ceb1967e63963fa935f4a0b48d5bb6eeeedc6069f66c';
 
 export const PROFILE_VERSION = 1;
 const integer = value => Number.isSafeInteger(value) && value >= 0;
@@ -23,10 +23,12 @@ function rewardNormalize(event, catalogue) {
   if (!object(event)) return null;
   if(event.type==='play'){const e=event.play;if(!earningValid({...e,lastLaunch:e?.shots,owned:[],used:[]},Object.keys(catalogue.powers)))return null;return {type:'play',play:earningSnapshot(e)};}
   if(event.mode !== 'song-run') return null;
-  if (event.type === 'tutorial') return event.bloom === true ? { mode: event.mode, type: 'tutorial', bloom: true } : null;
+  if(event.economy!==undefined&&event.economy!==2)return null;
+  if (event.type === 'tutorial') return event.bloom === true ? { mode: event.mode, type: 'tutorial', bloom: true,...(event.economy?{economy:2}:{}) } : null;
   if (!['pool', 'victory', 'failure'].includes(event.type) || !runIdValid(event.runId) || !TRACKS.includes(event.trackId) ||
     ![3, 5].includes(event.poolCount) || (event.poolCount === 3 && event.trackId !== 'first-light')) return null;
   const result = { mode: event.mode, type: event.type, runId: event.runId, trackId: event.trackId, poolCount: event.poolCount };
+  if(event.economy)result.economy=2;
   if (event.type !== 'victory') {
     if (!integer(event.poolIndex) || event.poolIndex >= event.poolCount) return null;
     result.poolIndex = event.poolIndex;
@@ -71,6 +73,9 @@ function rewardApply(state, event) {
     }
     state.runs.set(event.runId, run);
   }
+  // Outcomes still prove clears, mastery and track unlocks. New payouts are
+  // exclusively productive shots and difficulty bonuses, in every mode.
+  if(event.economy===2)amount=0;
   const receipt = { id, event, amount };
   state.receipts.set(id, receipt); return receipt;
 }
@@ -137,6 +142,8 @@ export function profileReward(input, event, catalogue = CATALOGUE) {
   if (!profile) return rejected('invalid-profile');
   if (!normalized||normalized.type==='play') return rejected('invalid-outcome');
   const summary = rewardsInspect(profile.rewards, catalogue), previous = summary.receipts.get(rewardKey(normalized));
+  // Retrying a historical outcome must preserve its original receipt/rules.
+  if(previous&&previous.event.economy===undefined)delete normalized.economy;
   if (previous) return JSON.stringify(previous.event) === JSON.stringify(normalized)
     ? accepted(profile, { duplicate: true, receipt: structuredClone(previous) }) : rejected('reward-conflict');
   if (normalized.type === 'pool' && normalized.activated.some(power => !own(profile.research, power + '.base'))) return rejected('unowned-power');
@@ -153,6 +160,11 @@ export function profilePlayReward(input,earning,catalogue=CATALOGUE){
   const profile=profileValidate(input,catalogue),event=rewardNormalize({type:'play',play:earning},catalogue);
   if(!profile||!event||event.play.kind!==profile.kind)return rejected('invalid-play-reward');
   const e=event.play,id=rewardKey(event),index=profile.rewards.findIndex(r=>r.id===id),old=index<0?null:profile.rewards[index];
+  if(old?.event.play.version===2&&(e.version!==2||JSON.stringify(e.legacy)!==JSON.stringify(old.event.play.legacy)||e.productiveShots<old.event.play.productiveShots))return accepted(profile,{amount:0,duplicate:true});
+  if(old?.event.play.version===1&&e.version===2){
+    const prior=old.event.play,base=e.legacy;
+    if(!base||['contacts','blooms','waves','wins','shots','bonusPoints'].some(k=>base[k]<(prior[k]??0)))return rejected('invalid-legacy-baseline');
+  }
   if(old&&(old.event.play.mode!==e.mode||['contacts','blooms','waves','wins','shots','bonusPoints'].some(k=>(e[k]??0)<(old.event.play[k]??0))||Object.entries(old.event.play.mastery).some(([p,n])=>(e.mastery[p]||0)<n)))return accepted(profile,{amount:0,duplicate:true});
   if(Object.keys(e.mastery).some(p=>!own(profile.research,p+'.base')))return rejected('unowned-power');
   const total=earningAmount(e),amount=total-(old?.amount||0);
