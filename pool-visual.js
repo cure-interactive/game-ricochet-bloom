@@ -1,9 +1,9 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=1f640ece765639eb262e5d176ef2852715c65b89f2f09139a1b0716a366b6906';
-import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
+import {CosmeticVisual} from './cosmetic-visual.js?v=2e5f9d9d4280ef53561596ab5e3eb3b10f2f6a721b99764fd6b151167df24f05';
+import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=27a29e6d2cba5ed4d8a714591cb6751bcf16bb1cea5790adfc71e5146d80876e';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=cdb9cc50c02667b29df5c73e0f37f843f01318f6e4bbb76a955d1ac6a5652b09';
-import {PowerVisual} from './power-visual.js?v=b0415202ac7e2318e3d4f946ba4f712bec8859fcf97faa81a1d62cb1cccb4dbe';
+import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=e7e1246732c56d2262531fab4de3bea0efb0bd45245a9329dd44c04f3f1a1205';
+import {PowerVisual} from './power-visual.js?v=99e31341890e2474f25107e3d8d9c21a23a9a5f265411efc1bcd7161905ae1ac';
 
 // One presentation owner for every physics pool: play, Casual and menu autoplay.
 // Scores, aiming, audio and persistence belong to the caller, never this component.
@@ -57,7 +57,7 @@ export class PoolVisual {
  }
  before(context,game,time,visualDelta,isLowQuality=false){
   const seed=game.bodies[0];
-  this.cosmetics.step(seed,visualDelta,game.isFlying);this.cosmetics.render(context,isLowQuality);
+  this.cosmetics.step(seed,visualDelta);this.cosmetics.render(context,isLowQuality,true);
   if(isLowQuality){this.trails=[];this.particles=[];}
   this.powerVisual.update(visualDelta,game);
   this.powerVisual.render(context, game, time, isLowQuality);
@@ -70,7 +70,7 @@ export class PoolVisual {
   const previous = new Map();
   for (const point of this.trails) {
     const a = previous.get(point.id); previous.set(point.id, point);
-    if (!a || point.id===0&&!point.comet&&!point.drunk&&this.cosmetics.trail!=='trail.original') continue;
+    if (!a || point.id===0&&!point.comet&&!point.drunk) continue;
     context.strokeStyle = point.comet ? `rgba(255,201,117,${point.life * .8})` : point.drunk ? `rgba(255,172,216,${point.life * .6})` : point.id === -3 ? `rgba(178,192,255,${point.life * .45})` : point.id === -1 ? `rgba(216,183,255,${point.life * .55})` : point.id === -2 ? `rgba(155,237,244,${point.life * .55})` : `rgba(191,246,226,${point.life * .32})`;
     context.lineWidth = point.life * (point.comet ? 24 : point.id < 0 ? 8 : 15); context.lineCap = 'round'; context.beginPath(); context.moveTo(a.x, a.y); context.lineTo(point.x, point.y); context.stroke();
     if (point.comet) { context.strokeStyle = `rgba(255,246,207,${point.life * .8})`; context.lineWidth = point.life * 5; context.stroke(); }

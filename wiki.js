@@ -1,25 +1,25 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { screenHeader } from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
+import { screenHeader } from './screen-header.js?v=2e096f2a79faa63185588495732061424d007cab358cb47837ed18fd2666ad3c';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { iconHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=c19834ceda744639dd95c77b8bcc82706b3dde6c5899c2cc278f7c865cc0cc03';
+import { iconHTML } from './ui-icon.js?v=2fc20cc9221a523874a677a151fa2d76dd8dda2734129b3078e5c0d045e87188';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=3d7da319295796e9cd110f108c158c60a30c7ae6b4b2933cf3cdec1c69cf382d';
 
 export const WIKI_PAGES = Object.freeze({
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=26cbf632b13f303cbf1fcef267a69e4360da0f8a1d867ab50bae725e62a01b8c' },
-  player: { title: 'Player', url: './wiki/player.md?v=8122c62bc0013251350fdbeb930d7ca8fcb900f174d5b56af61796048f664364' },
-  developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=98086f6893aa55b3d1842506d0d3a9abc90a23246eb96ccf9096f1d2644d2deb' },
-  medals: { title: 'Medals', url: './wiki/medals.md?v=9cf0c1f86dc0b5d81237bff4186f4c3677f214f72ca0deafb00e5f1b83cc5e1a' },
-  'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=688714c1fe057d6c0da78a5f38b32cd4bc3fe0e712812b248e9d7552b6c54daf' },
-  experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=2925dacfbb1be75a34b46fe3cec9074a5e78b169a558c1a8299ea528a7e635b1' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=937d04de7c74c8816b44d950ff33b595b3a5f16ecd793c914b0914f5fd8166cb' },
+  player: { title: 'Player', url: './wiki/player.md?v=7b0f7333da7f33b732200d4e6de24ce4414fc8048759a1e9a2a8b268338a1f7c' },
+  developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=c511bd2026f1e4f17fc4730cb523f4a1f19b644b4ff084b9e71286a21e0f9ff3' },
+  medals: { title: 'Medals', url: './wiki/medals.md?v=8e4bd3a9087a3772f6c6f6eecd7b835c3419fddfc7372f20360fdbb87a1529c0' },
+  'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=c607b2d4e304d343c0815a81882356b4613b7d19554b3e82aa3383def0720193' },
+  experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=ef97ebdb6d6ea592b693906af344dacbbf62bbc91baa302af7b6210876191eac' },
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
-  waves: { title: 'Endless Waves', url: './wiki/waves.md?v=bcc53ccc28d9448fac1a1999a369dd0894c4055ec043e93d2617ada4021b42af' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=8b16c63d974f05fd6e1b5afe3f7fe725cb70c915495ce15840d52440f75bd76d' },
+  waves: { title: 'Endless Waves', url: './wiki/waves.md?v=e55368d7bc59e118d866c5f0413bc9f20f5493013b5c6b6ccf7c39f697aff1c5' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=94d8613f5fbf76caa2ad58c183652bae80412818c829ccfdc476f465f20bbeeb' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=543ce8c11fb5723231312405b2d53945c5e12fa5d38a6b72224c5e12dcfa3e8a' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=a5a4ffc4af204a9d661881069bd1adbd288db6a1ea3048bd381751a1a98e76a6' },
-  campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=7a28e512643ce0faf78d4f9020b8a6e8d56a536f4d64caa116560a40390460e3' },
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=f8933e46fd76e7b6117e1a272b4a68429d0e827b5808d5bd2fb91b690fd1aec0' },
+  campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=deec504c2d8878ca2f2afb01470e9a88a2653d36c24c96ab5fcfbb1d65614d76' },
   'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=ae2486db2bfd473fa48312e6e969de61f6bf1396c84a326b52f3b5cf1a612891' },
-  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=74045e7aeccd42a2ab68c8706c40aed9eb1dd792f13a8c3671e4dffd68619d4c' },
+  'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=5c721e16568c92d734d7e53fa7e78511ad8aa2eda61d4677fe81eb3cc1258b80' },
   settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=7acbc2f05c845c628ad169eaa351dcb82b4ea6632aa77a15d87105e84d651acd' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.

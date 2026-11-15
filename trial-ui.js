@@ -1,21 +1,21 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=1f640ece765639eb262e5d176ef2852715c65b89f2f09139a1b0716a366b6906';
+import {CosmeticVisual} from './cosmetic-visual.js?v=2e5f9d9d4280ef53561596ab5e3eb3b10f2f6a721b99764fd6b151167df24f05';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {bubbleRender} from './bubble-render.js?v=c737019c0f2253fce960b1d1c5e7e2887dc8f4353a005295a2f0e21a14ff3e6a';
+import {bubbleRender} from './bubble-render.js?v=0fb077e27e26a90c91049d6eba0ddb11d51a8b23c41c77fb68026af650ecc46a';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 const renderReady=frameGate();
-import { gamemodeMount } from './gamemode-ui.js?v=aaff7a655de6563068aee7e404cdf8cac81b5f4192937ad8dbbe965898d81bf6';
+import { gamemodeMount } from './gamemode-ui.js?v=5460d8d2e4aec80e9d67c7ec59337386fa04fabbe79fc80e08f087f1ca990302';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=cb1239d459734c6f9be44ad4762f547277da8fc66ff98164482c5bbefd917891';
-import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { screenHeader } from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
-import { songKeep } from './song.js?v=86145f0ef4ef602700690f402f88b49e113f92abeae29e29e2d088858cdc446e';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=b66de041ee2d9f60adfb88f52c358438190802a3f8dc744542f54dc430e58530';
+import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
+import { screenHeader } from './screen-header.js?v=2e096f2a79faa63185588495732061424d007cab358cb47837ed18fd2666ad3c';
+import { songKeep } from './song.js?v=490c28dfcf9cb065c698c1d1d66cf57067e308cfaf0db3ec20c3b23b6ea9aeb8';
 import { melodyDraw } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { experimentRewarded, experimentGoal, EXPERIMENT_RECIPES } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { experimentMedal, experimentRead, experimentSave, experimentWrite, experimentEmpty, experimentExport } from './experiment-store.js?v=a8292e2ba4898dcd05c18655b0c4e77fc2b57e4a9fdccf59cd5e766ee84079df';
+import { experimentMedal, experimentRead, experimentSave, experimentWrite, experimentEmpty, experimentExport } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
 import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialForGeneration,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=ee88fa6819c43397fd16a782519a3e055707b4f141bd667e1be4ec2db2f3209a';
-import { trialRead,trialWrite } from './trial-store.js?v=255056b814040c9a76665cbb7a364a84d8e3de0f2db46032210bf13e62f9f0ee';
+import { trialRead,trialWrite } from './trial-store.js?v=c51c57ab0b8f034d070eb9f80de7a27d1fd23947e6e180f0f1a77c46a659bf17';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { buttonHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
+import { buttonHTML } from './ui-icon.js?v=2fc20cc9221a523874a677a151fa2d76dd8dda2734129b3078e5c0d045e87188';
 const button=(id,label,icon='arrow-left')=>buttonHTML(label,icon,{id});
 const color={'music-note':'#a4f4cf','beat-gate':'#eb9bcd','sound-hazard':'#ff8b91',instrument:'#f2d279',keeper:'#ff8b91',gate:'#9ce6cf',power:'#c4a7ff',payload:'#ffb56e',player:'#f6f5cf',target:'#ed82bd',blast:'#ffb56e',fire:'#ff765f',gas:'#cadb78',cell:'#a4f4cf',cargo:'#8edbff',plug:'#c6b4ff',vent:'#bf89e8',mote:'#ec8ed7',mud:'#bba18c',spike:'#fa8c91'};
 export function trialMount(host){
@@ -64,7 +64,7 @@ export function trialMount(host){
     if(!paused&&!blocked&&!document.hidden){accumulator+=dt;while(accumulator>=TRIAL_SIZE.step){const before=game.phase,beforePreview=!!game.melody?.preview,beforeHits=game.hit.length;effects(trialStep(game));accumulator-=TRIAL_SIZE.step;if(before!==game.phase||beforePreview!==!!game.melody?.preview){save();renderUI();}else if(game.mode==='music'&&beforeHits!==game.hit.length)renderUI();if(blocked)break;}
       if(game.tick-lastSaved>=60){save();lastSaved=game.tick;if(blocked)renderUI();}flashes=flashes.filter(f=>(f.life-=dt)>0);
     }else accumulator=0;
-    const visualDt=!paused&&!blocked&&!document.hidden?dt:0,p=trialPlayer(game);cosmetic.configure(host.cosmetics?.());cosmetic.step(p,visualDt,game.phase==='flight');bubbleStep(playerMembrane,{...p,radius:p.r},visualDt);
+    const visualDt=!paused&&!blocked&&!document.hidden?dt:0,p=trialPlayer(game);cosmetic.configure(host.cosmetics?.());cosmetic.step(p,visualDt);host.sound.cosmeticTravel?.(host.cosmetics?.(),p,!paused&&!blocked&&!document.hidden);bubbleStep(playerMembrane,{...p,radius:p.r},visualDt);
     draw();frame=requestAnimationFrame(loop);
   }
   function draw(){if(!game)return;ctx.clearRect(0,0,900,600);const gradient=ctx.createLinearGradient(0,0,900,600);gradient.addColorStop(0,'#112c36');gradient.addColorStop(1,'#090f22');ctx.fillStyle=gradient;ctx.fillRect(0,0,900,600);
@@ -74,7 +74,7 @@ export function trialMount(host){
     for(const z of game.zones){ctx.fillStyle='#bba18c25';ctx.strokeStyle='#bba18c88';ctx.beginPath();ctx.arc(z.x,z.y,z.r,0,Math.PI*2);ctx.fill();ctx.stroke();}
     for(const w of game.walls)if(w.active){ctx.fillStyle=game.setup?.experimentId==='010'?'#783b50':w.breakable?'#a88760':'#375364';ctx.beginPath();ctx.roundRect(w.x,w.y,w.w,w.h,Math.min(8,w.w/2,w.h/2));ctx.fill();ctx.strokeStyle=w.breakable?'#f1c698':'#92c4d0';ctx.lineWidth=2;ctx.stroke();if(w.breakable){ctx.strokeStyle='#493a34';for(let y=w.y+8;y<w.y+w.h;y+=12){ctx.beginPath();ctx.moveTo(w.x,y);ctx.lineTo(w.x+w.w,Math.min(y+8,w.y+w.h));ctx.stroke();}}}
     if(game.mode==='music')melodyDraw(game,ctx);
-    cosmetic.render(ctx,document.body.dataset.quality==='low');
+    cosmetic.render(ctx,document.body.dataset.quality==='low',true);
     for(const b of game.bodies.filter(b=>b.active)){
       if(b.kind==='player'){const body={...b,radius:b.r};bubbleRender(ctx,body,bubbleOutline(playerMembrane,body),host.skin?.()||'#f1f9d7',{skinTime:cosmetic.elapsed,skinStyle:host.skinStyle?.(),lowQuality:document.body.dataset.quality==='low'});if(game.payloadState==='carried'){ctx.strokeStyle='#ffb56e';ctx.lineWidth=4;ctx.beginPath();ctx.arc(b.x,b.y,b.r+8,0,Math.PI*2);ctx.stroke();}continue;}
       ctx.save();ctx.translate(b.x,b.y);ctx.strokeStyle=color[b.kind];ctx.fillStyle=color[b.kind]+'35';ctx.lineWidth=2.5;

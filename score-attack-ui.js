@@ -1,8 +1,8 @@
 import { SCORE_BUDGETS, SCORE_DEFAULT, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
-import { scoreRead } from './score-attack-store.js?v=28c09cd67e9f6b401b4e2be53d1b0fc7a6641f65d0e11b4602de140c66e68ef8';
-import { scoreConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { medalConditionsHTML } from './medal-ui.js?v=cb1239d459734c6f9be44ad4762f547277da8fc66ff98164482c5bbefd917891';
-import { assetURL } from './asset.js?v=8f07996fa8e454545217f8565c5a5622b3443d83730233178d64ed3fad75399b';
+import { scoreRead } from './score-attack-store.js?v=57d08353b2dfac41f93e1d5e1d88bb8387652b1a9d3223e2d9ed7b07150e6d5e';
+import { scoreConditions } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
+import { medalConditionsHTML } from './medal-ui.js?v=b66de041ee2d9f60adfb88f52c358438190802a3f8dc744542f54dc430e58530';
+import { assetURL } from './asset.js?v=088862b3a656c6f1107998eef742251f591f278feccffeabbe3a08e65a29731d';
 
 export function scoreAttackMount({content,heading,storage,...host}) {
   const $=id=>content.querySelector('#'+id);
@@ -10,7 +10,7 @@ export function scoreAttackMount({content,heading,storage,...host}) {
   let budget=SCORE_DEFAULT;
   function scoreSetup(){
     host.screen('score-setup');heading.textContent='Score Attack';
-    content.innerHTML=`<div class="mode-overview"><img src="${art('score-attack')}" alt="" width="480" height="240"><div><p>Build chains, bank off walls and trigger blooms. Use every shot to chase your best score.</p><small>No countdown · No extra shots · Final shot finishes before scoring</small></div></div><div class="layout-grid" role="group" aria-label="Shot budget">${SCORE_BUDGETS.map(n=>`<button class="layout-card" data-budget="${n}" aria-pressed="${n===budget}"><strong>${n} Shots</strong><small>${n===5?'Quick Run':n===10?'Standard Run':'Long Run'}</small></button>`).join('')}</div><div id="score-setup-detail"></div>`;
+    content.innerHTML=`<div class="mode-overview"><img src="${art('score-attack')}" alt="" width="480" height="240"><div><p>Build chains, bank off walls and trigger 5-Chains. Use every shot to chase your best score.</p><small>No countdown · No extra shots · Final shot finishes before scoring</small></div></div><div class="layout-grid" role="group" aria-label="Shot budget">${SCORE_BUDGETS.map(n=>`<button class="layout-card" data-budget="${n}" aria-pressed="${n===budget}"><strong>${n} Shots</strong><small>${n===5?'Quick Run':n===10?'Standard Run':'Long Run'}</small></button>`).join('')}</div><div id="score-setup-detail"></div>`;
     for(const b of content.querySelectorAll('[data-budget]'))b.onclick=()=>{budget=Number(b.dataset.budget);scoreSetup();content.querySelector(`[data-budget="${budget}"]`).focus();};
     const saved=scoreRead(storage,host.kind(),budget),targets=scoreTargets(budget),detail=$('score-setup-detail');
     const medal=saved.best===null?null:scoreMedal(saved.best,budget);

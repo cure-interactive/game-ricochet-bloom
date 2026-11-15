@@ -1,6 +1,6 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { assetURL } from './asset.js?v=8f07996fa8e454545217f8565c5a5622b3443d83730233178d64ed3fad75399b';
-import { MEDAL_NAMES, medalRank } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
+import { assetURL } from './asset.js?v=088862b3a656c6f1107998eef742251f591f278feccffeabbe3a08e65a29731d';
+import { MEDAL_NAMES, medalRank } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
 export function medalIcon(name){return MEDAL_NAMES.includes(name)?`<img class="medal-icon" src="${assetURL(`icon/medal/${name.toLowerCase()}.svg`)}" width="40" height="48" alt="" aria-hidden="true">`:'';}
 export function medalBadge(name){return name?`<span class="medal-badge">${medalIcon(name)}<strong>${escape(name)} Medal</strong></span>`:'';}
 export function medalConditionsHTML(conditions,earned=null){

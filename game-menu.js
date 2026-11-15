@@ -1,9 +1,10 @@
-import { menuLayoutMount } from './menu-title.js?v=6123349fca721160b1a90bc90be4ff129699acfbc73784450ddb9e0b010af40b';
+import {cosmeticLoadout} from './cosmetic.js?v=7ec09556610ab987f7c5deb3143a3e4ba1da31461c131f3a4136838fa80ecdac';
+import { menuLayoutMount } from './menu-title.js?v=f8dfc85ba56dc5aa45483fd0cab0ab065787bad2a409b92a39d063d5182d1c1a';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { buttonHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
-import { menuBackgroundMount } from './menu-background.js?v=266701e90e768eec3b010b4a2391209c56a10381d1957332c4bc53ab452dfd77';
+import { buttonHTML } from './ui-icon.js?v=2fc20cc9221a523874a677a151fa2d76dd8dda2734129b3078e5c0d045e87188';
+import { menuBackgroundMount } from './menu-background.js?v=009515ba39545a1815fd80599e9b96a3ea9f903a7ee633335dbd24c19c03e349';
 
-import { driftMount } from './drift-ui.js?v=fd99f8c6ae897edd694343813e31d856640c2e27bb9fdc259bad31abc4bfdbe1';
+import { driftMount } from './drift-ui.js?v=a6adf44f2cbdb75dc42a747364ead3e14faf4bfdf0c516aac92ffc83282d3b1b';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
@@ -20,7 +21,7 @@ export function gameMenuMount(host) {
   const drift=driftMount({pause:pauseOpen,resume});
   const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true,{profile:host.profile,skin:host.skin,skinStyle:host.skinStyle,audioSettings:host.audioSettings,powerMarkings:()=>casual});
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
-  function refresh(){background.refresh();document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');document.body.style.setProperty('--player-skin-style',host.skinStyle?.()||'original');const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
+  function refresh(){background.refresh();document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');document.body.style.setProperty('--player-skin-style',host.skinStyle?.()||'original');document.body.style.setProperty('--player-trail',cosmeticLoadout(host.profile?.()?.profile).trail);document.body.style.setProperty('--player-impact',cosmeticLoadout(host.profile?.()?.profile).bounce);const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
   function present(name){
     route.visit(name);
     if((name.startsWith('gamemodes:')||name.startsWith('pool-setup:'))||['drift','drift-pause','home','gamemodes','trial-setup','score-setup','experiment-hub','experiment-family','experiment-detail'].includes(name))homeMode=true;else if(['play','pause','trial'].includes(name))homeMode=false;

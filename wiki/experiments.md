@@ -125,7 +125,7 @@ After a result, choose **Review / Change Setup** to write a verdict and notes, o
 
 ## Points and Music
 
-Every playable experiment preset, including Custom, earns Points from productive settled shots. Reaction Puzzle, Cargo Rescue and Outbreak Containment award 3 Points; Trick Shots, Melody Trials and Capture Transport Release award 4. A shot must touch a target or complete its goal. Repeated contacts, blooms and finishing a trial do not stack extra currency. Misses, previews, waiting and restarting pay nothing. Earlier earned receipts are preserved and resuming never pays twice.
+Every playable experiment preset, including Custom, earns Points from productive settled shots. Reaction Puzzle, Cargo Rescue and Outbreak Containment award 3 Points; Trick Shots, Melody Trials and Capture Transport Release award 4. A shot must touch a target or complete its goal. Repeated contacts, 5-Chains and finishing a trial do not stack extra currency. Misses, previews, waiting and restarting pay nothing. Earlier earned receipts are preserved and resuming never pays twice.
 
 Fixed environmental tools keep existing research from changing a puzzle. Trials do not train permanent power mastery. Contact-generated music accompanies play; goals and the reaction log explain outcomes with sound muted.
 

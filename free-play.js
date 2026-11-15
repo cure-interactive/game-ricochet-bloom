@@ -1,8 +1,8 @@
-import {gameCreate} from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
+import {gameCreate} from './engine.js?v=27a29e6d2cba5ed4d8a714591cb6751bcf16bb1cea5790adfc71e5146d80876e';
 import {playerSync} from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
-import { unlockedResolve } from './profile.js?v=ff3af513f440e9b41048a058ead26903ec9c9e5006b2c39da30f534cd339ab33';
-import { GAME_CATALOGUE } from './run.js?v=092dcb31aec037c2c2e756df3cc28906975a53fd312f249b8265916dc20ffdcc';
-import { skillStateCreate } from './skill-effect.js?v=9714f4318d0faebb1d4b65dc36b658da67a2d7fc6d636415a8457aa9c75be2a7';
+import { unlockedResolve } from './profile.js?v=f7b3a87fc5d7716a89298b57239615e23d05fe47498eeb878a028f5b9af6bab2';
+import { GAME_CATALOGUE } from './run.js?v=a94c7f4c0c0973d817eacf5436f00e19f3a7ce67701e23687687ecbdff39fb6e';
+import { skillStateCreate } from './skill-effect.js?v=00306505aba47472293f9f7ac25546ba1565afbc197b3654d49e1f688f523013';
 
 export function freePlayBuild(progress){
   const equipped=progress.equipped.filter(id=>Object.hasOwn(progress.profile.research,id));

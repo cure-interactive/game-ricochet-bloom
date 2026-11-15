@@ -1,8 +1,8 @@
-import {COSMETICS,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=2bb18d2e076499e68b09a42197f9a740fe84fa04b929d8919c5848590fd93936';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=2dd0c55658f00a37af933997e25796ccda83d4068583e78edd42fd55a33be8f3';
-import {screenHeader} from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
-import {rarityIconHTML} from './skill-icon.js?v=dac326ff7d924addc5d734209ca68a5154f8912b8216a5cd7ed7b53eb92fb089';
+import {COSMETICS,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=7ec09556610ab987f7c5deb3143a3e4ba1da31461c131f3a4136838fa80ecdac';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=2b229bf52d006d9550d38d66a6667530c0260090e4fbdad9df8eca97f29e2e69';
+import {screenHeader} from './screen-header.js?v=2e096f2a79faa63185588495732061424d007cab358cb47837ed18fd2666ad3c';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=2fc20cc9221a523874a677a151fa2d76dd8dda2734129b3078e5c0d045e87188';
+import {rarityIconHTML} from './skill-icon.js?v=6afe5816de6b88784292e9626ccd933b6ecd0972b8aa92b72f278a2865892f5a';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 export function cosmeticMount(host){
@@ -35,7 +35,7 @@ export function cosmeticMount(host){
   const owned=cosmeticOwned(profile,item),equipped=loadout[kind]===selected,points=profile.wallet.seeds;
   detail.classList.toggle('is-equipped',equipped);detail.style.setProperty('--skin-color',item.color);
   detail.innerHTML=`<div class="skin-selection-title">${iconHTML(equipped?'check':owned?'lock-open':'lock')}<div><small class="cosmetic-rarity">${rarityIconHTML(item.rarity)}${RARITIES[item.rarity].name} · ${kind==='trail'?'Trail':'Impact'}</small><h3>${escapeHTML(item.name)}</h3></div></div><p class="skin-unlock">${escapeHTML(item.description)}</p><button type="button" data-cosmetic-equip ${equipped||!owned&&points<item.cost?'disabled':''} class="skin-equip ${equipped?'is-equipped':''}">${iconHTML(equipped?'check':owned?(kind==='trail'?'trails':'bounce-effects'):'lock')}<span>${equipped?'Equipped':owned?'Equip '+(kind==='trail'?'Trail':'Impact'):'Unlock &amp; Equip · '+item.cost+' Points'}</span></button>${!owned?`<p class="cosmetic-wallet">${iconHTML('coin')}${points} Points${points<item.cost?' · '+(item.cost-points)+' more needed':''}</p>`:''}`;
-  if(item.rarity==='mythic')detail.insertAdjacentHTML('beforeend',`<button type="button" class="quiet cosmetic-sound-button" data-cosmetic-sound>${iconHTML('play')}<span>Preview Sound</span></button><small class="cosmetic-sound-hint" role="status">Mythic sound · follows master volume and mute.</small>`);
+  if(cosmeticHasSound(item))detail.insertAdjacentHTML('beforeend',`<button type="button" class="quiet cosmetic-sound-button" data-cosmetic-sound>${iconHTML('play')}<span>Preview Sound</span></button><small class="cosmetic-sound-hint" role="status">${item.kind==='trail'&&item.rarity==='mythic'?'Launch and travel · fades during the final second.':'Launch or impact accent.'} Follows master volume and mute.</small>`);
   preview ||=cosmeticPreviewMount(large,{loadout:()=>({...cosmeticLoadout(host.profile()),...(selected?{[kind]:selected}:{})}),color:host.color,style:host.style});
  }
  function goBack(){
@@ -45,7 +45,7 @@ export function cosmeticMount(host){
  back.onclick=goBack;dialog.addEventListener('cancel',e=>{e.preventDefault();goBack();});
  dialog.addEventListener('close',()=>{stop();preview?.destroy();preview=null;});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
- dialog.addEventListener('click',async e=>{if(!e.target.closest('[data-cosmetic-sound]'))return;const id=selected,token=++audition;host.stopSound?.();const ready=await host.unlock?.();if(token!==audition||!dialog.open||selected!==id)return;detail.querySelector('.cosmetic-sound-hint').textContent=ready!==false&&host.sound?.(id)?'Mythic sound preview started. Tap to replay.':'Sound is muted or unavailable. Check Audio settings.';});
+ dialog.addEventListener('click',async e=>{if(!e.target.closest('[data-cosmetic-sound]'))return;const id=selected,token=++audition;host.stopSound?.();const ready=await host.unlock?.();if(token!==audition||!dialog.open||selected!==id)return;detail.querySelector('.cosmetic-sound-hint').textContent=ready!==false&&host.sound?.(id)?'Sound preview started. Tap to replay.':'Sound is muted or unavailable. Check Audio settings.';});
  dialog.addEventListener('click',e=>{
   const choice=e.target.closest('[data-cosmetic]');
   if(choice){stop();libraryScroll=scroll.scrollTop;selected=choice.dataset.cosmetic;render();status.textContent='';scroll.scrollTop=0;back.focus({preventScroll:true});}

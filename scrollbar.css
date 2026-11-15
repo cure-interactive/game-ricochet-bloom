@@ -27,5 +27,9 @@
 :root body .scroll-indicator[data-active=true],:root body .scroll-indicator[data-held=true],:root body .scroll-indicator:hover{opacity:.9}
 .scroll-indicator[data-axis=y][data-held=true]>span{width:6px}
 .scroll-indicator[data-axis=x][data-held=true]>span{height:6px}
+.scroll-indicator[data-axis=y]{cursor:ns-resize}
+.scroll-indicator[data-axis=x]{cursor:ew-resize}
+.scroll-indicator>span{cursor:grab}
+:root body .scroll-indicator[data-held=true],.scroll-indicator[data-held=true]>span{cursor:grabbing}
 
 @media(forced-colors:active){.scroll-indicator>span{background:ButtonText;forced-color-adjust:none}}

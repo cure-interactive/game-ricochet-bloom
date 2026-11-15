@@ -1,5 +1,5 @@
 import {PLAYER_UPGRADES,playerBuild,playerConfig,playerLaunchSpeed,playerGuideLength,playerCruiseDrag,playerCollisionSpeed} from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
-import {flightDrag} from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
+import {flightDrag} from './engine.js?v=27a29e6d2cba5ed4d8a714591cb6751bcf16bb1cea5790adfc71e5146d80876e';
 const maximum=playerConfig(playerBuild({playerResearch:Object.fromEntries(PLAYER_UPGRADES.map(n=>[n.id,{paid:0}]))}));
 const specs=[
  {key:'guideExtra',branch:'Sight',label:'Extra Guide Length',description:'Additional aiming distance before walls or geometry limit the preview.',unit:' units'},

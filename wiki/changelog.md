@@ -6,6 +6,33 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.28.0
+
+Build: 2026-11-15 20:57:53 UTC
+
+### Player Changes
+
+- Trails follow moving players, icons and previews, including slow movement, dragging and scrolling.
+- Legendary trails get launch sounds; Mythic trails add traveling sounds. Preview Sound fades the traveling sample during its final second.
+- Use consistently styled sliders and scrollbar cursors across devices.
+- Skills and Player Stats share a sliding selector whose text contrast follows the indicator. The indicator stays inside its container, and left-handed mode reverses tab order.
+- Skills uses an opaque dotted background that follows map panning and zooming. Points appears before the selector in the standard layout.
+- Skins, Trails and Impacts galleries fill their available width before wrapping. Trails and Impacts icons animate in Wiki links and other shared controls.
+- About places game and developer information side by side when space allows. Icon Credits keeps clear spacing around every icon.
+- Prepare the moving menu background before an exiting menu reveals it.
+- Call five-contact achievements **5-Chains**, with the Ripple icon in Stats. Empty medal counts show a faded dash.
+
+<!-- development -->
+### Developer Notes
+
+- Sample shared cosmetic trails from displacement, reproject decorative element movement into local canvas coordinates, and preserve hidden-state bounds and discontinuity handling.
+- Share rarity sound policy and finite travel voices across pool, trial and Casual consumers; stop on inactive, hidden, muted and paused states. Native iPhone audibility remains a physical-device check.
+- Keep range values and keyboard/assistive semantics in native inputs while custom DOM paints controls and shared pointer mapping drives input/change events.
+- Extract segmented-control for cross-dialog Skills and within-page Stats, using actual button bounds for drag destinations and indicator placement. Keep domain-specific tree graphs separate.
+- Reuse cosmeticThumbnailMount through the dynamic cosmetic-icon element. Preserve saved cosmetic IDs, bloom events and blooms counters while renaming current player-facing terminology.
+- Project map dots through the existing camera callback and prime uncovered backgrounds in the pre-paint dialog mutation phase. Covered backgrounds continue simulation without rendering or receiving input.
+<!-- /development -->
+
 ## v3.27.3
 
 Build: 2026-11-15 20:17:55 UTC

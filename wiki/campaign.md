@@ -10,17 +10,17 @@ The sequence is **First Light → Crosscurrent → Glasswater → Afterimage →
 
 Each track follows the same five-pool structure with its own atmosphere and arrangement:
 
-1. **Intro:** make one bloom, with 12 bubbles.
-2. **Verse:** make a bloom and touch all three musical roles, with 14 bubbles.
-3. **Build:** make two blooms, with 16 bubbles.
-4. **Bridge:** make a bloom with a wall bank, with 14 bubbles.
-5. **Finale:** make two blooms and touch all three roles, with 18 bubbles.
+1. **Intro:** make one 5-Chain, with 12 bubbles.
+2. **Verse:** make a 5-Chain and touch all three musical roles, with 14 bubbles.
+3. **Build:** make two 5-Chains, with 16 bubbles.
+4. **Bridge:** make a 5-Chain with a wall bank, with 14 bubbles.
+5. **Finale:** make two 5-Chains and touch all three roles, with 18 bubbles.
 
-Standard runs give six shots per pool; Relaxed gives eight. The first bloom adds one extra shot, for a maximum of seven or nine. Your song develops across the pools. After a clear, Continue takes you straight to the next pool.
+Standard runs give six shots per pool; Relaxed gives eight. The first 5-Chain adds one extra shot, for a maximum of seven or nine. Your song develops across the pools. After a clear, Continue takes you straight to the next pool.
 
 ## Score Medals in Every Pool
 
-**Score** is the value previously called Resonance. Each new bubble in a shot scores 25 multiplied by its position in the chain. A wall bank adds 25 to subsequent new contacts; a bloom adds 500. Shots remaining do not add score.
+**Score** is the value previously called Resonance. Each new bubble in a shot scores 25 multiplied by its position in the chain. A wall bank adds 25 to subsequent new contacts; a 5-Chain adds 500. Shots remaining do not add score.
 
 All 25 levels have these targets for their respective pool:
 
@@ -36,7 +36,7 @@ Track awards remain separate: Bronze for finishing all five pools, Silver for at
 
 ## Research Points and Powers
 
-Productive shots earn **5 Points** when they settle. A Campaign bonus adds **1 Point per difficulty level**: Three Voices pays 1, Seven-Note Run pays 2, and Double-Bank Bloom pays 3. The award stays earned even if the pool later fails. Contacts and blooms do not stack extra base Points, and pool clears and track finishes do not add currency. Spend Points in [Skills](skill-tree.md). The large in-pool Score measures performance separately.
+Productive shots earn **5 Points** when they settle. A Campaign bonus adds **1 Point per difficulty level**: Three Voices pays 1, Seven-Note Run pays 2, and Double-Bank 5-Chain pays 3. The award stays earned even if the pool later fails. Contacts and 5-Chains do not stack extra base Points, and pool clears and track finishes do not add currency. Spend Points in [Skills](skill-tree.md). The large in-pool Score measures performance separately.
 
 Activate an owned power in a shot hitting at least three bubbles to build its mastery in any mode. Successfully cleared Campaign pools also count. Three mastery uses satisfy a capstone requirement. Your unlocked powers appear randomly during play, with all researched upgrades applied automatically. There is no between-pool upgrade draft. Temporary upgrades already granted in an older saved run remain active until that run ends.
 

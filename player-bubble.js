@@ -1,10 +1,11 @@
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
+import {CosmeticVisual} from './cosmetic-visual.js?v=2e5f9d9d4280ef53561596ab5e3eb3b10f2f6a721b99764fd6b151167df24f05';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
-import {menuPoolView} from './menu-pool.js?v=0b5c07eac5ef4173f8d7da00f2fe5ee9727c47519b938fd37824f1538fccf955';
+import {menuPoolView} from './menu-pool.js?v=d66dd93f756efc88d83a2916e508a39825ae5fec916e47ea0ae44d23f18e543e';
 import {skinSpringStep} from './skin-preview.js?v=f6a2f88366df07d470289950dc3f210a87107edc99259fc29ce505ba69a2567a';
-import {bubbleRender,bubblePath} from './bubble-render.js?v=c737019c0f2253fce960b1d1c5e7e2887dc8f4353a005295a2f0e21a14ff3e6a';
+import {bubbleRender,bubblePath} from './bubble-render.js?v=0fb077e27e26a90c91049d6eba0ddb11d51a8b23c41c77fb68026af650ecc46a';
 import {visualActivityMount} from './visual-activity.js?v=ca1926027ea9e579abb4052b949a9fce925b332e26c2fba1d6009efe4436bf1f';
 
 // Decorative instances own only visual state. The surrounding button or large
@@ -24,7 +25,7 @@ export function registerPlayerBubble(win=window){
   connectedCallback(){
    if(this.resize)return;
    if(!this.membrane){
-   this.membrane=bubbleCreate();this.body={x:50.4,y:50.4,radius:14,vx:0,vy:0};
+   this.membrane=bubbleCreate();this.body={x:50.4,y:50.4,radius:14,vx:0,vy:0};this.trail=new CosmeticVisual();
    this.renderReady=frameGate();this.frame=0;this.last=0;this.visible=false;this.bounce=0;
    this.pressure={x:0,y:0,vx:0,vy:0};this.pulses=[];
    this.phase=++sequence*2.4;this.age=0;this.nextRipple=1.1+(sequence%4)*.23;
@@ -88,11 +89,11 @@ export function registerPlayerBubble(win=window){
    this.pressureHit(point,'tap');this.pulses.push({...point,age:0});if(this.pulses.length>8)this.pulses.shift();
   }
   halt(){
-   if(this.frame)win.cancelAnimationFrame(this.frame);this.frame=0;this.last=0;
+   if(this.frame)win.cancelAnimationFrame(this.frame);this.frame=0;this.last=0;this.trail?.breakTrail();
   }
   reset(){
    if(this.frame)win.cancelAnimationFrame(this.frame);this.frame=0;this.last=0;this.bounce=0;
-   this.membrane=bubbleCreate();if(this.body)this.body.vx=this.body.vy=0;
+   this.membrane=bubbleCreate();this.trail?.breakTrail();if(this.body)this.body.vx=this.body.vy=0;
    this.pressure={x:0,y:0,vx:0,vy:0};this.pulses=[];
    this.style.transform='';if(this.visible)this.paint();
   }
@@ -124,16 +125,24 @@ export function registerPlayerBubble(win=window){
    this.bounce*=Math.exp(-dt*5);
    // A small tethered hop for decorative icons; the large viewer owns its drag tether.
    this.style.transform=this.closest('.skin-preview-interactive')?'':`translateY(${(Math.sin(time*.018)*this.bounce*12).toFixed(3)}%)`;
-   this.paint();
+   this.paint(dt);
    this.request();
   }
-  paint(){
+  paint(dt=0){
    if(!this.context||!this.size||!this.canAnimate())return;
    const pixels=Math.ceil(this.size*3.6*qualityPixelRatio(this.ownerDocument.body.dataset?.quality,win.devicePixelRatio||1));
    if(this.canvas.width!==pixels||this.canvas.height!==pixels)this.canvas.width=this.canvas.height=pixels;
    const c=this.context;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pixels,pixels);c.setTransform(pixels/100.8,0,0,pixels/100.8,0,0);
    const style=win.getComputedStyle(this),color=style.getPropertyValue('--skin-color').trim()||'#f1f9d7';
    const body={...this.body,x:this.body.x+this.pressure.x,y:this.body.y+this.pressure.y};
+   // Sample actual screen movement, including parent drag/scroll and the icon's
+   // own hop. Reproject the old points into this moving canvas so the tail stays
+   // behind, rather than moving with the element. Resizes are discontinuities.
+   const rect=this.getBoundingClientRect(),unit=this.size/28,x=(rect.left+rect.width/2)/unit,y=(rect.top+rect.height/2)/unit;
+   if(this.trailUnit!==unit){this.trail.breakTrail();this.trailUnit=unit;}
+   this.trail.configure({trail:style.getPropertyValue('--player-trail').trim()});
+   this.trail.step({x:x+this.pressure.x,y:y+this.pressure.y},dt);
+   c.save();c.translate(this.body.x-x,this.body.y-y);this.trail.render(c,this.ownerDocument.body.dataset?.quality==='low',true);c.restore();
    const points=bubbleOutline(this.membrane,body);
    bubbleRender(c,body,points,color,{glowExtent:1.3,skinTime:this.age,skinStyle:style.getPropertyValue('--skin-style').trim()||style.getPropertyValue('--player-skin-style').trim(),lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
    if(style.getPropertyValue('--player-bubble-outline').trim()==='1'){

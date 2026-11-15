@@ -7,7 +7,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 - [How to Play](how-to-play.md)
 - [Casual](how-to-play.md#casual)
 - [Points](how-to-play.md#points)
-- [Pull, Release, Bloom](how-to-play.md#pull-release-bloom)
+- [Pull, Release, Chain](how-to-play.md#pull-release-chain)
 - [Player Stats](how-to-play.md#player-stats)
 - [Contact Powers](how-to-play.md#contact-powers)
 - [Build a Song](how-to-play.md#build-a-song)
@@ -197,6 +197,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Change Logs
 
 - [Change Logs](changelog.md)
+- [v3.28.0](changelog.md#v3-28-0)
 - [v3.27.3](changelog.md#v3-27-3)
 - [v3.27.2](changelog.md#v3-27-2)
 - [v3.27.1](changelog.md#v3-27-1)

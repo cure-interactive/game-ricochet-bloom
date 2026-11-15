@@ -4,8 +4,8 @@ export const COSMETICS=Object.freeze([
  {id:'trail.silk',kind:'trail',name:'Silk',rarity:'common',cost:60,color:'#a9f1df',style:'silk',description:'A clean, flowing ribbon of mint light.'},
  {id:'trail.stardust',kind:'trail',name:'Stardust',rarity:'rare',cost:120,color:'#8ddcff',style:'stardust',description:'A trail of drifting blue-white stars.'},
  {id:'trail.prism',kind:'trail',name:'Prism',rarity:'epic',cost:220,color:'#c4a4ff',style:'prism',description:'Three colored ribbons braid through your wake.'},
- {id:'trail.ember',kind:'trail',name:'Ember',rarity:'legendary',cost:360,color:'#ffc477',style:'ember',description:'Twin fire ribbons brighten with speed and shed cooling embers.'},
- {id:'trail.aurora',kind:'trail',name:'Aurora',rarity:'mythic',cost:550,color:'#aaf5df',style:'aurora',description:'Aurora ribbons unfurl with speed, leaving drifting stars. A rising Mythic chime accompanies each launch.'},
+ {id:'trail.ember',kind:'trail',name:'Ember',rarity:'legendary',cost:360,color:'#ffc477',style:'ember',description:'Twin fire ribbons brighten with speed and shed cooling embers, with a warm launch accent.'},
+ {id:'trail.aurora',kind:'trail',name:'Aurora',rarity:'mythic',cost:550,color:'#aaf5df',style:'aurora',description:'Aurora ribbons unfurl with speed, leaving drifting stars. A rising chime accompanies each launch, with an airy sound while traveling.'},
  {id:'bounce.none',kind:'bounce',name:'Original',rarity:'common',cost:0,color:'#bff6e2',style:'none',description:'Keep the normal bubble and power feedback.'},
  {id:'bounce.rings',kind:'bounce',name:'Ripple Rings',rarity:'common',cost:60,color:'#a9f1df',style:'rings',description:'Soft rings spread from every player bounce.'},
  {id:'bounce.spark',kind:'bounce',name:'Spark',rarity:'rare',cost:120,color:'#8ddcff',style:'spark',description:'Tiny stars burst from each contact and fade.'},
@@ -39,3 +39,5 @@ export function cosmeticValidate(value){
 export const cosmeticLoadout=profile=>profile?.cosmetics??cosmeticDefault();
 export const cosmeticOwned=(profile,item)=>item.cost===0||Object.hasOwn(cosmeticLoadout(profile).owned,item.id);
 export const cosmeticSkin=profile=>cosmeticGet(cosmeticLoadout(profile).skin);
+
+export const cosmeticHasSound=item=>!!item&&(item.kind==='trail'&&['legendary','mythic'].includes(item.rarity)||item.kind==='bounce'&&item.rarity==='mythic');

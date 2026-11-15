@@ -47,7 +47,7 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 .bonus-emblem{display:grid;place-items:center;border:1px solid #c4b6ff38;border-radius:50%;background:#b3a1ff12}.bonus-emblem .ui-icon{width:65%;height:65%}.bonus-arrow .ui-icon{width:14px;height:14px;transform:none}
 #bonus-reward,.bonus-steps span,#bonus-prize{display:inline-flex;align-items:center;gap:5px}#bonus-reward .ui-icon{width:11px;height:11px}.bonus-steps .ui-icon{width:14px;height:14px}
 .role-legend>span,.sound-hint{display:inline-flex;align-items:center;gap:6px}.role-legend .ui-icon{width:15px;height:15px}.sound-hint .ui-icon{width:14px;height:14px}
-.power-slots .ui-icon{width:15px;height:15px}.settings-links{flex-wrap:wrap;gap:12px}.icon-credit-list{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:22px 0}.icon-credit-list a{justify-content:flex-start;padding:8px;font-size:12px;color:#c8d0e8}.icon-credit-list .ui-icon{width:20px;height:20px}#credits-dialog a{color:#a8efdf}#credits-dialog p{font-size:12px}
+.power-slots .ui-icon{width:15px;height:15px}.settings-links{flex-wrap:wrap;gap:12px}.icon-credit-list{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:22px 0}.icon-credit-list a{display:flex;align-items:center;gap:8px;min-width:0;justify-content:flex-start;padding:8px;font-size:12px;color:#c8d0e8}.icon-credit-list .ui-icon{width:20px;height:20px}#credits-dialog a{color:#a8efdf}#credits-dialog p{font-size:12px}
 @media(max-width:600px){
  button:has(>.ui-icon),a:has(>.ui-icon){gap:5px}.ui-icon{width:15px;height:15px}
  header #settings-open{width:40px;min-width:40px;padding:8px}header #settings-open .button-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
@@ -146,3 +146,11 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 
 [data-icon="player-glide"]{--ui-icon:url("./icon/upgrade/glide.1.svg?v=0126a776b88b339ab9d373cd78fe350a293ef70c02cf2e08727aaa183d7e8f45")}
 [data-icon="player-steady"]{--ui-icon:url("./icon/upgrade/steady.1.svg?v=f79e1c0cb9eb87642b61067724ce2b472b78dc3e88fff90f598b97ac25b12bdb")}
+
+.icon-credit-list .instruction-icon{flex:none;object-fit:contain;width:24px;height:24px}
+.icon-credit-list a>span:last-child{min-width:0;overflow-wrap:anywhere}
+
+[data-icon="ripple"]{--ui-icon:url("./icon/power/ripple.svg?v=5f9fd7b188199dff1216d387666f801d7d5f6a11435e67b5c567c7ac006ffa68")}
+
+.ui-icon:is([data-icon=trails],[data-icon=bounce-effects]){background:none;mask:none;-webkit-mask:none;overflow:visible}
+cosmetic-icon,cosmetic-icon>canvas{display:block;width:100%;height:100%;pointer-events:none}

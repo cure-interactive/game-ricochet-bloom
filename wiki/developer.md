@@ -6,7 +6,7 @@ This area is available in the in-game Wiki while Development mode is enabled. No
 
 The target is roughly two average research purchases per five minutes of representative active play, across gamemodes. This is a balance target, not a timed allowance or a purchase cap. Waiting, pausing and leaving the game open earn nothing. Better play can earn faster; missed shots earn nothing.
 
-New rewards pay once per productive settled shot: a shot must contact a target or complete its goal. Repeated contacts, larger chains, blooms and wave clears do not stack extra base Points. Difficulty bonuses still add 1–5 Points when earned. Campaign clears retain their progress, medals and mastery without a second currency award. All playable experiment presets use the same action rules for their mode.
+New rewards pay once per productive settled shot: a shot must contact a target or complete its goal. Repeated contacts, larger chains, 5-Chains and wave clears do not stack extra base Points. Difficulty bonuses still add 1–5 Points when earned. Campaign clears retain their progress, medals and mastery without a second currency award. All playable experiment presets use the same action rules for their mode.
 
 Research prices and per-mode action awards are calibrated together. The average means the arithmetic mean of all purchasable power nodes and player upgrades, excluding the free Ripple root. Cheap skills can be bought more often and expensive skills less often. Existing balances, purchases and historical reward receipts remain unchanged; updated prices apply only to future purchases. Older in-progress reward records retain their prior earned amount and use the new action rules for subsequent shots.
 

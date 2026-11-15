@@ -45,7 +45,7 @@ export function medalEvidenceValid(e){return e?.version===MEDAL_VERSION&&[0,1].i
 export function poolConditions(mode){
   if(mode==='free')return scoreConditions({Bronze:1000,Silver:5000,Gold:15000},'Settle a shot');
   if(mode==='waves')return [condition('Bronze','Clear this wave in 5 shots','shots',5),condition('Silver','Clear this wave in at most 4 shots','shots',4),condition('Gold','Clear this wave in at most 3 shots','shots',3)];
-  if(mode==='challenge')return [condition('Bronze','Make 3 blooms before shots run out','complete',1,'at-least'),condition('Silver','Make 3 blooms in at most 8 shots','shots',8),condition('Gold','Make 3 blooms in at most 5 shots','shots',5)];
+  if(mode==='challenge')return [condition('Bronze','Make 3 5-Chains before shots run out','complete',1,'at-least'),condition('Silver','Make 3 5-Chains in at most 8 shots','shots',8),condition('Gold','Make 3 5-Chains in at most 5 shots','shots',5)];
   return null;
 }
 export const poolMedalKey=(game,kind='normal',wave=game.wave?.number)=>JSON.stringify([MEDAL_VERSION,kind,game.mode,game.seed,game.mode==='waves'?wave:0]);

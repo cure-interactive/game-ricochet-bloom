@@ -1,8 +1,8 @@
-import { skillCurve } from './skill-curve.js?v=487d6e76fcacb5f6c7c211da88aa6a45585c6a4cb44edf561da652e91e7e93da';
-import { skillConfig } from './skill-effect.js?v=9714f4318d0faebb1d4b65dc36b658da67a2d7fc6d636415a8457aa9c75be2a7';
-import { POWER_TREES } from './power-tree.js?v=63bf3b6b2e1c95b8d713d9766c92c3aa21f8a54787e198cb02d92fd99216d23a';
-import { profilePurchase, profileDevelopmentCopy, unlockedResolve } from './profile.js?v=ff3af513f440e9b41048a058ead26903ec9c9e5006b2c39da30f534cd339ab33';
-import { GAME_CATALOGUE as cat } from './run.js?v=092dcb31aec037c2c2e756df3cc28906975a53fd312f249b8265916dc20ffdcc';
+import { skillCurve } from './skill-curve.js?v=d4f4014602f0604b9391abb25976d6d7ec74f5296eb3b83c36a5115b06101756';
+import { skillConfig } from './skill-effect.js?v=00306505aba47472293f9f7ac25546ba1565afbc197b3654d49e1f688f523013';
+import { POWER_TREES } from './power-tree.js?v=34729e03c64597e84f1839d5ee9fd913ee7e9a4bdfb952f4edfd241a8bd26feb';
+import { profilePurchase, profileDevelopmentCopy, unlockedResolve } from './profile.js?v=f7b3a87fc5d7716a89298b57239615e23d05fe47498eeb878a028f5b9af6bab2';
+import { GAME_CATALOGUE as cat } from './run.js?v=a94c7f4c0c0973d817eacf5436f00e19f3a7ce67701e23687687ecbdff39fb6e';
 
 const on=value=>value?'On':'Off';
 const number=value=>Number(value.toFixed(2));
@@ -77,7 +77,7 @@ const statDescription={
  'Path Memory':'How much recent travel is saved for rewinding.',
  'Playback Speed':'How quickly the stored path is retraced. Lower rewinds more slowly.',
  'Parallel Offset':'Shifts the return route beside the original path.',
- 'Return-Bloom Wave':'A bloom earned during the return sends out one small push wave.',
+ 'Return 5-Chain Wave':'A 5-Chain earned during the return sends out one small push wave.',
  'Strikes':'How many bubbles the lightning sequence targets.',
  'Target Pattern':'Whether lightning prefers nearby or separated targets.',
  'Charged Relay':'The first struck bubble can pass one hit through a later collision.',
@@ -100,7 +100,7 @@ const statDescription={
  'Magazine':'Shots available each time Blaster activates.',
  'Pellets Per Shot':'Projectiles fired together for one shot of ammunition.',
  'Wall Bounces':'How many wall rebounds each projectile can make.',
- 'Bloom Reload':'The first bloom after activation refills the magazine once per shot.'
+ '5-Chain Reload':'The first 5-Chain after activation refills the magazine once per shot.'
 };
 
 // Values describe the configured power, not a prediction of score or collision outcome.
@@ -125,7 +125,7 @@ export function powerVariables(build,power){
  case 'echo':return {'Path Deviation':c.leash,'Elastic Response':on(c.elastic),'Unhit-Bubble Seeking':on(c.seek),...finish('Finish Queued Route')};
  case 'split':return {'Side Seeds':c.count,'Launch Angle':degrees(c.fan),'Duration':seconds(c.duration),...finish('Final Convergence')};
  case 'relay':return {'Relay Carriers':c.count,'Transfer Window':seconds(c.duration),'Recipient Push':on(c.a),...finish('Additional Pass')};
- case 'rewind':return {'Path Memory':seconds(c.memory),'Playback Speed':scale(c.playbackRate),'Parallel Offset':on(c.b),...finish('Return-Bloom Wave')};
+ case 'rewind':return {'Path Memory':seconds(c.memory),'Playback Speed':scale(c.playbackRate),'Parallel Offset':on(c.b),...finish('Return 5-Chain Wave')};
  case 'lightning':return {'Strikes':c.count,'Strike Strength':c.strength,'Target Pattern':c.a?'Separated':'Nearest Unhit',...finish('Charged Relay')};
  case 'pulse':return {'Waves':c.count,'Wave Interval':seconds(c.beat),'Pressure Strength':c.force,...finish('Unhit-Biased Final Wave')};
  case 'swap':return {'Destination':c.a&&c.b?'Forward, Open-Space Unhit':c.a?'Forward Unhit':c.b?'Open-Space Unhit':'Distant Unhit',...finish('Departure Wave')};
@@ -133,7 +133,7 @@ export function powerVariables(build,power){
  case 'homing':return {'Duration':seconds(c.duration),'Look-Ahead':c.reach,'Turn Limit':number(c.turn)+' rad/s',...finish('Musical-Role Preference')};
  case 'wrap':return {'Duration':seconds(c.duration),'Wrapping Edges':'All','Departure Pressure':c.departure,'Arrival Pressure':c.arrival,'Arrival Radius':c.arrivalRadius};
  case 'slingshot':return {'Release Target':c.a?'Nearest Forward':'Nearest Unhit','Release Speed':c.speed,...finish('Second Orbit')};
- case 'blaster':return {'Magazine':c.ammo,'Pellets Per Shot':c.offsets.length,'Wall Bounces':c.bounces,...finish('Bloom Reload')};
+ case 'blaster':return {'Magazine':c.ammo,'Pellets Per Shot':c.offsets.length,'Wall Bounces':c.bounces,...finish('5-Chain Reload')};
  default:throw new Error('Missing power variables: '+power);
  }
 }

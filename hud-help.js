@@ -1,13 +1,13 @@
-import {iconHTML} from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
-import {screenHeader} from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
+import {iconHTML} from './ui-icon.js?v=2fc20cc9221a523874a677a151fa2d76dd8dda2734129b3078e5c0d045e87188';
+import {screenHeader} from './screen-header.js?v=2e096f2a79faa63185588495732061424d007cab358cb47837ed18fd2666ad3c';
 
 const number=value=>value.toLocaleString('en-US');
 export function hudHelpView(kind,{score=0,points=0,shots=0,mode='free',contacts=0}={}){
   const views={
-    score:{title:'Score',icon:'stats',value:number(score),text:'Build score by contacting bubbles, banking off walls and making blooms. Score is used for medal targets and personal bests; it is separate from spendable Points.'},
+    score:{title:'Score',icon:'stats',value:number(score),text:'Build score by contacting bubbles, banking off walls and making 5-Chains. Score is used for medal targets and personal bests; it is separate from spendable Points.'},
     points:{title:'Points',icon:'coin',value:number(points),text:'Spend these Points on permanent power and player upgrades in Skills. Productive shots and completed bonus challenges earn Points when the shot settles. Your balance carries between gamemodes in this profile.'},
     shots:{title:'Shots',icon:'play',value:mode==='free'?'Unlimited':number(shots)+' left',text:mode==='free'?'Free Play has no shot limit. Drag back from your player and release to launch. Wait for the current shot to settle before launching again.':'Each launch uses one shot. Complete the current goal before the budget runs out. The remaining shots are shown here; medal conditions may ask you to finish in fewer shots.'},
-    chain:{title:'Bloom Chain',icon:'star-point-four',value:number(contacts)+' different bubbles',text:'Touch five different bubbles during one shot to make a bloom. Each dot is one unique contact; hitting the same bubble again does not add another dot. A bloom earns an extra power opportunity for the next shot, up to three.',dots:Math.min(5,contacts)}
+    chain:{title:'5-Chain',icon:'star-point-four',value:number(contacts)+' different bubbles',text:'Touch five different bubbles during one shot to make a 5-Chain. Each dot is one unique contact; hitting the same bubble again does not add another dot. A 5-Chain earns an extra power opportunity for the next shot, up to three.',dots:Math.min(5,contacts)}
   };
   return views[kind];
 }

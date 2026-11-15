@@ -1,7 +1,7 @@
 import { EXPERIMENT_CATALOGUE } from './experiment-catalogue.js?v=46fd868b7899d3825edca249ee222d0822e27a53f260e03d7069491bca53ea1e';
 import { EXPERIMENT_MODES, experimentMode } from './experiment-mode.js?v=8691672ebafa0ee909e0adfbe1058bb7a29634ac3aef011c8c8a34ad0b9eb1bf';
 import { EXPERIMENT_RECIPES, EXPERIMENT_DESTINATIONS } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { CAMPAIGN_NAME } from './run.js?v=092dcb31aec037c2c2e756df3cc28906975a53fd312f249b8265916dc20ffdcc';
+import { CAMPAIGN_NAME } from './run.js?v=a94c7f4c0c0973d817eacf5436f00e19f3a7ce67701e23687687ecbdff39fb6e';
 
 // Stable individual destinations remain searchable beneath curated collections.
 export const GAMEMODE_CARDS=Object.freeze([
@@ -9,7 +9,7 @@ export const GAMEMODE_CARDS=Object.freeze([
   {id:'drift',name:'Casual',description:'A self-playing bubble pool. Tap to stir the bubbles and enjoy your unlocked powers. No Points or medals.',category:'original',art:'drift',route:'casual',playable:true},
   {id:'free',name:'Free Play',description:'An open pool for your unlocked powers.',category:'original',art:'free',route:'legacy',playable:true},
   {id:'waves',name:'Endless Waves',description:'Clear the pool before your shots run out.',category:'original',art:'waves',route:'legacy',playable:true},
-  {id:'challenge',name:'Challenge',description:'Reach three blooms before your shots run out.',category:'original',art:'challenge',route:'legacy',playable:true},
+  {id:'challenge',name:'Challenge',description:'Reach three 5-Chains before your shots run out.',category:'original',art:'challenge',route:'legacy',playable:true},
   ...['reaction','cargo','outbreak'].map(id=>({id,name:EXPERIMENT_RECIPES[id].name,description:{reaction:'Trigger chains while protecting healthy cells.',cargo:'Push fragile cargo into safe receivers.',outbreak:'Seal vents and stop infection from reaching the central cell.'}[id],category:id,art:id,route:'setup',playable:true})),
   ...EXPERIMENT_CATALOGUE.map(e=>({...e,category:experimentMode(e.id).id,route:EXPERIMENT_DESTINATIONS[e.id]?'destination':EXPERIMENT_RECIPES[e.id]?'setup':'detail',playable:!!(EXPERIMENT_RECIPES[e.id]||EXPERIMENT_DESTINATIONS[e.id])}))
 ]);

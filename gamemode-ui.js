@@ -1,13 +1,13 @@
-import { screenHeader } from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
-import { buttonHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
+import { screenHeader } from './screen-header.js?v=2e096f2a79faa63185588495732061424d007cab358cb47837ed18fd2666ad3c';
+import { buttonHTML } from './ui-icon.js?v=2fc20cc9221a523874a677a151fa2d76dd8dda2734129b3078e5c0d045e87188';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { assetURL } from './asset.js?v=8f07996fa8e454545217f8565c5a5622b3443d83730233178d64ed3fad75399b';
-import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=915fcbca86b4379125b06117b29688b5ad5b5ecefb3a45125d6aaaf860525bf1';
-import { gamemodeGalleryMount } from './gamemode-gallery.js?v=ac6c29aef7fb2449fa7cd796020ae786f2f73db90d0ec295318507c4e2faa8a8';
-import { scoreAttackMount } from './score-attack-ui.js?v=7dcca61e31d43cb95bca4195a5899307344abbb0b67b999f4d65ee3baf710f9c';
-import { experimentMount } from './experiment-ui.js?v=7d47d24ce35fa1bb0d5846bb16850778bb49451e3656a2b061a6f314784c2936';
-import { poolConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=cb1239d459734c6f9be44ad4762f547277da8fc66ff98164482c5bbefd917891';
+import { assetURL } from './asset.js?v=088862b3a656c6f1107998eef742251f591f278feccffeabbe3a08e65a29731d';
+import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=9bf6cea7d494734b3a08db5cffa3847ef87e5932095fd6a07bd8e1f9e0bb735e';
+import { gamemodeGalleryMount } from './gamemode-gallery.js?v=f0607b5ddbe4ae01d25607f06777474866ec2e15f71acd86d30b697c8641d962';
+import { scoreAttackMount } from './score-attack-ui.js?v=63d8ac4fe00afa443a63b77dcfdfb1dcc9c1f9e3ea659df59b8211510db2edf7';
+import { experimentMount } from './experiment-ui.js?v=97456a9b2949a706cab499a07a13b1c822d8ad6bb1c376900d5fbf24ddc20350';
+import { poolConditions } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=b66de041ee2d9f60adfb88f52c358438190802a3f8dc744542f54dc430e58530';
 
 // Dialog composition and destination routing. Each child receives only the
 // content slot, profile/storage access and navigation callbacks it uses.
@@ -30,7 +30,7 @@ export function gamemodeMount(host) {
   const hub=experimentMount({content,title:heading,show:showMenu,screen:host.screen,kind:host.kind,start:host.start,destination:()=>score.open(),modes:gallery.open,wiki:id=>{menu.close();host.wiki(id);}});
   function poolSetup(mode){
     const card=GAMEMODE_CARDS.find(e=>e.id===mode),records=host.poolMedals(mode);host.screen('pool-setup:'+mode);$('gamemodes-title').textContent=card.name;
-    content.innerHTML=`<div class="mode-overview"><img src="${art(mode)}" alt="" width="480" height="240"><p>${escape(card.description)}</p></div>${medalConditionsHTML(poolConditions(mode))}<p>${mode==='waves'?'Every wave has its own medal. The entire clearing shot counts; remaining shots determine your tier.':mode==='free'?'Milestones use the current pool’s score and are awarded when a shot settles. Keep playing after Gold.':'Finish three blooms to earn a medal. Your final shot finishes before its result is recorded.'} Personal medals stay separate by pool seed and profile.</p>${records.length?`<details><summary>Earned Medals · ${records.length}</summary><ul>${records.map(r=>`<li>${medalBadge(r.medal)} · ${escape(r.seed)}${mode==='waves'?' · Wave '+r.wave:''}</li>`).join('')}</ul></details>`:'<p>No medals recorded yet.</p>'}<button id="pool-play" class="primary">Play ${card.name}</button>`;
+    content.innerHTML=`<div class="mode-overview"><img src="${art(mode)}" alt="" width="480" height="240"><p>${escape(card.description)}</p></div>${medalConditionsHTML(poolConditions(mode))}<p>${mode==='waves'?'Every wave has its own medal. The entire clearing shot counts; remaining shots determine your tier.':mode==='free'?'Milestones use the current pool’s score and are awarded when a shot settles. Keep playing after Gold.':'Finish three 5-Chains to earn a medal. Your final shot finishes before its result is recorded.'} Personal medals stay separate by pool seed and profile.</p>${records.length?`<details><summary>Earned Medals · ${records.length}</summary><ul>${records.map(r=>`<li>${medalBadge(r.medal)} · ${escape(r.seed)}${mode==='waves'?' · Wave '+r.wave:''}</li>`).join('')}</ul></details>`:'<p>No medals recorded yet.</p>'}<button id="pool-play" class="primary">Play ${card.name}</button>`;
     $('pool-play').onclick=()=>{menu.close();host.legacy(mode);};showMenu();
   }
   const back=()=>{gallery.remember();menu.close();host.back();};

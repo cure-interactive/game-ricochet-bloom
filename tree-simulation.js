@@ -1,5 +1,5 @@
-import { CATALOGUE, catalogueCreate, STARTERS } from './catalogue.js?v=e1d28e3d6e7b738118ac032124c3cb6f31acb64f80230e4dc3460da763c710bd';
-import { profileCreate, profileValidate, profilePurchase, profileReward, loadoutResolve } from './profile.js?v=ff3af513f440e9b41048a058ead26903ec9c9e5006b2c39da30f534cd339ab33';
+import { CATALOGUE, catalogueCreate, STARTERS } from './catalogue.js?v=5cfc599f22248911c8bcd4338b5eb7fd16e3fe4df92507bfdf3382d1366b52d1';
+import { profileCreate, profileValidate, profilePurchase, profileReward, loadoutResolve } from './profile.js?v=f7b3a87fc5d7716a89298b57239615e23d05fe47498eeb878a028f5b9af6bab2';
 
 // This capability fixture is exclusively for the UI simulator, never the engine.
 export const SIMULATION_CATALOGUE = catalogueCreate(Object.keys(CATALOGUE.nodes));
@@ -39,7 +39,7 @@ export function simulationAct(input, action) {
       result = profileReward(state.profile, { mode: 'song-run', type: 'tutorial', bloom: true }, cat);
       if (!result.ok) return fail(result.reason);
       state.profile = result.profile;
-      return success(state, result.duplicate ? 'Tutorial reward already collected.' : 'Tutorial bloom: +4 Points.');
+      return success(state, result.duplicate ? 'Tutorial reward already collected.' : 'Tutorial 5-Chain: +4 Points.');
     case 'buy':
       if (state.phase !== 'shop') return fail('Permanent research is between runs.');
       result = profilePurchase(state.profile, action.id, cat);

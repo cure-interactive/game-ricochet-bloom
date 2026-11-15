@@ -1,15 +1,15 @@
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=64bdd6cd70d57cc487bfb2b0b6c0bef450c1ba19b1b392d00e5a015b89702c03';
-export {skillStatsHTML} from './skill-card.js?v=64bdd6cd70d57cc487bfb2b0b6c0bef450c1ba19b1b392d00e5a015b89702c03';
-import { treeSwitchHTML, treeSwitchMount } from './tree-switch.js?v=db240ec5257f36aca8cbfec523e0e638ee0735c2100934d25e13c6b5ddb9423d';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=a947ebf174fc08199bf8e2002c4f373f2c6d08d4e6aa3a9a68f0d83cac47ecea';
+export {skillStatsHTML} from './skill-card.js?v=a947ebf174fc08199bf8e2002c4f373f2c6d08d4e6aa3a9a68f0d83cac47ecea';
+import { treeSwitchHTML, treeSwitchMount } from './tree-switch.js?v=28fa5b52ad39df5677f805bcfff670cda41960bb0edd40a05df5bd3b7ecf75df';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { screenHeader } from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
-import { purchaseComparison, skillStats } from './skill-comparison.js?v=e2dc6d5e61af60dba8e9d5faf07c578cd59be57d47364bbe9f57fdc5122b38fd';
+import { screenHeader } from './screen-header.js?v=2e096f2a79faa63185588495732061424d007cab358cb47837ed18fd2666ad3c';
+import { purchaseComparison, skillStats } from './skill-comparison.js?v=5b35574ba3979f2018c9886471b2b043d1bbbbecf60c45cbd0fd41b73c50a575';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
-import { POWER_TREES } from './power-tree.js?v=63bf3b6b2e1c95b8d713d9766c92c3aa21f8a54787e198cb02d92fd99216d23a';
-import { profilePurchase, profileSummary } from './profile.js?v=ff3af513f440e9b41048a058ead26903ec9c9e5006b2c39da30f534cd339ab33';
-import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=092dcb31aec037c2c2e756df3cc28906975a53fd312f249b8265916dc20ffdcc';
-import { buttonHTML, iconHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
+import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=3796f253f5adde9641a9269883caf82cfcba3eea0317792412224f9da63cb35c';
+import { POWER_TREES } from './power-tree.js?v=34729e03c64597e84f1839d5ee9fd913ee7e9a4bdfb952f4edfd241a8bd26feb';
+import { profilePurchase, profileSummary } from './profile.js?v=f7b3a87fc5d7716a89298b57239615e23d05fe47498eeb878a028f5b9af6bab2';
+import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=a94c7f4c0c0973d817eacf5436f00e19f3a7ce67701e23687687ecbdff39fb6e';
+import { buttonHTML, iconHTML } from './ui-icon.js?v=2fc20cc9221a523874a677a151fa2d76dd8dda2734129b3078e5c0d045e87188';
 const button=(action,label,icon='add',attributes={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attributes});
 const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn Points in any game mode.','mastery':'Activate this power on 3 shots that hit at least 3 bubbles. Melody Journey clears also count.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
 
@@ -82,7 +82,7 @@ export function treeMount(controller){
  let state=controller.get(),selected='ripple.base',tip=null,tipId=null,lastView=null;
  const fullLayout=treeLayout(POWER_TREES,cat.nodes),world={x:0,y:0,width:fullLayout.width,height:fullLayout.height};
  let layout=fullLayout,visiblePositions={};
- dialog.innerHTML=`${screenHeader({icon:'skill-tree',className:'tree-heading',title:'Skills',back:button('back','Back','arrow-left'),actions:treeSwitchHTML('powers')+'<div class="tree-wallet-summary"></div>'})}<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected power tree"><div class="tree-map-stage">${skillLegendHTML('tree-legend-content')}<div class="tree-map-scroll" tabindex="0" aria-label="Skills map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom">85%</output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div></section></div><footer class="tree-map-hint">Tap a skill for details · Drag to move · Pinch or scroll to zoom</footer><section id="skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="skill-tooltip-title" hidden></section>`;
+ dialog.innerHTML=`${screenHeader({icon:'skill-tree',className:'tree-heading',title:'Skills',back:button('back','Back','arrow-left'),actions:'<div class="tree-wallet-summary"></div>'+treeSwitchHTML('powers')})}<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected power tree"><div class="tree-map-stage">${skillLegendHTML('tree-legend-content')}<div class="tree-map-scroll" tabindex="0" aria-label="Skills map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom">85%</output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div></section></div><footer class="tree-map-hint">Tap a skill for details · Drag to move · Pinch or scroll to zoom</footer><section id="skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="skill-tooltip-title" hidden></section>`;
  treeSwitchMount(dialog,'powers',()=>controller.players?.());
  const surface=dialog.querySelector('.tree-map-scroll'),mapElement=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage');
  const {legend,legendContent,setLegend}=skillLegendMount(dialog);

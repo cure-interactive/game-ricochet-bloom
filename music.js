@@ -144,7 +144,7 @@ export function musicBloom(music) {
 export function musicProgress(music) {
   let stage = music.blooms >= 3 ? 4 : music.blooms >= 2 || (music.plucks >= 6 && music.blooms >= 1) ? 3 : music.blooms >= 1 || (music.plucks >= 3 && music.theme.length === 4) ? 2 : music.plucks > 0 ? 1 : 0;
   if(music.run)stage=Math.min(stage,[2,3,3,2,4,4][music.run.section]);
-  return { stage, name: ['Quiet Pool', 'First Ripples', 'Melody', 'Groove', 'Full Song'][stage], next: ['Pluck to wake the song', 'A bloom or three plucks grows your melody', 'More plucks and blooms add a groove', 'Three blooms brings the full song', 'Keep plucking to write new variations'][stage] };
+  return { stage, name: ['Quiet Pool', 'First Ripples', 'Melody', 'Groove', 'Full Song'][stage], next: ['Pluck to wake the song', 'A 5-Chain or three plucks grows your melody', 'More plucks and 5-Chains add a groove', 'Three 5-Chains brings the full song', 'Keep plucking to write new variations'][stage] };
 }
 const TRIADS = [[60, 64, 67], [57, 60, 64], [53, 57, 60], [55, 59, 62]];
 const VOICINGS = [[60, 64, 67], [57, 60, 64], [57, 60, 65], [59, 62, 67]];

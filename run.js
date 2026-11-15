@@ -1,10 +1,10 @@
 import { PLAYER_UPGRADES, playerBuild } from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
-import { buildValidate } from './skill-effect.js?v=9714f4318d0faebb1d4b65dc36b658da67a2d7fc6d636415a8457aa9c75be2a7';
-import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=e1d28e3d6e7b738118ac032124c3cb6f31acb64f80230e4dc3460da763c710bd';
-import { POWER_TREES } from './power-tree.js?v=63bf3b6b2e1c95b8d713d9766c92c3aa21f8a54787e198cb02d92fd99216d23a';
-import { profileCosmetic, profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=ff3af513f440e9b41048a058ead26903ec9c9e5006b2c39da30f534cd339ab33';
-import { gameCreate, saveValidate, RULE } from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
-import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
+import { buildValidate } from './skill-effect.js?v=00306505aba47472293f9f7ac25546ba1565afbc197b3654d49e1f688f523013';
+import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=5cfc599f22248911c8bcd4338b5eb7fd16e3fe4df92507bfdf3382d1366b52d1';
+import { POWER_TREES } from './power-tree.js?v=34729e03c64597e84f1839d5ee9fd913ee7e9a4bdfb952f4edfd241a8bd26feb';
+import { profileCosmetic, profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=f7b3a87fc5d7716a89298b57239615e23d05fe47498eeb878a028f5b9af6bab2';
+import { gameCreate, saveValidate, RULE } from './engine.js?v=27a29e6d2cba5ed4d8a714591cb6751bcf16bb1cea5790adfc71e5146d80876e';
+import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 
@@ -12,7 +12,7 @@ export const GAME_CATALOGUE=catalogueCreate(Object.entries(POWER_TREES).flatMap(
 export const CAMPAIGN_NAME='Melody Journey';
 export const POOL_NAMES=['Intro','Verse','Build','Bridge','Finale'];
 export const POPULATIONS=[12,14,16,14,18];
-export const GOALS=['Make one bloom','Bloom + all three musical roles','Make two blooms','Bloom after banking off a wall','Two blooms + all three roles'];
+export const GOALS=['Make one 5-Chain','5-Chain + all three musical roles','Make two 5-Chains','5-Chain after banking off a wall','Two 5-Chains + all three roles'];
 export const MEDALS={silverBonuses:3,goldBonuses:5,goldLaunches:20};
 // All five tracks use the same targets for the same goal. Environmental
 // difficulty changes the shot, not the meaning of its score or medal.
@@ -167,7 +167,7 @@ export function progressionAct(input,action){
   return {ok:true,state:s,message};
 }
 export function poolGoalMet(s){const r=s.run;if(!r)return false;const blooms=r.game.blooms,roles=r.roles.length===3;return s.pool===0?blooms>=1:s.pool===1?blooms>=1&&roles:s.pool===2?blooms>=2:s.pool===3?r.bankBloom:blooms>=2&&roles;}
-export function goalRemaining(s){if(!s.run)return '';const r=s.run,need=[1,1,2,1,2][s.pool],parts=[];if(r.game.blooms<need)parts.push(`${need-r.game.blooms} more bloom${need-r.game.blooms>1?'s':''}`);if([1,4].includes(s.pool)&&r.roles.length<3)parts.push('contact '+['melody','bass','rhythm'].filter(x=>!r.roles.includes(x)).join(' & '));if(s.pool===3&&!r.bankBloom)parts.push('a wall bank before the fifth contact of a bloom');return parts.join(' · ')||'Goal met · let this pluck finish';}
+export function goalRemaining(s){if(!s.run)return '';const r=s.run,need=[1,1,2,1,2][s.pool],parts=[];if(r.game.blooms<need)parts.push(`${need-r.game.blooms} more 5-Chain${need-r.game.blooms>1?'s':''}`);if([1,4].includes(s.pool)&&r.roles.length<3)parts.push('contact '+['melody','bass','rhythm'].filter(x=>!r.roles.includes(x)).join(' & '));if(s.pool===3&&!r.bankBloom)parts.push('a wall bank before the fifth contact of a 5-Chain');return parts.join(' · ')||'Goal met · let this pluck finish';}
 function resultRecord(s,outcome){
   const r=s.run,music=r.music;if(music&&outcome==='victory')musicRunSection(music,5,s.track);
   const record={id:r.id,kind:s.profile.kind,track:s.track,seed:r.seed,relaxed:s.relaxed,rules:RULE.version,build:structuredClone(r.game.build),routes:[...r.routes],outcome,launches:r.launches,score:r.score,bonuses:r.bonuses,music:structuredClone(music),medal:outcome==='failure'?null:r.bonuses>=MEDALS.goldBonuses&&r.launches<=MEDALS.goldLaunches?'Gold':r.bonuses>=MEDALS.silverBonuses?'Silver':'Bronze'};

@@ -130,10 +130,13 @@ dialog select,dialog input:not([type]),dialog input[type=number],dialog input[ty
 .settings-actions{display:grid;gap:12px;min-width:0}
 .settings-update-status{min-block-size:3em;margin:0;font-size:14px;line-height:1.5;overflow-wrap:anywhere}
 .settings-about{gap:0;padding:16px;text-align:left}
+.about-overview{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));padding-bottom:18px}
+.about-overview>section{min-width:0}
 .settings-about>section{min-width:0;padding:18px 0}
 .settings-about>section:first-child{padding-top:0}
 .settings-about>section:last-child{padding-bottom:0}
-.settings-about>section+section{border-top:1px solid #badfd238}
+.settings-about>.about-credits{grid-column:1/-1;border-top:1px solid #badfd238}
+.settings-about>.about-developer{padding-top:0}
 .settings-about .about-game{display:flex;align-items:flex-start;gap:14px}
 .settings-about .about-game>div{min-width:0;display:grid;gap:12px}
 #settings-dialog .settings-about .about-game h3{margin:0}

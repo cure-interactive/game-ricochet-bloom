@@ -1,10 +1,10 @@
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=93b35985fdd4a57c460799ea92460242b39f4e3576bf6b7de2cf226d83a382e4';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=c0db179bcb018380a8604c761694e0021f5b46aae7b41ff0986bf44e98136bce';
-import {cosmeticGet} from './cosmetic.js?v=2bb18d2e076499e68b09a42197f9a740fe84fa04b929d8919c5848590fd93936';
+import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=7ec09556610ab987f7c5deb3143a3e4ba1da31461c131f3a4136838fa80ecdac';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
-import { PoolMedia } from './media.js?v=85e5401f1351f21e3f9a6176997476dbc7e535666ab9c15da4f659b571f2c79a';
-import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, musicPower, bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
+import { PoolMedia } from './media.js?v=768fd2085fb48c8070f85109a5576972870f150254ad3d8924ab36fdd5fef962';
+import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, musicPower, bubbleRole } from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export const SOUND_CHECK_SECONDS = 2.8;
@@ -136,13 +136,13 @@ export class PoolSound {
   musicPercussion(event) { instrumentPercussion(this,event); }
   pauseSet(value,{ambient=false}={}) { this.isPaused=value; this.keepAmbient=value&&ambient; if(value){this.cosmeticStop();if(!ambient)this.phraseClear();} this.mixUpdate(); }
   notePitch(tone) { return this.harmony ? frequency(this.harmony.notes[tone % 5]) : SCALE[tone % 5]; }
-  settingsSet(volume, isMuted) { this.volume = volume; this.isMuted = isMuted; if (isMuted) this.phraseClear(); if (this.master) this.master.gain.setTargetAtTime(isMuted ? 0 : volume * .48, this.context.currentTime, .03); this.mixUpdate(); }
-  tone(frequency, end, duration, level, pan = 0, offset = 0, type = 'sine', echo = false, phrase = false, { allowPaused = false,group } = {}) {
+  settingsSet(volume, isMuted) { this.volume = volume; this.isMuted = isMuted; if (isMuted) this.phraseClear(); if(isMuted||!volume)this.cosmeticStop(); if (this.master) this.master.gain.setTargetAtTime(isMuted ? 0 : volume * .48, this.context.currentTime, .03); this.mixUpdate(); }
+  tone(frequency, end, duration, level, pan = 0, offset = 0, type = 'sine', echo = false, phrase = false, { allowPaused = false,group,fadeOut=duration } = {}) {
     voicesReap(this);
     if (!this.context || this.context.state !== 'running' || this.isMuted || (this.isPaused && !allowPaused && !(phrase&&this.keepAmbient)) || this.voiceCount >= (group==='audition'?55:46)) return;
     const context = this.context, start = context.currentTime + offset, oscillator = context.createOscillator(), gain = context.createGain(), stereo = context.createStereoPanner();
     oscillator.type = type; oscillator.frequency.setValueAtTime(frequency, start); oscillator.frequency.exponentialRampToValueAtTime(Math.max(20, end), start + duration);
-    gain.gain.setValueAtTime(.0001, start); gain.gain.exponentialRampToValueAtTime(Math.max(.001, level), start + .008); gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
+    gain.gain.setValueAtTime(.0001, start); gain.gain.exponentialRampToValueAtTime(Math.max(.001, level), start + .008); if(fadeOut<duration)gain.gain.setValueAtTime(Math.max(.001,level),start+duration-fadeOut); gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
     stereo.pan.value = Math.max(-.85, Math.min(.85, pan)); oscillator.connect(gain); gain.connect(stereo); stereo.connect(this.master); if (echo) stereo.connect(this.delay);
     const voice = { oscillator, gain, start,group }; if (phrase) this.phraseVoices.add(voice);
     voiceTrack(this,voice,start+duration+.02,[oscillator,gain,stereo]);
@@ -233,13 +233,13 @@ export class PoolSound {
     this.uiCount=(this.uiCount||0)+1;
     return true;
   }
-  cosmeticStop(){voicesStop(this,'cosmetic');voicesStop(this,'cosmetic-preview');}
+  cosmeticStop(){voicesStop(this,'cosmetic');voicesStop(this,'cosmetic-preview');voicesStop(this,'cosmetic-travel');this.travelState=null;}
   cosmeticPreviewStop(){voicesStop(this,'cosmetic-preview');}
   cosmeticAudition(id){const item=cosmeticGet(id);return !!item&&this.cosmeticPlay({[item.kind]:id},{type:item.kind==='trail'?'launch':'cosmetic-hit'},{preview:true});}
   cosmeticPlay(loadout,event,{preview=false}={}){
     const kind=event.type==='launch'?'trail':event.type==='cosmetic-hit'||event.type==='wall'&&event.id===0||event.type==='impact'&&(event.a===0||event.b===0)?'bounce':null;
     const item=cosmeticGet(loadout?.[kind]);
-    if(!kind||item?.kind!==kind||item.rarity!=='mythic'||!['aurora','nova'].includes(item.style))return false;
+    if(!kind||item?.kind!==kind||!cosmeticHasSound(item))return false;
     if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.isPaused&&!preview||globalThis.document?.hidden)return false;
     voicesReap(this);if(preview)this.cosmeticPreviewStop();
     if(this.voiceCount>40)return false;
@@ -249,9 +249,23 @@ export class PoolSound {
     const pan=preview?0:poolPan(event.x,event.y,this.portrait),options={allowPaused:preview,group:preview?'cosmetic-preview':'cosmetic'};
     // Original finite accents: a rising airy wake and a low crystalline impact.
     // No feedback delay or continuing oscillator can accumulate between hits.
-    const notes=kind==='trail'?[[330,660,.6,.035,0,'sine'],[495,990,.55,.025,.1,'sine'],[990,1320,.45,.016,.2,'triangle']]:[[150,55,.18,.075,0,'sine'],[660,990,.42,.035,0,'sine'],[990,1320,.38,.025,.06,'triangle'],[1320,1760,.32,.016,.12,'sine']];
+    const notes=item.style==='ember'?[[180,440,.24,.055,0,'triangle'],[360,720,.34,.025,.06,'sine']]:kind==='trail'?[[330,660,.6,.035,0,'sine'],[495,990,.55,.025,.1,'sine'],[990,1320,.45,.016,.2,'triangle']]:[[150,55,.18,.075,0,'sine'],[660,990,.42,.035,0,'sine'],[990,1320,.38,.025,.06,'triangle'],[1320,1760,.32,.016,.12,'sine']];
     for(const [start,end,duration,level,offset,type] of notes)this.tone(start,end,duration,level,pan,offset,type,false,false,options);
+    if(preview&&kind==='trail'&&item.rarity==='mythic')this.travelVoices(0,.2,3.6,.02,{...options,fadeOut:1});
     return true;
+  }
+  travelVoices(pan,offset,duration,level,options){
+    this.tone(440,466,duration,level,pan,offset,'sine',false,false,options);
+    this.tone(660,698,duration,level*.55,pan,offset,'sine',false,false,options);
+  }
+  cosmeticTravel(loadout,body,active=true){
+    const item=cosmeticGet(loadout?.trail);
+    if(!active||item?.rarity!=='mythic'||item.kind!=='trail'||!body||!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.isPaused||globalThis.document?.hidden){voicesStop(this,'cosmetic-travel');this.travelState=null;return false;}
+    voicesReap(this);const now=this.context.currentTime,old=this.travelState;
+    const speed=old&&now>old.time?Math.hypot(body.x-old.x,body.y-old.y)/(now-old.time):Math.hypot(body.vx||0,body.vy||0);
+    this.travelState={x:body.x,y:body.y,time:now,at:old?.at??-Infinity};
+    if(speed<1||now-this.travelState.at<.24||this.voiceCount>40)return false;
+    this.travelState.at=now;this.travelVoices(poolPan(body.x,body.y,this.portrait),0,.6,.008+Math.min(1,speed/500)*.012,{group:'cosmetic-travel'});return true;
   }
   audition() {
     if (!this.context || this.context.state !== 'running' || this.isMuted || !this.volume) return false;

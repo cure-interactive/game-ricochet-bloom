@@ -1,8 +1,8 @@
-import { trialEvidence, trialMedal, medalEvidenceValid, medalRank } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
+import { trialEvidence, trialMedal, medalEvidenceValid, medalRank } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
 import { experimentValidate, experimentKey, EXPERIMENT_VERDICTS } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
 import { EXPERIMENT_CATALOGUE } from './experiment-catalogue.js?v=46fd868b7899d3825edca249ee222d0822e27a53f260e03d7069491bca53ea1e';
 import { trialValidate } from './trial.js?v=ee88fa6819c43397fd16a782519a3e055707b4f141bd667e1be4ec2db2f3209a';
-import { trialRead } from './trial-store.js?v=255056b814040c9a76665cbb7a364a84d8e3de0f2db46032210bf13e62f9f0ee';
+import { trialRead } from './trial-store.js?v=c51c57ab0b8f034d070eb9f80de7a27d1fd23947e6e180f0f1a77c46a659bf17';
 const ids=new Set([...EXPERIMENT_CATALOGUE.map(e=>e.id),'reaction','cargo','outbreak']);
 const favouriteIds=new Set([...ids,'campaign','free','waves','challenge','drift']);
 export const experimentStoreKey=kind=>`ricochet-bloom-experiments-v1-${kind}`;

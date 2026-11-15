@@ -1,4 +1,4 @@
-import { iconHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
+import { iconHTML } from './ui-icon.js?v=2fc20cc9221a523874a677a151fa2d76dd8dda2734129b3078e5c0d045e87188';
 
 export function edgeBackReady(dx,dy,width) {
   return dx>=Math.min(100,Math.max(60,width*.22))&&dx>Math.abs(dy)*1.5;

@@ -1,4 +1,4 @@
-import {PoolSound} from './sound.js?v=5da07fec8dab2c418c3da527e89c5d819ad9dcc08494fdeea12510ddc75c4a4c';
+import {PoolSound} from './sound.js?v=ecfdac4eeae78bdb2c171763d290351ac8b43d196ae0d26a89d47b979646a0c8';
 import {audioRecoveryMount} from './audio-recovery.js?v=a5d57683b8fe57d7f13d1fa71c9b83d09e71b85b80725cac3414636c56f391a3';
 
 // Detached composition uses the game's finished arrangement/scheduler only.
@@ -14,6 +14,7 @@ export function menuMusicCreate(settings, sound=new PoolSound({media:false})){
  return {
   event(event){sound.eventPlay(event,{effects:false});},
   cosmetic(event,loadout){sync();if(active)sound.cosmeticPlay(loadout,event);},
+  travel(loadout,body,enabled){sync();sound.cosmeticTravel(loadout,body,active&&enabled);},
   cosmeticStop(){sound.cosmeticStop();},
   update(bodies,portrait){sync();sound.portrait=portrait;sound.musicUpdate(bodies.reduce((sum,b)=>sum+Math.hypot(b.vx,b.vy),0)/(Math.max(1,bodies.length)*100));},
   active(value){active=value;sync();sound.pauseSet(!value);},

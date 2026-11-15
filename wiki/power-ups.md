@@ -4,7 +4,7 @@ Contact with a marked bubble activates its power. The random pool includes power
 
 This reference is generated from the skill catalogue. Skills shows your current ownership, price and mastery progress.
 
-Earn up to three power opportunities by making blooms on consecutive shots. Offers use your unlocked powers: when fewer powers are available than earned slots, powers can repeat. A repeated pickup refreshes that power instead of stacking duplicate effects. Its icon stays visible with a checkmark after collection. On a nearly cleared Waves board, there can only be as many offers as remaining bubbles.
+Earn up to three power opportunities by making 5-Chains on consecutive shots. Offers use your unlocked powers: when fewer powers are available than earned slots, powers can repeat. A repeated pickup refreshes that power instead of stacking duplicate effects. Its icon stays visible with a checkmark after collection. On a nearly cleared Waves board, there can only be as many offers as remaining bubbles.
 
 ## Find a Power
 
@@ -65,7 +65,7 @@ Upgrade in this order:
 - **Extra Magazine (Rare):** Carry five shots instead of three.
 - **Bank Shot (Rare):** Shots bounce once off a wall. Projectile banks do not count as player wall banks.
 - **Scatter Shot (Epic):** Fire three pellets in a short fan for one ammunition. Each bubble can be struck only once per volley.
-- **Bloom Reload (Legendary):** The first bloom after activation refills your magazine once this shot. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
+- **5-Chain Reload (Legendary):** The first 5-Chain after activation refills your magazine once this shot. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
 
@@ -298,7 +298,7 @@ Upgrade in this order:
 - **Longer Memory (Epic):** Retain up to two seconds for the encore.
 - **Gentle Rewind (Legendary):** Replay more slowly, allowing drifting bubbles to enter the route.
 - **Offset Rewind (Legendary):** Return on a small parallel offset with softened joins; do not invent intermediate travel across teleport discontinuities.
-- **Final Burst (Mythic):** A bloom earned during the return produces a brief accent and one bounded radial bubble push. It does not schedule another Rewind. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
+- **Final Burst (Mythic):** A 5-Chain earned during the return produces a brief accent and one bounded radial bubble push. It does not schedule another Rewind. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
 

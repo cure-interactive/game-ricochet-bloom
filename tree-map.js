@@ -98,7 +98,7 @@ export function mapCameraMount(surface,world,change) {
   const center=ps=>({x:ps.reduce((s,p)=>s+p.x,0)/ps.length,y:ps.reduce((s,p)=>s+p.y,0)/ps.length});
   const minimumScale=()=>cameraFit(world,size()).scale;
   const zoomAt=(from,scale,anchor)=>cameraZoom(from,scale,anchor,minimumScale());
-  function apply(next){camera=cameraClamp(next,size(),world);change(camera,{minScale:minimumScale()});}
+  function apply(next){camera=cameraClamp(next,size(),world);if(surface.style){surface.style.backgroundPosition=`${camera.x}px ${camera.y}px`;surface.style.backgroundSize=`${24*camera.scale}px ${24*camera.scale}px`;}change(camera,{minScale:minimumScale()});}
   function stopAnimation(){if(!animation)return;const current=animation;animation=null;win.cancelAnimationFrame(current.frame);current.resolve(false);}
   function focusTarget(point,scale,vertical){const v=size();return cameraClamp({x:v.width/2-point.x*scale,y:Math.min(140,v.height*vertical)-point.y*scale,scale},v,world);}
   function focusAnimated(point,scale=Math.max(.85,camera.scale),vertical=.25,duration=450){

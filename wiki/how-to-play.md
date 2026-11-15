@@ -1,14 +1,14 @@
 # How to Play
 
-## Pull, Release, Bloom
+## Pull, Release, Chain
 
 1. Drag anywhere in the pool to pull back your glowing player. Release to launch in the opposite direction. A longer pull gives a stronger shot.
-2. Touch different bubbles to build a chain. Reach **five unique bubbles in one shot** to make a bloom.
+2. Touch different bubbles to build a chain. Reach **five unique bubbles in one shot** to make a 5-Chain.
 3. Use wall bounces and moving bubbles to extend your chain. Each bubble counts once per shot; hitting it again can still change your motion.
 
-A new bubble earns 25 points multiplied by its place in the chain. Wall banks add a scoring bonus, and a bloom adds 500. The bonus objective offers an additional target during play. Score is separate from the persistent Points spent in Skills.
+A new bubble earns 25 points multiplied by its place in the chain. Wall banks add a scoring bonus, and a 5-Chain adds 500. The bonus objective offers an additional target during play. Score is separate from the persistent Points spent in Skills.
 
-In Melody Journey, follow the goal displayed above the pool and finish before you run out of shots. The first bloom in a pool earns one extra shot. Your shot coasts to a stop before its result is resolved.
+In Melody Journey, follow the goal displayed above the pool and finish before you run out of shots. The first 5-Chain in a pool earns one extra shot. Your shot coasts to a stop before its result is resolved.
 
 Choose **Gamemodes → Endless Waves** from the main menu for five shots per wave: bubbles pop on their first hit, and clearing every bubble advances to a harder wave. See [Endless Waves](waves.md).
 
@@ -24,7 +24,7 @@ Casual earns **no Points, medals, mastery or campaign progress**. It never repla
 
 Every scoring gamemode and playable experiment preset earns permanent **Points** for Skills. Points bank when the shot settles, including a failed final shot:
 
-- **Melody Journey, Free Play, Endless Waves, Score Attack and Challenge: +5 Points per productive shot.** Touch at least one bubble or complete the goal. More contacts, blooms and cleared waves do not stack extra base Points.
+- **Melody Journey, Free Play, Endless Waves, Score Attack and Challenge: +5 Points per productive shot.** Touch at least one bubble or complete the goal. More contacts, 5-Chains and cleared waves do not stack extra base Points.
 - **Reaction Puzzle, Cargo Rescue and Outbreak Containment: +3 Points per productive shot.** Their shorter shots use a smaller award.
 - **Trick Shots, Melody Trials and Capture Transport Release: +4 Points per productive shot.**
 - **Bonus challenges: +1 Point per difficulty level.** The current challenges pay 1–3 Points, with support for five tiers. They bank once at rest. Campaign pool and track clears do not add another currency payout.
@@ -43,13 +43,13 @@ Open **Player → Stats** for your build, play totals, records and medals. The [
 
 Hit a marked bubble to trigger its power. You do not need another button. **Blaster aims and fires automatically.** Collecting a power refreshes your flight time; powered motion gradually settles afterward.
 
-Begin with one power opportunity per shot. A shot that blooms earns one more for the next shot, up to three. A shot without a bloom resets the next shot to one. The markers appear together at the start of the shot.
+Begin with one power opportunity per shot. A shot that 5-Chains earns one more for the next shot, up to three. A shot without a 5-Chain resets the next shot to one. The markers appear together at the start of the shot.
 
 Only powers you have unlocked are included in the random pool. Research expands that variety and strengthens their effects. See the [Power-Ups reference](power-ups.md) for individual behaviors.
 
 ## Build a Song
 
-Shots collect melodic ideas; blooms add harmony and musical layers. Bubble markings identify **melody**, **bass** and **rhythm**. Hits on those bubbles influence their part as it becomes available.
+Shots collect melodic ideas; 5-Chains add harmony and musical layers. Bubble markings identify **melody**, **bass** and **rhythm**. Hits on those bubbles influence their part as it becomes available.
 
 Three different bubbles establish a recurring melody. Later notes develop the music over time rather than replacing it after every collision. A short answering phrase plays after a shot, and the arrangement continues between shots. New musical layers join on the beat.
 
@@ -57,7 +57,7 @@ Melody Journey shows its music panel during play. In other modes, activate the D
 
 ## Controls
 
-The compact HUD keeps score, spendable Points, shots, power slots, chain dots and the bonus reward below the pool. Tap any HUD item for an information card. Score and Points explain their different roles; shots explain the budget; chain dots show bloom progress. The medal lists every condition, power slots explain the current powers, and the checkmarked challenge flag opens the bonus objective with progress and its Points reward. Tap outside a card, press Escape or use Close to dismiss it. Pause floats in the pool corner and follows Left-Handed Layout.
+The compact HUD keeps score, spendable Points, shots, power slots, chain dots and the bonus reward below the pool. Tap any HUD item for an information card. Score and Points explain their different roles; shots explain the budget; chain dots show 5-Chain progress. The medal lists every condition, power slots explain the current powers, and the checkmarked challenge flag opens the bonus objective with progress and its Points reward. Tap outside a card, press Escape or use Close to dismiss it. Pause floats in the pool corner and follows Left-Handed Layout.
 
 - Touch or mouse: drag and release in the pool.
 - Keyboard: left/right arrows aim, up/down arrows change shot strength, Space launches, and P pauses.

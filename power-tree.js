@@ -1399,7 +1399,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Final Burst",
-        "description": "A bloom earned during the return produces a brief accent and one bounded radial bubble push. It does not schedule another Rewind.",
+        "description": "A 5-Chain earned during the return produces a brief accent and one bounded radial bubble push. It does not schedule another Rewind.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [
@@ -2074,8 +2074,8 @@ export const POWER_TREES = {
         "conflicts": []
       },
       {
-        "name": "Bloom Reload",
-        "description": "The first bloom after activation refills your magazine once this shot.",
+        "name": "5-Chain Reload",
+        "description": "The first 5-Chain after activation refills your magazine once this shot.",
         "key": "capstone",
         "kind": "capstone",
         "effects": [

@@ -4,9 +4,9 @@ import { BONUS_TIERS, earningValid, earningPower, earningSettle } from './earnin
 import { liveBubbles, waveConfig, wavePrepare, waveEntryStep, waveValid, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { DRUNK_SECONDS, drunkSway, overlapResponse, magnetResponse } from './power-response.js?v=53825a2132c5ad509bdd8a251983587d3024f860edd302123036c23bc5fa89bd';
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=9714f4318d0faebb1d4b65dc36b658da67a2d7fc6d636415a8457aa9c75be2a7';
-export { skillFlags } from './skill-effect.js?v=9714f4318d0faebb1d4b65dc36b658da67a2d7fc6d636415a8457aa9c75be2a7';
+import { bubbleRole } from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=00306505aba47472293f9f7ac25546ba1565afbc197b3654d49e1f688f523013';
+export { skillFlags } from './skill-effect.js?v=00306505aba47472293f9f7ac25546ba1565afbc197b3654d49e1f688f523013';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
 export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 19, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: DRUNK_SECONDS, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
@@ -693,7 +693,7 @@ export function physicsStep(state) {
     const bonus=objectiveProgress(state);
     if(bonus.progress===1) {state.objective.earned=true;state.objective.completed++;state.objective.rewardPoints=bonus.reward;state.objective.pendingPoints=bonus.reward;events.push({type:'objective',index:bonus.index,points:bonus.reward,x:seed.x,y:seed.y});}
   }
-  // Apply after every collision, bloom and power impulse so impacts cannot cancel Stasis.
+  // Apply after every collision, 5-Chain and power impulse so impacts cannot cancel Stasis.
   for (const body of liveBubbles(state)) {
     const frozen=effectGet(state,'stasis')?.targets.includes(body.id),region=regionFrozen(state,body.id);if(!frozen&&!region)continue;
     const speed=Math.hypot(body.vx,body.vy),limit=frozen?skillConfig(state,'stasis').speed:100;
@@ -906,15 +906,15 @@ export function saveValidate(input) {
 }
 
 export const OBJECTIVES=Object.freeze([
-  {title:'Bank a Bloom',difficulty:1,description:'Touch five different bubbles and bounce off a wall in one shot.',targets:{notes:5,banks:1},tip:'Aim toward a wall with bubbles along the rebound path.'},
+  {title:'Bank a 5-Chain',difficulty:1,description:'Touch five different bubbles and bounce off a wall in one shot.',targets:{notes:5,banks:1},tip:'Aim toward a wall with bubbles along the rebound path.'},
   {title:'Seven-Bubble Chain',difficulty:2,description:'Touch seven different bubbles in one shot.',targets:{notes:7},tip:'Every new bubble counts, including contacts made by your powers.'},
-  {title:'Power Play',difficulty:3,description:'Collect two powers and bounce off a wall in one shot.',targets:{powers:2,banks:1},tip:'Build a bloom streak to begin a shot with two or three power bubbles.'}
+  {title:'Power Play',difficulty:3,description:'Collect two powers and bounce off a wall in one shot.',targets:{powers:2,banks:1},tip:'Build a 5-Chain streak to begin a shot with two or three power bubbles.'}
 ]);
 export function objectiveProgress(state) {
   const index=state.objective.index%OBJECTIVES.length,definition=OBJECTIVES[index];
   if(state.mode==='song-run'){
     const complete=state.objective.completed>0,kind=state.objective.index%3,roles=new Set(state.chain.map(bubbleRole)).size;
-    const definition=kind===1?{title:'Three Voices',difficulty:1,description:'Contact melody, bass and rhythm in one shot.',target:3,value:roles,label:'musical roles'}:kind===2?{title:'Double-Bank Bloom',difficulty:3,description:'Bounce off two walls before the fifth contact of a bloom.',target:1,value:Number(!!state.objective.bankBloom),label:'double-bank bloom'}:{title:'Seven-Bubble Chain',difficulty:2,description:'Touch seven different bubbles in one shot.',target:7,value:Math.min(7,state.chain.length),label:'bubbles'};
+    const definition=kind===1?{title:'Three Voices',difficulty:1,description:'Contact melody, bass and rhythm in one shot.',target:3,value:roles,label:'musical roles'}:kind===2?{title:'Double-Bank 5-Chain',difficulty:3,description:'Bounce off two walls before the fifth contact of a 5-Chain.',target:1,value:Number(!!state.objective.bankBloom),label:'double-bank 5-Chain'}:{title:'Seven-Bubble Chain',difficulty:2,description:'Touch seven different bubbles in one shot.',target:7,value:Math.min(7,state.chain.length),label:'bubbles'};
     const value=complete?definition.target:definition.value;return {...definition,tip:'Every collector counts. The bonus stays earned for this pool.',index:kind,steps:[{key:'notes',label:definition.label,target:definition.target,value}],progress:value/definition.target,complete,reward:definition.difficulty};
   }
   const values={notes:state.chain.length,banks:state.banks,powers:state.power.used};

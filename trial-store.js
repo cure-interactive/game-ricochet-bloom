@@ -1,4 +1,4 @@
-import { trialEvidence, trialMedal, medalEvidenceValid, medalRank } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
+import { trialEvidence, trialMedal, medalEvidenceValid, medalRank } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
 import { trialValidate } from './trial.js?v=ee88fa6819c43397fd16a782519a3e055707b4f141bd667e1be4ec2db2f3209a';
 export const trialKey=(kind,mode)=>`ricochet-bloom-trial-v1-${kind}-${mode}`;

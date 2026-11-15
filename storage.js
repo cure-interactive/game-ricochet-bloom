@@ -1,5 +1,5 @@
-import { MEDAL_NAMES, medalHigher, medalEvaluate, poolConditions, poolMedalKey } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { saveValidate } from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
+import { MEDAL_NAMES, medalHigher, medalEvaluate, poolConditions, poolMedalKey } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
+import { saveValidate } from './engine.js?v=27a29e6d2cba5ed4d8a714591cb6751bcf16bb1cea5790adfc71e5146d80876e';
 export const STORAGE = 'ricochet-bloom-pool-v3', LEGACY_STORAGE = 'ricochet-bloom-pool-v2';
 // Settings must persist even when a trial owns gameplay saving. Merge only the
 // requested preferences into the latest raw save; never replace unreadable data.

@@ -18,7 +18,7 @@ Unlock & Equip purchases a skin once. Owned skins can be equipped freely. Origin
 
 ## Trails and Impacts
 
-Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons also animate your equipped styles. Hidden previews pause and keep their state. Trails follow your moving player; impacts appear at player contacts and fade away smoothly.
+Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons also animate your equipped styles. Hidden previews pause and keep their state. Trails follow player movement, including moving icons and previews; impacts appear at player contacts and fade away smoothly.
 
 - Common styles cost 60 Points.
 - Rare styles cost 120 Points.
@@ -27,7 +27,7 @@ Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to 
 - Mythic styles cost 550 Points.
 - Original options remain free. Purchases are permanent within the current profile, and equipping an owned style is free.
 
-Mythic Aurora adds a short rising sound when you launch. Mythic Prismatic Nova adds a crystalline accent to player impacts. Tap **Preview Sound** to hear either before purchasing. Sounds follow master volume and mute; gallery animations stay silent. Rapid impacts are limited to keep audio clear.
+Legendary Ember adds a warm launch sound. Mythic Aurora adds a rising launch sound and an airy traveling sound while the player moves. Mythic Prismatic Nova adds a crystalline accent to player impacts. Tap **Preview Sound** to hear the selected effect before purchasing. Aurora previews travel for a few seconds and fade over their final second. Sounds follow master volume and mute; gallery animations stay silent. Rapid impacts are limited to keep audio clear.
 
 Cosmetics do not alter power, speed, score or rewards. Your selections appear in normal play, experiments, Casual and the menu background. Power effects retain their own important visual feedback. Normal and Development purchases are separate.
 

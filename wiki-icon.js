@@ -1,8 +1,8 @@
-import { iconHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
-import { CATALOGUE } from './catalogue.js?v=e1d28e3d6e7b738118ac032124c3cb6f31acb64f80230e4dc3460da763c710bd';
+import { iconHTML } from './ui-icon.js?v=2fc20cc9221a523874a677a151fa2d76dd8dda2734129b3078e5c0d045e87188';
+import { CATALOGUE } from './catalogue.js?v=5cfc599f22248911c8bcd4338b5eb7fd16e3fe4df92507bfdf3382d1366b52d1';
 import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=dac326ff7d924addc5d734209ca68a5154f8912b8216a5cd7ed7b53eb92fb089';
-import { medalIcon } from './medal-ui.js?v=cb1239d459734c6f9be44ad4762f547277da8fc66ff98164482c5bbefd917891';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=6afe5816de6b88784292e9626ccd933b6ecd0972b8aa92b72f278a2865892f5a';
+import { medalIcon } from './medal-ui.js?v=b66de041ee2d9f60adfb88f52c358438190802a3f8dc744542f54dc430e58530';
 
 // Only known topics and catalogue identities produce decoration. Markdown never
 // supplies an image URL, raw SVG or icon name to the renderer.
@@ -12,7 +12,7 @@ const topics={
  'change-logs':'list','player-changes':'gamepad','developer-notes':'code',
  'ricochet-bloom-wiki':'book','table-of-contents':'list','how-to-play':'gamepad',waves:'wave',campaign:'campaign','skill-tree':'skill-tree','power-ups':'powers','sound-settings-saves':'gear',
  play:'play',grow:'skill-tree','make-yourself-at-home':'gear',
- 'pull-release-bloom':'pulse','contact-powers':'powers','build-a-song':'music-note',controls:'hand-left',
+ 'pull-release-bloom':'pulse','pull-release-chain':'pulse','contact-powers':'powers','build-a-song':'music-note',controls:'hand-left',
  'choose-a-track':'campaign','five-pools-per-run':'list','research-points-and-powers':'coin','continue-or-start-again':'play',
  'one-connected-tree':'skill-tree','research-and-activation':'lock-open','rarity-and-type':'epic','read-the-map':'eye',
  audio:'music-note','accessibility-and-display':'switches','saves-and-backups':'download','screen-rotation':'eye','find-a-power':'powers',

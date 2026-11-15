@@ -1,18 +1,18 @@
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=64bdd6cd70d57cc487bfb2b0b6c0bef450c1ba19b1b392d00e5a015b89702c03';
-import {playerSkillStats} from './player-skill-comparison.js?v=d84f646e1966b6549a8c282bc6d5a557b592fc6ee8b72be9c76d897efa1409e5';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=a947ebf174fc08199bf8e2002c4f373f2c6d08d4e6aa3a9a68f0d83cac47ecea';
+import {playerSkillStats} from './player-skill-comparison.js?v=5413d93733478c5c3d73d00b0f092c6f044b3ee96887cab2636e891526bba17e';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import {playerTreeGraph} from './player-tree.js?v=f1637448476e14d8810eba33f852b9715620335bf7f0c322aa4b4b6f02ddaf5c';
-import {mapCameraMount,nearestMapNode} from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
-import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=db240ec5257f36aca8cbfec523e0e638ee0735c2100934d25e13c6b5ddb9423d';
-import {screenHeader} from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
+import {playerTreeGraph} from './player-tree.js?v=48ba72eee42207978a1009eeabbaf3012eafc0870cd2f10f9c2a1baf5ab3f5a1';
+import {mapCameraMount,nearestMapNode} from './tree-map.js?v=3796f253f5adde9641a9269883caf82cfcba3eea0317792412224f9da63cb35c';
+import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=28fa5b52ad39df5677f805bcfff670cda41960bb0edd40a05df5bd3b7ecf75df';
+import {screenHeader} from './screen-header.js?v=2e096f2a79faa63185588495732061424d007cab358cb47837ed18fd2666ad3c';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=2fc20cc9221a523874a677a151fa2d76dd8dda2734129b3078e5c0d045e87188';
 
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 const rules='Every purchased upgrade stacks permanently. Open pools apply purchases between shots; Melody Journey applies them from the next pool. Score Attack fixes them at the start of a run. Fixed trials and shared challenges keep their authored rules.';
 
 export function playerUpgradeMount(host){
  const dialog=document.createElement('dialog');dialog.id='player-upgrade-dialog';dialog.setAttribute('aria-label','Player Skills');
- dialog.innerHTML=screenHeader({icon:'skill-tree',className:'tree-heading',title:'Skills',back:button('back','Back','arrow-left'),actions:treeSwitchHTML('player')+'<div class="tree-wallet-summary"></div>'})+
+ dialog.innerHTML=screenHeader({icon:'skill-tree',className:'tree-heading',title:'Skills',back:button('back','Back','arrow-left'),actions:'<div class="tree-wallet-summary"></div>'+treeSwitchHTML('player')})+
   `<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected player tree"><div class="tree-map-stage">${skillLegendHTML('player-legend-content')}<div class="tree-map-scroll" tabindex="0" aria-label="Player skill map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom"></output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div></section></div><footer class="tree-map-hint">Tap a skill for details · Drag to move · Pinch or scroll to zoom</footer><section id="player-skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="player-skill-title" hidden></section>`;
  document.body.append(dialog);
  const surface=dialog.querySelector('.tree-map-scroll'),map=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage'),tip=dialog.querySelector('.skill-tooltip');

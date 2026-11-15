@@ -1,4 +1,4 @@
-import {cosmeticGet} from './cosmetic.js?v=2bb18d2e076499e68b09a42197f9a740fe84fa04b929d8919c5848590fd93936';
+import {cosmeticGet} from './cosmetic.js?v=7ec09556610ab987f7c5deb3143a3e4ba1da31461c131f3a4136838fa80ecdac';
 const tau=Math.PI*2;
 const line=(c,x,y,r,a)=>{c.moveTo(x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.55);c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);};
 // Cosmetics draw only: no collisions, random engine state, audio or rewards.
@@ -15,7 +15,7 @@ export class CosmeticVisual{
   if(!body||!moving||!dt){this.last=null;return;}
   const distance=this.last?Math.hypot(body.x-this.last.x,body.y-this.last.y):0;
   if(distance>180)this.breakTrail();
-  if(!this.last||distance>2){this.points.push({x:body.x,y:body.y,age:0,t:this.elapsed,energy:Math.min(1,Math.hypot(body.vx||0,body.vy||0)/500),break:!this.last});this.last={x:body.x,y:body.y};}
+  if(!this.last||distance>.05){this.points.push({x:body.x,y:body.y,age:0,t:this.elapsed,energy:Math.min(1,Math.max(Math.hypot(body.vx||0,body.vy||0),distance/dt)/500),break:!this.last});this.last={x:body.x,y:body.y};}
   if(this.points.length>100)this.points.splice(0,this.points.length-100);
  }
  render(c,low=false,showOriginal=false){

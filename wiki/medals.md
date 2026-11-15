@@ -28,11 +28,11 @@ Track awards remain separate: Bronze for completing all five pools; Silver with 
 
 ## Challenge
 
-- **Bronze:** Make 3 blooms before shots run out.
-- **Silver:** Make 3 blooms in at most 8 shots.
-- **Gold:** Make 3 blooms in at most 5 shots.
+- **Bronze:** Make 3 5-Chains before shots run out.
+- **Silver:** Make 3 5-Chains in at most 8 shots.
+- **Gold:** Make 3 5-Chains in at most 5 shots.
 
-Each pool seed keeps a separate best medal. Finish three blooms before running out of shots; bonus shots do not change the Silver or Gold shot limits.
+Each pool seed keeps a separate best medal. Finish three 5-Chains before running out of shots; bonus shots do not change the Silver or Gold shot limits.
 
 ## Free Play
 

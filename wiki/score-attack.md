@@ -1,16 +1,16 @@
 # Score Attack
 
-Choose **Gamemodes → Score Attack**. Pick 5, 10 or 15 shots; 10 is selected initially. Chase a personal best with the same physics, chains, banks and blooms used in Melody Journey.
+Choose **Gamemodes → Score Attack**. Pick 5, 10 or 15 shots; 10 is selected initially. Chase a personal best with the same physics, chains, banks and 5-Chains used in Melody Journey.
 
 ## Every Shot Counts
 
-There is no countdown. Bubbles drift while you aim. Blooms add score but no extra shots or separate Points. Three blooms do not end the run. Your last shot completes its entire flight and settles before the result is recorded.
+There is no countdown. Bubbles drift while you aim. 5-Chains add score but no extra shots or separate Points. Three 5-Chains do not end the run. Your last shot completes its entire flight and settles before the result is recorded.
 
 Each new run begins with the same pool layout. Your owned skills and active choices are fixed at the start of the attempt. Purchases remain available in Skills and apply to the next attempt.
 
 ## Score and Medals
 
-Each different bubble touched during a shot adds 25 times its position in the chain: 25, 50, 75 and so on. A new contact after a wall bank adds another 25. Five unique contacts trigger a bloom worth 500 more. Repeat contacts with the same bubble do not extend that shot's chain.
+Each different bubble touched during a shot adds 25 times its position in the chain: 25, 50, 75 and so on. A new contact after a wall bank adds another 25. Five unique contacts trigger a 5-Chain worth 500 more. Repeat contacts with the same bubble do not extend that shot's chain.
 
 - **5 shots:** Bronze 1,500, Silver 3,000, Gold 5,000.
 - **10 shots:** Bronze 3,000, Silver 6,000, Gold 10,000.
