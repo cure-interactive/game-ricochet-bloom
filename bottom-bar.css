@@ -108,10 +108,11 @@ body > main .control-strip, main:has(.phrase-panel[hidden]) .control-strip { gri
   }
 }
 
-/* The bottom profile strip is a touch-sized disclosure only during gameplay. */
+/* Status and music disclosure share one compact strip; safe-area space is separate. */
 body[data-development=true]{--content-safe-bottom:0px}
-#development-profile-bar{position:fixed;inset:auto 0 0;margin:0;width:100%;max-width:none;box-sizing:border-box;height:auto;min-height:calc(20px + env(safe-area-inset-bottom));padding:0 max(8px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(8px,env(safe-area-inset-left));border:0;box-shadow:inset 0 1px #e5c58b40;border-radius:0;background:#27271ff5;color:#e6d3ac;font:500 11px/19px 'Fredoka',sans-serif;letter-spacing:.3px;text-align:center;z-index:10000;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-#development-profile-bar>button{display:block;width:100%;height:28px;min-height:28px;padding:0 12px;border:0;border-radius:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit;text-align:center;cursor:pointer}
+#development-profile-bar{position:fixed;inset:auto 0 0;margin:0;width:100%;max-width:none;box-sizing:border-box;height:auto;min-height:calc(20px + env(safe-area-inset-bottom));padding:0 max(8px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(8px,env(safe-area-inset-left));border:0;box-shadow:inset 0 1px #e5c58b40;border-radius:0;background:#27271ff5;color:#e6d3ac;font:500 11px/20px 'Fredoka',sans-serif;letter-spacing:.3px;text-align:center;z-index:10000;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+#development-profile-bar>span{display:block;height:20px}
+#development-profile-bar>button{display:block;width:100%;height:20px;min-height:20px;padding:0 12px;border:0;border-radius:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit;text-align:center;cursor:pointer}
 #development-profile-bar>button::after{content:'▴';margin-left:10px}
 #development-profile-bar>button[aria-expanded=true]::after{content:'▾'}
 #development-profile-bar>button:focus-visible{outline:2px solid #e6d3ac;outline-offset:-3px}

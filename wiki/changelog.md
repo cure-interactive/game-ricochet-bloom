@@ -6,6 +6,18 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.22.1
+
+### Player Changes
+
+- Keep the Development bar compact when showing or hiding music.
+
+<!-- development -->
+### Developer Notes
+
+- Match the profile status and music disclosure to the same 20px height, with safe-area space reserved separately.
+<!-- /development -->
+
 ## v3.22.0
 
 ### Player Changes
