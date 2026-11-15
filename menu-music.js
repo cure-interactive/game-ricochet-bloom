@@ -1,4 +1,4 @@
-import {PoolSound} from './sound.js?v=3ba6ed78094687b7f333a88e40649b332d9dc985ff381426cdfb3d66b2d82e0b';
+import {PoolSound} from './sound.js?v=1036cac58e3c724300f1f652d6f1c6854280fa02f98737a93a7a66da3066a944';
 
 // Detached composition uses the game's finished arrangement/scheduler only.
 // Events teach the composer, but never play collision, launch or power sounds.
@@ -13,7 +13,7 @@ export function menuMusicCreate(settings, sound=new PoolSound({media:false})){
   event(event){sound.eventPlay(event,{effects:false});},
   update(bodies,portrait){sync();sound.portrait=portrait;sound.musicUpdate(bodies.reduce((sum,b)=>sum+Math.hypot(b.vx,b.vy),0)/(Math.max(1,bodies.length)*100));},
   active(value){active=value;sync();sound.pauseSet(!value);},
-  unlock(){sync();if(active&&!sound.isMuted&&sound.volume>0&&sound.ambience>0)void sound.unlockAsync().catch(()=>{});},
+  unlock(){sync();if(active&&!sound.isMuted&&sound.volume>0&&sound.ambience>0&&sound.context?.state!=='running')void sound.unlockAsync().catch(()=>{});},
   reset(){sound.musicRestore(null,0,0);},
   get diagnostics(){return {bars:sound.music.bar,effectEvents:sound.eventCount,voices:sound.voiceCount,state:sound.isPaused?'paused':sound.context?.state||'locked'};},
  };

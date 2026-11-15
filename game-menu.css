@@ -216,7 +216,7 @@ body[data-menu-mode=home] #tree-sheet{height:var(--app-height,100dvh);max-height
 
 /* Drift reuses the full-size menu pool, with just one safe-area control. */
 #drift-controls{position:fixed;inset:0;z-index:8;pointer-events:none}
-#drift-pause{position:absolute;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));width:48px;height:48px;display:flex;align-items:center;justify-content:center;gap:0;padding:0;border:1px solid #97b9b666;border-radius:50%;background:#102632c9;color:#e2f2ee;pointer-events:auto;backdrop-filter:blur(12px)}
+#drift-pause{position:absolute;top:auto;bottom:max(12px,env(safe-area-inset-bottom));right:max(12px,env(safe-area-inset-right));width:48px;height:48px;display:flex;align-items:center;justify-content:center;gap:0;padding:0;border:1px solid #97b9b666;border-radius:50%;background:#102632c9;color:#e2f2ee;pointer-events:auto;backdrop-filter:blur(12px)}
 body[data-left-handed=true] #drift-pause{right:auto;left:max(12px,env(safe-area-inset-left))}
 body:is([data-screen=drift],[data-screen=drift-pause]) #menu-background:after{display:none}
 body:is([data-screen=drift],[data-screen=drift-pause]) .home-pool{opacity:1}

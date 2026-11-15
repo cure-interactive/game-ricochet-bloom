@@ -15,11 +15,11 @@ export const WIKI_PAGES = Object.freeze({
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=bcc53ccc28d9448fac1a1999a369dd0894c4055ec043e93d2617ada4021b42af' },
   contents: { title: 'Contents', url: './wiki/contents.md?v=e0e64c4ecd4f312b29ca38e43d250d8fd16feb97be462c9acbefc68448b642c3' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=96e18105bd6505aecd380d016a9f4302aac41b6753d54fc54e28fa54462624dd' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=900a8a3f8c3a0954656b882f97bd42a44f6eceb348bb0272d5e988ceeeaac1f3' },
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=f731085728a4f176e16ee7841e0ec5a724a9e018b096a6bbe70451f9e2572d0c' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=7a28e512643ce0faf78d4f9020b8a6e8d56a536f4d64caa116560a40390460e3' },
   'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=54a35271d8c0a9996059e5630c3420246405ea1b9c1c324b0e98f402f3eb1445' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=e4f06faca821acf4bf00bdec5867b81eccfa627da972c9ead0ec55c0d7bd4910' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=00782d2d7c4088d6ec7c1fa57f0fffac2f3f6fe5754b98121ec62d2703e2ad8b' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=aa3d1af27605eca2e224634e50d456a4a69c7ad9cad0ea1e1b9207b47ad001ea' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.
 export const WIKI_SOURCES = Object.freeze([

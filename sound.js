@@ -199,6 +199,17 @@ export class PoolSound {
     if (event.type === 'win') { [this.notePitch(0), this.notePitch(2), this.notePitch(3), this.notePitch(0) * 2].forEach((pitch, index) => this.tone(pitch, pitch, 1.2, .12, 0, index * .22, 'sine', true)); }
     if (event.type === 'over') [523.25, 392, 329.63, 261.63].forEach((pitch, index) => this.tone(pitch, pitch, .75, .15, 0, index * .12, 'sine', true));
   }
+  uiPlay(kind='select') {
+    if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.voiceCount>42)return false;
+    const now=this.context.currentTime;
+    if(now-(this.uiLastAt??-Infinity)<.06)return false;
+    this.uiLastAt=now;
+    const pitch=kind==='back'?440:kind==='confirm'?660:560;
+    this.tone(pitch,kind==='back'?330:pitch*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true});
+    if(kind==='confirm')this.tone(880,880,.09,.055,0,.055,'sine',false,false,{allowPaused:true});
+    this.uiCount=(this.uiCount||0)+1;
+    return true;
+  }
   audition() {
     if (!this.context || this.context.state !== 'running' || this.isMuted || !this.volume || this.voiceCount > 37 || this.context.currentTime < this.auditionUntil) return false;
     this.auditionUntil = this.context.currentTime + SOUND_CHECK_SECONDS;

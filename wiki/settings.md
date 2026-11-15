@@ -1,12 +1,14 @@
 # Sound, Settings & Saves
 
-Pause offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skills and Player Skins from the Main Menu. Settings → About displays the Cure Interactive logo and game information, with access to Icon Credits.
+The full-screen pause menu shares the main menu’s bubble background, game title and version. It offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skills and Player Skins from the Main Menu. Settings → About displays the Cure Interactive logo and game information, with access to Icon Credits.
 
 ## Audio
 
 Settings → Audio contains the sound toggle, master volume and ambience volume. Both volume sliders start at 100%. Lower ambience to hear the contact and bubble sounds more prominently. Sound Check plays three gameplay notes: low, medium, then full strength, at your current master volume. It uses the same note sound and output path as gameplay, works while paused, and does not depend on the ambience slider or change your song. Overlapping gameplay sounds can still make the overall mix louder than a single note.
 
-Audio begins after an interaction with the game. Leaving the page pauses the game and its sound; use Resume when you return. The music panel offers Glass, Velvet and Wood instrument palettes.
+Audio begins after an interaction with the game. Leaving the page pauses the game and its sound; use Resume when you return. Resume also retries audio interrupted by the browser. Automatic interruptions pause play without opening a second menu. The music panel offers Glass, Velvet and Wood instrument palettes.
+
+Buttons, navigation and settings changes play short UI sounds, including while paused. These use Sound and Master Volume; Music Volume does not change them. Turning Sound off also silences UI sounds.
 
 The main-menu background is a self-playing Free Play pool using your unlocked powers, player upgrades and equipped skin. It plays only its generated musical arrangement, without collision or power sound effects. Sound and Music Volume control it too. Menu play does not earn Points or change your saved game or song.
 

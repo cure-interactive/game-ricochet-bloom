@@ -4,7 +4,7 @@ import {poolBubbleRender} from './pool-bubble.js?v=e538de4e23539e2d7f78a503e1ec8
 import {freePlayCreate,freePlayBuild} from './free-play.js?v=409e1eb57ba278752223f7eb788efb6deba4562df6daf6e206ef5067994254b6';
 import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import {progressionCreate} from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302dff937b1bbfdae8fb6c8ea56';
-import {menuMusicCreate} from './menu-music.js?v=5260d30495daa3dbaf63b0ba7a3a5706bc7022261af7b5d593bf5d1b11991d23';
+import {menuMusicCreate} from './menu-music.js?v=9cd21a3757f4b44e47619b6e4aea0a5ec5966365e1047c3b33f11ed42bacdb06';
 import {PowerVisual} from './power-visual.js?v=4a5ad715cee03b1a9f5cc7902f7a75de11b9d5d1dc9164e8605077b35d5bc99f';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
 import { bubbleCreate, bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
@@ -67,6 +67,8 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
   function sync(){music.active(active&&!document.hidden);musicDiagnostics(); cancelAnimationFrame(frame);frame=0;previous=0;if(active&&!document.hidden)frame=requestAnimationFrame(animate);}
   function clear(){pool.contacts.clear();canvas.dataset.contacts='0';}
   document.addEventListener('visibilitychange',()=>{clear();sync();});window.addEventListener('resize',()=>{clear();sync();});
+  // App height settles after the window event; redraw the actual canvas size.
+  new ResizeObserver(()=>{if(!active&&!document.hidden)draw(0);}).observe(canvas);
   const background={refresh(){
     const progress=profile(),next=JSON.stringify([freePlayBuild(progress),playerBuild(progress.profile)]);
     if(signature===next)return;signature=next;
@@ -83,7 +85,9 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
     for(const hit of menuPoolTap(pool,point)){bubbleHit(skinFor(pool.game.bodies[hit.id]),pool.game.bodies[hit.id].radius,hit.nx,hit.ny,hit.speed);skinFor(pool.game.bodies[hit.id]).glow=.8;}
     canvas.dataset.pulses=String(pool.pressure.length);draw(0);if(!frame)sync();
   }};
-  for(const event of ['pointerdown','keydown'])document.addEventListener(event,()=>{if(active&&!document.hidden)music.unlock();},{capture:true,passive:true});
+  // Bubble after the control handler: Resume may activate a previously paused
+  // pool. Click also provides Safari's completed touch activation for recovery.
+  for(const event of ['pointerdown','click','keydown'])document.addEventListener(event,()=>{if(active&&!document.hidden)music.unlock();},{passive:true});
   menuContactMount(background,document,window);
   return background;
 }

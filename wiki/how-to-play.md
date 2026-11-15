@@ -16,7 +16,7 @@ Choose **Gamemodes → Endless Waves** from the main menu for five shots per wav
 
 Casual is a casual, self-playing pool with the same enlarged bubbles, player and power effects as the main-menu background. Tap or hold to stir the pool. Every five hits brings a power from your unlocked powers, with its icon shown inside a bubble. The music is the pool's composed ambient arrangement.
 
-The only play control is the floating **Pause** button, placed on your preferred hand's side. Pause freezes the pool and music; Resume continues it. Press P or Escape to pause with a keyboard. Casual uses the standard pause menu: Resume game, Main Menu, Wiki, How to Play and Settings. The pool stays paused while you read help or change settings.
+The only play control is the floating **Pause** button, placed in the bottom-right corner, or bottom-left with Left-Handed Layout. Pause freezes the pool and music; Resume continues it. Press P or Escape to pause with a keyboard. Casual uses the standard pause menu: Resume game, Main Menu, Wiki, How to Play and Settings. The pool stays paused while you read help or change settings.
 
 Casual earns **no Points, medals, mastery or campaign progress**. It never replaces your saved game. There is no score target, shot limit or loss condition.
 
