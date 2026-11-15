@@ -34,8 +34,9 @@ export function developmentBarMount(doc=document){
   if(doc.hidden)return;
   stack=stack.filter(d=>d.open&&d.isConnected);
   disclosure();
-  const ready=!doc.body.dataset.startup||doc.body.dataset.startup==='ready';
-  const visible=active&&ready&&!['drift','drift-pause'].includes(doc.body.dataset.screen);
+  // Restore presentation and its measured space while the splash still owns
+  // startup. The entrance and ready frames must use the same menu geometry.
+  const visible=active&&doc.body.dataset.startup!=='failed'&&!['drift','drift-pause'].includes(doc.body.dataset.screen);
   const nextLayer=stack.at(-1)||doc.body;
   // Reorder only when the modal layer changes. Preserve the rendered text layer
   // across ordinary screen mutations instead of repeatedly hiding/reopening it.

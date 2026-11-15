@@ -6,6 +6,25 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.27.3
+
+Build: 2026-11-15 20:17:55 UTC
+
+### Player Changes
+
+- Restore the Development bar during loading, with its space already reserved before the main menu appears.
+- Retry sound unlocking on ordinary taps and clicks without needing to visit Settings.
+- Browse Trails and Impacts like Player Skins: open a style for a larger animated preview and its Equip or Unlock card, then return to the gallery.
+- See the selected skin, trail or impact as a live title-bar icon in its preview page. Mythic effects keep their Preview Sound button.
+
+<!-- development -->
+### Developer Notes
+
+- Allow the Development popover through startup visibility rules and measure its reservation during loading; entering and ready no longer introduce a layout change.
+- Re-prime audio on trusted activation even when AudioContext reports running. Include click in shared recovery while retaining bounded lifecycle retries, active-menu gating and mute/pause behavior. Physical iOS audibility remains unverified.
+- Reuse the Skins gallery/detail styles for cosmetic menus, preserve gallery scroll and thumbnail instances, and share the cosmetic preview renderer with title icons. Keep purchase and save contracts unchanged.
+<!-- /development -->
+
 ## v3.27.2
 
 Build: 2026-11-15 19:14:28 UTC

@@ -1,30 +1,55 @@
 import {COSMETICS,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=2bb18d2e076499e68b09a42197f9a740fe84fa04b929d8919c5848590fd93936';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=64bd91987a14454b6ba9d32f1401286687fd689f1507827d8b092df65adea08f';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=2dd0c55658f00a37af933997e25796ccda83d4068583e78edd42fd55a33be8f3';
 import {screenHeader} from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
 import {buttonHTML,iconHTML} from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
 import {rarityIconHTML} from './skill-icon.js?v=dac326ff7d924addc5d734209ca68a5154f8912b8216a5cd7ed7b53eb92fb089';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 export function cosmeticMount(host){
- let kind='trail',selected='trail.original',preview=null,renderedKind='',audition=0;const thumbnails=[];
- const dialog=document.createElement('dialog');dialog.id='cosmetic-dialog';dialog.className='standard-dialog';dialog.setAttribute('aria-labelledby','cosmetic-title');
- dialog.innerHTML=screenHeader({icon:'trails',title:'Trails',titleId:'cosmetic-title',className:'dialog-heading',back:buttonHTML('Back','arrow-left',{'data-cosmetic-back':true})})+`<div class="dialog-body cosmetic-body"><section class="cosmetic-view reading-card"><canvas aria-label="Animated cosmetic preview"></canvas><div class="cosmetic-detail"></div></section><div class="cosmetic-choice-scroll" tabindex="0" role="region" aria-label="Cosmetic choices"><div class="cosmetic-grid"></div></div><p class="cosmetic-status reading-card" role="status" hidden></p></div>`;
- document.body.append(dialog);const back=dialog.querySelector('[data-cosmetic-back]'),detail=dialog.querySelector('.cosmetic-detail'),status=dialog.querySelector('.cosmetic-status'),choices=dialog.querySelector('.cosmetic-choice-scroll');
+ let kind='trail',selected=null,preview=null,headingPreview=null,renderedKind='',audition=0,libraryScroll=0;const thumbnails=[];
+ const dialog=document.createElement('dialog');dialog.id='cosmetic-dialog';dialog.setAttribute('aria-labelledby','cosmetic-title');
+ dialog.innerHTML=screenHeader({icon:'trails',title:'Trails',titleId:'cosmetic-title',className:'skin-heading',back:buttonHTML('Back','arrow-left',{'data-cosmetic-back':true})})+`<div class="skin-scroll"><section class="skin-library"><p class="skin-intro"></p><div class="skin-grid"></div></section><section class="skin-detail" hidden><div class="cosmetic-preview-large"><canvas aria-label="Animated cosmetic preview"></canvas></div><section class="skin-selection cosmetic-detail"></section></section><p class="skin-status" role="status"></p></div>`;
+ document.body.append(dialog);
+ const back=dialog.querySelector('[data-cosmetic-back]'),detail=dialog.querySelector('.cosmetic-detail'),status=dialog.querySelector('.skin-status'),scroll=dialog.querySelector('.skin-scroll'),large=dialog.querySelector('.cosmetic-preview-large canvas');
+ const heading=document.createElement('canvas');heading.className='cosmetic-heading-preview';heading.setAttribute('aria-hidden','true');dialog.querySelector('.screen-heading-title>.ui-icon').replaceWith(heading);
+ const title=()=>kind==='trail'?'Trails':'Impacts';
+ const stop=()=>{audition++;host.stopSound?.();};
  function render(){
-  const scrollTop=choices.scrollTop;
-  const profile=host.profile(),item=cosmeticGet(selected),loadout=cosmeticLoadout(profile),owned=cosmeticOwned(profile,item),equipped=loadout[kind]===selected,points=profile.wallet.seeds;
-  detail.innerHTML=`<div class="cosmetic-title"><h3>${escapeHTML(item.name)}</h3><span class="cosmetic-rarity">${rarityIconHTML(item.rarity)}${RARITIES[item.rarity].name}</span></div><p class="cosmetic-description">${escapeHTML(item.description)}</p>${!owned?`<p class="cosmetic-wallet">${iconHTML('coin')}${points} Points${!owned&&points<item.cost?' · '+(item.cost-points)+' more needed':''}</p>`:''}<button type="button" data-cosmetic-equip ${equipped||!owned&&points<item.cost?'disabled':''} class="${equipped?'is-equipped':'primary'}">${iconHTML(equipped?'check':owned?'check':'coin')}<span>${equipped?'Equipped':owned?'Equip':'Unlock &amp; Equip · '+item.cost+' Points'}</span></button>`;
-  if(renderedKind!==kind){for(const control of thumbnails)control.destroy();thumbnails.length=0;renderedKind=kind;
-  dialog.querySelector('.cosmetic-grid').innerHTML=COSMETICS.filter(x=>x.kind===kind).map(x=>`<button type="button" data-cosmetic="${x.id}" aria-pressed="${selected===x.id}" style="--cosmetic-color:${x.color}"><canvas class="cosmetic-thumbnail" aria-hidden="true"></canvas><strong>${escapeHTML(x.name)}</strong><span class="cosmetic-rarity">${rarityIconHTML(x.rarity)}${RARITIES[x.rarity].name}</span><small>${loadout[kind]===x.id?iconHTML('check')+'Equipped':cosmeticOwned(profile,x)?'Unlocked':x.cost+' Points'}</small></button>`).join('');
-  for(const canvas of dialog.querySelectorAll('.cosmetic-thumbnail'))thumbnails.push(cosmeticThumbnailMount(canvas,cosmeticGet(canvas.closest('[data-cosmetic]').dataset.cosmetic),{color:host.color,style:host.style}));}
-  for(const button of dialog.querySelectorAll('[data-cosmetic]')){const x=cosmeticGet(button.dataset.cosmetic);button.setAttribute('aria-pressed',String(selected===x.id));button.querySelector('small').innerHTML=loadout[kind]===x.id?iconHTML('check')+'Equipped':cosmeticOwned(profile,x)?'Unlocked':x.cost+' Points';}
-  if(item.rarity==='mythic')detail.insertAdjacentHTML('beforeend',`<button type="button" class="quiet" data-cosmetic-sound>${iconHTML('play')}<span>Preview Sound</span></button><small class="cosmetic-sound-hint" role="status">Mythic sound · follows master volume and mute.</small>`);
-  choices.scrollTop=scrollTop;
+  const profile=host.profile(),loadout=cosmeticLoadout(profile),item=selected?cosmeticGet(selected):null;
+  dialog.querySelector('.skin-library').hidden=!!item;dialog.querySelector('.skin-detail').hidden=!item;scroll.classList.toggle('is-detail',!!item);
+  dialog.querySelector('#cosmetic-title').textContent=item?.name||title();back.setAttribute('aria-label',item?'Back to '+title():'Back');
+  dialog.querySelector('.skin-intro').textContent=`Choose ${kind==='trail'?'a trail':'an impact'} from Common to Mythic. Open a style to see it in motion before unlocking it with Points.`;
+  if(renderedKind!==kind){
+   for(const control of thumbnails)control.destroy();thumbnails.length=0;headingPreview?.destroy();renderedKind=kind;
+   dialog.querySelector('.skin-grid').innerHTML=COSMETICS.filter(x=>x.kind===kind).map(x=>`<button type="button" class="skin-choice" data-cosmetic="${x.id}"><canvas class="cosmetic-thumbnail" aria-hidden="true"></canvas><strong>${escapeHTML(x.name)}</strong><span class="cosmetic-rarity">${rarityIconHTML(x.rarity)}${RARITIES[x.rarity].name}</span><span class="skin-choice-state"></span></button>`).join('');
+   for(const canvas of dialog.querySelectorAll('.cosmetic-thumbnail'))thumbnails.push(cosmeticThumbnailMount(canvas,cosmeticGet(canvas.closest('[data-cosmetic]').dataset.cosmetic),{color:host.color,style:host.style}));
+   headingPreview=cosmeticThumbnailMount(heading,()=>cosmeticGet(selected||cosmeticLoadout(host.profile())[kind]),{color:host.color,style:host.style,compact:true});
+  }
+  for(const button of dialog.querySelectorAll('[data-cosmetic]')){
+   const x=cosmeticGet(button.dataset.cosmetic),owned=cosmeticOwned(profile,x),equipped=loadout[kind]===x.id;
+   button.classList.toggle('is-equipped',equipped);button.classList.toggle('is-locked',!owned);
+   button.setAttribute('aria-label',`View ${x.name}, ${equipped?'Equipped':owned?'Unlocked':'Locked'}`);
+   button.querySelector('.skin-choice-state').innerHTML=iconHTML(equipped?'check':owned?'lock-open':'lock')+(equipped?'Equipped':owned?'Unlocked':x.cost+' Points');
+  }
+  if(!item)return;
+  const owned=cosmeticOwned(profile,item),equipped=loadout[kind]===selected,points=profile.wallet.seeds;
+  detail.classList.toggle('is-equipped',equipped);detail.style.setProperty('--skin-color',item.color);
+  detail.innerHTML=`<div class="skin-selection-title">${iconHTML(equipped?'check':owned?'lock-open':'lock')}<div><small class="cosmetic-rarity">${rarityIconHTML(item.rarity)}${RARITIES[item.rarity].name} · ${kind==='trail'?'Trail':'Impact'}</small><h3>${escapeHTML(item.name)}</h3></div></div><p class="skin-unlock">${escapeHTML(item.description)}</p><button type="button" data-cosmetic-equip ${equipped||!owned&&points<item.cost?'disabled':''} class="skin-equip ${equipped?'is-equipped':''}">${iconHTML(equipped?'check':owned?(kind==='trail'?'trails':'bounce-effects'):'lock')}<span>${equipped?'Equipped':owned?'Equip '+(kind==='trail'?'Trail':'Impact'):'Unlock &amp; Equip · '+item.cost+' Points'}</span></button>${!owned?`<p class="cosmetic-wallet">${iconHTML('coin')}${points} Points${points<item.cost?' · '+(item.cost-points)+' more needed':''}</p>`:''}`;
+  if(item.rarity==='mythic')detail.insertAdjacentHTML('beforeend',`<button type="button" class="quiet cosmetic-sound-button" data-cosmetic-sound>${iconHTML('play')}<span>Preview Sound</span></button><small class="cosmetic-sound-hint" role="status">Mythic sound · follows master volume and mute.</small>`);
+  preview ||=cosmeticPreviewMount(large,{loadout:()=>({...cosmeticLoadout(host.profile()),...(selected?{[kind]:selected}:{})}),color:host.color,style:host.style});
  }
- back.onclick=()=>host.back();dialog.addEventListener('cancel',e=>{e.preventDefault();host.back();});
- dialog.addEventListener('close',()=>{audition++;host.stopSound?.();});
- document.addEventListener('visibilitychange',()=>{if(document.hidden){audition++;host.stopSound?.();}});
+ function goBack(){
+  stop();if(!selected){host.back();return;}
+  const id=selected;selected=null;render();status.textContent='';scroll.scrollTop=libraryScroll;dialog.querySelector(`[data-cosmetic="${id}"]`)?.focus({preventScroll:true});
+ }
+ back.onclick=goBack;dialog.addEventListener('cancel',e=>{e.preventDefault();goBack();});
+ dialog.addEventListener('close',()=>{stop();preview?.destroy();preview=null;});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
  dialog.addEventListener('click',async e=>{if(!e.target.closest('[data-cosmetic-sound]'))return;const id=selected,token=++audition;host.stopSound?.();const ready=await host.unlock?.();if(token!==audition||!dialog.open||selected!==id)return;detail.querySelector('.cosmetic-sound-hint').textContent=ready!==false&&host.sound?.(id)?'Mythic sound preview started. Tap to replay.':'Sound is muted or unavailable. Check Audio settings.';});
- dialog.addEventListener('click',e=>{const choice=e.target.closest('[data-cosmetic]');if(choice){audition++;host.stopSound?.();selected=choice.dataset.cosmetic;status.hidden=true;render();dialog.querySelector(`[data-cosmetic="${selected}"]`).focus({preventScroll:true});}else if(e.target.closest('[data-cosmetic-equip]')){const item=cosmeticGet(selected),result=host.act({type:cosmeticOwned(host.profile(),item)?'equip-cosmetic':'buy-cosmetic',id:selected});render();status.hidden=false;status.textContent=result.ok?item.name+' equipped.':result.reason;}});
- return {open(destination='trails'){kind=destination==='bounce-effects'?'bounce':'trail';selected=cosmeticLoadout(host.profile())[kind];host.screen(destination);document.querySelectorAll('dialog[open]').forEach(d=>d.close());dialog.querySelector('#cosmetic-title').textContent=kind==='trail'?'Trails':'Impacts';dialog.querySelector('.screen-heading-title .ui-icon').dataset.icon=destination;render();status.hidden=true;dialog.showModal();choices.scrollTop=0;preview ||=cosmeticPreviewMount(dialog.querySelector('canvas'),{loadout:()=>({...cosmeticLoadout(host.profile()),[kind]:selected}),color:host.color,style:host.style});back.focus({preventScroll:true});}};
+ dialog.addEventListener('click',e=>{
+  const choice=e.target.closest('[data-cosmetic]');
+  if(choice){stop();libraryScroll=scroll.scrollTop;selected=choice.dataset.cosmetic;render();status.textContent='';scroll.scrollTop=0;back.focus({preventScroll:true});}
+  else if(e.target.closest('[data-cosmetic-equip]')){const item=cosmeticGet(selected),result=host.act({type:cosmeticOwned(host.profile(),item)?'equip-cosmetic':'buy-cosmetic',id:selected});render();status.textContent=result.ok?item.name+' equipped.':result.reason;const equip=detail.querySelector('[data-cosmetic-equip]');(equip.disabled?back:equip).focus({preventScroll:true});}
+ });
+ return {open(destination='trails'){stop();kind=destination==='bounce-effects'?'bounce':'trail';selected=null;libraryScroll=0;host.screen(destination);document.querySelectorAll('dialog[open]').forEach(d=>d.close());render();status.textContent='';dialog.showModal();scroll.scrollTop=0;back.focus({preventScroll:true});}};
 }

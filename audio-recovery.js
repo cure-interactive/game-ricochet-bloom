@@ -8,10 +8,12 @@ export function audioRecoveryMount(sound,doc=document,win=window,active=()=>true
   context?.removeEventListener?.('statechange',changed);context=sound.context;attempted=false;
   context?.addEventListener?.('statechange',changed);
  }
- function recover(event){
+ function recover(event,gesture=false){
   if(event?.isTrusted===false||!allowed())return;
   bind();
-  if(context?.state==='running'&&!sound.clockStalled?.()){sound.media?.retry();sound.musicUpdate();return;}
+  // A running state alone does not prove the output route was unlocked. Keep
+  // source priming inside real activation, even after a provisional resume.
+  if(!gesture&&context?.state==='running'&&!sound.clockStalled?.()){sound.media?.retry();sound.musicUpdate();return;}
   try{Promise.resolve(sound.unlockAsync()).then(()=>{bind();if(allowed())sound.musicUpdate();}).catch(()=>{});bind();}catch{}
  }
  function changed(){
@@ -19,8 +21,9 @@ export function audioRecoveryMount(sound,doc=document,win=window,active=()=>true
   else if(!attempted&&allowed()){attempted=true;recover();}
  }
  const visible=()=>{if(!doc.hidden&&sound.context)recover();};
- const gestures=['pointerdown','pointerup','touchend','keydown'];
- for(const name of gestures)doc.addEventListener(name,recover,{capture:true,passive:true});
+ const activate=event=>recover(event,true);
+ const gestures=['pointerdown','pointerup','touchend','click','keydown'];
+ for(const name of gestures)doc.addEventListener(name,activate,{capture:true,passive:true});
  doc.addEventListener('visibilitychange',visible);win.addEventListener('pageshow',visible);win.addEventListener('focus',visible);bind();
- return ()=>{disposed=true;context?.removeEventListener?.('statechange',changed);for(const name of gestures)doc.removeEventListener(name,recover,true);doc.removeEventListener('visibilitychange',visible);win.removeEventListener('pageshow',visible);win.removeEventListener('focus',visible);};
+ return ()=>{disposed=true;context?.removeEventListener?.('statechange',changed);for(const name of gestures)doc.removeEventListener(name,activate,true);doc.removeEventListener('visibilitychange',visible);win.removeEventListener('pageshow',visible);win.removeEventListener('focus',visible);};
 }

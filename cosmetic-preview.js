@@ -17,23 +17,23 @@ export function cosmeticThumbnail(canvas,item,{color='#f1f9d7',style=''}={}){
 }
 // Small previews stay silent and use the same visibility/quality lifecycle as
 // the selected viewer. The caller owns destruction when replacing its cards.
-export function cosmeticThumbnailMount(canvas,item,{color,style}={}){
+export function cosmeticThumbnailMount(canvas,item,{color,style,compact=false}={}){
  const get=()=>typeof item==='function'?item():item,value=x=>typeof x==='function'?x():x;
- return cosmeticPreviewMount(canvas,{thumbnail:get().kind,loadout:()=>({[get().kind]:get().id}),color:()=>value(color),style:()=>value(style)});
+ return cosmeticPreviewMount(canvas,{thumbnail:get().kind,compact,loadout:()=>({[get().kind]:get().id}),color:()=>value(color),style:()=>value(style)});
 }
 // Detached presentation: the same membrane, materials and effect renderer as play.
 export function cosmeticPreviewMount(canvas,host){
- const c=canvas.getContext('2d'),visual=new CosmeticVisual(),membrane=bubbleCreate(),body={id:0,x:90,y:100,radius:17,vx:130,vy:85},ready=frameGate();
+ const c=canvas.getContext('2d'),visual=new CosmeticVisual(),membrane=bubbleCreate(),body={id:0,x:90,y:100,radius:host.compact?26:17,vx:130,vy:85},ready=frameGate();
  const doc=canvas.ownerDocument,win=doc.defaultView;
  let frame=0,last=0,active=true,activity,pulse=-1;
  function draw(now){
   frame=0;if(!active||doc.hidden||activity?.isActive()===false)return;
   frame=win.requestAnimationFrame(draw);if(!ready(now))return;
   const dt=last?Math.min(.05,(now-last)/1000):0;last=now;
-  const ratio=qualityPixelRatio(doc.body.dataset.quality,win.devicePixelRatio||1),width=Math.max(1,canvas.clientWidth),height=Math.max(1,canvas.clientHeight),scale=Math.max(180/height,(host.thumbnail?280:400)/width),worldHeight=height*scale,worldWidth=width*scale;
+  const ratio=qualityPixelRatio(doc.body.dataset.quality,win.devicePixelRatio||1),width=Math.max(1,canvas.clientWidth),height=Math.max(1,canvas.clientHeight),scale=Math.max((host.compact?160:180)/height,(host.compact?160:host.thumbnail?280:400)/width),worldHeight=height*scale,worldWidth=width*scale;
   visual.configure(host.loadout());
   if(host.thumbnail){
-   const t=visual.elapsed,rx=Math.max(0,worldWidth/2-72),ry=Math.max(0,worldHeight/2-72);
+   const t=visual.elapsed,padding=host.compact?54:72,rx=Math.max(0,worldWidth/2-padding),ry=Math.max(0,worldHeight/2-padding);
    body.x=worldWidth/2+(host.thumbnail==='trail'?Math.sin(t*2)*rx:0);body.y=worldHeight/2+(host.thumbnail==='trail'?Math.sin(t*4)*ry:0);
    body.vx=Math.cos(t*2)*rx*2;body.vy=Math.cos(t*4)*ry*4;
    if(host.thumbnail==='bounce'&&Math.floor(t/.9)!==pulse){pulse=Math.floor(t/.9);visual.hit(body.x,body.y);bubbleHit(membrane,body.radius,1,0,150);}

@@ -18,7 +18,7 @@ Unlock & Equip purchases a skin once. Owned skins can be equipped freely. Origin
 
 ## Trails and Impacts
 
-Open **Player → Trails** or **Impacts**. Tap a style to see an animated preview before buying. The preview stays visible while you scroll the choices. Each card animates the actual effect, and the Player buttons animate your equipped styles. Hidden previews pause and keep their state. Trails follow your moving player; impacts appear at player contacts and fade away smoothly.
+Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons also animate your equipped styles. Hidden previews pause and keep their state. Trails follow your moving player; impacts appear at player contacts and fade away smoothly.
 
 - Common styles cost 60 Points.
 - Rare styles cost 120 Points.

@@ -1,7 +1,7 @@
 import {cosmeticGet,cosmeticLoadout} from './cosmetic.js?v=2bb18d2e076499e68b09a42197f9a740fe84fa04b929d8919c5848590fd93936';
-import {cosmeticThumbnailMount} from './cosmetic-preview.js?v=64bd91987a14454b6ba9d32f1401286687fd689f1507827d8b092df65adea08f';
+import {cosmeticThumbnailMount} from './cosmetic-preview.js?v=2dd0c55658f00a37af933997e25796ccda83d4068583e78edd42fd55a33be8f3';
 import {profileName} from './profile.js?v=ff3af513f440e9b41048a058ead26903ec9c9e5006b2c39da30f534cd339ab33';
-import {skinOptions} from './skin-ui.js?v=71c5169716c1c488e39fd9abf49ef5779b729eec30d9577039f6b9ce2e8123c5';
+import {skinOptions} from './skin-ui.js?v=015b3128ea26811049c14fcdd4b661041dd785f96af67e9d41c05f918117ffb5';
 import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=f6a2f88366df07d470289950dc3f210a87107edc99259fc29ce505ba69a2567a';
 import { screenHeader } from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
 import { buttonHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';

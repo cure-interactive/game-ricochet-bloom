@@ -16,10 +16,10 @@
 #startup-report{margin-top:18px;text-align:left;max-width:100%}
 #startup-report summary{min-height:44px;padding:12px 0;cursor:pointer}
 #startup-details{white-space:pre-wrap;overflow-wrap:anywhere;user-select:text;-webkit-user-select:text;font-size:12px}
-body[data-startup=loading]>:not(#startup):not(script),body[data-startup=failed]>:not(#startup):not(script){visibility:hidden}
+body[data-startup=loading]>:not(#startup):not(#development-profile-bar):not(script),body[data-startup=failed]>:not(#startup):not(script){visibility:hidden}
 body[data-startup=failed] .startup-bubbles,body[data-startup=failed] .startup-bubbles i{animation:none}
 body[data-startup=entering]>:not(#startup){pointer-events:none}
-body[data-startup=entering]>:not(#startup):not(#main-menu):not(#menu-background):not(script){visibility:hidden}
+body[data-startup=entering]>:not(#startup):not(#main-menu):not(#menu-background):not(#development-profile-bar):not(script){visibility:hidden}
 body[data-startup=entering] #startup{animation:startup-exit 2.1s ease both}
 body[data-startup=entering] #menu-background{animation:startup-reveal 1.4s ease both}
 body[data-startup=entering] .home-content h1{animation:startup-arrive .85s .95s cubic-bezier(.2,.7,.2,1) both}

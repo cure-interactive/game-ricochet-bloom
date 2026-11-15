@@ -8,7 +8,7 @@
   padding-bottom: max(12px, var(--content-safe-bottom,var(--safe-area-bottom,env(safe-area-inset-bottom))));
 }
 :root body[data-menu-mode=home] :is(dialog,#tree-dialog)[open],
-:root body :is(#tree-dialog, #player-upgrade-dialog, #campaign-dialog, #skin-dialog, #reward-dialog)[open] {
+:root body :is(#tree-dialog, #player-upgrade-dialog, #campaign-dialog, #skin-dialog,#cosmetic-dialog, #reward-dialog)[open] {
   padding-top: var(--safe-area-top,env(safe-area-inset-top));
 }
 /* Full-width action surfaces form the bottom edge, below floating navigation.
@@ -24,7 +24,7 @@
 @media(max-height:500px) {
   :root body dialog:has(> :is(.campaign-footer, .reward-footer, .tree-map-hint)) > .screen-heading { margin-bottom: 6px; }
 }
-:root body #skin-dialog .skin-scroll,
+:root body :is(#skin-dialog,#cosmetic-dialog) .skin-scroll,
 :root body #wiki-dialog .wiki-article { padding-bottom: 24px; }
 :root body #development-dialog.standard-dialog { padding: 0; }
 :root body[data-menu-mode=home] #development-dialog.standard-dialog { padding-top: var(--safe-area-top,env(safe-area-inset-top)); }
@@ -121,7 +121,7 @@ body[data-development=true]:not([data-screen=drift]):not([data-screen=drift-paus
 #development-profile-bar::backdrop{background:transparent;pointer-events:none}
 :root body[data-development=true] dialog[open]{top:0;bottom:var(--profile-bottom-space,0px);max-height:calc(var(--app-height,100dvh) - 16px)}
 :root body[data-development=true][data-menu-mode=home] :is(dialog,#tree-dialog)[open],
-:root body[data-development=true] :is(#tree-dialog,#player-upgrade-dialog,#campaign-dialog,#skin-dialog,#reward-dialog)[open]{inset:0 0 var(--profile-bottom-space,0px);height:var(--app-height,100dvh);max-height:var(--app-height,100dvh)}
+:root body[data-development=true] :is(#tree-dialog,#player-upgrade-dialog,#campaign-dialog,#skin-dialog,#cosmetic-dialog,#reward-dialog)[open]{inset:0 0 var(--profile-bottom-space,0px);height:var(--app-height,100dvh);max-height:var(--app-height,100dvh)}
 
 /* Development owns the outermost edge and safe area; action bars meet it. */
 :root body[data-development=true] :is(dialog, #tree-dialog) > :is(.campaign-footer, .reward-footer) { padding-bottom: 12px; }
