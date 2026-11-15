@@ -1,3 +1,4 @@
+import {bubblePressure} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
 import {gameCreate,launch,physicsStep,powerMarkers,RULE} from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
 
 // Only the aiming decision and delay are menu-specific. The detached session
@@ -13,20 +14,17 @@ export function menuPoolPoint(x,y,width,height){
   const {portrait,scale}=menuPoolView(width,height),dx=(x-width/2)/scale,dy=(y-height/2)/scale;
   return {x:RULE.width/2+(portrait?dy:dx),y:RULE.height/2+(portrait?-dx:dy)};
 }
-function repel(body,point,force){
-  const dx=body.x-point.x,dy=body.y-point.y,d=Math.hypot(dx,dy),angle=body.id*2.39996;
-  const nx=d>.01?dx/d:Math.cos(angle),ny=d>.01?dy/d:Math.sin(angle);
-  body.vx+=nx*force;body.vy+=ny*force;
+function repel(body,point,kind,seconds=1,age=0){
+  const hit=bubblePressure(body,point,kind,seconds,age);if(!hit)return null;
+  body.vx+=hit.vx;body.vy+=hit.vy;
   const speed=Math.hypot(body.vx,body.vy);if(speed>1100){body.vx*=1100/speed;body.vy*=1100/speed;}
-  // The membrane normal faces the contact; it is opposite the outward push.
-  return {id:body.id,nx:-nx,ny:-ny,speed:force};
+  return {id:body.id,nx:hit.nx,ny:hit.ny,speed:hit.speed};
 }
 export function menuPoolTap(pool,point){
   if(!Number.isFinite(point.x)||!Number.isFinite(point.y))return [];
   const hits=[];
   for(const body of pool.game.bodies){
-    const d=Math.hypot(body.x-point.x,body.y-point.y),falloff=Math.max(0,1-d/280);
-    if(falloff)hits.push(repel(body,point,420*falloff*falloff+(d<=body.radius?520:0)));
+    const hit=repel(body,point,'tap');if(hit)hits.push(hit);
   }
   pool.pressure.push({...point,age:0});if(pool.pressure.length>8)pool.pressure.shift();
   return hits;
@@ -52,13 +50,11 @@ export function menuPoolStep(pool,elapsed,autoplay=true){
     }
     for(const point of pool.contacts.values()){
       for(const body of pool.game.bodies){
-        const falloff=Math.max(0,1-Math.hypot(body.x-point.x,body.y-point.y)/160);
-        if(falloff)repel(body,point,1400*falloff*falloff*RULE.step);
+        repel(body,point,'hold',RULE.step);
       }
     }
     for(const point of pool.pressure){
-      const fade=Math.max(0,1-point.age/1.25);
-      for(const body of pool.game.bodies){const falloff=Math.max(0,1-Math.hypot(body.x-point.x,body.y-point.y)/320);if(falloff)repel(body,point,1000*falloff*falloff*fade*RULE.step);}
+      for(const body of pool.game.bodies)repel(body,point,'pulse',RULE.step,point.age);
       point.age+=RULE.step;
     }
     pool.pressure=pool.pressure.filter(point=>point.age<1.25);

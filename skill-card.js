@@ -1,7 +1,7 @@
 import {escapeHTML as escape} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import {skillIconHTML,rarityIconHTML,typeIconHTML} from './skill-icon.js?v=cae5624a7b3a8d355c4549dea20f5c012ddc77b8a3a20134de48060b7479d809';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
+import {skillIconHTML,rarityIconHTML,typeIconHTML} from './skill-icon.js?v=aa6492de0e8979e2f38bd1c0e4b0a726316bd3072c7c6ea38ecce7a9023f636e';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=c80973e44aaefb9769e151ec4746d8d0a0a1f5288dcb1c3e24c1fac2286b0658';
 import {tooltipPosition} from './skill-comparison.js?v=0944d2758f0a683a0ff6d11a4559bf2dbb188ddf8639a2d34a9cbbf894400eff';
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 

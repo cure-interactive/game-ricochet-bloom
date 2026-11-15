@@ -1,3 +1,5 @@
+import {bubbleContactMount as menuContactMount} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
+export {menuContactMount};
 import {poolBubbleRender} from './pool-bubble.js?v=e538de4e23539e2d7f78a503e1ec86307f2070893736d52a1a816ec8109565af';
 import {freePlayCreate,freePlayBuild} from './free-play.js?v=409e1eb57ba278752223f7eb788efb6deba4562df6daf6e206ef5067994254b6';
 import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
@@ -6,7 +8,7 @@ import {menuMusicCreate} from './menu-music.js?v=5260d30495daa3dbaf63b0ba7a3a570
 import {PowerVisual} from './power-visual.js?v=4a5ad715cee03b1a9f5cc7902f7a75de11b9d5d1dc9164e8605077b35d5bc99f';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
 import { bubbleCreate, bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=94ff6ef76160419ca541ccd701cd0e25eebaa2a442695190294cbbed1c369e8a';
+import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=a5ed2d2493c9c0b42afc144cd7c629a1a1a90e62d06cef37694428adee94911b';
 
 export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),skins=new Map(),powerVisual=new PowerVisual();
@@ -84,19 +86,4 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
   for(const event of ['pointerdown','keydown'])document.addEventListener(event,()=>{if(active&&!document.hidden)music.unlock();},{capture:true,passive:true});
   menuContactMount(background,document,window);
   return background;
-}
-
-// Observe input without capture ownership or cancellation: scrolling, buttons and
-// the skill-tree camera keep their normal gestures. Touch events survive scroll.
-export function menuContactMount(background,doc,win){
-  const options={capture:true,passive:true};
-  doc.addEventListener('touchstart',event=>{for(const touch of event.changedTouches)background.contact(`touch:${touch.identifier}`,touch.clientX,touch.clientY,true);},options);
-  doc.addEventListener('touchmove',event=>{for(const touch of event.touches)background.contact(`touch:${touch.identifier}`,touch.clientX,touch.clientY);},options);
-  const releaseTouches=event=>{for(const touch of event.changedTouches)background.release(`touch:${touch.identifier}`);};
-  doc.addEventListener('touchend',releaseTouches,options);doc.addEventListener('touchcancel',releaseTouches,options);
-  doc.addEventListener('pointerdown',event=>{if(event.pointerType!=='touch'&&event.button===0)background.contact(event.pointerId,event.clientX,event.clientY,true);},options);
-  doc.addEventListener('pointermove',event=>{if(event.pointerType==='touch')return;if(event.buttons&1)background.contact(event.pointerId,event.clientX,event.clientY);else background.release(event.pointerId);},options);
-  const releasePointer=event=>{if(event.pointerType!=='touch')background.release(event.pointerId);};
-  for(const name of ['pointerup','pointercancel','lostpointercapture'])doc.addEventListener(name,releasePointer,options);
-  win.addEventListener('blur',()=>background.clear());
 }

@@ -4,11 +4,11 @@ import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4
 export function skinPreviewHTML(name){
  return `<div class="skin-preview skin-preview-large skin-preview-interactive"><i role="button" tabindex="0" aria-label="${escapeHTML(name)} player preview. Drag or tap to bounce; arrow keys also move it."><player-bubble></player-bubble></i></div>`;
 }
-export function skinSpringStep(state,seconds){
+export function skinSpringStep(state,seconds,{stiffness=150,damping=12}={}){
  const next={...state};
  for(let remaining=Math.min(.05,Math.max(0,seconds));remaining>0;){
   const dt=Math.min(remaining,1/120);remaining-=dt;
-  for(const axis of ['x','y']){const v=axis==='x'?'vx':'vy';next[v]+=(-150*next[axis]-12*next[v])*dt;next[axis]+=next[v]*dt;}
+  for(const axis of ['x','y']){const v=axis==='x'?'vx':'vy';next[v]+=(-stiffness*next[axis]-damping*next[v])*dt;next[axis]+=next[v]*dt;}
  }
  if(Math.hypot(next.x,next.y)<.08&&Math.hypot(next.vx,next.vy)<.4)return {x:0,y:0,vx:0,vy:0};
  return next;
@@ -45,7 +45,7 @@ export function skinPreviewMount(element,{gentle=()=>false}={}){
   if(!reduced()){const dx=e.clientX-pointer.lastX,dy=e.clientY-pointer.lastY,d=Math.hypot(dx,dy);if(d>0)bubble?.kick?.(-dx/d,-dy/d,Math.min(160,d*12));}
   pointer.lastX=e.clientX;pointer.lastY=e.clientY;
  }
- function up(e){if(e.pointerId!==pointer?.id)return;const moved=pointer.moved;releaseCapture();if(moved)animate();else nudge();}
+ function up(e){if(e.pointerId!==pointer?.id)return;releaseCapture();animate();} // The shared pressure field owns pointer-tap direction.
  function cancel(e){if(e.pointerId===pointer?.id)reset();}
  function key(e){const direction={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],Enter:[0,-1],' ':[0,-1]}[e.key];if(!direction||pointer)return;e.preventDefault();nudge(...direction);}
  function click(e){if(e.detail===0)nudge();} // Assistive activation without pointer events.
