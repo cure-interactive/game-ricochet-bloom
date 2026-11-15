@@ -1,5 +1,5 @@
 [data-diagnostics]{margin-top:18px;text-align:left;min-width:0}
-#settings-dialog [data-diagnostics]{display:grid;gap:14px;margin:4px 0;padding:16px 0;border-block:1px solid #badfd238}
+#settings-dialog [data-diagnostics]{display:grid;gap:14px;margin:0;padding:0;border:0}
 #settings-dialog [data-diagnostics]>:is(h3,p){margin:0}
 #settings-dialog [data-diagnostics-copy]{width:100%}
 [data-diagnostics-copy]{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:12px 18px;border:1px solid #749eaa77;border-radius:12px;background:#204352;color:#e2f2ee;font:inherit;cursor:pointer;touch-action:manipulation}

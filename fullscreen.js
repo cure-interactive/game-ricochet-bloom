@@ -1,5 +1,5 @@
-import { buttonLabel } from './ui-icon.js?v=888786437685208af4de5b05ebc18f1a101f52f9783e909022cd0ea8e19dc5a6';
-import { assetURL } from './asset.js?v=cb684ea278b2dc6b1457e951b71d22eea4538d738b252e9abd7f743632acdfd4';
+import { buttonLabel } from './ui-icon.js?v=8551bed13f7a48d36a919c6b5d9290c16f3a19271f3ead8585eb9fdb1abdae6b';
+import { assetURL } from './asset.js?v=743039c3405a2515f971f201afe1964500b749ddd36b5142733c78e2ae16bc29';
 import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 
 export function displayDeviceIcon(win){
@@ -98,7 +98,7 @@ export function fullscreenMount(doc,win) {
   let pending=false,guideKey='';
   const render=()=>{
     const state=fullscreenState(doc,win),options=displayOptions(doc,win);
-    for(const button of buttons){buttonLabel(button,state.label,state.icon);button.disabled=pending||state.action==='help';}
+    for(const button of buttons){if(button.type==='checkbox')button.checked=state.action==='exit'||!!state.browser;else buttonLabel(button,state.label,state.icon);button.disabled=pending||state.action==='help';}
     doc.getElementById('display-mode').textContent=options.mode;
     doc.getElementById('display-description').textContent=options.description;
     doc.getElementById('display-app-title').textContent=options.title;
@@ -107,7 +107,7 @@ export function fullscreenMount(doc,win) {
     const key=options.title+options.open;
     if(key!==guideKey){details.open=options.open;guideKey=key;}
   };
-  for(const button of buttons)button.addEventListener('click',async()=>{
+  for(const button of buttons)button.addEventListener(button.type==='checkbox'?'change':'click',async()=>{
     if(pending||fullscreenState(doc,win).action==='help')return;
     pending=true;message.textContent='';render();
     const result=await fullscreenToggleAsync(doc,win);

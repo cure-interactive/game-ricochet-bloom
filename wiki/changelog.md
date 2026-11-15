@@ -3,7 +3,34 @@
 See what changed in each version. Open a version for its player-facing updates.
 
 <!-- development -->
-Developer notes appear inside each version below.
+Open Developer Notes inside a version for its technical changes.
+<!-- /development -->
+
+## v3.26.0
+
+Build: 2026-11-15 16:31:35 UTC
+
+### Player Changes
+
+- Keep Trails and Bounces previews visible while scrolling the choices; see actual effect thumbnails on cards and equipped Player buttons.
+- Group Appearance options together, with Skills and Stats paired below. Owned skins show a clean equip panel without purchase Points or unnecessary scrolling.
+- Give cosmetic rarities distinctive materials and effects, from restrained Common styles to reactive Legendary artwork and evolving Mythic layers. Cosmetics still grant no gameplay advantage.
+- Make scrolling move player icons gently and let previews return smoothly to center. Hidden previews retain their state while animation pauses.
+- Keep moving Main Menu and Casual bubbles within the screen's safe area.
+- Make held scrollbars twice as thick while keeping them inset in the existing blank space.
+- Disable battery and motion options when usable device data is unavailable. Full Screen now uses a checkbox that follows the browser's actual state.
+- Refine Get Help button styling, Settings separators, and the filled Bubble and Bulldozer icons.
+
+<!-- development -->
+### Developer Notes
+
+- Keep Developer Notes collapsed inside each version until opened.
+- Share visibility gating across player bubbles, skin tethers and cosmetic previews; preserve state through intersection, CSS, dialog and page suspension.
+- Bound scroll pressure targets and damp positional return; keep tap/drag membrane response and gameplay physics separate.
+- Share static thumbnail drawing with live cosmetic rendering, preserve preview aspect ratio and handle unset profile colors.
+- Apply pool safe-area offsets and Development reservation once, using the same canvas bounds for simulation, rendering and input.
+- Synchronize fullscreen state and capability controls; cover unavailable, late, interrupted and rejected browser responses.
+- Open all ancestor disclosures for Wiki deep links while preserving the Development-only notes gate.
 <!-- /development -->
 
 ## v3.25.1

@@ -1,6 +1,6 @@
 import { POWERS, powerAllowance, powerMarkers } from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
-import { assetURL } from './asset.js?v=cb684ea278b2dc6b1457e951b71d22eea4538d738b252e9abd7f743632acdfd4';
-import { iconHTML } from './ui-icon.js?v=888786437685208af4de5b05ebc18f1a101f52f9783e909022cd0ea8e19dc5a6';
+import { assetURL } from './asset.js?v=743039c3405a2515f971f201afe1964500b749ddd36b5142733c78e2ae16bc29';
+import { iconHTML } from './ui-icon.js?v=8551bed13f7a48d36a919c6b5d9290c16f3a19271f3ead8585eb9fdb1abdae6b';
 
 // An earned slot is a capacity, not a promise that another offer exists.
 // Waves can have fewer live bubbles than slots; small power pools can repeat.

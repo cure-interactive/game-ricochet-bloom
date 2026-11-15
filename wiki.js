@@ -1,12 +1,12 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { screenHeader } from './screen-header.js?v=b0d0290acde6740ba753e57b09f4a348cb46e78967253fc0bddd3ef9d9ea5ab0';
+import { screenHeader } from './screen-header.js?v=15bce8133223b9e41fb2955f06dcf847cc767d4f64307c602442b86117ae056e';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { iconHTML } from './ui-icon.js?v=888786437685208af4de5b05ebc18f1a101f52f9783e909022cd0ea8e19dc5a6';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=827f435b0729c04e109000b943c5cb058824959443cbba4e1bbc0d3d78afc27c';
+import { iconHTML } from './ui-icon.js?v=8551bed13f7a48d36a919c6b5d9290c16f3a19271f3ead8585eb9fdb1abdae6b';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=a721655a348115bd186006cfbf2d5ddb8951d9bb7c561ef850b67d8cd6683003';
 
 export const WIKI_PAGES = Object.freeze({
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=3c71b9e1f27c4baea03abb6a38e1dc651b22f8e46e1e28850d6f8507df29b6ce' },
-  player: { title: 'Player', url: './wiki/player.md?v=73c3e18651a8bbec2e47b32bef45c999e6c5c8d466d0a35051147dcf853e4642' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=dbcce8bff26665e3f43a3165f11d2de4ae7d3831875f4e132bb060471c3b6460' },
+  player: { title: 'Player', url: './wiki/player.md?v=8f271739e8e428d0b8914318f506d163a2fa52137232c524d020700dcaa2239e' },
   developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=5a192f78afff1d6cd08db60e29cd76208c9b6dd296ed2cdf78e7ed1b3b8ec237' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=9cf0c1f86dc0b5d81237bff4186f4c3677f214f72ca0deafb00e5f1b83cc5e1a' },
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=688714c1fe057d6c0da78a5f38b32cd4bc3fe0e712812b248e9d7552b6c54daf' },
@@ -14,7 +14,7 @@ export const WIKI_PAGES = Object.freeze({
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=bcc53ccc28d9448fac1a1999a369dd0894c4055ec043e93d2617ada4021b42af' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=93851051e18b53b945671d152d5a8493afa9944c19c22571b4c65ac2f6e7c01e' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=3f27ded252b472f8de40d8e3e5b1378677d19ea71c7bf87c425d203b852d1576' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=543ce8c11fb5723231312405b2d53945c5e12fa5d38a6b72224c5e12dcfa3e8a' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=a5a4ffc4af204a9d661881069bd1adbd288db6a1ea3048bd381751a1a98e76a6' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=7a28e512643ce0faf78d4f9020b8a6e8d56a536f4d64caa116560a40390460e3' },
@@ -91,9 +91,16 @@ export function renderWikiPage(source,page,development=false){
   // provide touch/keyboard access without another navigation or search model.
   if(page==='changelog'){
     let version=0;
-    return html.split(/(?=<h2 )/).map(part=>part.replace(/^(<h2 [\s\S]*?<\/h2>)([\s\S]*)$/,(_,heading,body)=>`<details class="wiki-topic-group wiki-release-group"${version++===0?' open':''}><summary>${heading}</summary><div class="wiki-release-body">${body}</div></details>`)).join('\n');
+    return html.split(/(?=<h2 )/).map(part=>part.replace(/^(<h2 [\s\S]*?<\/h2>)([\s\S]*)$/,(_,heading,body)=>{
+      const content=body.replace(/(<h3 id="developer-notes"[^>]*>[\s\S]*?<\/h3>)([\s\S]*?)(?=<h3 |$)/g,'<details class="wiki-developer-notes"><summary>$1</summary>$2</details>');
+      return `<details class="wiki-topic-group wiki-release-group"${version++===0?' open':''}><summary>${heading}</summary><div class="wiki-release-body">${content}</div></details>`;
+    })).join('\n');
   }
   return page==='contents'?html.split(/(?=<h2 )/).map(part=>part.replace(/^(<h2 [\s\S]*?<\/h2>)([\s\S]*)$/, '<details class="wiki-topic-group"><summary>$1</summary>$2</details>')).join('\n'):html;
+}
+export function revealWikiHeading(heading){
+ for(let group=heading.closest?.('details');group;group=group.parentElement?.closest?.('details'))group.open=true;
+ heading.scrollIntoView({block:'start'});
 }
 export function wikiMount(host) {
   const dialog=document.createElement('dialog');dialog.id='wiki-dialog';dialog.setAttribute('aria-labelledby','wiki-title');
@@ -101,7 +108,7 @@ export function wikiMount(host) {
   document.body.append(dialog);
   const article=dialog.querySelector('article'), title=dialog.querySelector('h2'), contents=dialog.querySelector('[data-wiki-contents]');
   let current={page:'wiki',anchor:''}, request=null;const history=pageHistory(current,target=>target.page);
-  function position(anchor){const heading=anchor&&article.querySelector('#'+anchor);if(heading){const group=heading.closest?.('details');if(group)group.open=true;heading.scrollIntoView({block:'start'});}else article.scrollTop=0;}
+  function position(anchor){const heading=anchor&&article.querySelector('#'+anchor);if(heading)revealWikiHeading(heading);else article.scrollTop=0;}
   const available=page=>wikiPageAvailable(page,host.development?.()===true);
   async function load(target, remember=true) {
     if(!available(target.page)){target={page:'wiki',anchor:''};history.reset(target);remember=false;}

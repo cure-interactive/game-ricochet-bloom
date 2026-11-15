@@ -119,7 +119,7 @@ body[data-menu-mode=home] #tree-sheet{height:var(--app-height,100dvh);max-height
 @media(max-height:450px){body[data-menu-mode=home] dialog.standard-dialog>.dialog-heading{padding-block:8px}body[data-menu-mode=home] dialog.standard-dialog>.dialog-body{padding-block:16px}}
 #main-menu{isolation:isolate;z-index:5;background:transparent}
 #menu-background{position:fixed;inset:0;z-index:4;pointer-events:none;overflow:hidden;background:#080e1c}
-.home-pool{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.home-pool{position:absolute;top:var(--safe-area-top,env(safe-area-inset-top));left:var(--safe-area-left,env(safe-area-inset-left));width:calc(100% - var(--safe-area-left,env(safe-area-inset-left)) - var(--safe-area-right,env(safe-area-inset-right)));height:calc(100% - var(--safe-area-top,env(safe-area-inset-top)) - var(--content-safe-bottom,var(--safe-area-bottom,env(safe-area-inset-bottom))) - var(--profile-bottom-space,0px));pointer-events:none}
 #menu-background:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#080e1c08 15%,#080e1c66 48%,#080e1c80 76%)}
 .home-content{grid-column:2;position:relative;text-shadow:0 2px 12px #080e1c}
 .home-primary button{text-shadow:none}
@@ -195,15 +195,15 @@ body[data-menu-mode=home] #tree-sheet{height:var(--app-height,100dvh);max-height
 .player-viewer{display:flex;flex-direction:column;align-items:center;min-width:0;text-align:center}
 .player-viewer-preview{width:100%;height:clamp(260px,44vh,420px);display:grid;place-items:center;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--skin-color) 8%,transparent),transparent 68%)}
 .player-viewer-preview .skin-preview-large{width:100%;height:100%;min-height:0}
-.player-viewer-preview .skin-preview-large i{width:clamp(160px,24vw,240px);height:clamp(160px,24vw,240px)}
+.player-viewer-preview .skin-preview-large i{width:clamp(110px,22dvh,200px);height:clamp(110px,22dvh,200px)}
 .player-viewer-name{font-size:26px;font-weight:500;margin:12px 0 4px}
 .player-menu-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%;container:player-actions/inline-size}
-.player-menu-actions [data-player-open="skills"]{grid-column:1/-1}
+.player-menu-options{display:flex;flex-direction:column;gap:22px;width:100%;min-width:0}.player-menu-options h3{margin:0 0 10px;font-size:13px;font-weight:500;color:#aac8cc}.player-appearance [data-player-open="skins"]{grid-column:1/-1}.player-progress{padding-top:16px;border-top:1px solid #789b9f44}.player-effect-thumbnail{display:block;width:76px;height:44px;min-height:0;max-height:none;object-fit:contain;background:transparent;pointer-events:none}.player-appearance button:not([data-player-open="skins"]){flex-direction:column;gap:0}.player-menu-options .player-progress button{min-height:60px;font-size:18px}
 @container player-actions (max-width:16rem){.player-menu-actions button{grid-column:1/-1}}
 .player-menu-actions button{display:flex;align-items:center;justify-content:center;gap:10px;min-width:0;min-height:88px;padding:20px 12px;border:1px solid #789b9f55;border-radius:18px;background:#14272f;color:#d9eae6;font:inherit;font-size:21px;cursor:pointer;text-align:left}
 .player-menu-actions .ui-icon{width:36px;height:36px;flex:none}
 .player-menu-actions button:hover{background:#1e3b41}.player-menu-actions button:focus-visible{outline:3px solid #eed496;outline-offset:3px}
-@media(max-width:650px){.player-menu-body{display:flex;flex-direction:column;gap:24px;padding:16px 22px 24px}.player-viewer{width:100%;flex:1;justify-content:center}.player-viewer-preview{height:clamp(230px,34vh,340px)}.player-menu-actions{gap:10px}.player-menu-actions button{min-height:64px;padding:12px 12px;font-size:18px}.player-menu-actions .ui-icon{width:30px;height:30px}.player-viewer-name{font-size:23px;margin-top:0}}
+@media(max-width:650px){.player-menu-body{display:flex;flex-direction:column;gap:16px;padding:12px 20px 16px}.player-viewer{width:100%;flex:1;justify-content:center}.player-viewer-preview{height:clamp(170px,26dvh,260px)}.player-menu-actions{gap:10px}.player-menu-actions button{min-height:64px;padding:12px 12px;font-size:18px}.player-menu-actions .ui-icon{width:30px;height:30px}.player-viewer-name{font-size:23px;margin-top:0}}
 @media(max-height:500px) and (min-width:651px){.player-menu-body{padding:14px 32px;gap:32px}.player-viewer-preview{height:200px}.player-viewer-preview .skin-preview-large i{width:140px;height:140px}.player-viewer-name{font-size:20px;margin:0}.player-menu-actions button{min-height:64px;padding:12px 12px}}
 
 .home-content h1 .home-version{display:block;margin-top:12px;color:#aec3c8;font:500 11px/19px 'Fredoka',sans-serif;letter-spacing:.3px}
@@ -216,8 +216,8 @@ body[data-menu-mode=home] #tree-sheet{height:var(--app-height,100dvh);max-height
 .player-name-input{width:100%;background:#14272f;user-select:text;-webkit-user-select:text}
 
 /* Drift reuses the full-size menu pool, with just one safe-area control. */
-#drift-controls{position:fixed;inset:0 0 auto;height:var(--viewport-height,100dvh);z-index:8;pointer-events:none}
-#drift-pause{position:absolute;top:auto;bottom:max(12px,var(--safe-area-bottom,env(safe-area-inset-bottom)));right:max(12px,var(--safe-area-right,env(safe-area-inset-right)));width:48px;height:48px;display:flex;align-items:center;justify-content:center;gap:0;padding:0;border:1px solid #97b9b666;border-radius:50%;background:#102632c9;color:#e2f2ee;pointer-events:auto;backdrop-filter:blur(12px)}
+#drift-controls{position:fixed;inset:0 0 auto;height:var(--app-height,100dvh);z-index:8;pointer-events:none}
+#drift-pause{position:absolute;top:auto;bottom:max(12px,var(--content-safe-bottom,var(--safe-area-bottom,env(safe-area-inset-bottom))));right:max(12px,var(--safe-area-right,env(safe-area-inset-right)));width:48px;height:48px;display:flex;align-items:center;justify-content:center;gap:0;padding:0;border:1px solid #97b9b666;border-radius:50%;background:#102632c9;color:#e2f2ee;pointer-events:auto;backdrop-filter:blur(12px)}
 body[data-left-handed=true] #drift-pause{right:auto;left:max(12px,var(--safe-area-left,env(safe-area-inset-left)))}
 body:is([data-screen=drift],[data-screen=drift-pause]) #menu-background:after{display:none}
 body:is([data-screen=drift],[data-screen=drift-pause]) .home-pool{opacity:1}

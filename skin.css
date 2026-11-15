@@ -17,10 +17,10 @@
 
 .skin-library[hidden],.skin-detail[hidden]{display:none}
 .skin-scroll.is-detail{display:flex;flex-direction:column}
-.skin-detail{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;min-height:min-content;width:100%;max-width:440px;margin:auto}
+.skin-detail{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:min-content;width:100%;max-width:440px;margin:auto}
 .skin-preview-large{flex:1;min-height:180px}
-.skin-preview-large i{width:clamp(140px,42vw,200px);height:clamp(140px,42vw,200px);position:relative}
- .skin-selection{flex:none;width:100%;padding:20px;border:1px solid #65828a66;border-radius:20px;background:linear-gradient(130deg,color-mix(in srgb,var(--skin-color) 10%,#132934),#10232e)}
+.skin-preview-large i{width:clamp(110px,29dvh,180px);height:clamp(110px,29dvh,180px);position:relative}
+ .skin-selection{flex:none;width:100%;padding:16px;border:1px solid #65828a66;border-radius:20px;background:linear-gradient(130deg,color-mix(in srgb,var(--skin-color) 10%,#132934),#10232e)}
 .skin-selection.is-equipped{border-color:#b4f4db88}
 .skin-selection-title{display:flex;align-items:center;gap:12px}
 .skin-selection-title>.ui-icon{width:28px;height:28px;color:#b4f4db}
@@ -43,7 +43,7 @@
 :is([aria-pressed="true"],[aria-selected="true"])>.ui-icon[data-icon="player-skin"]{--player-bubble-outline:1}
 
 /* The outer control retains its stable hit target while the membrane deforms. */
-.skin-preview-interactive{padding:60px;min-height:280px;overflow:visible}
+.skin-preview-interactive{padding:40px;min-height:220px;overflow:visible}
 .skin-preview-interactive i{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
 .skin-preview-interactive i.is-dragging{cursor:grabbing}
 .skin-preview-interactive i:focus-visible{outline:3px solid #eed496;outline-offset:12px}

@@ -1,4 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="#e9ffed">
-  <title>Bubble</title>
-  <circle cx="21" cy="28" r="16" fill="none" stroke="#e9ffed" stroke-width="6"/><path d="M13 24q0-6 6-7" fill="none" stroke="#e9ffed" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="39" cy="8" r="5"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="#e9ffed"><title>Bubble</title><path fill-rule="evenodd" d="M21 10a18 18 0 1 1 0 36 18 18 0 0 1 0-36Zm0 7a2 2 0 0 0 0 4 7 7 0 0 0-7 7 2 2 0 0 0-4 0 11 11 0 0 1 11-11Z"/><path d="M39 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg>

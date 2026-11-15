@@ -1,14 +1,15 @@
-import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
+import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
 import {menuPoolView} from './menu-pool.js?v=0b5c07eac5ef4173f8d7da00f2fe5ee9727c47519b938fd37824f1538fccf955';
-import {skinSpringStep} from './skin-preview.js?v=e6fa5d2b4812a18e495e4f673ba1d1c774eb5140702e19298017892c8fe38991';
-import {bubbleRender,bubblePath} from './bubble-render.js?v=56ad9b5c32cff5579086a5ce1623df71697fea88d19a8a1dd70c710fc11b76bc';
+import {skinSpringStep} from './skin-preview.js?v=f6a2f88366df07d470289950dc3f210a87107edc99259fc29ce505ba69a2567a';
+import {bubbleRender,bubblePath} from './bubble-render.js?v=17568e8082c50add06a13b44e7a1f3b5d3a282771e4f420fb68c8fb14028695d';
+import {visualActivityMount} from './visual-activity.js?v=ca1926027ea9e579abb4052b949a9fce925b332e26c2fba1d6009efe4436bf1f';
 
 // Decorative instances own only visual state. The surrounding button or large
 // preview keeps its existing input, focus, navigation and progression contract.
-import {playerMotion} from './player-motion.js?v=c210823f435f420a067442185bdcdb36345840686de4305d81befdc695e92578';
+import {playerMotion} from './player-motion.js?v=577160ddcb2e76940b04bf9ae7ff772b6ea10e077ac294aaa5ce572fbd733ce7';
 export function registerPlayerBubble(win=window){
  if(win.customElements.get('player-bubble'))return;
  const motion=playerMotion(win);
@@ -34,19 +35,19 @@ export function registerPlayerBubble(win=window){
    }
    this.target=this.closest('button')||this;
    this.activate=()=>{if(!contacts.size)this.kick(0,1);};
-   this.change=()=>{if(this.visible)this.paint();this.request();};
+   this.change=()=>{this.activity?.refresh();if(this.canAnimate())this.paint();this.request();};
    this.visibility=()=>{if(this.ownerDocument.hidden){input.clear();this.halt();}else this.request();};
    this.scrollPositions=new Map();
    for(let ancestor=this.parentElement;ancestor;ancestor=ancestor.parentElement)this.scrollPositions.set(ancestor,{x:ancestor.scrollLeft||0,y:ancestor.scrollTop||0});
    this.scrolled=event=>{
     const previous=this.scrollPositions.get(event.target);if(!previous)return;
     const next={x:event.target.scrollLeft||0,y:event.target.scrollTop||0};this.scrollPositions.set(event.target,next);
-    if(!this.visible||this.ownerDocument.hidden)return;
+    if(!this.canAnimate())return;
     const dx=next.x-previous.x,dy=next.y-previous.y,distance=Math.hypot(dx,dy);if(!distance)return;
-    const impulse=Math.min(100,distance*28/Math.max(1,this.size)*8);
-    this.pressure.vx=Math.max(-180,Math.min(180,this.pressure.vx+dx/distance*impulse));
-    this.pressure.vy=Math.max(-180,Math.min(180,this.pressure.vy+dy/distance*impulse));
-    this.kick(-dx/distance,-dy/distance,impulse);
+    const impulse=Math.min(18,distance*28/Math.max(1,this.size)*1.2);
+    this.pressure.vx=Math.max(-18,Math.min(18,(dx/distance*impulse/9-this.pressure.x)*6));
+    this.pressure.vy=Math.max(-18,Math.min(18,(dy/distance*impulse/9-this.pressure.y)*6));
+    bubbleHit(this.membrane,14,-dx/distance,-dy/distance,impulse*.35);this.request();
    };
    this.ownerDocument.addEventListener('scroll',this.scrolled,true);
    this.target.addEventListener('focusin',this.activate);
@@ -60,15 +61,17 @@ export function registerPlayerBubble(win=window){
    this.preferences=new win.MutationObserver(this.change);
    // Skin colors can be overridden on a reward button, preview or active profile.
    for(let ancestor=this.parentElement;ancestor;ancestor=ancestor.parentElement)this.preferences.observe(ancestor,{attributes:true,attributeFilter:['class','style','aria-pressed','aria-selected','data-quality']});
+   this.activity=visualActivityMount(this,active=>{if(active)this.request();else this.halt();},{intersection:false});
   }
-  request(){if(!this.frame&&this.visible&&!this.ownerDocument.hidden&&this.isConnected)this.frame=win.requestAnimationFrame(time=>this.tick(time));}
+  canAnimate(){return this.visible&&!this.ownerDocument.hidden&&this.isConnected&&this.activity?.isActive()!==false;}
+  request(){if(!this.frame&&this.canAnimate())this.frame=win.requestAnimationFrame(time=>this.tick(time));}
   kick(x=0,y=1,speed=140){
    if(!this.membrane)return;
    bubbleHit(this.membrane,14,x,y,speed);this.bounce=-.9;this.request();
   }
   velocity(x,y){if(!this.body)return;this.body.vx=x;this.body.vy=y;if(x||y)this.request();}
   pressureHit(point,kind,dt=1,age=0){
-   if(!this.visible||this.ownerDocument.hidden)return;
+   if(!this.canAnimate())return;
    const r=this.getBoundingClientRect();if(!r.width||!r.height)return;
    const scale=menuPoolView(win.innerWidth,win.innerHeight).scale,unit=r.width/28;
    const body={id:this.phase,x:(r.left+r.width/2+this.pressure.x*unit)/scale,y:(r.top+r.height/2+this.pressure.y*unit)/scale,radius:r.width/2/scale};
@@ -81,7 +84,7 @@ export function registerPlayerBubble(win=window){
    this.request();
   }
   press(point){
-   if(!this.visible||this.ownerDocument.hidden)return;
+   if(!this.canAnimate())return;
    this.pressureHit(point,'tap');this.pulses.push({...point,age:0});if(this.pulses.length>8)this.pulses.shift();
   }
   halt(){
@@ -94,7 +97,7 @@ export function registerPlayerBubble(win=window){
    this.style.transform='';if(this.visible)this.paint();
   }
   tick(time){
-   this.frame=0;if(!this.isConnected||!this.visible||this.ownerDocument.hidden){this.halt();return;}
+   this.frame=0;if(!this.canAnimate()){this.halt();return;}
    if(!this.renderReady(time)){this.request();return;}
    const dt=this.last?Math.min(.05,(time-this.last)/1000):1/60;this.last=time;
    this.age+=dt;
@@ -103,7 +106,7 @@ export function registerPlayerBubble(win=window){
    this.pulses=this.pulses.filter(point=>point.age<1.25);
    const sensor=motion.sample();
    this.pressure.vx+=sensor.x*dt;this.pressure.vy+=sensor.y*dt;
-   this.pressure=skinSpringStep(this.pressure,dt,{stiffness:24,damping:5});
+   this.pressure=skinSpringStep(this.pressure,dt,{stiffness:24,damping:10});
    // Keep the membrane tethered inside its unchanged control target.
    const distance=Math.hypot(this.pressure.x,this.pressure.y),limit=10;
    if(distance>limit){const nx=this.pressure.x/distance,ny=this.pressure.y/distance;this.pressure.x=nx*limit;this.pressure.y=ny*limit;
@@ -125,14 +128,14 @@ export function registerPlayerBubble(win=window){
    this.request();
   }
   paint(){
-   if(!this.context||!this.size)return;
+   if(!this.context||!this.size||!this.canAnimate())return;
    const pixels=Math.ceil(this.size*3.6*qualityPixelRatio(this.ownerDocument.body.dataset?.quality,win.devicePixelRatio||1));
    if(this.canvas.width!==pixels||this.canvas.height!==pixels)this.canvas.width=this.canvas.height=pixels;
    const c=this.context;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pixels,pixels);c.setTransform(pixels/100.8,0,0,pixels/100.8,0,0);
    const style=win.getComputedStyle(this),color=style.getPropertyValue('--skin-color').trim()||'#f1f9d7';
    const body={...this.body,x:this.body.x+this.pressure.x,y:this.body.y+this.pressure.y};
    const points=bubbleOutline(this.membrane,body);
-   bubbleRender(c,body,points,color,{glowExtent:1.3,skinStyle:style.getPropertyValue('--skin-style').trim()||style.getPropertyValue('--player-skin-style').trim(),lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
+   bubbleRender(c,body,points,color,{glowExtent:1.3,skinTime:this.age,skinStyle:style.getPropertyValue('--skin-style').trim()||style.getPropertyValue('--player-skin-style').trim(),lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
    if(style.getPropertyValue('--player-bubble-outline').trim()==='1'){
     // A separate contour follows the membrane, leaving its luminous rim intact.
     const gap=.8+84/this.size;
@@ -141,7 +144,7 @@ export function registerPlayerBubble(win=window){
    }
   }
   disconnectedCallback(){
-   this.visible=false;this.halt();this.resize.disconnect();this.resize=null;this.intersection.disconnect();this.preferences.disconnect();
+   this.visible=false;this.halt();this.activity?.destroy();this.activity=null;this.resize.disconnect();this.resize=null;this.intersection.disconnect();this.preferences.disconnect();
    this.target.removeEventListener('focusin',this.activate);
    this.ownerDocument.removeEventListener('scroll',this.scrolled,true);this.scrollPositions.clear();
    instances.delete(this);if(!instances.size){unmount?.();unmount=null;}

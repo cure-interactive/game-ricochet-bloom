@@ -1,13 +1,13 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=971f8b3ef6ea7b181b3c91ef6411b9b21c431dd9f29b88db57a10fb1d2a63319';
+import {CosmeticVisual} from './cosmetic-visual.js?v=35ae279ae6932928562e960c4333af77f4f1afda10bf8702ea90f75ac7acae2c';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {bubbleRender} from './bubble-render.js?v=56ad9b5c32cff5579086a5ce1623df71697fea88d19a8a1dd70c710fc11b76bc';
-import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
+import {bubbleRender} from './bubble-render.js?v=17568e8082c50add06a13b44e7a1f3b5d3a282771e4f420fb68c8fb14028695d';
+import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 const renderReady=frameGate();
-import { gamemodeMount } from './gamemode-ui.js?v=a9dd449809aceeec7d71cf2797ef8a5515c9cf17e55c461e2380e024e9faa13e';
+import { gamemodeMount } from './gamemode-ui.js?v=22697ea136311b9c04e6ea37f91b4ee96103972c4a2c78d1b1850a21c4edfbd6';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=32365a20c578d3041ee46927bf0fbb1d7cae05b81eac19d73650d171b0df73c1';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=9792b2d8e2643e06247bd19cd073ef092a6535778d01d4ac3dae8a72dae97539';
 import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { screenHeader } from './screen-header.js?v=b0d0290acde6740ba753e57b09f4a348cb46e78967253fc0bddd3ef9d9ea5ab0';
+import { screenHeader } from './screen-header.js?v=15bce8133223b9e41fb2955f06dcf847cc767d4f64307c602442b86117ae056e';
 import { songKeep } from './song.js?v=86145f0ef4ef602700690f402f88b49e113f92abeae29e29e2d088858cdc446e';
 import { melodyDraw } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { experimentRewarded, experimentGoal, EXPERIMENT_RECIPES } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
@@ -15,7 +15,7 @@ import { experimentMedal, experimentRead, experimentSave, experimentWrite, exper
 import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialForGeneration,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=ee88fa6819c43397fd16a782519a3e055707b4f141bd667e1be4ec2db2f3209a';
 import { trialRead,trialWrite } from './trial-store.js?v=255056b814040c9a76665cbb7a364a84d8e3de0f2db46032210bf13e62f9f0ee';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { buttonHTML } from './ui-icon.js?v=888786437685208af4de5b05ebc18f1a101f52f9783e909022cd0ea8e19dc5a6';
+import { buttonHTML } from './ui-icon.js?v=8551bed13f7a48d36a919c6b5d9290c16f3a19271f3ead8585eb9fdb1abdae6b';
 const button=(id,label,icon='arrow-left')=>buttonHTML(label,icon,{id});
 const color={'music-note':'#a4f4cf','beat-gate':'#eb9bcd','sound-hazard':'#ff8b91',instrument:'#f2d279',keeper:'#ff8b91',gate:'#9ce6cf',power:'#c4a7ff',payload:'#ffb56e',player:'#f6f5cf',target:'#ed82bd',blast:'#ffb56e',fire:'#ff765f',gas:'#cadb78',cell:'#a4f4cf',cargo:'#8edbff',plug:'#c6b4ff',vent:'#bf89e8',mote:'#ec8ed7',mud:'#bba18c',spike:'#fa8c91'};
 export function trialMount(host){
@@ -76,7 +76,7 @@ export function trialMount(host){
     if(game.mode==='music')melodyDraw(game,ctx);
     cosmetic.render(ctx,document.body.dataset.quality==='low');
     for(const b of game.bodies.filter(b=>b.active)){
-      if(b.kind==='player'){const body={...b,radius:b.r};bubbleRender(ctx,body,bubbleOutline(playerMembrane,body),host.skin?.()||'#f1f9d7',{skinStyle:host.skinStyle?.(),lowQuality:document.body.dataset.quality==='low'});if(game.payloadState==='carried'){ctx.strokeStyle='#ffb56e';ctx.lineWidth=4;ctx.beginPath();ctx.arc(b.x,b.y,b.r+8,0,Math.PI*2);ctx.stroke();}continue;}
+      if(b.kind==='player'){const body={...b,radius:b.r};bubbleRender(ctx,body,bubbleOutline(playerMembrane,body),host.skin?.()||'#f1f9d7',{skinTime:cosmetic.elapsed,skinStyle:host.skinStyle?.(),lowQuality:document.body.dataset.quality==='low'});if(game.payloadState==='carried'){ctx.strokeStyle='#ffb56e';ctx.lineWidth=4;ctx.beginPath();ctx.arc(b.x,b.y,b.r+8,0,Math.PI*2);ctx.stroke();}continue;}
       ctx.save();ctx.translate(b.x,b.y);ctx.strokeStyle=color[b.kind];ctx.fillStyle=color[b.kind]+'35';ctx.lineWidth=2.5;
       if(['blast','gas'].includes(b.kind)){ctx.setLineDash([3,9]);ctx.globalAlpha=.15;ctx.beginPath();ctx.arc(0,0,b.kind==='gas'?160:140,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;ctx.setLineDash([]);}
       ctx.beginPath();if(b.kind==='spike'||b.kind==='mote'){for(let i=0;i<16;i++){const a=i*Math.PI/8,r=i%2?b.r*.65:b.r;ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}ctx.closePath();}else if(b.kind==='plug'){ctx.moveTo(0,-b.r);ctx.lineTo(b.r,0);ctx.lineTo(0,b.r);ctx.lineTo(-b.r,0);ctx.closePath();}else ctx.arc(0,0,b.r,0,Math.PI*2);ctx.fill();ctx.stroke();

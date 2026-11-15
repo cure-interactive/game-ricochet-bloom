@@ -1,5 +1,5 @@
 // Native scroll positions remain authoritative, including thumb drag and fling.
-export const SCROLL_SURFACES='dialog,.dialog-body,#main-menu,.overlay,.skin-scroll,.song-list,.tree-detail-body,.campaign-scroll,.track-strip,.reward-scroll,#upgrade-preview,.tree-legend,.skill-tooltip-body,.trial-scroll,.wiki-article,.wave-medal-summary,textarea';
+export const SCROLL_SURFACES='dialog,.dialog-body,#main-menu,.overlay,.skin-scroll,.cosmetic-choice-scroll,.song-list,.tree-detail-body,.campaign-scroll,.track-strip,.reward-scroll,#upgrade-preview,.tree-legend,.skill-tooltip-body,.trial-scroll,.wiki-article,.wave-medal-summary,textarea';
 export function scrollbarGeometry(view,total,position,visible=view){
  const track=Math.max(0,visible-8),max=Math.max(0,total-view);
  if(!max||track<16)return null;
@@ -17,13 +17,13 @@ export function scrollbarInput(track,thumb,{geometry,position,move,active,view},
   if(Math.abs(velocity)>.015&&Math.abs(position()-before)>.01)momentum=win.requestAnimationFrame(coast);
  }
  const down=e=>{
-  if(e.button!==0||!geometry()?.travel)return;
+  if(e.button!==0||drag||!geometry()?.travel)return;
   stop();e.preventDefault();e.stopPropagation();track.setPointerCapture(e.pointerId);
   const g=geometry(),rect=track.getBoundingClientRect(),start=track.dataset.axis==='y'?rect.top:rect.left;
   const local=point(e)-start-4;
   const onThumb=local>=g.offset&&local<=g.offset+g.length;
   if(!onThumb)move((local-g.length/2)/g.travel*g.max);
-  drag={id:e.pointerId,start:point(e),position:position(),last:point(e),time:e.timeStamp,velocity:0,moved:false};active();
+  drag={id:e.pointerId,start:point(e),position:position(),last:point(e),time:e.timeStamp,velocity:0,moved:false};track.dataset.held='true';active();
  };
  const moving=e=>{
   const g=geometry();if(drag?.id!==e.pointerId||!g?.travel)return;
@@ -35,11 +35,11 @@ export function scrollbarInput(track,thumb,{geometry,position,move,active,view},
  const end=e=>{
   if(drag?.id!==e.pointerId)return;
   const fling=e.type==='pointerup'&&drag.moved&&e.timeStamp-drag.time<100;
-  velocity=fling?drag.velocity:0;drag=null;active();
+  velocity=fling?drag.velocity:0;drag=null;delete track.dataset.held;active();
   if(track.hasPointerCapture?.(e.pointerId))track.releasePointerCapture(e.pointerId);
   if(fling&&Math.abs(velocity)>.015){lastTime=win.performance.now();momentum=win.requestAnimationFrame(coast);}
  };
- const cancel=()=>{drag=null;stop();};
+ const cancel=()=>{const id=drag?.id;drag=null;delete track.dataset.held;if(id!==undefined&&track.hasPointerCapture?.(id))track.releasePointerCapture(id);stop();};
  const interrupt=e=>{if(!track.contains(e.target))cancel();};
  track.addEventListener('pointerdown',down);track.addEventListener('pointermove',moving);
  for(const name of ['pointerup','pointercancel','lostpointercapture'])track.addEventListener(name,end);
@@ -69,7 +69,8 @@ export function scrollbarsMount(doc=document,win=window){
   for(const [el,r] of records){
    const style=win.getComputedStyle(el),rect=el.getBoundingClientRect();
    const visible=rect.width>0&&rect.height>0&&style.visibility!=='hidden'&&!el.closest('[hidden]');
-   const clip={left:Math.max(0,rect.left+el.clientLeft),top:Math.max(0,rect.top+el.clientTop),right:Math.min(win.innerWidth,rect.left+el.clientLeft+el.clientWidth),bottom:Math.min(win.innerHeight,rect.top+el.clientTop+el.clientHeight)};
+   const viewport=win.visualViewport,bounds={left:viewport?.offsetLeft||0,top:viewport?.offsetTop||0,right:(viewport?.offsetLeft||0)+(viewport?.width||win.innerWidth),bottom:(viewport?.offsetTop||0)+(viewport?.height||win.innerHeight)};
+   const clip={left:Math.max(bounds.left,rect.left+el.clientLeft),top:Math.max(bounds.top,rect.top+el.clientTop),right:Math.min(bounds.right,rect.left+el.clientLeft+el.clientWidth),bottom:Math.min(bounds.bottom,rect.top+el.clientTop+el.clientHeight)};
    for(let parent=el.parentElement;visible&&parent&&parent!==doc.body;parent=parent.parentElement){
     const ps=win.getComputedStyle(parent),pr=parent.getBoundingClientRect();
     if(/auto|scroll|hidden|clip/.test(ps.overflowX)){clip.left=Math.max(clip.left,pr.left+parent.clientLeft);clip.right=Math.min(clip.right,pr.left+parent.clientLeft+parent.clientWidth);}
@@ -84,13 +85,14 @@ export function scrollbarsMount(doc=document,win=window){
     // Use existing blank padding. Some cards put padding on the parent shell,
     // while their scrolling body has none: paint outside that body's content.
     let edge=vertical?clip.right:clip.bottom,lane=Math.min(20,parseFloat(vertical?style.paddingRight:style.paddingBottom)||0);
-    if(lane<6)for(let parent=el.parentElement;parent&&parent!==doc.body;parent=parent.parentElement){
+    if(lane<9)for(let parent=el.parentElement;parent&&parent!==doc.body;parent=parent.parentElement){
      const ps=win.getComputedStyle(parent),pr=parent.getBoundingClientRect();
      const end=(vertical?pr.right:pr.bottom)-(parseFloat(vertical?ps.borderRightWidth:ps.borderBottomWidth)||0),gap=end-(vertical?rect.right:rect.bottom);
-     if(gap>=6&&gap<=40){edge=Math.min(vertical?win.innerWidth:win.innerHeight,end);lane=Math.min(20,gap);break;}
+     if(gap>=9&&gap<=40){edge=Math.min(vertical?bounds.right:bounds.bottom,end);lane=Math.min(20,gap);break;}
      if(gap>40)break;
     }
-    lane=Math.max(6,lane);
+    // Reserve both the doubled 6px thumb and its constant 3px edge inset.
+    lane=Math.max(9,lane);
     Object.assign(item.track.style,{left:`${vertical?edge-lane:clip.left}px`,top:`${vertical?clip.top:edge-lane}px`,width:`${vertical?lane:clip.right-clip.left}px`,height:`${vertical?clip.bottom-clip.top:lane}px`});
     item.thumb.style[vertical?'height':'width']=`${geometry.length}px`;item.thumb.style.transform=`translate${vertical?'Y':'X'}(${geometry.offset}px)`;
    }
@@ -99,6 +101,6 @@ export function scrollbarsMount(doc=document,win=window){
  const observer=new win.MutationObserver(changes=>{if(changes.some(r=>!r.target.closest?.('.scroll-indicator')&&(r.type==='attributes'||[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1))))schedule();});
  observer.observe(doc.body,{childList:true,subtree:true,attributes:true,attributeFilter:['open','hidden','data-screen']});
  const scroll=e=>{const r=records.get(e.target);if(r)for(const item of r.items)if(!item.track.hidden)active(item);schedule();};
- doc.addEventListener('scroll',scroll,true);win.addEventListener('resize',schedule);doc.fonts?.addEventListener('loadingdone',schedule);schedule();
- return ()=>{disposed=true;win.cancelAnimationFrame(frame);observer.disconnect();resize.disconnect();doc.removeEventListener('scroll',scroll,true);win.removeEventListener('resize',schedule);doc.fonts?.removeEventListener('loadingdone',schedule);for(const [el,r] of records){delete el.dataset.scrollbar;for(const item of r.items){item.dispose();win.clearTimeout(item.timer);item.track.remove();}}records.clear();};
+ doc.addEventListener('scroll',scroll,true);win.addEventListener('resize',schedule);win.visualViewport?.addEventListener('resize',schedule);win.visualViewport?.addEventListener('scroll',schedule);doc.fonts?.addEventListener('loadingdone',schedule);schedule();
+ return ()=>{disposed=true;win.cancelAnimationFrame(frame);observer.disconnect();resize.disconnect();doc.removeEventListener('scroll',scroll,true);win.removeEventListener('resize',schedule);win.visualViewport?.removeEventListener('resize',schedule);win.visualViewport?.removeEventListener('scroll',schedule);doc.fonts?.removeEventListener('loadingdone',schedule);for(const [el,r] of records){delete el.dataset.scrollbar;for(const item of r.items){item.dispose();win.clearTimeout(item.timer);item.track.remove();}}records.clear();};
 }

@@ -1,4 +1,4 @@
-import {skinMaterial} from './skin-material.js?v=98f690aa89f63d7fd55b160c4bc41adf3f7cffee2537f5a1c9aa9cb260956a4f';
+import {skinMaterial} from './skin-material.js?v=d8088705a4f16b8f6ce9911fa79e683edf625ee60dc86e7d23a2e1479268a922';
 export function bubblePath(points){
  const path=new Path2D(),first=points[0],last=points.at(-1);
  path.moveTo((first.x+last.x)/2,(first.y+last.y)/2);
@@ -6,7 +6,7 @@ export function bubblePath(points){
  path.closePath();return path;
 }
 // Shared membrane material for gameplay and player representations.
-export function bubbleRender(context, body, points, hue, {isSeed=true,isBubble=false,isPermeable=false,light=0,glowExtent=2.8,lowQuality=false,skinStyle='',skinRotation=0}={}) {
+export function bubbleRender(context, body, points, hue, {isSeed=true,isBubble=false,isPermeable=false,light=0,glowExtent=2.8,lowQuality=false,skinStyle='',skinRotation=0,skinTime=0}={}) {
   const radius=body.radius;
   const glow = context.createRadialGradient(body.x, body.y, radius * .3, body.x, body.y, radius * glowExtent);
   glow.addColorStop(0, hue + (isPermeable ? '0c' : light > .2 ? '70' : isSeed ? '40' : '33')); glow.addColorStop(1, hue + '00');
@@ -16,7 +16,7 @@ export function bubbleRender(context, body, points, hue, {isSeed=true,isBubble=f
   fill.addColorStop(0, isPermeable ? hue + '18' : isBubble ? hue + '60' : isSeed ? '#ffffed' : hue + 'bb'); fill.addColorStop(.45, hue + (isPermeable ? '0a' : isBubble ? '28' : isSeed ? 'ee' : '6c')); fill.addColorStop(1, hue + (isPermeable ? '02' : isBubble ? '08' : '20'));
   context.fillStyle = fill; context.strokeStyle = hue + (isPermeable ? '48' : 'c0'); context.lineWidth = isSeed ? 1.6 : 1.1; context.shadowColor = hue; context.shadowBlur = lowQuality ? 0 : isPermeable ? 2 : (isSeed ? 15 : 7) + light * 20; context.fill(skin); context.stroke(skin); context.shadowBlur = 0;
   context.save(); context.clip(skin);
-  if(isSeed&&!isPermeable)skinMaterial(context,body,points,skinStyle,skinRotation);
+  if(isSeed&&!isPermeable)skinMaterial(context,body,points,skinStyle,skinRotation,skinTime,lowQuality);
   // Skin highlight follows the deformed upper-left rim instead of floating on a circle.
   context.beginPath();
   for (let index = 14; index <= 20; index++) { const point = points[index], x = body.x + (point.x - body.x) * .79, y = body.y + (point.y - body.y) * .79; if (index === 14) context.moveTo(x, y); else context.lineTo(x, y); }

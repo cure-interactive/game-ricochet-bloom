@@ -40,3 +40,7 @@ body[data-menu-mode=home] .wiki-heading{padding-top:max(16px,var(--safe-area-top
 @media(max-width:540px){.wiki-article[data-wiki-view=wiki]>ul{grid-template-columns:1fr}.wiki-topic-group>summary>h2{font-size:18px}}
 
 .wiki-release-body{padding:4px 16px 16px}.wiki-release-body h3{margin:16px 0 8px}.wiki-release-body ul{padding-left:22px}.wiki-release-body li{margin:8px 0}
+.wiki-developer-notes{border-top:1px solid #789b9f30;margin-top:16px;padding-top:4px}
+.wiki-developer-notes>summary{cursor:pointer;min-height:44px;padding:10px 0;color:var(--mint)}
+.wiki-developer-notes>summary>h3{display:inline;margin:0;font-size:18px}
+.wiki-developer-notes>summary:focus-visible{outline:3px solid #ffe4a1;outline-offset:2px;border-radius:4px}

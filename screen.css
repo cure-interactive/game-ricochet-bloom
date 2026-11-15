@@ -169,3 +169,5 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=file]):
  :root body dialog.standard-dialog:not(.hud-info-card):not(#menu-dialog)[open]{inset:0;margin:0;width:100%;max-width:none;height:var(--app-height,100dvh);max-height:var(--app-height,100dvh);padding:var(--safe-area-top,env(safe-area-inset-top)) 0 0;border:0;border-radius:0;box-shadow:none}
  :root body dialog.standard-dialog:not(.hud-info-card):not(#menu-dialog)>.dialog-body{flex:1 1 auto}
 }
+
+.setting-toggle:has(input:disabled){opacity:.5;cursor:not-allowed}.setting-toggle input:disabled{cursor:not-allowed}

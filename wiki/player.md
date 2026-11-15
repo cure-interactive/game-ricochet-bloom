@@ -1,10 +1,10 @@
 # Player
 
-Open **Player** from the main menu to view your equipped skin and choose Skins, Stats, Trails, Bounce Effects or Skills.
+Open **Player** from the main menu to view your equipped skin. Appearance groups **Skins**, **Trails** and **Bounces** together; **Skills** and **Stats** sit below.
 
 ## Player Viewer
 
-The large preview shows your equipped skin. Drag it to stretch its tether, or tap it to make it bounce. Previews and player icons also jiggle when you scroll their containing panel. These interactions are cosmetic and do not change a run.
+The large preview shows your equipped skin. Drag it to stretch its tether, or tap it to make it bounce. Previews and player icons respond gently when you scroll their containing panel and return smoothly to center. Hidden previews pause their animation and retain their shape. These interactions are cosmetic and do not change a run.
 
 Your player name appears beneath the bubble. Tap or click it to edit in place (up to 32 characters). Press Enter or tap away to save; Escape cancels. An empty edit keeps the previous name. Names belong to the selected profile and are included in progress backups.
 
@@ -16,9 +16,9 @@ Common through Mythic shop skins cost Points. Sea Glass is Common, Frost Crystal
 
 Unlock & Equip purchases a skin once. Owned skins can be equipped freely. Original is always free, and completing campaign tracks still unlocks their existing skins. Inspecting a skin never equips it or spends Points.
 
-## Trails and Bounce Effects
+## Trails and Bounces
 
-Open Player → Trails or Bounce Effects. Tap a style to see an animated preview before buying. Trails follow your moving player; bounce effects appear at player contacts and fade away smoothly.
+Open **Player → Trails** or **Bounces**. Tap a style to see an animated preview before buying. The preview stays visible while you scroll the choices. Each card shows the actual effect, and the Player buttons show your equipped styles. Trails follow your moving player; bounces appear at player contacts and fade away smoothly.
 
 - Common styles cost 60 Points.
 - Rare styles cost 120 Points.
@@ -28,6 +28,16 @@ Open Player → Trails or Bounce Effects. Tap a style to see an animated preview
 - Original options remain free. Purchases are permanent within the current profile, and equipping an owned style is free.
 
 Cosmetics do not alter power, speed, score or rewards. Your selections appear in normal play, experiments, Casual and the menu background. Power effects retain their own important visual feedback. Normal and Development purchases are separate.
+
+### Rarity and appearance
+
+- **Common:** a restrained material or clean wake.
+- **Rare:** a distinctive motif, such as crystal facets or stardust.
+- **Epic:** layered geometry, such as nebula bands or braided prism trails.
+- **Legendary:** signature animated artwork that responds to motion, such as Solar's corona, Cure's orbiting marks or Ember's fire ribbons.
+- **Mythic:** evolving layers, such as Spectrum's shifting rings, Aurora's ribbons and stars or Nova's staged burst.
+
+Rarity describes the visual treatment. It grants no gameplay advantage. Lower rendering quality simplifies detail while preserving the style's identity.
 
 ## Stats
 

@@ -18,7 +18,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 - [Player](player.md)
 - [Player Viewer](player.md#player-viewer)
 - [Skins](player.md#skins)
-- [Trails and Bounce Effects](player.md#trails-and-bounce-effects)
+- [Trails and Bounces](player.md#trails-and-bounces)
 - [Stats](player.md#stats)
 - [Skills](player.md#skills)
 
@@ -197,6 +197,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Change Logs
 
 - [Change Logs](changelog.md)
+- [v3.26.0](changelog.md#v3-26-0)
 - [v3.25.1](changelog.md#v3-25-1)
 - [v3.25.0](changelog.md#v3-25-0)
 - [v3.24.1](changelog.md#v3-24-1)

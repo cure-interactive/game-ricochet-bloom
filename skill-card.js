@@ -1,8 +1,8 @@
 import {escapeHTML as escape} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import {skillIconHTML,rarityIconHTML,typeIconHTML} from './skill-icon.js?v=f04078a3ae0dd56dd976f0bdd91d899bbb53f3498f16b9666035546c976f4650';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=888786437685208af4de5b05ebc18f1a101f52f9783e909022cd0ea8e19dc5a6';
-import {tooltipPosition} from './skill-comparison.js?v=c1d8fe0cb6d2634b4237e879beebf6843cdfefd91da812c8143ffa0b90298d73';
+import {skillIconHTML,rarityIconHTML,typeIconHTML} from './skill-icon.js?v=787675702003a7070f84585e649465ec6bfc1302092547be6a7303281c4dd5a9';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=8551bed13f7a48d36a919c6b5d9290c16f3a19271f3ead8585eb9fdb1abdae6b';
+import {tooltipPosition} from './skill-comparison.js?v=ffbc73ba9b461bd89bcecee37013696e446d9aee0ccbfca2e6fa1e534eb29cb4';
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 
 function statCurveHTML(curve,stats){

@@ -1,11 +1,12 @@
-import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
+import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
+import {visualActivityMount} from './visual-activity.js?v=ca1926027ea9e579abb4052b949a9fce925b332e26c2fba1d6009efe4436bf1f';
 
 // A presentation-only tether, shared by the two large skin viewers.
 export function skinPreviewHTML(name){
  return `<div class="skin-preview skin-preview-large skin-preview-interactive"><i role="button" tabindex="0" aria-label="${escapeHTML(name)} player preview. Drag or tap to bounce; arrow keys also move it."><player-bubble></player-bubble></i></div>`;
 }
-export function skinSpringStep(state,seconds,{stiffness=150,damping=12}={}){
+export function skinSpringStep(state,seconds,{stiffness=150,damping=25}={}){
  const next={...state};
  for(let remaining=Math.min(.05,Math.max(0,seconds));remaining>0;){
   const dt=Math.min(remaining,1/120);remaining-=dt;
@@ -18,18 +19,18 @@ export function skinPreviewMount(element){
  const orb=element.querySelector('i'),doc=element.ownerDocument,win=doc.defaultView;
  const bubble=orb.querySelector('player-bubble');
  const renderReady=frameGate();
- let state={x:0,y:0,vx:0,vy:0},pointer=null,frame=0,last=0,destroyed=false;
+ let state={x:0,y:0,vx:0,vy:0},pointer=null,frame=0,last=0,destroyed=false,activity;
  function paint(){bubble?.velocity?.(state.vx/(Math.max(1,orb.clientWidth)/28),state.vy/(Math.max(1,orb.clientWidth)/28));orb.style.transform=`translate(${state.x.toFixed(2)}px,${state.y.toFixed(2)}px)`;}
  function stop(){if(frame)win.cancelAnimationFrame(frame);frame=0;last=0;}
  function releaseCapture(){const id=pointer?.id;pointer=null;orb.classList.remove('is-dragging');if(id!==undefined&&orb.hasPointerCapture(id))orb.releasePointerCapture(id);}
  function reset(){stop();releaseCapture();bubble?.reset?.();state={x:0,y:0,vx:0,vy:0};paint();}
  function tick(time){
-  frame=0;if(destroyed||doc.hidden||!element.isConnected){stop();releaseCapture();return;}
+  frame=0;if(destroyed||doc.hidden||!element.isConnected||activity?.isActive()===false){stop();releaseCapture();return;}
   if(!renderReady(time)){animate();return;}
   state=skinSpringStep(state,last?(time-last)/1000:1/60);last=time;paint();
   if(state.x||state.y||state.vx||state.vy)frame=win.requestAnimationFrame(tick);else last=0;
  }
- function animate(){if(!frame)frame=win.requestAnimationFrame(tick);}
+ function animate(){if(!destroyed&&!doc.hidden&&activity?.isActive()!==false&&!frame)frame=win.requestAnimationFrame(tick);}
  function nudge(x=0,y=-1){stop();bubble?.kick?.(-x,-y);state={x:x*24,y:y*24,vx:0,vy:0};paint();animate();}
  function down(e){
   if(pointer||e.isPrimary===false||e.button!==0)return;
@@ -54,5 +55,6 @@ export function skinPreviewMount(element){
  function visibility(){if(doc.hidden)suspend();else animate();}
  const listeners=[[orb,'pointerdown',down],[orb,'pointermove',move],[orb,'pointerup',up],[orb,'pointercancel',cancel],[orb,'lostpointercapture',cancel],[orb,'keydown',key],[orb,'click',click],[doc,'visibilitychange',visibility],[win,'blur',suspend],[win,'focus',visibility]];
  for(const [target,event,handler] of listeners)target.addEventListener(event,handler);
- return {reset,destroy(){destroyed=true;suspend();for(const [target,event,handler] of listeners)target.removeEventListener(event,handler);}};
+ activity=visualActivityMount(element,visible=>{if(visible)animate();else suspend();});
+ return {reset,destroy(){destroyed=true;activity.destroy();suspend();for(const [target,event,handler] of listeners)target.removeEventListener(event,handler);}};
 }

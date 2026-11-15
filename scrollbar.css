@@ -24,7 +24,8 @@
 .scroll-indicator>span{position:absolute;display:block;border-radius:999px;background:#c7ddd9;box-shadow:0 0 1px #07111c80;pointer-events:auto}
 .scroll-indicator[data-axis=y]>span{right:3px;top:4px;width:3px}
 .scroll-indicator[data-axis=x]>span{bottom:3px;left:4px;height:3px}
-:root body .scroll-indicator[data-active=true],:root body .scroll-indicator:hover{opacity:.9}
-@media(pointer:fine){:root body .scroll-indicator{pointer-events:auto}.scroll-indicator[data-axis=y]:hover>span{width:5px}.scroll-indicator[data-axis=x]:hover>span{height:5px}}
+:root body .scroll-indicator[data-active=true],:root body .scroll-indicator[data-held=true],:root body .scroll-indicator:hover{opacity:.9}
+.scroll-indicator[data-axis=y][data-held=true]>span{width:6px}
+.scroll-indicator[data-axis=x][data-held=true]>span{height:6px}
 
 @media(forced-colors:active){.scroll-indicator>span{background:ButtonText;forced-color-adjust:none}}

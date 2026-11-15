@@ -1,7 +1,7 @@
 import { EXPERIMENT_CATALOGUE } from './experiment-catalogue.js?v=46fd868b7899d3825edca249ee222d0822e27a53f260e03d7069491bca53ea1e';
 import { EXPERIMENT_MODES, experimentMode } from './experiment-mode.js?v=8691672ebafa0ee909e0adfbe1058bb7a29634ac3aef011c8c8a34ad0b9eb1bf';
 import { EXPERIMENT_RECIPES, EXPERIMENT_DESTINATIONS } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { CAMPAIGN_NAME } from './run.js?v=c17b84689d07e07e0cbb0c12024855634098b1421a58e3ad8a37a505ec9ac943';
+import { CAMPAIGN_NAME } from './run.js?v=2c9754babc86b1c700f2dc5099532f357f6f72bbb9f3b309dc7d9559ff3b6f11';
 
 // Stable individual destinations remain searchable beneath curated collections.
 export const GAMEMODE_CARDS=Object.freeze([
