@@ -30,14 +30,16 @@ export function developmentBarMount(doc=document){
  }
  toggle.onclick=()=>{if(!active||toggle.hidden)return;expanded=!expanded;disclosure();};
  let layer=null;
- function refresh(){
+ function refresh(promote=false){
+  if(doc.hidden)return;
   stack=stack.filter(d=>d.open&&d.isConnected);
   disclosure();
-  const visible=active&&!['drift','drift-pause'].includes(doc.body.dataset.screen);
+  const ready=!doc.body.dataset.startup||doc.body.dataset.startup==='ready';
+  const visible=active&&ready&&!['drift','drift-pause'].includes(doc.body.dataset.screen);
   const nextLayer=stack.at(-1)||doc.body;
   // Reorder only when the modal layer changes. Preserve the rendered text layer
   // across ordinary screen mutations instead of repeatedly hiding/reopening it.
-  if(popover&&bar.matches(':popover-open')&&(!visible||nextLayer!==layer))bar.hidePopover();
+  if(popover&&bar.matches(':popover-open')&&(!visible||nextLayer!==layer||promote))bar.hidePopover();
   bar.hidden=!visible;
   if(!visible){measure();return;}
   if(popover){if(!bar.matches(':popover-open'))bar.showPopover();}
@@ -50,12 +52,17 @@ export function developmentBarMount(doc=document){
   for(const r of records){
    if(r.type==='attributes'&&r.target.tagName==='DIALOG'){
     stack=stack.filter(d=>d!==r.target);if(r.target.open)stack.push(r.target);changed=true;
-   }else if(r.type==='attributes'&&r.target===doc.body&&r.attributeName==='data-screen')changed=true;
+   }else if(r.type==='attributes'&&r.target===doc.body&&['data-screen','data-startup'].includes(r.attributeName))changed=true;
    else if(r.type==='childList'&&[...r.removedNodes].some(n=>n===bar||n.contains?.(bar)))changed=true;
   }
   if(changed)refresh();
  });
- observer.observe(doc.body,{attributes:true,attributeFilter:['open','data-screen'],childList:true,subtree:true});
+ observer.observe(doc.body,{attributes:true,attributeFilter:['open','data-screen','data-startup'],childList:true,subtree:true});
+ // WebKit can discard a native top-layer presentation when restoring a page.
+ // Re-promote only at lifecycle boundaries, never on every UI update.
+ doc.defaultView.addEventListener('pageshow',()=>refresh(true));
+ doc.addEventListener('visibilitychange',()=>{if(!doc.hidden)refresh(true);});
+ if(popover)bar.addEventListener('toggle',()=>{if(!bar.matches(':popover-open'))refresh();});
  disclosure();
- return {set(kind,shared=false,musicCampaign=false){const next=developmentProfileActive(kind,shared);if(next===active&&campaign===musicCampaign)return;active=next;campaign=musicCampaign;expanded=false;doc.body.dataset.development=String(active);refresh();}};
+ return {set(kind,shared=false,musicCampaign=false){const next=developmentProfileActive(kind,shared);if(next!==active||campaign!==musicCampaign){active=next;campaign=musicCampaign;expanded=false;}doc.body.dataset.development=String(active);refresh();}};
 }

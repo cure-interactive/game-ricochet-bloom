@@ -6,6 +6,23 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.27.2
+
+Build: 2026-11-15 19:14:28 UTC
+
+### Player Changes
+
+- Restore the Development Profile Active bar automatically after loading a saved Development profile or returning to the app, without toggling Development mode.
+- Keep the music disclosure open when the game refreshes the same profile.
+
+<!-- development -->
+### Developer Notes
+
+- Wait for startup readiness before presenting the Development popover, then reconcile its visibility on startup, profile and modal changes.
+- Re-promote the bar on page and foreground restoration, and recover unexpected native popover dismissal without repeated hide/show cycles during normal updates.
+- Cover saved-profile startup, repeat synchronization, page restoration, disclosure retention and Normal/shared/Casual exclusions with lifecycle regressions.
+<!-- /development -->
+
 ## v3.27.1
 
 Build: 2026-11-15 18:21:23 UTC
