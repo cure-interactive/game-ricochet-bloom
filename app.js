@@ -11,7 +11,7 @@ import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-att
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=302a95ddf6f5defb9295bdcef741d700fd9628bac0b9e50e8559c7fc2f34a146';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 import { trialMount } from './trial-ui.js?v=e1d65d28d678379bed4a4718337010a50b9befe4947e72d7609901add8d96611';
-import { GAME_VERSION } from './version.js?v=9bc95b4a677f7499f73f410703dec2334016fdacc25c8b46cf017998a3762e1b';
+import { GAME_VERSION } from './version.js?v=2fb13773c14d3065101ae25868ea6d6bb50f7f339ae2f47cab60d619f245b48a';
 import { powerSlots } from './power-ui.js?v=3fe157700ec66fee26d6351b021a3cd0899965c0d6ac501e6d3b59597246dca5';
 import { creditsMount } from './credit.js?v=446b7c1c2827d0e1a38e97da83425920274275210210502d3bbd18f31baba981';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
@@ -23,7 +23,7 @@ import { POOL_NAMES } from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302d
 import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=409e1eb57ba278752223f7eb788efb6deba4562df6daf6e206ef5067994254b6';
 import { fullscreenMount } from './fullscreen.js?v=d5daba244e7972ac26b5269e299913d028cdeb472b09e5bbb3593a50f75ac0b4';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=883e427ad5727acb81afd07cfa963fae417aeb499b1bc234dbab5b03aaac8c9b';
+import { gameMenuMount } from './game-menu.js?v=891ce6eac2e5b46d86c8c65a6fa32c06e1b38861965af531fa910e1164e111da';
 import { environmentRender, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
 import { progressionMount } from './progression-ui.js?v=50cfa38c24ea7158a46a88320efb43c9742276529a0e24696f04915af60e6dcd';

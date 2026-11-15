@@ -1,10 +1,10 @@
 /* One navigation component across menus, wiki, campaign, skins, tree and trials.
    Position stays with the owning screen; this owns every visual state. */
-:root{--navigation-radius:16px;--navigation-control-radius:12px;--navigation-border:#668a9a66;--navigation-text:#e2f2ee;--navigation-surface:#142d3bea}
+:root{--menu-gutter:12px;--navigation-radius:16px;--navigation-control-radius:12px;--navigation-border:#668a9a66;--navigation-text:#e2f2ee;--navigation-surface:#142d3bea}
 #gamemodes-dialog{--navigation-width:760px}#wiki-dialog{--navigation-width:900px}#tree-dialog{--navigation-width:1460px}
 :root body :is(dialog,#tree-dialog)>.screen-heading{
   display:flex;align-items:center;justify-content:flex-start;gap:14px;flex:none;
-  width:calc(100% - 24px);max-width:var(--navigation-width,1100px);height:auto;min-height:68px;
+  width:calc(100% - 2 * var(--menu-gutter));max-width:var(--navigation-width,1100px);height:auto;min-height:68px;
   margin:10px auto max(12px,var(--content-safe-bottom,env(safe-area-inset-bottom)));padding:10px 14px;
   border:1px solid var(--navigation-border);border-radius:var(--navigation-radius);
   background:var(--navigation-surface);color:var(--navigation-text);box-shadow:0 8px 24px #0002;
@@ -24,8 +24,24 @@
 :root body :is(dialog,#tree-dialog)>.screen-heading button:disabled{opacity:.45;cursor:default}
 :root body :is(dialog,#tree-dialog)>.screen-heading .ui-icon{width:19px;height:19px;flex:none;margin:0}
 @media(hover:hover){:root body :is(dialog,#tree-dialog)>.screen-heading button:not(:disabled):hover{background:#2a5662;border-color:#b2e9d6}}
-@media(max-width:600px){:root body :is(dialog,#tree-dialog)>.screen-heading{width:calc(100% - 20px);gap:10px;padding:8px 10px;min-height:62px}:root body :is(dialog,#tree-dialog)>.screen-heading button{padding:10px 12px;font-size:14px}}
+@media(max-width:600px){:root body :is(dialog,#tree-dialog)>.screen-heading{gap:10px;padding:8px 10px;min-height:62px}:root body :is(dialog,#tree-dialog)>.screen-heading button{padding:10px 12px;font-size:14px}}
 @media(max-height:500px){:root body :is(dialog,#tree-dialog)>.screen-heading{margin-block:6px;min-height:60px;padding-block:7px}}
+
+/* Screen-spanning navigation is a docked bar, not a floating card. The body
+   and bar share their outer width; only genuinely inset desktop panels round. */
+@media(max-width:600px),(max-height:500px){
+ :root{--menu-gutter:0px}
+ :root body :is(dialog,#tree-dialog){--navigation-width:none}
+ :root body :is(dialog,#tree-dialog)>.screen-heading,
+ :root body :is(dialog,#tree-dialog)>.screen-heading.trial-heading,
+ :root body dialog:has(> :is(.campaign-footer,.reward-footer,.tree-map-hint))>.screen-heading{
+  width:100%;max-width:none;align-self:stretch;margin:0;border:0;border-top:1px solid var(--navigation-border);border-radius:0;box-shadow:none;
+  padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));
+  padding-bottom:max(8px,var(--content-safe-bottom,env(safe-area-inset-bottom)));
+ }
+ /* An adjacent full-width footer owns the safe area once. */
+ :root body dialog:has(> :is(.campaign-footer,.reward-footer,.tree-map-hint))>.screen-heading{padding-bottom:8px}
+}
 
 :root body :is(dialog,#tree-dialog)>.screen-heading button>span:not(.ui-icon){display:inline;font-size:inherit}
 

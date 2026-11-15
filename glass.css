@@ -99,15 +99,15 @@
 :root body .reading-card > :last-child { margin-bottom: 0; }
 :root body #development-dialog .reading-card { display: grid; gap: 14px; }
 :root body #development-dialog .reading-card :is(p,small) { margin: 0; color: #c8d9e2; line-height: 1.6; }
-:root body :is(#development-dialog,#save-recovery-dialog,#support-dialog) > .dialog-body { max-width: 720px; width: 100%; margin-inline: auto; padding: 16px; }
+:root body :is(#development-dialog,#save-recovery-dialog,#support-dialog) > .dialog-body { max-width: var(--navigation-width,1100px); width: calc(100% - 2 * var(--menu-gutter,12px)); margin-inline: auto; padding: 16px 0; }
 :root body :is(#save-recovery-dialog,#support-dialog) > .dialog-body { display: flex; flex-direction: column; gap: 16px; }
 :root body :is(#save-recovery-dialog,#support-dialog) .reading-card { flex: none; margin: 0; background: var(--reading-surface); }
 :root body .reading-card .support-recipient { color: #c8d9e2; }
 /* Other menu readers already have meaningful content groups. Their scrolling
    body is one reading card; existing nested controls keep their own material. */
-:root body dialog:not(.hud-info-card):not(#development-dialog):not(#save-recovery-dialog):not(#support-dialog) > :is(.dialog-body,.campaign-scroll,.wiki-article,.skin-scroll,.credit-page) {
+:root body dialog:not(.hud-info-card):not(#development-dialog):not(#save-recovery-dialog):not(#support-dialog) > :is(.dialog-body,.campaign-scroll,.wiki-article,.skin-scroll,.credit-page,.trial-scroll) {
   background: var(--reading-surface); border: 1px solid var(--reading-edge);
-  border-radius: 20px; width: calc(100% - 28px); max-width: 1060px;
+  border-radius: 20px; width: calc(100% - 2 * var(--menu-gutter,12px)); max-width: var(--navigation-width,1100px);
   margin: 10px auto 12px; padding: 20px; min-width: 0;
 }
 /* The compact HUD has two reading cards without taking more play-area height. */
@@ -120,4 +120,7 @@ body > main > :is(.hud,.hud-actions) { background: var(--reading-surface); borde
 :root body #development-dialog .reading-card p { font-size: 16px; }
 :root body #development-dialog .reading-card :is(small,.setting-toggle) { font-size: 14px; }
 
-:root body #wiki-dialog > .wiki-article, :root body #settings-dialog > .dialog-body, :root body #credits-dialog > :is(.dialog-body,.credit-page) { max-width: 760px; }
+@media(max-width:600px),(max-height:500px){
+ :root body dialog:not(.hud-info-card):not(#development-dialog):not(#save-recovery-dialog):not(#support-dialog) > :is(.dialog-body,.campaign-scroll,.wiki-article,.skin-scroll,.credit-page,.trial-scroll){border-inline:0;border-radius:0;padding-inline:max(16px,env(safe-area-inset-left),env(safe-area-inset-right))}
+ :root body :is(#development-dialog,#save-recovery-dialog,#support-dialog) > .dialog-body{padding-inline:0}
+}
