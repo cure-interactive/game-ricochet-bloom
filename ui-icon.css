@@ -104,3 +104,5 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 [data-icon="skill-tree"]{--ui-icon:url("./icon/ui/skill-tree.svg?v=4afa2e7e8097fb1020f872e1b367ffc03931cc3be473e8623e73e77b88ec4f0e")}
 
 [data-icon="challenge"]{--ui-icon:url("./icon/ui/challenge.svg?v=eba823d32bf0ed0db67aac3bfefae8da0c683b5c793af8355c0430ae692bb30b")}
+
+[data-icon="external"]{--ui-icon:url("./icon/ui/external.svg?v=4c49af6247a65228ee3c8c79cfd0baf8013f087c3d3f03041c61e3d6d086a068")}

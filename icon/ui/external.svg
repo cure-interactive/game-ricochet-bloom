@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   viewBox="5 5 16 16"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+
+<path d="M 15.88,8 H 10.5 C 9.6705896,8 8.9996168,7.3265158 8.9996168,6.5 8.9996168,5.6734842 9.669073,5 10.5,5 h 9 C 20.342119,5 21,5.6893187 21,6.5 v 9 C 21,16.346082 20.316059,17 19.5,17 18.683941,17 18,16.334061 18,15.5 V 10.12 L 7.55,20.57 C 7.2871239,20.832876 6.9138609,21 6.5,21 5.6779005,21 5,20.338786 5,19.5 5,19.131308 5.1336398,18.749901 5.43,18.45 Z"/>
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Arrow Up Right 16 Solid by Tailwind Labs (Heroicons), adapted by the Cure Interactive Icons collection author.",
+  "sources": [
+    {
+      "title": "Heroicons Arrow Up Right 16 Solid",
+      "url": "https://github.com/tailwindlabs/heroicons/blob/master/optimized/16/solid/arrow-up-right.svg",
+      "role": "Source artwork"
+    }
+  ],
+  "license": {
+    "name": "MIT",
+    "url": "https://github.com/tailwindlabs/heroicons/blob/master/LICENSE",
+    "scope": "Applies to the credited Heroicons source artwork. Commercial use, modification and redistribution are permitted.",
+    "conditions": [
+      "Preserve the complete Tailwind Labs copyright and MIT permission notice with copies or substantial portions."
+    ],
+    "notices": [
+      {
+        "title": "Heroicons MIT source notice",
+        "path": "attribution/license/mit/heroicons.txt",
+        "sha256": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985",
+        "text": "MIT License\n\nCopyright (c) Tailwind Labs, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Subject to the stated MIT license and notice condition.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "MIT",
+        "url": "https://github.com/tailwindlabs/heroicons/blob/master/LICENSE"
+      },
+      {
+        "title": "MIT license",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Scaled and fitted, shortened the right arm, adjusted the left arm, and redrew the rounded curves and diagonal tail for consistency with the Cure Interactive Icons collection."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>

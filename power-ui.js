@@ -1,5 +1,5 @@
 import { POWERS, powerAllowance, powerMarkers } from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
-import { assetURL } from './asset.js?v=439fe17f2cfeb3966893a76b09c7088b37c8b5c56215b31299603cee669a109b';
+import { assetURL } from './asset.js?v=7488e3f6b092de17934ac86bb2b8cfd341cb74bd89518ddfd3c8f4c7a347883e';
 import { iconHTML } from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
 
 // An earned slot is a capacity, not a promise that another offer exists.

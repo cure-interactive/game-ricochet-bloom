@@ -1,6 +1,6 @@
-import { gamemodeMount } from './gamemode-ui.js?v=cbb565703623fd153e71726b2cd772d4a2b59a403fbf42931d42d53097c1e429';
+import { gamemodeMount } from './gamemode-ui.js?v=a928f2ca86f345e147a6d946873d90dcd48fb9b4c81338731191e49d3e31caf6';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=dfdcfbb8db30dfb246fae78172550b2d7cd09d02d7dd4dc49fb082d1ec307b91';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=db74eee3cc9c0ca10c93823fb5f257e0a30b988507e558afe4570f5fb34488f8';
 import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { screenHeader } from './screen-header.js?v=883c141deaf0d60097c4b99c555371897614dfd0bde5d3229b4a41e5450222e0';
 import { songKeep } from './song.js?v=f967d4f585d3d5300be734f4ed6a4870e0de8c85450ff8f6bd9ad5fb49f1ae60';

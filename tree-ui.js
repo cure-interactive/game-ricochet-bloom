@@ -1,5 +1,5 @@
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=d4e0ec00633f191ae7f2a7f66de6acd197bff6524d2b29fb9254e3ad22b8622b';
-export {skillStatsHTML} from './skill-card.js?v=d4e0ec00633f191ae7f2a7f66de6acd197bff6524d2b29fb9254e3ad22b8622b';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=71bce0d761c179b11cfaa2b0c13bcbbdaec6a75a5f341abb2223a678d25da79f';
+export {skillStatsHTML} from './skill-card.js?v=71bce0d761c179b11cfaa2b0c13bcbbdaec6a75a5f341abb2223a678d25da79f';
 import { treeSwitchHTML, treeSwitchMount } from './tree-switch.js?v=ac9dc074fab2f3bf12102fc52c3bbbae0a47d9a0b800236d1308702938734329';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { screenHeader } from './screen-header.js?v=883c141deaf0d60097c4b99c555371897614dfd0bde5d3229b4a41e5450222e0';
