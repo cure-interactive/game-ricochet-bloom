@@ -1,4 +1,4 @@
-import {assetURL} from './asset.js?v=503d42e78d7051a9b7c8fa01b513c73d03dcf4a74cbe0499107d5c13256e2a7c';
+import {assetURL} from './asset.js?v=c22292ae9d0ee12d86a26c8723cc5379143c4c5bd035aa93a344b84200318ef1';
 // OS media presentation for the live synthesizer. The silent media source only
 // supplies the HTMLMediaElement session required by some mobile browsers.
 export function mediaCarrier() {

@@ -6,6 +6,18 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.23.1
+
+### Player Changes
+
+- Use a smartphone silhouette for mobile Display settings.
+
+<!-- development -->
+### Developer Notes
+
+- Give the display owner a dedicated mobile-device asset; retain the phone receiver icon and its original attribution separately.
+<!-- /development -->
+
 ## v3.23.0
 
 ### Player Changes

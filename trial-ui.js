@@ -1,8 +1,8 @@
 import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
 const renderReady=frameGate();
-import { gamemodeMount } from './gamemode-ui.js?v=0ef1f5647fe3d757a389e0db472159be466d22b72fcda310e2f640507420023d';
+import { gamemodeMount } from './gamemode-ui.js?v=4990f60608d53f70c1b0204f6b3e0445db0094d6cf08978c60d5b962b46bb6e0';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=07ea05cffed23e8539bb0c0e4b57e2b8f65f889b78ffa9a945d0baa77830b1d0';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=9eee0ddf3caf0550f208582f835f9880e150651c054bbf88e5732559d448fffc';
 import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { screenHeader } from './screen-header.js?v=ba224017463f62dbe26bd5a9cb443d01adafd0b81d74353ddee29501d9701838';
 import { songKeep } from './song.js?v=f967d4f585d3d5300be734f4ed6a4870e0de8c85450ff8f6bd9ad5fb49f1ae60';

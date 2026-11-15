@@ -88,3 +88,5 @@ Monitor and phone were exported from Cure Interactive Icons commit `71d7cc7fb2be
 - [ios-share](ios-share.md) — original installation-guide illustration.
 
 - [ios-home-screen](ios-home-screen.md) — original installation-guide illustration.
+
+- [mobile-device](mobile-device.md) — original smartphone display-settings icon.

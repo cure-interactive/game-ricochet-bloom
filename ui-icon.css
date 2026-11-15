@@ -117,3 +117,5 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 [data-icon="monitor"]{--ui-icon:url("./icon/ui/monitor.svg?v=ea9baaaac4848ff89386a3b44f7dd1f3d0b78827fcdaaa503bc4ec5775a096be")}
 
 [data-icon="phone"]{--ui-icon:url("./icon/ui/phone.svg?v=5c987203d10c629b990306f1d3ce326a1f03ad4aee19a89b3fbc01c27da57ae2")}
+
+[data-icon="mobile-device"]{--ui-icon:url("./icon/ui/mobile-device.svg?v=1180fbad554a25b4b3d2a909ed6de35669ba947a5c32ebdc5220fc568aae40b6")}

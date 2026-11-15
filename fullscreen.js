@@ -1,10 +1,10 @@
 import { buttonLabel } from './ui-icon.js?v=0bef764d102dc0e159800242f682b3d49abfbf27a976ab9ca47f0d10b1c82188';
-import { assetURL } from './asset.js?v=503d42e78d7051a9b7c8fa01b513c73d03dcf4a74cbe0499107d5c13256e2a7c';
+import { assetURL } from './asset.js?v=c22292ae9d0ee12d86a26c8723cc5379143c4c5bd035aa93a344b84200318ef1';
 import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 
 export function displayDeviceIcon(win){
  const nav=win.navigator||{};
- return /iPhone|iPad|iPod|Android|Mobile/.test(nav.userAgent||'')||nav.userAgentData?.mobile===true||(nav.platform==='MacIntel'&&nav.maxTouchPoints>1)?'phone':'monitor';
+ return /iPhone|iPad|iPod|Android|Mobile/.test(nav.userAgent||'')||nav.userAgentData?.mobile===true||(nav.platform==='MacIntel'&&nav.maxTouchPoints>1)?'mobile-device':'monitor';
 }
 function instructionHTML(step){
  const icons={Safari:'safari',Share:'ios-share','Add to Home Screen':'ios-home-screen'};
