@@ -1,8 +1,8 @@
 import { SCORE_BUDGETS, SCORE_DEFAULT, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { scoreRead } from './score-attack-store.js?v=2bd388c092d72ffed771bdda3f02806000c2142c6f76d74517ca7bc3a87a41c2';
 import { scoreConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { medalConditionsHTML } from './medal-ui.js?v=825608b775c3b002997589712ceb2b79be1cc555832c0608e1d3ebabbb2b4190';
-import { assetURL } from './asset.js?v=2b5633b19a07f956813bb7e10836cd197f17f91470581d4cac571bb4962b3316';
+import { medalConditionsHTML } from './medal-ui.js?v=4062a0022c51a0569f63227ff8c44fbbb718e156a1abcc12ded23ebea66f6184';
+import { assetURL } from './asset.js?v=d64a1aa9796b2a1d33fb12268687f3fb1d66e8471a633672bcbfb729b72072a0';
 
 export function scoreAttackMount({content,heading,storage,...host}) {
   const $=id=>content.querySelector('#'+id);

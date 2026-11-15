@@ -95,3 +95,16 @@ Monitor and phone were exported from Cure Interactive Icons commit `71d7cc7fb2be
 
 - [Powers](powers.md) — original energized-bubble category artwork.
 - Player Stats shares [player upgrade artwork](../upgrade/INDEX.md#player-upgrade-artwork) with Skills: launch speed, aiming length, reflected guide and wall retention. No duplicate stat drawings.
+
+
+## Platform installation actions
+
+- [iOS View More](ios-view-more.md) — original instructional artwork.
+- [More menu, vertical dots](browser-menu-dots.md) — original instructional artwork.
+- [Settings and more, horizontal dots](browser-menu-horizontal.md) — original instructional artwork.
+- [Menu, three lines](browser-menu-lines.md) — original instructional artwork.
+- [Android home screen shortcut](android-home-screen.md) — original instructional artwork.
+- [Install app](app-install.md) — original instructional artwork.
+- [Add to Dock](mac-dock.md) — original instructional artwork.
+- [Web apps button](web-app-window.md) — original instructional artwork.
+- [Apps](app-grid.md) — original instructional artwork.

@@ -6,6 +6,22 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.23.3
+
+### Player Changes
+
+- Add the View More icon to the iPhone and iPad installation steps.
+- Show matching menu and installation icons for Android, Mac, Windows, Linux and Chromebook guides.
+- Give Chrome, Edge, Samsung Internet and Firefox their own instructions, with clear alternatives when installation is unavailable.
+
+<!-- development -->
+### Developer Notes
+
+- Keep action artwork scoped to each browser guide so Android steps never show iOS Share or Home Screen artwork.
+- Preserve capability-based fullscreen and installed-app detection; cover browser precedence and iPad desktop identification.
+- Record all new original instructional artwork in Icon Credits.
+<!-- /development -->
+
 ## v3.23.2
 
 ### Player Changes
