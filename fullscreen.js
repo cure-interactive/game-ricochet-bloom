@@ -31,7 +31,7 @@ export function displayOptions(doc,win) {
   const state=fullscreenState(doc,win),nav=win.navigator||{},ua=nav.userAgent||'';
   const apple=/iPhone|iPad|iPod/.test(ua)||(nav.platform==='MacIntel'&&nav.maxTouchPoints>1);
   const android=/Android/.test(ua),mac=!apple&&/Mac/.test(nav.platform||ua);
-  const edge=/Edg\//.test(ua),firefox=/Firefox\//.test(ua),chrome=/Chrome|Chromium|CrOS/.test(ua)&&!edge&&!/OPR|SamsungBrowser/.test(ua);
+  const edge=/Edg(?:A)?\//.test(ua),firefox=/Firefox\//.test(ua),chrome=/Chrome|Chromium|CrOS/.test(ua)&&!edge&&!/OPR|SamsungBrowser/.test(ua);
   const safari=mac&&/Safari/.test(ua)&&!/Chrome|Chromium|Edg|OPR/.test(ua);
   const installed=appView(win),mode=state.action==='exit'||state.browser?'Full screen':installed?'App view':'Browser view';
   const description=state.action==='exit'?'Full screen is on. Leave it here or use your browser’s exit command.':state.browser?'Your browser controls this full-screen view. Use its full-screen command to leave.':state.action==='enter'?'Hide browser controls for this session. You can return to this view at any time.':'This browser does not allow the game to enter full screen. App view is a separate option below.';
