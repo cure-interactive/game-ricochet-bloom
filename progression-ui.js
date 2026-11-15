@@ -1,6 +1,6 @@
 import { screenHeader } from './screen-header.js?v=a0375361ae407ee8e60d3ed09355baf5bb084d84a2dc95aab41b05185b186b82';
 import { playerUpgradeMount } from './player-upgrade-ui.js?v=0c276234510d61b0085b76680c77a4a90c8293597a8496eb89a435ac600d77a7';
-import { saveRecoveryMount } from './save-recovery-ui.js?v=f1252f9bc88681dfb8d0380fa92a6fed5d47384632f34c9ccbab8b1cef5b1877';
+import { saveRecoveryMount } from './save-recovery-ui.js?v=ce0988b0cf6bfcbd0590afeac5af7feb9e9d9820c767062d1ab42493c4486144';
 import { progressionResetUnreadable } from './progression-store.js?v=3b5272a86ea6acab9816f1931b729e097167c89bf7d03481f93ba68b9279248b';
 import { medalIcon } from './medal-ui.js?v=840f32a7f8c4f8c3f542c688873a42595e25b4feb71ae36e6729236f26ac7055';
 
