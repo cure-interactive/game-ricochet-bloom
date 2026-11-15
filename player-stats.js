@@ -1,13 +1,13 @@
 import { playerBuild, playerConfig, PLAYER_UPGRADES } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import { profileSummary } from './profile.js?v=158288c80ff606a4bc820da33ab77138b46da32e904b28186088233dd839191d';
-import { GAME_CATALOGUE, poolMedal } from './run.js?v=86c0281b5c2ac66b243e3701cfee06940691c206000f4756729d9d580eedbd76';
+import { GAME_CATALOGUE, poolMedal } from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302dff937b1bbfdae8fb6c8ea56';
 import { TRACKS } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { SCORE_BUDGETS, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
-import { scoreRead } from './score-attack-store.js?v=59821f0f2371afef6e96faf86c00f0614aa3eb31f0bb970906dd020f9bc6dd49';
+import { scoreRead } from './score-attack-store.js?v=302a95ddf6f5defb9295bdcef741d700fd9628bac0b9e50e8559c7fc2f34a146';
 import { experimentRead, experimentMedal, experimentLegacy } from './experiment-store.js?v=a4909f1034df6319e26855ffe0381e4a156c2a079185019eb96c93e553a1c4f5';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
 import { trialMedal, MEDAL_NAMES } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { poolMedalRecords } from './storage.js?v=ac8e78dac357b01d39939277328785b6a02b8e4a372fa7b966193d0ce48866a5';
+import { poolMedalRecords } from './storage.js?v=b6329e33987fc0ba16d9b13905fb2da167599d2a64285d319a1675063b51e0fb';
 
 const counts=()=>Object.fromEntries(MEDAL_NAMES.map(name=>[name,0]));
 // Read-only projection. Every total retains its original save/profile boundary.

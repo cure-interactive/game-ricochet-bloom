@@ -1,8 +1,8 @@
-import { skillCurve } from './skill-curve.js?v=2a61a9787a65ef0c7f3c09db8093a51fb9876b7affc50f905ca77c1dc81b9813';
-import { skillConfig } from './skill-effect.js?v=6bc123e911039183cb33d2d4d4f01b63c8a5fdf57cf46b5e716d86a347906c28';
+import { skillCurve } from './skill-curve.js?v=e457dc049f28c0c87273d79df5995752d14ee11db0c3d064e84ff319f927d058';
+import { skillConfig } from './skill-effect.js?v=727e7de86b0868ac64950fc8cd89a06c9f4a7a3d8efd7b7fccb21bc1018dbd47';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
 import { profilePurchase, profileDevelopmentCopy, unlockedResolve } from './profile.js?v=158288c80ff606a4bc820da33ab77138b46da32e904b28186088233dd839191d';
-import { GAME_CATALOGUE as cat } from './run.js?v=86c0281b5c2ac66b243e3701cfee06940691c206000f4756729d9d580eedbd76';
+import { GAME_CATALOGUE as cat } from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302dff937b1bbfdae8fb6c8ea56';
 
 const on=value=>value?'On':'Off';
 const number=value=>Number(value.toFixed(2));

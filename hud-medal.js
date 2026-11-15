@@ -15,7 +15,7 @@ export function hudMedal(conditions,{score=0,shots=0,earned=null}={}){
 }
 export function hudMedalRender(button,view){
   button.hidden=!view;if(!view)return;
-  const html=medalIcon(view.name)+`<span>${view.text}</span>`;
+  const html=`<span class="label">MEDAL</span><span class="hud-medal-value">${medalIcon(view.name)}<span>${view.text}</span></span>`;
   if(button.innerHTML!==html)button.innerHTML=html;
   button.setAttribute('aria-label',view.label);button.title=view.label;
 }

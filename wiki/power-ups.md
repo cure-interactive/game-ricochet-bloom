@@ -4,6 +4,8 @@ Contact with a marked bubble activates its power. The random pool includes power
 
 This reference is generated from the skill catalogue. Skills shows your current ownership, price and mastery progress.
 
+Earn up to three power opportunities by making blooms on consecutive shots. Offers use your unlocked powers: when fewer powers are available than earned slots, powers can repeat. A repeated pickup refreshes that power instead of stacking duplicate effects. Its icon stays visible with a checkmark after collection. On a nearly cleared Waves board, there can only be as many offers as remaining bubbles.
+
 ## Find a Power
 
 - [Attract](#attract)

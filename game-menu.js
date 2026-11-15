@@ -1,7 +1,7 @@
-import { GAME_VERSION } from './version.js?v=088adfd88e56e1f551a54135bfb9d2bb044ecc1cfc4a58ecbeb5aaba1004ac47';
+import { GAME_VERSION } from './version.js?v=0fb33e21d6992651a86e6c2344280a4ebc4e8f67f823fd653fa1b1ce3e8dd621';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { buttonHTML } from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
-import { menuBackgroundMount } from './menu-background.js?v=647e7f8fc3e343b7f320e1fda985acb755ca67cd3f58820d61dfede06f90133d';
+import { menuBackgroundMount } from './menu-background.js?v=47aee343276939ca2a4fb8bf8a55cd23bc89f14ad0f26c5b798ba712382326c0';
 
 import { driftMount } from './drift-ui.js?v=94e003e319fd02ea04b6a49a04a3b2b3c0e1198936fe2e99a67c631b89db777c';
 

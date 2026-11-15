@@ -1,9 +1,9 @@
-import { POWERS, powerAllowance, powerMarkers } from './engine.js?v=22d89394af99da05710e30583f742f7d86a2cf848172bee65c6f573a179a0574';
+import { POWERS, powerAllowance, powerMarkers } from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
 import { assetURL } from './asset.js?v=439fe17f2cfeb3966893a76b09c7088b37c8b5c56215b31299603cee669a109b';
 import { iconHTML } from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
 
 // An earned slot is a capacity, not a promise that another offer exists.
-// Waves can have fewer live bubbles or distinct unlocked powers than slots.
+// Waves can have fewer live bubbles than slots; small power pools can repeat.
 export function powerSlots(game) {
   const used=game.isFlying?game.power.used:0,markers=powerMarkers(game),capacity=powerAllowance(game);
   return Array.from({length:3},(_,index)=>{

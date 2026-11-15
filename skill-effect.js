@@ -63,7 +63,7 @@ export function skillStateValid(v,count) {
   if(!ids(v.transfer)||!ids(v.transferSpent)||!ids(v.frostSpent)||v.transferSpent.some(id=>!v.transfer.includes(id)))return false;
   if(v.charged!==null&&(!Number.isInteger(v.charged)||v.charged<1||v.charged>count)||!Number.isInteger(v.slingTarget)||v.slingTarget<0||v.slingTarget>count)return false;
   const point=p=>p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>=30&&p.x<=930&&p.y>=30&&p.y<=610&&Number.isFinite(p.seconds)&&p.seconds>=0&&p.seconds<=1;
-  return Array.isArray(v.delayed)&&v.delayed.length<=2&&v.delayed.every(p=>point(p)&&['ripple','attract'].includes(p.kind)&&Number.isFinite(p.radius)&&p.radius>0&&p.radius<=528)&&Array.isArray(v.eddies)&&v.eddies.length<=2&&v.eddies.every(point)&&(v.vortex===null||point(v.vortex));
+  return Array.isArray(v.delayed)&&v.delayed.length<=3&&v.delayed.every(p=>point(p)&&['ripple','attract'].includes(p.kind)&&Number.isFinite(p.radius)&&p.radius>0&&p.radius<=528)&&Array.isArray(v.eddies)&&v.eddies.length<=2&&v.eddies.every(point)&&(v.vortex===null||point(v.vortex));
 }
 export function skillActivate(state,kind,body,events) {
   if(!state.build)return;

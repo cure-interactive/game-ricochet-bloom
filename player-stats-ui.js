@@ -1,4 +1,4 @@
-import { playerStats } from './player-stats.js?v=98f9da283fe4bf394da68498b18c17d6bc9f9f5024cac06dc8ca967cf7961b16';
+import { playerStats } from './player-stats.js?v=8d1ea293e0239a56795a98dd6d0dc22cde6ca162a8ada80e43d8e62bc2866c32';
 import { screenHeader } from './screen-header.js?v=883c141deaf0d60097c4b99c555371897614dfd0bde5d3229b4a41e5450222e0';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
 import { medalIcon } from './medal-ui.js?v=dfdcfbb8db30dfb246fae78172550b2d7cd09d02d7dd4dc49fb082d1ec307b91';

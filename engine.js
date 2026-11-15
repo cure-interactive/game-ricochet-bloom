@@ -5,8 +5,8 @@ import { liveBubbles, waveConfig, wavePrepare, waveEntryStep, waveValid, WAVE_EN
 import { DRUNK_SECONDS, drunkSway, overlapResponse, magnetResponse } from './power-response.js?v=53825a2132c5ad509bdd8a251983587d3024f860edd302123036c23bc5fa89bd';
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=6bc123e911039183cb33d2d4d4f01b63c8a5fdf57cf46b5e716d86a347906c28';
-export { skillFlags } from './skill-effect.js?v=6bc123e911039183cb33d2d4d4f01b63c8a5fdf57cf46b5e716d86a347906c28';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=727e7de86b0868ac64950fc8cd89a06c9f4a7a3d8efd7b7fccb21bc1018dbd47';
+export { skillFlags } from './skill-effect.js?v=727e7de86b0868ac64950fc8cd89a06c9f4a7a3d8efd7b7fccb21bc1018dbd47';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
 export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: DRUNK_SECONDS, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
@@ -40,16 +40,17 @@ export const POWERS = Object.freeze({
 });
 const powerKinds = Object.keys(POWERS);
 const offeredKinds = state => state.build ? state.build.map(p=>p.power) : powerKinds;
-// A seeded shuffle changes each offer, with distinct powers in a multi-pickup shot.
+// Prefer distinct powers, then fill earned slots from the same unlocked pool.
 function randomOfferKinds(state){return offeredKinds(state).slice().sort((a,b)=>seedHash(state.seed+':offer:'+state.power.claims+':'+a)-seedHash(state.seed+':offer:'+state.power.claims+':'+b));}
 function powerCreate(seed) { const hash = seedHash(seed); return { offer: powerKinds[hash % powerKinds.length], target: hash % 14 + 1, shot: 0, claims: 0, used: 0, capacity: 1, markers: [] }; }
 export function powerAllowance(state) { return state.power.capacity; }
 // The preview and flight share one allocation; contacts only remove existing markers.
 function powerPlan(state, count = powerAllowance(state)) {
   const markers = [], power = state.power, kinds=state.randomPowers?randomOfferKinds(state):offeredKinds(state);
-  for (let index = 0; index < count && index < kinds.length; index++) {
+  for (let index = 0; index < count && kinds.length; index++) {
     if(state.mode==='waves' && index>=liveBubbles(state).length)break;
-    const kind = kinds[((state.randomPowers?0:Math.max(0,kinds.indexOf(power.offer))) + index) % kinds.length];
+    const pick=index<kinds.length?index:seedHash(state.seed+':repeat:'+power.claims+':'+index)%kinds.length;
+    const kind = kinds[((state.randomPowers?0:Math.max(0,kinds.indexOf(power.offer))) + pick) % kinds.length];
     const candidates = liveBubbles(state).filter(body => body.id !== power.target && !markers.some(marker => marker.target === body.id));
     const unhit = candidates.filter(body => !state.chain.includes(body.id));
     const pool = unhit.length ? unhit : candidates;
@@ -361,6 +362,7 @@ export function launch(state, angle, power = .7) {
   const seed = state.bodies[0], speed = playerLaunchSpeed(state.playerBuild,power);
   seed.vx = Math.cos(angle) * speed; seed.vy = Math.sin(angle) * speed;
   state.power.markers = powerPlan(state);
+  state.power.repeatOffers = true;
   delete state.power.collected;
   effectClear(state); state.isFlying = true; state.flightAge = 0; state.chain = []; state.flightPath = []; state.banks = 0; state.launches++; state.power.used = 0; state.shotStart=state.score;state.lastShot=null;if(state.mode!=='song-run')state.objective.earned=false;
   if(state.build)state.skillState=skillStateCreate();
@@ -399,13 +401,14 @@ export function powerActivate(state,kind,targetId){
   const target=state.bodies.find(body=>body.id===targetId&&body.id>0&&!body.popped);
   if(!state.isFlying||!Object.hasOwn(POWERS,kind)||!target||state.build&&!state.build.some(p=>p.power===kind))return [];
   const seed=state.bodies[0],dx=target.x-seed.x,dy=target.y-seed.y,distance=Math.hypot(dx,dy),events=[];
-  effectClear(state,events,kind);
   powerCollect(state,{kind,target:targetId},seed,target,distance?dx/distance:1,distance?dy/distance:0,events);
   return events;
 }
 function powerCollect(state, marker, a, b, nx, ny, events) {
   const dt=RULE.step,seed=state.bodies[0];
   const kind = marker.kind; state.power.markers = state.power.markers.filter(item => item !== marker); state.power.shot = state.launches;
+  // Repeated pickups restart one instance; never stack duplicate persistent effects.
+  if(effectGet(state,kind))effectClear(state,events,kind);
   // Keep pickup identity after its effect expires, including saved flights.
   (state.power.collected??=Array(state.power.used).fill(null)).push(kind);state.power.used++;
   state.flightAge = 0;
@@ -747,9 +750,12 @@ export function saveValidate(input) {
     if (input.version >= 11) {
       const markers = power.markers;
       if(power.collected!==undefined&&(!Array.isArray(power.collected)||power.collected.length!==power.used||power.collected.some(kind=>kind!==null&&!powerKinds.includes(kind))))return null;
-      const remaining=input.isFlying?Math.max(0,Math.min(power.capacity,offeredKinds(input).length)-power.used):0;
+      if(power.repeatOffers!==undefined&&power.repeatOffers!==true)return null;
+      const remaining=input.isFlying?Math.max(0,(power.repeatOffers?power.capacity:Math.min(power.capacity,offeredKinds(input).length))-power.used):0;
       if (!Array.isArray(markers) || (input.mode==='waves'? markers.length > remaining : markers.length !== remaining) || markers.some(marker => !marker || !powerKinds.includes(marker.kind) || !Number.isInteger(marker.target) || marker.target < 1 || marker.target > count || input.mode==='waves'&&input.bodies[marker.target].popped)) return null;
-      if (new Set(markers.map(marker => marker.target)).size !== markers.length || new Set(markers.map(marker => marker.kind)).size !== markers.length || markers.some(marker => hasEffect(marker.kind))) return null;
+      const repeats=power.repeatOffers&&offeredKinds(input).length<power.capacity;
+      if (new Set(markers.map(marker => marker.target)).size !== markers.length || (!repeats&&(new Set(markers.map(marker => marker.kind)).size !== markers.length || markers.some(marker => hasEffect(marker.kind))))) return null;
+      if(power.repeatOffers&&input.build&&(markers.some(marker=>!offeredKinds(input).includes(marker.kind))||power.collected?.some(kind=>kind!==null&&!offeredKinds(input).includes(kind))))return null;
     }
     if (input.version === 4) {
       if (![null, ...powerKinds].includes(power.held) || ![null, ...powerKinds].includes(power.pending) || typeof power.armed !== 'boolean') return null;

@@ -38,12 +38,12 @@ body > main, body > main:has(.phrase-panel[hidden]) {
   gap: 4px; padding: 0 10px 6px;
 }
 .pool-shell { grid-column: 1; grid-row: 1; position: relative; overflow: hidden; }
-body > main > .hud { pointer-events: auto; grid-column: 1; grid-row: 2; display: flex; gap: 10px; min-height: 44px; padding: 0 4px; }
-.hud-balance { display: flex; gap: 14px; flex: 1; max-width: none; }
-.hud-balance .score { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; flex-wrap: nowrap; }
+body > main > .hud { pointer-events: auto; grid-column: 1; grid-row: 2; display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,.8fr) minmax(0,.65fr) minmax(0,1fr); gap: 6px; min-height: 52px; padding: 4px 8px; }
+.hud-balance { display: contents; }
+.hud-balance .score { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex-wrap: nowrap; text-align: center; }
 .hud-balance .run-score strong, .hud-balance .points strong { font-size: 17px; line-height: 1.1; overflow-wrap: normal; }
-.hud-balance .run-score .label, .hud .label { font-size: 8px; }
-.hud .pluck, body[data-left-handed=true] .hud .pluck { padding: 0; display: flex; flex-direction: column; gap: 1px; }
+.hud-balance .run-score .label, .hud .label { font-size: 10px; line-height: 12px; }
+.hud .pluck, body[data-left-handed=true] .hud .pluck { padding: 0; display: flex; flex-direction: column; justify-content: center; gap: 3px; }
 .hud .pluck strong { font-size: 17px; }
 .pool-shell > #pause { position: absolute; z-index: 4; top: 8px; right: 8px; left: auto; width: 44px; height: 44px; min-height: 44px; padding: 10px; border: 1px solid #7b9faf66; border-radius: 14px; background: #122837d9; color: #d9f3ed; }
 body[data-left-handed=true] .pool-shell > #pause { left: 8px; right: auto; }
@@ -54,22 +54,29 @@ body[data-left-handed=true] .pool-shell > .goal-strip { left: 62px; right: 10px;
 .pool-shell > .edge-feedback { position: absolute; z-index: 3; left: 12px; right: 12px; bottom: 10px; min-height: 0; height: 30px; pointer-events: none; }
 .edge-feedback #edge-idle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .edge-feedback .toast { border-radius: 12px; background: #0c2028e8; padding: 4px 8px; font-size: 11px; }
-.hud-actions { grid-row: 3; display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 4px; }
-.hud-actions .power-dock { flex: none; width: 94px; min-height: 44px; }
+.hud-actions { grid-row: 3; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1.1fr); align-items: stretch; gap: 6px; min-height: 52px; padding: 4px 8px; }
+.hud-actions .hud-label, .hud-actions .power-dock > button .button-label { display: block; color: #adc3cf; font-size: 10px; line-height: 12px; letter-spacing: .4px; text-transform: uppercase; }
+.hud-actions .power-dock { grid-area: 1 / 1; width: auto; min-height: 44px; display: flex; justify-content: center; align-items: flex-end; padding: 15px 0 2px; }
+.hud-actions .power-dock > button { min-height: 44px; border-radius: 8px; }
 .hud-actions .power-dock > button > .ui-icon { display: none; }
-.hud-actions .power-dock > button > span:not(.ui-icon) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.hud-actions .melody { flex: 1; min-width: 45px; position: static; width: auto; transform: none; }
-.hud-actions .melody > div { justify-content: center; }
-.hud-actions .bonus-card { flex: none; width: 114px; min-height: 44px; gap: 7px; padding: 4px 0 5px 8px; }
-.hud-actions .bonus-emblem { display: flex!important; }
-.hud-actions .bonus-emblem .ui-icon { width: 17px; height: 17px; }
-.hud-actions .bonus-copy { flex: 1; }
-.hud-actions .bonus-eyebrow { font-size: 0; letter-spacing: 0; }
-.hud-actions #bonus-reward { font-size: 11px; white-space: nowrap; }
-.hud-actions #bonus-title, .hud-actions #bonus-status { display: none; }
-.hud-actions .bonus-arrow { display: none; }
-.hud-medal { display: flex; align-items: center; justify-content: center; gap: 4px; min-height: 44px; min-width: 70px; padding: 4px 0 4px 6px; background: transparent; border: 0; font-size: 11px; white-space: nowrap; }
-.hud-medal .medal-icon { width: 22px; height: 27px; }
+.hud-actions .power-dock > button .button-label { position: absolute; inset: 0 0 auto; width: auto; height: auto; overflow: visible; clip-path: none; text-align: center; }
+.hud-actions .power-slots { justify-content: center; gap: 5px; }
+.hud-actions .melody { grid-area: 1 / 2; display: flex; flex-direction: column; justify-content: flex-start; gap: 3px; min-width: 0; position: static; width: auto; transform: none; }
+.hud-actions .melody > .hud-label { display: block; margin: 0; max-width: none; }
+.hud-actions .melody > #chain-label { display: none; }
+.hud-actions .melody > div { display: flex; justify-content: center; align-items: center; min-height: 26px; }
+.hud-actions .bonus-card { grid-area: 1 / 3; display: grid; grid-template-columns: 22px auto; grid-template-rows: 12px 26px; justify-content: center; align-content: start; align-items: center; width: auto; min-height: 44px; column-gap: 5px; row-gap: 3px; padding: 0 4px; border: 0; border-radius: 8px; text-align: center; }
+.hud-actions .bonus-emblem { display: flex!important; grid-row: 2; grid-column: 1; width: auto; height: auto; padding: 0; }
+.hud-actions .bonus-emblem .ui-icon { width: 19px; height: 19px; }
+.hud-actions .bonus-copy, .hud-actions .bonus-eyebrow { display: contents; }
+.hud-actions .bonus-eyebrow > .hud-label { grid-row: 1; grid-column: 1/-1; color: #adc3cf; }
+.hud-actions #bonus-reward { grid-row: 2; grid-column: 2; font-size: 11px; letter-spacing: 0; white-space: nowrap; }
+.hud-actions #bonus-title, .hud-actions #bonus-status, .hud-actions .bonus-arrow { display: none; }
+.hud-actions .bonus-track { left: 4px; right: 4px; }
+.hud-medal { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 44px; min-width: 0; padding: 0; background: transparent; border: 0; font-size: 11px; white-space: nowrap; }
+.hud-medal-value { display: flex; align-items: center; justify-content: center; gap: 4px; height: 22px; }
+.hud-medal .medal-icon { width: 18px; height: 22px; }
+.hud .score, .hud .pluck, body[data-left-handed=true] .hud .pluck, .hud .hud-medal { display: grid; grid-template-rows: 12px 24px; gap: 3px; align-content: center; align-items: center; justify-items: center; }
 #medals-dialog .pool-medal-targets { display: grid; gap: 18px; justify-content: stretch; padding: 0; }
 #medals-dialog .pool-medal-targets > [data-medal] { display: flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 16px; }
 #medals-dialog .pool-medal-targets small { text-align: left; font-size: 13px; line-height: 1.6; }
@@ -80,15 +87,16 @@ body > main .control-strip, main:has(.phrase-panel[hidden]) .control-strip { gri
   .hud-balance { gap: 8px; }
   .hud-balance .run-score strong, .hud-balance .points strong { font-size: 14px; }
   .hud-actions { gap: 6px; }
-  .hud-actions .bonus-card { width: 104px; }
+  .hud-actions { gap: 3px; }
+  .hud-actions .power-slots { gap: 3px; }
+  .hud-actions .bonus-card { padding-inline: 0; column-gap: 2px; }
 }
 @media(max-height:500px) and (min-width:480px) and (orientation:landscape) {
   body > main, body > main:has(.phrase-panel[hidden]) { max-width: 1200px; grid-template-columns: minmax(0,1fr) 210px; grid-template-rows: auto auto auto minmax(0,1fr) auto; gap: 6px 10px; }
   .pool-shell { grid-column: 1; grid-row: 1/-1; }
-  body > main > .hud { grid-column: 2; grid-row: 1; flex-wrap: wrap; }
-  .hud-balance { flex-basis: 140px; }
-  .hud-actions { grid-column: 2; grid-row: 2; flex-wrap: wrap; }
-  .hud-actions .bonus-card { width: 100%; border-left: 0; }
+  body > main > .hud { grid-column: 2; grid-row: 1; grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .hud-actions { grid-column: 2; grid-row: 2; grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .hud-actions .bonus-card { grid-row: 2; grid-column: 1/-1; }
   body > main .phrase-panel { grid-column: 2; grid-row: 3; }
   body > main .control-strip, main:has(.phrase-panel[hidden]) .control-strip { grid-column: 2; grid-row: 5; }
   .aim-controls { flex-wrap: wrap; }
@@ -120,7 +128,7 @@ body[data-development=true]{--content-safe-bottom:0px}
 .hud [data-hud-help], .hud-actions [data-hud-help] { background: transparent; border: 0; border-radius: 8px; padding: 0; min-width: 44px; min-height: 44px; color: inherit; }
 .hud [data-hud-help=points] { color: var(--mint); }
 .hud-actions .bonus-emblem { background: transparent; border: 0; box-shadow: none; }
-.hud-actions .bonus-emblem .ui-icon { width: 23px; height: 23px; }
+.hud-actions .bonus-emblem .ui-icon { width: 19px; height: 19px; }
 :root body dialog.hud-info-card[open] { position: fixed; inset: 0; display: flex; flex-direction: column; width: min(380px,calc(100% - 28px)); height: fit-content; max-height: calc(var(--app-height,100dvh) - 32px); margin: auto; padding: 0; border: 1px solid var(--glass-edge); border-radius: 22px; overflow: hidden; }
 :root body dialog.hud-info-card > .dialog-body { flex: 0 1 auto; min-height: 0; overflow: auto; padding: 20px; }
 :root body dialog.hud-info-card > .dialog-heading { width: auto; flex: none; margin: 0; padding: 10px 14px; border-radius: 0; }
