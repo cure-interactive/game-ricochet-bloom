@@ -153,4 +153,4 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 [data-icon="ripple"]{--ui-icon:url("./icon/power/ripple.svg?v=5f9fd7b188199dff1216d387666f801d7d5f6a11435e67b5c567c7ac006ffa68")}
 
 .ui-icon:is([data-icon=trails],[data-icon=bounce-effects]){background:none;mask:none;-webkit-mask:none;overflow:visible}
-cosmetic-icon,cosmetic-icon>canvas{display:block;width:100%;height:100%;pointer-events:none}
+cosmetic-icon,cosmetic-icon>canvas{display:block;width:100%;height:100%;pointer-events:none;background:transparent}

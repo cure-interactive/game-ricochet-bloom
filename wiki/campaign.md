@@ -2,7 +2,7 @@
 
 ## Choose a Track
 
-**Melody Journey** is the original musical campaign, available from **Gamemodes**. It shows the tracks you have unlocked. Select a track to open its own page with goals, rewards and a start or continue action. Locked tracks stay hidden until you unlock them. The music bar is available during this campaign in both Normal and Development profiles.
+**Melody Journey** is the original musical campaign, available from **Gamemodes**. It shows the tracks you have unlocked. Select a track to open its own page with goals, rewards and a start or continue action. Locked tracks stay hidden until you unlock them. Music continues during the campaign. The optional music panel is opened through the **Development Profile Active** disclosure in Development gameplay; it never opens automatically.
 
 The sequence is **First Light → Crosscurrent → Glasswater → Afterimage → Night Bloom**. Completing a track opens the next one and unlocks its player skin. Open **Player Skins** from the main menu and tap a small card for an enlarged preview. Turn on **Use This Skin** to equip an earned skin; turning it off returns to Original. The skin list shows Original and rewards associated with unlocked tracks. A visible skin that you have not earned can be previewed and shows its completion requirement. Skins for locked tracks remain hidden. Back returns to the skin list. Development → **Show Hidden Tracks, Skills and Skins** reveals the complete catalogues without unlocking them.
 

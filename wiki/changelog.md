@@ -6,6 +6,27 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.28.1
+
+Build: 2026-11-15 22:48:37 UTC
+
+### Player Changes
+
+- Keep the music panel collapsed until opened through Development Profile Active, including Melody Journey. The bar keeps its size and label, with an arrow when available.
+- Make Mythic Aurora travel a continuous ambient shimmer with smooth motion changes and a soft stop. Legendary launch sounds remain unchanged.
+- Show full pause navigation after returning to the app or page. Keep first-shot pull-back help until a successful launch.
+- Preserve one continuous equipped trail while grabbing and moving player previews and icons; let the drawing area follow the tail so small icon boxes do not cut it short.
+- Expand Wiki guidance for shared controls, cosmetic previews, Settings, handedness and Stats.
+
+<!-- development -->
+### Developer Notes
+
+- Remove forced campaign music visibility, retain accessible disclosure state and unchanged strip geometry.
+- Renew bounded phase-continuous travel voices rather than scheduling repeated attacks; retain finite auditions and audio lifecycle cleanup.
+- Pair foreground pause presentation with interruption state; make onboarding guidance depend on launch state.
+- Prevent zero-time observer repaints from breaking trail history, and document movement ownership and regression boundaries.
+<!-- /development -->
+
 ## v3.28.0
 
 Build: 2026-11-15 20:57:53 UTC

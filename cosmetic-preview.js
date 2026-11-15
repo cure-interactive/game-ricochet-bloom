@@ -1,4 +1,4 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=2e5f9d9d4280ef53561596ab5e3eb3b10f2f6a721b99764fd6b151167df24f05';
+import {CosmeticVisual} from './cosmetic-visual.js?v=75f3164bf98cdce5c7f48f0695f5df0bda00b2bcaecbfef14cd35613cba151f0';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {bubbleRender} from './bubble-render.js?v=0fb077e27e26a90c91049d6eba0ddb11d51a8b23c41c77fb68026af650ecc46a';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';

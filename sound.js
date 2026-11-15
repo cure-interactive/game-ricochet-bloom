@@ -1,6 +1,6 @@
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=93b35985fdd4a57c460799ea92460242b39f4e3576bf6b7de2cf226d83a382e4';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=c0db179bcb018380a8604c761694e0021f5b46aae7b41ff0986bf44e98136bce';
-import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=7ec09556610ab987f7c5deb3143a3e4ba1da31461c131f3a4136838fa80ecdac';
+import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=97b306ab42d46dc2f32ef73e7417114b7e4c554d3db716a4334c31895c9d8d32';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js?v=768fd2085fb48c8070f85109a5576972870f150254ad3d8924ab36fdd5fef962';
@@ -72,7 +72,7 @@ export class PoolSound {
     if(this.media){this.media=new PoolMedia(mediaEnv);if(mediaKey)this.media.describe(mediaKey);}
     try{void this.context?.close?.().catch(()=>{});}catch{}
     this.context=null;this.master=null;this.musicInput=null;this.musicOutput=null;this.delay=null;
-    this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};
+    this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};this.travelState=null;
   }
   harmonySet(blooms) {
     const count = Number.isSafeInteger(blooms) && blooms > 0 ? blooms : 0;
@@ -255,17 +255,43 @@ export class PoolSound {
     return true;
   }
   travelVoices(pan,offset,duration,level,options){
-    this.tone(440,466,duration,level,pan,offset,'sine',false,false,options);
-    this.tone(660,698,duration,level*.55,pan,offset,'sine',false,false,options);
+    // Aurora is a soft, slowly beating pad. Sustained oscillators keep phase
+    // across motion updates: no repeating attacks, pitch resets or loop seam.
+    const context=this.context,start=context.currentTime+offset;
+    return [[440,1],[440.18,.65],[660,.35]].map(([pitch,weight])=>{
+      const oscillator=context.createOscillator(),gain=context.createGain(),stereo=context.createStereoPanner();
+      oscillator.type='sine';oscillator.frequency.setValueAtTime(pitch,start);
+      gain.gain.setValueAtTime(.0001,start);gain.gain.linearRampToValueAtTime(level*weight,start+.45);
+      gain.gain.setValueAtTime(level*weight,start+duration-1);gain.gain.linearRampToValueAtTime(.0001,start+duration);
+      stereo.pan.value=Math.max(-.85,Math.min(.85,pan));oscillator.connect(gain);gain.connect(stereo);stereo.connect(this.master);
+      const voice=voiceTrack(this,{oscillator,gain,stereo,weight,start,group:options.group},start+duration+.02,[oscillator,gain,stereo]);
+      oscillator.start(start);oscillator.stop(voice.end);return voice;
+    });
   }
   cosmeticTravel(loadout,body,active=true){
     const item=cosmeticGet(loadout?.trail);
     if(!active||item?.rarity!=='mythic'||item.kind!=='trail'||!body||!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.isPaused||globalThis.document?.hidden){voicesStop(this,'cosmetic-travel');this.travelState=null;return false;}
     voicesReap(this);const now=this.context.currentTime,old=this.travelState;
     const speed=old&&now>old.time?Math.hypot(body.x-old.x,body.y-old.y)/(now-old.time):Math.hypot(body.vx||0,body.vy||0);
-    this.travelState={x:body.x,y:body.y,time:now,at:old?.at??-Infinity};
-    if(speed<1||now-this.travelState.at<.24||this.voiceCount>40)return false;
-    this.travelState.at=now;this.travelVoices(poolPan(body.x,body.y,this.portrait),0,.6,.008+Math.min(1,speed/500)*.012,{group:'cosmetic-travel'});return true;
+    this.travelState={x:body.x,y:body.y,time:now,at:old?.at??-Infinity,voices:old?.voices};
+    if(speed<1||now-this.travelState.at<.08)return false;
+    const state=this.travelState,level=.008+Math.min(1,speed/500)*.012,pan=poolPan(body.x,body.y,this.portrait);
+    if(!state.voices?.every(v=>this.audioVoices.has(v)&&v.end>now)){
+      if(this.voiceCount>40)return false;
+      state.voices=this.travelVoices(pan,0,2,level,{group:'cosmetic-travel'});
+    }
+    state.at=now;
+    for(const voice of state.voices){
+      const gain=voice.gain.gain;
+      if(gain.cancelAndHoldAtTime)gain.cancelAndHoldAtTime(now);
+      else {const current=gain.value;gain.cancelScheduledValues(now);gain.setValueAtTime(current,now);}
+      gain.setTargetAtTime(level*voice.weight,now,.22);
+      // A renewable audio-clock lease fades automatically even if updates stop.
+      gain.setTargetAtTime(.0001,now+.35,.14);
+      voice.stereo.pan.setTargetAtTime(Math.max(-.85,Math.min(.85,pan)),now,.15);
+      voice.end=now+1.2;voice.oscillator.stop(voice.end);
+    }
+    return true;
   }
   audition() {
     if (!this.context || this.context.state !== 'running' || this.isMuted || !this.volume) return false;

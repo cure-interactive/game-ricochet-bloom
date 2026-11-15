@@ -4,6 +4,8 @@
 
 Open **Player → Skills** to go straight to player upgrades, or open **Skills** from the main menu and switch between **Powers** and **Player** using the buttons in its navigation panel. The Player tree connects Your Player to the Sight, Launch, Rebound, Glide and Steady branches. Tap or click a node to read its effects, prerequisites and Points cost, then unlock it from the detail card. Drag to pan and pinch or scroll to zoom, just like the power tree. Keyboard users can move between nodes with arrow keys and open details with Enter or Space. Hovering does not open a card.
 
+Both trees use the same selector, Points display and map controls. Tap **Powers** or **Player**, or drag the selection; it stays inside its frame and the labels change contrast as it moves. Left-Handed Layout reverses the tab order and moves the surrounding controls. The dot background pans and zooms with the tree, without the main-menu bubbles behind it.
+
 Both trees use the same Points wallet. Purchases are permanent and cumulative; each second player upgrade requires the first in its branch, and every branch can be researched. The **Your Player** root card shows your current player attributes and where upgrades apply. Existing purchases are preserved. Skins remain cosmetic.
 
 - **Sight:** Long Sight costs 80 Points and adds 180 units of aiming guide and 140 units after the first wall bounce. Deep Sight costs 180 Points and adds the same amounts again. The guide shows wall geometry; bubbles and powers can change the actual path.

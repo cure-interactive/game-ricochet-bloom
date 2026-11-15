@@ -6,6 +6,8 @@
 2. Touch different bubbles to build a chain. Reach **five unique bubbles in one shot** to make a 5-Chain.
 3. Use wall bounces and moving bubbles to extend your chain. Each bubble counts once per shot; hitting it again can still change your motion.
 
+The initial **Drag back and release to launch** instruction stays until you successfully launch your first shot. Waiting, opening a menu, or cancelling a drag does not dismiss it.
+
 A new bubble earns 25 points multiplied by its place in the chain. Wall banks add a scoring bonus, and a 5-Chain adds 500. The bonus objective offers an additional target during play. Score is separate from the persistent Points spent in Skills.
 
 In Melody Journey, follow the goal displayed above the pool and finish before you run out of shots. The first 5-Chain in a pool earns one extra shot. Your shot coasts to a stop before its result is resolved.
@@ -16,7 +18,7 @@ Choose **Gamemodes → Endless Waves** from the main menu for five shots per wav
 
 Casual is a casual, self-playing pool with the same enlarged bubbles, player and power effects as the main-menu background. Tap or hold to stir the pool. Every five hits brings a power from your unlocked powers, with its icon shown inside a bubble. The music is the pool's composed ambient arrangement.
 
-The only play control is the floating **Pause** button, placed in the bottom-right corner, or bottom-left with Left-Handed Layout. Pause freezes the pool while its ambient music continues; Resume continues play. Press P or Escape to pause with a keyboard. Casual uses the standard pause menu: Resume game, Main Menu, Wiki, How to Play and Settings. The pool stays paused while you read help or change settings.
+The only play control is the floating **Pause** button, placed in the bottom-right corner, or bottom-left with Left-Handed Layout. Pause freezes the pool while its ambient music continues; Resume continues play. Press P or Escape to pause with a keyboard. Casual uses the standard pause menu: Resume game, Main Menu, Wiki, How to Play and Settings. The pool stays paused while you read help or change settings. Returning after switching to another app or tab shows this full pause menu; play resumes only when you choose Resume.
 
 Casual earns **no Points, medals, mastery or campaign progress**. It never replaces your saved game. There is no score target, shot limit or loss condition.
 

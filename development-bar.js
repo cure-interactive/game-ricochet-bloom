@@ -6,7 +6,7 @@ export function developmentBarMount(doc=document){
  const toggle=doc.createElement('button');toggle.type='button';toggle.setAttribute('aria-controls','game-music-bar');toggle.hidden=true;
  bar.append(status,toggle);doc.body.append(bar);
  const panel=doc.getElementById('game-music-bar');
- let active=false,campaign=false,expanded=false,stack=[...doc.querySelectorAll('dialog[open]')];
+ let active=false,expanded=false,stack=[...doc.querySelectorAll('dialog[open]')];
  const popover=typeof bar.showPopover==='function';
  let reserved=0;
  function measure(){
@@ -19,14 +19,14 @@ export function developmentBarMount(doc=document){
  if(doc.defaultView.ResizeObserver)new doc.defaultView.ResizeObserver(measure).observe(bar);
  else doc.defaultView.addEventListener('resize',measure,{passive:true});
  function disclosure(){
-  const playing=doc.body.dataset.screen==='play'&&!!panel,available=active&&!campaign&&playing&&!stack.length;
+  const playing=doc.body.dataset.screen==='play'&&!!panel,available=active&&playing&&!stack.length;
   if(!active||!playing)expanded=false;
   toggle.hidden=!available;status.hidden=available;
-  toggle.textContent=`Development Profile Active · ${expanded?'Hide':'Show'} Music`;
-  toggle.setAttribute('aria-label',toggle.textContent);
+  toggle.textContent='Development Profile Active';
+  toggle.setAttribute('aria-label',`Development Profile Active · ${expanded?'Hide':'Show'} Music`);
   toggle.setAttribute('aria-expanded',String(expanded));
   doc.body.dataset.developmentDisclosure=String(available);
-  if(panel)panel.hidden=!(playing&&(campaign||active&&expanded));
+  if(panel)panel.hidden=!(playing&&active&&expanded);
  }
  toggle.onclick=()=>{if(!active||toggle.hidden)return;expanded=!expanded;disclosure();};
  let layer=null;
@@ -65,5 +65,5 @@ export function developmentBarMount(doc=document){
  doc.addEventListener('visibilitychange',()=>{if(!doc.hidden)refresh(true);});
  if(popover)bar.addEventListener('toggle',()=>{if(!bar.matches(':popover-open'))refresh();});
  disclosure();
- return {set(kind,shared=false,musicCampaign=false){const next=developmentProfileActive(kind,shared);if(next!==active||campaign!==musicCampaign){active=next;campaign=musicCampaign;expanded=false;}doc.body.dataset.development=String(active);refresh();}};
+ return {set(kind,shared=false){const next=developmentProfileActive(kind,shared);if(next!==active){active=next;expanded=false;}doc.body.dataset.development=String(active);refresh();}};
 }

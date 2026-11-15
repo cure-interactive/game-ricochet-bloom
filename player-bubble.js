@@ -1,5 +1,5 @@
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
-import {CosmeticVisual} from './cosmetic-visual.js?v=2e5f9d9d4280ef53561596ab5e3eb3b10f2f6a721b99764fd6b151167df24f05';
+import {CosmeticVisual} from './cosmetic-visual.js?v=75f3164bf98cdce5c7f48f0695f5df0bda00b2bcaecbfef14cd35613cba151f0';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
@@ -130,9 +130,7 @@ export function registerPlayerBubble(win=window){
   }
   paint(dt=0){
    if(!this.context||!this.size||!this.canAnimate())return;
-   const pixels=Math.ceil(this.size*3.6*qualityPixelRatio(this.ownerDocument.body.dataset?.quality,win.devicePixelRatio||1));
-   if(this.canvas.width!==pixels||this.canvas.height!==pixels)this.canvas.width=this.canvas.height=pixels;
-   const c=this.context;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pixels,pixels);c.setTransform(pixels/100.8,0,0,pixels/100.8,0,0);
+   const c=this.context;
    const style=win.getComputedStyle(this),color=style.getPropertyValue('--skin-color').trim()||'#f1f9d7';
    const body={...this.body,x:this.body.x+this.pressure.x,y:this.body.y+this.pressure.y};
    // Sample actual screen movement, including parent drag/scroll and the icon's
@@ -141,7 +139,27 @@ export function registerPlayerBubble(win=window){
    const rect=this.getBoundingClientRect(),unit=this.size/28,x=(rect.left+rect.width/2)/unit,y=(rect.top+rect.height/2)/unit;
    if(this.trailUnit!==unit){this.trail.breakTrail();this.trailUnit=unit;}
    this.trail.configure({trail:style.getPropertyValue('--player-trail').trim()});
-   this.trail.step({x:x+this.pressure.x,y:y+this.pressure.y},dt);
+   // Style observers repaint during a grabbed parent's transform. A repaint
+   // has no elapsed simulation time and must not break the continuous trail.
+   if(dt>0)this.trail.step({x:x+this.pressure.x,y:y+this.pressure.y},dt);
+   // The tail belongs to movement, not the icon's hit box. Extend this same
+   // canvas around its live history, keeping the allocation viewport-bounded.
+   // Quantized edges avoid reallocating the backing bitmap for every pixel.
+   let left=0,top=0,right=100.8,bottom=100.8;
+   const ox=this.body.x-x,oy=this.body.y-y,pad=22;
+   for(const point of this.trail.points){
+    left=Math.min(left,Math.max(ox,point.x+ox-pad));right=Math.max(right,Math.min(ox+win.innerWidth/unit,point.x+ox+pad));
+    top=Math.min(top,Math.max(oy,point.y+oy-pad));bottom=Math.max(bottom,Math.min(oy+win.innerHeight/unit,point.y+oy+pad));
+   }
+   const edge=value=>Math.floor(value*unit/32)*32/unit;
+   left=edge(left);top=edge(top);right=-edge(-right);bottom=-edge(-bottom);
+   const width=(right-left)*unit,height=(bottom-top)*unit,ratio=qualityPixelRatio(this.ownerDocument.body.dataset?.quality,win.devicePixelRatio||1);
+   const pixelWidth=Math.ceil(width*ratio),pixelHeight=Math.ceil(height*ratio);
+   if(this.canvas.width!==pixelWidth)this.canvas.width=pixelWidth;
+   if(this.canvas.height!==pixelHeight)this.canvas.height=pixelHeight;
+   Object.assign(this.canvas.style,{width:`${width}px`,height:`${height}px`,left:`${(left-this.body.x)*unit+this.size/2}px`,top:`${(top-this.body.y)*unit+this.size/2}px`});
+   c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pixelWidth,pixelHeight);
+   c.setTransform(unit*ratio,0,0,unit*ratio,-left*unit*ratio,-top*unit*ratio);
    c.save();c.translate(this.body.x-x,this.body.y-y);this.trail.render(c,this.ownerDocument.body.dataset?.quality==='low',true);c.restore();
    const points=bubbleOutline(this.membrane,body);
    bubbleRender(c,body,points,color,{glowExtent:1.3,skinTime:this.age,skinStyle:style.getPropertyValue('--skin-style').trim()||style.getPropertyValue('--player-skin-style').trim(),lowQuality:this.ownerDocument.body.dataset?.quality==='low'});

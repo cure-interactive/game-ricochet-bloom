@@ -1,13 +1,13 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=2e5f9d9d4280ef53561596ab5e3eb3b10f2f6a721b99764fd6b151167df24f05';
+import {CosmeticVisual} from './cosmetic-visual.js?v=75f3164bf98cdce5c7f48f0695f5df0bda00b2bcaecbfef14cd35613cba151f0';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {bubbleRender} from './bubble-render.js?v=0fb077e27e26a90c91049d6eba0ddb11d51a8b23c41c77fb68026af650ecc46a';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 const renderReady=frameGate();
-import { gamemodeMount } from './gamemode-ui.js?v=5460d8d2e4aec80e9d67c7ec59337386fa04fabbe79fc80e08f087f1ca990302';
+import { gamemodeMount } from './gamemode-ui.js?v=b26ef8d01460f0f7cc885cb3f2fb766088b28ae26b745c37435ce467982e8b28';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
 import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=b66de041ee2d9f60adfb88f52c358438190802a3f8dc744542f54dc430e58530';
 import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
-import { screenHeader } from './screen-header.js?v=2e096f2a79faa63185588495732061424d007cab358cb47837ed18fd2666ad3c';
+import { screenHeader } from './screen-header.js?v=df0c707b39140716dd50e697fecf07a091e97021c7dcdd0c2c71abfbc81e0dab';
 import { songKeep } from './song.js?v=490c28dfcf9cb065c698c1d1d66cf57067e308cfaf0db3ec20c3b23b6ea9aeb8';
 import { melodyDraw } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { experimentRewarded, experimentGoal, EXPERIMENT_RECIPES } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
@@ -15,7 +15,7 @@ import { experimentMedal, experimentRead, experimentSave, experimentWrite, exper
 import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialForGeneration,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=ee88fa6819c43397fd16a782519a3e055707b4f141bd667e1be4ec2db2f3209a';
 import { trialRead,trialWrite } from './trial-store.js?v=c51c57ab0b8f034d070eb9f80de7a27d1fd23947e6e180f0f1a77c46a659bf17';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { buttonHTML } from './ui-icon.js?v=2fc20cc9221a523874a677a151fa2d76dd8dda2734129b3078e5c0d045e87188';
+import { buttonHTML } from './ui-icon.js?v=0d0f9193c5aa6fef4bc7c261261b274c333b9a1c84f7bc0aa5c9411ec47da6eb';
 const button=(id,label,icon='arrow-left')=>buttonHTML(label,icon,{id});
 const color={'music-note':'#a4f4cf','beat-gate':'#eb9bcd','sound-hazard':'#ff8b91',instrument:'#f2d279',keeper:'#ff8b91',gate:'#9ce6cf',power:'#c4a7ff',payload:'#ffb56e',player:'#f6f5cf',target:'#ed82bd',blast:'#ffb56e',fire:'#ff765f',gas:'#cadb78',cell:'#a4f4cf',cargo:'#8edbff',plug:'#c6b4ff',vent:'#bf89e8',mote:'#ec8ed7',mud:'#bba18c',spike:'#fa8c91'};
 export function trialMount(host){
@@ -46,7 +46,7 @@ export function trialMount(host){
     const medalSetup=game.setup??experimentSetup(game.mode,game.layout),evidence=trialEvidence(game),medal=trialMedal(medalSetup,evidence);
     $('trial-medals').innerHTML=medalConditionsHTML(trialConditions(medalSetup),medal);$('trial-medal-summary').textContent=medal?medal+' Medal · Conditions':bestMedal?'Best: '+bestMedal+' · Medal Conditions':'Medal Conditions';$('trial-medal-result').innerHTML=medalBadge(medal);
     const metric=trialConditions(medalSetup)[2].metric;$('trial-medal-progress').textContent=metric==='banks'?`${evidence.banks} wall banks this shot`:metric==='pitches'?`${evidence.pitches} different pitches in the last 64 notes`:metric==='seconds'?`${evidence.seconds.toFixed(1)} seconds in motion · aiming and pauses do not count`:`${game.shots} shots used`;
-    $('trial-overlay').hidden=!(paused||ended);$('trial-outcome').textContent=ended?(game.phase==='won'?'Well Played':'Try Another Route'):'Paused';$('trial-reason').textContent=ended?game.reason:'Your progress is saved.';$('trial-resume').hidden=ended;$('trial-resume').disabled=blocked;$('trial-retry').hidden=!ended;$('trial-retry').disabled=blocked;$('trial-pause').disabled=ended||blocked;$('trial-pause').lastElementChild.textContent=paused?'Resume':'Pause';$('trial-launch').disabled=paused||blocked||game.phase!=='aim'||!!game.melody?.preview||game.shots>=trialShots(game);$('trial-save-retry').hidden=!blocked;$('trial-export').hidden=!blocked||!game.setup;$('trial-release').hidden=game.mode!=='capture';$('trial-release').disabled=paused||blocked||game.phase!=='aim'||game.payloadState!=='carried';$('trial-review').hidden=!ended;$('trial-review').disabled=blocked;$('trial-home').hidden=!ended;$('trial-home').disabled=blocked;
+    $('trial-overlay').hidden=!(paused||ended);$('trial-outcome').textContent=ended?(game.phase==='won'?'Well Played':'Try Another Route'):'Paused';$('trial-reason').textContent=ended?game.reason:'Your progress is saved.';$('trial-resume').hidden=ended;$('trial-resume').disabled=blocked;$('trial-retry').hidden=!(ended||paused);$('trial-retry').disabled=blocked;$('trial-pause').disabled=ended||blocked;$('trial-pause').lastElementChild.textContent=paused?'Resume':'Pause';$('trial-launch').disabled=paused||blocked||game.phase!=='aim'||!!game.melody?.preview||game.shots>=trialShots(game);$('trial-save-retry').hidden=!blocked;$('trial-export').hidden=!blocked||!game.setup;$('trial-release').hidden=game.mode!=='capture';$('trial-release').disabled=paused||blocked||game.phase!=='aim'||game.payloadState!=='carried';$('trial-review').hidden=!(ended||paused);$('trial-review').disabled=blocked;$('trial-home').hidden=!(ended||paused);$('trial-home').disabled=blocked;
     const actions=$('trial-actions');
     if(game.setup?.experimentId==='003'){
       actions.innerHTML='<label>Call Your First Target<select id="trial-call">'+game.bodies.filter(b=>b.kind==='target'&&b.active).map(b=>`<option value="${b.id}"${b.id===game.precision.call?' selected':''}>Target ${b.id}</option>`).join('')+'</select></label>';
