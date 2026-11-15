@@ -1,6 +1,6 @@
 import { screenHeader } from './screen-header.js?v=883c141deaf0d60097c4b99c555371897614dfd0bde5d3229b4a41e5450222e0';
 import { playerUpgradeMount } from './player-upgrade-ui.js?v=42b8292d0c819baadf680d130d8962f574755c1d5c24c0a2eebaf16a7fb32521';
-import { saveRecoveryMount } from './save-recovery-ui.js?v=9853420acf36df078feaad977e4c78772bbf2a80b07f549db326bee5d429781f';
+import { saveRecoveryMount } from './save-recovery-ui.js?v=9a603ce14cc305fe37cf7c9ee4269e6c6caec498508a7e061bde19dc97eac6e2';
 import { progressionResetUnreadable } from './progression-store.js?v=3b5272a86ea6acab9816f1931b729e097167c89bf7d03481f93ba68b9279248b';
 import { medalIcon } from './medal-ui.js?v=dfdcfbb8db30dfb246fae78172550b2d7cd09d02d7dd4dc49fb082d1ec307b91';
 
@@ -174,7 +174,6 @@ export function progressionMount(host){
     trialReward:earning=>settleEarning(earning,false),
     profileIndicator(){profileBar.set(kind,!!shared,['run','challenge','listening'].includes(context));},
     recoveryNotice:recovery.notice,
-    help:recovery.help,
     get saveDiagnostics(){return {blocked:saveBlocked,pending:!!(pending||pendingEarning),lastFailure:lastSaveFailure};},
     get context(){return context;},get blocked(){return saveBlocked||context==='listening'||['run','challenge'].includes(context)&&state.phase!=='run';},get state(){return state;},
     renamePlayer(name){

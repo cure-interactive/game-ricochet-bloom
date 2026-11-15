@@ -40,8 +40,8 @@
 
 /* Child dialogs replace Settings visually while its native modal state, section
    expansion and scroll position remain intact for Close, Escape and edge Back. */
-:root body:has(:is(#development-dialog,#credits-dialog,#shutdown-dialog)[open]) #settings-dialog[open],
-:root body:has(:is(#development-dialog,#credits-dialog,#shutdown-dialog)[open]) #settings-dialog[open]::backdrop {
+:root body:has(:is(#development-dialog,#credits-dialog,#shutdown-dialog,#support-dialog)[open]) #settings-dialog[open],
+:root body:has(:is(#development-dialog,#credits-dialog,#shutdown-dialog,#support-dialog)[open]) #settings-dialog[open]::backdrop {
   visibility: hidden;
 }
 
@@ -112,7 +112,6 @@
 }
 /* The compact HUD has two reading cards without taking more play-area height. */
 body > main > :is(.hud,.hud-actions) { background: var(--reading-surface); border-radius: 0; box-shadow: inset 0 1px var(--reading-edge); padding-inline: 8px; }
-#main-menu .home-support { background: var(--reading-surface); border: 1px solid var(--reading-edge); border-radius: 12px; }
 @media(max-width:380px) {
   :root body .reading-card { padding: 14px; }
   :root body dialog:not(.hud-info-card):not(#development-dialog):not(#save-recovery-dialog):not(#support-dialog) > :is(.dialog-body,.campaign-scroll,.wiki-article,.skin-scroll,.credit-page) { padding: 16px; }

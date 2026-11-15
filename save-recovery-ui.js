@@ -6,7 +6,7 @@ const supportActions=()=>`<section data-diagnostics class="support-actions readi
 // One recovery surface for unreadable profiles and pending writes.
 export function saveRecoveryMount(host){
   const notice=document.createElement('section');notice.className='save-notice';notice.setAttribute('aria-label','Progress recovery');
-  notice.innerHTML='<div><strong>Saving Needs Help</strong><p>Your progress is kept. Tap here to retry or send a report.</p></div>'+buttonHTML('Get Help','reset',{class:'save-review'});
+  notice.innerHTML='<div><strong>Saving Needs Help</strong><p>Your progress is kept. Tap here to retry or send a report.</p></div>'+buttonHTML('Progress Recovery','reset',{class:'save-review'});
   const dialog=document.createElement('dialog');dialog.id='save-recovery-dialog';dialog.className='standard-dialog';dialog.setAttribute('aria-labelledby','save-recovery-title');
   dialog.innerHTML=`${screenHeader({className:'dialog-heading',title:'Progress Recovery',titleId:'save-recovery-title',icon:'reset',back:buttonHTML('Close','close',{id:'save-close'})})}<div class="dialog-body"><section class="reading-card"><p id="save-profile"></p><p id="save-message" role="status"></p><div class="save-actions">${buttonHTML('Retry Loading','reset',{id:'save-retry'})}</div></section>${supportActions()}<details class="reading-card"><summary>Backup options</summary>${buttonHTML('Export Backup','download',{id:'save-export'})}</details><details id="save-diagnostics" class="reading-card"><summary>Recovery Details</summary><pre></pre></details><div id="save-reset-section" class="reading-card">${buttonHTML('Start Fresh Profile','reset',{id:'save-reset'})}<section id="save-reset-confirmation" hidden><h3>Start Fresh?</h3><p>This replaces this profile with an empty one. Export a backup first if you want help recovering it. A separate copy of the original data will also be kept in this browser.</p><div class="save-actions">${buttonHTML('Keep Saved Data','arrow-left',{id:'save-keep'})}${buttonHTML('Back Up and Start Fresh','reset',{id:'save-reset-confirm'})}</div></section></div></div>`;
   document.body.append(dialog);
@@ -15,8 +15,10 @@ export function saveRecoveryMount(host){
   document.body.append(helpDialog);
   helpDialog.querySelector('[data-support-close]').onclick=()=>helpDialog.close();
   const help=()=>{if(host.status().blocked)open();else if(!helpDialog.open)helpDialog.showModal();};
-  const helpButton=document.createElement('button');helpButton.type='button';helpButton.innerHTML=iconHTML('about')+'<span>Get Help</span>';helpButton.onclick=help;
-  const advanced=document.getElementById('settings-advanced');advanced.before(helpButton);
+  const helpActions=document.createElement('div');helpActions.className='settings-actions settings-help';
+  helpActions.innerHTML=buttonHTML('Get Help','about',{id:'settings-support',class:'quiet'});
+  helpActions.querySelector('button').onclick=help;
+  document.querySelector('#settings-dialog > .dialog-body').append(helpActions);
   const find=id=>dialog.querySelector('#'+id);
   const settings=document.createElement('button');settings.type='button';settings.innerHTML=iconHTML('reset')+'<span>Progress Recovery</span>';
   document.getElementById('settings-advanced-actions').append(settings);
@@ -40,5 +42,5 @@ export function saveRecoveryMount(host){
   find('save-keep').onclick=()=>{find('save-reset-confirmation').hidden=true;find('save-reset').focus();};
   find('save-reset-confirm').onclick=()=>{host.reset();refresh();};
   refresh();
-  return {notice,open,refresh,help};
+  return {notice,open,refresh};
 }

@@ -1,2 +1,2 @@
 // Minor and patch versions are delegated for this project; major changes require approval.
-export const GAME_VERSION = '3.20.12';
+export const GAME_VERSION = '3.20.13';
