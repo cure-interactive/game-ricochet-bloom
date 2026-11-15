@@ -5,11 +5,11 @@ export {menuContactMount};
 import {freePlayCreate,freePlayBuild} from './free-play.js?v=0756fd6c275d9b67a242f4bd1c6e4adb572e9b7bedd77ec79419dfae7e475473';
 import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import {progressionCreate} from './run.js?v=aa118d34e3e643b1a488bc8d307b99a54e66ae474452ddcf6575bb9bee2e84a1';
-import {menuMusicCreate} from './menu-music.js?v=00d61ab880329286a6621e8fd2b6988c6855522446a331cad0369b2c0685987f';
-import {PoolVisual} from './pool-visual.js?v=94da50347263f83fbfe0c1e9554756aea57dfd1076c76fabed0c095e55ee546f';
+import {menuMusicCreate} from './menu-music.js?v=95cc04465994a96be2855f6d9e16a0cbc14962a8185f7da52a741d764ff6ca09';
+import {PoolVisual} from './pool-visual.js?v=6b7187c320498c0e7f86706f10c44d0315c226e8230e15a79e75842b43c03d93';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
 import { bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=7519519c05c10d989e0812a8dc056dd4651cbba92f1c83aa343877d1dcc87f3b';
+import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=d73b02edc746dd5fddf9898200d8fe2f3fe9b91e08924d2d5b874729f1ef172a';
 
 export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),visual=new PoolVisual();
@@ -23,7 +23,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
     if(!width||!height)return;
     if(canvas.width!==Math.round(width*dpr)||canvas.height!==Math.round(height*dpr)){canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);}
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
-    // Rotate the whole pool on phones so its geometry fills either orientation.
+    // Fit the whole pool on phones and desktop; input uses the same transform.
     const {portrait,scale}=menuPoolView(width,height);
     ctx.translate(width/2,height/2);ctx.scale(scale,scale);if(portrait)ctx.rotate(Math.PI/2);ctx.translate(-RULE.width/2,-RULE.height/2);
     for(const point of pool.contacts.values()){

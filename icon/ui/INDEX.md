@@ -111,6 +111,12 @@ Monitor and phone were exported from Cure Interactive Icons commit `71d7cc7fb2be
 
 ## Settings toggles
 
-- [Sound](sound.md) â€” original speaker and sound-wave artwork.
-- [Battery saver](battery-saver.md) â€” original battery and leaf artwork.
+- [Sound](sound.md) — original speaker and sound-wave artwork.
+- [Battery saver](battery-saver.md) — original battery and leaf artwork.
 - Other toggle labels reuse hand-left, gamepad, flask, eye and coin artwork credited above.
+
+## Backup actions
+
+- [Import](import.md) and [Export](export.md) — collection/file artwork from Cure Interactive Icons commit `c55406ddc60e50fe4ec0c023e7288beaa88c9bb8`, exported with complete CC-BY-3.0 credits and notices. Used by backup actions; geometry is unchanged.
+
+- [Device motion](device-motion.md) — original tilted-phone and movement-arrow artwork.

@@ -8,7 +8,8 @@ export function menuPoolCreate(game=gameCreate('MENU BLOOM','free')){
 }
 export function menuPoolView(width,height){
   const portrait=height>width;
-  return {portrait,scale:Math.max(width/(portrait?RULE.height:RULE.width),height/(portrait?RULE.width:RULE.height))};
+  // Keep the complete physical pool visible; cover scaling hides its walls.
+  return {portrait,scale:Math.min(width/(portrait?RULE.height:RULE.width),height/(portrait?RULE.width:RULE.height))};
 }
 export function menuPoolPoint(x,y,width,height){
   const {portrait,scale}=menuPoolView(width,height),dx=(x-width/2)/scale,dy=(y-height/2)/scale;

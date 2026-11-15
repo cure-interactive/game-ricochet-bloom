@@ -1,7 +1,7 @@
 import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=04e3e01eef88a08cf64f927e4e6b3fe2026d3900c5dd52f5313146f2fecf06ec';
+import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=0be907c714bf1915aadb9394e8ceebdc94ac03870cf3a5b2d8e3ae41456dadcf';
 import {PowerVisual} from './power-visual.js?v=055a6317e79f671c92674eed285313cb0bf4d05bb1c9bc05812f86bc1eb648b8';
 
 // One presentation owner for every physics pool: play, Casual and menu autoplay.

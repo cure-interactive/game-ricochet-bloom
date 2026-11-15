@@ -129,7 +129,14 @@
 #development-dialog .dev-controls>label:not(.setting-toggle) {display:grid;gap:8px;min-width:0;}
 #development-dialog input:not([type=checkbox]) {min-width:0;max-width:100%;width:100%;box-sizing:border-box;}
 #development-dialog .dialog-actions {display:grid;grid-template-columns:minmax(0,1fr);gap:12px;}
-#development-dialog .file-button {display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0;}
+#development-dialog .reading-card{display:grid;gap:14px}
+#development-dialog .reading-card>.section-title{margin:0;font-size:20px}
+#development-dialog .dev-option{display:grid;gap:6px}
+#development-dialog .dev-grant-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px}
+#development-dialog .dev-grant-row>label{display:grid;gap:8px;min-width:0}
+#development-dialog .dev-grant-row input{min-height:44px;font-size:16px}
+#development-dialog .backup-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:350px){#development-dialog .backup-actions{grid-template-columns:minmax(0,1fr)}}
 .dev-controls .grant-presets {display:flex;flex-wrap:wrap;gap:8px;}.dev-controls .grant-presets button {flex:1 1 76px;min-width:0;}
 #development-dialog .tree-confirm button {width:100%;margin-top:8px;}
 .shared-badge {color:#ffda98;font-size:.75rem;}

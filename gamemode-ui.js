@@ -1,13 +1,13 @@
-import { screenHeader } from './screen-header.js?v=ba224017463f62dbe26bd5a9cb443d01adafd0b81d74353ddee29501d9701838';
-import { buttonHTML } from './ui-icon.js?v=0bef764d102dc0e159800242f682b3d49abfbf27a976ab9ca47f0d10b1c82188';
+import { screenHeader } from './screen-header.js?v=8447a86a6a2e26ffb8084a0f95fdb4d952f77945d17e119f987f7d19630afe5a';
+import { buttonHTML } from './ui-icon.js?v=e8f82528036d2fd5dc9ea4baa32cd3a0f4b8d154b0a5fbb3994c86cdd0cd5bdf';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { assetURL } from './asset.js?v=4379f64b6cf04d7651d35a1ca46854905f6727d32b72a777b6664f8292f73f5e';
+import { assetURL } from './asset.js?v=118efdeb66f09c86e660934029e83ef93724af31ec3c746f70d9125b7e4e37a5';
 import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=ec038dffd7c47072baadc430b964e52f71a4fcf280ee71a4769675b2010df181';
-import { gamemodeGalleryMount } from './gamemode-gallery.js?v=59ab919879c12d815fa42fb481fd87c1d153b4102ba49787536e0a95aa64db42';
-import { scoreAttackMount } from './score-attack-ui.js?v=0bad4922bcaed15976911e504ec2d424ce85f713c135925fcd8d416d08d38f4a';
-import { experimentMount } from './experiment-ui.js?v=63701fcca1f8b29328342323a56ab57de80d8a93c687683d4dbb0c2100c7aea6';
+import { gamemodeGalleryMount } from './gamemode-gallery.js?v=f7435a5612a47e58f1d1fc7a8d5448bfcb79eb6c547bb8e1ebbf77946eb170ba';
+import { scoreAttackMount } from './score-attack-ui.js?v=77ec4ce16744c8c3e447436d449d5e4d6ebfea253de8a29ae68aa71f122cec8d';
+import { experimentMount } from './experiment-ui.js?v=0b464cd4b52cea9f7b2be3b33c9639a373aad45624598f1c6809a0047d266bf9';
 import { poolConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=dfca3840759fd3df03217aebe5417d113bf7b275cbe617822a19a5fe8de6090e';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=0d85e45cc7ae66df906c699d4158a7124c9efb2f5d788572b2c1e3e9ec7a3da5';
 
 // Dialog composition and destination routing. Each child receives only the
 // content slot, profile/storage access and navigation callbacks it uses.

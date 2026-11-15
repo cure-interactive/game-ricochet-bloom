@@ -6,6 +6,28 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.23.5
+
+### Player Changes
+
+- Use the skill-tree icon for the Powers navigation button.
+- Give UI section subtitles matching icon prefixes and improve Diagnostics spacing.
+- Group Development settings by purpose, with the Points amount beside Add Points and quick additions underneath.
+- Match Import Backup and Export Backup buttons, using the Cure Interactive Import and Export artwork.
+- Give text fields consistent dark, rounded styling and readable text on mobile.
+- Keep the complete Main Menu and Casual pool inside the available screen area.
+- Let device tilt and movement nudge player icons and previews. Find its new tilted-phone icon and enable Device Motion under Settings → Display when your browser requires permission.
+
+<!-- development -->
+### Developer Notes
+
+- Share section-title styling across Settings, game collections, campaign, experiments, support and skill-stat sections.
+- Keep existing title artwork, native file selection, saved preferences and backup validation intact.
+- Add portable icon credits and notices; retain the rejected bold-icon proposal as historical only.
+- Share a fitted Menu/Casual camera with inverse touch mapping and safe-area bounds.
+- Feed bounded, screen-oriented sensor forces into the shared decorative player membrane; preserve gameplay, clipping limits and touch behavior. Handle unavailable sensors, permission denial, hidden pages and stale events.
+<!-- /development -->
+
 ## v3.23.4
 
 ### Player Changes

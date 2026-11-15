@@ -1,7 +1,7 @@
 import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=ec038dffd7c47072baadc430b964e52f71a4fcf280ee71a4769675b2010df181';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { experimentRead, experimentFavourite } from './experiment-store.js?v=a4909f1034df6319e26855ffe0381e4a156c2a079185019eb96c93e553a1c4f5';
-import { assetURL } from './asset.js?v=4379f64b6cf04d7651d35a1ca46854905f6727d32b72a777b6664f8292f73f5e';
+import { assetURL } from './asset.js?v=118efdeb66f09c86e660934029e83ef93724af31ec3c746f70d9125b7e4e37a5';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 
 // Owns gallery view state only. Starting games and opening other screens are
@@ -28,8 +28,8 @@ export function gamemodeGalleryMount({content,heading,storage, ...host}) {
       const read=experimentRead(storage,host.kind()),favourites=read.library?.favourites??[],page=gamemodePage({view,query:state.query,category:state.category,favourites});
       $('gamemode-count').textContent=state.query.trim()?`${page.entries.length} search result${page.entries.length===1?'':'s'} across all gamemodes`:page.groups.length?`${page.entries.length} games · ${page.groups.length} collections`:`${page.entries.length} ${view==='development'?'idea':'game'}${page.entries.length===1?'':'s'}`;
       $('gamemode-save-status').textContent=read.ok?'':'Favourites could not be read. Your existing notebook is preserved.';
-      const sections=[true,false].map(playable=>{const entries=page.entries.filter(e=>e.playable===playable);return entries.length?`<section class="gamemode-group"><h3>${playable?'Play Now':'In Development'}</h3><div class="mode-grid">${entries.map(e=>card(e,favourites,read.ok)).join('')}</div></section>`:'';}).join('');
-      const collections=page.groups.length?`<section class="gamemode-group"><h3>Collections</h3><div class="mode-grid">${page.groups.map(g=>`<button type="button" class="mode-card" data-group="${g.id}">${experimentArt(g.art)}<span><strong>${g.name}</strong><small>${g.description}</small><em>${g.count} Playable Games · Explore</em></span></button>`).join('')}</div></section>`:'';
+      const sections=[true,false].map(playable=>{const entries=page.entries.filter(e=>e.playable===playable);return entries.length?`<section class="gamemode-group"><h3 class="section-title"><span class="ui-icon" data-icon="${playable?'play':'flask'}" aria-hidden="true"></span><span>${playable?'Play Now':'In Development'}</span></h3><div class="mode-grid">${entries.map(e=>card(e,favourites,read.ok)).join('')}</div></section>`:'';}).join('');
+      const collections=page.groups.length?`<section class="gamemode-group"><h3 class="section-title"><span class="ui-icon" data-icon="grid" aria-hidden="true"></span><span>Collections</span></h3><div class="mode-grid">${page.groups.map(g=>`<button type="button" class="mode-card" data-group="${g.id}">${experimentArt(g.art)}<span><strong>${g.name}</strong><small>${g.description}</small><em>${g.count} Playable Games · Explore</em></span></button>`).join('')}</div></section>`:'';
       $('gamemode-list').innerHTML=sections+collections||`<p class="gamemode-empty">${view==='favourites'&&!state.query?'No favourites yet. Star a game using the button in the top-right corner of its card.':'No games match. Try another search or category.'}</p>`;
       if(page.planned)$('gamemode-list').insertAdjacentHTML('beforeend',`<p>${page.planned} related ideas are still in development.</p>`);
       for(const b of content.querySelectorAll('[data-gamemode]'))b.onclick=()=>{rememberGallery();const e=GAMEMODE_CARDS.find(e=>e.id===b.dataset.gamemode);host.open(e);};

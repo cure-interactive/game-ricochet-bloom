@@ -2,14 +2,16 @@ import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
-import {menuPoolView} from './menu-pool.js?v=7519519c05c10d989e0812a8dc056dd4651cbba92f1c83aa343877d1dcc87f3b';
+import {menuPoolView} from './menu-pool.js?v=d73b02edc746dd5fddf9898200d8fe2f3fe9b91e08924d2d5b874729f1ef172a';
 import {skinSpringStep} from './skin-preview.js?v=e6fa5d2b4812a18e495e4f673ba1d1c774eb5140702e19298017892c8fe38991';
 import {bubbleRender,bubblePath} from './bubble-render.js?v=0b5db9753621bde8a86ab88be698cb900831918934659548b20bbe78ef0599fc';
 
 // Decorative instances own only visual state. The surrounding button or large
 // preview keeps its existing input, focus, navigation and progression contract.
+import {playerMotion} from './player-motion.js?v=c210823f435f420a067442185bdcdb36345840686de4305d81befdc695e92578';
 export function registerPlayerBubble(win=window){
  if(win.customElements.get('player-bubble'))return;
+ const motion=playerMotion(win);
  let sequence=0,unmount;
  const instances=new Set(),contacts=new Map();
  const input={contact(id,x,y,pulse=false){
@@ -99,6 +101,8 @@ export function registerPlayerBubble(win=window){
    for(const point of contacts.values())this.pressureHit(point,'hold',dt);
    for(const point of this.pulses){this.pressureHit(point,'pulse',dt,point.age);point.age+=dt;}
    this.pulses=this.pulses.filter(point=>point.age<1.25);
+   const sensor=motion.sample();
+   this.pressure.vx+=sensor.x*dt;this.pressure.vy+=sensor.y*dt;
    this.pressure=skinSpringStep(this.pressure,dt,{stiffness:24,damping:5});
    // Keep the membrane tethered inside its unchanged control target.
    const distance=Math.hypot(this.pressure.x,this.pressure.y),limit=10;
@@ -108,7 +112,7 @@ export function registerPlayerBubble(win=window){
    // bubbles have no physical neighbours, so give that same spring model a
    // bounded current and occasional small impacts instead of freezing it.
    const angle=this.phase+this.age*1.7;
-   const flow={vx:34*Math.cos(angle),vy:28*Math.sin(angle*.83)};
+   const flow={vx:34*Math.cos(angle)+sensor.x,vy:28*Math.sin(angle*.83)+sensor.y};
    if(this.age>=this.nextRipple){
     bubbleHit(this.membrane,14,Math.cos(angle),Math.sin(angle),60);
     this.nextRipple=this.age+1.35+.35*(1+Math.sin(angle));

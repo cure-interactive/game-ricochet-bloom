@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="download.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   width="800px"
+   height="800px"
+   viewBox="0 0 1200 1200"
+   enable-background="new 0 0 1200 1200"
+   xml:space="preserve"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs1" />
+<sodipodi:namedview
+   inkscape:cy="395.64407"
+   inkscape:cx="267.43337"
+   inkscape:zoom="0.63567236"
+   showgrid="false"
+   id="namedview30"
+   guidetolerance="10"
+   gridtolerance="10"
+   objecttolerance="10"
+   borderopacity="1"
+   bordercolor="#666666"
+   pagecolor="#ffffff"
+   inkscape:current-layer="svg2"
+   inkscape:window-maximized="1"
+   inkscape:window-y="-11"
+   inkscape:window-height="974"
+   inkscape:window-width="1920"
+   inkscape:pageshadow="2"
+   inkscape:pageopacity="0"
+   inkscape:window-x="-11"
+   inkscape:showpageshadow="0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#505050">
+	</sodipodi:namedview>
+<path
+   id="path5755"
+   inkscape:connector-curvature="0"
+   d="m 75,1050 h 1050 c 42.3142,0 75,34.5991 75,75 0,40.4009 -32.7339,75 -75,75 H 75 c -41.332462,0 -75,-33.5518 -75,-75 0,-41.4482 33.511852,-75 75,-75 z M 825,75 C 825,33.519793 791.33508,0 750,0 H 450 C 408.45295,0 375,33.566546 375,75 V 450 H 190.3365 c -34.33994,0 -48.90577,41.59991 -27.2535,63.25219 L 545.535,917.439 c 31.62818,31.62818 78.20609,30.72391 108.93,0 L 1036.917,513.252 C 1058.8166,491.35243 1043.8678,450 1009.6635,450 H 825 Z"
+   sodipodi:nodetypes="cczcczcccccccccccccc" />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Download Alt, Elusive Icons, by Team Redux. Adapted by the Cure Interactive Icons collection author.",
+  "sources": [
+    {
+      "title": "Elusive Icons Download Alt",
+      "url": "https://github.com/dovy/elusive-icons/blob/5ddd9167c8479ec07b78f3ba7150dc4ad32cc7bc/dev/icons-svg/download-alt.svg",
+      "role": "Source artwork"
+    },
+    {
+      "title": "Elusive Icons artwork license scope",
+      "url": "https://github.com/dovy/elusive-icons/blob/5ddd9167c8479ec07b78f3ba7150dc4ad32cc7bc/src/license.html",
+      "role": "Creator license statement"
+    },
+    {
+      "title": "Download Alt on SVG Repo",
+      "url": "https://www.svgrepo.com/svg/391821/download-alt",
+      "role": "Catalogue rendition"
+    }
+  ],
+  "license": {
+    "name": "CC-BY-3.0",
+    "url": "https://creativecommons.org/licenses/by/3.0/",
+    "scope": "Applies to the credited source artwork.",
+    "conditions": [
+      "Preserve appropriate credit, supplied notices, source and license links, and identify adaptations. Do not imply endorsement or impose additional restrictions inconsistent with the license."
+    ],
+    "notices": [
+      {
+        "title": "Elusive Icons source attribution and license information",
+        "path": "attribution/license/cc-by-3.0/elusive-icons.txt",
+        "sha256": "215787e2143569fc893ebb63da1389423c86d31f2e3ccc0bb7943b2b121be71f",
+        "text": "Elusive Icons Download Alt\nCreator credit: Team Redux\nSource: https://github.com/dovy/elusive-icons/blob/5ddd9167c8479ec07b78f3ba7150dc4ad32cc7bc/dev/icons-svg/download-alt.svg\nLicense: Creative Commons Attribution 3.0 Unported\nhttps://creativecommons.org/licenses/by/3.0/\n\nThe source SVG is covered by the remaining-project-files provision at\nhttps://github.com/dovy/elusive-icons/blob/5ddd9167c8479ec07b78f3ba7150dc4ad32cc7bc/src/license.html\nLicense version and creator credit: https://github.com/dovy/elusive-icons/blob/5ddd9167c8479ec07b78f3ba7150dc4ad32cc7bc/_config.yml\n\nPreserve creator credit, source and license links, applicable notices, and\nidentify adaptations. Do not imply endorsement or impose legal or technical\nrestrictions inconsistent with the license. Commercial redistribution and\nadaptation are permitted subject to the license. No warranties are provided.\n\nAdapted by the Cure Interactive Icons collection author: rounded corners and\nchanged arrow proportions and base-bar geometry for collection consistency.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Subject to the stated license and conditions.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "CC-BY-3.0",
+        "url": "https://creativecommons.org/licenses/by/3.0/"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Credit the named creators, link to the source and license, and identify artwork changes."
+    ],
+    "required_information": [
+      "changes",
+      "credit",
+      "sources"
+    ]
+  },
+  "changes": "Modified by the Cure Interactive Icons collection author for visual consistency with the collection: rounded corners and adjusted arrow proportions, shoulder height and base-bar geometry."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>
