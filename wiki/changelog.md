@@ -8,7 +8,7 @@ Open Developer Notes inside a version for its technical changes.
 
 ## v3.27.1
 
-Build: 2026-11-15 18:18:18 UTC
+Build: 2026-11-15 18:21:23 UTC
 
 ### Player Changes
 

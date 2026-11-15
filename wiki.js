@@ -5,9 +5,9 @@ import { iconHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26
 import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=c19834ceda744639dd95c77b8bcc82706b3dde6c5899c2cc278f7c865cc0cc03';
 
 export const WIKI_PAGES = Object.freeze({
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=e01fc5544e9b31a76ff58c6e5e62b0d44d7d12217fce0a1d4f66602d825de3da' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=4445caf7ae4b0ed55924bc9972f1a4292f96913317378aaca730af4777d992e7' },
   player: { title: 'Player', url: './wiki/player.md?v=b48bfc1140a1c681209bb3a6a652348f8a1206b13c9360d72733275c551b5912' },
-  developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=5a192f78afff1d6cd08db60e29cd76208c9b6dd296ed2cdf78e7ed1b3b8ec237' },
+  developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=98086f6893aa55b3d1842506d0d3a9abc90a23246eb96ccf9096f1d2644d2deb' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=9cf0c1f86dc0b5d81237bff4186f4c3677f214f72ca0deafb00e5f1b83cc5e1a' },
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=688714c1fe057d6c0da78a5f38b32cd4bc3fe0e712812b248e9d7552b6c54daf' },
   experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=2925dacfbb1be75a34b46fe3cec9074a5e78b169a558c1a8299ea528a7e635b1' },
@@ -20,7 +20,7 @@ export const WIKI_PAGES = Object.freeze({
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=7a28e512643ce0faf78d4f9020b8a6e8d56a536f4d64caa116560a40390460e3' },
   'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=ae2486db2bfd473fa48312e6e969de61f6bf1396c84a326b52f3b5cf1a612891' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=74045e7aeccd42a2ab68c8706c40aed9eb1dd792f13a8c3671e4dffd68619d4c' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=85b765ecb9eaf45e76768742b7bfcc12c31215f20a7db494e4b1cc6bbc818df2' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=7acbc2f05c845c628ad169eaa351dcb82b4ea6632aa77a15d87105e84d651acd' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.
 export const WIKI_SOURCES = Object.freeze([

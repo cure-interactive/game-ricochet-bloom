@@ -26,11 +26,11 @@ Back controls sit on the right by default. Enable **Settings → Accessibility �
 
 ## Copy Diagnostics
 
-Use **Settings → Advanced → Copy Diagnostics** when reporting a problem. The same button appears when the game cannot start or loading takes longer than expected. It copies the game version, browser, screen size, loading state, recent errors and read-only save metadata. Saved-game contents are not included, and copying does not change your progress. If clipboard access is unavailable, a selected report appears so you can copy it manually.
+Use **Settings → Get Help → Technical Diagnostics → Copy Diagnostics** when reporting a problem. The same button appears when the game cannot start or loading takes longer than expected. It copies the game version, browser, screen size, loading state, recent errors and read-only save metadata. Saved-game contents are not included, and copying does not change your progress. If clipboard access is unavailable, a selected report appears so you can copy it manually.
 
 ## Getting Help
 
-Open **Settings** and tap **Get Help** at the bottom, beneath About. **Email Report** opens an email to **main@cureinteractive.com** with the subject **Ricochet Bloom — Support Report — your player name** and your device details, diagnostics and game progress filled in; tap Send in your email app. The report includes your player name. **Share Report** opens your device’s sharing options; **Copy Report** lets you paste the same text into a message. No downloaded file is needed. Ordinary **Copy Diagnostics** still excludes save contents.
+Open **Settings** and tap **Get Help** at the bottom, beneath About. **Email Report** opens an email to **main@cureinteractive.com** with the subject **Ricochet Bloom — Support Report — your player name** and your device details, diagnostics and game progress filled in; tap Send in your email app. The report includes your player name. **Share Report** opens your device’s sharing options; **Copy Report** lets you paste the same text into a message. No downloaded file is needed. **Technical Diagnostics** is in the same Get Help section. It excludes saved-game contents; the full Support Report already includes those technical details, so you usually only need one report.
 
 If saving fails, the recovery panel offers these same actions and **Retry Save**. Keep the tab open so pending progress remains available. Do not clear browser data to troubleshoot.
 
