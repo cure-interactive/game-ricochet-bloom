@@ -1,6 +1,6 @@
 import {CosmeticVisual} from './cosmetic-visual.js?v=971f8b3ef6ea7b181b3c91ef6411b9b21c431dd9f29b88db57a10fb1d2a63319';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {bubbleRender} from './bubble-render.js?v=a5ba51fcc93401722fd8cb22fc06d3b5d79138cf35829de911ecfdf3fb48aafd';
+import {bubbleRender} from './bubble-render.js?v=7603fe99569586c03a77b9e9d7fe07fa147e17058c863426cde697dcb92d51a8';
 import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 // Detached presentation: the same membrane, materials and effect renderer as play.

@@ -1,5 +1,5 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { iconHTML } from './ui-icon.js?v=103b94fa6d56faa5abe36425811d79604abe143e6520441bb91f860e9a636119';
+import { iconHTML } from './ui-icon.js?v=e77c8634175296f7fa7b6ad85ade1b42bdf0d89af6f8099b5d6206fb97d7a067';
 // The icon is a sibling of the heading, so textContent updates keep it intact.
 export function screenTitle({title='',titleId='',titleHtml=null,icon='about'}){
   return `<div class="screen-heading-title">${iconHTML(icon)}<h2${titleId?` id="${escape(titleId)}"`:''}>${titleHtml??escape(title)}</h2></div>`;

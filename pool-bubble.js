@@ -1,10 +1,10 @@
 import {turnHits} from './turn-hits.js?v=601ae75742860558121ef0d4bb066017b87650900bbeeb17e8bf8d359fbcdd5d';
-import {bubbleRender} from './bubble-render.js?v=a5ba51fcc93401722fd8cb22fc06d3b5d79138cf35829de911ecfdf3fb48aafd';
+import {bubbleRender} from './bubble-render.js?v=7603fe99569586c03a77b9e9d7fe07fa147e17058c863426cde697dcb92d51a8';
 import {bubbleStep,bubbleOutline,bubbleFlow,bubbleHit} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers} from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
+import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers} from './engine.js?v=effdad3393e29949339e4f680eb50871d4dea3ee2a39ee5c96140de3b1404fee';
 import {regionFrozen} from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import {BUBBLE_ROLES,bubbleRole} from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import {assetURL} from './asset.js?v=2ab998f7a95b95aa8eb9675b9c21db799858eb1fe97cee5b6ac052679eaf09d8';
+import {assetURL} from './asset.js?v=9aa4355875f47659bed1ca495b9cf522c1b1f52eafe4fb135b89de5f59214643';
 let sharedIcons;
 export function poolBubbleIcons(){
  return sharedIcons??=Object.fromEntries([['powerIcons','power',Object.keys(POWERS)],['roleIcons','ui',Object.keys(BUBBLE_ROLES)]].map(([name,folder,kinds])=>[name,Object.fromEntries(kinds.map(kind=>{const icon=new Image();icon.src=new URL(assetURL(`./icon/${folder}/${kind}.svg`),import.meta.url).href;return [kind,icon];}))]));

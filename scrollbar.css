@@ -19,12 +19,12 @@
 /* The app overlay gives every scroll surface the same indicator on every host. */
 [data-scrollbar=custom]{scrollbar-width:none!important;scrollbar-gutter:auto!important}
 [data-scrollbar=custom]::-webkit-scrollbar{display:none;width:0;height:0}
-:root body .scroll-indicator{position:fixed;z-index:100;box-sizing:border-box;margin:0;padding:0;border:0;border-radius:0;background:transparent;opacity:.38;transition:opacity .25s;pointer-events:none;touch-action:none;user-select:none;overflow:hidden}
+:root body .scroll-indicator{position:fixed;z-index:100;box-sizing:border-box;margin:0;padding:0;border:0;border-radius:0;background:transparent;opacity:.38;transition:opacity .25s;pointer-events:auto;touch-action:none;user-select:none;overflow:hidden}
 :root body .scroll-indicator[hidden]{display:none}
 .scroll-indicator>span{position:absolute;display:block;border-radius:999px;background:#c7ddd9;box-shadow:0 0 1px #07111c80;pointer-events:auto}
 .scroll-indicator[data-axis=y]>span{right:3px;top:4px;width:3px}
 .scroll-indicator[data-axis=x]>span{bottom:3px;left:4px;height:3px}
 :root body .scroll-indicator[data-active=true],:root body .scroll-indicator:hover{opacity:.9}
 @media(pointer:fine){:root body .scroll-indicator{pointer-events:auto}.scroll-indicator[data-axis=y]:hover>span{width:5px}.scroll-indicator[data-axis=x]:hover>span{height:5px}}
-@media(pointer:coarse){.scroll-indicator>span{pointer-events:none}}
+
 @media(forced-colors:active){.scroll-indicator>span{background:ButtonText;forced-color-adjust:none}}

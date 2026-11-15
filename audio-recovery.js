@@ -11,7 +11,7 @@ export function audioRecoveryMount(sound,doc=document,win=window,active=()=>true
  function recover(event){
   if(event?.isTrusted===false||!allowed())return;
   bind();
-  if(context?.state==='running'){sound.media?.retry();return;}
+  if(context?.state==='running'&&!sound.clockStalled?.()){sound.media?.retry();sound.musicUpdate();return;}
   try{Promise.resolve(sound.unlockAsync()).then(()=>{bind();if(allowed())sound.musicUpdate();}).catch(()=>{});bind();}catch{}
  }
  function changed(){

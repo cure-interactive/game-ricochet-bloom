@@ -1,4 +1,4 @@
-import {assetURL} from './asset.js?v=2ab998f7a95b95aa8eb9675b9c21db799858eb1fe97cee5b6ac052679eaf09d8';
+import {assetURL} from './asset.js?v=9aa4355875f47659bed1ca495b9cf522c1b1f52eafe4fb135b89de5f59214643';
 // OS media presentation for the live synthesizer. The silent media source only
 // supplies the HTMLMediaElement session required by some mobile browsers.
 export function mediaCarrier() {
@@ -38,12 +38,13 @@ export class PoolMedia {
   }
   activate() {
     if (!this.element || this.pending || !this.enabled || !this.element.paused) return;
-    this.pending = true;
+    this.pending = true;const attempt=this.attempt=(this.attempt||0)+1;
     try {
       Promise.resolve(this.element.play()).then(() => {
+        if(attempt!==this.attempt)return;
         this.ready = true; this.failed = false;
         if (!this.enabled) this.element.pause();
-      }).catch(() => { this.failed = true; }).finally(() => { this.pending = false; });
+      }).catch(() => { if(attempt===this.attempt)this.failed = true; }).finally(() => { if(attempt===this.attempt)this.pending = false; });
     } catch { this.pending = false; this.failed = true; }
   }
   update(playing) {
@@ -55,8 +56,9 @@ export class PoolMedia {
       try { this.session.playbackState = state; this.state = state; } catch { /* Unsupported state reporting. */ }
     }
   }
-  retry() { this.failed = false; this.activate(); }
+  retry() { this.failed = false;if(this.pending&&this.element?.paused){this.attempt=(this.attempt||0)+1;this.pending=false;}this.activate(); }
   dispose() {
+    this.attempt=(this.attempt||0)+1;this.pending=false;
     this.enabled = false; this.element?.pause(); this.source?.disconnect();
     if (this.element) { this.element.removeAttribute('src'); this.element.load(); }
     if (this.url) this.env.URL.revokeObjectURL(this.url);

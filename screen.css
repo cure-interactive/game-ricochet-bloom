@@ -1,7 +1,7 @@
 :root{--app-height:max(0px,calc(var(--viewport-height,100dvh) - var(--profile-bottom-space,0px)))}
 /* The pool is the primary screen. Secondary actions belong to labelled dialogs. */
 html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
-body{height:var(--app-height,100dvh);display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) var(--content-safe-bottom,env(safe-area-inset-bottom)) env(safe-area-inset-left)}
+body{height:var(--app-height,100dvh);display:flex;flex-direction:column;padding:var(--safe-area-top,env(safe-area-inset-top)) var(--safe-area-right,env(safe-area-inset-right)) var(--content-safe-bottom,var(--safe-area-bottom,env(safe-area-inset-bottom))) var(--safe-area-left,env(safe-area-inset-left))}
 [hidden]{display:none!important}
 .hud-balance{display:flex;align-items:center;gap:16px;min-width:0;max-width:45%}
 .hud-balance .points{color:var(--mint)}
@@ -128,6 +128,7 @@ dialog select,dialog input:not([type]),dialog input[type=number],dialog input[ty
 #settings-dialog #sound-check-status:empty{display:none}
 #settings-dialog .settings-section-body>button,#settings-dialog .settings-actions>button{width:100%;min-height:44px;font-size:13px;white-space:normal;justify-content:center}
 .settings-actions{display:grid;gap:12px;min-width:0}
+.settings-update-status{min-block-size:3em;margin:0;font-size:14px;line-height:1.5;overflow-wrap:anywhere}
 .settings-about{gap:0;padding:16px;text-align:left}
 .settings-about>section{min-width:0;padding:18px 0}
 .settings-about>section:first-child{padding-top:0}
@@ -165,6 +166,6 @@ input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=file]):
 #display-instructions .instruction-control{white-space:nowrap}
 
 @media(max-width:600px),(max-height:500px){
- :root body dialog.standard-dialog:not(.hud-info-card):not(#menu-dialog)[open]{inset:0;margin:0;width:100%;max-width:none;height:var(--app-height,100dvh);max-height:var(--app-height,100dvh);padding:env(safe-area-inset-top) 0 0;border:0;border-radius:0;box-shadow:none}
+ :root body dialog.standard-dialog:not(.hud-info-card):not(#menu-dialog)[open]{inset:0;margin:0;width:100%;max-width:none;height:var(--app-height,100dvh);max-height:var(--app-height,100dvh);padding:var(--safe-area-top,env(safe-area-inset-top)) 0 0;border:0;border-radius:0;box-shadow:none}
  :root body dialog.standard-dialog:not(.hud-info-card):not(#menu-dialog)>.dialog-body{flex:1 1 auto}
 }

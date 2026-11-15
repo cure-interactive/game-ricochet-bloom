@@ -1,15 +1,15 @@
 import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
-import {bubbleContactMount as menuContactMount} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
+import {bubbleContactMount as menuContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
 export {menuContactMount};
-import {freePlayCreate,freePlayBuild} from './free-play.js?v=217d5207c7b6505b3e45fc542b2fda6a5b4392f2822733ecabae40e0cb697e81';
+import {freePlayCreate,freePlayBuild} from './free-play.js?v=5b27d0cfbb2c2933e14d62d1141c7e25f4a8cd2c929d917babd3219041b33d7a';
 import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
-import {progressionCreate} from './run.js?v=6dd8415b7c8881a813a15d04fdf57491f43d30f39dc373ea0adb2d98560c1871';
-import {menuMusicCreate} from './menu-music.js?v=fb4b85df8ea736a8f5062728d10c62f827478c45b0c27476bb455f6e55e28c3e';
-import {PoolVisual} from './pool-visual.js?v=deecbc1cec73dcff2924f0e21ab2c58025084e80e2b515ed93c10c687d7fec78';
-import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
+import {progressionCreate} from './run.js?v=9ff200b09c3b66bb99d641358b6fc72b7ef4244cd3fbc9db89e9fba295a31af5';
+import {menuMusicCreate} from './menu-music.js?v=9a78661f1bf2e45fb7787485943638d4db8535d0f45d40946e8f115328d70981';
+import {PoolVisual} from './pool-visual.js?v=fa33ca63226966763effe7ded53318b34f7b2a44a68686c294561440a7cfc87a';
+import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=effdad3393e29949339e4f680eb50871d4dea3ee2a39ee5c96140de3b1404fee';
 import { bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=d73b02edc746dd5fddf9898200d8fe2f3fe9b91e08924d2d5b874729f1ef172a';
+import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView, menuPoolResize } from './menu-pool.js?v=7fa8385ef0df4ed12ff038e2e1910901b33b937ba0e17b883ecff4f58f3219a3';
 
 export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',skinStyle=()=>'original',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),visual=new PoolVisual();
@@ -24,8 +24,9 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
     if(canvas.width!==Math.round(width*dpr)||canvas.height!==Math.round(height*dpr)){canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);}
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
     // Fit the whole pool on phones and desktop; input uses the same transform.
-    const {portrait,scale}=menuPoolView(width,height);
-    ctx.translate(width/2,height/2);ctx.scale(scale,scale);if(portrait)ctx.rotate(Math.PI/2);ctx.translate(-RULE.width/2,-RULE.height/2);
+    menuPoolResize(pool,width,height);
+    const {portrait,scale,worldWidth,worldHeight}=menuPoolView(width,height);
+    ctx.translate(width/2,height/2);ctx.scale(scale,scale);if(portrait)ctx.rotate(Math.PI/2);ctx.translate(-worldWidth/2,-worldHeight/2);
     for(const point of pool.contacts.values()){
       const glow=ctx.createRadialGradient(point.x,point.y,0,point.x,point.y,180);
       glow.addColorStop(0,'#b1f4db20');glow.addColorStop(1,'#b1f4db00');
@@ -53,6 +54,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
     if(!previous||dt>=1/30-.001){
       previous=now;
       visual.configure(profile().profile?.cosmetics);
+      menuPoolResize(pool,canvas.clientWidth,canvas.clientHeight);
       const obscured=covered();
       if(obscured){clear();pool.pressure=[];visual.clear();}
       for(const event of menuPoolStep(pool,dt)){

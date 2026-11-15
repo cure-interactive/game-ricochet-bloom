@@ -1,6 +1,8 @@
 // Shared finite instruments for live music and offline highlights.
+import {voiceTrack,voicesReap} from './audio-voice.js?v=c0db179bcb018380a8604c761694e0021f5b46aae7b41ff0986bf44e98136bce';
 const frequency=midi=>440*2**((midi-69)/12);
 export function instrumentNote(rack,event) {
+    voicesReap(rack);
     if (['kick', 'rim', 'shaker'].includes(event.role)) { instrumentPercussion(rack,event); return; }
     const isLead = event.role === 'lead';
     const partials = isLead ? [[1, 1, 1], [2, .28, .55], [3, .08, .3]] : [[1, 1, 1], [2, .13, .45]];
@@ -21,14 +23,15 @@ export function instrumentNote(rack,event) {
       gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
       stereo.pan.setValueAtTime(event.pan, start);
       oscillator.connect(gain); gain.connect(stereo); stereo.connect(rack.musicInput);
-      const voice = { oscillator, gain, start }; rack.phraseVoices.add(voice); rack.voiceCount++;
-      oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); stereo.disconnect(); rack.phraseVoices.delete(voice); rack.voiceCount--; };
+      const voice = { oscillator, gain, start }; rack.phraseVoices.add(voice);
+      voiceTrack(rack,voice,start+duration+.03,[oscillator,gain,stereo]);
       oscillator.start(start); oscillator.stop(start + duration + .03);
     }
     if (event.sourceId > 0) { rack.playbackQueue.push({ at: start, sourceId: event.sourceId, step: event.step, phraseIndex: event.phraseIndex, reply: !!event.reply, role: event.role, pan: event.pan, phrase: event.phrase }); rack.playbackQueue.sort((a, b) => a.at - b.at); }
   }
 
 export function instrumentPercussion(rack,event) {
+    voicesReap(rack);
     if (rack.phraseVoices.size >= (rack.voiceLimit??30) || rack.voiceCount >= (rack.voiceLimit??38)) return;
     const context = rack.context, start = Math.max(context.currentTime, event.at), gain = context.createGain(), stereo = context.createStereoPanner();
     const oscillator = event.role === 'shaker' ? context.createBufferSource() : context.createOscillator();
@@ -37,8 +40,8 @@ export function instrumentPercussion(rack,event) {
     else { oscillator.type = event.role === 'kick' ? 'sine' : 'triangle'; oscillator.frequency.setValueAtTime(event.role === 'kick' ? 125 : 900, start); oscillator.frequency.exponentialRampToValueAtTime(event.role === 'kick' ? 48 : 600, start + event.duration); filter.type = 'lowpass'; filter.frequency.value = event.role === 'kick' ? 240 : 1800; }
     gain.gain.setValueAtTime(.0001, start); gain.gain.linearRampToValueAtTime(event.level, start + .005); gain.gain.exponentialRampToValueAtTime(.0001, start + event.duration);
     stereo.pan.value = event.pan; oscillator.connect(filter); filter.connect(gain); gain.connect(stereo); stereo.connect(rack.musicInput);
-    const voice = { oscillator, gain, start }; rack.phraseVoices.add(voice); rack.voiceCount++;
-    oscillator.onended = () => { oscillator.disconnect(); filter.disconnect(); gain.disconnect(); stereo.disconnect(); rack.phraseVoices.delete(voice); rack.voiceCount--; };
+    const voice = { oscillator, gain, start }; rack.phraseVoices.add(voice);
+    voiceTrack(rack,voice,start+event.duration+.01,[oscillator,filter,gain,stereo]);
     oscillator.start(start); oscillator.stop(start + event.duration + .01);
     if(event.sourceId>0){rack.playbackQueue.push({at:start,sourceId:event.sourceId,step:event.step,role:event.role,pan:event.pan});rack.playbackQueue.sort((a,b)=>a.at-b.at);}
   }

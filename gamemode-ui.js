@@ -1,13 +1,13 @@
-import { screenHeader } from './screen-header.js?v=b6affbd0995aee77130ce56d47cac59ad4c31b7a965101bd73a0ee4373029bd9';
-import { buttonHTML } from './ui-icon.js?v=103b94fa6d56faa5abe36425811d79604abe143e6520441bb91f860e9a636119';
+import { screenHeader } from './screen-header.js?v=51857cf25e4385c97767f1c0590cb0b46b5d09cc3d7eb5242685365ce6f50cf6';
+import { buttonHTML } from './ui-icon.js?v=e77c8634175296f7fa7b6ad85ade1b42bdf0d89af6f8099b5d6206fb97d7a067';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { assetURL } from './asset.js?v=2ab998f7a95b95aa8eb9675b9c21db799858eb1fe97cee5b6ac052679eaf09d8';
-import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=84d7b3b3bd358d81b9f94e5852f7ba4f914b9edde7152b17c4533b63eb0e2915';
-import { gamemodeGalleryMount } from './gamemode-gallery.js?v=c410dc8d7a3c0f4202494a5044e7384fe501749958a71b086ab4b9d74b27b7c8';
-import { scoreAttackMount } from './score-attack-ui.js?v=341d7a0f404f75b3adc99a77eeeb0ab7d332fb45e39be365bb699d21ed4ab760';
-import { experimentMount } from './experiment-ui.js?v=1671a55f6f35d1a4294323c4331d2f4e8bdba5cab88cc220b5c14a938d0d5a04';
+import { assetURL } from './asset.js?v=9aa4355875f47659bed1ca495b9cf522c1b1f52eafe4fb135b89de5f59214643';
+import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=184a984640ab736ec72ad8cd9700f2254d313958cd9c0724e5511b0ae8030b58';
+import { gamemodeGalleryMount } from './gamemode-gallery.js?v=39e4fd10d02b058d001314f026c5e1dbef08e0294df2808f12f6a4cb675129eb';
+import { scoreAttackMount } from './score-attack-ui.js?v=548c3c9b5fe30606e178fd24bc4bd5de825497da33dbf4462a6cc6e2390e1026';
+import { experimentMount } from './experiment-ui.js?v=c425e1e9140cee58992f75596e467bb62b614bf4f487efc01a05cfebc0640a41';
 import { poolConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=b5276e5e37ae586768168f2426b47761ff2c53bd06cf95e3dbd39cffe2b25342';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=795da05e2212c917c07c9a3d2037ec916ce41e8b828cfe529329882a429d86d6';
 
 // Dialog composition and destination routing. Each child receives only the
 // content slot, profile/storage access and navigation callbacks it uses.

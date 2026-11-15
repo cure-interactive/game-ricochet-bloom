@@ -15,7 +15,7 @@ export function bubblePressure(body,point,kind,seconds=1,age=0){
 // Passive observation leaves buttons, scrolling and drag owners in control.
 export function bubbleContactMount(target,doc,win){
  const options={capture:true,passive:true},listeners=[];
- const on=(node,name,fn)=>{node.addEventListener(name,fn,options);listeners.push([node,name,fn]);};
+ const on=(node,name,fn)=>{const listener=e=>{if(e?.target?.closest?.('.scroll-indicator')){target.clear();return;}fn(e);};node.addEventListener(name,listener,options);listeners.push([node,name,listener]);};
  on(doc,'touchstart',e=>{for(const t of e.changedTouches)target.contact(`touch:${t.identifier}`,t.clientX,t.clientY,true);});
  on(doc,'touchmove',e=>{for(const t of e.touches)target.contact(`touch:${t.identifier}`,t.clientX,t.clientY);});
  const releaseTouches=e=>{for(const t of e.changedTouches)target.release(`touch:${t.identifier}`);};

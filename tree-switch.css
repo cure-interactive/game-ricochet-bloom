@@ -1,4 +1,5 @@
 /* Both tree views share category navigation and the same handed Back layout. */
+:root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading .tree-switch,:root body :is(#tree-dialog,#player-upgrade-dialog)>.tree-heading .tree-switch button{touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .tree-switch{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:4px;border:1px solid #759aa340;border-radius:14px;background:#08192580}
 .tree-switch-selection{position:absolute;z-index:-1;left:4px;top:4px;bottom:4px;width:calc((100% - 14px)/2);border-radius:10px;background:#b4f2d8;pointer-events:none;transform-origin:left center}
 .tree-switch[data-current=player] .tree-switch-selection{transform:translateX(calc(100% + 6px))}

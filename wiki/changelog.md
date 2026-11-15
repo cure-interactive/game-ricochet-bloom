@@ -6,6 +6,31 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.24.1
+
+Build: 2026-11-15 10:26:42 UTC
+
+### Player Changes
+
+- Keep full-screen content clear of the status bar and notch as the device rotates or the app resumes.
+- Fill the actual screen with the Home and Casual pool, without letterboxed play areas.
+- Grab, drag, fling or tap scrollbars using their existing blank edge space, including skill cards.
+- Find Updates and Get Help in separate Settings sections. Update feedback stays below its button without shifting it.
+- Restart Sound Check on every press, even while a previous check is playing. Recover expired audio voices after interruptions.
+- Keep the Development indicator visibly thin; the home-indicator clearance uses the surrounding screen color.
+- Use filled device motion and battery saver icons with clear cutouts.
+- Tap or drag the Skills tab selection with elastic settling. Power starting nodes are rounded squares, final upgrades are round, and unpurchased connections are dashed.
+
+<!-- development -->
+### Developer Notes
+
+- Give the full-screen dialog safe-area rule sufficient specificity and treat saved Safari page zoom as the viewport baseline.
+- Expand only the detached Home/Casual session's physical bounds to match its screen aspect ratio. Saved and scored pools retain canonical dimensions.
+- Extend native-position scrollbar controls to touch with bounded momentum and cancellation; position indicators inside existing local or parent padding without adding gutters.
+- Share idempotent audio voice cleanup across live and offline instruments. Reap expired voices when ended callbacks are delayed, bound resume attempts, and let new gestures retry pending media playback.
+- Keep physical iOS audibility and interruption behavior separate from automated lifecycle and browser layout evidence.
+<!-- /development -->
+
 ## v3.24.0
 
 Build: 2026-11-15 09:43:32 UTC

@@ -130,7 +130,7 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 
 [data-icon="sound"]{--ui-icon:url("./icon/ui/sound.svg?v=d4c554f8ec96a0da42242454954ae9ffda6e7de66689dbdf79249593078b002b")}
 
-[data-icon="battery-saver"]{--ui-icon:url("./icon/ui/battery-saver.svg?v=5acfcd145179657e2c00236cc34282e3106a6a7abc259b43098a409b7115af65")}
+[data-icon="battery-saver"]{--ui-icon:url("./icon/ui/battery-saver.svg?v=ab6f0739ae7398eeca3c7198b8de0a326af5c032a6313d126a4cde941ff75be9")}
 
 /* Prefix artwork for section headings and setting labels. */
 .section-title{display:flex;align-items:center;gap:8px;min-width:0}
@@ -139,7 +139,7 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 [data-icon="import"]{--ui-icon:url("./icon/ui/import.svg?v=61c0a1798dd05d563453d390188f52306ae4799d65d301ce89d0a867c509b732")}
 [data-icon="export"]{--ui-icon:url("./icon/ui/export.svg?v=41e97f9177fb2dd620348e98d72ea44d35986da90540dfa1ea86c1ecee4f2343")}
 
-[data-icon="device-motion"]{--ui-icon:url("./icon/ui/device-motion.svg?v=1f63e7bb07781b43e412c55827007ce861dd4d29b8bbbac513ab898e1e879dd3")}
+[data-icon="device-motion"]{--ui-icon:url("./icon/ui/device-motion.svg?v=6f843b97a3aec7c8fd406903941889633993681e522a997bc92421c80001f822")}
 
 [data-icon="trails"]{--ui-icon:url("./icon/ui/trails.svg?v=8561eb75c617441d17d8fa6f71fd68ef7b3f328ea307369e9a1704d25b00c368")}
 [data-icon="bounce-effects"]{--ui-icon:url("./icon/ui/bounce-effects.svg?v=5f53319140a5ef38bcb7de7c997f447b9255f0921f3dbaf8310bce31f13f97cf")}

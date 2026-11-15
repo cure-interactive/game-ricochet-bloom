@@ -1,5 +1,5 @@
-import {bubblePressure} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
-import {gameCreate,launch,physicsStep,powerMarkers,RULE} from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
+import {bubblePressure} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
+import {gameCreate,launch,physicsStep,powerMarkers,seedBodies,RULE} from './engine.js?v=effdad3393e29949339e4f680eb50871d4dea3ee2a39ee5c96140de3b1404fee';
 
 // Only the aiming decision and delay are menu-specific. The detached session
 // uses the normal Free Play launch, pickup, effect and collision rules.
@@ -8,12 +8,22 @@ export function menuPoolCreate(game=gameCreate('MENU BLOOM','free')){
 }
 export function menuPoolView(width,height){
   const portrait=height>width;
-  // Keep the complete physical pool visible; cover scaling hides its walls.
-  return {portrait,scale:Math.min(width/(portrait?RULE.height:RULE.width),height/(portrait?RULE.width:RULE.height))};
+  // Expand the physical long axis instead of letterboxing or cropping walls.
+  const scale=Math.min(width/(portrait?RULE.height:RULE.width),height/(portrait?RULE.width:RULE.height));
+  return {portrait,scale,worldWidth:(portrait?height:width)/scale,worldHeight:(portrait?width:height)/scale};
+}
+export function menuPoolResize(pool,width,height){
+ if(!(width>0&&height>0))return;
+ const view=menuPoolView(width,height),old=pool.game.viewportBounds||RULE;
+ if(old.width===view.worldWidth&&old.height===view.worldHeight&&old.inset===0)return;
+ const sx=view.worldWidth/old.width,sy=view.worldHeight/old.height;
+ for(const body of [...seedBodies(pool.game),...pool.game.bodies.slice(1)]){body.x*=sx;body.y*=sy;}
+ pool.game.viewportBounds={width:view.worldWidth,height:view.worldHeight,inset:0};
+ pool.contacts.clear();pool.pressure=[];
 }
 export function menuPoolPoint(x,y,width,height){
-  const {portrait,scale}=menuPoolView(width,height),dx=(x-width/2)/scale,dy=(y-height/2)/scale;
-  return {x:RULE.width/2+(portrait?dy:dx),y:RULE.height/2+(portrait?-dx:dy)};
+  const {portrait,scale,worldWidth,worldHeight}=menuPoolView(width,height),dx=(x-width/2)/scale,dy=(y-height/2)/scale;
+  return {x:worldWidth/2+(portrait?dy:dx),y:worldHeight/2+(portrait?-dx:dy)};
 }
 function repel(body,point,kind,seconds=1,age=0){
   const hit=bubblePressure(body,point,kind,seconds,age);if(!hit)return null;

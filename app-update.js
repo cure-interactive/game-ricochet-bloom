@@ -1,6 +1,6 @@
-import {GAME_VERSION} from './version.js?v=396091ac883948d93fb8cd9badc90da2f569590f4a10d2aeae21cb08d77345fc';
-import {BUILD_TIME} from './build.js?v=633f12ffd67f4d96fc6efa69870de6cf45b9ee3c88cbd4971e945b55ff84032b';
-import {buttonHTML} from './ui-icon.js?v=103b94fa6d56faa5abe36425811d79604abe143e6520441bb91f860e9a636119';
+import {GAME_VERSION} from './version.js?v=1528cc23667a630875348c46015ef76ad713ed8056270afe54b8d733ecfecdd8';
+import {BUILD_TIME} from './build.js?v=79305dd0d7578663845d8c7bd55e29369b8506d6bb40969c322008e929f8b057';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=e77c8634175296f7fa7b6ad85ade1b42bdf0d89af6f8099b5d6206fb97d7a067';
 export const isAppView=win=>!!win.navigator?.standalone||!!win.matchMedia?.('(display-mode: standalone)').matches||!!win.matchMedia?.('(display-mode: fullscreen)').matches;
 export function newerBuild(remote,version=GAME_VERSION,time=BUILD_TIME){
  if(!remote||!/^\d+\.\d+\.\d+$/.test(remote.version)||!Number.isFinite(Date.parse(remote.commitTime)))throw new Error('Invalid release information');
@@ -21,10 +21,11 @@ export async function checkUpdate({fetch:request=fetch,version=GAME_VERSION,time
  restart();return {updated:true,version:release.version};
 }
 export function appUpdateMount({save},doc=document,win=window){
- const group=doc.querySelector('.settings-help');if(!group)return;
- const wrapper=doc.createElement('div');wrapper.innerHTML=buttonHTML('Check for Updates','reset',{id:'check-updates',class:'quiet'});const button=wrapper.firstElementChild;
- group.prepend(button);const status=doc.createElement('p');status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.hidden=true;group.append(status);
- const render=()=>{button.hidden=!isAppView(win);if(button.hidden)status.hidden=true;};
+ const help=doc.querySelector('.settings-help');if(!help)return;
+ const group=doc.createElement('details');group.className='settings-section settings-updates';
+ group.innerHTML=`<summary>${iconHTML('reset')}<span>Updates</span></summary><div class="settings-section-body"><p class="settings-hint">Check for a new version. Your progress is saved before the app restarts.</p>${buttonHTML('Check for Updates','reset',{id:'check-updates',class:'quiet'})}<p class="settings-update-status" role="status" aria-live="polite">Ready to check for updates.</p></div>`;
+ help.before(group);const button=group.querySelector('button'),status=group.querySelector('[role=status]');
+ const render=()=>{group.hidden=!isAppView(win);};
  for(const query of ['(display-mode: standalone)','(display-mode: fullscreen)'])win.matchMedia?.(query).addEventListener?.('change',render);
  button.onclick=async()=>{button.disabled=true;status.hidden=false;status.textContent='Checking for updates…';try{const result=await checkUpdate({save,base:win.location.href,restart:()=>win.location.reload()});status.textContent=result.updated?'Update ready. Restarting…':'You have the latest version.';}catch(error){status.textContent=win.navigator.onLine===false?'You are offline. Connect to check for updates.':error.message||'Could not check for updates. Try again.';}finally{button.disabled=false;}};render();
 }

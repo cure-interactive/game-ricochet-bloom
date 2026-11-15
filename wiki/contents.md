@@ -195,6 +195,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Change Logs
 
 - [Change Logs](changelog.md)
+- [v3.24.1](changelog.md#v3-24-1)
 - [v3.24.0](changelog.md#v3-24-0)
 - [v3.23.5](changelog.md#v3-23-5)
 - [v3.23.4](changelog.md#v3-23-4)

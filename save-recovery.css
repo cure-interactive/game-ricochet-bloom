@@ -2,7 +2,7 @@
 .save-notice>div{flex:1;min-width:0}.save-notice strong{font-size:15px;font-weight:500}.save-notice p{font-size:12px;line-height:1.4;margin:4px 0 0;color:#c9d2d7}
 .save-notice button,#save-recovery-dialog button,#support-dialog button,#settings-support{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;max-width:100%;padding:10px 14px;border:1px solid #718a9766;border-radius:12px;background:#203947;color:#e3f5ef;font:inherit;cursor:pointer}
 .save-notice button{flex:none;font-size:14px}.save-notice[hidden]{display:none}
-#settings-dialog .settings-help{flex:none;margin-top:auto}
+#settings-dialog .settings-help{flex:none;margin-top:0}
 #settings-dialog #settings-support{min-height:48px;font-size:16px}
 #save-recovery-dialog .dialog-body{line-height:1.6;overflow-wrap:anywhere}
 #save-recovery-dialog .save-actions{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0}
@@ -29,3 +29,6 @@ body:has(#save-recovery-dialog[open]) #settings-dialog::backdrop{background:tran
 
 #support-dialog .dialog-body p,#save-recovery-dialog .dialog-body p{font-size:16px;line-height:1.5}
 .support-recipient{overflow-wrap:anywhere;color:#b8cece}
+.settings-help .support-actions p{font-size:14px;line-height:1.6}
+.settings-help .support-actions .section-title{font-size:16px;margin-top:0}
+.settings-help [data-support-email]{background:#b4f4db;color:#12372e}

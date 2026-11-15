@@ -10,6 +10,9 @@ export { skillFlags } from './skill-effect.js?v=727e7de86b0868ac64950fc8cd89a06c
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
 export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: DRUNK_SECONDS, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
+// Only the detached Home/Casual session supplies viewport bounds. Saved and
+// scored modes retain RULE's canonical board and deterministic dimensions.
+export const poolBounds=state=>state.mode==='free'&&state.viewportBounds||RULE;
 export function seedHash(seed) { let hash = 2166136261; for (const char of String(seed)) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619); return hash >>> 0 || 1; }
 export const POWERS = Object.freeze({
   ripple: { name: 'Ripple', symbol: '◎', color: '#9ff5df', description: 'Push nearby bubbles outward.' },
@@ -162,8 +165,8 @@ function effectClear(state, events = [], kind = null) {
   if (split && (!kind || kind === 'split')) events.push({ type: 'reunite', x: state.bodies[0].x, y: state.bodies[0].y, from: split.shards.map(({ x, y }) => ({ x, y })) });
   state.effects = kind ? state.effects.filter(effect => effect.kind !== kind) : [];
   if (!effectGet(state, 'bubble')) state.bodies[0].radius = effectGet(state, 'split') ? 10 : RULE.seedRadius;
-  const seed = state.bodies[0], inset = RULE.inset + seed.radius;
-  seed.x = Math.max(inset, Math.min(RULE.width - inset, seed.x)); seed.y = Math.max(inset, Math.min(RULE.height - inset, seed.y));
+  const seed = state.bodies[0], bounds=poolBounds(state),inset = bounds.inset + seed.radius;
+  seed.x = Math.max(inset, Math.min(bounds.width - inset, seed.x)); seed.y = Math.max(inset, Math.min(bounds.height - inset, seed.y));
 }
 function velocityLimit(body) {
   const speed = Math.hypot(body.vx, body.vy);
@@ -428,9 +431,10 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     state.effects.push(effect);
   } else if (kind === 'portal') {
     const speed = Math.hypot(seed.vx, seed.vy), dx = speed > 1 ? seed.vx / speed : -nx, dy = speed > 1 ? seed.vy / speed : -ny;
-    const entrance = { x: Math.max(100, Math.min(860, seed.x + dx * 70)), y: Math.max(100, Math.min(540, seed.y + dy * 70)) };
-    let exit = { x: RULE.width - entrance.x, y: RULE.height - entrance.y };
-    if (Math.hypot(exit.x - entrance.x, exit.y - entrance.y) < 300) exit = { x: entrance.x < 480 ? 800 : 160, y: entrance.y < 320 ? 500 : 140 };
+    const bounds=poolBounds(state);
+    const entrance = { x: Math.max(100, Math.min(bounds.width-100, seed.x + dx * 70)), y: Math.max(100, Math.min(bounds.height-100, seed.y + dy * 70)) };
+    let exit = { x: bounds.width - entrance.x, y: bounds.height - entrance.y };
+    if (Math.hypot(exit.x - entrance.x, exit.y - entrance.y) < 300) exit = { x: entrance.x < bounds.width/2 ? bounds.width-160 : 160, y: entrance.y < bounds.height/2 ? bounds.height-140 : 140 };
     state.effects.push({ kind, seconds: Math.min(5, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], gates: [entrance, exit], cooldown: 0 });
   } else if (kind === 'echo') {
     state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [], path: [], ghost: { ...seed, id: -3, radius: 12, cooldown: 0 }, follow: { x: seed.x, y: seed.y, vx: 0, vy: 0 }, isReady: false });
@@ -535,7 +539,7 @@ export function physicsStep(state) {
       body.vx*=coast;body.vy*=coast;
     }
     body.x += body.vx * dt; body.y += body.vy * dt;
-    const left = RULE.inset + body.radius, right = RULE.width - left, top = RULE.inset + body.radius, bottom = RULE.height - top;
+    const bounds=poolBounds(state),left = bounds.inset + body.radius, right = bounds.width - left, top = bounds.inset + body.radius, bottom = bounds.height - top;
     const edges=wrapEdges(state);
     if (body.id <= 0 && edges.length) {
       const nx = edges.includes('left') && body.x < left && body.vx < 0 ? 1 : edges.includes('right') && body.x > right && body.vx > 0 ? -1 : 0;
@@ -670,12 +674,14 @@ export function physicsStep(state) {
   }
   if (effectGet(state, 'slingshot')) {
     const effect = effectGet(state, 'slingshot'), anchor = state.bodies[effect.anchor], radius = effect.radius + Math.max(0, seed.radius - RULE.seedRadius);
-    seed.x = Math.max(44, Math.min(916, anchor.x + Math.cos(effect.angle) * radius));
-    seed.y = Math.max(44, Math.min(596, anchor.y + Math.sin(effect.angle) * radius));
+    const bounds=poolBounds(state),edge=bounds.inset+seed.radius;
+    seed.x = Math.max(edge, Math.min(bounds.width-edge, anchor.x + Math.cos(effect.angle) * radius));
+    seed.y = Math.max(edge, Math.min(bounds.height-edge, anchor.y + Math.sin(effect.angle) * radius));
     seed.vx = -Math.sin(effect.angle) * effect.spin * radius * 7;
     seed.vy = Math.cos(effect.angle) * effect.spin * radius * 7;
   }
-  for (const body of bodies) { body.x = Math.max(RULE.inset + body.radius, Math.min(RULE.width - RULE.inset - body.radius, body.x)); body.y = Math.max(RULE.inset + body.radius, Math.min(RULE.height - RULE.inset - body.radius, body.y)); }
+  const bounds=poolBounds(state);
+  for (const body of bodies) { body.x = Math.max(bounds.inset + body.radius, Math.min(bounds.width - bounds.inset - body.radius, body.x)); body.y = Math.max(bounds.inset + body.radius, Math.min(bounds.height - bounds.inset - body.radius, body.y)); }
   if (effectGet(state, 'echo')) {
     const effect = effectGet(state, 'echo'), ghost = effect.ghost, follow = effect.follow;
     if(!state.skillState?.echoDrain)effect.path.push({ x: seed.x, y: seed.y, radius: Math.min(12, seed.radius), ...(state.build?{teleport:state.skillState.teleport}:{}) });
