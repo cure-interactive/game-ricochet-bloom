@@ -1,10 +1,11 @@
+import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleContactMount as menuContactMount} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
 export {menuContactMount};
-import {poolBubbleRender} from './pool-bubble.js?v=e538de4e23539e2d7f78a503e1ec86307f2070893736d52a1a816ec8109565af';
+import {poolBubbleRender} from './pool-bubble.js?v=38461df453dbe70dcbc9b61dad6478a943e1816f2e2d7e257448c0bc272d26a9';
 import {freePlayCreate,freePlayBuild} from './free-play.js?v=409e1eb57ba278752223f7eb788efb6deba4562df6daf6e206ef5067994254b6';
 import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import {progressionCreate} from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302dff937b1bbfdae8fb6c8ea56';
-import {menuMusicCreate} from './menu-music.js?v=9cd21a3757f4b44e47619b6e4aea0a5ec5966365e1047c3b33f11ed42bacdb06';
+import {menuMusicCreate} from './menu-music.js?v=0695387a59b476ce01d442399a8a012eb715a32fc00a439a249c685b2ab72e01';
 import {PowerVisual} from './power-visual.js?v=4a5ad715cee03b1a9f5cc7902f7a75de11b9d5d1dc9164e8605077b35d5bc99f';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
 import { bubbleCreate, bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
@@ -13,9 +14,9 @@ import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolReleas
 export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),skins=new Map(),powerVisual=new PowerVisual();
   const skinFor=body=>{if(!skins.has(body.id))skins.set(body.id,bubbleCreate());return skins.get(body.id);};
-  let active=false,frame=0,previous=0,rings=[],signature='';
+  let active=false,audible=false,frame=0,previous=0,rings=[],signature='';
   function draw(dt){
-    const width=canvas.clientWidth,height=canvas.clientHeight,dpr=Math.min(2,devicePixelRatio||1);
+    const width=canvas.clientWidth,height=canvas.clientHeight,dpr=qualityPixelRatio(document.body?.dataset?.quality,devicePixelRatio||1);
     if(!width||!height)return;
     if(canvas.width!==Math.round(width*dpr)||canvas.height!==Math.round(height*dpr)){canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);}
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
@@ -46,7 +47,8 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
     canvas.dataset.powerHits=String(pool.hits);canvas.dataset.powerActivations=String(pool.activations);canvas.dataset.lastPower=pool.lastPower||'';canvas.dataset.powerChoices=pool.game.build.map(p=>p.power).join(',');
   }
   function animate(now){
-    frame=0;if(!active||document.hidden)return;
+    frame=0;if((!active&&!audible)||document.hidden)return;
+    if(!active){music.update(bodiesFor(),menuPoolView(canvas.clientWidth,canvas.clientHeight).portrait);musicDiagnostics();frame=requestAnimationFrame(animate);return;}
     const dt=previous?Math.min(.05,(now-previous)/1000):0;
     if(!previous||dt>=1/30){
       previous=now;
@@ -64,7 +66,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
   }
   const bodiesFor=()=>[...seedBodies(pool.game),...pool.game.bodies.slice(1)];
   function musicDiagnostics(){if(music.diagnostics)for(const [key,value] of Object.entries(music.diagnostics))canvas.dataset['music'+key[0].toUpperCase()+key.slice(1)]=String(value);}
-  function sync(){music.active(active&&!document.hidden);musicDiagnostics(); cancelAnimationFrame(frame);frame=0;previous=0;if(active&&!document.hidden)frame=requestAnimationFrame(animate);}
+  function sync(){music.active(audible&&!document.hidden);musicDiagnostics(); cancelAnimationFrame(frame);frame=0;previous=0;if((active||audible)&&!document.hidden)frame=requestAnimationFrame(animate);}
   function clear(){pool.contacts.clear();canvas.dataset.contacts='0';}
   document.addEventListener('visibilitychange',()=>{clear();sync();});window.addEventListener('resize',()=>{clear();sync();});
   // App height settles after the window event; redraw the actual canvas size.
@@ -73,7 +75,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
     const progress=profile(),next=JSON.stringify([freePlayBuild(progress),playerBuild(progress.profile)]);
     if(signature===next)return;signature=next;
     Object.assign(pool,menuPoolCreate(freePlayCreate('MENU BLOOM',progress)));skins.clear();powerVisual.clear();rings=[];music.reset();canvas.dataset.contacts='0';draw(0);
-  },show(value){if(active===value)return;clear();active=value;sync();},clear,
+  },show(value,{ambient=value}={}){if(active===value&&audible===ambient)return;clear();active=value;audible=ambient;sync();},clear,
     contact(id,clientX,clientY,pulse=false){
       if(!active||document.hidden)return;
       const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;
@@ -87,7 +89,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
   }};
   // Bubble after the control handler: Resume may activate a previously paused
   // pool. Click also provides Safari's completed touch activation for recovery.
-  for(const event of ['pointerdown','click','keydown'])document.addEventListener(event,()=>{if(active&&!document.hidden)music.unlock();},{passive:true});
+  for(const event of ['pointerdown','click','keydown'])document.addEventListener(event,()=>{if(audible&&!document.hidden)music.unlock();},{passive:true});
   menuContactMount(background,document,window);
   return background;
 }

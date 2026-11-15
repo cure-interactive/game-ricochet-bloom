@@ -1,25 +1,26 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { screenHeader } from './screen-header.js?v=2dc7126500a77a167bed988d7512d074c2bc41445c831ee0578e5a4395e9da9e';
+import { screenHeader } from './screen-header.js?v=14bb3cb52686c75546cfaae770ac220f4def2f4eab3369633c91b88a5b1c0a1f';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { iconHTML } from './ui-icon.js?v=b05618f62d88c1057558c943cbcf7d2565de3287bf77909ca25275b9b5cb8cbf';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=777b61612c9ca2b46b54db5b8fad9bf5a42e43a810232dc10981cc4e7aa7f66f';
+import { iconHTML } from './ui-icon.js?v=6d54c4caa769ca38c3ad26db1215fd884511a97d6e85072fad52e5c45607142e';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=c979dad4039aeff82a6fa0d13728daeb798c9c03e55c1c55d8af867499a18897';
 
 export const WIKI_PAGES = Object.freeze({
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=b6290e7dc4522a80dcb7a18a7714e9d0b335f15ba98e61344ac6153e3e251252' },
   player: { title: 'Player', url: './wiki/player.md?v=fe6b860a08b6c152079a0025f9e6cbb4e0b111bcb500681e95f05ac2faa13ec9' },
-  developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=ceb8c80d6bb5f809b39ba60740d24a5a704a1900198d00593c6d31669be04f07' },
+  developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=5a192f78afff1d6cd08db60e29cd76208c9b6dd296ed2cdf78e7ed1b3b8ec237' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=9cf0c1f86dc0b5d81237bff4186f4c3677f214f72ca0deafb00e5f1b83cc5e1a' },
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=688714c1fe057d6c0da78a5f38b32cd4bc3fe0e712812b248e9d7552b6c54daf' },
   experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=2925dacfbb1be75a34b46fe3cec9074a5e78b169a558c1a8299ea528a7e635b1' },
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=bcc53ccc28d9448fac1a1999a369dd0894c4055ec043e93d2617ada4021b42af' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=e0e64c4ecd4f312b29ca38e43d250d8fd16feb97be462c9acbefc68448b642c3' },
-  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=96e18105bd6505aecd380d016a9f4302aac41b6753d54fc54e28fa54462624dd' },
-  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=f731085728a4f176e16ee7841e0ec5a724a9e018b096a6bbe70451f9e2572d0c' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=efeae101c823b736a86ccb4872743fa0208d8a5d937ac5bee72d5fb02fa19d7b' },
+  wiki: { title: 'Wiki', url: './wiki/wiki.md?v=543ce8c11fb5723231312405b2d53945c5e12fa5d38a6b72224c5e12dcfa3e8a' },
+  'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=8be78935fa94ebcce2d2af1fdfe00b5c20939df1f02b1e44266f13fb4cc0151b' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=7a28e512643ce0faf78d4f9020b8a6e8d56a536f4d64caa116560a40390460e3' },
   'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=54a35271d8c0a9996059e5630c3420246405ea1b9c1c324b0e98f402f3eb1445' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=e4f06faca821acf4bf00bdec5867b81eccfa627da972c9ead0ec55c0d7bd4910' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=aa3d1af27605eca2e224634e50d456a4a69c7ad9cad0ea1e1b9207b47ad001ea' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=85b765ecb9eaf45e76768742b7bfcc12c31215f20a7db494e4b1cc6bbc818df2' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.
 export const WIKI_SOURCES = Object.freeze([
@@ -88,6 +89,10 @@ export function renderWikiPage(source,page,development=false){
   });
   // Contents groups retain the authored headings and links. Native disclosures
   // provide touch/keyboard access without another navigation or search model.
+  if(page==='changelog'){
+    let version=0;
+    return html.split(/(?=<h2 )/).map(part=>part.replace(/^(<h2 [\s\S]*?<\/h2>)([\s\S]*)$/,(_,heading,body)=>`<details class="wiki-topic-group wiki-release-group"${version++===0?' open':''}><summary>${heading}</summary><div class="wiki-release-body">${body}</div></details>`)).join('\n');
+  }
   return page==='contents'?html.split(/(?=<h2 )/).map(part=>part.replace(/^(<h2 [\s\S]*?<\/h2>)([\s\S]*)$/, '<details class="wiki-topic-group"><summary>$1</summary>$2</details>')).join('\n'):html;
 }
 export function wikiMount(host) {
@@ -96,13 +101,13 @@ export function wikiMount(host) {
   document.body.append(dialog);
   const article=dialog.querySelector('article'), title=dialog.querySelector('h2'), contents=dialog.querySelector('[data-wiki-contents]');
   let current={page:'wiki',anchor:''}, request=null;const history=pageHistory(current,target=>target.page);
-  function position(anchor){const heading=anchor&&article.querySelector('#'+anchor);if(heading)heading.scrollIntoView({block:'start'});else article.scrollTop=0;}
+  function position(anchor){const heading=anchor&&article.querySelector('#'+anchor);if(heading){const group=heading.closest?.('details');if(group)group.open=true;heading.scrollIntoView({block:'start'});}else article.scrollTop=0;}
   const available=page=>wikiPageAvailable(page,host.development?.()===true);
   async function load(target, remember=true) {
     if(!available(target.page)){target={page:'wiki',anchor:''};history.reset(target);remember=false;}
     if(remember)history.visit(target);current=target;request?.abort();const active=new AbortController();request=active;
     title.textContent=WIKI_PAGES[target.page].title;contents.hidden=target.page==='contents';article.setAttribute('data-wiki-view',target.page);
-    article.setAttribute('aria-busy','true');article.innerHTML='<p role="status">Loading page…</p>';article.scrollTop=0;
+    article.setAttribute('aria-busy','true');article.innerHTML='<div class="loading-state"><div class="loading-bar" role="progressbar" aria-label="Loading Wiki page"><span></span></div></div>';article.scrollTop=0;
     try {
       const response=await fetch(WIKI_PAGES[target.page].url,{cache:'no-cache',signal:active.signal});
       if(!response.ok)throw new Error('Page unavailable');const source=await response.text();

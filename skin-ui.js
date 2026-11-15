@@ -1,8 +1,8 @@
-import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=789a05d4b3daeccb6dbe8c79eb36260a6c48d72da948a8c92bd0616bfe68e764';
-import { screenHeader } from './screen-header.js?v=2dc7126500a77a167bed988d7512d074c2bc41445c831ee0578e5a4395e9da9e';
+import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=8e77b5504c857a83a814dcd61206c7f9fe8a72da3f327516a56db73a51645e2e';
+import { screenHeader } from './screen-header.js?v=14bb3cb52686c75546cfaae770ac220f4def2f4eab3369633c91b88a5b1c0a1f';
 import { TRACKS } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { completedTracks, unlockedTracks } from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302dff937b1bbfdae8fb6c8ea56';
-import { iconHTML } from './ui-icon.js?v=b05618f62d88c1057558c943cbcf7d2565de3287bf77909ca25275b9b5cb8cbf';
+import { iconHTML } from './ui-icon.js?v=6d54c4caa769ca38c3ad26db1215fd884511a97d6e85072fad52e5c45607142e';
 
 const skins=[{id:'original',name:'Original',color:'#f1f9d7'},...TRACKS];
 export function skinOptions(state,showHidden=false){

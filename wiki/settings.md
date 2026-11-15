@@ -1,12 +1,12 @@
 # Sound, Settings & Saves
 
-The full-screen pause menu shares the main menu’s bubble background, game title and version. It offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skills and Player Skins from the Main Menu. Settings → About displays the Cure Interactive logo and game information, with access to Icon Credits.
+The full-screen pause menu shares the main menu’s bubble background, game title and version. It offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skills and Player Skins from the Main Menu. Settings → About displays the Cure Interactive logo and game information, with access to Icon Credits and [Change Logs](changelog.md).
 
 ## Audio
 
 Settings → Audio contains the sound toggle, master volume and ambience volume. Both volume sliders start at 100%. Lower ambience to hear the contact and bubble sounds more prominently. Sound Check plays three gameplay notes: low, medium, then full strength, at your current master volume. It uses the same note sound and output path as gameplay, works while paused, and does not depend on the ambience slider or change your song. Overlapping gameplay sounds can still make the overall mix louder than a single note.
 
-Audio begins after an interaction with the game. Leaving the page pauses the game and its sound; use Resume when you return. Resume also retries audio interrupted by the browser. Automatic interruptions pause play without opening a second menu. The music panel offers Glass, Velvet and Wood instrument palettes.
+Audio begins after an interaction with the game. The pause menu freezes play while ambient music continues. Sound and Music Volume still control it. Leaving the page suspends sound and play; use Resume when you return. Resume also retries audio interrupted by the browser. Automatic interruptions pause play without opening a second menu. The music panel offers Glass, Velvet and Wood instrument palettes.
 
 Buttons, navigation and settings changes play short UI sounds, including while paused. These use Sound and Master Volume; Music Volume does not change them. Turning Sound off also silences UI sounds.
 
@@ -18,7 +18,7 @@ An available unchecked setting has a bright solid outline; checked settings are 
 
 Show on-screen controls adds shot-control buttons and skill-tree camera controls. It is off by default; touch gestures and keyboard controls remain available.
 
-Gentle Visuals reduces glow and motion intensity and is off by default. Screen Mode explains the fullscreen or app-view options available on your current device; browser support differs.
+Rendering Quality offers High, Balanced and Low. High keeps full detail, Balanced lowers rendering resolution, and Low also reduces decorative effects. All levels keep bubble deformation, player jiggle and interaction active. Previous Gentle Visuals preferences become Low quality; the operating system’s reduced-motion preference does not override game animation. Screen Mode explains the fullscreen or app-view options available on your current device; browser support differs.
 
 ## Left-Handed Layout
 

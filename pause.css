@@ -1,20 +1,15 @@
 /* One full-screen pause destination; the controls provide their own surfaces. */
 :root body #menu-dialog[open]{inset:0;margin:0;width:100%;max-width:none;height:var(--app-height,100dvh);max-height:var(--app-height,100dvh);padding:env(safe-area-inset-top) 0 0;border:0;border-radius:0;box-shadow:none;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
-:root body #menu-dialog>.dialog-body{display:flex;flex-direction:column;justify-content:safe center;gap:clamp(24px,6vh,64px);flex:1;min-height:0;width:min(100%,440px);max-width:none;margin:0 auto;padding:24px max(20px,env(safe-area-inset-left),env(safe-area-inset-right));border:0;border-radius:0;background:none;box-shadow:none;scrollbar-gutter:auto}
+:root body #menu-dialog>.dialog-body{display:grid;flex:1;min-height:0;height:auto;width:min(100%,440px);max-width:none;margin:0 auto;padding:0 max(20px,env(safe-area-inset-left),env(safe-area-inset-right)) 20px;border:0;border-radius:0;background:none;box-shadow:none;scrollbar-gutter:auto}
 /* The shared title and action classes retain the main menu's visual language. */
 :root body #menu-dialog::backdrop{background:#080e1c33;backdrop-filter:none;-webkit-backdrop-filter:none}
-#menu-dialog .pause-intro{width:100%;margin:0;text-align:center}
-#menu-dialog .pause-intro h1{margin:0 0 18px}
-#menu-dialog #menu-mode{display:inline-block;max-width:100%;margin:0;padding:8px 14px;border:1px solid #7b9faf44;border-radius:12px;background:#132c38;color:#d0e5e7;font-size:14px;line-height:1.5}
+#menu-dialog #menu-mode{display:inline-block;max-width:100%;margin:18px 0 0;padding:8px 14px;border:1px solid #7b9faf44;border-radius:12px;background:#132c38;color:#d0e5e7;font-size:14px;line-height:1.5}
 #menu-dialog .pause-actions{display:grid;gap:16px}
 #menu-dialog .home-secondary{margin-top:0;gap:10px;border:0;padding:0}
 #menu-dialog .home-secondary button{border:1px solid #7b9faf44;border-radius:14px;background:#132c38;min-height:72px}
 :root body #menu-dialog>.screen-heading{width:100%;max-width:none;margin:0;border:0;border-top:1px solid var(--navigation-border);border-radius:0;box-shadow:none;padding:10px max(14px,env(safe-area-inset-right)) max(10px,var(--content-safe-bottom,env(safe-area-inset-bottom))) max(14px,env(safe-area-inset-left))}
-@media(max-height:500px) and (min-width:600px){
- :root body #menu-dialog>.dialog-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;align-content:center;width:min(100%,960px);gap:24px;padding-block:12px}
- #menu-dialog .pause-intro{grid-column:1;grid-row:1}
- #menu-dialog .pause-actions{grid-column:2;grid-row:1}
- #menu-dialog .pause-intro h1{font-size:48px;margin-bottom:12px}
+@media(max-height:500px) and (min-width:600px) and (orientation:landscape){
+ :root body #menu-dialog>.dialog-body{width:min(100%,960px);padding-block:12px}
  #menu-dialog .home-primary button{min-height:44px}
  #menu-dialog .pause-actions{gap:10px}
 }

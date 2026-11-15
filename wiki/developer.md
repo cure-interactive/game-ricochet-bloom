@@ -34,3 +34,7 @@ The v3.17.0 reference samples produce about 1.76–2.14 average purchases per fi
 ## Development Tools
 
 Development mode uses an isolated profile. Currency grants and maximum-research controls are test tools; they are not normal earnings. Copy Diagnostics is available in Settings and startup recovery. Export a backup before replacing progress. Keep confidential credentials and private information out of this area: the in-game visibility switch is not authentication for files on the public static host.
+
+## Release Notes
+
+[Change Logs](changelog.md) includes player changes and developer notes for each release. Developer notes are visible while Development mode is enabled.

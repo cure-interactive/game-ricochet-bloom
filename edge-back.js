@@ -1,4 +1,4 @@
-import { iconHTML } from './ui-icon.js?v=b05618f62d88c1057558c943cbcf7d2565de3287bf77909ca25275b9b5cb8cbf';
+import { iconHTML } from './ui-icon.js?v=6d54c4caa769ca38c3ad26db1215fd884511a97d6e85072fad52e5c45607142e';
 
 export function edgeBackReady(dx,dy,width) {
   return dx>=Math.min(100,Math.max(60,width*.22))&&dx>Math.abs(dy)*1.5;
@@ -9,7 +9,7 @@ export function dialogBack(dialog) {
   if(dialog.dispatchEvent(new Event('cancel',{cancelable:true})))dialog.close();
   return true;
 }
-export function edgeBackMount(doc=document,win=window) {
+export function edgeBackMount(doc=document,win=window,{feedback=()=>{}}={}) {
   let gesture=null,suppressClick=false;
   const stop=event=>{if(event.cancelable)event.preventDefault();event.stopImmediatePropagation();};
   function cancel(){if(!gesture)return;gesture.cue.remove();gesture=null;}
@@ -19,7 +19,7 @@ export function edgeBackMount(doc=document,win=window) {
     if(!dialog||point.clientX>24||point.clientX<0)return false;
     const cue=doc.createElement('div');cue.className='edge-back-feedback';cue.setAttribute('aria-hidden','true');
     cue.innerHTML=iconHTML('arrow-left')+'<span>Back</span>';dialog.append(cue);
-    gesture={dialog,cue,id,x:point.clientX,y:point.clientY,dx:0,dy:0};suppressClick=false;stop(event);return true;
+    gesture={dialog,cue,id,x:point.clientX,y:point.clientY,dx:0,dy:0,stage:0};suppressClick=false;feedback('back-start');stop(event);return true;
   }
   function move(event,point){
     if(!gesture)return;
@@ -29,12 +29,16 @@ export function edgeBackMount(doc=document,win=window) {
     const r=g.dialog.getBoundingClientRect();
     g.cue.style.top=Math.max(12,Math.min(r.height-56,g.y-r.top-22))+'px';
     g.cue.style.left=Math.max(8,Math.min(80,g.dx*.35))+'px';
-    g.cue.classList.toggle('is-ready',edgeBackReady(g.dx,g.dy,win.innerWidth));
+    const ready=edgeBackReady(g.dx,g.dy,win.innerWidth);
+    g.cue.classList.toggle('is-ready',ready);
+    const threshold=Math.min(100,Math.max(60,win.innerWidth*.22));
+    const stage=Math.min(3,Math.floor(Math.max(0,g.dx)/threshold*3));
+    if(stage>g.stage){g.stage=stage;feedback('back-wind-'+stage);}
   }
   function finish(event,point){
     if(!gesture)return;move(event,point);if(!gesture)return;
     const g=gesture,ready=edgeBackReady(g.dx,g.dy,win.innerWidth);cancel();
-    suppressClick=true;if(ready)dialogBack(g.dialog);
+    suppressClick=true;if(ready&&dialogBack(g.dialog))feedback('back-complete');
   }
   // Touch-start cancellation reserves only the left edge, before Safari can
   // claim its browser navigation gesture. Interior panning stays untouched.

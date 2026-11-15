@@ -43,3 +43,7 @@ Ricochet Bloom gameplay, campaign, progression and audio source in this release.
 #### Codex on behalf of `leviscustempris`
 
 Authored and checked against the game implementation.
+
+## Change Logs
+
+- [Change Logs](changelog.md) — Updates for every version.

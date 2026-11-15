@@ -65,5 +65,4 @@
 #gamemodes-dialog .mode-star:focus-visible{outline:2px solid #fff;outline-offset:1px}
 #gamemodes-dialog .mode-star:disabled{opacity:.5;cursor:not-allowed}
 @media(hover:hover){#gamemodes-dialog .mode-star:hover{color:#ffe2a6}.mode-star:hover svg{transform:scale(1.1)}}
-@media(prefers-reduced-motion:reduce){.mode-star svg{transition:none}}
 @media(max-width:600px){.gamemode-filter{grid-template-columns:1fr}.gamemode-navigation{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.gamemode-navigation button{width:100%;min-width:0;padding:10px 6px;font-size:12px;line-height:1.3;white-space:normal}.gamemode-navigation button:last-child:nth-child(odd){grid-column:1/-1}}

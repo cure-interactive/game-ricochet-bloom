@@ -31,8 +31,6 @@ body[data-startup=entering] .home-secondary{animation:startup-arrive .85s 1.2s c
 @keyframes startup-fade-out{from{opacity:1}to{opacity:0}}
 @keyframes startup-reveal{from{opacity:0}to{opacity:1}}
 @keyframes startup-arrive{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@media(prefers-reduced-motion:reduce){.startup-bubbles,.startup-bubbles i{animation:none!important}}
-body.motion-reduced .startup-bubbles,body.motion-reduced .startup-bubbles i{animation:none!important}
 body[data-startup=entering][data-startup-motion=reduced] #startup{animation:startup-fade-out .25s ease both}
 body[data-startup=entering][data-startup-motion=reduced] :is(#menu-background,.home-content h1,.home-primary,.home-secondary){animation:startup-reveal .25s ease both}
 @media(max-height:450px){.startup-bubbles{transform:scale(.65);height:90px;animation:none}.startup-eyebrow{margin-top:10px}#startup h1{font-size:28px}#startup-message{margin-top:10px;font-size:14px}}

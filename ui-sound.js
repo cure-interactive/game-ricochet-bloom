@@ -1,14 +1,16 @@
 // One delegated route covers mouse, touch and keyboard-activated controls.
 // Unlock stays in the gesture; the cue follows the action's mute/volume changes.
-export function uiSoundMount(sound,doc=document){
- function play(kind){
+export function uiSoundFeedback(sound,doc=document){
+ return function play(kind){
   if(doc.hidden||sound.isMuted||!sound.volume)return;
   const report=()=>{if(doc.documentElement?.dataset){doc.documentElement.dataset.uiSoundState=sound.context?.state||'locked';doc.documentElement.dataset.uiSounds=String(sound.uiCount||0);}};
   try{
    const ready=sound.context?.state==='running'?true:sound.unlockAsync();
    Promise.resolve(ready).then(ok=>{if(ok&&!doc.hidden)sound.uiPlay(kind);report();}).catch(()=>{report();});
   }catch{report();}
- }
+ };
+}
+export function uiSoundMount(sound,doc=document,play=uiSoundFeedback(sound,doc)){
  function click(event){
   if(event.isTrusted===false)return;
   const button=event.target?.closest?.('button,a[href],summary,[role="button"],[role="tab"]');

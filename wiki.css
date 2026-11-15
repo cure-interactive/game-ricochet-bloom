@@ -38,3 +38,5 @@ body[data-menu-mode=home] .wiki-heading{padding-top:max(16px,env(safe-area-inset
 .wiki-topic-group>ul>li>a{min-height:44px;padding:8px 0}
 .wiki-article a:focus-visible,.wiki-topic-group>summary:focus-visible{outline:3px solid #ffe4a1;outline-offset:2px;border-radius:4px}
 @media(max-width:540px){.wiki-article[data-wiki-view=wiki]>ul{grid-template-columns:1fr}.wiki-topic-group>summary>h2{font-size:18px}}
+
+.wiki-release-body{padding:4px 16px 16px}.wiki-release-body h3{margin:16px 0 8px}.wiki-release-body ul{padding-left:22px}.wiki-release-body li{margin:8px 0}

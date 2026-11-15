@@ -1,9 +1,10 @@
-import { uiSoundMount } from './ui-sound.js?v=fd1e58c1bfe0b2cbd2d6c16bf88112d9cc06539591f9dae2e858d9e09ab582e5';
-import {hudCardsMount} from './hud-help.js?v=8dbc94ec4a53118ff2ea69f8dba9e1074dd5125bc73160c1986b671e2e267f10';
+import {QUALITY,qualityRead,qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
+import { uiSoundMount, uiSoundFeedback } from './ui-sound.js?v=34bd5b0d5d8b6e0549b0c4144d2e90855f0420eabc22530e9b94fa3532c1ceef';
+import {hudCardsMount} from './hud-help.js?v=68e1d0323385514b64d67cbeacf07ef99df7bb4dbfc0e8bf5a3f3f4a755cc8f8';
 import { hudMedal, hudMedalRender } from './hud-medal.js?v=f24183c5ccdbc3a22df26331a67e3cb2d644132a50bd1192965027936628c861';
-import {poolBubbleRender,poolBubbleIcons} from './pool-bubble.js?v=e538de4e23539e2d7f78a503e1ec86307f2070893736d52a1a816ec8109565af';
-import { playerMenuMount } from './player-menu.js?v=6daab0131a1f9c3810d01b2b598c3ff966fe8ef2ffbc4c0de56f7953552df86c';
-import { playerStatsMount } from './player-stats-ui.js?v=28fa27269ec751a948b2292291ae696e401c0b08f781a823787d16efec068c27';
+import {poolBubbleRender,poolBubbleIcons} from './pool-bubble.js?v=38461df453dbe70dcbc9b61dad6478a943e1816f2e2d7e257448c0bc272d26a9';
+import { playerMenuMount } from './player-menu.js?v=7b19b27eefb9623543f5b306b2d604da3005ba9bcf208dc88a506072481b168c';
+import { playerStatsMount } from './player-stats-ui.js?v=6510d7dd5dc3457d4c54b709fc161d1cbcfca92688a8265a6fdcff3165d1741b';
 import { playerBuild, playerSync } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import { poolMedalRecord, poolMedalRecords } from './storage.js?v=b6329e33987fc0ba16d9b13905fb2da167599d2a64285d319a1675063b51e0fb';
 import { medalIcon, medalBadge } from './medal-ui.js?v=840f32a7f8c4f8c3f542c688873a42595e25b4feb71ae36e6729236f26ac7055';
@@ -11,30 +12,30 @@ import { poolConditions, poolMedalKey, medalEvaluate, scoreConditions } from './
 import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=302a95ddf6f5defb9295bdcef741d700fd9628bac0b9e50e8559c7fc2f34a146';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { trialMount } from './trial-ui.js?v=a90e533b7bb466b04fc7667c51e3b3cde3f9eff1de393f26e20b2503de108f8f';
-import { GAME_VERSION } from './version.js?v=58eb9d7c529f68e2fca0bbe3565b8e7d4e7447df8ebe482fa4f52f8cd049721c';
-import { powerSlots } from './power-ui.js?v=9720961dac01caf126fcaba12b411a16449e20d752331d40db00b8e785b041fb';
-import { creditsMount } from './credit.js?v=b56637c7201abc73b19affb73229d19e7bc6c2bd40732d3782c95605e0fa8c43';
+import { trialMount } from './trial-ui.js?v=912ab168fbc6d111799e6d197dc39389989c61166242660a00d6e82607ed098b';
+import { GAME_VERSION } from './version.js?v=a76b14b870a784a3d4d83a6fbd36e114f62ab6852cfe284243c5c03b12dcd7c0';
+import { powerSlots } from './power-ui.js?v=9e43b2be97b05dd6768cc97cc19c7ecd01d37a3c78595bf13d8257b33d9d9d26';
+import { creditsMount } from './credit.js?v=3ee87ca9f51d49a2017de5a264239d4bcce87ccba21d92ac76d0ebaef2905622';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=c76004d132b2ea92ec0cecf92a15fae0a4ec85781d19df28f70222f5ed78b04a';
-import { edgeBackMount } from './edge-back.js?v=75f5791874de475329f0a00896d84ad6373bdc5691516a2e87a460f65b517ec1';
-import { wikiMount } from './wiki.js?v=94b2af50b0a1aa347f50c60290b0048707ee3095c7fe52ab033bfa203a11774e';
+import { edgeBackMount } from './edge-back.js?v=f2b13d69f1aa47e0b95ff8cc99490b8d819699eff08d8a25be1ed8464555591a';
+import { wikiMount } from './wiki.js?v=d28c28b6441b69453ef288e53dd068763ce6f62e99ba78f1a3922aafec94145c';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { POOL_NAMES } from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302dff937b1bbfdae8fb6c8ea56';
 import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=409e1eb57ba278752223f7eb788efb6deba4562df6daf6e206ef5067994254b6';
-import { fullscreenMount } from './fullscreen.js?v=cb14fbf69f5ec5f57f148e717b710364fca7d56ab8cc957b9a02a98e2ff45fa9';
+import { fullscreenMount } from './fullscreen.js?v=713b059cec9fe1c111ccd940522d20e81eb7e0d7d66e3604f005ab0a7f103aff';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=debd365b80b0235b527d2bfd675a70b5e1e0201dc7b3d197179e6fd311632bf0';
+import { gameMenuMount } from './game-menu.js?v=5ca1a6d8a6b07641bf2bf97155ef25ca46f260fad907ee25b377b0a0238b5413';
 import { environmentRender, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
-import { progressionMount } from './progression-ui.js?v=20fc46fd0a4b6a133c0e62270b470c173449983194063516719ac4a6bb5504b2';
+import { progressionMount } from './progression-ui.js?v=463a144b63953e8e22cba2b188b18501d25d3e6fa2f1099165f09db343f4703b';
 import {assetURL} from './asset.js?v=0cfe0a794ed64ab3bcda90c0fff1c797d61ca36785d8f327839e506603d7508c';
-import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=b05618f62d88c1057558c943cbcf7d2565de3287bf77909ca25275b9b5cb8cbf';
+import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=6d54c4caa769ca38c3ad26db1215fd884511a97d6e85072fad52e5c45607142e';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
-import {songLibrarySetup} from './song-ui.js?v=2946f7783bb79cfa57d00fb78635d018f92df9dbc9c7a5de7da2fa296fa40b77';
+import {songLibrarySetup} from './song-ui.js?v=d4cdb323f0cabef68d9e6e99a574e168b555320f1b84b3faa32458a35b8a8bce';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet, poolPreferencesWrite } from './storage.js?v=b6329e33987fc0ba16d9b13905fb2da167599d2a64285d319a1675063b51e0fb';
-import { PoolSound, SOUND_CHECK_SECONDS } from './sound.js?v=1036cac58e3c724300f1f652d6f1c6854280fa02f98737a93a7a66da3066a944';
+import { PoolSound, SOUND_CHECK_SECONDS } from './sound.js?v=53d9bfffd31bd4700478441f5eea5995e1cb8cff9ee6aa6d070599c721210749';
 import { musicProgress, musicPhrasePreview } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 import { bubbleCreate, bubbleHit, bubbleRipple } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import { PowerVisual } from './power-visual.js?v=4a5ad715cee03b1a9f5cc7902f7a75de11b9d5d1dc9164e8605077b35d5bc99f';
@@ -50,7 +51,8 @@ const modeName = mode => progression?.context==='challenge'?'Shared Challenge':m
 audio.musicRestore(savedMusic, game.blooms, game.launches);
 document.body.dataset.leftHanded = String(preferences.leftHanded === true);
 let assistedControls = preferences.assistedControls === true;
-let isStarted = false, isPaused = false, isGentle = preferences.gentle === true;
+let quality=qualityRead(preferences);
+let isStarted = false, isPaused = false, isLowQuality = quality==='low';
 let angle = -Math.PI / 2, power = .7, drag = null, previousTime = performance.now(), accumulator = 0, lastSaveTick = 0, lastUITick = -100;
 let trails = [], particles = [], rings = [], connections = [], bolts = [], reunions = [], scorePopups = [], toastTimer, frameCount = 0, noteCount = 0;
 const membranes = new Map();
@@ -72,7 +74,7 @@ function save() {
   if (game.mode === 'challenge') best = Math.max(best, game.score);
   if(game.mode==='score-attack'){if(!scoreWrite(localStorage,game,audio.musicSave())){storageIsAvailable=false;isPaused=true;audio.pauseSet(true);$('save-status').textContent='Score Attack could not be saved. Keep this tab open and retry from Pause.';return false;}}
   else if(!progression||progression.context==='legacy')poolStoreSet(store, game, audio.musicSave());
-  else if(!physicsBatch&&progression.checkpoint(game,audio.musicSave())===false)return false; store.best = best; store.preferences = { ...preferences, volume: audio.volume, ambience: audio.ambience, muted: audio.isMuted, gentle: isGentle, assistedControls };
+  else if(!physicsBatch&&progression.checkpoint(game,audio.musicSave())===false)return false; store.best = best; store.preferences = { ...preferences, volume: audio.volume, ambience: audio.ambience, muted: audio.isMuted, quality, assistedControls };
   if(!progression||progression.context==='legacy')poolMedalRecord(store,game,game.earning?.kind??progression?.trialKind??'normal');
   try { localStorage.setItem(STORAGE, JSON.stringify(store)); storageIsAvailable = true; } catch { storageIsAvailable = false; }
   $('save-status').textContent = storageIsAvailable ? '● Pool saved on this browser' : 'Save unavailable · keep this tab open'; lastSaveTick = game.tick;
@@ -86,7 +88,7 @@ function membraneGet(body) {
   return membranes.get(body.id);
 }
 function membraneHit(id, nx, ny, strength) {
-  const body = id < 0 ? seedBodies(game).find(body => body.id === id) : game.bodies[id]; if (!body || isGentle) return;
+  const body = id < 0 ? seedBodies(game).find(body => body.id === id) : game.bodies[id]; if (!body || isLowQuality) return;
   bubbleHit(membraneGet(body), body.radius, nx, ny, strength, !!effectGet(game, 'stasis')?.targets.includes(id));
 }
 function eventHandle(event) {
@@ -165,7 +167,7 @@ function eventHandle(event) {
   uiRender();
 }
 function particleBurst(x, y, color, count) {
-  if (isGentle) return;
+  if (isLowQuality) return;
   for (let index = 0; index < count; index++) { const angle = Math.random() * Math.PI * 2, speed = 15 + Math.random() * 125; particles.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: .5 + Math.random() * 1.3, color, radius: 1 + Math.random() * 2.5 }); }
   if (particles.length > 350) particles.splice(0, particles.length - 350);
 }
@@ -180,7 +182,7 @@ function scorePopupRender(dt, view, ratio) {
     const halfWidth = context.measureText(text).width / 2 + 6;
     const point=view.screen(popup.x,popup.y);
     const x = Math.max(halfWidth+4, Math.min(view.rect.width-halfWidth-4,point.x));
-    const rise = (isGentle ? 10 : 46) * (1 - Math.pow(1 - popup.age / 1.8, 2));
+    const rise = (isLowQuality ? 10 : 46) * (1 - Math.pow(1 - popup.age / 1.8, 2));
     let y = Math.max(size, Math.min(view.rect.height-size,point.y-12-rise));
     // Separate simultaneous hit and bloom awards, including dense Split/Echo hits.
     for (const other of occupied) if (Math.abs(x - other.x) < halfWidth + other.halfWidth && Math.abs(y - other.y) < size * 1.25) y = other.y + size * 1.3;
@@ -197,15 +199,15 @@ function scorePopupRender(dt, view, ratio) {
 // Browser chrome and HUD height can change the canvas shape without rotating the phone.
 // Keep drawing, aiming and stereo mapped to the viewport orientation instead.
 function geometry() { const rect=canvas.getBoundingClientRect(); return {rect,...poolView(rect.width,rect.height,RULE.width,RULE.height,matchMedia('(orientation: portrait)').matches)}; }
-function resize() { const { rect } = geometry(), ratio = Math.min(2, devicePixelRatio || 1); canvas.width = Math.round(rect.width * ratio); canvas.height = Math.round(rect.height * ratio); }
+function resize() { const { rect } = geometry(), ratio = qualityPixelRatio(quality,devicePixelRatio || 1); canvas.width = Math.round(rect.width * ratio); canvas.height = Math.round(rect.height * ratio); }
 new ResizeObserver(resize).observe(canvas);
 function blobRender(body,dt,time){
  const playback=audio.playbackLights.get(body.id);
- const replayGlow=playback?Math.max(0,(playback.until-audio.context.currentTime)/.7)*(isGentle?.18:.7):0;
- poolBubbleRender(context,game,body,membraneGet(body),dt,time,{gentle:isGentle,skinColor:progression?.skin||'#f1f9d7',portrait:portraitView,replayGlow});
+ const replayGlow=playback?Math.max(0,(playback.until-audio.context.currentTime)/.7)*(isLowQuality?.18:.7):0;
+ poolBubbleRender(context,game,body,membraneGet(body),dt,time,{gentle:isLowQuality,skinColor:progression?.skin||'#f1f9d7',portrait:portraitView,replayGlow});
 }
 function render(now) {
-  if (navigation && navigation.current !== 'play') { previousTime=now;accumulator=0;requestAnimationFrame(render);return; }
+  if (navigation && navigation.current !== 'play') { if(audio.keepAmbient&&!document.hidden){audio.musicUpdate(0);canvas.dataset.songBar=String(audio.music.bar);canvas.dataset.musicVoices=String(audio.phraseVoices.size);canvas.dataset.musicPaused=String(audio.isMusicPaused);} previousTime=now;accumulator=0;requestAnimationFrame(render);return; }
   const view=geometry(), {rect,scale}=view, ratio=canvas.width/rect.width; portraitView=view.portrait; audio.portrait=portraitView;
   audio.musicUpdate(game.bodies.reduce((sum, body) => sum + Math.hypot(body.vx, body.vy), 0) / (game.bodies.length * 100));
   const elapsed = Math.min(.06, (now - previousTime) / 1000); previousTime = now;
@@ -215,7 +217,7 @@ function render(now) {
   const visualDelta = isPaused || document.hidden || document.querySelector('dialog[open]') ? 0 : elapsed;
   const time = isStarted ? game.tick * RULE.step : now / 1000;
   context.setTransform(1, 0, 0, 1, 0, 0); context.clearRect(0, 0, canvas.width, canvas.height); context.setTransform(...view.matrix.map(value=>value*ratio));
-  environmentRender(context,game,isGentle);
+  environmentRender(context,game,isLowQuality);
   // Slow luminous currents, not a grid.
   context.lineWidth = 1;
   for (let ring = 0; ring < 6; ring++) { context.beginPath(); context.ellipse(480 + Math.sin(time * .12 + ring) * 12, 320, 140 + ring * 72, 90 + ring * 50, -.3, 0, Math.PI * 2); context.strokeStyle = '#77b2e0' + (ring % 2 ? '0a' : '10'); context.stroke(); }
@@ -223,21 +225,21 @@ function render(now) {
   context.strokeStyle = '#8db9e819'; context.lineWidth = 1; context.beginPath(); context.roundRect(30, 30, 900, 580, 50); context.stroke();
   const seed = game.bodies[0];
   powerVisual.update(visualDelta);
-  powerVisual.render(context, game, time, isGentle);
+  powerVisual.render(context, game, time, isLowQuality);
   bolts = bolts.filter(bolt => { bolt.life -= visualDelta; return bolt.life > 0; });
   for (const bolt of bolts) {
     const dx = bolt.x - bolt.fromX, dy = bolt.y - bolt.fromY, distance = Math.max(1, Math.hypot(dx, dy));
     context.save(); context.globalAlpha = Math.min(1, bolt.life / .18); context.strokeStyle = POWERS.lightning.color;
-    context.lineWidth = isGentle ? 2 : 3; context.shadowColor = POWERS.lightning.color; context.shadowBlur = isGentle ? 0 : 12;
+    context.lineWidth = isLowQuality ? 2 : 3; context.shadowColor = POWERS.lightning.color; context.shadowBlur = isLowQuality ? 0 : 12;
     context.beginPath(); context.moveTo(bolt.fromX, bolt.fromY);
     for (let index = 1; index <= 6; index++) {
-      const offset = isGentle || index === 6 ? 0 : (index % 2 ? 13 : -13);
+      const offset = isLowQuality || index === 6 ? 0 : (index % 2 ? 13 : -13);
       context.lineTo(bolt.fromX + dx * index / 6 - dy / distance * offset, bolt.fromY + dy * index / 6 + dx / distance * offset);
     }
     context.stroke(); context.restore();
   }
   const seeds = seedBodies(game);
-  if (game.isFlying && !isGentle && isActive) {
+  if (game.isFlying && !isLowQuality && isActive) {
     for (const body of seeds) trails.push({ id: body.id, x: body.x, y: body.y, life: .7, comet: body.id === 0 && !!effectGet(game, 'comet'), drunk: body.id !== -3 && !!effectGet(game, 'drunk') });
     if (trails.length > 210) trails.splice(0, trails.length - 210);
   }
@@ -252,10 +254,10 @@ function render(now) {
   }
   if (effectGet(game, 'portal')) for (const [index, gate] of effectGet(game, 'portal').gates.entries()) {
     context.save(); context.translate(gate.x, gate.y); context.strokeStyle = index ? '#d4baff' : POWERS.portal.color;
-    context.shadowColor = context.strokeStyle; context.shadowBlur = isGentle ? 0 : 14; context.lineWidth = 3;
+    context.shadowColor = context.strokeStyle; context.shadowBlur = isLowQuality ? 0 : 14; context.lineWidth = 3;
     context.globalAlpha = effectGet(game, 'portal').cooldown > 0 ? .45 : .9;
     context.beginPath(); context.ellipse(0, 0, 25, 34, -.25, 0, Math.PI * 2); context.stroke();
-    context.rotate(isGentle ? index : time * (index ? -1 : 1)); context.lineWidth = 1.5; context.globalAlpha *= .55;
+    context.rotate(isLowQuality ? index : time * (index ? -1 : 1)); context.lineWidth = 1.5; context.globalAlpha *= .55;
     for (let arc = 0; arc < 3; arc++) { context.beginPath(); context.arc(0, 0, 40, arc * Math.PI * 2 / 3, arc * Math.PI * 2 / 3 + 1); context.stroke(); }
     context.restore();
   }
@@ -266,31 +268,31 @@ function render(now) {
     context.setLineDash([]); context.beginPath(); context.moveTo(anchor.x, anchor.y); context.lineTo(seed.x, seed.y); context.stroke(); context.restore();
   }
   reunions = reunions.filter(point => { point.life -= visualDelta; return point.life > 0; });
-  if (!isGentle) for (const point of reunions) {
+  if (!isLowQuality) for (const point of reunions) {
     const progress = 1 - (point.life / .4) ** 2;
     context.globalAlpha = point.life / .4; context.fillStyle = POWERS.split.color;
     context.beginPath(); context.arc(point.x + (seed.x - point.x) * progress, point.y + (seed.y - point.y) * progress, 8 * point.life / .4 + 2, 0, Math.PI * 2); context.fill(); context.globalAlpha = 1;
   }
   connections = connections.filter(line => { line.life -= visualDelta; return line.life > 0; });
-  if (!isGentle) for (const line of connections) { const a = game.bodies[line.from], b = game.bodies[line.to]; context.globalAlpha = line.life / 2.4; context.strokeStyle = line.color + '55'; context.lineWidth = .8; context.beginPath(); context.moveTo(a.x, a.y); context.quadraticCurveTo((a.x + b.x) / 2 + 15, (a.y + b.y) / 2 - 20, b.x, b.y); context.stroke(); context.globalAlpha = 1; }
+  if (!isLowQuality) for (const line of connections) { const a = game.bodies[line.from], b = game.bodies[line.to]; context.globalAlpha = line.life / 2.4; context.strokeStyle = line.color + '55'; context.lineWidth = .8; context.beginPath(); context.moveTo(a.x, a.y); context.quadraticCurveTo((a.x + b.x) / 2 + 15, (a.y + b.y) / 2 - 20, b.x, b.y); context.stroke(); context.globalAlpha = 1; }
   for (const body of liveBubbles(game)) blobRender(body, visualDelta, time);
   for (const body of seeds) { context.save(); if (body.id === -3) context.globalAlpha = .42; blobRender(body, visualDelta, time); context.restore(); }
   if (!game.isFlying && isStarted && !isPaused && !game.isOver) {
     const path=aimPreview(game,angle,power);
     context.save();context.strokeStyle='#e4ffcb88';context.lineWidth=1.5;context.setLineDash([3,8]);context.beginPath();path.forEach((p,i)=>i?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y));context.stroke();context.setLineDash([]);
     if(path.length===3){context.beginPath();context.arc(path[1].x,path[1].y,5,0,Math.PI*2);context.stroke();}context.restore();
-    context.strokeStyle = '#dbf8c833'; context.lineWidth = 1; context.beginPath(); context.arc(seed.x, seed.y, 26 + (isGentle ? 0 : Math.sin(time * 2) * 2), 0, Math.PI * 2); context.stroke();
+    context.strokeStyle = '#dbf8c833'; context.lineWidth = 1; context.beginPath(); context.arc(seed.x, seed.y, 26 + (isLowQuality ? 0 : Math.sin(time * 2) * 2), 0, Math.PI * 2); context.stroke();
     if (drag) { context.beginPath(); context.moveTo(seed.x, seed.y); context.lineTo(seed.x - Math.cos(angle) * power * 100, seed.y - Math.sin(angle) * power * 100); context.strokeStyle = '#d8f5caaa'; context.lineWidth = 2; context.stroke(); }
   }
   rings = rings.filter(ring => {
     ring.previousRadius = ring.radius; ring.life -= visualDelta; ring.radius = Math.max(8, ring.radius + visualDelta * (ring.kind ? (ring.kind === 'stasis' ? 0 : ring.kind === 'attract' ? -1 : 1) * ((['swap', 'comet', 'magnet', 'lightning', 'impact', 'tether', 'split', 'bubble', 'portal', 'echo', 'slingshot', 'drunk', 'wrap', 'homing'].includes(ring.kind) ? 150 : RULE.powerRadius) - 8) / 1.6 : ring.bloom ? 220 : 75));
-    if (!isGentle && visualDelta > 0 && !['attract', 'stasis', 'swap', 'comet', 'magnet', 'lightning', 'impact', 'tether', 'split', 'bubble', 'portal', 'echo', 'slingshot', 'drunk', 'wrap', 'homing'].includes(ring.kind)) for (const body of game.bodies) {
+    if (!isLowQuality && visualDelta > 0 && !['attract', 'stasis', 'swap', 'comet', 'magnet', 'lightning', 'impact', 'tether', 'split', 'bubble', 'portal', 'echo', 'slingshot', 'drunk', 'wrap', 'homing'].includes(ring.kind)) for (const body of game.bodies) {
       const pulse = bubbleRipple(ring, body);
       if (pulse) membraneHit(body.id, pulse.nx, pulse.ny, pulse.strength);
     }
     return ring.life > 0;
   });
-  if (!isGentle) for (const ring of rings.filter(ring => !ring.kind)) { context.globalAlpha = Math.min(.5, ring.life * .5); context.strokeStyle = ring.color; context.lineWidth = ring.bloom ? 2 : 1; context.beginPath(); context.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2); context.stroke(); context.globalAlpha = 1; }
+  if (!isLowQuality) for (const ring of rings.filter(ring => !ring.kind)) { context.globalAlpha = Math.min(.5, ring.life * .5); context.strokeStyle = ring.color; context.lineWidth = ring.bloom ? 2 : 1; context.beginPath(); context.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2); context.stroke(); context.globalAlpha = 1; }
   particles = particles.filter(particle => particle.life > 0);
   for (const particle of particles) { particle.life -= visualDelta; particle.x += particle.vx * visualDelta; particle.y += particle.vy * visualDelta; context.globalAlpha = Math.min(.8, Math.max(0, particle.life)); context.fillStyle = particle.color; context.beginPath(); context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2); context.fill(); } context.globalAlpha = 1;
   scorePopupRender(visualDelta, view, ratio);
@@ -398,14 +400,14 @@ function uiRender() {
   $('wave-medal-results').hidden=game.mode!=='waves'||!game.isOver;
   if(game.mode==='waves'&&game.isOver){$('wave-medal-results').innerHTML=game.wave.number>1?`<p>Best medals for cleared waves</p><div class="wave-medal-summary">${poolMedalRecords(store,{kind:game.earning?.kind??progression?.trialKind??'normal',mode:'waves',seed:game.seed}).filter(r=>r.wave<game.wave.number).sort((a,b)=>a.wave-b.wave).map(r=>`<span>Wave ${r.wave} ${medalBadge(r.medal)}</span>`).join('')}</div>`:'';$('end-title').textContent='Endless Waves';$('end-label').textContent=`WAVE ${game.wave.number} · OUT OF SHOTS`;$('end-detail').textContent=`${game.wave.number-1} waves cleared · ${game.earning?earningAmount(game.earning):0} Points earned · Best wave ${Math.max(store.waveBest?.wave||1,game.wave.number)} · Best score ${Math.max(store.waveBest?.score||0,game.score).toLocaleString('en-US')}`;}
   // Read-only observability for live-browser QA. Never drives gameplay.
-  canvas.dataset.gentle = String(isGentle);
+  canvas.dataset.quality = quality;
   canvas.dataset.bubbleDeformation = Math.max(0, ...Array.from(membranes.values(), skin => Math.hypot(...skin.strain))).toFixed(3);
-  Object.assign(canvas.dataset, { physicsTick: String(game.tick), flying: String(game.isFlying), score: String(game.score), seedX: game.bodies[0].x.toFixed(2), seedY: game.bodies[0].y.toFixed(2), chain: String(game.chain.length), audioState: audio.context?.state || 'locked', soundEvents: String(audio.eventCount), notes: String(noteCount), mode: game.mode, harmony: audio.harmony?.name || 'none', songChords: String(audio.music.history.length), songTheme: audio.music.theme.join(','), musicPending: String(audio.musicQueue.length), musicVoices: String(audio.phraseVoices.size), audioVoices: String(audio.voiceCount), harmonyPaused: String(audio.isPaused), musicPassage: String(audio.passage), musicSection: audio.section, musicStage: String(audio.stage), songStage: String(song.stage), songPlucks: String(audio.music.plucks), songBar: String(audio.music.bar), mediaState: audio.media.state, mediaReady: String(audio.media.ready), mediaArtwork: audio.media.artwork?.[0]?.src || '', hookNextBar: String(audio.music.evolution.nextBar), hookPending: String(!!audio.music.evolution.pending), phraseSteps: (audio.music.motifs.at(-1)?.steps || []).join(','), hookSteps: (audio.music.hook?.steps || []).join(','), phraseReplayCount: String(audio.playbackCount), phraseReplayIds: [...audio.playbackLights.keys()].join(','), ambience: String(audio.ambience) });
+  Object.assign(canvas.dataset, { physicsTick: String(game.tick), flying: String(game.isFlying), score: String(game.score), seedX: game.bodies[0].x.toFixed(2), seedY: game.bodies[0].y.toFixed(2), chain: String(game.chain.length), audioState: audio.context?.state || 'locked', soundEvents: String(audio.eventCount), notes: String(noteCount), mode: game.mode, harmony: audio.harmony?.name || 'none', songChords: String(audio.music.history.length), songTheme: audio.music.theme.join(','), musicPending: String(audio.musicQueue.length), musicVoices: String(audio.phraseVoices.size), audioVoices: String(audio.voiceCount), harmonyPaused: String(audio.isMusicPaused), musicPassage: String(audio.passage), musicSection: audio.section, musicStage: String(audio.stage), songStage: String(song.stage), songPlucks: String(audio.music.plucks), songBar: String(audio.music.bar), mediaState: audio.media.state, mediaReady: String(audio.media.ready), mediaArtwork: audio.media.artwork?.[0]?.src || '', hookNextBar: String(audio.music.evolution.nextBar), hookPending: String(!!audio.music.evolution.pending), phraseSteps: (audio.music.motifs.at(-1)?.steps || []).join(','), hookSteps: (audio.music.hook?.steps || []).join(','), phraseReplayCount: String(audio.playbackCount), phraseReplayIds: [...audio.playbackLights.keys()].join(','), ambience: String(audio.ambience) });
 }
 function phraseRender() {
   if($('game-music-bar').hidden)return;
   const isLive = game.isFlying, phrase = isLive ? musicPhrasePreview(audio.music) : audio.playbackPhrase || audio.music.motifs.at(-1), now = audio.context?.currentTime ?? 0;
-  const isAudible = audio.isMusicPlaying && audio.context?.state === 'running' && !audio.isMuted && !audio.isPaused && audio.volume > 0 && audio.ambience > 0;
+  const isAudible = audio.isMusicPlaying && audio.context?.state === 'running' && !audio.isMuted && !audio.isMusicPaused && audio.volume > 0 && audio.ambience > 0;
   const count = phrase?.tones.length || 0;
   $('phrase-title').textContent = isLive ? `Your Phrase · Live · ${count} ${count === 1 ? 'Note' : 'Notes'}` : phrase ? `${audio.playbackPhrase ? audio.lastPlayback?.reply ? 'Your Phrase · Reply' : 'Your Melody' : 'Your Latest Phrase'} · ${count} ${count === 1 ? 'Note' : 'Notes'}` : 'Your Phrase';
   $('phrase-status').textContent = isLive ? !isStarted ? 'Your unfinished phrase is saved. Return to keep playing.' : audio.isPaused ? 'Paused · your growing phrase is saved.' : phrase ? 'Each bubble adds a note. Your phrase is taking shape.' : 'Your new phrase starts with the first bubble.' : !phrase ? 'Pluck through the bubbles. Listen for their reply.' : !isStarted ? 'Your phrase is saved. Return to hear it.' : audio.isPaused ? 'Paused · your phrase is saved.' : !isAudible ? 'Phrase saved · turn on sound and ambience to hear it.' : now < audio.replyUntil ? 'The pool is playing your phrase back.' : audio.music.reply ? 'Your phrase joins on the next bar.' : 'Follow the glowing bubbles as your melody returns.';
@@ -430,7 +432,7 @@ function phraseRender() {
   const activeStep = isLive ? phrase && lastStrike && game.tick - lastStrike.tick < 42 ? phrase.steps.at(-1) : -1 : isAudible && audio.lastPlayback && now - audio.lastPlayback.at < .35 ? audio.lastPlayback.step : -1;
   for (const [step, item] of [...pattern.children].entries()) item.classList.toggle('active', step === activeStep);
 }
-function controlsRender() { $('left-handed').checked=preferences.leftHanded===true; document.body.dataset.leftHanded=String(preferences.leftHanded===true); $('button-controls').checked=assistedControls; document.querySelector('.control-strip').hidden=!assistedControls; document.body.classList.toggle('assisted-controls',assistedControls); $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').replaceChildren(iconNode('music-note'),document.createTextNode(audio.isMuted?'Sound is off. Enable Sound to listen.':'Sound on. Headphones make it lovelier.')); $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('motion').checked = isGentle; document.body.classList.toggle('motion-reduced', isGentle); }
+function controlsRender() { $('left-handed').checked=preferences.leftHanded===true; document.body.dataset.leftHanded=String(preferences.leftHanded===true); $('button-controls').checked=assistedControls; document.querySelector('.control-strip').hidden=!assistedControls; document.body.classList.toggle('assisted-controls',assistedControls); $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').replaceChildren(iconNode('music-note'),document.createTextNode(audio.isMuted?'Sound is off. Enable Sound to listen.':'Sound on. Headphones make it lovelier.')); $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('quality').value=quality; $('quality-description').textContent=QUALITY[quality].description; document.body.dataset.quality=quality; }
 function freePlayRefresh(){if(progression?.context==='legacy'){freePlaySync(game,progression.state);playerSync(game,progression.state.profile);}}
 function shoot() { if(progression?.blocked)return; if(game.isFlying) return; if (!isStarted || isPaused || document.querySelector('dialog[open]')) return; freePlayRefresh(); audioUnlockAsync(); if(!progression.prepareShot(game))return; if (launch(game, angle, power)) { audio.eventPlay({ type: 'launch', x: game.bodies[0].x, y: game.bodies[0].y }); save(); uiRender(); } }
 function pauseSet(value) { if (!isStarted || game.isOver) return; isPaused = value; audio.pauseSet(value); dragCancel(); save(); uiRender(); if (!value) { audioUnlockAsync(); canvas.focus({ preventScroll: true }); } }
@@ -555,7 +557,7 @@ $('audition').onclick = async () => {
   } catch { status.textContent='Audio could not start. Tap Sound check to try again.'; }
   finally { button.disabled=false; buttonLabel(button,'Sound check','play'); }
 };
-$('motion').onchange = event => { isGentle = event.currentTarget.checked; if (isGentle) { particles = []; trails = []; } controlsRender(); save(); };
+$('quality').onchange = event => { quality=event.currentTarget.value; isLowQuality=quality==='low'; if (isLowQuality) { particles=[]; trails=[]; } controlsRender(); resize(); save(); };
 creditsMount($('credits-dialog'));
 $('credits-open').onclick=()=>$('credits-dialog').showModal();
 $('left-handed').onchange=event=>{preferences.leftHanded=event.currentTarget.checked;store.preferences.leftHanded=preferences.leftHanded;controlsRender();$('left-handed-status').textContent=poolPreferencesWrite(localStorage,{leftHanded:preferences.leftHanded})?'':'Layout changed for this session. This browser could not save the preference.';};
@@ -568,11 +570,14 @@ $('seed-form').onsubmit = event => { event.preventDefault(); const seed = $('see
 document.querySelectorAll('[data-close]').forEach(button => { button.onclick = () => button.closest('dialog').close(); });
 document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('close', () => { if (isStarted) canvas.focus({ preventScroll: true }); }));
 $('copy-result').onclick = async () => { try { await navigator.clipboard.writeText(`Ricochet Bloom · ${gameWon(game) ? 'WIN · ' : ''}${game.score} score · ${game.blooms} blooms · ${game.bestChain} best chain · seed ${game.seed}`); buttonLabel($('copy-result'),'Copied','check'); } catch { buttonLabel($('copy-result'),'Clipboard unavailable','copy'); } };
+let restorePausedAmbient=false;
 lifecycleMount(document, window, () => {
+  restorePausedAmbient=audio.keepAmbient===true;
   audio.pauseSet(true); dragCancel();
   if (isStarted && !game.isOver) pauseSet(true);
   else save();
 }, () => {
+  if(restorePausedAmbient&&!document.hidden){audio.pauseSet(true,{ambient:true});audioUnlockAsync();restorePausedAmbient=false;}
   if (isStarted && game.isOver && navigation?.current === 'play') { audio.pauseSet(false); audioUnlockAsync(); }
 });
 if (saved) { $('welcome-copy').textContent = `Your ${saved.mode === 'free' ? 'free-play' : 'challenge'} pool is saved. Pick up where you left off.`; buttonLabel($('start'),saved.isOver?'View your result':'Return to the pool','play'); }
@@ -594,7 +599,7 @@ if (['127.0.0.1', 'localhost', '[::1]'].includes(location.hostname)) {
   }).catch(() => {});
 }
 
-progression=progressionMount({songsMount:(host,track)=>songLibrary.mount(host,track),songsClose:()=>songLibrary.close(),songsRefresh:()=>songLibrary.refresh(),gentle:()=>isGentle,currentScreen:()=>navigation?.current||'home',screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),save:()=>save(),play:loadPool,message:toast,runMusic(music){if(music.run)audio.music.run=structuredClone(music.run);},restoreLegacy(){const entry=store.pools[store.activeMode];loadPool(entry?.game||gameCreate('LAGOON',store.activeMode),entry?.music);}});
+progression=progressionMount({songsMount:(host,track)=>songLibrary.mount(host,track),songsClose:()=>songLibrary.close(),songsRefresh:()=>songLibrary.refresh(),gentle:()=>isLowQuality,currentScreen:()=>navigation?.current||'home',screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),save:()=>save(),play:loadPool,message:toast,runMusic(music){if(music.run)audio.music.run=structuredClone(music.run);},restoreLegacy(){const entry=store.pools[store.activeMode];loadPool(entry?.game||gameCreate('LAGOON',store.activeMode),entry?.music);}});
 
 for(const entry of Object.values(store.pools))if(entry&&!progression.settle(entry.game,false))break;
 if(progression.state.run)progression.settle(progression.state.run.game,false);
@@ -603,24 +608,26 @@ $('game-version').textContent='Version '+GAME_VERSION;
 trials=trialMount({drift:()=>navigation?.drift(),poolMedals:mode=>poolMedalRecords(store,{kind:progression.trialKind,mode}),wiki:id=>wiki.open(/^\d{3}$/.test(id)&&progression.developmentEnabled?'game-modes':'experiments',/^\d{3}$/.test(id)&&progression.developmentEnabled?'experiment-'+id:''),scorePlay,sound:audio,unlock:audioUnlockAsync,save,kind:()=>progression.trialKind,generation:()=>progression.trialGeneration,points:()=>progression.points,reward:e=>progression.trialReward(e),screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),legacy(mode){if(mode==='campaign')progression.campaign('tracks');else if(mode==='free')freePlay();else if(mode==='waves')wavesPlay();else {if(progression.context!=='legacy')progression.leave();save();const entry=store.pools.challenge;loadPool(entry?.game||gameCreate('LAGOON','challenge'),entry?.music);}}});
 
 const wiki=wikiMount({development:()=>progression.developmentEnabled,screen:()=>navigation?.show('wiki'),back:()=>navigation?.back()});
-const playerMenuScreen=playerMenuMount({get:()=>progression.state,profile:()=>progression.statsProfile.state.profile,rename:name=>progression.renamePlayer(name),gentle:()=>isGentle,screen:()=>navigation?.show('player'),back:()=>navigation?.back(),open:destination=>{if(destination==='skins')progression.skins();else if(destination==='stats')playerStatsScreen.open();else if(destination==='skills')progression.players();}});
+$('game-changelog').onclick=()=>{navigation.show('settings');wiki.open('changelog');};
+const playerMenuScreen=playerMenuMount({get:()=>progression.state,profile:()=>progression.statsProfile.state.profile,rename:name=>progression.renamePlayer(name),gentle:()=>isLowQuality,screen:()=>navigation?.show('player'),back:()=>navigation?.back(),open:destination=>{if(destination==='skins')progression.skins();else if(destination==='stats')playerStatsScreen.open();else if(destination==='skills')progression.players();}});
 const playerStatsScreen=playerStatsMount({get:()=>({...progression.statsProfile,storage:localStorage,poolStore:store}),screen:()=>navigation?.show('stats'),back:()=>navigation?.back(),open:destination=>destination==='upgrades'?progression.players():progression.tree()});
 navigation=gameMenuMount({
   recoveryNotice:progression.recoveryNotice,
-  gentle:()=>isGentle,
+  gentle:()=>isLowQuality,
   skin:()=>progression.skin,
   profile:()=>progression.statsProfile.state,
   audioSettings:()=>({volume:audio.volume,ambience:audio.ambience,muted:audio.isMuted}),
-  suspend(){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true);uiRender();},
+  suspend({ambient=false}={}){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true,{ambient:ambient&&isStarted});uiRender();},
   resume:start,
   freePlay, wavesPlay,
   info(){if(preferences.lastPlay==='score-attack'){const attack=scoreRead(localStorage,progression.trialKind,preferences.scoreBudget||SCORE_DEFAULT).entry;if(attack&&!attack.game.isOver)return {resume:{artwork:assetURL('artwork/mode/score-attack.svg'),detail:`Score Attack · ${attack.game.attack.budget} Shots · ${attack.game.plucks} Left`}};}const wave=store.pools.waves;if(preferences.lastPlay==='waves'&&wave&&!wave.game.isOver)return {resume:{artwork:assetURL('artwork/pool-512.png'),detail:`Endless Waves · Wave ${wave.game.wave.number} · ${wave.game.plucks} Shots Left`}};const s=progression.state;if(s.phase==='shop')return {resume:null};const next=s.phase==='interlude',pool=s.pool+(next?1:0);return {resume:{artwork:assetURL('artwork/'+s.track+'.svg'),detail:trackGet(s.track).name+' · '+(next?'Next: ':'')+'Pool '+(pool+1)+' — '+POOL_NAMES[pool]}};},
   continue(){if(preferences.lastPlay==='score-attack'){const attack=scoreRead(localStorage,progression.trialKind,preferences.scoreBudget||SCORE_DEFAULT).entry;if(attack&&!attack.game.isOver){scorePlay(preferences.scoreBudget||SCORE_DEFAULT);return;}}if(preferences.lastPlay==='waves'&&store.pools.waves&&!store.pools.waves.game.isOver){wavesPlay();return;}if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
   open(screen){if(screen==='gamemodes')trials.gallery();else if(screen.startsWith('gamemodes:'))trials.gallery(screen.slice(10));else if(screen.startsWith('pool-setup:'))trials.poolSetup(screen.slice(11));else if(screen==='score-setup')trials.scoreSetup();else if(screen==='trial-setup')trials.setup();else if(screen==='experiment-hub')trials.hub();else if(screen==='experiment-family')trials.family();else if(screen==='experiment-detail')trials.detail();else if(screen==='pause'||screen==='drift-pause'){if(screen==='drift-pause')$('menu-mode').textContent='Casual';$('menu-dialog').showModal();}else if(screen==='levels')progression.campaign('tracks');else if(screen==='player')playerMenuScreen.open();else if(screen==='stats')playerStatsScreen.open();else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='player-upgrades')progression.players();else if(screen==='wiki')wiki.open();else if(screen==='help')wiki.open('how-to-play');else $('settings-dialog').showModal();}
 });
-uiSoundMount(audio,document);
+const uiFeedback=uiSoundFeedback(audio,document);
+uiSoundMount(audio,document,uiFeedback);
 fullscreenMount(document,window);
-edgeBackMount(document,window);
+edgeBackMount(document,window,{feedback:uiFeedback});
 $('welcome').hidden=true;
 $('menu-home').onclick=()=>navigation.home();
 $('menu-resume').onclick=()=>navigation.resume();

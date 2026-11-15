@@ -159,14 +159,14 @@ body[data-menu-mode=home] #tree-sheet{height:var(--app-height,100dvh);max-height
 
 /* Three equal flexible gaps around the title and the complete button group. */
 #main-menu{padding-block:env(safe-area-inset-top) var(--content-safe-bottom,env(safe-area-inset-bottom))}
-#main-menu .home-content{display:grid;grid-template-rows:minmax(20px,1fr) max-content minmax(20px,1fr) max-content minmax(20px,1fr);height:100%;min-height:min-content;margin-block:0;align-self:stretch}
-#main-menu .home-content h1{grid-row:2;margin:0}
-#main-menu .home-actions{grid-row:4;min-width:0;container-type:inline-size}
+.menu-layout{display:grid;grid-template-rows:minmax(20px,1fr) max-content minmax(20px,1fr) max-content minmax(20px,1fr);height:100%;min-height:min-content;margin-block:0;align-self:stretch}
+.menu-layout>.menu-heading{grid-row:2;text-align:center}.menu-layout .menu-heading h1{margin:0}
+.menu-layout>.home-actions{grid-row:4;min-width:0;container-type:inline-size}
 
 /* Phones keep actions within thumb reach; the logo centers above the group. */
 @media(max-width:600px){
  #main-menu{padding-top:env(safe-area-inset-top);padding-bottom:max(16px,var(--content-safe-bottom,env(safe-area-inset-bottom)))}
- #main-menu .home-content{grid-template-rows:minmax(20px,1fr) max-content minmax(20px,1fr) max-content}
+ .menu-layout{grid-template-rows:minmax(20px,1fr) max-content minmax(20px,1fr) max-content}
 }
 
 /* Pair compact destinations; the wave entry explains the separate endless loop. */
@@ -180,10 +180,10 @@ body[data-menu-mode=home] #tree-sheet{height:var(--app-height,100dvh);max-height
 /* Short landscape screens put the logo beside the complete action group. */
 @media(max-height:500px) and (min-width:600px) and (orientation:landscape){
  #main-menu{grid-template-columns:minmax(0,1fr);gap:0;padding:12px max(20px,env(safe-area-inset-right)) 12px max(20px,env(safe-area-inset-left))}
- #main-menu .home-content{grid-column:1;grid-template-columns:minmax(150px,.8fr) minmax(320px,1fr);grid-template-rows:1fr;gap:24px;align-items:center;width:100%;min-height:min-content}
- #main-menu .home-content h1{grid-column:1;grid-row:1;font-size:clamp(38px,6vw,60px)}
- #main-menu .home-actions{grid-column:2;grid-row:1}
- #main-menu .home-secondary{margin-top:12px;padding-top:10px}
+ .menu-layout{grid-column:1;grid-template-columns:minmax(150px,.8fr) minmax(320px,1fr);grid-template-rows:1fr;gap:24px;align-items:center;width:100%;min-height:min-content}
+ .menu-layout>.menu-heading{grid-column:1;grid-row:1}.menu-layout .menu-heading h1{font-size:clamp(38px,6vw,60px)}
+ .menu-layout>.home-actions{grid-column:2;grid-row:1}
+ .menu-layout .home-secondary{margin-top:12px;padding-top:10px}
 }
 
 /* Fixed home layers follow the same visible height as dialogs and gameplay. */

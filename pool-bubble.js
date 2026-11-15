@@ -1,4 +1,4 @@
-import {bubbleRender} from './bubble-render.js?v=997e50dee1966fa389f1522907cc5fcd744d3bb3525669d3e306cec729fe9b34';
+import {bubbleRender} from './bubble-render.js?v=c5d036382edf95377b9d55c39b58264bb3af9c05e2412b3aca4b1d04215a6388';
 import {bubbleStep,bubbleOutline,bubbleFlow} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers} from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
 import {regionFrozen} from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
@@ -41,9 +41,9 @@ export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGe
   const isPermeable = !isSeed && frozenHit(game, body.id);
   membrane.glow = Math.max(0, membrane.glow - dt * 1.4);
   const light = Math.max(membrane.glow, replayGlow);
-  bubbleStep(membrane, body, dt, isGentle, isGentle ? undefined : bubbleFlow(body, game.bodies), !isSeed && (!!effectGet(game, 'stasis')?.targets.includes(body.id)||regionFrozen(game,body.id)));
+  bubbleStep(membrane, body, dt, false, bubbleFlow(body, game.bodies), !isSeed && (!!effectGet(game, 'stasis')?.targets.includes(body.id)||regionFrozen(game,body.id)));
   const points = bubbleOutline(membrane, body).map(point => ({ x: Math.max(RULE.inset, Math.min(RULE.width - RULE.inset, point.x)), y: Math.max(RULE.inset, Math.min(RULE.height - RULE.inset, point.y)) }));
-  const skin = bubbleRender(context, body, points, hue, {isSeed,isBubble,isPermeable,light});
+  const skin = bubbleRender(context, body, points, hue, {isSeed,isBubble,isPermeable,light,lowQuality:isGentle});
   context.save(); context.clip(skin);
   if (!isSeed) {
     // A pearly nucleus and drifting flecks make each bubble feel inhabited.

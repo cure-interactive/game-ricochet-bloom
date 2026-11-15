@@ -32,6 +32,7 @@
   var panel = document.getElementById('startup');
   var title = document.getElementById('startup-title');
   var message = document.getElementById('startup-message');
+  var progress = document.getElementById('startup-progress');
   var details = document.getElementById('startup-details');
   var retry = document.getElementById('startup-retry');
   var body = document.body;
@@ -43,6 +44,8 @@
   function report(error) {
     if (ready || failed) return;
     failed = true;
+    progress.hidden = true;
+    message.hidden = false;
     clearTimeout(timer);
     body.dataset.startup = 'failed';
     panel.setAttribute('aria-busy', 'false');
@@ -67,6 +70,7 @@
     if (ready || failed) return;
     retry.hidden = false;
     title.textContent = 'Still Loading';
+    message.hidden = false;
     document.getElementById('startup-diagnostics').hidden = false;
     message.textContent = 'The game is taking longer than expected. You can wait or retry. Retrying keeps your saved progress.';
   }, 15000);
@@ -96,8 +100,12 @@
     document.getElementById('startup-report').hidden = true;
     document.getElementById('startup-diagnostics').hidden = true;
     title.textContent = 'Ricochet Bloom';
-    message.textContent = 'Your pool is ready.';
-    var reduced = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || body.classList.contains('motion-reduced');
+    message.hidden = true;
+    progress.hidden = false;
+    progress.setAttribute('data-complete', 'true');
+    progress.setAttribute('aria-valuenow', '100');
+    progress.setAttribute('aria-label', 'Game ready');
+    var reduced = false;
     // Give cached loads a readable beat, then let the splash clear before the
     // menu arrives. Keep input blocked until every entrance has settled.
     setTimeout(function () {

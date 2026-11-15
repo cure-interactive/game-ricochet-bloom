@@ -1,7 +1,7 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { assetURL } from './asset.js?v=0cfe0a794ed64ab3bcda90c0fff1c797d61ca36785d8f327839e506603d7508c';
-import { renderMarkdown } from './wiki.js?v=94b2af50b0a1aa347f50c60290b0048707ee3095c7fe52ab033bfa203a11774e';
-import { buttonLabel } from './ui-icon.js?v=b05618f62d88c1057558c943cbcf7d2565de3287bf77909ca25275b9b5cb8cbf';
+import { renderMarkdown } from './wiki.js?v=d28c28b6441b69453ef288e53dd068763ce6f62e99ba78f1a3922aafec94145c';
+import { buttonLabel } from './ui-icon.js?v=6d54c4caa769ca38c3ad26db1215fd884511a97d6e85072fad52e5c45607142e';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 // Only shipped attribution/assets may navigate inside the viewer.
 export function creditTarget(href, current='icon/ui/INDEX.md') {
@@ -47,7 +47,7 @@ export function creditsMount(dialog) {
   async function load(name,remember=true){
     const target=creditTarget(name,'index.html');if(!target)return;
     if(remember)history.visit(name);current=name;buttonLabel(dismiss,'Back','arrow-left');dismiss.setAttribute('aria-label','Back to Credits');dismiss.onclick=back;request?.abort();const active=new AbortController();request=active;
-    original.hidden=true;page.hidden=false;article.innerHTML='<p role="status">Loading Credits…</p>';page.scrollTop=0;
+    original.hidden=true;page.hidden=false;article.innerHTML='<div class="loading-state"><div class="loading-bar" role="progressbar" aria-label="Loading Icon Credits"><span></span></div></div>';page.scrollTop=0;
     try{const response=await fetch(target.url,{signal:active.signal});if(!response.ok)throw new Error('Unavailable');const source=await response.text();
       if(request!==active||!dialog.open)return;article.innerHTML=creditMarkdown(source,name);article.focus({preventScroll:true});
     }catch{if(!active.signal.aborted&&dialog.open)article.innerHTML='<p role="alert">Credits could not load.</p><button type="button" class="quiet" data-credit-retry>Try Again</button>';}
