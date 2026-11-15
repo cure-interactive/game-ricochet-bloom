@@ -52,7 +52,7 @@
     var layout = 'unavailable';
     try {
       var css = window.getComputedStyle(document.documentElement);
-      layout = ['viewport-height','profile-bottom-space','safe-area-top','safe-area-right','safe-area-bottom','safe-area-left'].map(function (key) {
+      layout = ['viewport-height','viewport-dynamic-height','viewport-fixed-height','profile-bottom-space','safe-area-top','safe-area-right','safe-area-bottom','safe-area-bottom-reported','safe-area-bottom-external','safe-area-left'].map(function (key) {
         return key + '=' + (css.getPropertyValue('--' + key).trim() || '0px');
       }).join(', ');
     } catch (_) {}
@@ -67,6 +67,8 @@
       'Online: ' + navigator.onLine + ' | Secure context: ' + window.isSecureContext,
       'Viewport: ' + window.innerWidth + ' x ' + window.innerHeight + ' | Pixel ratio: ' + window.devicePixelRatio,
       'Visual viewport: ' + (viewport ? Math.round(viewport.width) + ' x ' + Math.round(viewport.height) + ', scale ' + viewport.scale : 'unavailable'),
+      'Screen: ' + (window.screen ? window.screen.width + ' x ' + window.screen.height : 'unavailable'),
+      'Visual offset: ' + (viewport ? (viewport.offsetLeft || 0) + ', ' + (viewport.offsetTop || 0) : 'unavailable'),
       'Layout: ' + layout,
       'Installed app: ' + Boolean(navigator.standalone || window.matchMedia && window.matchMedia('(display-mode: standalone)').matches),
       'Startup: ' + clean(body.dataset.startup) + ' | Screen: ' + clean(body.dataset.screen),

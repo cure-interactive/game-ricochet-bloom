@@ -1,7 +1,7 @@
 import {cosmeticSkin,cosmeticLoadout} from './cosmetic.js?v=2bb18d2e076499e68b09a42197f9a740fe84fa04b929d8919c5848590fd93936';
 import { screenHeader } from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
 import { playerUpgradeMount } from './player-upgrade-ui.js?v=0fd644dad1def0aee3b4b48d061a6f527042ea2ab864810a1eb46af3881ac718';
-import { saveRecoveryMount } from './save-recovery-ui.js?v=129959906ea5961ba62a852107ec003247755612728110085d50631462897b59';
+import { saveRecoveryMount } from './save-recovery-ui.js?v=6a135e979a686d4d37c316914a2bde78bacbf2f82ba166e4ca6127377d8336ec';
 import { progressionResetUnreadable } from './progression-store.js?v=f8a2125c9071644af680beda0d3b88152cc38ac19024952f705e72d7f7307298';
 import { medalIcon } from './medal-ui.js?v=cb1239d459734c6f9be44ad4762f547277da8fc66ff98164482c5bbefd917891';
 

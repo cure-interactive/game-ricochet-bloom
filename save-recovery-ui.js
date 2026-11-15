@@ -1,7 +1,7 @@
 import { screenHeader } from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
 
-const supportActions=(showHelpTitle=false)=>`<section data-diagnostics class="support-actions reading-card" aria-label="Send a problem report">${showHelpTitle?'<h3 class="section-title"><span class="ui-icon" data-icon="about" aria-hidden="true"></span><span>Having trouble playing or buying a skill?</span></h3>':''}<p>Email Cure Interactive for help. Your player name, game progress and device details are filled in for you. The subject identifies Ricochet Bloom, Support Report and your player name. In your email app, just tap Send.</p><p class="support-recipient">To: main@cureinteractive.com</p><div class="save-actions">${buttonHTML('Email Report','upload',{'data-support-email':''})}${buttonHTML('Share Report','upload',{'data-support-share':''})}${buttonHTML('Copy Report','copy',{'data-support-copy':''})}</div><p data-diagnostics-status role="status" aria-live="polite"></p><textarea data-diagnostics-report aria-label="Support report" readonly hidden></textarea></section>`;
+const supportActions=(showHelpTitle=false)=>`<section data-diagnostics class="support-actions reading-card" aria-label="Send a problem report">${showHelpTitle?'<h3 class="section-title"><span class="ui-icon" data-icon="about" aria-hidden="true"></span><span>Contact Support</span></h3>':''}<p>For help with playing, purchases or saving, send a Support Report. It includes your player name, game progress and technical diagnostics.</p><p>Email opens a draft for you to review and send. Share and Copy use the same report.</p><p class="support-recipient">To: main@cureinteractive.com</p><div class="save-actions">${buttonHTML('Email Report','upload',{'data-support-email':''})}${buttonHTML('Share Report','upload',{'data-support-share':''})}${buttonHTML('Copy Report','copy',{'data-support-copy':''})}</div><p data-diagnostics-status role="status" aria-live="polite"></p><textarea data-diagnostics-report aria-label="Support report" readonly hidden></textarea></section>`;
 
 // One recovery surface for unreadable profiles and pending writes.
 export function saveRecoveryMount(host){
@@ -12,6 +12,7 @@ export function saveRecoveryMount(host){
   document.body.append(dialog);
   const helpActions=document.createElement('details');helpActions.className='settings-section settings-help';
   helpActions.innerHTML=`<summary>${iconHTML('about')}<span>Get Help</span></summary><div class="settings-section-body">${supportActions(true).replace('support-actions reading-card','support-actions')}<p class="settings-hint">To upgrade: open Skills, tap a bubble, then tap Unlock. Its card shows the Points needed.</p></div>`;
+  helpActions.querySelector('.settings-section-body').append(document.getElementById('settings-diagnostics'));
   document.querySelector('#settings-dialog > .dialog-body').append(helpActions);
   const find=id=>dialog.querySelector('#'+id);
   const settings=document.createElement('button');settings.type='button';settings.innerHTML=iconHTML('reset')+'<span>Progress Recovery</span>';

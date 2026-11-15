@@ -6,6 +6,25 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.27.1
+
+Build: 2026-11-15 18:18:18 UTC
+
+### Player Changes
+
+- Adjust bottom spacing for installed iPhone apps that already reserve a strip outside the game, including Home, Casual, Pause and the Development bar.
+- Use the full available fixed viewport when app mode reports a shorter dynamic height.
+- Find Technical Diagnostics in Settings → Get Help. Clear descriptions explain when to copy diagnostics and what a full Support Report includes.
+
+<!-- development -->
+### Developer Notes
+
+- Measure fixed and dynamic viewport bounds together. Keep standard env() insets except for the narrow installed-iPhone portrait signature described in WebKit #313800; normalize saved page zoom for that comparison, never size the page from screen dimensions, and preserve keyboard clipping separately.
+- Remove deprecated apple-mobile-web-app-status-bar-style=black-translucent following WebKit guidance. Existing installed shell behavior may persist; physical-device confirmation remains pending.
+- Diagnostics reports screen dimensions, visual offsets, both viewport measurements and raw versus effective bottom insets. Move its existing Settings node into Get Help without changing startup recovery or report privacy boundaries.
+- Add regressions for the reported 1.15-scale geometry, corrected shells, ordinary tabs, landscape, split-width windows and keyboard restoration.
+<!-- /development -->
+
 ## v3.27.0
 
 Build: 2026-11-15 17:45:17 UTC

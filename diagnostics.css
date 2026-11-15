@@ -9,3 +9,5 @@
 [data-diagnostics-report]{display:block;width:100%;min-height:180px;max-height:40vh;padding:12px;border:1px solid #749eaa77;border-radius:10px;background:#091626;color:#e2f2ee;font:12px/1.5 monospace;resize:vertical;user-select:text;-webkit-user-select:text}
 [data-diagnostics][hidden],[data-diagnostics-report][hidden]{display:none}
 #startup-diagnostics{text-align:center}
+
+#settings-dialog .settings-help #settings-diagnostics{border-top:1px solid #badfd238;padding-top:20px;margin-top:4px}
