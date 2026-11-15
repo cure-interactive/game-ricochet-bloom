@@ -122,9 +122,9 @@ function wallCollide(b,w){
   const nx=dx/d,ny=dy/d,v=b.vx*nx+b.vy*ny;if(v<0){b.vx-=1.65*v*nx;b.vy-=1.65*v*ny;}
 }
 function contain(g,b){
-  for(const w of g.walls)if(w.active){const before=[b.vx,b.vy];wallCollide(b,w);if(g.mode==='precision'&&b.kind==='player'&&(b.vx!==before[0]||b.vy!==before[1]))precisionBank(g);}
+  for(const w of g.walls)if(w.active){const before=[b.vx,b.vy];wallCollide(b,w);if(b.kind==='player'&&(b.vx!==before[0]||b.vy!==before[1]))event(g,'cosmetic-hit',b,{nx:b.vx-before[0],ny:b.vy-before[1]});if(g.mode==='precision'&&b.kind==='player'&&(b.vx!==before[0]||b.vy!==before[1]))precisionBank(g);}
   if(g.mode==='precision'&&precisionWrap(g,b))return;
-  for(const [p,v,max] of [['x','vx',900],['y','vy',600]]){if(b[p]<b.r){if(g.mode==='precision'&&b.kind==='player')precisionBank(g);b[p]=b.r;b[v]=Math.abs(b[v])*(g.setup?.experimentId==='007'?.98:.75);}if(b[p]>max-b.r){if(g.mode==='precision'&&b.kind==='player')precisionBank(g);b[p]=max-b.r;b[v]=-Math.abs(b[v])*(g.setup?.experimentId==='007'?.98:.75);}}
+  for(const [p,v,max] of [['x','vx',900],['y','vy',600]]){if(b[p]<b.r){if(b.kind==='player')event(g,'cosmetic-hit',b,{nx:p==='x'?-1:0,ny:p==='y'?-1:0});if(g.mode==='precision'&&b.kind==='player')precisionBank(g);b[p]=b.r;b[v]=Math.abs(b[v])*(g.setup?.experimentId==='007'?.98:.75);}if(b[p]>max-b.r){if(b.kind==='player')event(g,'cosmetic-hit',b,{nx:p==='x'?1:0,ny:p==='y'?1:0});if(g.mode==='precision'&&b.kind==='player')precisionBank(g);b[p]=max-b.r;b[v]=-Math.abs(b[v])*(g.setup?.experimentId==='007'?.98:.75);}}
 }
 function destinations(g){
   if(g.mode==='music'){melodyDestinations(g);return;}
@@ -204,6 +204,7 @@ export function trialStep(g){
     const a=bodies[i],b=bodies[j];if(!a.active||!b.active||a.fixed&&b.fixed||['vent','mud'].includes(a.kind)||['vent','mud'].includes(b.kind)&&a.kind!=='player')continue;
     let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);if(d>a.r+b.r)continue;
     const impact=Math.abs(((b.vx-a.vx)*dx+(b.vy-a.vy)*dy)/Math.max(.001,d));
+    if((a.kind==='player'||b.kind==='player')&&impact>22&&(b.vx-a.vx)*dx+(b.vy-a.vy)*dy<0)event(g,'cosmetic-hit',a.kind==='player'?a:b,{nx:dx/Math.max(1,d),ny:dy/Math.max(1,d),speed:impact});
     if(impact>option(g,'impactLimit',Infinity)&&(a.kind==='cargo'||b.kind==='cargo')){remove(g,a.kind==='cargo'?a:b,'impact limit exceeded');continue;}
     if(g.mode==='music'&&(a.kind==='player'||b.kind==='player')&&a.kind!=='instrument'&&b.kind!=='instrument'){melodyTouch(g,a.kind==='player'?a:b,a.kind==='player'?b:a);continue;}
     if(a.kind==='player'&&g.mode==='precision'){precisionTouch(g,b);continue;}

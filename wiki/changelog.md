@@ -6,7 +6,33 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.24.0
+
+Build: 2026-11-15 09:43:32 UTC
+
+### Player Changes
+
+- Choose Trails and Bounce Effects from the Player menu, with animated previews before purchasing.
+- Unlock Common, Rare, Epic, Legendary and Mythic cosmetic styles with Points. Equip owned styles freely.
+- Add six player skins, including a Cure Interactive bubble, while keeping earned campaign skins.
+- Share your equipped look across gameplay, Casual, menu autoplay, player icons and previews.
+- Keep bottom bars attached to the screen edge, including Settings opened from Pause and app mode.
+- Use a filled phone Display icon with earpiece and microphone cutouts.
+- Check for Updates beside Get Help in app-mode Settings. A ready update saves progress and restarts the app; offline or save problems keep the current app open.
+- Show the build date and time below the About version and beneath each tagged changelog version.
+
+<!-- development -->
+### Developer Notes
+
+- Optional validated profile cosmetic receipts preserve legacy saves and historical prices. Purchases use the existing transactional progression owner, including the suspended profile during shared challenges.
+- Share cosmetic trails and collision feedback through CosmeticVisual without changing physics, scoring, power effects or rewards. Skin materials remain clipped to the genuine membrane.
+- Move mobile safe-area clearance inside navigation surfaces; keep installed-app viewport sizing independent of stale browser-toolbar measurements while respecting focused editors.
+- Generate build metadata and historical changelog dates from commit timestamps with tool/build.mjs. Match the generated release time to the final source commit's committer date.
+<!-- /development -->
+
 ## v3.23.5
+
+Build: 2026-11-15 09:13:49 UTC
 
 ### Player Changes
 
@@ -32,6 +58,8 @@ Developer notes appear inside each version below.
 
 ## v3.23.4
 
+Build: 2026-11-15 05:21:48 UTC
+
 ### Player Changes
 
 - Find a matching icon beside every Settings and Development toggle, with its checkbox on the right.
@@ -47,6 +75,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.23.3
+
+Build: 2026-11-15 05:01:50 UTC
 
 ### Player Changes
 
@@ -64,6 +94,8 @@ Developer notes appear inside each version below.
 
 ## v3.23.2
 
+Build: 2026-11-15 04:34:12 UTC
+
 ### Player Changes
 
 - Show matching player-upgrade icons for launch speed, aiming guides and wall rebound in Stats.
@@ -79,6 +111,8 @@ Developer notes appear inside each version below.
 
 ## v3.23.1
 
+Build: 2026-11-15 04:06:58 UTC
+
 ### Player Changes
 
 - Use a smartphone silhouette for mobile Display settings.
@@ -90,6 +124,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.23.0
+
+Build: 2026-11-15 04:05:10 UTC
 
 ### Player Changes
 
@@ -114,6 +150,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.22.4
+
+Build: 2026-11-15 03:39:44 UTC
 
 ### Player Changes
 
@@ -140,6 +178,8 @@ Developer notes appear inside each version below.
 
 ## v3.22.3
 
+Build: 2026-11-15 03:03:16 UTC
+
 ### Player Changes
 
 - Show Lightning bolts and struck-bubble flashes consistently, including Casual and Low quality.
@@ -163,6 +203,8 @@ Developer notes appear inside each version below.
 
 ## v3.22.2
 
+Build: 2026-11-15 02:40:05 UTC
+
 ### Player Changes
 
 - Give menus, panels and Wiki pages slim, rounded scrollbars inspired by iOS.
@@ -177,6 +219,8 @@ Developer notes appear inside each version below.
 
 ## v3.22.1
 
+Build: 2026-11-15 02:28:31 UTC
+
 ### Player Changes
 
 - Keep the Development bar compact when showing or hiding music.
@@ -188,6 +232,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.22.0
+
+Build: 2026-11-15 02:21:39 UTC
 
 ### Player Changes
 
@@ -214,6 +260,8 @@ Developer notes appear inside each version below.
 
 ## v3.21.0
 
+Build: 2026-11-15 01:53:13 UTC
+
 ### Player Changes
 
 - Use the game title, version and bubble background in full-screen pause.
@@ -229,6 +277,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.22
 
+Build: 2026-11-15 01:34:11 UTC
+
 ### Player Changes
 
 - Use the standard pause menu in Casual.
@@ -241,6 +291,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.20.21
+
+Build: 2026-11-15 01:27:13 UTC
 
 ### Player Changes
 
@@ -255,6 +307,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.20
 
+Build: 2026-11-15 01:21:18 UTC
+
 ### Player Changes
 
 - Move the help introduction into its support card.
@@ -267,6 +321,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.20.19
+
+Build: 2026-11-15 01:15:40 UTC
 
 ### Player Changes
 
@@ -282,6 +338,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.18
 
+Build: 2026-11-15 01:07:29 UTC
+
 ### Player Changes
 
 - Prevent whole-app zoom while keeping in-game gestures.
@@ -294,6 +352,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.20.17
+
+Build: 2026-11-15 01:02:05 UTC
 
 ### Player Changes
 
@@ -308,6 +368,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.16
 
+Build: 2026-11-15 00:51:18 UTC
+
 ### Player Changes
 
 - Round the Points labels beneath skill-tree icons.
@@ -320,6 +382,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.20.15
+
+Build: 2026-11-15 00:45:26 UTC
 
 ### Player Changes
 
@@ -334,6 +398,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.14
 
+Build: 2026-11-15 00:38:22 UTC
+
 ### Player Changes
 
 - Use the Cure Interactive external-link icon on the developer card.
@@ -346,6 +412,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.20.13
+
+Build: 2026-11-15 00:30:47 UTC
 
 ### Player Changes
 
@@ -360,6 +428,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.12
 
+Build: 2026-11-15 00:23:56 UTC
+
 ### Player Changes
 
 - Extend the play area and information bars to the screen edges.
@@ -372,6 +442,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.20.11
+
+Build: 2026-11-15 00:14:30 UTC
 
 ### Player Changes
 
@@ -387,6 +459,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.10
 
+Build: 2026-11-14 22:50:58 UTC
+
 ### Player Changes
 
 - Link the About developer card to the Cure Interactive website.
@@ -399,6 +473,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.20.9
+
+Build: 2026-11-14 22:45:17 UTC
 
 ### Player Changes
 
@@ -413,6 +489,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.8
 
+Build: 2026-11-14 22:38:52 UTC
+
 ### Player Changes
 
 - Send support reports to the Cure Interactive inbox with the game, report type and player name in the subject.
@@ -425,6 +503,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.20.7
+
+Build: 2026-11-14 22:30:19 UTC
 
 ### Player Changes
 
@@ -439,6 +519,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.6
 
+Build: 2026-11-14 22:26:44 UTC
+
 ### Player Changes
 
 - Place menu text inside readable cards.
@@ -451,6 +533,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.20.5
+
+Build: 2026-11-14 22:15:43 UTC
 
 ### Player Changes
 
@@ -466,6 +550,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.4
 
+Build: 2026-11-14 18:50:20 UTC
+
 ### Player Changes
 
 - Keep collected power icons visible with checkmark badges.
@@ -478,6 +564,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.20.3
+
+Build: 2026-11-14 18:42:01 UTC
 
 ### Player Changes
 
@@ -493,6 +581,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.2
 
+Build: 2026-11-14 18:12:56 UTC
+
 ### Player Changes
 
 - Improve mobile save recovery and provide direct support reports.
@@ -505,6 +595,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.20.1
+
+Build: 2026-11-14 17:28:16 UTC
 
 ### Player Changes
 
@@ -519,6 +611,8 @@ Developer notes appear inside each version below.
 
 ## v3.20.0
 
+Build: 2026-11-14 17:20:23 UTC
+
 ### Player Changes
 
 - Add a self-playing casual pool with unlocked powers and no Points or medals.
@@ -531,6 +625,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.19.6
+
+Build: 2026-11-14 17:03:11 UTC
 
 ### Player Changes
 
@@ -545,6 +641,8 @@ Developer notes appear inside each version below.
 
 ## v3.19.5
 
+Build: 2026-11-14 16:54:54 UTC
+
 ### Player Changes
 
 - Outline selected player icons in the control's text colour.
@@ -558,6 +656,8 @@ Developer notes appear inside each version below.
 
 ## v3.19.4
 
+Build: 2026-11-14 16:48:43 UTC
+
 ### Player Changes
 
 - Keep player previews and icons visibly deforming after their initial bounce.
@@ -570,6 +670,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.19.3
+
+Build: 2026-11-14 16:40:20 UTC
 
 ### Player Changes
 
@@ -585,6 +687,8 @@ Developer notes appear inside each version below.
 
 ## v3.19.2
 
+Build: 2026-11-14 16:28:50 UTC
+
 ### Player Changes
 
 - Make Sound Check play low, medium and full-strength gameplay notes.
@@ -598,6 +702,8 @@ Developer notes appear inside each version below.
 
 ## v3.19.1
 
+Build: 2026-11-14 16:21:27 UTC
+
 ### Player Changes
 
 - Remove notes, icons and hit counters from main-menu bubbles.
@@ -610,6 +716,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.19.0
+
+Build: 2026-11-14 16:16:15 UTC
 
 ### Player Changes
 
@@ -625,6 +733,8 @@ Developer notes appear inside each version below.
 
 ## v3.18.2
 
+Build: 2026-11-14 16:07:20 UTC
+
 ### Player Changes
 
 - Close the Skills legend when tapping outside it.
@@ -638,6 +748,8 @@ Developer notes appear inside each version below.
 
 ## v3.18.1
 
+Build: 2026-11-14 16:01:46 UTC
+
 ### Player Changes
 
 - Place Player destinations in two columns where space allows.
@@ -650,6 +762,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.18.0
+
+Build: 2026-11-14 15:51:14 UTC
 
 ### Player Changes
 
@@ -665,6 +779,8 @@ Developer notes appear inside each version below.
 
 ## v3.17.10
 
+Build: 2026-11-14 15:33:17 UTC
+
 ### Player Changes
 
 - Use the game's elastic player rendering for previews and icons.
@@ -677,6 +793,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.17.9
+
+Build: 2026-11-14 15:18:03 UTC
 
 ### Player Changes
 
@@ -691,6 +809,8 @@ Developer notes appear inside each version below.
 
 ## v3.17.8
 
+Build: 2026-11-14 15:09:18 UTC
+
 ### Player Changes
 
 - Keep titles opposite Back and Close controls.
@@ -703,6 +823,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.17.7
+
+Build: 2026-11-14 14:01:16 UTC
 
 ### Player Changes
 
@@ -717,6 +839,8 @@ Developer notes appear inside each version below.
 
 ## v3.17.6
 
+Build: 2026-11-14 13:53:46 UTC
+
 ### Player Changes
 
 - Remove the unused Stream View option.
@@ -729,6 +853,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.17.5
+
+Build: 2026-11-14 13:38:14 UTC
 
 ### Player Changes
 
@@ -743,6 +869,8 @@ Developer notes appear inside each version below.
 
 ## v3.17.4
 
+Build: 2026-11-14 13:27:07 UTC
+
 ### Player Changes
 
 - Use chart artwork for Stats and tree artwork for Skills.
@@ -755,6 +883,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.17.3
+
+Build: 2026-11-14 13:20:13 UTC
 
 ### Player Changes
 
@@ -769,6 +899,8 @@ Developer notes appear inside each version below.
 
 ## v3.17.2
 
+Build: 2026-11-14 13:10:18 UTC
+
 ### Player Changes
 
 - Halve the reach of held-touch bubble repulsion.
@@ -782,6 +914,8 @@ Developer notes appear inside each version below.
 
 ## v3.17.1
 
+Build: 2026-11-14 13:02:51 UTC
+
 ### Player Changes
 
 - Correct title placement with left-handed navigation.
@@ -794,6 +928,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.17.0
+
+Build: 2026-11-14 12:50:13 UTC
 
 ### Player Changes
 
@@ -809,6 +945,8 @@ Developer notes appear inside each version below.
 
 ## v3.16.1
 
+Build: 2026-11-14 12:20:58 UTC
+
 ### Player Changes
 
 - Organize Player Stats and improve its icons.
@@ -822,6 +960,8 @@ Developer notes appear inside each version below.
 
 ## v3.16.0
 
+Build: 2026-11-14 12:11:24 UTC
+
 ### Player Changes
 
 - Activate an unlocked power in the background pool every five hits.
@@ -834,6 +974,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.15.0
+
+Build: 2026-11-14 11:59:21 UTC
 
 ### Player Changes
 
@@ -849,6 +991,8 @@ Developer notes appear inside each version below.
 
 ## v3.14.2
 
+Build: 2026-11-14 11:46:53 UTC
+
 ### Player Changes
 
 - Rename Skill Tree to Skills.
@@ -863,6 +1007,8 @@ Developer notes appear inside each version below.
 
 ## v3.14.1
 
+Build: 2026-11-14 11:39:30 UTC
+
 ### Player Changes
 
 - Correct default navigation placement on the right.
@@ -875,6 +1021,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.14.0
+
+Build: 2026-11-14 06:02:25 UTC
 
 ### Player Changes
 
@@ -889,6 +1037,8 @@ Developer notes appear inside each version below.
 
 ## v3.13.9
 
+Build: 2026-11-14 05:48:32 UTC
+
 ### Player Changes
 
 - Show the game version beneath the main-menu title.
@@ -901,6 +1051,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.13.8
+
+Build: 2026-11-14 05:43:18 UTC
 
 ### Player Changes
 
@@ -915,6 +1067,8 @@ Developer notes appear inside each version below.
 
 ## v3.13.7
 
+Build: 2026-11-14 05:37:30 UTC
+
 ### Player Changes
 
 - Improve title alignment and distinguish Back from Close.
@@ -927,6 +1081,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.13.6
+
+Build: 2026-11-14 05:27:18 UTC
 
 ### Player Changes
 
@@ -941,6 +1097,8 @@ Developer notes appear inside each version below.
 
 ## v3.13.5
 
+Build: 2026-11-14 05:16:08 UTC
+
 ### Player Changes
 
 - Improve the loading-to-main-menu animation.
@@ -953,6 +1111,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.13.4
+
+Build: 2026-11-14 05:04:59 UTC
 
 ### Player Changes
 
@@ -967,6 +1127,8 @@ Developer notes appear inside each version below.
 
 ## v3.13.3
 
+Build: 2026-11-14 04:57:06 UTC
+
 ### Player Changes
 
 - Reserve interface space for the Development bar.
@@ -979,6 +1141,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.13.2
+
+Build: 2026-11-14 04:47:21 UTC
 
 ### Player Changes
 
@@ -993,6 +1157,8 @@ Developer notes appear inside each version below.
 
 ## v3.13.1
 
+Build: 2026-11-14 04:40:19 UTC
+
 ### Player Changes
 
 - Center stacked skin previews above their information panel.
@@ -1005,6 +1171,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.13.0
+
+Build: 2026-11-14 04:33:05 UTC
 
 ### Player Changes
 
@@ -1019,6 +1187,8 @@ Developer notes appear inside each version below.
 
 ## v3.12.0
 
+Build: 2026-11-14 04:16:51 UTC
+
 ### Player Changes
 
 - Add Copy Diagnostics to Settings and startup recovery.
@@ -1031,6 +1201,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.11.0
+
+Build: 2026-11-14 04:05:19 UTC
 
 ### Player Changes
 
@@ -1046,6 +1218,8 @@ Developer notes appear inside each version below.
 
 ## v3.10.0
 
+Build: 2026-11-14 03:53:03 UTC
+
 ### Player Changes
 
 - Add Player Stats for the active profile.
@@ -1058,6 +1232,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.9.4
+
+Build: 2026-11-14 03:23:23 UTC
 
 ### Player Changes
 
@@ -1072,6 +1248,8 @@ Developer notes appear inside each version below.
 
 ## v3.9.3
 
+Build: 2026-11-14 03:05:51 UTC
+
 ### Player Changes
 
 - Add a loading-screen transition into the main menu.
@@ -1084,6 +1262,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.9.2
+
+Build: 2026-11-14 02:53:05 UTC
 
 ### Player Changes
 
@@ -1099,6 +1279,8 @@ Developer notes appear inside each version below.
 
 ## v3.9.1
 
+Build: 2026-11-14 02:43:18 UTC
+
 ### Player Changes
 
 - Move full-width action bars to the bottom edge.
@@ -1111,6 +1293,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.9.0
+
+Build: 2026-11-14 02:35:30 UTC
 
 ### Player Changes
 
@@ -1125,6 +1309,8 @@ Developer notes appear inside each version below.
 
 ## v3.8.1
 
+Build: 2026-11-14 02:12:11 UTC
+
 ### Player Changes
 
 - Make menus and shared interface controls more consistent.
@@ -1137,6 +1323,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.8.0
+
+Build: 2026-11-14 01:53:44 UTC
 
 ### Player Changes
 
@@ -1151,6 +1339,8 @@ Developer notes appear inside each version below.
 
 ## v3.7.0
 
+Build: 2026-11-14 01:24:50 UTC
+
 ### Player Changes
 
 - Make power upgrades cumulative.
@@ -1164,6 +1354,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.6.1
+
+Build: 2026-11-14 00:57:29 UTC
 
 ### Player Changes
 
@@ -1180,6 +1372,8 @@ Developer notes appear inside each version below.
 
 ## v3.6.0
 
+Build: 2026-11-13 22:56:39 UTC
+
 ### Player Changes
 
 - Group related gamemodes into collections.
@@ -1193,6 +1387,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.5.0
+
+Build: 2026-11-13 20:06:17 UTC
 
 ### Player Changes
 
@@ -1211,6 +1407,8 @@ Developer notes appear inside each version below.
 
 ## v3.4.0
 
+Build: 2026-11-13 16:35:36 UTC
+
 ### Player Changes
 
 - Organize the experiment hub and add saved setups and capture trials.
@@ -1224,6 +1422,8 @@ Developer notes appear inside each version below.
 
 ## v3.3.0
 
+Build: 2026-11-13 15:02:16 UTC
+
 ### Player Changes
 
 - Add Score Attack with 5, 10 or 15 shots, medals and personal records.
@@ -1236,6 +1436,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v3.2.0
+
+Build: 2026-11-13 14:43:05 UTC
 
 ### Player Changes
 
@@ -1254,6 +1456,8 @@ Developer notes appear inside each version below.
 
 ## v3.1.0
 
+Build: 2026-11-13 04:34:15 UTC
+
 ### Player Changes
 
 - Show available Points in every game mode.
@@ -1271,6 +1475,8 @@ Developer notes appear inside each version below.
 
 ## v3.0.0
 
+Build: 2026-11-13 03:22:27 UTC
+
 ### Player Changes
 
 - Add Reaction Puzzle, Cargo Rescue and Outbreak Containment experiments.
@@ -1284,6 +1490,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v2.0.0
+
+Build: 2026-11-13 02:31:42 UTC
 
 ### Player Changes
 
@@ -1301,6 +1509,8 @@ Developer notes appear inside each version below.
 <!-- /development -->
 
 ## v1.0.0
+
+Build: 2026-11-10 01:35:09 UTC
 
 ### Player Changes
 

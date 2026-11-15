@@ -1,14 +1,16 @@
+import {CosmeticVisual} from './cosmetic-visual.js?v=971f8b3ef6ea7b181b3c91ef6411b9b21c431dd9f29b88db57a10fb1d2a63319';
 import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=0be907c714bf1915aadb9394e8ceebdc94ac03870cf3a5b2d8e3ae41456dadcf';
+import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=76a1e4cb211095f4b11eda6275a15a78324ca66df96009327ff8adc511a6ddd5';
 import {PowerVisual} from './power-visual.js?v=055a6317e79f671c92674eed285313cb0bf4d05bb1c9bc05812f86bc1eb648b8';
 
 // One presentation owner for every physics pool: play, Casual and menu autoplay.
 // Scores, aiming, audio and persistence belong to the caller, never this component.
 export class PoolVisual {
- constructor(){this.membranes=new Map();this.powerVisual=new PowerVisual();this.clear();}
- clear(){this.membranes.clear();this.powerVisual.clear();this.trails=[];this.particles=[];this.rings=[];this.connections=[];this.reunions=[];}
+ constructor(){this.cosmetics=new CosmeticVisual();this.membranes=new Map();this.powerVisual=new PowerVisual();this.clear();}
+ configure(loadout){this.cosmetics.configure(loadout);}
+ clear(){const loadout={trail:this.cosmetics.trail,bounce:this.cosmetics.bounce};this.cosmetics.clear();this.cosmetics.configure(loadout);this.membranes.clear();this.powerVisual.clear();this.trails=[];this.particles=[];this.rings=[];this.connections=[];this.reunions=[];}
  membrane(body){if(!this.membranes.has(body.id))this.membranes.set(body.id,bubbleCreate());return this.membranes.get(body.id);}
  hit(game,id,nx,ny,strength){const body=id<0?seedBodies(game).find(b=>b.id===id):game.bodies[id];if(!body)return; bubbleHit(this.membrane(body),body.radius,nx,ny,strength,!!effectGet(game,'stasis')?.targets.includes(id));}
  burst(x,y,color,count,low){
@@ -18,6 +20,8 @@ export class PoolVisual {
  }
  event(event,game,low=false){
   if(event.type==='wave'){this.clear();return;}
+  if(event.type==='impact'&&(event.a===0||event.b===0)||event.type==='wall'&&event.id===0)this.cosmetics.hit(event.x,event.y);
+  if(['wrap','portal'].includes(event.type)||event.type==='power'&&['swap','split'].includes(event.kind))this.cosmetics.breakTrail();
   this.powerVisual.event(event,game);poolBubbleEvent(event,game,body=>this.membrane(body));
   const hit=(id,nx,ny,speed)=>this.hit(game,id,nx,ny,speed),burst=(x,y,color,n)=>this.burst(x,y,color,n,low);
   if(event.type==='impact'){hit(event.a,event.nx,event.ny,event.speed);hit(event.b,-event.nx,-event.ny,event.speed);}
@@ -53,6 +57,7 @@ export class PoolVisual {
  }
  before(context,game,time,visualDelta,isLowQuality=false){
   const seed=game.bodies[0];
+  this.cosmetics.step(seed,visualDelta,game.isFlying);this.cosmetics.render(context,isLowQuality);
   if(isLowQuality){this.trails=[];this.particles=[];}
   this.powerVisual.update(visualDelta,game);
   this.powerVisual.render(context, game, time, isLowQuality);
@@ -65,7 +70,7 @@ export class PoolVisual {
   const previous = new Map();
   for (const point of this.trails) {
     const a = previous.get(point.id); previous.set(point.id, point);
-    if (!a) continue;
+    if (!a || point.id===0&&!point.comet&&!point.drunk&&this.cosmetics.trail!=='trail.original') continue;
     context.strokeStyle = point.comet ? `rgba(255,201,117,${point.life * .8})` : point.drunk ? `rgba(255,172,216,${point.life * .6})` : point.id === -3 ? `rgba(178,192,255,${point.life * .45})` : point.id === -1 ? `rgba(216,183,255,${point.life * .55})` : point.id === -2 ? `rgba(155,237,244,${point.life * .55})` : `rgba(191,246,226,${point.life * .32})`;
     context.lineWidth = point.life * (point.comet ? 24 : point.id < 0 ? 8 : 15); context.lineCap = 'round'; context.beginPath(); context.moveTo(a.x, a.y); context.lineTo(point.x, point.y); context.stroke();
     if (point.comet) { context.strokeStyle = `rgba(255,246,207,${point.life * .8})`; context.lineWidth = point.life * 5; context.stroke(); }

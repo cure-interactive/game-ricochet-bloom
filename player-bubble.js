@@ -4,7 +4,7 @@ import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
 import {menuPoolView} from './menu-pool.js?v=d73b02edc746dd5fddf9898200d8fe2f3fe9b91e08924d2d5b874729f1ef172a';
 import {skinSpringStep} from './skin-preview.js?v=e6fa5d2b4812a18e495e4f673ba1d1c774eb5140702e19298017892c8fe38991';
-import {bubbleRender,bubblePath} from './bubble-render.js?v=0b5db9753621bde8a86ab88be698cb900831918934659548b20bbe78ef0599fc';
+import {bubbleRender,bubblePath} from './bubble-render.js?v=a5ba51fcc93401722fd8cb22fc06d3b5d79138cf35829de911ecfdf3fb48aafd';
 
 // Decorative instances own only visual state. The surrounding button or large
 // preview keeps its existing input, focus, navigation and progression contract.
@@ -132,7 +132,7 @@ export function registerPlayerBubble(win=window){
    const style=win.getComputedStyle(this),color=style.getPropertyValue('--skin-color').trim()||'#f1f9d7';
    const body={...this.body,x:this.body.x+this.pressure.x,y:this.body.y+this.pressure.y};
    const points=bubbleOutline(this.membrane,body);
-   bubbleRender(c,body,points,color,{glowExtent:1.3,lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
+   bubbleRender(c,body,points,color,{glowExtent:1.3,skinStyle:style.getPropertyValue('--skin-style').trim()||style.getPropertyValue('--player-skin-style').trim(),lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
    if(style.getPropertyValue('--player-bubble-outline').trim()==='1'){
     // A separate contour follows the membrane, leaving its luminous rim intact.
     const gap=.8+84/this.size;

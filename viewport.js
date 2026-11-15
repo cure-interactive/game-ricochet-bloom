@@ -6,7 +6,9 @@ export function viewportMount(doc=document,win=window){
   function update(){
     frame=0;if(doc.hidden)return;
     if(viewport&&Math.abs(viewport.scale-1)>.01)return;
-    const height=viewport?.height>0?viewport.height:win.innerHeight;
+    const standalone=!!win.navigator?.standalone||!!win.matchMedia?.('(display-mode: standalone)').matches;
+    const editing=doc.activeElement?.matches?.('input,textarea,[contenteditable=true]');
+    const height=standalone&&!editing?win.innerHeight:viewport?.height>0?viewport.height:win.innerHeight;
     if(!Number.isFinite(height)||height<=0)return;
     const value=`${Math.round(height*100)/100}px`;
     if(value!==last){doc.documentElement.style.setProperty('--viewport-height',value);last=value;}

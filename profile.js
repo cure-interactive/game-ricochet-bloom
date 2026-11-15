@@ -2,6 +2,8 @@ import { PLAYER_UPGRADES, playerResearchValid, playerUpgradeReason } from './pla
 import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=41b471c37ef2d3e54b61ceb1967e63963fa935f4a0b48d5bb6eeeedc6069f66c';
 
+import {cosmeticGet,cosmeticValidate,cosmeticDefault,cosmeticOwned} from './cosmetic.js?v=1b311bc177fb26970783e2cc6a501de7066f96f2d1f5e34527d39000881ba8cd';
+
 export const PROFILE_VERSION = 1;
 const integer = value => Number.isSafeInteger(value) && value >= 0;
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -113,6 +115,7 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
   if(input.playerResearch!==undefined&&!playerResearchValid(input.playerResearch))return null;
   if(input.playGeneration!==undefined&&!integer(input.playGeneration))return null;
   if(input.name!==undefined&&!playerNameValid(input.name))return null;
+  const cosmetics=cosmeticValidate(input.cosmetics);if(cosmetics===null)return null;
   const summary = rewardsInspect(input.rewards, catalogue);
   if (!summary||input.rewards.some(r=>r.event.type==='play'&&r.event.play.kind!==input.kind)) return null;
   const research = {};
@@ -129,7 +132,7 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
   const familyUnlocks=input.familyUnlocks===undefined?[...FAMILIES]:input.familyUnlocks;
   if(!unique(familyUnlocks)||familyUnlocks.some(f=>!FAMILIES.includes(f)))return null;
   return { version: PROFILE_VERSION, familyUnlocks:[...familyUnlocks], familyAccess:{...familyAccess}, kind: input.kind, revision: input.revision, wallet: { seeds: input.wallet.seeds },
-    research, ...(input.playGeneration===undefined?{}:{playGeneration:input.playGeneration}), ...(input.name===undefined?{}:{name:input.name}), ...(input.playerResearch===undefined?{}:{playerResearch:structuredClone(input.playerResearch)}), rewards: [...summary.receipts.values()] };
+    research, ...(cosmetics===undefined?{}:{cosmetics}), ...(input.playGeneration===undefined?{}:{playGeneration:input.playGeneration}), ...(input.name===undefined?{}:{name:input.name}), ...(input.playerResearch===undefined?{}:{playerResearch:structuredClone(input.playerResearch)}), rewards: [...summary.receipts.values()] };
 }
 export function profileSummary(input, catalogue = CATALOGUE) {
   const profile = profileValidate(input, catalogue);
@@ -269,4 +272,18 @@ export function profilePlayerPurchase(input,id,catalogue=CATALOGUE) {
  const node=PLAYER_UPGRADES.find(n=>n.id===id);
  profile.wallet.seeds-=node.cost;profile.playerResearch??={};profile.playerResearch[id]={paid:node.cost};
  return accepted(profile,{purchased:id,paid:node.cost});
+}
+
+export function profileCosmetic(input,id,buy=false){
+ const profile=profileValidate(input),item=cosmeticGet(id);
+ if(!profile)return rejected('Invalid saved profile.');
+ if(!item)return rejected('This cosmetic is unavailable.');
+ const owned=cosmeticOwned(profile,item);
+ if(!owned&&!buy)return rejected('Unlock this cosmetic first.');
+ if(!owned&&profile.wallet.seeds<item.cost)return rejected(`You need ${item.cost-profile.wallet.seeds} more Points.`);
+ if(!advance(profile))return rejected('Profile revision limit reached.');
+ profile.cosmetics??=cosmeticDefault();
+ if(!owned){profile.wallet.seeds-=item.cost;profile.cosmetics.owned[id]={paid:item.cost};}
+ profile.cosmetics[item.kind]=id;
+ return accepted(profile,{paid:owned?0:item.cost,purchased:!owned});
 }

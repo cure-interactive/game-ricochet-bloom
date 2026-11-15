@@ -2,7 +2,7 @@ import { PLAYER_UPGRADES, playerBuild } from './player-upgrade.js?v=2f8094123653
 import { buildValidate } from './skill-effect.js?v=727e7de86b0868ac64950fc8cd89a06c9f4a7a3d8efd7b7fccb21bc1018dbd47';
 import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=41b471c37ef2d3e54b61ceb1967e63963fa935f4a0b48d5bb6eeeedc6069f66c';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
-import { profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=158288c80ff606a4bc820da33ab77138b46da32e904b28186088233dd839191d';
+import { profileCosmetic, profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=14dbdacea0f7ac8a44d752b92934267d6332d3d95f346b844d7717f582164a38';
 import { gameCreate, saveValidate, RULE } from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
 import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 
@@ -154,10 +154,11 @@ export function progressionAct(input,action){
     case 'start':if(s.phase!=='shop')return fail('A run already exists.');s.attempt++;poolCreate(s);message=trackGet(s.track).name+' · Intro';break;
     case 'continue':if(s.phase!=='interlude')return fail('Clear this pool first.');{const music=s.run.music;s.pool++;poolCreate(s,music);message=POOL_NAMES[s.pool];}break;
     case 'abandon':if(!s.run)return fail('No active run.');reward(s,{type:'failure',poolIndex:s.pool+(s.phase==='interlude'?1:0),blooms:0,abandoned:true});s.retry=s.run.initial;finish(s);message='Run ended. Earned Points and research remain.';break;
-    case 'skin':if(action.skin!=='original'&&!completedTracks(s).includes(action.skin))return fail('Complete that track to unlock its skin.');s.skin=action.skin;break;
+    case 'buy-cosmetic':case 'equip-cosmetic':r=profileCosmetic(s.profile,action.id,action.type==='buy-cosmetic');if(!r.ok)return r;s.profile=r.profile;message='Cosmetic equipped.';break;
+    case 'skin':if(action.skin!=='original'&&!completedTracks(s).includes(action.skin))return fail('Complete that track to unlock its skin.');s.skin=action.skin;if(s.profile.cosmetics)s.profile.cosmetics.skin='campaign';break;
     case 'grant':r=profileCurrencyGrant(s.profile,'seeds',action.amount,cat);if(!r.ok)return r;s.profile=r.profile;message=`Added ${action.amount} development Points.`;break;
     case 'max':if(s.profile.kind!=='development')return fail('Development only.');for(const id of Object.keys(cat.nodes))s.profile.research[id]??={paid:0};s.profile.playerResearch=Object.fromEntries(PLAYER_UPGRADES.map(n=>[n.id,{paid:0}]));s.profile.revision++;s.profile.familyAccess=Object.fromEntries(Object.keys(s.profile.familyAccess).map(f=>[f,3]));s.bypass=true;s.equipped=Object.values(cat.nodes).filter(n=>n.kind!=='base'&&s.powers.includes(n.power)&&(!n.conflicts.length||n.effects.includes('a'))).map(n=>n.id);s.borrowed=[];syncUnlocked(s);if(s.phase==='interlude'){s.run.offers=[];s.run.discovered=true;}message=`All ${Object.keys(cat.powers).length} powers and ${Object.keys(cat.nodes).length} research nodes unlocked. Upgrades are active automatically.`;break;
-    case 'max-progress':if(s.profile.kind!=='development')return fail('Development only.');s.developmentProgress=true;s.profile.wallet.seeds=Math.max(10000,s.profile.wallet.seeds);s.profile.revision++;message='All levels and skins open. 10,000 Points available. Songs and clear rewards are not fabricated.';break;
+    case 'max-progress':if(s.profile.kind!=='development')return fail('Development only.');s.developmentProgress=true;s.profile.wallet.seeds=Math.max(10000,s.profile.wallet.seeds);s.profile.revision++;message='All levels and campaign skins open. 10,000 Points available. Songs and clear rewards are not fabricated.';break;
     case 'bypass':if(s.profile.kind!=='development')return fail('Development only.');s.bypass=!s.bypass;tidy(s);break;
     default:return fail('Unknown progression action.');
   }

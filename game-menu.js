@@ -1,9 +1,9 @@
-import { menuLayoutMount } from './menu-title.js?v=30c9fa606591905251fc8ec4e7780b8ea64a87f009d9ba44ed94fcb71ce773ef';
+import { menuLayoutMount } from './menu-title.js?v=a27f559dbe7f566e18e97d02e327eb850886dabc9af00137bcbc6f87ab04ef66';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { buttonHTML } from './ui-icon.js?v=e8f82528036d2fd5dc9ea4baa32cd3a0f4b8d154b0a5fbb3994c86cdd0cd5bdf';
-import { menuBackgroundMount } from './menu-background.js?v=97684d6913ef26086a45acb04b5e5197f97cf01c68f7db9c916ce6299065c44b';
+import { buttonHTML } from './ui-icon.js?v=103b94fa6d56faa5abe36425811d79604abe143e6520441bb91f860e9a636119';
+import { menuBackgroundMount } from './menu-background.js?v=ac2433081f6433ece947d3c9f55b799d26b92090795068d4a82ef3b30adbc089';
 
-import { driftMount } from './drift-ui.js?v=9786f023a13325527f644a2ac86cdfdfc4f81aa7fd9567625c365913972c9c98';
+import { driftMount } from './drift-ui.js?v=b239f8d0e99f528c975a64886efde273361dbc03265c89734a006880cc1bfde0';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
@@ -18,9 +18,9 @@ export function gameMenuMount(host) {
   if(host.recoveryNotice)home.querySelector('.home-actions').prepend(host.recoveryNotice);
   const route=pageHistory('home');let homeMode=true,casual=false;
   const drift=driftMount({pause:pauseOpen,resume});
-  const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true,{profile:host.profile,skin:host.skin,audioSettings:host.audioSettings,powerMarkings:()=>casual});
+  const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true,{profile:host.profile,skin:host.skin,skinStyle:host.skinStyle,audioSettings:host.audioSettings,powerMarkings:()=>casual});
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
-  function refresh(){background.refresh();document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
+  function refresh(){background.refresh();document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');document.body.style.setProperty('--player-skin-style',host.skinStyle?.()||'original');const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){resume.querySelector('.continue-art').src=info.resume.artwork;resume.querySelector('.continue-detail').textContent=info.resume.detail;}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
   function present(name){
     route.visit(name);
     if((name.startsWith('gamemodes:')||name.startsWith('pool-setup:'))||['drift','drift-pause','home','gamemodes','trial-setup','score-setup','experiment-hub','experiment-family','experiment-detail'].includes(name))homeMode=true;else if(['play','pause','trial'].includes(name))homeMode=false;
@@ -53,5 +53,5 @@ export function gameMenuMount(host) {
     queueMicrotask(recoverDestination);
   },true);
   refresh();present('home');
-  return {home:homeOpen,back,show:present,drift(){close();casual=true;present('drift');},pause:pauseOpen,resume,play(){close();casual=false;route.reset('play');present('play');},get current(){return route.current;}};
+  return {refresh,home:homeOpen,back,show:present,drift(){close();casual=true;present('drift');},pause:pauseOpen,resume,play(){close();casual=false;route.reset('play');present('play');},get current(){return route.current;}};
 }

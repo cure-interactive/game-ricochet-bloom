@@ -1,6 +1,6 @@
 # Player
 
-Open **Player** from the main menu to view your equipped skin and choose Skins, Stats or Skills.
+Open **Player** from the main menu to view your equipped skin and choose Skins, Stats, Trails, Bounce Effects or Skills.
 
 ## Player Viewer
 
@@ -10,7 +10,24 @@ Your player name appears beneath the bubble. Tap or click it to edit in place (u
 
 ## Skins
 
-Open **Player → Skins** to browse appearances. Original is available from the start; completing a Melody Journey track unlocks its skin. Select a skin to inspect its large preview and unlock information, then press **Equip Skin** for an owned skin. The current skin displays a checked **Equipped** state. Select Original to return to the original appearance. Skins change appearance, not gameplay strength.
+Open Player → Skins to inspect each look on a live, squishy bubble. Drag or tap the preview.
+
+Common through Mythic shop skins cost Points. Sea Glass is Common, Frost Crystal is Rare, Nebula is Epic, Solar and Cure Interactive are Legendary, and Spectrum is Mythic. The Cure skin uses the approved Cure Interactive artwork inside blue glass.
+
+Unlock & Equip purchases a skin once. Owned skins can be equipped freely. Original is always free, and completing campaign tracks still unlocks their existing skins. Inspecting a skin never equips it or spends Points.
+
+## Trails and Bounce Effects
+
+Open Player → Trails or Bounce Effects. Tap a style to see an animated preview before buying. Trails follow your moving player; bounce effects appear at player contacts and fade away smoothly.
+
+- Common styles cost 60 Points.
+- Rare styles cost 120 Points.
+- Epic styles cost 220 Points.
+- Legendary styles cost 360 Points.
+- Mythic styles cost 550 Points.
+- Original options remain free. Purchases are permanent within the current profile, and equipping an owned style is free.
+
+Cosmetics do not alter power, speed, score or rewards. Your selections appear in normal play, experiments, Casual and the menu background. Power effects retain their own important visual feedback. Normal and Development purchases are separate.
 
 ## Stats
 

@@ -163,3 +163,8 @@ dialog select,dialog input:not([type]),dialog input[type=number],dialog input[ty
 input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=file]):not([type=color]):not([type=button]):not([type=submit]):not([type=reset]):not([type=hidden]),textarea,select,[contenteditable=true],[contenteditable=""],[contenteditable=plaintext-only]{font-size:max(16px,var(--keyboard-font-size,1em))!important}
 
 #display-instructions .instruction-control{white-space:nowrap}
+
+@media(max-width:600px),(max-height:500px){
+ :root body dialog.standard-dialog:not(.hud-info-card):not(#menu-dialog)[open]{inset:0;margin:0;width:100%;max-width:none;height:var(--app-height,100dvh);max-height:var(--app-height,100dvh);padding:env(safe-area-inset-top) 0 0;border:0;border-radius:0;box-shadow:none}
+ :root body dialog.standard-dialog:not(.hud-info-card):not(#menu-dialog)>.dialog-body{flex:1 1 auto}
+}

@@ -2,16 +2,16 @@ import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleContactMount as menuContactMount} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
 export {menuContactMount};
-import {freePlayCreate,freePlayBuild} from './free-play.js?v=0756fd6c275d9b67a242f4bd1c6e4adb572e9b7bedd77ec79419dfae7e475473';
+import {freePlayCreate,freePlayBuild} from './free-play.js?v=217d5207c7b6505b3e45fc542b2fda6a5b4392f2822733ecabae40e0cb697e81';
 import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
-import {progressionCreate} from './run.js?v=aa118d34e3e643b1a488bc8d307b99a54e66ae474452ddcf6575bb9bee2e84a1';
-import {menuMusicCreate} from './menu-music.js?v=95cc04465994a96be2855f6d9e16a0cbc14962a8185f7da52a741d764ff6ca09';
-import {PoolVisual} from './pool-visual.js?v=6b7187c320498c0e7f86706f10c44d0315c226e8230e15a79e75842b43c03d93';
+import {progressionCreate} from './run.js?v=6dd8415b7c8881a813a15d04fdf57491f43d30f39dc373ea0adb2d98560c1871';
+import {menuMusicCreate} from './menu-music.js?v=fb4b85df8ea736a8f5062728d10c62f827478c45b0c27476bb455f6e55e28c3e';
+import {PoolVisual} from './pool-visual.js?v=deecbc1cec73dcff2924f0e21ab2c58025084e80e2b515ed93c10c687d7fec78';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
 import { bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=d73b02edc746dd5fddf9898200d8fe2f3fe9b91e08924d2d5b874729f1ef172a';
 
-export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
+export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',skinStyle=()=>'original',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),visual=new PoolVisual();
   const skinFor=body=>visual.membrane(body);
   const renderReady=frameGate();
@@ -38,7 +38,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
       glow.addColorStop(0,`rgba(177,244,219,${fade*.12})`);glow.addColorStop(1,'rgba(177,244,219,0)');ctx.fillStyle=glow;ctx.fillRect(pulse.x-100,pulse.y-100,200,200);
     }
     visual.before(ctx,pool.game,pool.game.tick*RULE.step,dt,gentle());
-    visual.bodies(ctx,pool.game,dt,pool.game.tick*RULE.step,{gentle:gentle(),skinColor:skin(),portrait,markings:false,powerMarkings:powerMarkings()});
+    visual.bodies(ctx,pool.game,dt,pool.game.tick*RULE.step,{gentle:gentle(),skinColor:skin(),skinStyle:skinStyle(),portrait,markings:false,powerMarkings:powerMarkings()});
     visual.after(ctx,pool.game,dt,gentle());
     canvas.dataset.tick=String(pool.game.tick);
     canvas.dataset.effects=pool.game.effects.map(e=>e.kind).join(',');canvas.dataset.frozen=String(effectGet(pool.game,'stasis')?.targets.length||0);canvas.dataset.permeable=String(pool.game.bodies.filter(b=>b.id>0&&frozenHit(pool.game,b.id)).length);
@@ -52,6 +52,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
     const dt=previous?Math.min(.05,(now-previous)/1000):0;
     if(!previous||dt>=1/30-.001){
       previous=now;
+      visual.configure(profile().profile?.cosmetics);
       const obscured=covered();
       if(obscured){clear();pool.pressure=[];visual.clear();}
       for(const event of menuPoolStep(pool,dt)){

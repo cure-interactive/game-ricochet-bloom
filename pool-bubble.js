@@ -1,10 +1,10 @@
 import {turnHits} from './turn-hits.js?v=601ae75742860558121ef0d4bb066017b87650900bbeeb17e8bf8d359fbcdd5d';
-import {bubbleRender} from './bubble-render.js?v=0b5db9753621bde8a86ab88be698cb900831918934659548b20bbe78ef0599fc';
+import {bubbleRender} from './bubble-render.js?v=a5ba51fcc93401722fd8cb22fc06d3b5d79138cf35829de911ecfdf3fb48aafd';
 import {bubbleStep,bubbleOutline,bubbleFlow,bubbleHit} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers} from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
 import {regionFrozen} from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import {BUBBLE_ROLES,bubbleRole} from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import {assetURL} from './asset.js?v=118efdeb66f09c86e660934029e83ef93724af31ec3c746f70d9125b7e4e37a5';
+import {assetURL} from './asset.js?v=2ab998f7a95b95aa8eb9675b9c21db799858eb1fe97cee5b6ac052679eaf09d8';
 let sharedIcons;
 export function poolBubbleIcons(){
  return sharedIcons??=Object.fromEntries([['powerIcons','power',Object.keys(POWERS)],['roleIcons','ui',Object.keys(BUBBLE_ROLES)]].map(([name,folder,kinds])=>[name,Object.fromEntries(kinds.map(kind=>{const icon=new Image();icon.src=new URL(assetURL(`./icon/${folder}/${kind}.svg`),import.meta.url).href;return [kind,icon];}))]));
@@ -44,7 +44,7 @@ function frostRender(context,body, points, skin, frost,isGentle) {
   }
   context.restore();
 }
-export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGentle=false,skinColor='#f1f9d7',portrait:portraitView=false,replayGlow=0,markings=true,powerMarkings=markings,icons=null}={}) {
+export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGentle=false,skinColor='#f1f9d7',skinStyle='',portrait:portraitView=false,replayGlow=0,markings=true,powerMarkings=markings,icons=null}={}) {
   const {powerIcons,roleIcons}=markings||powerMarkings?(icons||poolBubbleIcons()):{};
   const isSeed = body.id <= 0, isBubble = body.id === 0 && !!effectGet(game, 'bubble'), hue = isSeed ? body.id === -3 ? POWERS.echo.color : body.id < 0 ? POWERS.split.color : isBubble ? POWERS.bubble.color : (skinColor||'#f1f9d7') : COLORS[body.tone], radius = body.radius;
   const isPermeable = !isSeed && frozenHit(game, body.id);
@@ -52,7 +52,7 @@ export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGe
   const light = Math.max(membrane.glow, replayGlow);
   bubbleStep(membrane, body, dt, false, bubbleFlow(body, game.bodies), !isSeed && (!!effectGet(game, 'stasis')?.targets.includes(body.id)||regionFrozen(game,body.id)));
   const points = bubbleOutline(membrane, body).map(point => ({ x: Math.max(RULE.inset, Math.min(RULE.width - RULE.inset, point.x)), y: Math.max(RULE.inset, Math.min(RULE.height - RULE.inset, point.y)) }));
-  const skin = bubbleRender(context, body, points, hue, {isSeed,isBubble,isPermeable,light,lowQuality:isGentle});
+  const skin = bubbleRender(context, body, points, hue, {isSeed,isBubble,isPermeable,light,lowQuality:isGentle,skinStyle:isSeed&&body.id===0?skinStyle:'',skinRotation:portraitView?-Math.PI/2:0});
   context.save(); context.clip(skin);
   if (!isSeed) {
     // A pearly nucleus and drifting flecks make each bubble feel inhabited.

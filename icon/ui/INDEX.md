@@ -120,3 +120,9 @@ Monitor and phone were exported from Cure Interactive Icons commit `71d7cc7fb2be
 - [Import](import.md) and [Export](export.md) — collection/file artwork from Cure Interactive Icons commit `c55406ddc60e50fe4ec0c023e7288beaa88c9bb8`, exported with complete CC-BY-3.0 credits and notices. Used by backup actions; geometry is unchanged.
 
 - [Device motion](device-motion.md) — original tilted-phone and movement-arrow artwork.
+
+## Player cosmetics
+
+- [Trails](trails.md) and [Bounce Effects](bounce-effects.md) — original geometric artwork.
+- Mobile Device now uses a solid silhouette with earpiece and microphone cutouts; the original Cure-created provenance is unchanged.
+- Skin material patterns are original canvas artwork; the Cure skin reuses the approved, unmodified `brand/cure-interactive.svg` wordmark already credited in About.

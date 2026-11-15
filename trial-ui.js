@@ -1,18 +1,21 @@
+import {CosmeticVisual} from './cosmetic-visual.js?v=971f8b3ef6ea7b181b3c91ef6411b9b21c431dd9f29b88db57a10fb1d2a63319';
+import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
+import {bubbleRender} from './bubble-render.js?v=a5ba51fcc93401722fd8cb22fc06d3b5d79138cf35829de911ecfdf3fb48aafd';
 import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
 const renderReady=frameGate();
-import { gamemodeMount } from './gamemode-ui.js?v=799b0f21dd1f729698e16471c3b0117ab1bf231d5c15df3a35cfa9a3ab363635';
+import { gamemodeMount } from './gamemode-ui.js?v=1eb3010fdd734060f6aa6f297248610b28a4d74cd4830b619f27f7eeae0ec779';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=0d85e45cc7ae66df906c699d4158a7124c9efb2f5d788572b2c1e3e9ec7a3da5';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=b5276e5e37ae586768168f2426b47761ff2c53bd06cf95e3dbd39cffe2b25342';
 import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { screenHeader } from './screen-header.js?v=8447a86a6a2e26ffb8084a0f95fdb4d952f77945d17e119f987f7d19630afe5a';
+import { screenHeader } from './screen-header.js?v=b6affbd0995aee77130ce56d47cac59ad4c31b7a965101bd73a0ee4373029bd9';
 import { songKeep } from './song.js?v=f967d4f585d3d5300be734f4ed6a4870e0de8c85450ff8f6bd9ad5fb49f1ae60';
 import { melodyDraw } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { experimentRewarded, experimentGoal, EXPERIMENT_RECIPES } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { experimentMedal, experimentRead, experimentSave, experimentWrite, experimentEmpty, experimentExport } from './experiment-store.js?v=a4909f1034df6319e26855ffe0381e4a156c2a079185019eb96c93e553a1c4f5';
-import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialForGeneration,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=41dcf26ae54ee012572d2be70947d77e1c69db8ae45fad8fb954e237657f3118';
-import { trialRead,trialWrite } from './trial-store.js?v=270f39a7072ef8529f0a9aa32b5019b5f2560e8f2ce2f7b2a073bb0622396577';
+import { experimentMedal, experimentRead, experimentSave, experimentWrite, experimentEmpty, experimentExport } from './experiment-store.js?v=a8292e2ba4898dcd05c18655b0c4e77fc2b57e4a9fdccf59cd5e766ee84079df';
+import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialForGeneration,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=ee88fa6819c43397fd16a782519a3e055707b4f141bd667e1be4ec2db2f3209a';
+import { trialRead,trialWrite } from './trial-store.js?v=255056b814040c9a76665cbb7a364a84d8e3de0f2db46032210bf13e62f9f0ee';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { buttonHTML } from './ui-icon.js?v=e8f82528036d2fd5dc9ea4baa32cd3a0f4b8d154b0a5fbb3994c86cdd0cd5bdf';
+import { buttonHTML } from './ui-icon.js?v=103b94fa6d56faa5abe36425811d79604abe143e6520441bb91f860e9a636119';
 const button=(id,label,icon='arrow-left')=>buttonHTML(label,icon,{id});
 const color={'music-note':'#a4f4cf','beat-gate':'#eb9bcd','sound-hazard':'#ff8b91',instrument:'#f2d279',keeper:'#ff8b91',gate:'#9ce6cf',power:'#c4a7ff',payload:'#ffb56e',player:'#f6f5cf',target:'#ed82bd',blast:'#ffb56e',fire:'#ff765f',gas:'#cadb78',cell:'#a4f4cf',cargo:'#8edbff',plug:'#c6b4ff',vent:'#bf89e8',mote:'#ec8ed7',mud:'#bba18c',spike:'#fa8c91'};
 export function trialMount(host){
@@ -21,9 +24,10 @@ export function trialMount(host){
   play.innerHTML=`${screenHeader({icon:'flask',className:'trial-heading',titleId:'trial-title',metaId:'trial-layout',back:button('trial-back','Back'),actions:button('trial-pause','Pause','pause')})}<div class="trial-scroll"><p id="trial-goal"></p><div id="trial-actions" class="trial-actions"></div><div class="trial-stats"><span class="trial-wallet" aria-label="Available Points for Skills">Points <strong id="trial-wallet">0</strong></span><strong id="trial-shots"></strong><span id="trial-status"></span><span id="trial-points"></span></div><details class="trial-medal-details"><summary id="trial-medal-summary">Medal Conditions</summary><div id="trial-medals"></div><p id="trial-medal-progress"></p></details><div class="trial-board"><canvas id="trial-canvas" width="900" height="600" tabindex="0" aria-label="Trial board. Drag backward and release to launch. Arrow keys aim, Space launches. Escape pauses."></canvas><div id="trial-overlay" hidden><strong id="trial-outcome"></strong><div id="trial-medal-result"></div><p id="trial-reason"></p>${button('trial-resume','Resume','play')}${button('trial-retry','Retry Same Setup','reset')}<button id="trial-review">Review / Change Setup</button>${button('trial-home','Main Menu','grid')}</div></div><p id="trial-alert" role="status" aria-live="polite"></p><button id="trial-save-retry" type="button" hidden>Retry Save</button><button id="trial-export" type="button" hidden>Export Pending Run</button><div class="trial-controls"><label>Aim <input id="trial-angle" type="range" min="-180" max="180" value="0"><output id="trial-angle-value">0°</output></label><label>Power <input id="trial-power" type="range" min="0" max="100" value="70"><output id="trial-power-value">70%</output></label>${button('trial-launch','Launch','play')}<button id="trial-release" hidden>Release Payload</button></div><p id="trial-legend" class="trial-legend"></p><details class="trial-help"><summary>Controls and Reaction Log</summary><p>Drag anywhere on the board, pull back, then release. Arrow keys aim; Up/Down change power; Space launches. The board waits while you aim. Escape pauses. Each experiment setup keeps a separate save. Retry uses the same layout and settings.</p><ol id="trial-log"></ol><p>These experiments use fixed environmental tools. Standard original trials earn Points; variations record results separately. Permanent power mastery is trained in the original modes.</p></details></div>`;
   document.body.append(play);
   const $=id=>document.getElementById(id),canvas=$('trial-canvas'),ctx=canvas.getContext('2d');
+  const cosmetic=new CosmeticVisual();let playerMembrane=bubbleCreate();
   let game=null,paused=false,blocked=false,angle=0,power=.7,drag=null,oldMusic=null,frame=0,last=0,accumulator=0,lastSaved=0,flashes=[],bestMedal=null;
   const active=()=>!!game&&play.open;
-  function effects(events){for(const e of events){host.sound.eventPlay({...e,id:e.type==='note'?(e.id-1)%20+1:e.id});if(['blast','pop','damage','objective'].includes(e.type))flashes.push({...e,life:e.type==='blast'?.55:.3});}}
+  function effects(events){cosmetic.configure(host.cosmetics?.());for(const e of events){if(e.type==='cosmetic-hit'){cosmetic.hit(e.x,e.y);bubbleHit(playerMembrane,trialPlayer(game).r,e.nx||1,e.ny||0,e.speed||150);continue;}host.sound.eventPlay({...e,id:e.type==='note'?(e.id-1)%20+1:e.id});if(['blast','pop','damage','objective'].includes(e.type))flashes.push({...e,life:e.type==='blast'?.55:.3});}}
   function save(){
     if(!game)return true;let stored=false;
     if(game.setup){const read=experimentRead(localStorage,game.kind);try{stored=read.ok&&experimentWrite(localStorage,game.kind,experimentSave(read.library,game,host.sound.musicSave()));if(stored)bestMedal=experimentMedal(experimentRead(localStorage,game.kind).library,game.setup);}catch{stored=false;}}
@@ -31,7 +35,7 @@ export function trialMount(host){
     const paid=stored&&(!experimentRewarded(game.setup)||host.reward(game.earning));blocked=!paid;
     if(blocked){paused=true;host.sound.pauseSet(true);$('trial-alert').textContent='Progress could not be saved. Play is paused; retry saving or export this run before leaving.';}return paid;
   }
-  function enter(next,music=null){const current=trialForGeneration(next,host.generation?.()??0);if(current!==next){next=current;music=null;}host.save();modes.close();host.screen('trial');oldMusic=host.sound.musicSave();game=next;if(game.setup)modes.select(game.setup);paused=game.phase==='flight';blocked=false;bestMedal=null;drag=null;flashes=[];angle=0;power=.7;accumulator=0;last=performance.now();lastSaved=game.tick;
+  function enter(next,music=null){const current=trialForGeneration(next,host.generation?.()??0);if(current!==next){next=current;music=null;}host.save();modes.close();host.screen('trial');oldMusic=host.sound.musicSave();game=next;cosmetic.clear();playerMembrane=bubbleCreate();if(game.setup)modes.select(game.setup);paused=game.phase==='flight';blocked=false;bestMedal=null;drag=null;flashes=[];angle=0;power=.7;accumulator=0;last=performance.now();lastSaved=game.tick;
     host.sound.musicRestore(music,game.earning.blooms,game.shots);host.sound.portrait=false;host.sound.media.describe(TRIAL_MODES[game.mode].name);host.sound.pauseSet(paused);host.sound.musicStart();host.unlock();play.showModal();save();renderUI();draw();canvas.focus({preventScroll:true});if(!frame)frame=requestAnimationFrame(loop);
   }
   function leave(toHome=false){if(!save()){renderUI();return;}host.sound.pauseSet(true);play.close();game=null;drag=null;host.sound.musicRestore(oldMusic,oldMusic?.blooms,oldMusic?.plucks);oldMusic=null;if(toHome===true)host.home();else host.back();}
@@ -52,7 +56,7 @@ export function trialMount(host){
       const action=$('trial-preview')??$('trial-compose');if(action){action.disabled=paused||blocked||game.phase!=='aim'||(game.setup.experimentId==='090'&&!game.melody.heard.length);action.onclick=()=>{if(game.setup.experimentId==='090'){const kept=songKeep(localStorage,{id:game.id,name:'Composition · '+TRIAL_MODES.music.layouts[game.layout],created:Date.now(),music:host.sound.musicSave()});if(!kept.ok){alert(kept.reason);return;}}if(trialAction(game,game.setup.experimentId==='083'?'preview':'finish')){save();renderUI();}};}
     }else actions.replaceChildren();
     for(const id of ['trial-angle','trial-power'])$(id).disabled=paused||game.phase!=='aim';$('trial-angle').value=Math.round(angle*180/Math.PI);$('trial-power').value=Math.round(power*100);$('trial-angle-value').textContent=`${Math.round(angle*180/Math.PI)}°`;$('trial-power-value').textContent=`${Math.round(power*100)}%`;
-    if(!blocked)$('trial-alert').textContent=paused?'Paused. Resume when you are ready.':game.phase==='flight'?'Shot in motionâ€¦':game.melody?.preview?'Watch and listen to the call. Launch unlocks after the phrase.':ended?game.reason:game.mode==='outbreak'?'Next: infection advances and vents follow their shown turn schedules. The infection cap is six.':'Drag backward and release, or set your aim and press Launch.';
+    if(!blocked)$('trial-alert').textContent=paused?'Paused. Resume when you are ready.':game.phase==='flight'?'Shot in motion…':game.melody?.preview?'Watch and listen to the call. Launch unlocks after the phrase.':ended?game.reason:game.mode==='outbreak'?'Next: infection advances and vents follow their shown turn schedules. The infection cap is six.':'Drag backward and release, or set your aim and press Launch.';
     $('trial-log').replaceChildren(...game.log.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));canvas.dataset.phase=game.phase;canvas.dataset.tick=game.tick;canvas.dataset.layout=game.layout;canvas.dataset.mode=game.mode;canvas.dataset.shots=game.shots;
   }
   function loop(now){frame=0;if(!active())return;if(!renderReady(now)){frame=requestAnimationFrame(loop);return;}const dt=Math.min(.05,(now-last)/1000);last=now;
@@ -60,6 +64,7 @@ export function trialMount(host){
     if(!paused&&!blocked&&!document.hidden){accumulator+=dt;while(accumulator>=TRIAL_SIZE.step){const before=game.phase,beforePreview=!!game.melody?.preview,beforeHits=game.hit.length;effects(trialStep(game));accumulator-=TRIAL_SIZE.step;if(before!==game.phase||beforePreview!==!!game.melody?.preview){save();renderUI();}else if(game.mode==='music'&&beforeHits!==game.hit.length)renderUI();if(blocked)break;}
       if(game.tick-lastSaved>=60){save();lastSaved=game.tick;if(blocked)renderUI();}flashes=flashes.filter(f=>(f.life-=dt)>0);
     }else accumulator=0;
+    const visualDt=!paused&&!blocked&&!document.hidden?dt:0,p=trialPlayer(game);cosmetic.configure(host.cosmetics?.());cosmetic.step(p,visualDt,game.phase==='flight');bubbleStep(playerMembrane,{...p,radius:p.r},visualDt);
     draw();frame=requestAnimationFrame(loop);
   }
   function draw(){if(!game)return;ctx.clearRect(0,0,900,600);const gradient=ctx.createLinearGradient(0,0,900,600);gradient.addColorStop(0,'#112c36');gradient.addColorStop(1,'#090f22');ctx.fillStyle=gradient;ctx.fillRect(0,0,900,600);
@@ -69,7 +74,9 @@ export function trialMount(host){
     for(const z of game.zones){ctx.fillStyle='#bba18c25';ctx.strokeStyle='#bba18c88';ctx.beginPath();ctx.arc(z.x,z.y,z.r,0,Math.PI*2);ctx.fill();ctx.stroke();}
     for(const w of game.walls)if(w.active){ctx.fillStyle=game.setup?.experimentId==='010'?'#783b50':w.breakable?'#a88760':'#375364';ctx.beginPath();ctx.roundRect(w.x,w.y,w.w,w.h,Math.min(8,w.w/2,w.h/2));ctx.fill();ctx.strokeStyle=w.breakable?'#f1c698':'#92c4d0';ctx.lineWidth=2;ctx.stroke();if(w.breakable){ctx.strokeStyle='#493a34';for(let y=w.y+8;y<w.y+w.h;y+=12){ctx.beginPath();ctx.moveTo(w.x,y);ctx.lineTo(w.x+w.w,Math.min(y+8,w.y+w.h));ctx.stroke();}}}
     if(game.mode==='music')melodyDraw(game,ctx);
+    cosmetic.render(ctx,document.body.dataset.quality==='low');
     for(const b of game.bodies.filter(b=>b.active)){
+      if(b.kind==='player'){const body={...b,radius:b.r};bubbleRender(ctx,body,bubbleOutline(playerMembrane,body),host.skin?.()||'#f1f9d7',{skinStyle:host.skinStyle?.(),lowQuality:document.body.dataset.quality==='low'});if(game.payloadState==='carried'){ctx.strokeStyle='#ffb56e';ctx.lineWidth=4;ctx.beginPath();ctx.arc(b.x,b.y,b.r+8,0,Math.PI*2);ctx.stroke();}continue;}
       ctx.save();ctx.translate(b.x,b.y);ctx.strokeStyle=color[b.kind];ctx.fillStyle=color[b.kind]+'35';ctx.lineWidth=2.5;
       if(['blast','gas'].includes(b.kind)){ctx.setLineDash([3,9]);ctx.globalAlpha=.15;ctx.beginPath();ctx.arc(0,0,b.kind==='gas'?160:140,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;ctx.setLineDash([]);}
       ctx.beginPath();if(b.kind==='spike'||b.kind==='mote'){for(let i=0;i<16;i++){const a=i*Math.PI/8,r=i%2?b.r*.65:b.r;ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}ctx.closePath();}else if(b.kind==='plug'){ctx.moveTo(0,-b.r);ctx.lineTo(b.r,0);ctx.lineTo(0,b.r);ctx.lineTo(-b.r,0);ctx.closePath();}else ctx.arc(0,0,b.r,0,Math.PI*2);ctx.fill();ctx.stroke();
