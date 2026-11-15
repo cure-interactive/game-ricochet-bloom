@@ -6,6 +6,22 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.28.2
+
+Build: 2026-11-15 23:35:29 UTC
+
+### Player Changes
+
+- Try sound immediately when the app or page gains focus or returns to view. If the browser needs interaction, any ordinary tap retries without visiting Settings.
+- Keep player icons and previews moving while scrolled offscreen on a visible page. Draw their trails and glow until the entire effect leaves the visible area.
+
+<!-- development -->
+### Developer Notes
+
+- Prime output on foreground events even before context creation or when the context reports running; keep trusted gesture retries synchronous and respect mute, volume and pause.
+- Separate page activity from paint clipping in the shared visual lifecycle. Use dynamic effect bounds and clipping ancestors, continue offscreen membrane/tether/cosmetic simulation, and bound canvas allocation to the visible region.
+<!-- /development -->
+
 ## v3.28.1
 
 Build: 2026-11-15 22:48:37 UTC

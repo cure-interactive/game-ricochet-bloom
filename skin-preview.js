@@ -1,6 +1,6 @@
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import {visualActivityMount} from './visual-activity.js?v=ca1926027ea9e579abb4052b949a9fce925b332e26c2fba1d6009efe4436bf1f';
+import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
 
 // A presentation-only tether, shared by the two large skin viewers.
 export function skinPreviewHTML(name){
@@ -53,8 +53,8 @@ export function skinPreviewMount(element){
  function click(e){if(e.detail===0)nudge();} // Assistive activation without pointer events.
  function suspend(){stop();releaseCapture();}
  function visibility(){if(doc.hidden)suspend();else animate();}
- const listeners=[[orb,'pointerdown',down],[orb,'pointermove',move],[orb,'pointerup',up],[orb,'pointercancel',cancel],[orb,'lostpointercapture',cancel],[orb,'keydown',key],[orb,'click',click],[doc,'visibilitychange',visibility],[win,'blur',suspend],[win,'focus',visibility]];
+ const listeners=[[orb,'pointerdown',down],[orb,'pointermove',move],[orb,'pointerup',up],[orb,'pointercancel',cancel],[orb,'lostpointercapture',cancel],[orb,'keydown',key],[orb,'click',click],[doc,'visibilitychange',visibility],[win,'blur',()=>{releaseCapture();animate();}],[win,'focus',visibility]];
  for(const [target,event,handler] of listeners)target.addEventListener(event,handler);
- activity=visualActivityMount(element,visible=>{if(visible)animate();else suspend();});
+ activity=visualActivityMount(element,visible=>{if(visible)animate();else suspend();},{intersection:false});
  return {reset,destroy(){destroyed=true;activity.destroy();suspend();for(const [target,event,handler] of listeners)target.removeEventListener(event,handler);}};
 }

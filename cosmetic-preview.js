@@ -3,7 +3,7 @@ import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385
 import {bubbleRender} from './bubble-render.js?v=0fb077e27e26a90c91049d6eba0ddb11d51a8b23c41c77fb68026af650ecc46a';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
-import {visualActivityMount} from './visual-activity.js?v=ca1926027ea9e579abb4052b949a9fce925b332e26c2fba1d6009efe4436bf1f';
+import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
 // A deterministic still from the real renderer, with no per-card animation loop.
 export function cosmeticThumbnail(canvas,item,{color='#f1f9d7',style=''}={}){
  const c=canvas.getContext('2d'),visual=new CosmeticVisual(),body={id:0,x:150,y:60,radius:12,vx:260,vy:0};
@@ -42,12 +42,13 @@ export function cosmeticPreviewMount(canvas,host){
    for(const [axis,velocity,max] of [['x','vx',worldWidth],['y','vy',worldHeight]])if(body[axis]<72||body[axis]>max-72){body[axis]=Math.max(72,Math.min(max-72,body[axis]));body[velocity]*=-1;visual.hit(body.x,body.y);bubbleHit(membrane,body.radius,axis==='x'?-Math.sign(body.vx):0,axis==='y'?-Math.sign(body.vy):0,210);}
   }
   bubbleStep(membrane,body,dt);visual.step(body,dt,true);
+  if(!activity.clip(canvas.getBoundingClientRect()))return;
   if(canvas.width!==Math.round(width*ratio)||canvas.height!==Math.round(height*ratio)){canvas.width=Math.round(width*ratio);canvas.height=Math.round(height*ratio);}
   c.setTransform(canvas.width/worldWidth,0,0,canvas.height/worldHeight,0,0);c.clearRect(0,0,worldWidth,worldHeight);
   visual.render(c,doc.body.dataset.quality==='low',true);
   bubbleRender(c,body,bubbleOutline(membrane,body),host.color?.()||'#f1f9d7',{skinTime:visual.elapsed,skinStyle:host.style?.(),lowQuality:doc.body.dataset.quality==='low',glowExtent:2});
  }
  function sync(){win.cancelAnimationFrame(frame);frame=0;last=0;if(active&&!doc.hidden&&activity?.isActive()!==false)frame=win.requestAnimationFrame(draw);}
- activity=visualActivityMount(canvas,sync);sync();
+ activity=visualActivityMount(canvas,sync,{intersection:false});sync();
  return {destroy(){active=false;activity.destroy();win.cancelAnimationFrame(frame);}};
 }

@@ -18,7 +18,7 @@ Unlock & Equip purchases a skin once. Owned skins can be equipped freely. Origin
 
 ## Trails and Impacts
 
-Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons and Wiki cosmetic icons also animate your equipped styles. Skins, Trails and Impacts use the same gallery → detail → Back pattern: inspecting does not buy or equip, and wider galleries use the available row space before wrapping. Hidden previews pause and keep their state. One trail follows each player’s actual movement, including grabbing, dragging, scrolling, rebound and supported device motion in icons and previews; impacts appear at player contacts and fade away smoothly.
+Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons and Wiki cosmetic icons also animate your equipped styles. Skins, Trails and Impacts use the same gallery → detail → Back pattern: inspecting does not buy or equip, and wider galleries use the available row space before wrapping. Previews on hidden pages pause and keep their state; scrolling offscreen only culls their drawing. One trail follows each player’s actual movement, including grabbing, dragging, scrolling, rebound and supported device motion in icons and previews; impacts appear at player contacts and fade away smoothly.
 
 - Common styles cost 60 Points.
 - Rare styles cost 120 Points.
@@ -66,3 +66,5 @@ Ricochet Bloom gameplay, campaign, progression and audio source in this release.
 #### Codex on behalf of `leviscustempris`
 
 Authored and checked against the game implementation.
+
+Player icons and previews keep simulating while their page is visible, even when you scroll them out of view. Drawing continues while any part of the bubble, glow or trail remains in the visible area; it stops only after the whole effect leaves. Scrolling back reveals the ongoing motion. Switching away from the page or closing its menu suspends that work without resetting the preview.

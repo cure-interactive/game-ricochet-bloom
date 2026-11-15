@@ -1,8 +1,8 @@
 import {COSMETICS,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=97b306ab42d46dc2f32ef73e7417114b7e4c554d3db716a4334c31895c9d8d32';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=20604c99e97a4ff8194ea16312e7a9178eb892fb30b74fd31e1d4754ca258727';
-import {screenHeader} from './screen-header.js?v=df0c707b39140716dd50e697fecf07a091e97021c7dcdd0c2c71abfbc81e0dab';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=0d0f9193c5aa6fef4bc7c261261b274c333b9a1c84f7bc0aa5c9411ec47da6eb';
-import {rarityIconHTML} from './skill-icon.js?v=f43e5c177b8f2b453ce4657c89cac675a6d3fcdbf6cb06ffe823c12f025b06d5';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=5bcce0eb71dcfa0a2670076c0c6fcf7ffc879a26eb35852f918016696d8de3d3';
+import {screenHeader} from './screen-header.js?v=787a0f26e9ce958dd7fc39d6f8a8060e54493bdd6e428a4b02dc4cbf3e02b5f6';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=67494bc447e88045ecfb056d422d1fe9d650a74f0aeff78377a52630b16c73fb';
+import {rarityIconHTML} from './skill-icon.js?v=de0c4c023e1c7afad3dacbf7330c997ee32f98a7d56f8426bfd4fdc9d9ff8447';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 export function cosmeticMount(host){

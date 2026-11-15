@@ -4,9 +4,9 @@ import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
 import {menuPoolView} from './menu-pool.js?v=d66dd93f756efc88d83a2916e508a39825ae5fec916e47ea0ae44d23f18e543e';
-import {skinSpringStep} from './skin-preview.js?v=f6a2f88366df07d470289950dc3f210a87107edc99259fc29ce505ba69a2567a';
+import {skinSpringStep} from './skin-preview.js?v=dffa0b15172b1535b0849715aec10f240c6cdfbb50a479ee8ce195b254fee193';
 import {bubbleRender,bubblePath} from './bubble-render.js?v=0fb077e27e26a90c91049d6eba0ddb11d51a8b23c41c77fb68026af650ecc46a';
-import {visualActivityMount} from './visual-activity.js?v=ca1926027ea9e579abb4052b949a9fce925b332e26c2fba1d6009efe4436bf1f';
+import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
 
 // Decorative instances own only visual state. The surrounding button or large
 // preview keeps its existing input, focus, navigation and progression contract.
@@ -57,14 +57,15 @@ export function registerPlayerBubble(win=window){
    this.resize=new win.ResizeObserver(()=>{this.size=this.getBoundingClientRect().width;if(this.visible)this.paint();this.request();});this.resize.observe(this);
    this.intersection=new win.IntersectionObserver(entries=>{
     const visible=entries[0].isIntersecting&&entries[0].intersectionRect.width>0;
-    if(visible&&!this.visible){this.visible=true;if(!this.age)this.kick(0,1,95);this.request();}else if(!visible){this.visible=false;this.halt();}
+    if(visible&&!this.visible&&!this.age)this.kick(0,1,95);
+    this.visible=visible;this.request();
    });this.intersection.observe(this);
    this.preferences=new win.MutationObserver(this.change);
    // Skin colors can be overridden on a reward button, preview or active profile.
    for(let ancestor=this.parentElement;ancestor;ancestor=ancestor.parentElement)this.preferences.observe(ancestor,{attributes:true,attributeFilter:['class','style','aria-pressed','aria-selected','data-quality']});
    this.activity=visualActivityMount(this,active=>{if(active)this.request();else this.halt();},{intersection:false});
   }
-  canAnimate(){return this.visible&&!this.ownerDocument.hidden&&this.isConnected&&this.activity?.isActive()!==false;}
+  canAnimate(){return !this.ownerDocument.hidden&&this.isConnected&&this.activity?.isActive()!==false;}
   request(){if(!this.frame&&this.canAnimate())this.frame=win.requestAnimationFrame(time=>this.tick(time));}
   kick(x=0,y=1,speed=140){
    if(!this.membrane)return;
@@ -72,7 +73,7 @@ export function registerPlayerBubble(win=window){
   }
   velocity(x,y){if(!this.body)return;this.body.vx=x;this.body.vy=y;if(x||y)this.request();}
   pressureHit(point,kind,dt=1,age=0){
-   if(!this.canAnimate())return;
+   if(!this.visible||!this.canAnimate())return;
    const r=this.getBoundingClientRect();if(!r.width||!r.height)return;
    const scale=menuPoolView(win.innerWidth,win.innerHeight).scale,unit=r.width/28;
    const body={id:this.phase,x:(r.left+r.width/2+this.pressure.x*unit)/scale,y:(r.top+r.height/2+this.pressure.y*unit)/scale,radius:r.width/2/scale};
@@ -85,7 +86,7 @@ export function registerPlayerBubble(win=window){
    this.request();
   }
   press(point){
-   if(!this.canAnimate())return;
+   if(!this.visible||!this.canAnimate())return;
    this.pressureHit(point,'tap');this.pulses.push({...point,age:0});if(this.pulses.length>8)this.pulses.shift();
   }
   halt(){
@@ -145,12 +146,18 @@ export function registerPlayerBubble(win=window){
    // The tail belongs to movement, not the icon's hit box. Extend this same
    // canvas around its live history, keeping the allocation viewport-bounded.
    // Quantized edges avoid reallocating the backing bitmap for every pixel.
-   let left=0,top=0,right=100.8,bottom=100.8;
-   const ox=this.body.x-x,oy=this.body.y-y,pad=22;
+   const points=bubbleOutline(this.membrane,body),ox=this.body.x-x,oy=this.body.y-y,pad=34;
+   // Include the deformed rim, selected contour and device-pixel shadow.
+   const rim=1+105/this.size,glow=Math.max(body.radius*1.3,15/unit);
+   let left=body.x-glow,top=body.y-glow,right=body.x+glow,bottom=body.y+glow;
+   for(const point of points){left=Math.min(left,point.x-rim-glow);right=Math.max(right,point.x+rim+glow);top=Math.min(top,point.y-rim-glow);bottom=Math.max(bottom,point.y+rim+glow);}
    for(const point of this.trail.points){
-    left=Math.min(left,Math.max(ox,point.x+ox-pad));right=Math.max(right,Math.min(ox+win.innerWidth/unit,point.x+ox+pad));
-    top=Math.min(top,Math.max(oy,point.y+oy-pad));bottom=Math.max(bottom,Math.min(oy+win.innerHeight/unit,point.y+oy+pad));
+    left=Math.min(left,point.x+ox-pad);right=Math.max(right,point.x+ox+pad);
+    top=Math.min(top,point.y+oy-pad);bottom=Math.max(bottom,point.y+oy+pad);
    }
+   const clipped=this.activity?.clip({left:(left-ox)*unit,top:(top-oy)*unit,right:(right-ox)*unit,bottom:(bottom-oy)*unit});
+   if(this.canvas.hidden===!!clipped)this.canvas.hidden=!clipped;if(!clipped)return;
+   left=clipped.left/unit+ox;top=clipped.top/unit+oy;right=clipped.right/unit+ox;bottom=clipped.bottom/unit+oy;
    const edge=value=>Math.floor(value*unit/32)*32/unit;
    left=edge(left);top=edge(top);right=-edge(-right);bottom=-edge(-bottom);
    const width=(right-left)*unit,height=(bottom-top)*unit,ratio=qualityPixelRatio(this.ownerDocument.body.dataset?.quality,win.devicePixelRatio||1);
@@ -161,7 +168,6 @@ export function registerPlayerBubble(win=window){
    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pixelWidth,pixelHeight);
    c.setTransform(unit*ratio,0,0,unit*ratio,-left*unit*ratio,-top*unit*ratio);
    c.save();c.translate(this.body.x-x,this.body.y-y);this.trail.render(c,this.ownerDocument.body.dataset?.quality==='low',true);c.restore();
-   const points=bubbleOutline(this.membrane,body);
    bubbleRender(c,body,points,color,{glowExtent:1.3,skinTime:this.age,skinStyle:style.getPropertyValue('--skin-style').trim()||style.getPropertyValue('--player-skin-style').trim(),lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
    if(style.getPropertyValue('--player-bubble-outline').trim()==='1'){
     // A separate contour follows the membrane, leaving its luminous rim intact.
