@@ -126,3 +126,8 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 [data-icon="player-sight"]{--ui-icon:url("./icon/upgrade/sight.1.svg?v=589234f5dbfa55f2bf3e4087a7ef619a1cfd90d4cbf87856663181c123963386")}
 [data-icon="player-bank-sight"]{--ui-icon:url("./icon/upgrade/sight.2.svg?v=8c76220ed9bdeb1b31f7e2cecf164ba431229836e5dbba7da0738431e956bc87")}
 [data-icon="player-rebound"]{--ui-icon:url("./icon/upgrade/rebound.1.svg?v=bc8b19235d6c8fb688acbbb7f09fdbcca544708fa55fb7600a19d349b6d21d51")}
+
+
+[data-icon="sound"]{--ui-icon:url("./icon/ui/sound.svg?v=d4c554f8ec96a0da42242454954ae9ffda6e7de66689dbdf79249593078b002b")}
+
+[data-icon="battery-saver"]{--ui-icon:url("./icon/ui/battery-saver.svg?v=5acfcd145179657e2c00236cc34282e3106a6a7abc259b43098a409b7115af65")}

@@ -1,7 +1,7 @@
 import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=ec038dffd7c47072baadc430b964e52f71a4fcf280ee71a4769675b2010df181';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { experimentRead, experimentFavourite } from './experiment-store.js?v=a4909f1034df6319e26855ffe0381e4a156c2a079185019eb96c93e553a1c4f5';
-import { assetURL } from './asset.js?v=d64a1aa9796b2a1d33fb12268687f3fb1d66e8471a633672bcbfb729b72072a0';
+import { assetURL } from './asset.js?v=4379f64b6cf04d7651d35a1ca46854905f6727d32b72a777b6664f8292f73f5e';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 
 // Owns gallery view state only. Starting games and opening other screens are

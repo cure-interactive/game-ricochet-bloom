@@ -1,4 +1,4 @@
-import { medalIcon } from './medal-ui.js?v=4062a0022c51a0569f63227ff8c44fbbb718e156a1abcc12ded23ebea66f6184';
+import { medalIcon } from './medal-ui.js?v=dfca3840759fd3df03217aebe5417d113bf7b275cbe617822a19a5fe8de6090e';
 import { medalRank } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 
 // A score target advances as the score grows. Shot limits show the strongest

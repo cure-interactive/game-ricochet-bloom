@@ -1,13 +1,13 @@
 import { screenHeader } from './screen-header.js?v=ba224017463f62dbe26bd5a9cb443d01adafd0b81d74353ddee29501d9701838';
 import { buttonHTML } from './ui-icon.js?v=0bef764d102dc0e159800242f682b3d49abfbf27a976ab9ca47f0d10b1c82188';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { assetURL } from './asset.js?v=d64a1aa9796b2a1d33fb12268687f3fb1d66e8471a633672bcbfb729b72072a0';
+import { assetURL } from './asset.js?v=4379f64b6cf04d7651d35a1ca46854905f6727d32b72a777b6664f8292f73f5e';
 import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=ec038dffd7c47072baadc430b964e52f71a4fcf280ee71a4769675b2010df181';
-import { gamemodeGalleryMount } from './gamemode-gallery.js?v=b430f6b0dc7aeab35531d10461938a8bac68378f9cd7bcf034b868a6bf8059f1';
-import { scoreAttackMount } from './score-attack-ui.js?v=0bb02e3e15fea2d47023c82ccf51cb289577cd32dd83fc0df05d1e6ccb2eb4b3';
-import { experimentMount } from './experiment-ui.js?v=5807d6875abe89005eff94109b16b64408f7346dbf34a488fd720b9b972cef9c';
+import { gamemodeGalleryMount } from './gamemode-gallery.js?v=59ab919879c12d815fa42fb481fd87c1d153b4102ba49787536e0a95aa64db42';
+import { scoreAttackMount } from './score-attack-ui.js?v=0bad4922bcaed15976911e504ec2d424ce85f713c135925fcd8d416d08d38f4a';
+import { experimentMount } from './experiment-ui.js?v=63701fcca1f8b29328342323a56ab57de80d8a93c687683d4dbb0c2100c7aea6';
 import { poolConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=4062a0022c51a0569f63227ff8c44fbbb718e156a1abcc12ded23ebea66f6184';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=dfca3840759fd3df03217aebe5417d113bf7b275cbe617822a19a5fe8de6090e';
 
 // Dialog composition and destination routing. Each child receives only the
 // content slot, profile/storage access and navigation callbacks it uses.

@@ -4,7 +4,7 @@ import {bubbleStep,bubbleOutline,bubbleFlow,bubbleHit} from './bubble.js?v=385ba
 import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers} from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
 import {regionFrozen} from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import {BUBBLE_ROLES,bubbleRole} from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import {assetURL} from './asset.js?v=d64a1aa9796b2a1d33fb12268687f3fb1d66e8471a633672bcbfb729b72072a0';
+import {assetURL} from './asset.js?v=4379f64b6cf04d7651d35a1ca46854905f6727d32b72a777b6664f8292f73f5e';
 let sharedIcons;
 export function poolBubbleIcons(){
  return sharedIcons??=Object.fromEntries([['powerIcons','power',Object.keys(POWERS)],['roleIcons','ui',Object.keys(BUBBLE_ROLES)]].map(([name,folder,kinds])=>[name,Object.fromEntries(kinds.map(kind=>{const icon=new Image();icon.src=new URL(assetURL(`./icon/${folder}/${kind}.svg`),import.meta.url).href;return [kind,icon];}))]));

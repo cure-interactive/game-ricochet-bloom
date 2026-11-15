@@ -108,3 +108,9 @@ Monitor and phone were exported from Cure Interactive Icons commit `71d7cc7fb2be
 - [Add to Dock](mac-dock.md) — original instructional artwork.
 - [Web apps button](web-app-window.md) — original instructional artwork.
 - [Apps](app-grid.md) — original instructional artwork.
+
+## Settings toggles
+
+- [Sound](sound.md) â€” original speaker and sound-wave artwork.
+- [Battery saver](battery-saver.md) â€” original battery and leaf artwork.
+- Other toggle labels reuse hand-left, gamepad, flask, eye and coin artwork credited above.

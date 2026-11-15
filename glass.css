@@ -130,7 +130,7 @@ body > main > :is(.hud,.hud-actions) { background: var(--reading-surface); borde
  --pool-background-covered:1;background:var(--reading-surface);backdrop-filter:none;-webkit-backdrop-filter:none;
 }
 :root body dialog:not(.hud-info-card):not(#menu-dialog) > :is(.dialog-body,.campaign-scroll,.wiki-article,.skin-scroll,.credit-page,.trial-scroll){margin-block:0;border-block:0;border-radius:0}
-:root body dialog:not(.hud-info-card):not(#menu-dialog):has(> :is(.dialog-body,.campaign-scroll,.wiki-article,.skin-scroll,.credit-page,.trial-scroll)) > .screen-heading{margin-block:0}
+:root body dialog:not(.hud-info-card):not(#menu-dialog):has(> :is(.dialog-body,.campaign-scroll,.wiki-article,.skin-scroll,.credit-page,.trial-scroll)) > .screen-heading{margin-block:0 var(--navigation-bottom-clearance,0px)}
 
 /* Oversized transparent bubble canvases must not create sideways page scrolling. */
 :root body dialog > :is(.dialog-body,.skin-scroll){overflow-x:hidden}

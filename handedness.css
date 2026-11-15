@@ -8,3 +8,6 @@ body[data-left-handed=true] :is(#tree-dialog,#player-upgrade-dialog) .tree-legen
 body[data-left-handed=true] .pool-shell>.hud{flex-direction:row-reverse}
 body[data-left-handed=true] .hud .pluck{padding-left:48px;padding-right:0}
 body[data-left-handed=true] .hud .pluck button{left:0;right:auto}
+
+/* Toggle controls follow the same handedness preference as navigation. */
+body[data-left-handed=true] .setting-toggle{flex-direction:row-reverse}

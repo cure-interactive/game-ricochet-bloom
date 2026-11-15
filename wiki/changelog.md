@@ -6,6 +6,22 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.23.4
+
+### Player Changes
+
+- Find a matching icon beside every Settings and Development toggle, with its checkbox on the right.
+- Mirror toggle controls when Left-Handed Layout is enabled.
+- Keep mobile navigation bars compact, with home-indicator clearance below the bar in app view.
+
+<!-- development -->
+### Developer Notes
+
+- Share toggle layout across all seven existing native checkbox controls, preserving labels, keyboard input and saved preferences.
+- Separate navigation-row height from bottom safe-area reservation; adjacent footers and the Development strip still own their inset once.
+- Add original Sound and Battery Saver artwork with Icon Credits and provenance.
+<!-- /development -->
+
 ## v3.23.3
 
 ### Player Changes
