@@ -90,3 +90,8 @@ Monitor and phone were exported from Cure Interactive Icons commit `71d7cc7fb2be
 - [ios-home-screen](ios-home-screen.md) — original installation-guide illustration.
 
 - [mobile-device](mobile-device.md) — original smartphone display-settings icon.
+
+## Bubble powers and player attributes
+
+- [Powers](powers.md) — original energized-bubble category artwork.
+- Player Stats shares [player upgrade artwork](../upgrade/INDEX.md#player-upgrade-artwork) with Skills: launch speed, aiming length, reflected guide and wall retention. No duplicate stat drawings.

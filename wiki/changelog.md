@@ -6,6 +6,21 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.23.2
+
+### Player Changes
+
+- Show matching player-upgrade icons for launch speed, aiming guides and wall rebound in Stats.
+- Give Powers its own energized-bubble icon in Skills, Stats, Wiki and the Bubble Powers panel.
+- Use the Points coin for research spending and launch artwork for shot records.
+
+<!-- development -->
+### Developer Notes
+
+- Reuse canonical upgrade SVGs through shared UI icon masks; keep Powers distinct from Skills, Bloom and shutdown.
+- Register original Powers artwork and provenance in Icon Credits.
+<!-- /development -->
+
 ## v3.23.1
 
 ### Player Changes

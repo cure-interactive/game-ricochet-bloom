@@ -119,3 +119,10 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 [data-icon="phone"]{--ui-icon:url("./icon/ui/phone.svg?v=5c987203d10c629b990306f1d3ce326a1f03ad4aee19a89b3fbc01c27da57ae2")}
 
 [data-icon="mobile-device"]{--ui-icon:url("./icon/ui/mobile-device.svg?v=1180fbad554a25b4b3d2a909ed6de35669ba947a5c32ebdc5220fc568aae40b6")}
+
+/* Stats reuse the exact player-upgrade artwork used in Skills. */
+[data-icon="powers"]{--ui-icon:url("./icon/ui/powers.svg?v=a48453d82c19cbebab3736bdc2b77dfdeec022be917fea1bd9c4bf096ee2fb4a")}
+[data-icon="player-launch"]{--ui-icon:url("./icon/upgrade/launch.1.svg?v=c02a7c0e92f578229870b7979e4e34b9c4e50a5da9111de45444c046c63efbd4")}
+[data-icon="player-sight"]{--ui-icon:url("./icon/upgrade/sight.1.svg?v=589234f5dbfa55f2bf3e4087a7ef619a1cfd90d4cbf87856663181c123963386")}
+[data-icon="player-bank-sight"]{--ui-icon:url("./icon/upgrade/sight.2.svg?v=8c76220ed9bdeb1b31f7e2cecf164ba431229836e5dbba7da0738431e956bc87")}
+[data-icon="player-rebound"]{--ui-icon:url("./icon/upgrade/rebound.1.svg?v=bc8b19235d6c8fb688acbbb7f09fdbcca544708fa55fb7600a19d349b6d21d51")}

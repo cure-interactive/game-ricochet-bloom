@@ -1,5 +1,5 @@
 import { buttonLabel } from './ui-icon.js?v=0bef764d102dc0e159800242f682b3d49abfbf27a976ab9ca47f0d10b1c82188';
-import { assetURL } from './asset.js?v=c22292ae9d0ee12d86a26c8723cc5379143c4c5bd035aa93a344b84200318ef1';
+import { assetURL } from './asset.js?v=2b5633b19a07f956813bb7e10836cd197f17f91470581d4cac571bb4962b3316';
 import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 
 export function displayDeviceIcon(win){
