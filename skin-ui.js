@@ -1,8 +1,10 @@
 import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=8e77b5504c857a83a814dcd61206c7f9fe8a72da3f327516a56db73a51645e2e';
-import { screenHeader } from './screen-header.js?v=14bb3cb52686c75546cfaae770ac220f4def2f4eab3369633c91b88a5b1c0a1f';
+import { screenHeader } from './screen-header.js?v=726c3c9632ff2e218e50aff0a5088b7cddb0601a274bd277ae4be0d63cc4c693';
 import { TRACKS } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { completedTracks, unlockedTracks } from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302dff937b1bbfdae8fb6c8ea56';
-import { iconHTML } from './ui-icon.js?v=6d54c4caa769ca38c3ad26db1215fd884511a97d6e85072fad52e5c45607142e';
+import { iconHTML } from './ui-icon.js?v=030c0efc6cdfba88e28420bfcfaf809c34dba306c37f69d9b366521d5b469e5d';
+
+import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 
 const skins=[{id:'original',name:'Original',color:'#f1f9d7'},...TRACKS];
 export function skinOptions(state,showHidden=false){
@@ -29,7 +31,7 @@ export function skinMount(controller){
     dialog.querySelector('#skin-title').textContent=skin?skin.name:'Player Skins';back.setAttribute('aria-label',skin?'Back to Player Skins':'Back');
     if(!skin){detail.replaceChildren();return;}
     detail.style.setProperty('--skin-color',skin.color);
-    detail.innerHTML=`${skinPreviewHTML(skin.name)}<div class="skin-selection"><label class="setting-toggle"><input id="skin-use" type="checkbox" ${skin.equipped?'checked':''} ${!skin.owned||skin.id==='original'&&skin.equipped?'disabled':''}><span>Use This Skin</span></label><p class="skin-unlock">${!skin.owned?iconHTML('lock')+'Complete '+skin.name+' to unlock this skin.':skin.id==='original'?'The original player appearance.':skin.equipped?'Turn off to return to Original.':'Unlocked by completing '+skin.name+'.'}</p></div>`;
+    detail.innerHTML=`${skinPreviewHTML(skin.name)}<section class="skin-selection ${skin.equipped?'is-equipped':''}" aria-label="${escapeHTML(skin.name)} skin"><div class="skin-selection-title">${iconHTML(skin.equipped?'check':skin.owned?'lock-open':'lock')}<div><small>Player Skin</small><h3>${escapeHTML(skin.name)}</h3></div></div><p class="skin-unlock">${!skin.owned?'Complete '+escapeHTML(skin.name)+' to unlock this skin.':skin.id==='original'?'Your original glow.':skin.equipped?'Your player is wearing this skin.':'Unlocked by completing '+escapeHTML(skin.name)+'.'}</p><button type="button" id="skin-use" class="skin-equip ${skin.equipped?'is-equipped':''}" ${!skin.owned||skin.equipped?'disabled':''}>${iconHTML(skin.equipped?'check':skin.owned?'player-skin':'lock')}<span>${skin.equipped?'Equipped':skin.owned?'Equip Skin':'Locked'}</span></button></section>`;
     preview=skinPreviewMount(detail.querySelector('.skin-preview-large'),{gentle:controller.gentle});
   }
   dialog.addEventListener('close',()=>{if(!dialog.open){preview?.destroy();preview=null;}});
@@ -43,9 +45,9 @@ export function skinMount(controller){
     const choice=event.target.closest('[data-player-skin]');if(!choice)return;
     libraryScroll=scroll.scrollTop;selected=choice.dataset.playerSkin;render();status.textContent='';scroll.scrollTop=0;back.focus({preventScroll:true});
   });
-  dialog.addEventListener('change',event=>{
-    if(event.target.id!=='skin-use')return;
-    const action=skinSelection(controller.get(),selected,event.target.checked);if(!action){render();return;}
+  dialog.addEventListener('click',event=>{
+    if(!event.target.closest('#skin-use'))return;
+    const action=skinSelection(controller.get(),selected,true);if(!action){render();return;}
     const result=controller.act(action);render();
     status.textContent=result.ok?`${skins.find(s=>s.id===action.skin).name} equipped.`:result.reason;
     const toggle=dialog.querySelector('#skin-use');(toggle.disabled?back:toggle).focus({preventScroll:true});

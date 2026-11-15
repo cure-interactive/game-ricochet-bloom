@@ -1,5 +1,5 @@
-import {bubbleRender} from './bubble-render.js?v=c5d036382edf95377b9d55c39b58264bb3af9c05e2412b3aca4b1d04215a6388';
-import {bubbleStep,bubbleOutline,bubbleFlow} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
+import {bubbleRender} from './bubble-render.js?v=0b5db9753621bde8a86ab88be698cb900831918934659548b20bbe78ef0599fc';
+import {bubbleStep,bubbleOutline,bubbleFlow,bubbleHit} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers} from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
 import {regionFrozen} from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import {BUBBLE_ROLES,bubbleRole} from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
@@ -7,6 +7,14 @@ import {assetURL} from './asset.js?v=0cfe0a794ed64ab3bcda90c0fff1c797d61ca36785d
 let sharedIcons;
 export function poolBubbleIcons(){
  return sharedIcons??=Object.fromEntries([['powerIcons','power',Object.keys(POWERS)],['roleIcons','ui',Object.keys(BUBBLE_ROLES)]].map(([name,folder,kinds])=>[name,Object.fromEntries(kinds.map(kind=>{const icon=new Image();icon.src=new URL(assetURL(`./icon/${folder}/${kind}.svg`),import.meta.url).href;return [kind,icon];}))]));
+}
+// Both player-controlled and detached pools use the same strike response.
+export function poolBubbleEvent(event,game,membraneFor){
+ if(event.type!=='lightning')return;
+ const body=game.bodies[event.id];if(!body)return;
+ const membrane=membraneFor(body);
+ bubbleHit(membrane,body.radius,-event.nx,-event.ny,850,!!effectGet(game,'stasis')?.targets.includes(body.id));
+ membrane.glow=.8;
 }
 // Frost is attached to the actual membrane and clipped inside its surface.
 function frostRender(context,body, points, skin, frost,isGentle) {

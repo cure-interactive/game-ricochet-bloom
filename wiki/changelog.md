@@ -6,6 +6,29 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.22.3
+
+### Player Changes
+
+- Show Lightning bolts and struck-bubble flashes consistently, including Casual and Low quality.
+- Keep the player's glowing rim and add a separate, jiggling selection outline in Skills.
+- Let player icons and previews react to scrolling, with more room for movement and glow.
+- Remove background strips and gaps from full-page menus and guides.
+- Stop covered backgrounds from reacting to taps while their simulation continues.
+- Restore the main menu if a screen closes without another destination.
+- Give skin selection a clearer Equip Skin button and checked Equipped state.
+- Play edge-back feedback when swiping both forward and backward.
+
+<!-- development -->
+### Developer Notes
+
+- Share Lightning bolt lifetime and rendering through PowerVisual, and membrane strike feedback through poolBubbleEvent.
+- Share membrane path construction, expand UI canvas bounds, and preserve native scrolling while applying bounded scroll impulses.
+- Mark opaque screen coverage in CSS; skip background drawing and input while continuing physics and ambient composition.
+- Recover unhandled native dialog exits after synchronous navigation completes; preserve intentional Casual and gameplay screens.
+- Emit gesture progress cues on stage changes in either direction, including returning to zero.
+<!-- /development -->
+
 ## v3.22.2
 
 ### Player Changes

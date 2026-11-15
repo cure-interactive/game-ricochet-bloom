@@ -3,7 +3,7 @@ import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
 import {menuPoolView} from './menu-pool.js?v=a5ed2d2493c9c0b42afc144cd7c629a1a1a90e62d06cef37694428adee94911b';
 import {skinSpringStep} from './skin-preview.js?v=8e77b5504c857a83a814dcd61206c7f9fe8a72da3f327516a56db73a51645e2e';
-import {bubbleRender} from './bubble-render.js?v=c5d036382edf95377b9d55c39b58264bb3af9c05e2412b3aca4b1d04215a6388';
+import {bubbleRender,bubblePath} from './bubble-render.js?v=0b5db9753621bde8a86ab88be698cb900831918934659548b20bbe78ef0599fc';
 
 // Decorative instances own only visual state. The surrounding button or large
 // preview keeps its existing input, focus, navigation and progression contract.
@@ -19,7 +19,7 @@ export function registerPlayerBubble(win=window){
  class PlayerBubble extends win.HTMLElement{
   connectedCallback(){
    if(this.canvas)return;
-   this.membrane=bubbleCreate();this.body={x:39.2,y:39.2,radius:14,vx:0,vy:0};
+   this.membrane=bubbleCreate();this.body={x:50.4,y:50.4,radius:14,vx:0,vy:0};
    this.frame=0;this.last=0;this.visible=false;this.bounce=0;
    this.pressure={x:0,y:0,vx:0,vy:0};this.pulses=[];
    this.phase=++sequence*2.4;this.age=0;this.nextRipple=1.1+(sequence%4)*.23;
@@ -29,6 +29,19 @@ export function registerPlayerBubble(win=window){
    this.activate=()=>{if(!contacts.size)this.kick(0,1);};
    this.change=()=>{if(this.visible)this.paint();this.request();};
    this.visibility=()=>{if(this.ownerDocument.hidden)input.clear();else this.request();};
+   this.scrollPositions=new Map();
+   for(let ancestor=this.parentElement;ancestor;ancestor=ancestor.parentElement)this.scrollPositions.set(ancestor,{x:ancestor.scrollLeft||0,y:ancestor.scrollTop||0});
+   this.scrolled=event=>{
+    const previous=this.scrollPositions.get(event.target);if(!previous)return;
+    const next={x:event.target.scrollLeft||0,y:event.target.scrollTop||0};this.scrollPositions.set(event.target,next);
+    if(!this.visible||this.ownerDocument.hidden)return;
+    const dx=next.x-previous.x,dy=next.y-previous.y,distance=Math.hypot(dx,dy);if(!distance)return;
+    const impulse=Math.min(100,distance*28/Math.max(1,this.size)*8);
+    this.pressure.vx=Math.max(-180,Math.min(180,this.pressure.vx+dx/distance*impulse));
+    this.pressure.vy=Math.max(-180,Math.min(180,this.pressure.vy+dy/distance*impulse));
+    this.kick(-dx/distance,-dy/distance,impulse);
+   };
+   this.ownerDocument.addEventListener('scroll',this.scrolled,true);
    this.target.addEventListener('focusin',this.activate);
    instances.add(this);if(!unmount)unmount=bubbleContactMount(input,this.ownerDocument,win);
    this.ownerDocument.addEventListener('visibilitychange',this.visibility);
@@ -100,20 +113,24 @@ export function registerPlayerBubble(win=window){
   }
   paint(){
    if(!this.context||!this.size)return;
-   const pixels=Math.ceil(this.size*2.8*qualityPixelRatio(this.ownerDocument.body.dataset?.quality,win.devicePixelRatio||1));
+   const pixels=Math.ceil(this.size*3.6*qualityPixelRatio(this.ownerDocument.body.dataset?.quality,win.devicePixelRatio||1));
    if(this.canvas.width!==pixels||this.canvas.height!==pixels)this.canvas.width=this.canvas.height=pixels;
-   const c=this.context;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pixels,pixels);c.setTransform(pixels/78.4,0,0,pixels/78.4,0,0);
+   const c=this.context;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pixels,pixels);c.setTransform(pixels/100.8,0,0,pixels/100.8,0,0);
    const style=win.getComputedStyle(this),color=style.getPropertyValue('--skin-color').trim()||'#f1f9d7';
    const body={...this.body,x:this.body.x+this.pressure.x,y:this.body.y+this.pressure.y};
-   const skin=bubbleRender(c,body,bubbleOutline(this.membrane,body),color,{glowExtent:1.3,lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
+   const points=bubbleOutline(this.membrane,body);
+   bubbleRender(c,body,points,color,{glowExtent:1.3,lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
    if(style.getPropertyValue('--player-bubble-outline').trim()==='1'){
-    // Follow the actual membrane, keeping a 1.5 CSS-pixel edge at icon sizes.
-    c.strokeStyle=style.color;c.lineWidth=42/this.size;c.stroke(skin);
+    // A separate contour follows the membrane, leaving its luminous rim intact.
+    const gap=.8+84/this.size;
+    const outside=points.map(point=>{const dx=point.x-body.x,dy=point.y-body.y,d=Math.hypot(dx,dy);return {x:point.x+dx/d*gap,y:point.y+dy/d*gap};});
+    c.strokeStyle=style.color;c.lineWidth=42/this.size;c.stroke(bubblePath(outside));
    }
   }
   disconnectedCallback(){
    this.visible=false;this.reset();this.resize.disconnect();this.intersection.disconnect();this.preferences.disconnect();
    this.target.removeEventListener('focusin',this.activate);
+   this.ownerDocument.removeEventListener('scroll',this.scrolled,true);this.scrollPositions.clear();
    instances.delete(this);if(!instances.size){unmount?.();unmount=null;}
    this.ownerDocument.removeEventListener('visibilitychange',this.visibility);
    this.canvas.remove();this.canvas=null;

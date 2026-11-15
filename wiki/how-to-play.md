@@ -63,7 +63,7 @@ The compact HUD keeps score, spendable Points, shots, power slots, chain dots an
 - Keyboard: left/right arrows aim, up/down arrows change shot strength, Space launches, and P pauses.
 - Optional buttons: Settings → Accessibility → Show on-screen controls.
 
-The main menu and its menus share a living bubble background. Press an empty area for a pulse; hold or move one or more fingers to keep pushing nearby bubbles away. Menu controls and scrolling still work normally. This background does not affect your run or progress.
+The main menu and its menus share a living bubble background. Press an empty area for a pulse; hold or move one or more fingers to keep pushing nearby bubbles away. Menu controls and scrolling still work normally. Opaque pages cover the pool completely: it keeps simulating but does not react to touches through the page. This background does not affect your run or progress.
 
 [Explore the Melody Journey](campaign.md) or [learn about research](skill-tree.md).
 

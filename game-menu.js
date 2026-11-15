@@ -1,9 +1,9 @@
-import { menuLayoutMount } from './menu-title.js?v=ada0ca587be4788de511606bfc9569cec6346624ebf392b06b3c235857f58075';
+import { menuLayoutMount } from './menu-title.js?v=646a097734a117046ad897dbcdcd82cf03dd23d2bf49e96f2214b3de8af478bb';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { buttonHTML } from './ui-icon.js?v=6d54c4caa769ca38c3ad26db1215fd884511a97d6e85072fad52e5c45607142e';
-import { menuBackgroundMount } from './menu-background.js?v=ec9df64ce2b83c78d227006b83bd433d48c635983d3c3b059baa56cbb693abdf';
+import { buttonHTML } from './ui-icon.js?v=030c0efc6cdfba88e28420bfcfaf809c34dba306c37f69d9b366521d5b469e5d';
+import { menuBackgroundMount } from './menu-background.js?v=c2657f3045e6b657a57b541c4f600d443486fe3628409b8ba6881f154b9917b9';
 
-import { driftMount } from './drift-ui.js?v=447ef657e4cc51209a1545e0f3516fbc5cd25393fd20dc8a1ceef7d01937a0db';
+import { driftMount } from './drift-ui.js?v=6cd159a8d6972f44e594903c1136b787c05037ec6df60e3cc6ac9d4f20f13a8f';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
@@ -27,6 +27,12 @@ export function gameMenuMount(host) {
     document.body.dataset.screen=name;document.body.dataset.menuMode=name==='drift'?'drift':casual?'play':homeMode?'home':'play';home.hidden=name!=='home';backdrop.hidden=!homeMode&&name!=='pause';background.show(homeMode&&(!casual||name==='drift'),{ambient:homeMode});drift.show(name);
     document.querySelector('body>main').inert=name!=='play';
     if(name!=='play')host.suspend({ambient:!homeMode&&!casual});refresh();
+    queueMicrotask(recoverDestination);
+  }
+  function recoverDestination(){
+    if(document.querySelector('dialog[open]'))return;
+    if(casual&&route.current!=='drift')resume();
+    else if(homeMode&&!casual&&home.hidden)homeOpen();
   }
   function homeOpen(){close();casual=false;route.reset('home');present('home');home.querySelector(host.info().resume?'#home-continue':'#home-gamemodes').focus({preventScroll:true});}
   function pauseOpen(){close();const name=casual?'drift-pause':'pause';present(name);host.open(name);}
@@ -40,7 +46,12 @@ export function gameMenuMount(host) {
   home.querySelector('#home-help').onclick=()=>host.open('help');
   home.querySelector('#home-settings').onclick=()=>host.open('settings');
   // Settings can switch profiles without a page-history transition.
-  document.addEventListener('close',()=>{if(homeMode)refresh();},true);
+  document.addEventListener('close',()=>{
+    if(homeMode)refresh();
+    // Native Close/Escape and nested dialog exits must always leave a destination.
+    // Check after synchronous navigation has opened its replacement dialog.
+    queueMicrotask(recoverDestination);
+  },true);
   refresh();present('home');
   return {home:homeOpen,back,show:present,drift(){close();casual=true;present('drift');},pause:pauseOpen,resume,play(){close();casual=false;route.reset('play');present('play');},get current(){return route.current;}};
 }

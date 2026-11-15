@@ -205,7 +205,7 @@ export class PoolSound {
     const now=this.context.currentTime;
     if(kind!=='back-complete'&&now-(this.uiLastAt??-Infinity)<.06)return false;
     this.uiLastAt=now;
-    const wind={'back-start':300,'back-wind-1':380,'back-wind-2':480,'back-wind-3':620};
+    const wind={'back-start':300,'back-wind-0':300,'back-wind-1':380,'back-wind-2':480,'back-wind-3':620};
     const back=kind==='back'||kind==='back-complete';
     const pitch=wind[kind]||(back?440:kind==='confirm'?660:560);
     this.tone(pitch,back?330:pitch*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true});

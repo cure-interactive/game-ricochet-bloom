@@ -1,4 +1,4 @@
-import { iconHTML } from './ui-icon.js?v=6d54c4caa769ca38c3ad26db1215fd884511a97d6e85072fad52e5c45607142e';
+import { iconHTML } from './ui-icon.js?v=030c0efc6cdfba88e28420bfcfaf809c34dba306c37f69d9b366521d5b469e5d';
 
 export function edgeBackReady(dx,dy,width) {
   return dx>=Math.min(100,Math.max(60,width*.22))&&dx>Math.abs(dy)*1.5;
@@ -33,7 +33,7 @@ export function edgeBackMount(doc=document,win=window,{feedback=()=>{}}={}) {
     g.cue.classList.toggle('is-ready',ready);
     const threshold=Math.min(100,Math.max(60,win.innerWidth*.22));
     const stage=Math.min(3,Math.floor(Math.max(0,g.dx)/threshold*3));
-    if(stage>g.stage){g.stage=stage;feedback('back-wind-'+stage);}
+    if(stage!==g.stage){g.stage=stage;feedback('back-wind-'+stage);}
   }
   function finish(event,point){
     if(!gesture)return;move(event,point);if(!gesture)return;

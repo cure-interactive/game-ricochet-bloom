@@ -20,10 +20,16 @@
 .skin-detail{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;min-height:min-content;width:100%;max-width:440px;margin:auto}
 .skin-preview-large{flex:1;min-height:180px}
 .skin-preview-large i{width:clamp(140px,42vw,200px);height:clamp(140px,42vw,200px);position:relative}
-.skin-selection{flex:none;width:100%;padding:16px;border:1px solid #65828a66;border-radius:16px;background:var(--glass-control,#162c36)}
-#skin-dialog .skin-selection .setting-toggle{display:flex;width:100%;min-height:48px;font-size:17px;gap:12px;white-space:normal;color:#dceeea}
-.skin-selection .setting-toggle:has(input:disabled){cursor:default}
-.skin-selection input:disabled{cursor:default;opacity:.65}
+ .skin-selection{flex:none;width:100%;padding:20px;border:1px solid #65828a66;border-radius:20px;background:linear-gradient(130deg,color-mix(in srgb,var(--skin-color) 10%,#132934),#10232e)}
+.skin-selection.is-equipped{border-color:#b4f4db88}
+.skin-selection-title{display:flex;align-items:center;gap:12px}
+.skin-selection-title>.ui-icon{width:28px;height:28px;color:#b4f4db}
+.skin-selection-title small{font-size:11px;color:#a8c4ca;text-transform:uppercase;letter-spacing:.12em}
+.skin-selection-title h3{margin:3px 0 0;font-size:24px;font-weight:500;color:#e4f0f3}
+#skin-dialog .skin-equip{width:100%;min-height:50px;margin-top:18px;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid #aee5ce88;border-radius:14px;background:#b4f4db;color:#153831;font-size:18px}
+#skin-dialog .skin-equip.is-equipped{background:#1b3f3c;color:#c7f5df;opacity:1;cursor:default}
+#skin-dialog .skin-equip:disabled:not(.is-equipped){background:#21313c;color:#a8bac4;cursor:default;border-color:#65828a66}
+.skin-equip .ui-icon{width:23px;height:23px}
 .skin-unlock{display:flex;align-items:center;gap:8px;color:#acc3cd;font-size:13px;line-height:1.5;margin:10px 0 0}
 .skin-unlock .ui-icon{width:18px;height:18px;flex:none}
 .skin-scroll.is-detail>.skin-status{flex:none;text-align:center;margin:0}
@@ -37,7 +43,7 @@
 :is([aria-pressed="true"],[aria-selected="true"])>.ui-icon[data-icon="player-skin"]{--player-bubble-outline:1}
 
 /* The outer control retains its stable hit target while the membrane deforms. */
-.skin-preview-interactive{padding:40px;min-height:280px;overflow:clip}
+.skin-preview-interactive{padding:60px;min-height:280px;overflow:visible}
 .skin-preview-interactive i{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
 .skin-preview-interactive i.is-dragging{cursor:grabbing}
 .skin-preview-interactive i:focus-visible{outline:3px solid #eed496;outline-offset:12px}
@@ -45,4 +51,4 @@
 
 .skin-preview i{position:relative;border-radius:50%}
 player-bubble{display:block;position:absolute;inset:0;pointer-events:none}
-player-bubble canvas{position:absolute;display:block;width:280%;height:280%;left:-90%;top:-90%;aspect-ratio:1;background:transparent;pointer-events:none}
+player-bubble canvas{position:absolute;display:block;width:360%;height:360%;left:-130%;top:-130%;aspect-ratio:1;background:transparent;pointer-events:none}

@@ -75,6 +75,7 @@ export class PowerVisual {
       this.add({ kind: 'wrap', x: event.x, y: event.y, nx: -event.nx, ny: -event.ny, color: POWERS.wrap.color, duration: .55 });
     }
     if (event.type === 'portal') for (const point of [{ x: event.fromX, y: event.fromY }, event]) this.add({ kind: 'endpoint', color: POWERS.portal.color, x: point.x, y: point.y, duration: .7 });
+    if(event.type==='lightning')this.add({kind:'lightning',...event,color:POWERS.lightning.color,duration:.32});
     if (event.type === 'push' || event.type === 'lightning') {
       const color = POWERS[event.type === 'push' ? 'impact' : 'lightning'].color;
       this.add({ kind: 'shock', x: event.x, y: event.y, nx: event.nx, ny: event.ny, color, duration: .5 });
@@ -104,7 +105,21 @@ export class PowerVisual {
       const progress = cue.age / cue.duration, travel = gentle ? .35 : progress;
       c.save(); c.globalAlpha = (1 - progress) * (gentle ? .3 : .65); c.lineWidth = gentle ? 1.4 : 2;
       c.strokeStyle = c.fillStyle = cue.color || POWERS[cue.kind]?.color || POWERS.split.color;
-      if (cue.kind === 'wrap') {
+      if(cue.kind==='lightning') {
+        const dx=cue.x-cue.fromX,dy=cue.y-cue.fromY,distance=Math.max(1,Math.hypot(dx,dy));
+        c.globalAlpha=Math.min(1,(cue.duration-cue.age)/.18);c.lineWidth=gentle?2:3;
+        c.shadowColor=POWERS.lightning.color;c.shadowBlur=gentle?0:12;
+        c.beginPath();c.moveTo(cue.fromX,cue.fromY);
+        for(let index=1;index<=6;index++){
+          const offset=index===6?0:(index%2?1:-1)*(gentle?8:13);
+          c.lineTo(cue.fromX+dx*index/6-dy/distance*offset,cue.fromY+dy*index/6+dx/distance*offset);
+        }
+        c.stroke();
+        if(!gentle)for(let index=0;index<8;index++){
+          const angle=index*TAU/8+cue.index*.3,near=5+progress*22,far=near+10*(1-progress);
+          line(c,cue.x+Math.cos(angle)*near,cue.y+Math.sin(angle)*near,cue.x+Math.cos(angle)*far,cue.y+Math.sin(angle)*far);
+        }
+      } else if (cue.kind === 'wrap') {
         const angle = Math.atan2(cue.ny, cue.nx), radius = 12 + travel * 28;
         c.beginPath(); c.ellipse(cue.x, cue.y, radius * .5, radius, angle, 0, TAU); c.stroke();
         arrow(c, cue.x + Math.cos(angle) * travel * 42, cue.y + Math.sin(angle) * travel * 42, angle, gentle ? 6 : 10);

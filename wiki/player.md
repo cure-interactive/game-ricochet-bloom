@@ -4,13 +4,13 @@ Open **Player** from the main menu to view your equipped skin and choose Skins, 
 
 ## Player Viewer
 
-The large preview shows your equipped skin. Drag it to stretch its tether, or tap it to make it bounce. Preview interactions are cosmetic and do not change a run.
+The large preview shows your equipped skin. Drag it to stretch its tether, or tap it to make it bounce. Previews and player icons also jiggle when you scroll their containing panel. These interactions are cosmetic and do not change a run.
 
 Your player name appears beneath the bubble. Tap or click it to edit in place (up to 32 characters). Press Enter or tap away to save; Escape cancels. An empty edit keeps the previous name. Names belong to the selected profile and are included in progress backups.
 
 ## Skins
 
-Open **Player → Skins** to browse appearances. Original is available from the start; completing a Melody Journey track unlocks its skin. Select a skin to inspect its large preview and unlock information, then equip an owned skin. Skins change appearance, not gameplay strength.
+Open **Player → Skins** to browse appearances. Original is available from the start; completing a Melody Journey track unlocks its skin. Select a skin to inspect its large preview and unlock information, then press **Equip Skin** for an owned skin. The current skin displays a checked **Equipped** state. Select Original to return to the original appearance. Skins change appearance, not gameplay strength.
 
 ## Stats
 
