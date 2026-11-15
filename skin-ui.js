@@ -1,8 +1,8 @@
 import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=789a05d4b3daeccb6dbe8c79eb36260a6c48d72da948a8c92bd0616bfe68e764';
-import { screenHeader } from './screen-header.js?v=a0375361ae407ee8e60d3ed09355baf5bb084d84a2dc95aab41b05185b186b82';
+import { screenHeader } from './screen-header.js?v=2dc7126500a77a167bed988d7512d074c2bc41445c831ee0578e5a4395e9da9e';
 import { TRACKS } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { completedTracks, unlockedTracks } from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302dff937b1bbfdae8fb6c8ea56';
-import { iconHTML } from './ui-icon.js?v=c80973e44aaefb9769e151ec4746d8d0a0a1f5288dcb1c3e24c1fac2286b0658';
+import { iconHTML } from './ui-icon.js?v=b05618f62d88c1057558c943cbcf7d2565de3287bf77909ca25275b9b5cb8cbf';
 
 const skins=[{id:'original',name:'Original',color:'#f1f9d7'},...TRACKS];
 export function skinOptions(state,showHidden=false){

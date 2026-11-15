@@ -29,5 +29,6 @@ export function buttonHTML(label,icon='play',attributes={}) {
   if(key==='disabled'||key==='hidden')return value?' '+key:'';
   return ` ${key}="${escapeHTML(value)}"`;
  }).join('');
- return `<button${attrs}>${iconHTML(icon)}<span>${escapeHTML(label)}</span></button>`;
+ const text=escapeHTML(label);
+ return `<button${attrs}>${iconHTML(icon)}${text?`<span>${text}</span>`:''}</button>`;
 }

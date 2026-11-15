@@ -33,7 +33,8 @@
 button:has(>.ui-icon),a:has(>.ui-icon){display:inline-flex;align-items:center;justify-content:center;gap:8px}
 button[hidden],a[hidden]{display:none!important}
 .button-label{min-width:0}.close>.ui-icon{width:16px;height:16px}
-#pause>.ui-icon,#fullscreen>.ui-icon{width:20px;height:20px}
+#pause>.ui-icon,#drift-pause>.ui-icon{width:28px;height:28px}
+#fullscreen>.ui-icon{width:20px;height:20px}
 summary::after{content:"";display:inline-block;flex:none;width:10px;height:10px;background:currentColor;-webkit-mask:url("./icon/ui/arrow-down.svg?v=2b109afce1e5f40fbbfb3593910fb94a297252f8602c4614f6418bfab5d028e5") center/contain no-repeat;mask:url("./icon/ui/arrow-down.svg?v=2b109afce1e5f40fbbfb3593910fb94a297252f8602c4614f6418bfab5d028e5") center/contain no-repeat}
 summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{margin-left:auto}summary::-webkit-details-marker{display:none}details[open]>summary::after{transform:rotate(180deg)}
 .setting-toggle input[type="checkbox"]{appearance:none;-webkit-appearance:none;flex:none;width:21px;height:21px;min-width:21px;padding:0;border:0;border-radius:4px;background:#182b3a;box-shadow:inset 0 0 0 2px #b8cad7;-webkit-mask:url("./icon/ui/checkbox-off.svg?v=2d9f2d0348cf2b8b44fe00248a66a57b27d9a578364ea117afc6711724604699") center/contain no-repeat;mask:url("./icon/ui/checkbox-off.svg?v=2d9f2d0348cf2b8b44fe00248a66a57b27d9a578364ea117afc6711724604699") center/contain no-repeat;cursor:pointer}
