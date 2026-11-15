@@ -6,6 +6,20 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.22.2
+
+### Player Changes
+
+- Give menus, panels and Wiki pages slim, rounded scrollbars inspired by iOS.
+- Remove scrollbar arrows and solid tracks, with clearer thumbs when hovered or dragged.
+
+<!-- development -->
+### Developer Notes
+
+- Share app-owned overlay indicators across scroll surfaces, with native scroll positions, proportional thumbs, clipping and mouse drag support.
+- Remove the campaign carousel’s separate scrollbar palette.
+<!-- /development -->
+
 ## v3.22.1
 
 ### Player Changes

@@ -5,7 +5,7 @@ import { iconHTML } from './ui-icon.js?v=6d54c4caa769ca38c3ad26db1215fd884511a97
 import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=c979dad4039aeff82a6fa0d13728daeb798c9c03e55c1c55d8af867499a18897';
 
 export const WIKI_PAGES = Object.freeze({
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=a4e2a71181d17ee8fe9d08b1b1dc1b458e64f4780ab5049a2cc3a20c0f30029f' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=55244e8530369976254f4611335fb541acee4e8bcb4f920660f872e085c7ac4f' },
   player: { title: 'Player', url: './wiki/player.md?v=fe6b860a08b6c152079a0025f9e6cbb4e0b111bcb500681e95f05ac2faa13ec9' },
   developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=5a192f78afff1d6cd08db60e29cd76208c9b6dd296ed2cdf78e7ed1b3b8ec237' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=9cf0c1f86dc0b5d81237bff4186f4c3677f214f72ca0deafb00e5f1b83cc5e1a' },
@@ -14,7 +14,7 @@ export const WIKI_PAGES = Object.freeze({
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=bcc53ccc28d9448fac1a1999a369dd0894c4055ec043e93d2617ada4021b42af' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=30abd762826237c1d434b28f43a4cf6d492a382d4c9da7051999015c2f893d6c' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=6d047bde313fff4cb84acbf16e23528afe17f4a2129bc25a03ad510e0c514cdb' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=543ce8c11fb5723231312405b2d53945c5e12fa5d38a6b72224c5e12dcfa3e8a' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=8be78935fa94ebcce2d2af1fdfe00b5c20939df1f02b1e44266f13fb4cc0151b' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=7a28e512643ce0faf78d4f9020b8a6e8d56a536f4d64caa116560a40390460e3' },

@@ -1,0 +1,30 @@
+/* Shared iOS-style indicators without replacing native scrolling or hit testing. */
+:root{--scroll-thumb:#b5d3d580;--scroll-thumb-hover:#c9e9e7b3;--scroll-thumb-active:#d9fff1}
+*{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) transparent}
+/* Non-auto standard values override these pseudo-elements in Chromium/Safari. */
+@supports selector(::-webkit-scrollbar){
+ *{scrollbar-width:auto;scrollbar-color:auto}
+ ::-webkit-scrollbar{width:6px;height:6px;background:transparent}
+ ::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent;border:0;box-shadow:none}
+ ::-webkit-scrollbar-thumb{min-height:24px;min-width:24px;border:1px solid transparent;border-radius:999px;background:var(--scroll-thumb);background-clip:padding-box}
+ ::-webkit-scrollbar-thumb:hover{background-color:var(--scroll-thumb-hover)}
+ ::-webkit-scrollbar-thumb:active{background-color:var(--scroll-thumb-active)}
+ ::-webkit-scrollbar-button{display:none;width:0;height:0}
+}
+@media(forced-colors:active){
+ *{scrollbar-color:auto}
+ ::-webkit-scrollbar-thumb{background-color:ButtonText}
+}
+
+/* The app overlay gives every scroll surface the same indicator on every host. */
+[data-scrollbar=custom]{scrollbar-width:none!important;scrollbar-gutter:auto!important}
+[data-scrollbar=custom]::-webkit-scrollbar{display:none;width:0;height:0}
+:root body .scroll-indicator{position:fixed;z-index:100;box-sizing:border-box;margin:0;padding:0;border:0;border-radius:0;background:transparent;opacity:.38;transition:opacity .25s;pointer-events:none;touch-action:none;user-select:none;overflow:hidden}
+:root body .scroll-indicator[hidden]{display:none}
+.scroll-indicator>span{position:absolute;display:block;border-radius:999px;background:#c7ddd9;box-shadow:0 0 1px #07111c80;pointer-events:auto}
+.scroll-indicator[data-axis=y]>span{right:3px;top:4px;width:3px}
+.scroll-indicator[data-axis=x]>span{bottom:3px;left:4px;height:3px}
+:root body .scroll-indicator[data-active=true],:root body .scroll-indicator:hover{opacity:.9}
+@media(pointer:fine){:root body .scroll-indicator{pointer-events:auto}.scroll-indicator[data-axis=y]:hover>span{width:5px}.scroll-indicator[data-axis=x]:hover>span{height:5px}}
+@media(pointer:coarse){.scroll-indicator>span{pointer-events:none}}
+@media(forced-colors:active){.scroll-indicator>span{background:ButtonText;forced-color-adjust:none}}

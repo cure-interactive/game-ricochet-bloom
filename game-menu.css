@@ -91,7 +91,7 @@ body:not([data-screen=play]):not([data-screen=pause])>main{display:none}
  #campaign-dialog .campaign-preview .restoration-feature>button{position:static;flex:none}
 }
 @media(max-width:760px){
- #campaign-dialog .track-strip{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scroll-padding-inline:2px;scrollbar-width:thin;scrollbar-color:#6da89b #101f30;padding-bottom:12px;margin-bottom:18px}
+ #campaign-dialog .track-strip{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scroll-padding-inline:2px;padding-bottom:12px;margin-bottom:18px}
  #campaign-dialog .track-strip button{min-height:200px}
  #campaign-dialog .track-strip button>.restoration-art{height:112px;min-height:112px}
  #campaign-dialog .track-strip button>span:not(.ui-icon):not(.restoration-art){font-size:20px;min-height:80px}
