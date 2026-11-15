@@ -1,7 +1,7 @@
 import {turnHits} from './turn-hits.js?v=601ae75742860558121ef0d4bb066017b87650900bbeeb17e8bf8d359fbcdd5d';
 import {bubbleRender} from './bubble-render.js?v=56ad9b5c32cff5579086a5ce1623df71697fea88d19a8a1dd70c710fc11b76bc';
 import {bubbleStep,bubbleOutline,bubbleFlow,bubbleHit} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers} from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
+import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers,poolBounds} from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
 import {regionFrozen} from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import {BUBBLE_ROLES,bubbleRole} from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 import {assetURL} from './asset.js?v=cb684ea278b2dc6b1457e951b71d22eea4538d738b252e9abd7f743632acdfd4';
@@ -51,7 +51,8 @@ export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGe
   membrane.glow = Math.max(0, membrane.glow - dt * 1.4);
   const light = Math.max(membrane.glow, replayGlow);
   bubbleStep(membrane, body, dt, false, bubbleFlow(body, game.bodies), !isSeed && (!!effectGet(game, 'stasis')?.targets.includes(body.id)||regionFrozen(game,body.id)));
-  const points = bubbleOutline(membrane, body).map(point => ({ x: Math.max(RULE.inset, Math.min(RULE.width - RULE.inset, point.x)), y: Math.max(RULE.inset, Math.min(RULE.height - RULE.inset, point.y)) }));
+  const bounds=poolBounds(game);
+  const points = bubbleOutline(membrane, body).map(point => ({ x: Math.max(bounds.inset, Math.min(bounds.width - bounds.inset, point.x)), y: Math.max(bounds.inset, Math.min(bounds.height - bounds.inset, point.y)) }));
   const skin = bubbleRender(context, body, points, hue, {isSeed,isBubble,isPermeable,light,lowQuality:isGentle,skinStyle:isSeed&&body.id===0?skinStyle:'',skinRotation:portraitView?-Math.PI/2:0});
   context.save(); context.clip(skin);
   if (!isSeed) {

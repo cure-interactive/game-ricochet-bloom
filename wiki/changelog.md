@@ -6,6 +6,21 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.25.1
+
+Build: 2026-11-15 10:54:03 UTC
+
+### Player Changes
+
+- Keep bubbles and the player fully shaped throughout the expanded Main Menu and Casual pool, including the lower part of tall phone screens.
+
+<!-- development -->
+### Developer Notes
+
+- Use shared physical pool bounds for membrane outline clipping. Remove the remaining fixed scored-board clamp; retain the original inset for scored play.
+- Cover player and ordinary bubbles beyond the old board limits, actual viewport edges and both quality levels with a geometry regression.
+<!-- /development -->
+
 ## v3.25.0
 
 Build: 2026-11-15 10:48:37 UTC

@@ -1,7 +1,7 @@
-import { menuLayoutMount } from './menu-title.js?v=d4bf86e7213c731d730e21a18434530736db3a495255efdd347bb55894400034';
+import { menuLayoutMount } from './menu-title.js?v=3efa75c41220d77bf5f5957a3edda60671f8e4c885d78efbe3ec92c7ac84a27e';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { buttonHTML } from './ui-icon.js?v=888786437685208af4de5b05ebc18f1a101f52f9783e909022cd0ea8e19dc5a6';
-import { menuBackgroundMount } from './menu-background.js?v=6dd327ec1303120ef0c9836956e866772948a54894a06b90d267c390114f98f2';
+import { menuBackgroundMount } from './menu-background.js?v=ecc5aa4b0f43ee95fe4b11978cc31a0a33a0d45b18224a873a2d48302e19cc90';
 
 import { driftMount } from './drift-ui.js?v=12ebc56f67f6014dceb59e4ea177d346a40a3dc3c55c5abfeab0d9f871122538';
 
