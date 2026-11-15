@@ -1,6 +1,25 @@
 // A classic script keeps recovery available even when a game module cannot load.
 (function () {
   'use strict';
+  // Cancel browser magnification, not propagation: map gestures keep their input.
+  // CSS handles double-tap/pinch intent; these guards also cover WebKit gestures
+  // and desktop trackpad/keyboard zoom before the game modules are available.
+  function preventPageZoom(event) { if (event.cancelable) event.preventDefault(); }
+  var zoomOptions = { capture: true, passive: false };
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (type) {
+    window.addEventListener(type, preventPageZoom, zoomOptions);
+  });
+  window.addEventListener('touchmove', function (event) {
+    if (event.touches.length > 1) preventPageZoom(event);
+  }, zoomOptions);
+  window.addEventListener('wheel', function (event) {
+    if (event.ctrlKey || event.metaKey) preventPageZoom(event);
+  }, zoomOptions);
+  window.addEventListener('keydown', function (event) {
+    if (!(event.ctrlKey || event.metaKey) || event.altKey) return;
+    if (['+', '=', '-', 'Add', 'Subtract'].indexOf(event.key) !== -1) preventPageZoom(event);
+    // Keep Ctrl/Cmd+0 available to reset zoom imposed through browser chrome.
+  }, true);
   // Apply before modules load, including menus, dialogs and startup recovery.
   window.addEventListener('contextmenu', function (event) { event.preventDefault(); }, true);
   ['pointerdown', 'pointerup', 'mousedown', 'mouseup', 'auxclick'].forEach(function (type) {
