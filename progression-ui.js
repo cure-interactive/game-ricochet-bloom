@@ -7,7 +7,7 @@ import { medalIcon } from './medal-ui.js?v=9792b2d8e2643e06247bd19cd073ef092a653
 
 import { earningPrepare, earningId } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 import { profilePlayReward, profileDevelopmentCopy, profileRename, profileName } from './profile.js?v=35ee447af313fddd4644b3ddab21f1d923caeb0ab83ece6417e1b84c61b8fe01';
-import { developmentBarMount } from './development-bar.js?v=e8a4107c18e63972339e4ebbcbb4b5515eaf0f1157c1701ebc1f6654895338bd';
+import { developmentBarMount } from './development-bar.js?v=cf812ec2056e4230d92ad9837b715fe285403eb753c12d448fa1245d02a9d283';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { campaignMount } from './campaign-ui.js?v=51fc362494aa3566f6f70e6a499b2551e0df199bd0226f8d5bb89a8301bf5de1';
 import { challengeEncode, challengeDecode } from './challenge.js?v=5498ed0ab7508a847b77aa9b764d77053ea0b4d3a1032118700f9afe91725966';

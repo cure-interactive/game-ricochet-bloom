@@ -6,6 +6,25 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.26.1
+
+Build: 2026-11-15 17:07:05 UTC
+
+### Player Changes
+
+- Keep Home, Casual, Pause and menu bars on the same screen bounds when Safari or app mode changes the available space.
+- Avoid extra bottom clearance when browser controls already cover that area.
+- Keep the Development strip thin, its text readable, and its position steady when opening menus.
+
+<!-- development -->
+### Developer Notes
+
+- Measure the dynamic CSS viewport together with its safe-area insets; keep keyboard and older-browser fallbacks without guessing device chrome from screen dimensions.
+- Anchor the Development strip to the shared app-height boundary and avoid reopening its popover on same-layer navigation.
+- Include measured viewport, effective safe insets, profile reservation and installed-app state in Diagnostics.
+- Cover stale window heights, partial browser-chrome overlap, keyboard restoration, orientation changes and popover layer transitions.
+<!-- /development -->
+
 ## v3.26.0
 
 Build: 2026-11-15 16:31:35 UTC

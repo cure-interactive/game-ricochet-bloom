@@ -29,15 +29,20 @@ export function developmentBarMount(doc=document){
   if(panel)panel.hidden=!(playing&&(campaign||active&&expanded));
  }
  toggle.onclick=()=>{if(!active||toggle.hidden)return;expanded=!expanded;disclosure();};
+ let layer=null;
  function refresh(){
   stack=stack.filter(d=>d.open&&d.isConnected);
   disclosure();
-  if(popover&&bar.matches(':popover-open'))bar.hidePopover();
   const visible=active&&!['drift','drift-pause'].includes(doc.body.dataset.screen);
+  const nextLayer=stack.at(-1)||doc.body;
+  // Reorder only when the modal layer changes. Preserve the rendered text layer
+  // across ordinary screen mutations instead of repeatedly hiding/reopening it.
+  if(popover&&bar.matches(':popover-open')&&(!visible||nextLayer!==layer))bar.hidePopover();
   bar.hidden=!visible;
   if(!visible){measure();return;}
-  if(popover)bar.showPopover();
+  if(popover){if(!bar.matches(':popover-open'))bar.showPopover();}
   else {const parent=stack.at(-1)||doc.body;if(bar.parentNode!==parent)parent.append(bar);}
+  layer=nextLayer;
   measure();
  }
  const observer=new doc.defaultView.MutationObserver(records=>{

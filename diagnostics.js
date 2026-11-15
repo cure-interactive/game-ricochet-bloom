@@ -49,6 +49,13 @@
     try { var value = new URL(module.src).searchParams.get('v'); if (/^[a-f0-9]{64}$/.test(value)) checksum = value; } catch (_) {}
     var runtime;
     try { runtime = context(); } catch (_) { runtime = {}; }
+    var layout = 'unavailable';
+    try {
+      var css = window.getComputedStyle(document.documentElement);
+      layout = ['viewport-height','profile-bottom-space','safe-area-top','safe-area-right','safe-area-bottom','safe-area-left'].map(function (key) {
+        return key + '=' + (css.getPropertyValue('--' + key).trim() || '0px');
+      }).join(', ');
+    } catch (_) {}
     return [
       'Ricochet Bloom Diagnostics',
       'Version: ' + (version ? version.content : 'unknown'),
@@ -60,6 +67,8 @@
       'Online: ' + navigator.onLine + ' | Secure context: ' + window.isSecureContext,
       'Viewport: ' + window.innerWidth + ' x ' + window.innerHeight + ' | Pixel ratio: ' + window.devicePixelRatio,
       'Visual viewport: ' + (viewport ? Math.round(viewport.width) + ' x ' + Math.round(viewport.height) + ', scale ' + viewport.scale : 'unavailable'),
+      'Layout: ' + layout,
+      'Installed app: ' + Boolean(navigator.standalone || window.matchMedia && window.matchMedia('(display-mode: standalone)').matches),
       'Startup: ' + clean(body.dataset.startup) + ' | Screen: ' + clean(body.dataset.screen),
       'Profile: ' + (body.dataset.development === 'true' ? 'development' : 'normal or not initialized'),
       'Clipboard API: ' + Boolean(navigator.clipboard && navigator.clipboard.writeText),

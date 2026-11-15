@@ -1,4 +1,4 @@
-import { menuLayoutMount } from './menu-title.js?v=deb1df3e21e363f29b40bf8bb9c2145912086a573ecdd26cd852c6361265c989';
+import { menuLayoutMount } from './menu-title.js?v=6fdb5ee6837c7708c76905274086e01876f7562e65ddbb8fbafd0a9d422228a7';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { buttonHTML } from './ui-icon.js?v=8551bed13f7a48d36a919c6b5d9290c16f3a19271f3ead8585eb9fdb1abdae6b';
 import { menuBackgroundMount } from './menu-background.js?v=11d62823f3e3c5af3abb275ca1495fdde40377bf96545374b8d3a6e97cf2377f';
