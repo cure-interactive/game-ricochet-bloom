@@ -31,13 +31,13 @@
 :root body #development-dialog.standard-dialog > .dialog-heading { display: flex; }
 :root body #development-dialog.standard-dialog > .dialog-heading h2 { flex: 1; }
 
-/* The pool gets all remaining height; two compact rows hold live information. */
+/* Edge-to-edge gameplay; the HUD is one continuous bottom surface. */
 body > main, body > main:has(.phrase-panel[hidden]) {
   grid-template-columns: minmax(0,1fr);
   grid-template-rows: minmax(0,1fr) auto auto auto auto;
-  gap: 4px; padding: 0 10px 6px;
+  max-width: none; margin: 0; gap: 0; padding: 0;
 }
-.pool-shell { grid-column: 1; grid-row: 1; position: relative; overflow: hidden; }
+.pool-shell { grid-column: 1; grid-row: 1; position: relative; overflow: hidden; border: 0; border-radius: 0; }
 body > main > .hud { pointer-events: auto; grid-column: 1; grid-row: 2; display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,.8fr) minmax(0,.65fr) minmax(0,1fr); gap: 6px; min-height: 52px; padding: 4px 8px; }
 .hud-balance { display: contents; }
 .hud-balance .score { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex-wrap: nowrap; text-align: center; }
@@ -92,7 +92,7 @@ body > main .control-strip, main:has(.phrase-panel[hidden]) .control-strip { gri
   .hud-actions .bonus-card { padding-inline: 0; column-gap: 2px; }
 }
 @media(max-height:500px) and (min-width:480px) and (orientation:landscape) {
-  body > main, body > main:has(.phrase-panel[hidden]) { max-width: 1200px; grid-template-columns: minmax(0,1fr) 210px; grid-template-rows: auto auto auto minmax(0,1fr) auto; gap: 6px 10px; }
+  body > main, body > main:has(.phrase-panel[hidden]) { grid-template-columns: minmax(0,1fr) 210px; grid-template-rows: auto auto auto minmax(0,1fr) auto; gap: 0; }
   .pool-shell { grid-column: 1; grid-row: 1/-1; }
   body > main > .hud { grid-column: 2; grid-row: 1; grid-template-columns: repeat(2,minmax(0,1fr)); }
   .hud-actions { grid-column: 2; grid-row: 2; grid-template-columns: repeat(2,minmax(0,1fr)); }

@@ -111,7 +111,7 @@
   margin: 10px auto 12px; padding: 20px; min-width: 0;
 }
 /* The compact HUD has two reading cards without taking more play-area height. */
-body > main > :is(.hud,.hud-actions) { background: var(--reading-surface); border-radius: 12px; box-shadow: inset 0 0 0 1px var(--reading-edge); padding-inline: 8px; }
+body > main > :is(.hud,.hud-actions) { background: var(--reading-surface); border-radius: 0; box-shadow: inset 0 1px var(--reading-edge); padding-inline: 8px; }
 #main-menu .home-support { background: var(--reading-surface); border: 1px solid var(--reading-edge); border-radius: 12px; }
 @media(max-width:380px) {
   :root body .reading-card { padding: 14px; }
