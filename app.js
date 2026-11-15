@@ -11,19 +11,19 @@ import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-att
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=302a95ddf6f5defb9295bdcef741d700fd9628bac0b9e50e8559c7fc2f34a146';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 import { trialMount } from './trial-ui.js?v=a90e533b7bb466b04fc7667c51e3b3cde3f9eff1de393f26e20b2503de108f8f';
-import { GAME_VERSION } from './version.js?v=76a3c04e5b6757eb77fd221e89bfc35b11ae5680ecefe0bf272abd044152f5c8';
+import { GAME_VERSION } from './version.js?v=b8d791582b037653e184381e4529fdb7c363fbbfd19dfba0f6b3166ae75295e3';
 import { powerSlots } from './power-ui.js?v=9720961dac01caf126fcaba12b411a16449e20d752331d40db00b8e785b041fb';
-import { creditsMount } from './credit.js?v=fa8b0667de3fac9f6941d55b2edad6684a97c324d614de748866899bc5f19bd7';
+import { creditsMount } from './credit.js?v=be23e70294ac490ab1daa386fd6f0bf09cc7d52f80d2f3dcc7a4fb0adde76788';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=c76004d132b2ea92ec0cecf92a15fae0a4ec85781d19df28f70222f5ed78b04a';
 import { edgeBackMount } from './edge-back.js?v=75f5791874de475329f0a00896d84ad6373bdc5691516a2e87a460f65b517ec1';
-import { wikiMount } from './wiki.js?v=ee3f62c05571da53137175ad7b49ab9a97a30bbf23ffd4e25862e137722d1aea';
+import { wikiMount } from './wiki.js?v=3bda84c6e4df70ec8bae5b988d179cebe624e14cb901de8f1c4a45674ce5b6c7';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { POOL_NAMES } from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302dff937b1bbfdae8fb6c8ea56';
 import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=409e1eb57ba278752223f7eb788efb6deba4562df6daf6e206ef5067994254b6';
 import { fullscreenMount } from './fullscreen.js?v=cb14fbf69f5ec5f57f148e717b710364fca7d56ab8cc957b9a02a98e2ff45fa9';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=cc7535c20c90f8b8eae71c202f0fcfe7708ea4b000c5a4fb93c1df2adda93319';
+import { gameMenuMount } from './game-menu.js?v=a0fc0c7ae7096c184ae0685700a95359750097b33ca383d63fa94f6db5b71e8d';
 import { environmentRender, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
 import { progressionMount } from './progression-ui.js?v=20fc46fd0a4b6a133c0e62270b470c173449983194063516719ac4a6bb5504b2';
@@ -615,16 +615,16 @@ navigation=gameMenuMount({
   freePlay, wavesPlay,
   info(){if(preferences.lastPlay==='score-attack'){const attack=scoreRead(localStorage,progression.trialKind,preferences.scoreBudget||SCORE_DEFAULT).entry;if(attack&&!attack.game.isOver)return {resume:{artwork:assetURL('artwork/mode/score-attack.svg'),detail:`Score Attack · ${attack.game.attack.budget} Shots · ${attack.game.plucks} Left`}};}const wave=store.pools.waves;if(preferences.lastPlay==='waves'&&wave&&!wave.game.isOver)return {resume:{artwork:assetURL('artwork/pool-512.png'),detail:`Endless Waves · Wave ${wave.game.wave.number} · ${wave.game.plucks} Shots Left`}};const s=progression.state;if(s.phase==='shop')return {resume:null};const next=s.phase==='interlude',pool=s.pool+(next?1:0);return {resume:{artwork:assetURL('artwork/'+s.track+'.svg'),detail:trackGet(s.track).name+' · '+(next?'Next: ':'')+'Pool '+(pool+1)+' — '+POOL_NAMES[pool]}};},
   continue(){if(preferences.lastPlay==='score-attack'){const attack=scoreRead(localStorage,progression.trialKind,preferences.scoreBudget||SCORE_DEFAULT).entry;if(attack&&!attack.game.isOver){scorePlay(preferences.scoreBudget||SCORE_DEFAULT);return;}}if(preferences.lastPlay==='waves'&&store.pools.waves&&!store.pools.waves.game.isOver){wavesPlay();return;}if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
-  open(screen){if(screen==='gamemodes')trials.gallery();else if(screen.startsWith('gamemodes:'))trials.gallery(screen.slice(10));else if(screen.startsWith('pool-setup:'))trials.poolSetup(screen.slice(11));else if(screen==='score-setup')trials.scoreSetup();else if(screen==='trial-setup')trials.setup();else if(screen==='experiment-hub')trials.hub();else if(screen==='experiment-family')trials.family();else if(screen==='experiment-detail')trials.detail();else if(screen==='pause')$('menu-dialog').showModal();else if(screen==='levels')progression.campaign('tracks');else if(screen==='player')playerMenuScreen.open();else if(screen==='stats')playerStatsScreen.open();else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='player-upgrades')progression.players();else if(screen==='wiki')wiki.open();else if(screen==='help')wiki.open('how-to-play');else $('settings-dialog').showModal();}
+  open(screen){if(screen==='gamemodes')trials.gallery();else if(screen.startsWith('gamemodes:'))trials.gallery(screen.slice(10));else if(screen.startsWith('pool-setup:'))trials.poolSetup(screen.slice(11));else if(screen==='score-setup')trials.scoreSetup();else if(screen==='trial-setup')trials.setup();else if(screen==='experiment-hub')trials.hub();else if(screen==='experiment-family')trials.family();else if(screen==='experiment-detail')trials.detail();else if(screen==='pause'||screen==='drift-pause'){if(screen==='drift-pause')$('menu-mode').textContent='Casual';$('menu-dialog').showModal();}else if(screen==='levels')progression.campaign('tracks');else if(screen==='player')playerMenuScreen.open();else if(screen==='stats')playerStatsScreen.open();else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='player-upgrades')progression.players();else if(screen==='wiki')wiki.open();else if(screen==='help')wiki.open('how-to-play');else $('settings-dialog').showModal();}
 });
 fullscreenMount(document,window);
 edgeBackMount(document,window);
 $('welcome').hidden=true;
 $('menu-home').onclick=()=>navigation.home();
 $('pause-home').onclick=()=>navigation.home();
-$('menu-resume').onclick=()=>start();
-$('menu-dialog').querySelector('[data-close]').onclick=()=>start();
-$('menu-dialog').addEventListener('cancel',event=>{event.preventDefault();start();});
+$('menu-resume').onclick=()=>navigation.resume();
+$('menu-dialog').querySelector('[data-close]').onclick=()=>navigation.resume();
+$('menu-dialog').addEventListener('cancel',event=>{event.preventDefault();navigation.resume();});
 $('menu-wiki').onclick=()=>wiki.open();
 $('menu-help').onclick=()=>wiki.open('how-to-play');
 $('menu-settings').onclick=()=>$('settings-dialog').showModal();
