@@ -1,9 +1,9 @@
-import { menuLayoutMount } from './menu-title.js?v=6fdb5ee6837c7708c76905274086e01876f7562e65ddbb8fbafd0a9d422228a7';
+import { menuLayoutMount } from './menu-title.js?v=69625888828a7d4d0b686b64e2299842de3b0f5962c0ae6258b406a8dd4631b5';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { buttonHTML } from './ui-icon.js?v=8551bed13f7a48d36a919c6b5d9290c16f3a19271f3ead8585eb9fdb1abdae6b';
-import { menuBackgroundMount } from './menu-background.js?v=11d62823f3e3c5af3abb275ca1495fdde40377bf96545374b8d3a6e97cf2377f';
+import { buttonHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
+import { menuBackgroundMount } from './menu-background.js?v=601e4a01e33349b130a7f4ef74c1f2a6c11b74c73702349898070763ab7b895d';
 
-import { driftMount } from './drift-ui.js?v=c7fdf32fa20066b912b2d3d2652d9ce309ade3a26c2234f154c51ed03c1bdfc5';
+import { driftMount } from './drift-ui.js?v=fd99f8c6ae897edd694343813e31d856640c2e27bb9fdc259bad31abc4bfdbe1';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {

@@ -1,6 +1,6 @@
 # Player
 
-Open **Player** from the main menu to view your equipped skin. Appearance groups **Skins**, **Trails** and **Bounces** together; **Skills** and **Stats** sit below.
+Open **Player** from the main menu to view your equipped skin. Appearance groups **Skins**, **Trails** and **Impacts** together; **Skills** and **Stats** sit below.
 
 ## Player Viewer
 
@@ -16,9 +16,9 @@ Common through Mythic shop skins cost Points. Sea Glass is Common, Frost Crystal
 
 Unlock & Equip purchases a skin once. Owned skins can be equipped freely. Original is always free, and completing campaign tracks still unlocks their existing skins. Inspecting a skin never equips it or spends Points.
 
-## Trails and Bounces
+## Trails and Impacts
 
-Open **Player → Trails** or **Bounces**. Tap a style to see an animated preview before buying. The preview stays visible while you scroll the choices. Each card shows the actual effect, and the Player buttons show your equipped styles. Trails follow your moving player; bounces appear at player contacts and fade away smoothly.
+Open **Player → Trails** or **Impacts**. Tap a style to see an animated preview before buying. The preview stays visible while you scroll the choices. Each card animates the actual effect, and the Player buttons animate your equipped styles. Hidden previews pause and keep their state. Trails follow your moving player; impacts appear at player contacts and fade away smoothly.
 
 - Common styles cost 60 Points.
 - Rare styles cost 120 Points.
@@ -26,6 +26,8 @@ Open **Player → Trails** or **Bounces**. Tap a style to see an animated previe
 - Legendary styles cost 360 Points.
 - Mythic styles cost 550 Points.
 - Original options remain free. Purchases are permanent within the current profile, and equipping an owned style is free.
+
+Mythic Aurora adds a short rising sound when you launch. Mythic Prismatic Nova adds a crystalline accent to player impacts. Tap **Preview Sound** to hear either before purchasing. Sounds follow master volume and mute; gallery animations stay silent. Rapid impacts are limited to keep audio clear.
 
 Cosmetics do not alter power, speed, score or rewards. Your selections appear in normal play, experiments, Casual and the menu background. Power effects retain their own important visual feedback. Normal and Development purchases are separate.
 

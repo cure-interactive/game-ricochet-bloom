@@ -1,4 +1,4 @@
-import {registerPlayerBubble} from './player-bubble.js?v=db00eb60f268220dec856a552f027d5165aaf0438dea7683d2f1c329a3ff87a0';
+import {registerPlayerBubble} from './player-bubble.js?v=073381ecba704220fe3ac4e3e6aba137803b4ee19cc9936af429a2af5263883d';
 if(typeof window!=='undefined')registerPlayerBubble();
 import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 // Decorative icons share one renderer. player-skin uses the equipped skin

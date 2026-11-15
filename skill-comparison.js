@@ -1,8 +1,8 @@
 import { skillCurve } from './skill-curve.js?v=487d6e76fcacb5f6c7c211da88aa6a45585c6a4cb44edf561da652e91e7e93da';
 import { skillConfig } from './skill-effect.js?v=9714f4318d0faebb1d4b65dc36b658da67a2d7fc6d636415a8457aa9c75be2a7';
 import { POWER_TREES } from './power-tree.js?v=63bf3b6b2e1c95b8d713d9766c92c3aa21f8a54787e198cb02d92fd99216d23a';
-import { profilePurchase, profileDevelopmentCopy, unlockedResolve } from './profile.js?v=35ee447af313fddd4644b3ddab21f1d923caeb0ab83ece6417e1b84c61b8fe01';
-import { GAME_CATALOGUE as cat } from './run.js?v=2c9754babc86b1c700f2dc5099532f357f6f72bbb9f3b309dc7d9559ff3b6f11';
+import { profilePurchase, profileDevelopmentCopy, unlockedResolve } from './profile.js?v=ff3af513f440e9b41048a058ead26903ec9c9e5006b2c39da30f534cd339ab33';
+import { GAME_CATALOGUE as cat } from './run.js?v=092dcb31aec037c2c2e756df3cc28906975a53fd312f249b8265916dc20ffdcc';
 
 const on=value=>value?'On':'Off';
 const number=value=>Number(value.toFixed(2));

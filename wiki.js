@@ -1,12 +1,12 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { screenHeader } from './screen-header.js?v=15bce8133223b9e41fb2955f06dcf847cc767d4f64307c602442b86117ae056e';
+import { screenHeader } from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { iconHTML } from './ui-icon.js?v=8551bed13f7a48d36a919c6b5d9290c16f3a19271f3ead8585eb9fdb1abdae6b';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=a721655a348115bd186006cfbf2d5ddb8951d9bb7c561ef850b67d8cd6683003';
+import { iconHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=c19834ceda744639dd95c77b8bcc82706b3dde6c5899c2cc278f7c865cc0cc03';
 
 export const WIKI_PAGES = Object.freeze({
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=83ec91bbd69b6a1c504b0710ec09d994d56c85fcc3bf2a8b980fd1e0a8484bdd' },
-  player: { title: 'Player', url: './wiki/player.md?v=8f271739e8e428d0b8914318f506d163a2fa52137232c524d020700dcaa2239e' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=3dc96d296a2809119fefa9a2dfa4084e83d049cf46f8dbe9741519df703aa42f' },
+  player: { title: 'Player', url: './wiki/player.md?v=b48bfc1140a1c681209bb3a6a652348f8a1206b13c9360d72733275c551b5912' },
   developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=5a192f78afff1d6cd08db60e29cd76208c9b6dd296ed2cdf78e7ed1b3b8ec237' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=9cf0c1f86dc0b5d81237bff4186f4c3677f214f72ca0deafb00e5f1b83cc5e1a' },
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=688714c1fe057d6c0da78a5f38b32cd4bc3fe0e712812b248e9d7552b6c54daf' },
@@ -14,7 +14,7 @@ export const WIKI_PAGES = Object.freeze({
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=bcc53ccc28d9448fac1a1999a369dd0894c4055ec043e93d2617ada4021b42af' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=098cf34319a05e8059d9c4187245cb1ae034fe391bd89c3e9043ea1cc42b6e99' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=4e08b2d008852d41213a6e03331c273444ea48779b0a21126bfc0a47d1562fb8' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=543ce8c11fb5723231312405b2d53945c5e12fa5d38a6b72224c5e12dcfa3e8a' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=a5a4ffc4af204a9d661881069bd1adbd288db6a1ea3048bd381751a1a98e76a6' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=7a28e512643ce0faf78d4f9020b8a6e8d56a536f4d64caa116560a40390460e3' },
@@ -108,7 +108,7 @@ export function wikiMount(host) {
   document.body.append(dialog);
   const article=dialog.querySelector('article'), title=dialog.querySelector('h2'), contents=dialog.querySelector('[data-wiki-contents]');
   let current={page:'wiki',anchor:''}, request=null;const history=pageHistory(current,target=>target.page);
-  function position(anchor){const heading=anchor&&article.querySelector('#'+anchor);if(heading)revealWikiHeading(heading);else article.scrollTop=0;}
+  function position(anchor){if(current.page==='player'&&anchor==='trails-and-bounces')anchor='trails-and-impacts';const heading=anchor&&article.querySelector('#'+anchor);if(heading)revealWikiHeading(heading);else article.scrollTop=0;}
   const available=page=>wikiPageAvailable(page,host.development?.()===true);
   async function load(target, remember=true) {
     if(!available(target.page)){target={page:'wiki',anchor:''};history.reset(target);remember=false;}

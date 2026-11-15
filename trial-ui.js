@@ -1,13 +1,13 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=35ae279ae6932928562e960c4333af77f4f1afda10bf8702ea90f75ac7acae2c';
+import {CosmeticVisual} from './cosmetic-visual.js?v=1f640ece765639eb262e5d176ef2852715c65b89f2f09139a1b0716a366b6906';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {bubbleRender} from './bubble-render.js?v=17568e8082c50add06a13b44e7a1f3b5d3a282771e4f420fb68c8fb14028695d';
+import {bubbleRender} from './bubble-render.js?v=c737019c0f2253fce960b1d1c5e7e2887dc8f4353a005295a2f0e21a14ff3e6a';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 const renderReady=frameGate();
-import { gamemodeMount } from './gamemode-ui.js?v=22697ea136311b9c04e6ea37f91b4ee96103972c4a2c78d1b1850a21c4edfbd6';
+import { gamemodeMount } from './gamemode-ui.js?v=aaff7a655de6563068aee7e404cdf8cac81b5f4192937ad8dbbe965898d81bf6';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=9792b2d8e2643e06247bd19cd073ef092a6535778d01d4ac3dae8a72dae97539';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=cb1239d459734c6f9be44ad4762f547277da8fc66ff98164482c5bbefd917891';
 import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { screenHeader } from './screen-header.js?v=15bce8133223b9e41fb2955f06dcf847cc767d4f64307c602442b86117ae056e';
+import { screenHeader } from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
 import { songKeep } from './song.js?v=86145f0ef4ef602700690f402f88b49e113f92abeae29e29e2d088858cdc446e';
 import { melodyDraw } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { experimentRewarded, experimentGoal, EXPERIMENT_RECIPES } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
@@ -15,7 +15,7 @@ import { experimentMedal, experimentRead, experimentSave, experimentWrite, exper
 import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialForGeneration,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=ee88fa6819c43397fd16a782519a3e055707b4f141bd667e1be4ec2db2f3209a';
 import { trialRead,trialWrite } from './trial-store.js?v=255056b814040c9a76665cbb7a364a84d8e3de0f2db46032210bf13e62f9f0ee';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { buttonHTML } from './ui-icon.js?v=8551bed13f7a48d36a919c6b5d9290c16f3a19271f3ead8585eb9fdb1abdae6b';
+import { buttonHTML } from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
 const button=(id,label,icon='arrow-left')=>buttonHTML(label,icon,{id});
 const color={'music-note':'#a4f4cf','beat-gate':'#eb9bcd','sound-hazard':'#ff8b91',instrument:'#f2d279',keeper:'#ff8b91',gate:'#9ce6cf',power:'#c4a7ff',payload:'#ffb56e',player:'#f6f5cf',target:'#ed82bd',blast:'#ffb56e',fire:'#ff765f',gas:'#cadb78',cell:'#a4f4cf',cargo:'#8edbff',plug:'#c6b4ff',vent:'#bf89e8',mote:'#ec8ed7',mud:'#bba18c',spike:'#fa8c91'};
 export function trialMount(host){
@@ -27,7 +27,7 @@ export function trialMount(host){
   const cosmetic=new CosmeticVisual();let playerMembrane=bubbleCreate();
   let game=null,paused=false,blocked=false,angle=0,power=.7,drag=null,oldMusic=null,frame=0,last=0,accumulator=0,lastSaved=0,flashes=[],bestMedal=null;
   const active=()=>!!game&&play.open;
-  function effects(events){cosmetic.configure(host.cosmetics?.());for(const e of events){if(e.type==='cosmetic-hit'){cosmetic.hit(e.x,e.y);bubbleHit(playerMembrane,trialPlayer(game).r,e.nx||1,e.ny||0,e.speed||150);continue;}host.sound.eventPlay({...e,id:e.type==='note'?(e.id-1)%20+1:e.id});if(['blast','pop','damage','objective'].includes(e.type))flashes.push({...e,life:e.type==='blast'?.55:.3});}}
+  function effects(events){cosmetic.configure(host.cosmetics?.());for(const e of events){host.sound.cosmeticPlay?.(host.cosmetics?.(),e);if(e.type==='cosmetic-hit'){cosmetic.hit(e.x,e.y);bubbleHit(playerMembrane,trialPlayer(game).r,e.nx||1,e.ny||0,e.speed||150);continue;}host.sound.eventPlay({...e,id:e.type==='note'?(e.id-1)%20+1:e.id});if(['blast','pop','damage','objective'].includes(e.type))flashes.push({...e,life:e.type==='blast'?.55:.3});}}
   function save(){
     if(!game)return true;let stored=false;
     if(game.setup){const read=experimentRead(localStorage,game.kind);try{stored=read.ok&&experimentWrite(localStorage,game.kind,experimentSave(read.library,game,host.sound.musicSave()));if(stored)bestMedal=experimentMedal(experimentRead(localStorage,game.kind).library,game.setup);}catch{stored=false;}}

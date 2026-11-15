@@ -1,8 +1,9 @@
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=93b35985fdd4a57c460799ea92460242b39f4e3576bf6b7de2cf226d83a382e4';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=c0db179bcb018380a8604c761694e0021f5b46aae7b41ff0986bf44e98136bce';
+import {cosmeticGet} from './cosmetic.js?v=2bb18d2e076499e68b09a42197f9a740fe84fa04b929d8919c5848590fd93936';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
-import { PoolMedia } from './media.js?v=42206823008eebd9530df8b1b80e68f018a4f6166997fe4f81d452857a7a0ae4';
+import { PoolMedia } from './media.js?v=85e5401f1351f21e3f9a6176997476dbc7e535666ab9c15da4f659b571f2c79a';
 import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, musicPower, bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
@@ -71,7 +72,7 @@ export class PoolSound {
     if(this.media){this.media=new PoolMedia(mediaEnv);if(mediaKey)this.media.describe(mediaKey);}
     try{void this.context?.close?.().catch(()=>{});}catch{}
     this.context=null;this.master=null;this.musicInput=null;this.musicOutput=null;this.delay=null;
-    this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.clockSample=null;this.resumeTimedOut=false;
+    this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};
   }
   harmonySet(blooms) {
     const count = Number.isSafeInteger(blooms) && blooms > 0 ? blooms : 0;
@@ -133,7 +134,7 @@ export class PoolSound {
   }
   musicVoice(event) { instrumentNote(this,event); }
   musicPercussion(event) { instrumentPercussion(this,event); }
-  pauseSet(value,{ambient=false}={}) { this.isPaused=value; this.keepAmbient=value&&ambient; if(value&&!ambient)this.phraseClear(); this.mixUpdate(); }
+  pauseSet(value,{ambient=false}={}) { this.isPaused=value; this.keepAmbient=value&&ambient; if(value){this.cosmeticStop();if(!ambient)this.phraseClear();} this.mixUpdate(); }
   notePitch(tone) { return this.harmony ? frequency(this.harmony.notes[tone % 5]) : SCALE[tone % 5]; }
   settingsSet(volume, isMuted) { this.volume = volume; this.isMuted = isMuted; if (isMuted) this.phraseClear(); if (this.master) this.master.gain.setTargetAtTime(isMuted ? 0 : volume * .48, this.context.currentTime, .03); this.mixUpdate(); }
   tone(frequency, end, duration, level, pan = 0, offset = 0, type = 'sine', echo = false, phrase = false, { allowPaused = false,group } = {}) {
@@ -230,6 +231,26 @@ export class PoolSound {
     this.tone(pitch,back?330:pitch*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true});
     if(kind==='confirm')this.tone(880,880,.09,.055,0,.055,'sine',false,false,{allowPaused:true});
     this.uiCount=(this.uiCount||0)+1;
+    return true;
+  }
+  cosmeticStop(){voicesStop(this,'cosmetic');voicesStop(this,'cosmetic-preview');}
+  cosmeticPreviewStop(){voicesStop(this,'cosmetic-preview');}
+  cosmeticAudition(id){const item=cosmeticGet(id);return !!item&&this.cosmeticPlay({[item.kind]:id},{type:item.kind==='trail'?'launch':'cosmetic-hit'},{preview:true});}
+  cosmeticPlay(loadout,event,{preview=false}={}){
+    const kind=event.type==='launch'?'trail':event.type==='cosmetic-hit'||event.type==='wall'&&event.id===0||event.type==='impact'&&(event.a===0||event.b===0)?'bounce':null;
+    const item=cosmeticGet(loadout?.[kind]);
+    if(!kind||item?.kind!==kind||item.rarity!=='mythic'||!['aurora','nova'].includes(item.style))return false;
+    if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.isPaused&&!preview||globalThis.document?.hidden)return false;
+    voicesReap(this);if(preview)this.cosmeticPreviewStop();
+    if(this.voiceCount>40)return false;
+    const now=this.context.currentTime;this.cosmeticAt||={};
+    if(!preview&&now-(this.cosmeticAt[kind]??-Infinity)<(kind==='trail'?1.2:.22))return false;
+    if(!preview)this.cosmeticAt[kind]=now;
+    const pan=preview?0:poolPan(event.x,event.y,this.portrait),options={allowPaused:preview,group:preview?'cosmetic-preview':'cosmetic'};
+    // Original finite accents: a rising airy wake and a low crystalline impact.
+    // No feedback delay or continuing oscillator can accumulate between hits.
+    const notes=kind==='trail'?[[330,660,.6,.035,0,'sine'],[495,990,.55,.025,.1,'sine'],[990,1320,.45,.016,.2,'triangle']]:[[150,55,.18,.075,0,'sine'],[660,990,.42,.035,0,'sine'],[990,1320,.38,.025,.06,'triangle'],[1320,1760,.32,.016,.12,'sine']];
+    for(const [start,end,duration,level,offset,type] of notes)this.tone(start,end,duration,level,pan,offset,type,false,false,options);
     return true;
   }
   audition() {

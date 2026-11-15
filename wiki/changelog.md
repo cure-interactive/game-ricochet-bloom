@@ -6,6 +6,26 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.27.0
+
+Build: 2026-11-15 17:45:17 UTC
+
+### Player Changes
+
+- See animated Trail and Impact previews in the gallery and on your Player menu buttons.
+- Find Bounce Effects under their new name: Impacts. Your purchases and equipped styles stay the same.
+- Hear a rising chime when launching with the Mythic Aurora trail, and crystalline accents when Prismatic Nova hits a bubble or wall.
+- Try Mythic sounds with Preview Sound before unlocking a style. Tap again to replay immediately; previews follow master volume and mute.
+
+<!-- development -->
+### Developer Notes
+
+- Share the cosmetic renderer and visibility lifecycle across selected previews, gallery thumbnails and Player buttons; preserve live thumbnails when selection changes.
+- Route finite Mythic accents through existing pool, trial and Casual audio owners. Keep menu autoplay and animated thumbnails silent, throttle rapid impacts and stop preview voices on navigation or interruption.
+- Preserve bounce.* save IDs, the bounce-effects route and legacy Wiki anchors while changing player-facing terminology to Impacts.
+- Cover animated geometry, offscreen suspension, Mythic-only event routing, repeated audition cleanup, mute/volume gating and silent background simulation.
+<!-- /development -->
+
 ## v3.26.1
 
 Build: 2026-11-15 17:07:05 UTC

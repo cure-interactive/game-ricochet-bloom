@@ -1,4 +1,4 @@
-import {cosmeticGet} from './cosmetic.js?v=b8028cde82f815bfb83549964463189b74fb01825596e5000f4c12401aa3ae76';
+import {cosmeticGet} from './cosmetic.js?v=2bb18d2e076499e68b09a42197f9a740fe84fa04b929d8919c5848590fd93936';
 const tau=Math.PI*2;
 const line=(c,x,y,r,a)=>{c.moveTo(x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.55);c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);};
 // Cosmetics draw only: no collisions, random engine state, audio or rewards.

@@ -1,11 +1,11 @@
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=7c0e2142dde20d66dd2c7957684281dacb5d4421d118b3629e95b644ae910769';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=64bdd6cd70d57cc487bfb2b0b6c0bef450c1ba19b1b392d00e5a015b89702c03';
 import {playerSkillStats} from './player-skill-comparison.js?v=d84f646e1966b6549a8c282bc6d5a557b592fc6ee8b72be9c76d897efa1409e5';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {playerTreeGraph} from './player-tree.js?v=f1637448476e14d8810eba33f852b9715620335bf7f0c322aa4b4b6f02ddaf5c';
 import {mapCameraMount,nearestMapNode} from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
-import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=5a0343556014867bcff11f330ff535971ecc967220a5013516aa2e4de72dcffe';
-import {screenHeader} from './screen-header.js?v=15bce8133223b9e41fb2955f06dcf847cc767d4f64307c602442b86117ae056e';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=8551bed13f7a48d36a919c6b5d9290c16f3a19271f3ead8585eb9fdb1abdae6b';
+import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=db240ec5257f36aca8cbfec523e0e638ee0735c2100934d25e13c6b5ddb9423d';
+import {screenHeader} from './screen-header.js?v=b306cceabc9f0deeca788ec8e8c0d57e9e805cdc65dcedbc8a476126c9a29d1d';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
 
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 const rules='Every purchased upgrade stacks permanently. Open pools apply purchases between shots; Melody Journey applies them from the next pool. Score Attack fixes them at the start of a run. Fixed trials and shared challenges keep their authored rules.';

@@ -1,8 +1,8 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=35ae279ae6932928562e960c4333af77f4f1afda10bf8702ea90f75ac7acae2c';
+import {CosmeticVisual} from './cosmetic-visual.js?v=1f640ece765639eb262e5d176ef2852715c65b89f2f09139a1b0716a366b6906';
 import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=8444d11e2604fbfee7cc9ba89b61dde5b9b1c54204eca49c731d676c6dc3bde3';
+import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=cdb9cc50c02667b29df5c73e0f37f843f01318f6e4bbb76a955d1ac6a5652b09';
 import {PowerVisual} from './power-visual.js?v=b0415202ac7e2318e3d4f946ba4f712bec8859fcf97faa81a1d62cb1cccb4dbe';
 
 // One presentation owner for every physics pool: play, Casual and menu autoplay.

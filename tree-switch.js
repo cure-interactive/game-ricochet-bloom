@@ -1,4 +1,4 @@
-import {buttonHTML} from './ui-icon.js?v=8551bed13f7a48d36a919c6b5d9290c16f3a19271f3ead8585eb9fdb1abdae6b';
+import {buttonHTML} from './ui-icon.js?v=9daaa5e40972f69cf050ece173928b6fbd59e26e5df22d97963a2eb738cd6d08';
 export function treeSwitchHTML(current){
  return `<nav class="tree-switch" data-current="${current}" aria-label="Skills Views"><span class="tree-switch-selection" aria-hidden="true"></span>${[['powers','Powers','powers'],['player','Player','player-skin']].map(([id,label,icon])=>buttonHTML(label,icon,{'data-tree-view':id,'aria-pressed':id===current})).join('')}</nav>`;
 }

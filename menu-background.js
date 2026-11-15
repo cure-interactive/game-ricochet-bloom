@@ -2,11 +2,11 @@ import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066f
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleContactMount as menuContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
 export {menuContactMount};
-import {freePlayCreate,freePlayBuild} from './free-play.js?v=d8cddd1c22996bd89a8355e7bdc67aa9ca44e843d6529ed503e293b8d3180fcf';
+import {freePlayCreate,freePlayBuild} from './free-play.js?v=84c1283ff1af1a86937c3582a4b4650e69a38835a430acfce91ce450bdc6b62d';
 import {playerBuild} from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
-import {progressionCreate} from './run.js?v=2c9754babc86b1c700f2dc5099532f357f6f72bbb9f3b309dc7d9559ff3b6f11';
-import {menuMusicCreate} from './menu-music.js?v=c368d0299a2ef9830f9b62aaf0b52ddb60745504bf11207a1d89f68f521516f8';
-import {PoolVisual} from './pool-visual.js?v=54627dd8c8144ad74c2e7acb2cda8179122a02d66428a0351f9113b7aa7853d5';
+import {progressionCreate} from './run.js?v=092dcb31aec037c2c2e756df3cc28906975a53fd312f249b8265916dc20ffdcc';
+import {menuMusicCreate} from './menu-music.js?v=2843c3fd095048bf7904a2140cf66f0593d0e634db4d5d8e2c7304e554149b0d';
+import {PoolVisual} from './pool-visual.js?v=a4c82d8948972af911f675109d66526102a1755fd5f94a0b103b25a442244b1b';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
 import { bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView, menuPoolResize } from './menu-pool.js?v=0b5c07eac5ef4173f8d7da00f2fe5ee9727c47519b938fd37824f1538fccf955';
@@ -60,6 +60,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
       for(const event of menuPoolStep(pool,dt)){
         music.event(event);if(obscured)continue;
         visual.event(event,pool.game,gentle());
+        if(document.body?.dataset?.screen==='drift')music.cosmetic?.(event,profile().profile?.cosmetics);
       }
       music.update(bodiesFor(),menuPoolView(canvas.clientWidth,canvas.clientHeight).portrait);
       canvas.dataset.tick=String(pool.game.tick);canvas.dataset.covered=String(obscured);musicDiagnostics();
@@ -69,7 +70,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
   }
   const bodiesFor=()=>[...seedBodies(pool.game),...pool.game.bodies.slice(1)];
   function musicDiagnostics(){if(music.diagnostics)for(const [key,value] of Object.entries(music.diagnostics))canvas.dataset['music'+key[0].toUpperCase()+key.slice(1)]=String(value);}
-  function sync(){music.active(audible&&!document.hidden);musicDiagnostics(); cancelAnimationFrame(frame);frame=0;previous=0;if((active||audible)&&!document.hidden)frame=requestAnimationFrame(animate);}
+  function sync(){music.active(audible&&!document.hidden);if(!active||document.hidden)music.cosmeticStop?.();musicDiagnostics(); cancelAnimationFrame(frame);frame=0;previous=0;if((active||audible)&&!document.hidden)frame=requestAnimationFrame(animate);}
   function clear(){pool.contacts.clear();canvas.dataset.contacts='0';}
   document.addEventListener('visibilitychange',()=>{clear();sync();});window.addEventListener('resize',()=>{clear();sync();});
   // App height settles after the window event; redraw the actual canvas size.
