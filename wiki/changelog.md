@@ -12,6 +12,8 @@ Developer notes appear inside each version below.
 
 - Use the skill-tree icon for the Powers navigation button.
 - Give UI section subtitles matching icon prefixes and improve Diagnostics spacing.
+- Give both Skills legends better panel padding and section spacing while retaining icon-to-label spacing.
+- Slide the selected background smoothly between the Powers and Player tabs, including when reversing direction.
 - Group Development settings by purpose, with the Points amount beside Add Points and quick additions underneath.
 - Match Import Backup and Export Backup buttons, using the Cure Interactive Import and Export artwork.
 - Give text fields consistent dark, rounded styling and readable text on mobile.

@@ -1,6 +1,6 @@
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=1cbb5b0e1435aeaa85ceb6fa628d65eae51c2358f10c43ee1fb4cdfaa1a43752';
-export {skillStatsHTML} from './skill-card.js?v=1cbb5b0e1435aeaa85ceb6fa628d65eae51c2358f10c43ee1fb4cdfaa1a43752';
-import { treeSwitchHTML, treeSwitchMount } from './tree-switch.js?v=7fa2f599c1ef16684f7f21057a1323766cd42bd909bea9fd1e8c667c3cd6f8b7';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=18dd07e70d0012b5e96742680903796f7ed0145469f0a82597c10b55be315251';
+export {skillStatsHTML} from './skill-card.js?v=18dd07e70d0012b5e96742680903796f7ed0145469f0a82597c10b55be315251';
+import { treeSwitchHTML, treeSwitchMount } from './tree-switch.js?v=936aa6d50233d00d4eee5b5df75e8d965892933be94b843f9790b2ad652deb9e';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { screenHeader } from './screen-header.js?v=8447a86a6a2e26ffb8084a0f95fdb4d952f77945d17e119f987f7d19630afe5a';
 import { purchaseComparison, skillStats } from './skill-comparison.js?v=0330b14bed9a119c5f28b77399a2c0d4a61a6937c9a342697fc816a968699100';

@@ -5,7 +5,7 @@ import { iconHTML } from './ui-icon.js?v=e8f82528036d2fd5dc9ea4baa32cd3a0f4b8d15
 import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=92e3274743920f1df8e93070888b4c7eb46e20e44408c950ef0953b473d825c1';
 
 export const WIKI_PAGES = Object.freeze({
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=4c1f15350942115f00aa20526c8c99555e3301cd8d1de0cd7d2edaa2d9669183' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=010237babd570d1e14e1ab7b97ec860598f6e02109e4281a500fd231c6add9ab' },
   player: { title: 'Player', url: './wiki/player.md?v=04f65e1e1b37e9f52a432fc50a48b6f098fd4d9dd97aeb441a5e92f97006a982' },
   developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=5a192f78afff1d6cd08db60e29cd76208c9b6dd296ed2cdf78e7ed1b3b8ec237' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=9cf0c1f86dc0b5d81237bff4186f4c3677f214f72ca0deafb00e5f1b83cc5e1a' },
