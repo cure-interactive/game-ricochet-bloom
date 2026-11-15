@@ -1,4 +1,4 @@
-import { GAME_VERSION } from './version.js?v=cefc8aea90ca6beb5c0f2c7439658b1167d19b2e5dd7f566ebf093b9afbf07b3';
+import { GAME_VERSION } from './version.js?v=432c0c2f9b4f422710a47ca0e732ffb303c132781f59dd048dc26079b4a3f85b';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { buttonHTML } from './ui-icon.js?v=6ec8a4ba31addd578a8b719304a1ec4bd9a40353abff6d30f299787bf0d2481c';
 import { menuBackgroundMount } from './menu-background.js?v=b37fec7726ecc5e44ff70d16a77fab6bf7cd6ac8809eb7bec6cf1578df8848de';

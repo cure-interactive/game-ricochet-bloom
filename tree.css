@@ -48,7 +48,7 @@
 .skill-badge{position:absolute;right:-6px;top:-4px;width:18px;height:18px;border:1px solid #597386;border-radius:50%;background:#102236;display:grid;place-items:center;color:#b9ced7}
 .skill-badge .ui-icon{width:11px!important;height:11px!important}
 .skill-node>strong{font-size:12px;font-weight:500;line-height:1.2;max-width:100%;background:#0d1929;padding:1px 3px;border-radius:3px}
-.skill-node>small{font-size:10px;line-height:1.2;color:#9cb4c4;background:#0d1929;padding:0 3px}
+.skill-node>small{font-size:10px;line-height:1.2;color:#9cb4c4;background:#0d1929;padding:0 3px;border-radius:3px}
 .skill-node.is-base .skill-orb{width:58px;height:58px;margin-top:-4px;margin-bottom:-4px;border-color:var(--rarity-color)}
 .skill-node.is-base>strong{font-size:14px;color:var(--rarity-color)}
 .skill-node.is-capstone .skill-orb{border-radius:15px;color:#d9bdff}
