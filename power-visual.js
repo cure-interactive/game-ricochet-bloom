@@ -1,5 +1,5 @@
 // Presentation only: engine events supply impulses; active effects supply geometry.
-import { RULE, POWERS, effectGet, homingTarget, wrapEdges, blasterTarget } from './engine.js?v=effdad3393e29949339e4f680eb50871d4dea3ee2a39ee5c96140de3b1404fee';
+import { RULE, POWERS, effectGet, homingTarget, wrapEdges, blasterTarget, seedBodies, poolBounds } from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
 const TAU = Math.PI * 2;
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 function line(c, x, y, endX, endY) { c.beginPath(); c.moveTo(x, y); c.lineTo(endX, endY); c.stroke(); }
@@ -16,8 +16,8 @@ function curve(c, a, b, bend) {
   const middle = curvePoint(a, b, bend * 2, .5);
   c.beginPath(); c.moveTo(a.x, a.y); c.quadraticCurveTo(middle.x, middle.y, b.x, b.y); c.stroke();
 }
-function springWall(c, cues, gentle, active) {
-  const inset = RULE.inset + 2, right = RULE.width - inset, bottom = RULE.height - inset, radius = 40;
+function springWall(c, cues, gentle, active, bounds) {
+  const inset = bounds.inset + 2, right = bounds.width - inset, bottom = bounds.height - inset, radius = 40;
   // Deform the wall itself along the inward collision normal, never the collider.
   function edge(x, y, dx, dy, length, nx, ny) {
     const steps = Math.ceil(length / 8);
@@ -93,7 +93,7 @@ export class PowerVisual {
     if (event.type === 'portal') for (const point of [{ x: event.fromX, y: event.fromY }, event]) this.add({ kind: 'endpoint', color: POWERS.portal.color, x: point.x, y: point.y, duration: .7 });
     if(event.type==='lightning')this.add({kind:'lightning',...event,color:POWERS.lightning.color,duration:.32});
     if (event.type === 'push' || event.type === 'lightning') {
-      const color = POWERS[event.type === 'push' ? 'impact' : 'lightning'].color;
+      const color = POWERS[event.kind==='bulldozer'?'bulldozer':event.type === 'push' ? 'impact' : 'lightning'].color;
       this.add({ kind: 'shock', x: event.x, y: event.y, nx: event.nx, ny: event.ny, color, duration: .5 });
       this.add({ kind: 'wake', id: event.id, x: event.x, y: event.y, nx: event.nx, ny: event.ny, color, duration: .8 });
     }
@@ -105,7 +105,8 @@ export class PowerVisual {
   render(c, game, time, gentle) {
     c.save(); c.lineCap = 'round'; c.lineJoin = 'round';
     // Clip large currents and wakes to the pool, keeping controls and labels clear.
-    c.beginPath(); c.roundRect(RULE.inset, RULE.inset, RULE.width - RULE.inset * 2, RULE.height - RULE.inset * 2, 45); c.clip();
+    const bounds=poolBounds(game);
+    c.beginPath(); c.roundRect(bounds.inset, bounds.inset, bounds.width - bounds.inset * 2, bounds.height - bounds.inset * 2, bounds.inset?45:0); c.clip();
     const skills=game.skillState;
     if(skills){
       c.save();c.lineWidth=1.5;c.globalAlpha=gentle?.28:.55;
@@ -194,6 +195,7 @@ export class PowerVisual {
     c.restore();
   }
   renderPersistent(c,game,time,gentle){
+    const bounds=poolBounds(game);
     const seed = game.bodies[0], phase = gentle ? .5 : time;
     const homing = effectGet(game, 'homing');
     if (homing) {
@@ -257,15 +259,15 @@ export class PowerVisual {
     }
     const edges=wrapEdges(game), wrap = edges.length ? effectGet(game, 'wrap') : null;
     const springCues = this.cues.filter(cue => cue.kind === 'spring'), springActive = !!effectGet(game, 'spring') && !wrap;
-    if (!wrap && (springActive || springCues.length)) springWall(c, springCues, gentle, springActive);
+    if (!wrap && (springActive || springCues.length)) springWall(c, springCues, gentle, springActive,bounds);
     if (wrap) {
-      const fade = Math.min(1, wrap.seconds / .5), inset = RULE.inset + 6;
+      const fade = Math.min(1, wrap.seconds / .5), inset = bounds.inset + 6;
       c.strokeStyle = POWERS.wrap.color; c.globalAlpha = (gentle ? .25 : .5) * fade; c.lineWidth = 2;
       c.setLineDash([4, 16]); c.beginPath();
-      const right=RULE.width-inset,bottom=RULE.height-inset;
+      const right=bounds.width-inset,bottom=bounds.height-inset;
       for(const [edge,x1,y1,x2,y2] of [['left',inset,inset,inset,bottom],['right',right,inset,right,bottom],['top',inset,inset,right,inset],['bottom',inset,bottom,right,bottom]])if(edges.includes(edge)){c.moveTo(x1,y1);c.lineTo(x2,y2);}
       c.stroke(); c.setLineDash([]);
-      for (const [edge,x, y, nx, ny] of [['left',inset, RULE.height / 2, -1, 0], ['right',RULE.width - inset, RULE.height / 2, 1, 0], ['top',RULE.width / 2, inset, 0, -1], ['bottom',RULE.width / 2, RULE.height - inset, 0, 1]]) {
+      for (const [edge,x, y, nx, ny] of [['left',inset, bounds.height / 2, -1, 0], ['right',bounds.width - inset, bounds.height / 2, 1, 0], ['top',bounds.width / 2, inset, 0, -1], ['bottom',bounds.width / 2, bounds.height - inset, 0, 1]]) {
         if(!edges.includes(edge))continue;
         const travel = gentle ? 12 : 8 + ((5 - wrap.seconds) * 24) % 20;
         c.globalAlpha = (gentle ? .45 : .85) * fade;
@@ -298,6 +300,16 @@ export class PowerVisual {
           const t = gentle ? .7 : (phase * 1.3 + i / 3 + body.id * .17) % 1, p = curvePoint(start, seed, bend, t), next = curvePoint(start, seed, bend, Math.min(1, t + .02));
           c.globalAlpha = gentle ? .4 : .65 * Math.sin(t * Math.PI); arrow(c, p.x, p.y, Math.atan2(next.y - p.y, next.x - p.x), 7);
         }
+      }
+    }
+    if(effectGet(game,'bulldozer')){
+      c.strokeStyle=POWERS.bulldozer.color;c.lineWidth=gentle?2:3;
+      for(const body of seedBodies(game).filter(b=>b.id>=-2)){
+        const angle=Math.atan2(body.vy,body.vx),r=body.radius+9;
+        c.save();c.translate(body.x,body.y);c.rotate(angle);c.globalAlpha=gentle?.55:.85;
+        c.beginPath();c.moveTo(r-6,-r);c.quadraticCurveTo(r+10,0,r-6,r);c.stroke();
+        if(!gentle){c.globalAlpha=.35+.15*Math.sin(time*8);line(c,-r,-r*.55,r-9,-r*.55);line(c,-r,r*.55,r-9,r*.55);}
+        c.restore();
       }
     }
     if (effectGet(game, 'impact')) {

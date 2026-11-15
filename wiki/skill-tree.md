@@ -2,7 +2,7 @@
 
 ## Player Upgrades
 
-Open **Player → Skills** to go straight to player upgrades, or open **Skills** from the main menu and switch between **Powers** and **Player** using the buttons in its navigation panel. The Player tree connects Your Player to the Sight, Launch and Rebound branches. Tap or click a node to read its effects, prerequisites and Points cost, then unlock it from the detail card. Drag to pan and pinch or scroll to zoom, just like the power tree. Keyboard users can move between nodes with arrow keys and open details with Enter or Space. Hovering does not open a card.
+Open **Player → Skills** to go straight to player upgrades, or open **Skills** from the main menu and switch between **Powers** and **Player** using the buttons in its navigation panel. The Player tree connects Your Player to the Sight, Launch, Rebound, Glide and Steady branches. Tap or click a node to read its effects, prerequisites and Points cost, then unlock it from the detail card. Drag to pan and pinch or scroll to zoom, just like the power tree. Keyboard users can move between nodes with arrow keys and open details with Enter or Space. Hovering does not open a card.
 
 Both trees use the same Points wallet. Purchases are permanent and cumulative; each second player upgrade requires the first in its branch, and every branch can be researched. The **Your Player** root card shows your current player attributes and where upgrades apply. Existing purchases are preserved. Skins remain cosmetic.
 
@@ -11,6 +11,15 @@ Both trees use the same Points wallet. Purchases are permanent and cumulative; e
 - **Rebound:** Ordinary walls retain 94% of speed perpendicular to the wall. Elastic Shell costs 120 Points and raises this to 97%; Perfect Rebound costs 240 Points and raises it to 100%. Stronger power effects still apply, and ordinary flight drag still brings shots to rest. Physical Split seeds share this improvement.
 
 Free Play, Challenge and Endless Waves apply research between shots. Melody Journey applies it from the next pool. Score Attack fixes the build at the start of a new run. Saved shots keep their original behavior. Fixed puzzle trials and shared challenges keep their authored player rules, so personal upgrades cannot alter their challenge conditions.
+
+### Glide and Steady Shell
+
+- **Smooth Glide (60 Points):** 12% less drag during the first three seconds of flight.
+- **Silken Glide (140 Points):** 24% less early drag in total. Requires Smooth Glide.
+- **Steady Shell (80 Points):** recover 15% of speed lost in solid bubble collisions while keeping the bounce direction.
+- **Resilient Shell (180 Points):** recover 30% of lost speed in total. Requires Steady Shell.
+
+Both branches also affect Split seeds. Glide leaves the normal coast and stopping rules unchanged. Steady Shell never adds speed beyond the incoming speed. Fixed challenges retain their supplied builds; ongoing campaign pools keep their pinned build until the next pool.
 
 ## One Connected Tree
 
@@ -53,7 +62,7 @@ Earn Points in every playable mode. Melody Journey, Free Play, Waves and Challen
 - **Available:** a double outer border.
 - **Locked:** a dashed border and lock.
 
-The selected node has a white outline. Its prerequisite path keeps the rarity colors of its skills. Tap Legend at the top right to show all five rarities and the separate ownership states. Tap the expanded card to collapse it and leave more of the tree visible.
+Power roots use rounded squares; final upgrades use circles. Connections to unpurchased skills are dashed, and owned connections are solid. The selected node has a white outline. Its prerequisite path keeps the rarity colors of its skills. Tap Legend at the top right to show all five rarities and the separate ownership states. Tap the expanded card to collapse it and leave more of the tree visible.
 
 Drag to move in two dimensions; pinch or scroll to zoom. Zooming out stops when the visible skills fit the screen, with a small margin. This limit adjusts as skills appear or the screen size changes. Tap any node to inspect it; every unowned skill has an Unlock button. It is enabled when you have enough Points and meet the requirements; otherwise it stays visible and explains the restriction. The button remains visible below scrolling stats. Owned and currently unlockable skills are fully bright; unavailable unowned tree nodes are dim, even on the highlighted path. Icons inside skill cards always remain fully bright. Tap elsewhere, close it, or move the map to dismiss it. Owned upgrades stay active together. Inspecting a skill does not change your powers.
 

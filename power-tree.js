@@ -2089,5 +2089,85 @@ export const POWER_TREES = {
       }
     ],
     "included": []
-  }
+  },
+  "bulldozer": {
+  "name": "Bulldozer",
+  "type": "Motion",
+  "tier": 2,
+  "current": "Push bubbles aside without bouncing backward. Keep 85% of incoming speed at solid bubble contacts for four seconds. Split seeds share the effect.",
+  "today": [],
+  "uncertain": false,
+  "compatible": true,
+  "included": [],
+  "nodes": [
+    {
+      "key": "base",
+      "kind": "base",
+      "name": "Bulldozer",
+      "description": "Push bubbles aside without bouncing backward. Keep 85% of incoming speed at solid bubble contacts for four seconds. Split seeds share the effect.",
+      "effects": [],
+      "seedCost": 60,
+      "tuningCost": 0,
+      "masteryPools": 0,
+      "rarity": "common",
+      "conflicts": []
+    },
+    {
+      "key": "foundation",
+      "kind": "foundation",
+      "name": "Heavy Treads",
+      "description": "Keep 93% of incoming speed when shoving bubbles.",
+      "effects": [
+        "foundation"
+      ],
+      "seedCost": 30,
+      "tuningCost": 0,
+      "masteryPools": 0,
+      "rarity": "rare",
+      "conflicts": []
+    },
+    {
+      "key": "a",
+      "kind": "a",
+      "name": "Driving Force",
+      "description": "Push contacted bubbles 35% harder while preserving your direction.",
+      "effects": [
+        "a"
+      ],
+      "seedCost": 50,
+      "tuningCost": 0,
+      "masteryPools": 0,
+      "rarity": "epic",
+      "conflicts": []
+    },
+    {
+      "key": "b",
+      "kind": "b",
+      "name": "Long Haul",
+      "description": "Keep Bulldozer active for six seconds instead of four.",
+      "effects": [
+        "b"
+      ],
+      "seedCost": 50,
+      "tuningCost": 0,
+      "masteryPools": 0,
+      "rarity": "epic",
+      "conflicts": []
+    },
+    {
+      "key": "capstone",
+      "kind": "capstone",
+      "name": "Clear Path",
+      "description": "Each newly shoved bubble sends a small outward wave through nearby bubbles, once per bubble per activation.",
+      "effects": [
+        "capstone"
+      ],
+      "seedCost": 100,
+      "tuningCost": 0,
+      "masteryPools": 3,
+      "rarity": "legendary",
+      "conflicts": []
+    }
+  ]
+}
 };

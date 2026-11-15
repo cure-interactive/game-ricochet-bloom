@@ -1,9 +1,9 @@
 import {CosmeticVisual} from './cosmetic-visual.js?v=971f8b3ef6ea7b181b3c91ef6411b9b21c431dd9f29b88db57a10fb1d2a63319';
-import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=effdad3393e29949339e4f680eb50871d4dea3ee2a39ee5c96140de3b1404fee';
+import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=415c27cb40027b01c99743d205297d78b3cd7e728a134d680c96711034c35d2f';
-import {PowerVisual} from './power-visual.js?v=5172daf0d0710bf3a8d19b44ea8ef2eb210764fa2d657f15b3f6958deee7645a';
+import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=d62c8dc6a896dc0c18b72eb9e82c045f9cbfc6be98509643cded8f4ded1938e0';
+import {PowerVisual} from './power-visual.js?v=b0415202ac7e2318e3d4f946ba4f712bec8859fcf97faa81a1d62cb1cccb4dbe';
 
 // One presentation owner for every physics pool: play, Casual and menu autoplay.
 // Scores, aiming, audio and persistence belong to the caller, never this component.
@@ -42,7 +42,7 @@ export class PoolVisual {
   if(event.type==='slingshot')burst(event.x,event.y,POWERS.slingshot.color,18);
   if(event.type==='reunite'){this.reunions=event.from.map(point=>({...point,life:.4}));this.membranes.delete(-1);this.membranes.delete(-2);}
   if(event.type==='tether')for(const id of [event.a,event.b])this.membrane(game.bodies[id]).glow=.35;
-  if(event.type==='push'){hit(event.id,-event.nx,-event.ny,700);this.rings.push({x:event.x,y:event.y,radius:12,life:.7,color:POWERS.impact.color,kind:'impact'});}
+  if(event.type==='push'){hit(event.id,-event.nx,-event.ny,700);this.rings.push({x:event.x,y:event.y,radius:12,life:.7,color:POWERS[event.kind==='bulldozer'?'bulldozer':'impact'].color,kind:'impact'});}
   if(event.type==='power'){
    if(event.kind==='echo')this.membranes.delete(-3);
    if(event.kind==='split'){this.trails=[];this.membranes.delete(0);}

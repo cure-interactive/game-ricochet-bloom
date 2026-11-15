@@ -6,6 +6,30 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.25.0
+
+Build: 2026-11-15 10:48:37 UTC
+
+### Player Changes
+
+- Unlock **Bulldozer** after Focused Impact: shove bubbles aside, keep moving forward, and retain most of your speed. Split seeds share the power.
+- Research Heavy Treads, Driving Force, Long Haul and Clear Path to improve momentum, shove strength, duration and nearby clearing waves.
+- Add **Smooth Glide** and **Silken Glide** to reduce drag during the opening three seconds of a shot.
+- Add **Steady Shell** and **Resilient Shell** to recover speed lost in bubble collisions while keeping your bounce direction.
+- Inspect the new upgrades with individual artwork, before/after values and response graphs. Stats shows both new player attributes.
+- Keep power effects visible throughout the full Home and Casual pool, including Spring and Wrap boundary cues.
+- Use the skill-tree symbol consistently for Powers destinations.
+
+<!-- development -->
+### Developer Notes
+
+- Add version 19 powered-flight validation with version 18 compatibility. Optional Glide/Steady ranks default to zero in legacy player builds; purchases use the existing profile transaction.
+- Resolve Bulldozer contacts in the shared fixed-step solver, including activating contacts and Split seeds. Bound per-bubble Clear Path waves and reuse the shared fading effect renderer.
+- Apply collision recovery after the existing first-note speed floor; preserve normal coast timing, immutable supplied builds and saved-flight replay.
+- Generate new upgrade SVGs and the power reference from their canonical owners; update shared Stats and purchase comparisons.
+
+<!-- /development -->
+
 ## v3.24.1
 
 Build: 2026-11-15 10:26:42 UTC

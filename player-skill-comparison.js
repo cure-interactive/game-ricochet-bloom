@@ -1,10 +1,13 @@
-import {PLAYER_UPGRADES,playerBuild,playerConfig,playerLaunchSpeed,playerGuideLength} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
-const maximum=playerConfig({version:1,sight:2,launch:2,rebound:2});
+import {PLAYER_UPGRADES,playerBuild,playerConfig,playerLaunchSpeed,playerGuideLength,playerCruiseDrag,playerCollisionSpeed} from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
+import {flightDrag} from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
+const maximum=playerConfig(playerBuild({playerResearch:Object.fromEntries(PLAYER_UPGRADES.map(n=>[n.id,{paid:0}]))}));
 const specs=[
  {key:'guideExtra',branch:'Sight',label:'Extra Guide Length',description:'Additional aiming distance before walls or geometry limit the preview.',unit:' units'},
  {key:'bankGuide',branch:'Sight',label:'Reflected Guide Length',description:'Maximum preview distance after the first wall bounce, within the remaining guide budget.',unit:' units'},
  {key:'maxLaunch',branch:'Launch',label:'Maximum Launch Speed',description:'Full-power launch speed. Minimum-power shots stay at 280 units per second.',unit:' units/s'},
- {key:'wallRetention',branch:'Rebound',label:'Wall Speed Retained',description:'Perpendicular speed kept at ordinary walls. Stronger power effects still apply.',unit:'%',scale:100}
+ {key:'wallRetention',branch:'Rebound',label:'Wall Speed Retained',description:'Perpendicular speed kept at ordinary walls. Stronger power effects still apply.',unit:'%',scale:100},
+ {key:'dragReduction',branch:'Glide',label:'Early Drag Reduction',description:'Less drag during the first three seconds of flight. Natural stopping is unchanged.',unit:'%',scale:100},
+ {key:'collisionRecovery',branch:'Steady',label:'Lost Speed Recovered',description:'Part of the speed lost in a solid bubble collision restored along the bounce direction.',unit:'%',scale:100}
 ];
 const rounded=n=>Math.round(n*100)/100;
 // Preview prerequisites in a detached build, never in the profile or active run.
@@ -17,6 +20,11 @@ export function playerPurchaseComparison(profile,id){
  return {before,after:playerBuild({...profile,playerResearch:research}),compare:!!node&&!owned,beforeLabel:prerequisites?'With Prerequisites':'Current',afterLabel:'After Research'};
 }
 function responseCurve(branch,comparison){
+ if(branch==='Glide'||branch==='Steady'){
+  const glide=branch==='Glide',response=(build,x)=>glide?100*Math.exp(-playerCruiseDrag(build,0,flightDrag(0))*x):playerCollisionSpeed(build,100,x),points=build=>Array.from({length:21},(_,i)=>{const x=i/20*(glide?3:100);return [x,response(build,x)];});
+  const previous=points(comparison.before),current=points(comparison.after);
+  return {points:current,previous:comparison.compare?previous:null,changed:comparison.compare&&current.some((p,i)=>p[1]!==previous[i][1]),xMax:glide?3:100,yMin:0,yMax:100,xEnd:glide?'3 s':'100%',xLabel:glide?'Early flight time':'Speed after collision (%)',yLabel:'Speed retained (%)',summary:glide?'Isolated early-flight drag.':'Collision recovery from an incoming speed of 100%.',note:glide?'Uses the gameplay drag law; excludes walls, powers and collisions.':'Keeps the resulting bounce direction and never adds speed beyond the incoming speed.'};
+ }
  const {before,after,compare}=comparison,rebound=branch==='Rebound',sight=branch==='Sight';
  const response=(build,x)=>rebound?100*playerConfig(build).wallRetention**x:sight?playerGuideLength(build,x):playerLaunchSpeed(build,x);
  const points=build=>Array.from({length:rebound?11:21},(_,i)=>{const x=rebound?i:i/20;return [x,response(build,x)];});
@@ -32,6 +40,6 @@ export function playerSkillStats(profile,id='player'){
   const scale=s.scale||1,value=rounded(after[s.key]*scale),previous=rounded(before[s.key]*scale),best=rounded(maximum[s.key]*scale);
   return {label:s.label,description:s.description,kind:'bar',direction:'higher',value,previous,best,max:best,progress:value/best,previousProgress:previous/best,changed:comparison.compare&&value!==previous,before:previous+s.unit,after:value+s.unit};
  });
- if(node){const curve=responseCurve(node.branch,comparison);rows.push({label:node.branch==='Sight'?'Guide Response':node.branch==='Launch'?'Launch Response':'Rebound Response',description:'',kind:'text',changed:false,after:'',curve});}
+ if(node){const curve=responseCurve(node.branch,comparison);rows.push({label:node.branch==='Sight'?'Guide Response':node.branch+' Response',description:'',kind:'text',changed:false,after:'',curve});}
  return {heading:comparison.compare?'Upgrade Preview':'Current Player Build',...comparison,rows};
 }

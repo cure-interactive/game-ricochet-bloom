@@ -1,6 +1,6 @@
-import {PLAYER_UPGRADES,playerUpgradeReason} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
+import {PLAYER_UPGRADES,playerUpgradeReason} from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
 import {researchLayout} from './tree-map.js?v=f0eef94b88145f071c75d50ebf488d06a1e21bb049a894a7abe1abb1393368ea';
-const branches={player:{name:'Player'},Sight:{name:'Sight'},Launch:{name:'Launch'},Rebound:{name:'Rebound'}};
+const branches={player:{name:'Player'},...Object.fromEntries(PLAYER_UPGRADES.map(n=>[n.branch,{name:n.branch}]))};
 // Use the power tree's prerequisite layout and discoverable research frontier.
 export function playerTreeGraph(state,showAll=false){
  const profile=state.profile,owned=profile.playerResearch??{};

@@ -1,4 +1,4 @@
-import { buttonHTML } from './ui-icon.js?v=e77c8634175296f7fa7b6ad85ade1b42bdf0d89af6f8099b5d6206fb97d7a067';
+import { buttonHTML } from './ui-icon.js?v=888786437685208af4de5b05ebc18f1a101f52f9783e909022cd0ea8e19dc5a6';
 
 // Presentation only: the shared menu pool owns simulation and ambient audio.
 export function driftMount(host,doc=document){

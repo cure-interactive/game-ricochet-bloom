@@ -1,6 +1,6 @@
 import { liveBubbles } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { waveFalloff, waveRadial } from './power-response.js?v=53825a2132c5ad509bdd8a251983587d3024f860edd302123036c23bc5fa89bd';
-import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
+import { POWER_TREES } from './power-tree.js?v=63bf3b6b2e1c95b8d713d9766c92c3aa21f8a54787e198cb02d92fd99216d23a';
 
 // Resolved configuration belongs to physics; profile ownership stays outside it.
 export function buildValidate(build) {
@@ -30,6 +30,7 @@ export function skillConfig(state,power) {
     case 'ripple': case 'attract': case 'vortex': Object.assign(c,{reach:440*((f.foundation&&power!=='vortex')||(power==='vortex'&&f.b)?1.2:1),force:640*(f.a?1.25:1)});break;
     case 'comet': Object.assign(c,{wallRetention:f.foundation?.99:.94,lateDrag:f.b?.5:1});break;
     case 'impact': c.pushScale=f.a?1.35:1;break;
+    case 'bulldozer': Object.assign(c,{retention:f.foundation?.93:.85,pushScale:f.a?1.35:1,duration:f.b?6:4});break;
     case 'spring': c.reboundScale=f.a?1.3:1;break;
     case 'drunk': Object.assign(c,{swayScale:f.a?.55:1,swayPeriod:f.b?1.5:1});break;
     case 'wake': Object.assign(c,{width:f.b?44:28,force:f.a?1450:1000});break;

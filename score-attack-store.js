@@ -1,4 +1,4 @@
-import { saveValidate } from './engine.js?v=effdad3393e29949339e4f680eb50871d4dea3ee2a39ee5c96140de3b1404fee';
+import { saveValidate } from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
 import { SCORE_BUDGETS } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 export const scoreKey=(kind,budget)=>`ricochet-bloom-score-attack-v1-${kind}-${budget}`;
 export function scoreRead(storage,kind,budget){

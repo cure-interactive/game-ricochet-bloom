@@ -1,6 +1,6 @@
 # Upgrade Icons
 
-Original SVG artwork for 100 power upgrades and all six player upgrades. Each drawing represents
+Original SVG artwork for 104 power upgrades and all ten player upgrades. Each drawing represents
 its individual effect, using the rounded strokes, pale mint color and open negative
 space of the game's existing Cure Interactive power icons. No external artwork is
 copied. Base power artwork remains in the sibling `power/` directory.

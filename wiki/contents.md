@@ -26,6 +26,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 
 - [Skills](skill-tree.md)
 - [Player Upgrades](skill-tree.md#player-upgrades)
+- [Glide and Steady Shell](skill-tree.md#glide-and-steady-shell)
 - [One Connected Tree](skill-tree.md#one-connected-tree)
 - [Research and Activation](skill-tree.md#research-and-activation)
 - [Rarity and Type](skill-tree.md#rarity-and-type)
@@ -38,6 +39,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 - [Attract](power-ups.md#attract)
 - [Blaster](power-ups.md#blaster)
 - [Bubble](power-ups.md#bubble)
+- [Bulldozer](power-ups.md#bulldozer)
 - [Comet](power-ups.md#comet)
 - [Drunk](power-ups.md#drunk)
 - [Echo](power-ups.md#echo)
@@ -195,6 +197,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Change Logs
 
 - [Change Logs](changelog.md)
+- [v3.25.0](changelog.md#v3-25-0)
 - [v3.24.1](changelog.md#v3-24-1)
 - [v3.24.0](changelog.md#v3-24-0)
 - [v3.23.5](changelog.md#v3-23-5)

@@ -2,14 +2,14 @@ import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleContactMount as menuContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
 export {menuContactMount};
-import {freePlayCreate,freePlayBuild} from './free-play.js?v=5b27d0cfbb2c2933e14d62d1141c7e25f4a8cd2c929d917babd3219041b33d7a';
-import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
-import {progressionCreate} from './run.js?v=9ff200b09c3b66bb99d641358b6fc72b7ef4244cd3fbc9db89e9fba295a31af5';
-import {menuMusicCreate} from './menu-music.js?v=9a78661f1bf2e45fb7787485943638d4db8535d0f45d40946e8f115328d70981';
-import {PoolVisual} from './pool-visual.js?v=fa33ca63226966763effe7ded53318b34f7b2a44a68686c294561440a7cfc87a';
-import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=effdad3393e29949339e4f680eb50871d4dea3ee2a39ee5c96140de3b1404fee';
+import {freePlayCreate,freePlayBuild} from './free-play.js?v=b97208449f51e118ee7b8faf4c2f3f5864fb0c861a755e55cb7ae09b83667a59';
+import {playerBuild} from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
+import {progressionCreate} from './run.js?v=c17b84689d07e07e0cbb0c12024855634098b1421a58e3ad8a37a505ec9ac943';
+import {menuMusicCreate} from './menu-music.js?v=ac505102c529b4dc3c424af7f60a8de651d31700eeb440c49e47a3e307971fd4';
+import {PoolVisual} from './pool-visual.js?v=a331a89b8b0de9b02b82e7c57d87f495b1e28d8c49aa0ee5abbe2b16c25365c9';
+import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
 import { bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView, menuPoolResize } from './menu-pool.js?v=7fa8385ef0df4ed12ff038e2e1910901b33b937ba0e17b883ecff4f58f3219a3';
+import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView, menuPoolResize } from './menu-pool.js?v=0b5c07eac5ef4173f8d7da00f2fe5ee9727c47519b938fd37824f1538fccf955';
 
 export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',skinStyle=()=>'original',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),visual=new PoolVisual();

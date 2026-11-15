@@ -1,8 +1,8 @@
-import { skillCurve } from './skill-curve.js?v=e457dc049f28c0c87273d79df5995752d14ee11db0c3d064e84ff319f927d058';
-import { skillConfig } from './skill-effect.js?v=727e7de86b0868ac64950fc8cd89a06c9f4a7a3d8efd7b7fccb21bc1018dbd47';
-import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
-import { profilePurchase, profileDevelopmentCopy, unlockedResolve } from './profile.js?v=14dbdacea0f7ac8a44d752b92934267d6332d3d95f346b844d7717f582164a38';
-import { GAME_CATALOGUE as cat } from './run.js?v=9ff200b09c3b66bb99d641358b6fc72b7ef4244cd3fbc9db89e9fba295a31af5';
+import { skillCurve } from './skill-curve.js?v=487d6e76fcacb5f6c7c211da88aa6a45585c6a4cb44edf561da652e91e7e93da';
+import { skillConfig } from './skill-effect.js?v=9714f4318d0faebb1d4b65dc36b658da67a2d7fc6d636415a8457aa9c75be2a7';
+import { POWER_TREES } from './power-tree.js?v=63bf3b6b2e1c95b8d713d9766c92c3aa21f8a54787e198cb02d92fd99216d23a';
+import { profilePurchase, profileDevelopmentCopy, unlockedResolve } from './profile.js?v=fe0384e77c0c88780a6340baf29b10d1b97a993dc269b427c7db34bfb9293d8e';
+import { GAME_CATALOGUE as cat } from './run.js?v=c17b84689d07e07e0cbb0c12024855634098b1421a58e3ad8a37a505ec9ac943';
 
 const on=value=>value?'On':'Off';
 const number=value=>Number(value.toFixed(2));
@@ -16,6 +16,8 @@ const statDescription={
  'Bank Charge':'A new bubble hit charges an extra boost for the next wall bounce.',
  'Late-Flight Drag':'Braking late in a shot. Lower lets the player coast farther.',
  'Wall Pressure Waves':'The first two powered wall bounces also push nearby bubbles.',
+ 'Collision Speed Retained':'Incoming speed kept while shoving a bubble without changing heading.',
+ 'Clear Path Waves':'Each newly shoved bubble emits one small outward wave per activation.',
  'Push Strength':'How strongly player contact shoves a bubble.',
  'Push Shape':'Forward contact push, plus an outward wave when Broad Impact is researched.',
  'Collision Transfer':'The first two hit bubbles can each pass on one extra shove.',
@@ -107,6 +109,7 @@ export function powerVariables(build,power){
  const c=skillConfig({build},power),finish=label=>({[label]:on(c.capstone)});
  switch(power){
  case 'comet':return {'Wall Speed Retained':number(c.wallRetention*100)+'%','Bank Charge':on(c.a),'Late-Flight Drag':scale(c.lateDrag),...finish('Wall Pressure Waves')};
+ case 'bulldozer':return {'Collision Speed Retained':number(c.retention*100)+'%','Push Strength':scale(c.pushScale),'Duration':seconds(c.duration),...finish('Clear Path Waves')};
  case 'impact':return {'Push Strength':scale(c.pushScale),'Push Shape':c.b?'Forward + Radial':'Forward',...finish('Collision Transfer')};
  case 'spring':return {'Duration':seconds(c.duration),'Rebound Boost':scale(c.reboundScale),'Rebound Steering':on(c.b),...finish('Wall Pressure Waves')};
  case 'drunk':return {'Sway Width':scale(c.swayScale),'Sway Period':scale(c.swayPeriod),...finish('Shared Sway')};

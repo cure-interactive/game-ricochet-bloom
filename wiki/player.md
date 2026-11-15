@@ -31,7 +31,7 @@ Cosmetics do not alter power, speed, score or rewards. Your selections appear in
 
 ## Stats
 
-Open **Player → Stats** to see your researched launch speed, aiming-guide lengths, wall speed retention, Points, upgrades and recorded play totals. Overview, Records and Medals group your information, with links to Player Skills and Power Skills.
+Open **Player → Stats** to see your researched launch speed, aiming-guide lengths, wall speed retention, early drag reduction, collision recovery, Points, upgrades and recorded play totals. Overview, Records and Medals group your information, with links to Player Skills and Power Skills.
 
 The screen also shows Melody Journey clears, separate 5/10/15-shot Score Attack bests, experiment results and Bronze/Silver/Gold records by gamemode. Standard and Relaxed campaign records stay separate. Each saved record counts only its best medal.
 
@@ -39,7 +39,7 @@ Stats belong to the selected Normal or Development profile in this browser. Olde
 
 ## Skills
 
-Open **Player → Skills** for the Sight, Launch and Rebound branches. You can also switch between Player and Powers inside Skills. Both trees spend the same Points wallet; purchases are permanent and cumulative.
+Open **Player → Skills** for the Sight, Launch, Rebound, Glide and Steady branches. You can also switch between Player and Powers inside Skills. Both trees spend the same Points wallet; purchases are permanent and cumulative.
 
 See [Player Upgrades](skill-tree.md#player-upgrades) for effects, costs and where your researched build applies. [Medals](medals.md) explains the conditions behind your records.
 

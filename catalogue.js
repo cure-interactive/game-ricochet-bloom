@@ -1,4 +1,4 @@
-import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
+import { POWER_TREES } from './power-tree.js?v=63bf3b6b2e1c95b8d713d9766c92c3aa21f8a54787e198cb02d92fd99216d23a';
 // Progression definitions are not a claim that an engine behavior is implemented.
 // The engine integration must explicitly advertise supported node IDs.
 export const CURRENCIES = Object.freeze({ seeds: Object.freeze({ name: 'Points' }) });
@@ -7,7 +7,7 @@ export const STARTERS = Object.freeze(['ripple']);
 // One parent per power. Upgrade chains and these branches form one rooted tree.
 export const POWER_PARENT = Object.freeze({
  ripple:null, comet:'ripple.foundation', attract:'ripple.foundation', stasis:'attract.a', pulse:'ripple.b',
- impact:'comet.foundation', spring:'comet.foundation', wake:'comet.capstone', drunk:'pulse.b',
+ impact:'comet.foundation', bulldozer:'impact.a', spring:'comet.foundation', wake:'comet.capstone', drunk:'pulse.b',
  wrap:'spring.a', blaster:'impact.a',
  magnet:'attract.foundation', vortex:'attract.foundation', homing:'magnet.a',
  orbit:'vortex.a', slingshot:'orbit.capstone',

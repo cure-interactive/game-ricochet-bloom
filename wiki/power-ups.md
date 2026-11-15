@@ -11,6 +11,7 @@ Earn up to three power opportunities by making blooms on consecutive shots. Offe
 - [Attract](#attract)
 - [Blaster](#blaster)
 - [Bubble](#bubble)
+- [Bulldozer](#bulldozer)
 - [Comet](#comet)
 - [Drunk](#drunk)
 - [Echo](#echo)
@@ -82,6 +83,23 @@ Upgrade in this order:
 - **Soft Bubble (Epic):** Reduce the reaction on the player without weakening the outward bubble push.
 - **Firm Bubble (Epic):** Strengthen the outward push on bubbles without increasing the reaction on the player.
 - **Breathing Bubble (Legendary):** Radius gently expands and contracts by 10 percent on the pulse. Contact still counts once per bubble, and radius changes never impart an instant bounce. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
+
+[All Powers](#find-a-power)
+
+## Bulldozer
+
+**Common · Motion Type**
+
+Push bubbles aside without bouncing backward. Keep 85% of incoming speed at solid bubble contacts for four seconds. Split seeds share the effect.
+
+**Unlock:** research Focused Impact in Impact, then buy this power.
+
+Upgrade in this order:
+
+- **Heavy Treads (Rare):** Keep 93% of incoming speed when shoving bubbles.
+- **Driving Force (Epic):** Push contacted bubbles 35% harder while preserving your direction.
+- **Long Haul (Epic):** Keep Bulldozer active for six seconds instead of four.
+- **Clear Path (Legendary):** Each newly shoved bubble sends a small outward wave through nearby bubbles, once per bubble per activation. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
 

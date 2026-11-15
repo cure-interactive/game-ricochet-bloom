@@ -1,9 +1,9 @@
-import { PLAYER_UPGRADES, playerBuild } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
-import { buildValidate } from './skill-effect.js?v=727e7de86b0868ac64950fc8cd89a06c9f4a7a3d8efd7b7fccb21bc1018dbd47';
-import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=41b471c37ef2d3e54b61ceb1967e63963fa935f4a0b48d5bb6eeeedc6069f66c';
-import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
-import { profileCosmetic, profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=14dbdacea0f7ac8a44d752b92934267d6332d3d95f346b844d7717f582164a38';
-import { gameCreate, saveValidate, RULE } from './engine.js?v=effdad3393e29949339e4f680eb50871d4dea3ee2a39ee5c96140de3b1404fee';
+import { PLAYER_UPGRADES, playerBuild } from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
+import { buildValidate } from './skill-effect.js?v=9714f4318d0faebb1d4b65dc36b658da67a2d7fc6d636415a8457aa9c75be2a7';
+import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=e1d28e3d6e7b738118ac032124c3cb6f31acb64f80230e4dc3460da763c710bd';
+import { POWER_TREES } from './power-tree.js?v=63bf3b6b2e1c95b8d713d9766c92c3aa21f8a54787e198cb02d92fd99216d23a';
+import { profileCosmetic, profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=fe0384e77c0c88780a6340baf29b10d1b97a993dc269b427c7db34bfb9293d8e';
+import { gameCreate, saveValidate, RULE } from './engine.js?v=514a1bb2de32041b9d992eb1f14445cdb6d4cc4b4eadf2008a4ff26627a5f26d';
 import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
 
 import { TRACKS, trackGet, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
@@ -70,7 +70,7 @@ export function discoveryUse(input,id,remove=[]) {
   return {ok:true,state:s,message:`${node.name} is active for the next pool.`};
 }
 function tidy(s){if(s.powerMode==='unlocked'){s.borrowed=s.borrowed.filter(id=>!s.profile.research[id]);syncUnlocked(s);return;}s.borrowed=s.borrowed.filter(id=>!s.profile.research[id]&&s.powers.includes(catalogueNode(GAME_CATALOGUE,id).power));s.equipped=s.equipped.filter(id=>(s.profile.research[id]||s.borrowed.includes(id))&&s.powers.includes(catalogueNode(GAME_CATALOGUE,id).power));while(!progressionLoadout(s).ok&&s.equipped.length)s.equipped.pop();}
-function setupValid(r){return !!r&&seedValid(r.seed)&&!!trackGet(r.track)&&typeof r.relaxed==='boolean'&&unique(r.powers)&&r.powers.length>=1&&r.powers.length<=25&&r.powers.every(p=>!!GAME_CATALOGUE.powers[p])&&unique(r.equipped)&&unique(r.borrowed)&&[...r.equipped,...r.borrowed].every(id=>catalogueNode(GAME_CATALOGUE,id)?.kind!=='base'&&r.powers.includes(catalogueNode(GAME_CATALOGUE,id)?.power));}
+function setupValid(r){return !!r&&seedValid(r.seed)&&!!trackGet(r.track)&&typeof r.relaxed==='boolean'&&unique(r.powers)&&r.powers.length>=1&&r.powers.length<=Object.keys(GAME_CATALOGUE.powers).length&&r.powers.every(p=>!!GAME_CATALOGUE.powers[p])&&unique(r.equipped)&&unique(r.borrowed)&&[...r.equipped,...r.borrowed].every(id=>catalogueNode(GAME_CATALOGUE,id)?.kind!=='base'&&r.powers.includes(catalogueNode(GAME_CATALOGUE,id)?.power));}
 function recordValid(r){return !!r&&typeof r.id==='string'&&/^run-[0-9]+$/.test(r.id)&&(r.outcome==='failure'?r.medal===null:['Bronze','Silver','Gold'].includes(r.medal))&&!!trackGet(r.track)&&seedValid(r.seed)&&['victory','failure'].includes(r.outcome)&&typeof r.relaxed==='boolean'&&integer(r.launches)&&integer(r.score)&&integer(r.bonuses)&&r.bonuses<=5&&integer(r.rules)&&['normal','development'].includes(r.kind)&&musicValid(r.music)&&buildValidate(r.build)&&Array.isArray(r.routes)&&r.routes.every(n=>[0,1].includes(n));}
 export function progressionValidate(input,kind='normal') {
   if(!input||input.version!==1||!['shop','run','interlude'].includes(input.phase)||!integer(input.attempt)||!Number.isInteger(input.pool)||input.pool<0||input.pool>4||typeof input.relaxed!=='boolean'||typeof input.bypass!=='boolean'||input.bypass&&kind!=='development')return null;

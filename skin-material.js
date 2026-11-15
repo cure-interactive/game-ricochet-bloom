@@ -1,4 +1,4 @@
-import {assetURL} from './asset.js?v=9aa4355875f47659bed1ca495b9cf522c1b1f52eafe4fb135b89de5f59214643';
+import {assetURL} from './asset.js?v=cb684ea278b2dc6b1457e951b71d22eea4538d738b252e9abd7f743632acdfd4';
 let cure;
 export function skinMaterial(c,body,points,style,rotation=0){
  if(!['cure','frost','nebula','solar','seaglass','spectrum'].includes(style))return;

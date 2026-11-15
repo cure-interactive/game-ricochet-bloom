@@ -79,7 +79,7 @@
 .tree-world-links .is-locked:not(.is-route){opacity:.85;stroke:#6b8ba2;stroke-width:4}
 .tree-world-links path:not(.is-active){stroke-dasharray:8 8;stroke-linecap:round}
 .tree-world-links path.is-active{stroke-dasharray:none}
-.bridge-label{font-size:12px;stroke-width:4px}:is(.skill-node,.skill-card-icon).is-base .skill-orb{border-radius:15px;}
+.bridge-label{font-size:12px;stroke-width:4px}:is(.skill-node,.skill-card-icon).is-base:not(:has(player-bubble)) .skill-orb{border-radius:15px;}
 :is(.skill-node,.skill-card-icon).is-capstone .skill-orb{box-shadow:0 0 0 3px #171d32,0 0 0 5px #75628d66}
 :is(#tree-dialog,#player-upgrade-dialog) .skill-node[aria-pressed=true] .skill-orb{outline:2px solid #fff0b6;outline-offset:5px;box-shadow:0 0 25px #e7c77b40}
 @media(max-width:760px){#tree-sheet{height:min(580px,calc(var(--app-height,100dvh) * 0.65));max-height:calc(var(--app-height,100dvh) * 0.65)}#tree-sheet::backdrop{background:#020a1644;backdrop-filter:none;-webkit-backdrop-filter:none}}

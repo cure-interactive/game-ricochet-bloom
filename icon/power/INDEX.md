@@ -5,6 +5,7 @@ Original SVG artwork created for Ricochet Bloom by Cure Interactive. These game-
 - [Attract](attract.svg)
 - [Blaster](blaster.svg)
 - [Bubble](bubble.svg)
+- [Bulldozer](bulldozer.svg)
 - [Comet](comet.svg)
 - [Drunk](drunk.svg)
 - [Echo](echo.svg)

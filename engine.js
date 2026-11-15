@@ -1,14 +1,14 @@
-import { playerConfig, playerBuildValid, playerLaunchSpeed, playerGuideLength } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
+import { playerConfig, playerBuildValid, playerLaunchSpeed, playerGuideLength, playerCruiseDrag, playerCollisionSpeed } from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
 import { SCORE_BUDGETS, SCORE_DEFAULT, SCORE_SEED, scoreAttackValid } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { BONUS_TIERS, earningValid, earningPower, earningSettle } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 import { liveBubbles, waveConfig, wavePrepare, waveEntryStep, waveValid, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { DRUNK_SECONDS, drunkSway, overlapResponse, magnetResponse } from './power-response.js?v=53825a2132c5ad509bdd8a251983587d3024f860edd302123036c23bc5fa89bd';
 import { trackLayout, environmentValid, environmentStep, regionFrozen } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { bubbleRole } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=727e7de86b0868ac64950fc8cd89a06c9f4a7a3d8efd7b7fccb21bc1018dbd47';
-export { skillFlags } from './skill-effect.js?v=727e7de86b0868ac64950fc8cd89a06c9f4a7a3d8efd7b7fccb21bc1018dbd47';
+import { buildValidate, skillFlags, skillConfig, skillStateCreate, skillStateValid, skillActivate, skillContact, skillWall, skillCollision, skillTeleport, skillStep, pressure } from './skill-effect.js?v=9714f4318d0faebb1d4b65dc36b658da67a2d7fc6d636415a8457aa9c75be2a7';
+export { skillFlags } from './skill-effect.js?v=9714f4318d0faebb1d4b65dc36b658da67a2d7fc6d636415a8457aa9c75be2a7';
 // Deterministic fixed-step circle physics; the renderer and audio consume events.
-export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 18, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: DRUNK_SECONDS, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
+export const RULE = Object.freeze({ width: 960, height: 640, inset: 30, step: 1 / 120, version: 19, settleSeconds: 2, settleSpeed: 6, settleDrag: .65, coastResistance: 45, homingSeconds: 5, homingReach: 360, homingTurn: 3.4, drunkSeconds: DRUNK_SECONDS, echoLeash: 48, stasisSpeed: 100, powerRadius: 440, powerImpulse: 640, plucks: 12, bloomNotes: 5, goalBlooms: 3, flightSeconds: 7, seedRadius: 14 });
 export const COLORS = ['#73f5dc', '#a7a0ff', '#ff97d9', '#8bd8ff', '#e3f48f'];
 // Only the detached Home/Casual session supplies viewport bounds. Saved and
 // scored modes retain RULE's canonical board and deterministic dimensions.
@@ -23,6 +23,7 @@ export const POWERS = Object.freeze({
   swap: { name: 'Swap', symbol: '⇄', color: '#f3b3ff', description: 'Exchange places with the farthest bubble and keep moving.' },
   magnet: { name: 'Magnet', symbol: '∩', color: '#ffb3cd', description: 'Draw unhit bubbles toward your moving seed for 2.4 seconds.' },
   lightning: { name: 'Lightning', symbol: 'ϟ', color: '#b9dfff', description: 'Strike three different bubbles in quick succession and knock them away.' },
+  bulldozer: { name: 'Bulldozer', symbol: '▰', color: '#ffd07f', description: 'Shove bubbles aside without ricocheting. Keep most of your speed for four seconds; Split seeds share the effect.' },
   impact: { name: 'Impact', symbol: '»', color: '#ffe39e', description: 'Give your seed much stronger pushes for the rest of this shot.' },
   tether: { name: 'Tether', symbol: '△', color: '#b4f6d2', description: 'Link three bubbles with stretchy musical threads. The group drifts toward your moving seed for four seconds.' },
   split: { name: 'Split', symbol: '⋔', color: '#c9c0ff', description: 'Fan into three little seeds for three seconds. All three collect powers; every bubble still scores once.' },
@@ -452,6 +453,8 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
     if (!effectGet(state, 'bubble')) seed.radius = 10; seed.vx = Math.cos(angle) * speed; seed.vy = Math.sin(angle) * speed;
     const shards = [-skillConfig(state,'split').fan, skillConfig(state,'split').fan].map((offset, index) => ({ ...seed, id: -index - 1, radius: 10, vx: Math.cos(angle + offset) * speed, vy: Math.sin(angle + offset) * speed }));
     state.effects.push({ kind, seconds: Math.min(3, Math.max(dt, RULE.flightSeconds - state.flightAge)), targets: [], shards });
+  } else if (kind === 'bulldozer') {
+    state.effects.push({kind,seconds:skillConfig(state,kind).duration,targets:[]});
   } else if (kind === 'bubble') {
     state.effects.push({ kind, seconds: Math.max(dt, RULE.flightSeconds - state.flightAge), targets: [] });
   } else if (kind === 'drunk') {
@@ -529,7 +532,7 @@ export function physicsStep(state) {
     if (body.id === -3 || effectGet(state, 'orbit')?.satellites.includes(body.id) || body.id === 0 && (effectGet(state, 'slingshot') || effectGet(state,'rewind')?.returning)) continue;
     if(state.mode==='waves'&&body.id>0){const speed=Math.hypot(body.vx,body.vy),target=waveConfig(state.wave.number).speed;if(speed>0&&speed<target&&!effectGet(state,'stasis')){body.vx*=1+dt*.65;body.vy*=1+dt*.65;}}
     if (body.id > 0) { body.vx += Math.cos(state.tick * .002 + body.id * 1.7) * 4 * dt; body.vy += Math.sin(state.tick * .0025 + body.id * 2.1) * 4 * dt; }
-    const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? flightDrag(state.flightAge)*(effectGet(state,'comet')&&state.flightAge>3?skillConfig(state,'comet').lateDrag:1) : 3 : (effectGet(state, 'stasis')?.targets.includes(body.id)||regionFrozen(state,body.id)) ? 5 : .65) * dt);
+    const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? playerCruiseDrag(state.playerBuild,state.flightAge,flightDrag(state.flightAge))*(effectGet(state,'comet')&&state.flightAge>3?skillConfig(state,'comet').lateDrag:1) : 3 : (effectGet(state, 'stasis')?.targets.includes(body.id)||regionFrozen(state,body.id)) ? 5 : .65) * dt);
     body.vx *= drag; body.vy *= drag;
     if(body.id<=0&&state.isFlying){
       // Small rolling resistance beats ambient currents at low speed without
@@ -613,10 +616,13 @@ export function physicsStep(state) {
       const reaction=skillConfig(state,'bubble').reaction/skillConfig(state,'bubble').pressure;
       a.vx -= nx * pressure * .18 * reaction; a.vy -= ny * pressure * .18 * reaction; velocityLimit(a);
     }
+    const dozer=a.id<=0&&a.id>=-2&&state.isFlying&&(effectGet(state,'bulldozer')||marker?.kind==='bulldozer');
     const inverseA = a.id === -3 ? .55 : a.id <= 0 ? 1 : 900 / (a.radius * a.radius), inverseB = 900 / (b.radius * b.radius), inverseSum = inverseA + inverseB;
     const correction = Math.max(0, solidTarget - distance - .01) * .92 / inverseSum;
-    a.x -= nx * correction * inverseA; a.y -= ny * correction * inverseA; b.x += nx * correction * inverseB; b.y += ny * correction * inverseB;
+    if(dozer){b.x+=nx*correction*inverseSum;b.y+=ny*correction*inverseSum;}
+    else {a.x -= nx * correction * inverseA; a.y -= ny * correction * inverseA; b.x += nx * correction * inverseB; b.y += ny * correction * inverseB;}
     const relative = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+    const collisionSpeed=relative<0&&distance<solidTarget?Math.hypot(a.vx,a.vy):null;
     if (relative < 0 && distance < solidTarget) {
       const incomingX = a.vx, incomingY = a.vy;
       const impulse = -(1 + .94) * relative / inverseSum;
@@ -632,6 +638,17 @@ export function physicsStep(state) {
         }
         velocityLimit(a);
       }
+      if(dozer){
+        const config=skillConfig(state,'bulldozer'),toward=incomingX*nx+incomingY*ny;
+        // Keep the incoming heading; a moving bubble catching up cannot reverse it.
+        a.vx=incomingX*(toward>0?config.retention:1);a.vy=incomingY*(toward>0?config.retention:1);
+        const extra=impulse*inverseB*(config.pushScale-1);b.vx+=nx*extra;b.vy+=ny*extra;
+        // Separate along the contact normal so solver passes cannot charge the
+        // same shove repeatedly while the player is still overlapping.
+        const separation=Math.max(0,a.vx*nx+a.vy*ny+20-(b.vx*nx+b.vy*ny));b.vx+=nx*separation;b.vy+=ny*separation;
+        velocityLimit(a);velocityLimit(b);
+        events.push({type:'push',kind:'bulldozer',id:b.id,x:b.x,y:b.y,nx,ny});
+      }
       if (a.id === 0 && state.isFlying && effectGet(state, 'impact') && skillFlags(state,'impact').foundation) {
         const push = Math.max(260, impulse * inverseB * .9)*skillConfig(state,'impact').pushScale;
         b.vx += nx * push; b.vy += ny * push; velocityLimit(b);
@@ -641,9 +658,19 @@ export function physicsStep(state) {
       if (-relative > 22 && a.cooldown <= 0 && b.cooldown <= 0) { events.push({ type: 'impact', a: a.id, b: b.id, x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, nx, ny, speed: -relative, bubble: a.id === 0 && !!effectGet(state, 'bubble') }); a.cooldown = .08; b.cooldown = .08; }
     }
     if (marker) powerCollect(state,marker,a,b,nx,ny,events);
+    if(dozer&&relative<0&&distance<solidTarget){
+      const effect=effectGet(state,'bulldozer');
+      if(skillConfig(state,'bulldozer').capstone&&effect&&!effect.targets.includes(b.id)){effect.targets.push(b.id);pressure(state,b.x,b.y,150,180);events.push({type:'skill-wave',x:b.x,y:b.y});}
+    }
     const stasis = effectGet(state, 'stasis');
     if (a.id <= 0 && state.isFlying && stasis && !stasis.targets.includes(b.id)) stasis.targets.push(b.id);
     if (a.id <= 0 && state.isFlying) scoreContact(state,b,a,events);
+    // Apply research after the normal first-contact speed floor, so that
+    // recovery helps both new notes and repeat collisions without replacing it.
+    if(collisionSpeed!==null&&!dozer&&a.id<=0&&a.id>=-2&&state.isFlying){
+      const speed=Math.hypot(a.vx,a.vy),retained=playerCollisionSpeed(state.playerBuild,collisionSpeed,speed);
+      if(speed>.0001){a.vx*=retained/speed;a.vy*=retained/speed;}velocityLimit(a);
+    }
     if(pass===0&&relative < -12)skillCollision(state,a,b,events,(target,from)=>{const m=state.power.markers.find(m=>m.target===target.id);if(m)powerCollect(state,m,seed,target,nx,ny,events);scoreContact(state,target,from,events);});
     const relay=effectGet(state,'relay');
     if (state.isFlying && relay && a.id>0 && b.id>0 && relative < -12) {
@@ -726,7 +753,7 @@ export function physicsStep(state) {
   return events;
 }
 export function saveValidate(input) {
-  if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free', 'song-run', 'waves','score-attack'].includes(input.mode)) return null;
+  if (!input || ![2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, RULE.version].includes(input.version) || typeof input.seed !== 'string' || input.seed.length > 32 || !['challenge', 'free', 'song-run', 'waves','score-attack'].includes(input.mode)) return null;
   if(input.playerBuild!==undefined&&!playerBuildValid(input.playerBuild))return null;
   if(input.earning!==undefined&&(!earningValid(input.earning,Object.keys(POWERS))||input.earning.mode!==input.mode||input.earning.lastLaunch>input.launches))return null;
   const count=Array.isArray(input.bodies)?input.bodies.length-1:0;
@@ -778,7 +805,7 @@ export function saveValidate(input) {
   }
   if (input.version >= 6) {
     for (const effect of effects) {
-    if (!effect || ![null, 'magnet', 'lightning', 'impact', 'comet', ...(input.version >= 7 ? ['tether', 'split', 'bubble'] : []), ...(input.version >= 8 ? ['portal', 'echo', 'slingshot'] : []), ...(input.version >= 10 ? ['stasis'] : []), ...(input.version >= 13 ? ['drunk'] : []), ...(input.version >= 14 ? ['relay','wake','spring','orbit','rewind','pulse'] : []), ...(input.version >= 16 ? ['wrap'] : []), ...(input.version >= 17 ? ['homing'] : []), ...(input.version >= 18 ? ['blaster'] : [])].includes(effect.kind) || !Number.isFinite(effect.seconds) || effect.seconds < 0 || effect.seconds > RULE.flightSeconds || !Array.isArray(effect.targets)) return null;
+    if (!effect || ![null, 'magnet', 'lightning', 'impact', 'comet', ...(input.version >= 7 ? ['tether', 'split', 'bubble'] : []), ...(input.version >= 8 ? ['portal', 'echo', 'slingshot'] : []), ...(input.version >= 10 ? ['stasis'] : []), ...(input.version >= 13 ? ['drunk'] : []), ...(input.version >= 14 ? ['relay','wake','spring','orbit','rewind','pulse'] : []), ...(input.version >= 16 ? ['wrap'] : []), ...(input.version >= 17 ? ['homing'] : []), ...(input.version >= 18 ? ['blaster'] : []), ...(input.version >= 19 ? ['bulldozer'] : [])].includes(effect.kind) || !Number.isFinite(effect.seconds) || effect.seconds < 0 || effect.seconds > RULE.flightSeconds || !Array.isArray(effect.targets)) return null;
     if (effect.kind && (!input.isFlying || input.power.shot !== input.launches || effect.seconds <= 0)) return null;
     if (!effect.kind && effect.seconds !== 0) return null;
     if(effect.kind==='blaster') {
@@ -790,6 +817,8 @@ export function saveValidate(input) {
     if (effect.kind === 'magnet' && effect.seconds > (input.build?3.2:2.4) || effect.kind === 'lightning' && effect.seconds > .22) return null;
     if (effect.kind === 'lightning' || effect.kind === 'stasis') {
       if (effect.targets.length < 1 || effect.targets.length > (effect.kind === 'stasis' ? count : 3) || new Set(effect.targets).size !== effect.targets.length || effect.targets.some(id => !Number.isInteger(id) || id < 1 || id > count)) return null;
+    } else if(effect.kind==='bulldozer'){
+      if(effect.seconds>skillConfig(input,'bulldozer').duration||effect.targets.length>count||new Set(effect.targets).size!==effect.targets.length||effect.targets.some(id=>!Number.isInteger(id)||id<1||id>count)||effect.targets.length&&!skillConfig(input,'bulldozer').capstone)return null;
     } else if (effect.targets.length) return null;
     const idsValid=ids=>Array.isArray(ids)&&new Set(ids).size===ids.length&&ids.every(id=>Number.isInteger(id)&&id>=1&&id<=count);
     if(effect.kind==='relay' && (!idsValid(effect.armed)||!idsValid(effect.spent)||effect.armed.length>(input.build?4:3)||effect.spent.some(id=>!effect.armed.includes(id))||!Number.isInteger(effect.remaining)||effect.remaining<0||effect.remaining>3||effect.remaining+effect.armed.length>4)) return null;

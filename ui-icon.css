@@ -121,7 +121,7 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 [data-icon="mobile-device"]{--ui-icon:url("./icon/ui/mobile-device.svg?v=ca3ef87c9a5963e25a9261aae91ec4e69a9b6962a3dd35db85fe0f9e27a1f2d9")}
 
 /* Stats reuse the exact player-upgrade artwork used in Skills. */
-[data-icon="powers"]{--ui-icon:url("./icon/ui/powers.svg?v=a48453d82c19cbebab3736bdc2b77dfdeec022be917fea1bd9c4bf096ee2fb4a")}
+[data-icon="powers"]{--ui-icon:url("./icon/ui/skill-tree.svg?v=4afa2e7e8097fb1020f872e1b367ffc03931cc3be473e8623e73e77b88ec4f0e")}
 [data-icon="player-launch"]{--ui-icon:url("./icon/upgrade/launch.1.svg?v=c02a7c0e92f578229870b7979e4e34b9c4e50a5da9111de45444c046c63efbd4")}
 [data-icon="player-sight"]{--ui-icon:url("./icon/upgrade/sight.1.svg?v=589234f5dbfa55f2bf3e4087a7ef619a1cfd90d4cbf87856663181c123963386")}
 [data-icon="player-bank-sight"]{--ui-icon:url("./icon/upgrade/sight.2.svg?v=8c76220ed9bdeb1b31f7e2cecf164ba431229836e5dbba7da0738431e956bc87")}
@@ -143,3 +143,6 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
 
 [data-icon="trails"]{--ui-icon:url("./icon/ui/trails.svg?v=8561eb75c617441d17d8fa6f71fd68ef7b3f328ea307369e9a1704d25b00c368")}
 [data-icon="bounce-effects"]{--ui-icon:url("./icon/ui/bounce-effects.svg?v=5f53319140a5ef38bcb7de7c997f447b9255f0921f3dbaf8310bce31f13f97cf")}
+
+[data-icon="player-glide"]{--ui-icon:url("./icon/upgrade/glide.1.svg?v=0126a776b88b339ab9d373cd78fe350a293ef70c02cf2e08727aaa183d7e8f45")}
+[data-icon="player-steady"]{--ui-icon:url("./icon/upgrade/steady.1.svg?v=f79e1c0cb9eb87642b61067724ce2b472b78dc3e88fff90f598b97ac25b12bdb")}

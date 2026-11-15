@@ -2,9 +2,9 @@ import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
-import {menuPoolView} from './menu-pool.js?v=7fa8385ef0df4ed12ff038e2e1910901b33b937ba0e17b883ecff4f58f3219a3';
+import {menuPoolView} from './menu-pool.js?v=0b5c07eac5ef4173f8d7da00f2fe5ee9727c47519b938fd37824f1538fccf955';
 import {skinSpringStep} from './skin-preview.js?v=e6fa5d2b4812a18e495e4f673ba1d1c774eb5140702e19298017892c8fe38991';
-import {bubbleRender,bubblePath} from './bubble-render.js?v=7603fe99569586c03a77b9e9d7fe07fa147e17058c863426cde697dcb92d51a8';
+import {bubbleRender,bubblePath} from './bubble-render.js?v=56ad9b5c32cff5579086a5ce1623df71697fea88d19a8a1dd70c710fc11b76bc';
 
 // Decorative instances own only visual state. The surrounding button or large
 // preview keeps its existing input, focus, navigation and progression contract.
