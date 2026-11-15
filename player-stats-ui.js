@@ -1,7 +1,7 @@
-import { playerStats } from './player-stats.js?v=8d1ea293e0239a56795a98dd6d0dc22cde6ca162a8ada80e43d8e62bc2866c32';
-import { screenHeader } from './screen-header.js?v=726c3c9632ff2e218e50aff0a5088b7cddb0601a274bd277ae4be0d63cc4c693';
-import { buttonHTML, iconHTML } from './ui-icon.js?v=030c0efc6cdfba88e28420bfcfaf809c34dba306c37f69d9b366521d5b469e5d';
-import { medalIcon } from './medal-ui.js?v=840f32a7f8c4f8c3f542c688873a42595e25b4feb71ae36e6729236f26ac7055';
+import { playerStats } from './player-stats.js?v=22ed5fb511f04e89bc787bdf6643f8ab4120ba00a64b690fd4695dd8865bef6c';
+import { screenHeader } from './screen-header.js?v=3b71d5c855dd4b471d831d7b322deefa0bba720a3eea641f906d8a003ec1e468';
+import { buttonHTML, iconHTML } from './ui-icon.js?v=fab92047db86060c2671b46474bb7cf366b388662fcaa98e2bd64d1b21d77da2';
+import { medalIcon } from './medal-ui.js?v=9aaa9f8fa64b3392a62dbf0aa893c7abbe2f828e0982bd8ae44c034018ffccf8';
 import { MEDAL_NAMES } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 

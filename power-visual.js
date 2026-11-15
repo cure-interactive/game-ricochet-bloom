@@ -1,5 +1,5 @@
 // Presentation only: engine events supply impulses; active effects supply geometry.
-import { RULE, POWERS, effectGet, homingTarget, wrapEdges, blasterTarget } from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
+import { RULE, POWERS, effectGet, homingTarget, wrapEdges, blasterTarget } from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
 const TAU = Math.PI * 2;
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 function line(c, x, y, endX, endY) { c.beginPath(); c.moveTo(x, y); c.lineTo(endX, endY); c.stroke(); }
@@ -52,11 +52,27 @@ function springWall(c, cues, gentle, active) {
   edge(inset, bottom - radius, 0, -1, bottom - inset - radius * 2, 1, 0);
   c.quadraticCurveTo(inset, inset, inset + radius, inset); c.closePath(); c.stroke(); c.restore();
 }
+// Multiply every opacity written by the existing renderer, including nested saves.
+function alphaContext(context,opacity){
+ return new Proxy(context,{get(target,key){const value=target[key];return key==='globalAlpha'?value/Math.max(opacity,.00001):typeof value==='function'?value.bind(target):value;},set(target,key,value){target[key]=key==='globalAlpha'?value*opacity:value;return true;}});
+}
 export class PowerVisual {
-  constructor() { this.cues = []; }
-  clear() { this.cues = []; }
+  constructor() { this.clear(); }
+  clear() { this.cues = [];this.previous=null;this.exits=[]; }
   add(cue) { this.cues.push({ age: 0, duration: .65, ...cue }); if (this.cues.length > 72) this.cues.splice(0, this.cues.length - 72); }
-  update(dt) { for (const cue of this.cues) cue.age += dt; this.cues = this.cues.filter(cue => cue.age < cue.duration); }
+  update(dt,game) {
+    for (const cue of this.cues) cue.age += dt;this.cues=this.cues.filter(cue=>cue.age<cue.duration);
+    for(const exit of this.exits)exit.age+=dt;this.exits=this.exits.filter(exit=>exit.age<.45);
+    if(!game)return;
+    const active=new Set(game.effects.filter(effect=>effect.seconds>0).map(effect=>effect.kind));
+    // Renewed powers replace their outgoing image rather than double-rendering it.
+    for(const exit of this.exits)exit.game.effects=exit.game.effects.filter(effect=>!active.has(effect.kind));
+    this.exits=this.exits.filter(exit=>exit.game.effects.length);
+    const removed=this.previous?.effects.filter(effect=>!active.has(effect.kind))||[];
+    if(removed.length)this.exits.push({age:0,game:{...this.previous,effects:removed}});
+    this.previous=active.size?{...game,isFlying:true,bodies:game.bodies.map(body=>({...body})),chain:[...game.chain],flightPath:game.flightPath.map(point=>({...point})),effects:structuredClone(game.effects)}:null;
+    if(this.exits.length>8)this.exits.splice(0,this.exits.length-8);
+  }
   event(event, game) {
     const seed = game.bodies[0];
     if (event.type === 'power') {
@@ -170,6 +186,14 @@ export class PowerVisual {
       }
       c.restore();
     }
+    this.renderPersistent(c,game,time,gentle);
+    for(const exit of this.exits){
+      const t=Math.min(1,exit.age/.45),opacity=1-t*t*(3-2*t);
+      c.save();this.renderPersistent(alphaContext(c,opacity),exit.game,time,gentle);c.restore();
+    }
+    c.restore();
+  }
+  renderPersistent(c,game,time,gentle){
     const seed = game.bodies[0], phase = gentle ? .5 : time;
     const homing = effectGet(game, 'homing');
     if (homing) {
@@ -320,6 +344,20 @@ export class PowerVisual {
     for(let i=0;i<blaster.ammo;i++) {const a=-Math.PI/2+(i-(blaster.ammo-1)/2)*.38;c.beginPath();c.arc(seed.x+Math.cos(a)*(seed.radius+13),seed.y+Math.sin(a)*(seed.radius+13),3,0,Math.PI*2);c.fill();}
     c.restore();
   }
+  if (effectGet(game, 'portal')) for (const [index, gate] of effectGet(game, 'portal').gates.entries()) {
+    c.save(); c.translate(gate.x, gate.y); c.strokeStyle = index ? '#d4baff' : POWERS.portal.color;
+    c.shadowColor = c.strokeStyle; c.shadowBlur = gentle ? 0 : 14; c.lineWidth = 3;
+    c.globalAlpha = effectGet(game, 'portal').cooldown > 0 ? .45 : .9;
+    c.beginPath(); c.ellipse(0, 0, 25, 34, -.25, 0, Math.PI * 2); c.stroke();
+    c.rotate(gentle ? index : time * (index ? -1 : 1)); c.lineWidth = 1.5; c.globalAlpha *= .55;
+    for (let arc = 0; arc < 3; arc++) { c.beginPath(); c.arc(0, 0, 40, arc * Math.PI * 2 / 3, arc * Math.PI * 2 / 3 + 1); c.stroke(); }
     c.restore();
+  }
+  if (effectGet(game, 'slingshot')) {
+    const effect = effectGet(game, 'slingshot'), anchor = game.bodies[effect.anchor];
+    c.save(); c.strokeStyle = POWERS.slingshot.color; c.lineWidth = 2; c.globalAlpha = .6;
+    c.setLineDash([4, 6]); c.beginPath(); c.arc(anchor.x, anchor.y, effect.radius + Math.max(0, seed.radius - RULE.seedRadius), 0, Math.PI * 2); c.stroke();
+    c.setLineDash([]); c.beginPath(); c.moveTo(anchor.x, anchor.y); c.lineTo(seed.x, seed.y); c.stroke(); c.restore();
+  }
   }
 }

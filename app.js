@@ -1,46 +1,50 @@
+import {turnHits} from './turn-hits.js?v=601ae75742860558121ef0d4bb066017b87650900bbeeb17e8bf8d359fbcdd5d';
+import {inputModalityMount} from './input-modality.js?v=ec290657f7857743c779cffb29f79cca250e53ba1c39cce335ca91e5309a43ee';
 import {scrollbarsMount} from './scrollbar.js?v=36d83e2b9ee3b2fb6d149c30dc02d73fa0eceddd7971ba41de716b035ff6e56b';
 import {QUALITY,qualityRead,qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import { uiSoundMount, uiSoundFeedback } from './ui-sound.js?v=34bd5b0d5d8b6e0549b0c4144d2e90855f0420eabc22530e9b94fa3532c1ceef';
-import {hudCardsMount} from './hud-help.js?v=8bbd21db8054276817018abd2b6139241440a21d3fc2a9846d3a3e5a67aa14aa';
-import { hudMedal, hudMedalRender } from './hud-medal.js?v=f24183c5ccdbc3a22df26331a67e3cb2d644132a50bd1192965027936628c861';
-import {poolBubbleRender,poolBubbleIcons,poolBubbleEvent} from './pool-bubble.js?v=823ebd5050b413a65573da7ac125417b9e3b898a9d1516e0ed0b6e938998d8c0';
-import { playerMenuMount } from './player-menu.js?v=d9696d70bd8b98fbfa0494224acd8cdf2f50b68d1e3c8917cb5d9025071d3dd6';
-import { playerStatsMount } from './player-stats-ui.js?v=74ec8329e4b8b1d94ef99de607e9542751bdc93f9e03861cf5694ff03e2b30fe';
+import {hudCardsMount} from './hud-help.js?v=08697ff3c2ff461222bd2ddac9b9dd24e7b65631d4ca25e5641e4d478790b0ae';
+import { hudMedal, hudMedalRender } from './hud-medal.js?v=d1ccb5156d06c7f9b74af3787de76f6c0aef7fb43f0043d38aa14be59ae9d6c1';
+import {poolBubbleIcons} from './pool-bubble.js?v=a02fee373c605593cc19ced091fb17f0ab66f857856e28039aeae134403c4a6e';
+import { playerMenuMount } from './player-menu.js?v=cb2a05168349614386d279c47819e0a43304d0041cb9b59aa08db9c2323ca694';
+import { playerStatsMount } from './player-stats-ui.js?v=ae949b007a906a884a4d722c4c73b6f4a18a9aaa7923e7c85629c4025fad8e84';
 import { playerBuild, playerSync } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
-import { poolMedalRecord, poolMedalRecords } from './storage.js?v=b6329e33987fc0ba16d9b13905fb2da167599d2a64285d319a1675063b51e0fb';
-import { medalIcon, medalBadge } from './medal-ui.js?v=840f32a7f8c4f8c3f542c688873a42595e25b4feb71ae36e6729236f26ac7055';
+import { poolMedalRecord, poolMedalRecords } from './storage.js?v=de38cca2b0bb64e517d3dda0ba557276e0b81a310b0786faee19f287c138be5c';
+import { medalIcon, medalBadge } from './medal-ui.js?v=9aaa9f8fa64b3392a62dbf0aa893c7abbe2f828e0982bd8ae44c034018ffccf8';
 import { poolConditions, poolMedalKey, medalEvaluate, scoreConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
-import { scoreRead, scoreWrite } from './score-attack-store.js?v=302a95ddf6f5defb9295bdcef741d700fd9628bac0b9e50e8559c7fc2f34a146';
+import { scoreRead, scoreWrite } from './score-attack-store.js?v=2bd388c092d72ffed771bdda3f02806000c2142c6f76d74517ca7bc3a87a41c2';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { trialMount } from './trial-ui.js?v=fed34ff00cd4bd60c7d90f34d5ad2d70ae87f688fda21b67492b5b0c31745919';
-import { GAME_VERSION } from './version.js?v=3ed107c76a952c8b9d29d4ded04b7587319149a8b7d676a48e2ec757b176a636';
-import { powerSlots } from './power-ui.js?v=576ada57b668b5e5ff25eae121902b5c1a8b2bc0ab651e2a984f45f9f355dc78';
-import { creditsMount } from './credit.js?v=c2ae3a959b5504b49c333b920c485c5365fe9c826ff6d2903b0cb78a86ccd197';
+import { trialMount } from './trial-ui.js?v=48d5589c1d7c613ee68bf83bbfede32bd16e5f6d95528cc674289a95792b8b98';
+import { GAME_VERSION } from './version.js?v=ae384ac23098df044199cf35a26ff55da218f2d1a2bd8198a4739b5ad422bc6a';
+import { powerSlots } from './power-ui.js?v=0c04c3a6b5569343efca11b46bfab2648748637bb7ff352e84709d9fb2061c96';
+import { creditsMount } from './credit.js?v=ab7deba354d1ea9778bd959bb4d18f5147026c032ef0e1160dbff00a65ab3cd4';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=c76004d132b2ea92ec0cecf92a15fae0a4ec85781d19df28f70222f5ed78b04a';
-import { edgeBackMount } from './edge-back.js?v=b1da1019d7385fc7af0b7c7c3f64b974cc57ebd9aa822a867ffef4695a8e2fd9';
-import { wikiMount } from './wiki.js?v=ca4d67d5c0a5ed9896d0426e28f993cd5bf93807e5c23da97d1e2aac4fc832fc';
+import { edgeBackMount } from './edge-back.js?v=f5f6e92be6cc8b7887e6245a128bf98e444d81b7efcbf0b3e42d21b2f58c259d';
+import { wikiMount } from './wiki.js?v=676fa07b713c0d3495c03d3aa54589c5832ec2330a04312e07bcdb4db52ed526';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { POOL_NAMES } from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302dff937b1bbfdae8fb6c8ea56';
-import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=409e1eb57ba278752223f7eb788efb6deba4562df6daf6e206ef5067994254b6';
-import { fullscreenMount } from './fullscreen.js?v=b4d0bffa34f0bb2139d14b7b2f9fd6b53e798fd46a7860cd86403c1c6fb8171c';
+import { POOL_NAMES } from './run.js?v=aa118d34e3e643b1a488bc8d307b99a54e66ae474452ddcf6575bb9bee2e84a1';
+import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=0756fd6c275d9b67a242f4bd1c6e4adb572e9b7bedd77ec79419dfae7e475473';
+import { fullscreenMount } from './fullscreen.js?v=3d8460e31ec9e43e5dac5caa2250ff4582b3fa98875b3b71b6836d11cc3e5b83';
 import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=3974a2b6d1714e4f1154baff1cf67b9c377b095a0ea30625b1c20de5a247474f';
+import { gameMenuMount } from './game-menu.js?v=d8fd56f0addabe2cd1d2e1d78158d5393255dddc498490e2082832b6c5996bc3';
 import { environmentRender, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
-import { progressionMount } from './progression-ui.js?v=2a23d3537d5fb34edb2af9b066590c98e53e1101648dc78b323ecf6ab50d74ee';
-import {assetURL} from './asset.js?v=0cfe0a794ed64ab3bcda90c0fff1c797d61ca36785d8f327839e506603d7508c';
-import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=030c0efc6cdfba88e28420bfcfaf809c34dba306c37f69d9b366521d5b469e5d';
+import { progressionMount } from './progression-ui.js?v=868511bfdaf29682053d5d2a746f69d2f369b28b17ceb0e158127def63712bf7';
+import {assetURL} from './asset.js?v=0ee88dff8da07de52fba70c1dd08771f5f90984e0661c9346b244d7a40676de9';
+import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=fab92047db86060c2671b46474bb7cf366b388662fcaa98e2bd64d1b21d77da2';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
-import {songLibrarySetup} from './song-ui.js?v=24ce6acefb74120b2dd15b962fdd2099af4656b19a3e66eef50ed537111b11e2';
-import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
-import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet, poolPreferencesWrite } from './storage.js?v=b6329e33987fc0ba16d9b13905fb2da167599d2a64285d319a1675063b51e0fb';
-import { PoolSound, SOUND_CHECK_SECONDS } from './sound.js?v=0899a7a01d27ae3e77a70952db0de50ff3ad5f838955144796b607884739ef6c';
+import {songLibrarySetup} from './song-ui.js?v=675f8a2f8fd0c08e04b3ecba49fade0479cb38b2ecc4eb307bba1e744377b0d6';
+import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
+import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet, poolPreferencesWrite } from './storage.js?v=de38cca2b0bb64e517d3dda0ba557276e0b81a310b0786faee19f287c138be5c';
+import { PoolSound, SOUND_CHECK_SECONDS } from './sound.js?v=c8f70e278ab198e418304bf5e55ae005c2202d1aa7635742c95ae02f974927a4';
 import { musicProgress, musicPhrasePreview } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import { bubbleCreate, bubbleHit, bubbleRipple } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import { PowerVisual } from './power-visual.js?v=5025b852f5ff35c3c06f90c45ce0d289aaf4acbc1ddedfe8a5a1930a8191fecb';
+import {PoolVisual} from './pool-visual.js?v=595cb4850528ef70e4d69bbdd1562183e05c8b1371bb9065a1618a63af3c7b29';
+import {wakeLockMount} from './wake-lock.js?v=154014a91b4cd2b75bb445ea16836bbcf58eb0e1b0e3c5ac6991b66dc38beea5';
+import {dropdownMount} from './dropdown.js?v=a8ceb6a79e963c9749725c6135dfe78471edd9846fc68eb2bcbe157d6ac17472';
 viewportMount();
+inputModalityMount();
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
 let store = poolStoreRead(null), storageIsAvailable = true;
 try { store = poolStoreRead(JSON.parse(localStorage.getItem(STORAGE) ?? localStorage.getItem(LEGACY_STORAGE) ?? 'null')); } catch { storageIsAvailable = false; }
@@ -55,9 +59,8 @@ let assistedControls = preferences.assistedControls === true;
 let quality=qualityRead(preferences);
 let isStarted = false, isPaused = false, isLowQuality = quality==='low';
 let angle = -Math.PI / 2, power = .7, drag = null, previousTime = performance.now(), accumulator = 0, lastSaveTick = 0, lastUITick = -100;
-let trails = [], particles = [], rings = [], connections = [], reunions = [], scorePopups = [], toastTimer, frameCount = 0, noteCount = 0;
-const membranes = new Map();
-const powerVisual = new PowerVisual();
+let scorePopups = [], toastTimer, frameCount = 0, noteCount = 0;
+const poolVisual=new PoolVisual(),membranes=poolVisual.membranes;
 const {powerIcons}=poolBubbleIcons();
 for (const [kind, p] of Object.entries(POWERS)) {
   const card = document.createElement('div'); card.className = 'power-card'; card.style.setProperty('--power-color', p.color);
@@ -84,89 +87,36 @@ function save() {
 function announce(text) { $('announcement').textContent = text; }
 function toast(text) { $('toast').textContent = text; $('toast').classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => $('toast').classList.remove('show'), 1600); announce(text); }
 async function audioUnlockAsync() { try { await audio.unlockAsync(); } catch { toast('Audio unavailable in this browser'); } }
-function membraneGet(body) {
-  if (!membranes.has(body.id)) membranes.set(body.id, bubbleCreate());
-  return membranes.get(body.id);
-}
-function membraneHit(id, nx, ny, strength) {
-  const body = id < 0 ? seedBodies(game).find(body => body.id === id) : game.bodies[id]; if (!body || isLowQuality) return;
-  bubbleHit(membraneGet(body), body.radius, nx, ny, strength, !!effectGet(game, 'stasis')?.targets.includes(id));
-}
 function eventHandle(event) {
   audio.eventPlay({ ...event, tick: game.tick });
-  powerVisual.event(event, game);
-  poolBubbleEvent(event,game,membraneGet);
+  poolVisual.event(event,game,isLowQuality);
   if (Number.isFinite(event.points) && event.points > 0) {
     scorePopups.push({ x: event.x, y: event.y, points: event.points, age: 0, isBloom: event.type === 'bloom', color: event.type === 'bloom' ? '#e1d4ff' : COLORS[event.tone] || '#e4ffcb' });
     if (scorePopups.length > 32) scorePopups.shift();
   }
-  if(event.type==='pop'){particleBurst(event.x,event.y,COLORS[event.tone],22);rings.push({x:event.x,y:event.y,radius:event.radius,life:.4,color:COLORS[event.tone],bloom:false,touched:new Set()});}
   if(event.type==='wave-clear'){const medal=poolMedalRecord(store,game,game.earning?.kind??progression?.trialKind??'normal',event);toast(`Wave ${event.number} cleared · ${medal||'Complete'} · +${event.points}`);}
-  if(event.type==='wave'){membranes.clear();powerVisual.clear();trails=[];connections=[];reunions=[];announce(`Wave ${event.number}. Five shots to pop every bubble.`);save();}
-  if (event.type === 'impact') { membraneHit(event.a, event.nx, event.ny, event.speed); membraneHit(event.b, -event.nx, -event.ny, event.speed); }
-  if (event.type === 'blaster-hit') { membraneHit(event.id,-event.nx,-event.ny,650); particleBurst(event.x,event.y,POWERS.blaster.color,8); }
-  if (event.type === 'blaster-fire') { membraneHit(0,event.nx,event.ny,180); save(); }
+  if(event.type==='wave'){announce(`Wave ${event.number}. Five shots to pop every bubble.`);save();}
+  if(event.type==='blaster-fire')save();
   if (event.type === 'blaster-reload') toast('Bloom reload · magazine refilled');
-  if (event.type === 'wall') membraneHit(event.id, -event.nx, -event.ny, event.speed);
   if(event.type==='objective') {toast(`Bonus complete · +${event.points} ${event.points===1?'Point':'Points'} when this shot settles.`);save();}
   if (event.type === 'note') {
-    noteCount++; membraneGet(game.bodies[event.id]).glow = 1;
-    const previous = game.chain.length > 1 ? game.bodies[game.chain.at(-2)] : game.bodies[0];
-    connections.push({ from: previous.id, to: event.id, life: 2.4, color: COLORS[event.tone] });
-    rings.push({ x: event.x, y: event.y, radius: game.bodies[event.id].radius, life: 1, color: COLORS[event.tone], bloom: false, touched: new Set([event.id]) });
-    particleBurst(event.x, event.y, COLORS[event.tone], 16);
+    noteCount++;
     if (event.chain === 3) toast('The pool is listening.');
     announce(`${event.chain} contacts, ${game.score} score.`); save();
   }
   if(event.type==='lightning')save();
-  if (event.type === 'echo-jump') { trails = trails.filter(point => point.id !== -3); membranes.delete(-3); }
-  if (event.type === 'wrap') {
-    trails = trails.filter(point => point.id !== event.id); membranes.delete(event.id);
-    for (const point of [{ x: event.fromX, y: event.fromY }, event]) particleBurst(point.x, point.y, POWERS.wrap.color, 10);
-    save();
-  }
-  if (event.type === 'portal') {
-    trails = []; membranes.delete(0);
-    for (const point of [{ x: event.fromX, y: event.fromY }, event]) particleBurst(point.x, point.y, POWERS.portal.color, 18);
-    toast('Through the portal · momentum intact.'); save();
-  }
-  if (event.type === 'slingshot') { particleBurst(event.x, event.y, POWERS.slingshot.color, 18); toast(event.target ? 'Slingshot · heading for an unhit bubble.' : 'Slingshot · away you go.'); save(); }
-  if (event.type === 'reunite') {
-    reunions = event.from.map(point => ({ ...point, life: .4 }));
-    membranes.delete(-1); membranes.delete(-2); save();
-  }
-  if (event.type === 'tether') {
-    membraneGet(game.bodies[event.a]).glow = .35; membraneGet(game.bodies[event.b]).glow = .35;
-  }
-  if (event.type === 'push') {
-    membraneHit(event.id, -event.nx, -event.ny, 700);
-    rings.push({ x: event.x, y: event.y, radius: 12, life: .7, color: POWERS.impact.color, kind: 'impact' });
-  }
+  if(event.type==='wrap'||event.type==='reunite')save();
+  if(event.type==='portal'){toast('Through the portal · momentum intact.');save();}
+  if(event.type==='slingshot'){toast(event.target?'Slingshot · heading for an unhit bubble.':'Slingshot · away you go.');save();}
   if (event.type === 'power-streak') {
     if (event.successful) toast(`${event.capacity} powers next shot · bloom streak${event.capacity === 3 ? ' at maximum' : ' growing'}.`);
     else if (event.previousCapacity > 1) toast('Streak reset · one power next shot.');
     save();
   }
-  if (event.type === 'power') {
-    if (event.kind === 'echo') membranes.delete(-3);
-    if (event.kind === 'split') { trails = []; membranes.delete(0); }
-    const p = POWERS[event.kind]; toast(`${p.name} · flight refreshed to ${RULE.flightSeconds}s`);
-    rings.push({ x: event.x, y: event.y, radius: event.kind === 'attract' || event.kind === 'stasis' ? RULE.powerRadius : 8, life: 1.6, color: p.color, kind: event.kind, bloom: true });
-    if (event.kind === 'swap') {
-      trails = []; membranes.clear();
-      rings.push({ x: event.exitX, y: event.exitY, radius: 8, life: 1.6, color: p.color, kind: 'swap', bloom: true });
-      particleBurst(event.exitX, event.exitY, p.color, 24);
-    }
-    particleBurst(event.x, event.y, p.color, 24); save();
-  }
-  if (event.type === 'bloom') { toast(`Bloom! +500 · ${Math.min(3, game.power.capacity + 1)} powers next shot.`); rings.push({ x: event.x, y: event.y, radius: 20, life: 2.5, color: '#c1b4ff', bloom: true }); particleBurst(event.x, event.y, '#ddcbff', 80); save(); }
+  if(event.type==='power'){toast(`${POWERS[event.kind].name} · flight refreshed to ${RULE.flightSeconds}s`);save();}
+  if(event.type==='bloom'){toast(`Bloom! +500 · ${Math.min(3,game.power.capacity+1)} powers next shot.`);save();}
   if (['rest', 'over', 'win'].includes(event.type)) { freePlayRefresh(); save(); if (event.type !== 'rest') announce(`${game.mode==='score-attack'?'Score Attack complete.':gameWon(game) ? 'You won! Three blooms.' : 'Out of shots. Try again.'} ${game.score} score.`); }
   uiRender();
-}
-function particleBurst(x, y, color, count) {
-  if (isLowQuality) return;
-  for (let index = 0; index < count; index++) { const angle = Math.random() * Math.PI * 2, speed = 15 + Math.random() * 125; particles.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: .5 + Math.random() * 1.3, color, radius: 1 + Math.random() * 2.5 }); }
-  if (particles.length > 350) particles.splice(0, particles.length - 350);
 }
 // Transient score feedback uses the exact event award, including bank bonuses.
 function scorePopupRender(dt, view, ratio) {
@@ -198,11 +148,7 @@ function scorePopupRender(dt, view, ratio) {
 function geometry() { const rect=canvas.getBoundingClientRect(); return {rect,...poolView(rect.width,rect.height,RULE.width,RULE.height,matchMedia('(orientation: portrait)').matches)}; }
 function resize() { const { rect } = geometry(), ratio = qualityPixelRatio(quality,devicePixelRatio || 1); canvas.width = Math.round(rect.width * ratio); canvas.height = Math.round(rect.height * ratio); }
 new ResizeObserver(resize).observe(canvas);
-function blobRender(body,dt,time){
- const playback=audio.playbackLights.get(body.id);
- const replayGlow=playback?Math.max(0,(playback.until-audio.context.currentTime)/.7)*(isLowQuality?.18:.7):0;
- poolBubbleRender(context,game,body,membraneGet(body),dt,time,{gentle:isLowQuality,skinColor:progression?.skin||'#f1f9d7',portrait:portraitView,replayGlow});
-}
+
 function render(now) {
   if (navigation && navigation.current !== 'play') { if(audio.keepAmbient&&!document.hidden){audio.musicUpdate(0);canvas.dataset.songBar=String(audio.music.bar);canvas.dataset.musicVoices=String(audio.phraseVoices.size);canvas.dataset.musicPaused=String(audio.isMusicPaused);} previousTime=now;accumulator=0;requestAnimationFrame(render);return; }
   const view=geometry(), {rect,scale}=view, ratio=canvas.width/rect.width; portraitView=view.portrait; audio.portrait=portraitView;
@@ -221,47 +167,8 @@ function render(now) {
   for (let index = 0; index < 75; index++) { const x = ((index * 137.5 + Math.sin(time * .12 + index) * 7) % 900) + 30, y = ((index * 89.7 + Math.cos(time * .17 + index) * 9) % 550) + 45; context.fillStyle = index % 3 ? '#86b7df28' : '#c6c6ff50'; context.beginPath(); context.arc(x, y, index % 4 === 0 ? 1.3 : .7, 0, Math.PI * 2); context.fill(); }
   context.strokeStyle = '#8db9e819'; context.lineWidth = 1; context.beginPath(); context.roundRect(30, 30, 900, 580, 50); context.stroke();
   const seed = game.bodies[0];
-  powerVisual.update(visualDelta);
-  powerVisual.render(context, game, time, isLowQuality);
-  const seeds = seedBodies(game);
-  if (game.isFlying && !isLowQuality && isActive) {
-    for (const body of seeds) trails.push({ id: body.id, x: body.x, y: body.y, life: .7, comet: body.id === 0 && !!effectGet(game, 'comet'), drunk: body.id !== -3 && !!effectGet(game, 'drunk') });
-    if (trails.length > 210) trails.splice(0, trails.length - 210);
-  }
-  trails = trails.filter(point => { point.life -= visualDelta; return point.life > 0; });
-  const previous = new Map();
-  for (const point of trails) {
-    const a = previous.get(point.id); previous.set(point.id, point);
-    if (!a) continue;
-    context.strokeStyle = point.comet ? `rgba(255,201,117,${point.life * .8})` : point.drunk ? `rgba(255,172,216,${point.life * .6})` : point.id === -3 ? `rgba(178,192,255,${point.life * .45})` : point.id === -1 ? `rgba(216,183,255,${point.life * .55})` : point.id === -2 ? `rgba(155,237,244,${point.life * .55})` : `rgba(191,246,226,${point.life * .32})`;
-    context.lineWidth = point.life * (point.comet ? 24 : point.id < 0 ? 8 : 15); context.lineCap = 'round'; context.beginPath(); context.moveTo(a.x, a.y); context.lineTo(point.x, point.y); context.stroke();
-    if (point.comet) { context.strokeStyle = `rgba(255,246,207,${point.life * .8})`; context.lineWidth = point.life * 5; context.stroke(); }
-  }
-  if (effectGet(game, 'portal')) for (const [index, gate] of effectGet(game, 'portal').gates.entries()) {
-    context.save(); context.translate(gate.x, gate.y); context.strokeStyle = index ? '#d4baff' : POWERS.portal.color;
-    context.shadowColor = context.strokeStyle; context.shadowBlur = isLowQuality ? 0 : 14; context.lineWidth = 3;
-    context.globalAlpha = effectGet(game, 'portal').cooldown > 0 ? .45 : .9;
-    context.beginPath(); context.ellipse(0, 0, 25, 34, -.25, 0, Math.PI * 2); context.stroke();
-    context.rotate(isLowQuality ? index : time * (index ? -1 : 1)); context.lineWidth = 1.5; context.globalAlpha *= .55;
-    for (let arc = 0; arc < 3; arc++) { context.beginPath(); context.arc(0, 0, 40, arc * Math.PI * 2 / 3, arc * Math.PI * 2 / 3 + 1); context.stroke(); }
-    context.restore();
-  }
-  if (effectGet(game, 'slingshot')) {
-    const effect = effectGet(game, 'slingshot'), anchor = game.bodies[effect.anchor];
-    context.save(); context.strokeStyle = POWERS.slingshot.color; context.lineWidth = 2; context.globalAlpha = .6;
-    context.setLineDash([4, 6]); context.beginPath(); context.arc(anchor.x, anchor.y, effect.radius + Math.max(0, seed.radius - RULE.seedRadius), 0, Math.PI * 2); context.stroke();
-    context.setLineDash([]); context.beginPath(); context.moveTo(anchor.x, anchor.y); context.lineTo(seed.x, seed.y); context.stroke(); context.restore();
-  }
-  reunions = reunions.filter(point => { point.life -= visualDelta; return point.life > 0; });
-  if (!isLowQuality) for (const point of reunions) {
-    const progress = 1 - (point.life / .4) ** 2;
-    context.globalAlpha = point.life / .4; context.fillStyle = POWERS.split.color;
-    context.beginPath(); context.arc(point.x + (seed.x - point.x) * progress, point.y + (seed.y - point.y) * progress, 8 * point.life / .4 + 2, 0, Math.PI * 2); context.fill(); context.globalAlpha = 1;
-  }
-  connections = connections.filter(line => { line.life -= visualDelta; return line.life > 0; });
-  if (!isLowQuality) for (const line of connections) { const a = game.bodies[line.from], b = game.bodies[line.to]; context.globalAlpha = line.life / 2.4; context.strokeStyle = line.color + '55'; context.lineWidth = .8; context.beginPath(); context.moveTo(a.x, a.y); context.quadraticCurveTo((a.x + b.x) / 2 + 15, (a.y + b.y) / 2 - 20, b.x, b.y); context.stroke(); context.globalAlpha = 1; }
-  for (const body of liveBubbles(game)) blobRender(body, visualDelta, time);
-  for (const body of seeds) { context.save(); if (body.id === -3) context.globalAlpha = .42; blobRender(body, visualDelta, time); context.restore(); }
+  poolVisual.before(context,game,time,visualDelta,isLowQuality);
+  poolVisual.bodies(context,game,visualDelta,time,{gentle:isLowQuality,skinColor:progression?.skin||'#f1f9d7',portrait:portraitView,replayGlow:body=>{const playback=audio.playbackLights.get(body.id);return playback?Math.max(0,(playback.until-audio.context.currentTime)/.7)*(isLowQuality?.18:.7):0;}});
   if (!game.isFlying && isStarted && !isPaused && !game.isOver) {
     const path=aimPreview(game,angle,power);
     context.save();context.strokeStyle='#e4ffcb88';context.lineWidth=1.5;context.setLineDash([3,8]);context.beginPath();path.forEach((p,i)=>i?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y));context.stroke();context.setLineDash([]);
@@ -269,17 +176,7 @@ function render(now) {
     context.strokeStyle = '#dbf8c833'; context.lineWidth = 1; context.beginPath(); context.arc(seed.x, seed.y, 26 + (isLowQuality ? 0 : Math.sin(time * 2) * 2), 0, Math.PI * 2); context.stroke();
     if (drag) { context.beginPath(); context.moveTo(seed.x, seed.y); context.lineTo(seed.x - Math.cos(angle) * power * 100, seed.y - Math.sin(angle) * power * 100); context.strokeStyle = '#d8f5caaa'; context.lineWidth = 2; context.stroke(); }
   }
-  rings = rings.filter(ring => {
-    ring.previousRadius = ring.radius; ring.life -= visualDelta; ring.radius = Math.max(8, ring.radius + visualDelta * (ring.kind ? (ring.kind === 'stasis' ? 0 : ring.kind === 'attract' ? -1 : 1) * ((['swap', 'comet', 'magnet', 'lightning', 'impact', 'tether', 'split', 'bubble', 'portal', 'echo', 'slingshot', 'drunk', 'wrap', 'homing'].includes(ring.kind) ? 150 : RULE.powerRadius) - 8) / 1.6 : ring.bloom ? 220 : 75));
-    if (!isLowQuality && visualDelta > 0 && !['attract', 'stasis', 'swap', 'comet', 'magnet', 'lightning', 'impact', 'tether', 'split', 'bubble', 'portal', 'echo', 'slingshot', 'drunk', 'wrap', 'homing'].includes(ring.kind)) for (const body of game.bodies) {
-      const pulse = bubbleRipple(ring, body);
-      if (pulse) membraneHit(body.id, pulse.nx, pulse.ny, pulse.strength);
-    }
-    return ring.life > 0;
-  });
-  if (!isLowQuality) for (const ring of rings.filter(ring => !ring.kind)) { context.globalAlpha = Math.min(.5, ring.life * .5); context.strokeStyle = ring.color; context.lineWidth = ring.bloom ? 2 : 1; context.beginPath(); context.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2); context.stroke(); context.globalAlpha = 1; }
-  particles = particles.filter(particle => particle.life > 0);
-  for (const particle of particles) { particle.life -= visualDelta; particle.x += particle.vx * visualDelta; particle.y += particle.vy * visualDelta; context.globalAlpha = Math.min(.8, Math.max(0, particle.life)); context.fillStyle = particle.color; context.beginPath(); context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2); context.fill(); } context.globalAlpha = 1;
+  poolVisual.after(context,game,visualDelta,isLowQuality);
   scorePopupRender(visualDelta, view, ratio);
   if (game.tick - lastUITick >= 12 || frameCount++ % 20 === 0) { uiRender(); lastUITick = game.tick; }
   requestAnimationFrame(render);
@@ -329,23 +226,23 @@ function uiRender() {
   }
   hudMedalRender($('medals-open'),hudMedal(medal?scoreConditions(medal.targets,game.mode==='song-run'?'Clear the pool':'Finish the run'):poolConditions(game.mode),{score:game.score,shots:game.mode==='waves'?5-game.plucks:game.launches,earned:medalEarned}));
   $('end-medal').innerHTML=game.isOver?medalBadge(game.mode==='score-attack'?scoreMedal(game.score,game.attack.budget):game.mode==='challenge'&&gameWon(game)?medalEvaluate(poolConditions('challenge'),{complete:1,shots:game.launches}):null):'';
-  $('chain-label').textContent = game.chain.length ? `${game.chain.length} CONTACTS ${game.chain.length >= 5 ? '· BEAUTIFUL.' : '· KEEP THE CHAIN GOING.'}` : 'FIVE DIFFERENT BUBBLES. ONE BLOOM.';
-  $('note-meter').replaceChildren(...Array.from({ length: 5 }, (_, index) => { const item = document.createElement('i'); if (game.chain[index]) { item.className = 'active'; item.style.setProperty('--note', COLORS[game.bodies[game.chain[index]].tone]); } return item; }));
-  $('note-meter').setAttribute('aria-label', `${game.chain.length} unique contacts this shot`);
+  $('chain-label').textContent = turnHits(game).length ? `${turnHits(game).length} CONTACTS ${turnHits(game).length >= 5 ? '· BEAUTIFUL.' : '· KEEP THE CHAIN GOING.'}` : 'FIVE DIFFERENT BUBBLES. ONE BLOOM.';
+  $('note-meter').replaceChildren(...Array.from({ length: 5 }, (_, index) => { const item = document.createElement('i'); if (turnHits(game)[index]) { item.className = 'active'; item.style.setProperty('--note', COLORS[game.bodies[turnHits(game)[index]].tone]); } return item; }));
+  $('note-meter').setAttribute('aria-label', `${turnHits(game).length} unique contacts this shot`);
   $('state-label').textContent = isPaused ? 'A QUIET MOMENT.' : game.isOver ? 'RUN COMPLETE.' : !isStarted ? 'YOUR NEXT LITTLE OBSESSION.' : game.isFlying ? game.flightAge >= RULE.flightSeconds ? 'SETTLING INTO THE POOL' : `FOLLOW THE LIGHT · ${Math.max(0, Math.ceil(RULE.flightSeconds - game.flightAge))}s` : 'AIM. RELEASE. BLOOM.';
   $('goal-label').textContent = game.mode==='score-attack'?'Score Attack':game.mode==='waves'?'Endless Waves':game.mode === 'free' ? 'Free play' : gameWon(game) ? 'Three blooms complete' : `Blooms ${Math.min(game.blooms, RULE.goalBlooms)} / ${RULE.goalBlooms}`;
   $('goal-progress').setAttribute('aria-label','Blooms toward victory');$('goal-progress').hidden = game.mode === 'free'; $('goal-progress').max = RULE.goalBlooms; $('goal-progress').value = Math.min(game.blooms, RULE.goalBlooms);
   if(progression?.hud()) {$('goal-label').textContent=progression.hud();$('goal-progress').hidden=true;}
   if(game.mode==='waves'){const left=liveBubbles(game).length,total=game.bodies.length-1;$('goal-label').textContent=`Wave ${game.wave.number} · ${left} / ${total} bubbles left`;$('goal-progress').hidden=false;$('goal-progress').setAttribute('aria-label','Bubbles popped this wave');$('goal-progress').max=total;$('goal-progress').value=total-left;$('state-label').textContent=game.wave.entry<WAVE_ENTRY?'BUBBLES INCOMING':left===0?'WAVE CLEARED · COASTING':game.isFlying?'POP EVERY BUBBLE':`${game.plucks} SHOTS TO CLEAR THE BOARD`;Object.assign(canvas.dataset,{wave:String(game.wave.number),bubblesLeft:String(left),waveEntering:String(game.wave.entry<WAVE_ENTRY)});}
-  if(game.mode==='score-attack'){$('goal-label').textContent=`Score Attack · ${game.attack.budget} Shots`;$('goal-progress').hidden=false;$('goal-progress').max=game.attack.budget;$('goal-progress').value=game.launches-(game.isFlying?1:0);$('goal-progress').setAttribute('aria-label','Shots completed');$('state-label').textContent=isPaused?'PAUSED':game.isOver?'RUN COMPLETE':game.isFlying?'SHOT IN MOTION':'BUILD CHAINS. BANK. BLOOM.';$('chain-label').textContent=game.chain.length?`${game.chain.length} UNIQUE CONTACTS`:'FIVE DIFFERENT BUBBLES. ONE BLOOM.';}
+  if(game.mode==='score-attack'){$('goal-label').textContent=`Score Attack · ${game.attack.budget} Shots`;$('goal-progress').hidden=false;$('goal-progress').max=game.attack.budget;$('goal-progress').value=game.launches-(game.isFlying?1:0);$('goal-progress').setAttribute('aria-label','Shots completed');$('state-label').textContent=isPaused?'PAUSED':game.isOver?'RUN COMPLETE':game.isFlying?'SHOT IN MOTION':'BUILD CHAINS. BANK. BLOOM.';$('chain-label').textContent=turnHits(game).length?`${turnHits(game).length} UNIQUE CONTACTS`:'FIVE DIFFERENT BUBBLES. ONE BLOOM.';}
   document.querySelector('.goal-strip').hidden=progression?.context!=='listening'&&(game.mode==='free'||game.mode==='score-attack');
   $('menu-mode').textContent=game.mode==='song-run'?`Melody Journey · ${progression?.hud()??''}`:game.mode==='free'?'Free Play':game.mode==='score-attack'?`Score Attack · ${game.attack.budget} shots`:game.mode==='waves'?$('goal-label').textContent:'Three Blooms';
   bonusRender();
   $('palette').value=audio.music.palette;
   const shot=game.lastShot;
-  $('shot-result').textContent=game.isFlying?`${game.chain.length} unique contacts · ${game.banks} banks · ${game.power.used} powers`:shot?`${shot.bloom?'Bloom!':shot.notes===4?'One bubble short of a bloom.':`${shot.notes} of 5 contacts toward a bloom.`}${shot.points===null?' · Resumed shot':` +${shot.points}`} · ${shot.banks} banks · ${shot.powers} powers${shot.objective?' · Objective complete':''}`:'Aim for a wall bank. The dotted guide shows your first rebound; drifting bubbles can change the path.';
+  $('shot-result').textContent=game.isFlying?`${turnHits(game).length} unique contacts · ${game.banks} banks · ${game.power.used} powers`:shot?`${shot.bloom?'Bloom!':shot.notes===4?'One bubble short of a bloom.':`${shot.notes} of 5 contacts toward a bloom.`}${shot.points===null?' · Resumed shot':` +${shot.points}`} · ${shot.banks} banks · ${shot.powers} powers${shot.objective?' · Objective complete':''}`:'Aim for a wall bank. The dotted guide shows your first rebound; drifting bubbles can change the path.';
   $('edge-idle').textContent=game.isFlying?'':game.mode==='score-attack'?'Drag back and release to launch':game.launches?'Drag back for another shot':'Drag back anywhere to launch';
-  if(game.mode==='score-attack'){$('shot-result').textContent=game.isFlying?`${game.chain.length} unique contacts · ${game.banks} banks · ${game.power.used} powers`:shot?`${shot.notes} contacts${shot.bloom?' · Bloom!':''} · +${shot.points??0} score · ${shot.banks} banks${shot.objective?' · Bonus complete':''}`:'Bank off walls and chain different bubbles to build your score.';$('note-meter').setAttribute('aria-label',`${game.chain.length} unique contacts this shot`);}
+  if(game.mode==='score-attack'){$('shot-result').textContent=game.isFlying?`${turnHits(game).length} unique contacts · ${game.banks} banks · ${game.power.used} powers`:shot?`${shot.notes} contacts${shot.bloom?' · Bloom!':''} · +${shot.points??0} score · ${shot.banks} banks${shot.objective?' · Bonus complete':''}`:'Bank off walls and chain different bubbles to build your score.';$('note-meter').setAttribute('aria-label',`${turnHits(game).length} unique contacts this shot`);}
   const song = musicProgress(audio.music);
   $('song-stage').textContent = `${song.name}${audio.isMusicPlaying && !audio.isMuted && !audio.isPaused && audio.ambience ? audio.stage < song.stage ? ' · joining on the next bar' : audio.section !== song.name ? ` · ${audio.section}` : '' : ''}`;
   $('song-next').textContent = song.next;
@@ -362,7 +259,7 @@ function uiRender() {
     if(slot.innerHTML!==view.html)slot.innerHTML=view.html;
   }
   $('power-progress').textContent = game.isFlying ? `${used} / ${allowance} powers used · bloom to ${allowance === 3 ? 'keep all three' : `earn ${allowance + 1} next shot`}` : `${allowance} ${allowance === 1 ? 'power' : 'powers'} this shot · ${allowance === 3 ? 'bloom to keep all three' : `bloom to earn ${allowance + 1} next shot`}. No bloom resets to 1.`;
-  canvas.dataset.frozenHit = game.chain.filter(id => frozenHit(game, id)).join(',');
+  canvas.dataset.frozenHit = turnHits(game).filter(id => frozenHit(game, id)).join(',');
   canvas.dataset.stasisTargets = (effectGet(game, 'stasis')?.targets || []).join(','); canvas.dataset.stasisSpeed = String(Math.max(0, ...(effectGet(game, 'stasis')?.targets || []).map(id => Math.hypot(game.bodies[id].vx, game.bodies[id].vy))));
   canvas.dataset.seedCount = String(seedBodies(game).length); canvas.dataset.seedRadius = game.bodies[0].radius.toFixed(1);
   const power = game.power, first = markers[0], kind = first?.kind || power.offer, p = POWERS[kind], available = powerAvailable(game);
@@ -387,7 +284,7 @@ function uiRender() {
   // Read-only observability for live-browser QA. Never drives gameplay.
   canvas.dataset.quality = quality;
   canvas.dataset.bubbleDeformation = Math.max(0, ...Array.from(membranes.values(), skin => Math.hypot(...skin.strain))).toFixed(3);
-  Object.assign(canvas.dataset, { physicsTick: String(game.tick), flying: String(game.isFlying), score: String(game.score), seedX: game.bodies[0].x.toFixed(2), seedY: game.bodies[0].y.toFixed(2), chain: String(game.chain.length), audioState: audio.context?.state || 'locked', soundEvents: String(audio.eventCount), notes: String(noteCount), mode: game.mode, harmony: audio.harmony?.name || 'none', songChords: String(audio.music.history.length), songTheme: audio.music.theme.join(','), musicPending: String(audio.musicQueue.length), musicVoices: String(audio.phraseVoices.size), audioVoices: String(audio.voiceCount), harmonyPaused: String(audio.isMusicPaused), musicPassage: String(audio.passage), musicSection: audio.section, musicStage: String(audio.stage), songStage: String(song.stage), songPlucks: String(audio.music.plucks), songBar: String(audio.music.bar), mediaState: audio.media.state, mediaReady: String(audio.media.ready), mediaArtwork: audio.media.artwork?.[0]?.src || '', hookNextBar: String(audio.music.evolution.nextBar), hookPending: String(!!audio.music.evolution.pending), phraseSteps: (audio.music.motifs.at(-1)?.steps || []).join(','), hookSteps: (audio.music.hook?.steps || []).join(','), phraseReplayCount: String(audio.playbackCount), phraseReplayIds: [...audio.playbackLights.keys()].join(','), ambience: String(audio.ambience) });
+  Object.assign(canvas.dataset, { physicsTick: String(game.tick), flying: String(game.isFlying), score: String(game.score), seedX: game.bodies[0].x.toFixed(2), seedY: game.bodies[0].y.toFixed(2), chain: String(turnHits(game).length), audioState: audio.context?.state || 'locked', soundEvents: String(audio.eventCount), notes: String(noteCount), mode: game.mode, harmony: audio.harmony?.name || 'none', songChords: String(audio.music.history.length), songTheme: audio.music.theme.join(','), musicPending: String(audio.musicQueue.length), musicVoices: String(audio.phraseVoices.size), audioVoices: String(audio.voiceCount), harmonyPaused: String(audio.isMusicPaused), musicPassage: String(audio.passage), musicSection: audio.section, musicStage: String(audio.stage), songStage: String(song.stage), songPlucks: String(audio.music.plucks), songBar: String(audio.music.bar), mediaState: audio.media.state, mediaReady: String(audio.media.ready), mediaArtwork: audio.media.artwork?.[0]?.src || '', hookNextBar: String(audio.music.evolution.nextBar), hookPending: String(!!audio.music.evolution.pending), phraseSteps: (audio.music.motifs.at(-1)?.steps || []).join(','), hookSteps: (audio.music.hook?.steps || []).join(','), phraseReplayCount: String(audio.playbackCount), phraseReplayIds: [...audio.playbackLights.keys()].join(','), ambience: String(audio.ambience) });
 }
 function phraseRender() {
   if($('game-music-bar').hidden)return;
@@ -424,7 +321,7 @@ function pauseSet(value) { if (!isStarted || game.isOver) return; isPaused = val
 function start() { preferences.lastPlay=game.mode;if(game.attack)preferences.scoreBudget=game.attack.budget; freePlayRefresh(); navigation?.play(); audio.media.describe(game.seed); isStarted = true; isPaused = false; $('welcome').hidden = true; if (game.mode!=='song-run' && audio.bloomCount !== game.blooms) audio.harmonySet(game.blooms); audio.pauseSet(false); audio.musicStart(); audioUnlockAsync(); save(); uiRender(); if(!game.launches)toast('Drag back and release to launch'); canvas.focus({ preventScroll: true }); }
 function loadPool(nextGame, music = null) {
   game = structuredClone(nextGame); progression?.settle(game,false); audio.musicRestore(music, music?music.blooms:game.blooms, music?music.plucks:game.launches);
-  membranes.clear(); powerVisual.clear(); trails = []; particles = []; rings = []; connections = []; reunions = []; scorePopups = []; dragCancel(); accumulator = 0;
+  poolVisual.clear(); scorePopups = []; dragCancel(); accumulator = 0;
   angle = -Math.PI / 2; power = .7; $('power').value = 70; clearTimeout(toastTimer); $('toast').classList.remove('show'); buttonLabel($('copy-result'),'Copy this result','copy'); start();
 }
 function newPool(seed, mode) { if(mode==='score-attack'){scorePlay(game.attack.budget,true);return;}loadPool(gameCreate(seed, mode,mode==='waves'?{build:freePlayBuild(progression.state),randomPowers:true}:{})); }
@@ -542,12 +439,12 @@ $('audition').onclick = async () => {
   } catch { status.textContent='Audio could not start. Tap Sound check to try again.'; }
   finally { button.disabled=false; buttonLabel(button,'Sound check','play'); }
 };
-$('quality').onchange = event => { quality=event.currentTarget.value; isLowQuality=quality==='low'; if (isLowQuality) { particles=[]; trails=[]; } controlsRender(); resize(); save(); };
+$('quality').onchange = event => { quality=event.currentTarget.value; isLowQuality=quality==='low';  controlsRender(); resize(); save(); };
 creditsMount($('credits-dialog'));
 $('credits-open').onclick=()=>$('credits-dialog').showModal();
 $('left-handed').onchange=event=>{preferences.leftHanded=event.currentTarget.checked;store.preferences.leftHanded=preferences.leftHanded;controlsRender();$('left-handed-status').textContent=poolPreferencesWrite(localStorage,{leftHanded:preferences.leftHanded})?'':'Layout changed for this session. This browser could not save the preference.';};
 $('button-controls').onchange=event=>{assistedControls=event.currentTarget.checked;controlsRender();save();};
-hudCardsMount(()=>({score:game.score,points:progression?.points??0,shots:game.plucks,mode:game.mode,contacts:game.chain.length}));
+hudCardsMount(()=>({score:game.score,points:progression?.points??0,shots:game.plucks,mode:game.mode,contacts:turnHits(game).length}));
 for(const name of ['powers','music','bonus','medals']) $(name+'-open').onclick=()=>{document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());$(name+'-dialog').showModal();};
 $('retry').onclick = () => dialogOpen();
 $('result-home').onclick=()=>{if(save())navigation.home();else toast('Your result could not be saved. Keep this tab open and try Main Menu again.');};
@@ -614,6 +511,8 @@ uiSoundMount(audio,document,uiFeedback);
 fullscreenMount(document,window);
 edgeBackMount(document,window,{feedback:uiFeedback});
 scrollbarsMount(document,window);
+wakeLockMount();
+dropdownMount();
 $('welcome').hidden=true;
 $('menu-home').onclick=()=>navigation.home();
 $('menu-resume').onclick=()=>navigation.resume();

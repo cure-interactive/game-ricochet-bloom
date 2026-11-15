@@ -1,4 +1,4 @@
-import { buttonLabel } from './ui-icon.js?v=030c0efc6cdfba88e28420bfcfaf809c34dba306c37f69d9b366521d5b469e5d';
+import { buttonLabel } from './ui-icon.js?v=fab92047db86060c2671b46474bb7cf366b388662fcaa98e2bd64d1b21d77da2';
 
 const appView=win=>!!win.navigator?.standalone||!!win.matchMedia?.('(display-mode: standalone)').matches;
 // Capability and actual browser state, never screen size, decide this action.

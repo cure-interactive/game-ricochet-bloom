@@ -1,9 +1,10 @@
+import {turnHits} from './turn-hits.js?v=601ae75742860558121ef0d4bb066017b87650900bbeeb17e8bf8d359fbcdd5d';
 import {bubbleRender} from './bubble-render.js?v=0b5db9753621bde8a86ab88be698cb900831918934659548b20bbe78ef0599fc';
 import {bubbleStep,bubbleOutline,bubbleFlow,bubbleHit} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers} from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
+import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers} from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
 import {regionFrozen} from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import {BUBBLE_ROLES,bubbleRole} from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import {assetURL} from './asset.js?v=0cfe0a794ed64ab3bcda90c0fff1c797d61ca36785d8f327839e506603d7508c';
+import {assetURL} from './asset.js?v=0ee88dff8da07de52fba70c1dd08771f5f90984e0661c9346b244d7a40676de9';
 let sharedIcons;
 export function poolBubbleIcons(){
  return sharedIcons??=Object.fromEntries([['powerIcons','power',Object.keys(POWERS)],['roleIcons','ui',Object.keys(BUBBLE_ROLES)]].map(([name,folder,kinds])=>[name,Object.fromEntries(kinds.map(kind=>{const icon=new Image();icon.src=new URL(assetURL(`./icon/${folder}/${kind}.svg`),import.meta.url).href;return [kind,icon];}))]));
@@ -103,5 +104,5 @@ export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGe
     else { context.fillStyle = '#f3fff5'; context.font = '32px Arial'; context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillText(p.symbol, 0, 0); }
     context.restore();
   }
-  if (!isSeed && game.chain.includes(body.id)) { context.strokeStyle = hue + (isPermeable ? '28' : '88'); context.lineWidth = 1; context.beginPath(); for (const [index, point] of points.entries()) { const x = body.x + (point.x - body.x) * 1.1, y = body.y + (point.y - body.y) * 1.1; if (!index) context.moveTo(x, y); else context.lineTo(x, y); } context.closePath(); context.stroke(); }
+  if (!isSeed && turnHits(game).includes(body.id)) { context.strokeStyle = hue + (isPermeable ? '28' : '88'); context.lineWidth = 1; context.beginPath(); for (const [index, point] of points.entries()) { const x = body.x + (point.x - body.x) * 1.1, y = body.y + (point.y - body.y) * 1.1; if (!index) context.moveTo(x, y); else context.lineTo(x, y); } context.closePath(); context.stroke(); }
 }

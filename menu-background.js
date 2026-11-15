@@ -1,20 +1,19 @@
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleContactMount as menuContactMount} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
 export {menuContactMount};
-import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=823ebd5050b413a65573da7ac125417b9e3b898a9d1516e0ed0b6e938998d8c0';
-import {freePlayCreate,freePlayBuild} from './free-play.js?v=409e1eb57ba278752223f7eb788efb6deba4562df6daf6e206ef5067994254b6';
+import {freePlayCreate,freePlayBuild} from './free-play.js?v=0756fd6c275d9b67a242f4bd1c6e4adb572e9b7bedd77ec79419dfae7e475473';
 import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
-import {progressionCreate} from './run.js?v=1e0bdaf30c5327f0cc68f9919e08cba1b81cb302dff937b1bbfdae8fb6c8ea56';
-import {menuMusicCreate} from './menu-music.js?v=9242df5dd5248fa81deeeae5550d5752d913cac49cab0029655d1294280cd048';
-import {PowerVisual} from './power-visual.js?v=5025b852f5ff35c3c06f90c45ce0d289aaf4acbc1ddedfe8a5a1930a8191fecb';
-import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=b2a7731e93a4103079007e6fb396de5e246d561444e4313122aba52136f8ac3b';
-import { bubbleCreate, bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=a5ed2d2493c9c0b42afc144cd7c629a1a1a90e62d06cef37694428adee94911b';
+import {progressionCreate} from './run.js?v=aa118d34e3e643b1a488bc8d307b99a54e66ae474452ddcf6575bb9bee2e84a1';
+import {menuMusicCreate} from './menu-music.js?v=eadf5534c4cc2c14e1ffb2b32d4ba8b1cf488c9cd7f993251ecddb3b196af2f0';
+import {PoolVisual} from './pool-visual.js?v=595cb4850528ef70e4d69bbdd1562183e05c8b1371bb9065a1618a63af3c7b29';
+import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
+import { bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
+import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=7519519c05c10d989e0812a8dc056dd4651cbba92f1c83aa343877d1dcc87f3b';
 
 export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
-  const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),skins=new Map(),powerVisual=new PowerVisual();
-  const skinFor=body=>{if(!skins.has(body.id))skins.set(body.id,bubbleCreate());return skins.get(body.id);};
-  let active=false,audible=false,frame=0,previous=0,rings=[],signature='';
+  const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),visual=new PoolVisual();
+  const skinFor=body=>visual.membrane(body);
+  let active=false,audible=false,frame=0,previous=0,signature='';
   const covered=()=>[...(document.querySelectorAll?.('dialog[open]')||[])].some(dialog=>getComputedStyle(dialog).getPropertyValue('--pool-background-covered').trim()==='1');
   function draw(dt){
     if(covered())return;
@@ -25,8 +24,6 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
     // Rotate the whole pool on phones so its geometry fills either orientation.
     const {portrait,scale}=menuPoolView(width,height);
     ctx.translate(width/2,height/2);ctx.scale(scale,scale);if(portrait)ctx.rotate(Math.PI/2);ctx.translate(-RULE.width/2,-RULE.height/2);
-    for(const ring of rings){ctx.strokeStyle=`rgba(177,244,219,${Math.max(0,1-ring.age/2)*.35})`;ctx.lineWidth=2;ctx.beginPath();ctx.arc(ring.x,ring.y,20+ring.age*160,0,Math.PI*2);ctx.stroke();ring.age+=dt;}
-    rings=rings.filter(r=>r.age<2);
     for(const point of pool.contacts.values()){
       const glow=ctx.createRadialGradient(point.x,point.y,0,point.x,point.y,180);
       glow.addColorStop(0,'#b1f4db20');glow.addColorStop(1,'#b1f4db00');
@@ -38,11 +35,9 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
       const glow=ctx.createRadialGradient(pulse.x,pulse.y,0,pulse.x,pulse.y,100);
       glow.addColorStop(0,`rgba(177,244,219,${fade*.12})`);glow.addColorStop(1,'rgba(177,244,219,0)');ctx.fillStyle=glow;ctx.fillRect(pulse.x-100,pulse.y-100,200,200);
     }
-    powerVisual.render(ctx,pool.game,pool.game.tick*RULE.step,gentle());
-    const bodies=[...seedBodies(pool.game),...pool.game.bodies.slice(1)];
-    for(const body of bodies){
-      poolBubbleRender(ctx,pool.game,body,skinFor(body),dt,pool.game.tick*RULE.step,{gentle:gentle(),skinColor:skin(),portrait,markings:false,powerMarkings:powerMarkings()});
-    }
+    visual.before(ctx,pool.game,pool.game.tick*RULE.step,dt,gentle());
+    visual.bodies(ctx,pool.game,dt,pool.game.tick*RULE.step,{gentle:gentle(),skinColor:skin(),portrait,markings:false,powerMarkings:powerMarkings()});
+    visual.after(ctx,pool.game,dt,gentle());
     canvas.dataset.tick=String(pool.game.tick);
     canvas.dataset.effects=pool.game.effects.map(e=>e.kind).join(',');canvas.dataset.frozen=String(effectGet(pool.game,'stasis')?.targets.length||0);canvas.dataset.permeable=String(pool.game.bodies.filter(b=>b.id>0&&frozenHit(pool.game,b.id)).length);
     musicDiagnostics();
@@ -55,15 +50,10 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
     if(!previous||dt>=1/30){
       previous=now;
       const obscured=covered();
-      if(obscured){clear();pool.pressure=[];rings=[];}
-      powerVisual.update(dt);
+      if(obscured){clear();pool.pressure=[];visual.clear();}
       for(const event of menuPoolStep(pool,dt)){
         music.event(event);if(obscured)continue;
-        if(event.type==='impact')for(const [id,sign] of [[event.a,1],[event.b,-1]]){const body=seedBodies(pool.game).find(b=>b.id===id)||pool.game.bodies[id];if(body)bubbleHit(skinFor(body),body.radius,event.nx*sign,event.ny*sign,event.speed,!!effectGet(pool.game,'stasis')?.targets.includes(id));}
-        if(event.type==='wall'){const body=bodiesFor().find(b=>b.id===event.id);if(body)bubbleHit(skinFor(body),body.radius,-event.nx,-event.ny,event.speed,!!effectGet(pool.game,'stasis')?.targets.includes(body.id));}
-        powerVisual.event(event,pool.game);poolBubbleEvent(event,pool.game,skinFor);
-        if(event.type==='note'&&pool.game.bodies[event.id])skinFor(pool.game.bodies[event.id]).glow=.9;
-        if(event.type==='bloom'&&!gentle())rings.push({x:event.x,y:event.y,age:0});
+        visual.event(event,pool.game,gentle());
       }
       music.update(bodiesFor(),menuPoolView(canvas.clientWidth,canvas.clientHeight).portrait);
       canvas.dataset.tick=String(pool.game.tick);canvas.dataset.covered=String(obscured);musicDiagnostics();
@@ -81,7 +71,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
   const background={refresh(){
     const progress=profile(),next=JSON.stringify([freePlayBuild(progress),playerBuild(progress.profile)]);
     if(signature===next)return;signature=next;
-    Object.assign(pool,menuPoolCreate(freePlayCreate('MENU BLOOM',progress)));skins.clear();powerVisual.clear();rings=[];music.reset();canvas.dataset.contacts='0';draw(0);
+    Object.assign(pool,menuPoolCreate(freePlayCreate('MENU BLOOM',progress)));visual.clear();music.reset();canvas.dataset.contacts='0';draw(0);
   },show(value,{ambient=value}={}){if(active===value&&audible===ambient)return;clear();active=value;audible=ambient;sync();},clear,
     contact(id,clientX,clientY,pulse=false){
       if(!active||document.hidden||covered()){clear();return;}

@@ -501,6 +501,14 @@ function powerCollect(state, marker, a, b, nx, ny, events) {
   if(state.mode==='waves'&&kind==='tether'&&!effectGet(state,kind)?.links.length)effectClear(state,events,kind);
   if(kind==='swap')skillTeleport(state,event.x,event.y,event.exitX,event.exitY,'swap');
   events.push(event);
+  // Capturing a satellite touches its pickup just as a direct player contact does.
+  // Consume through the same owner so repeated/chained captures cannot duplicate it.
+  if(kind==='orbit')for(const id of [...(effectGet(state,'orbit')?.satellites||[])]){
+    const pickup=state.power.markers.find(marker=>marker.target===id);
+    if(!pickup)continue;
+    const body=state.bodies[id],dx=body.x-seed.x,dy=body.y-seed.y,d=Math.hypot(dx,dy)||1;
+    powerCollect(state,pickup,seed,body,dx/d,dy/d,events);
+  }
   powerNext(state);
 }
 export function physicsStep(state) {

@@ -6,6 +6,31 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.22.4
+
+### Player Changes
+
+- Show the same power trails, portal details, impact reactions and Split reunion effects in regular play, Casual and the main-menu pool.
+- Keep keyboard focus rings out of touch and mouse navigation, while preserving them for keyboard controls.
+- Give development details the Cure Interactive code icon.
+- Keep supported phones awake during play, including Casual; allow sleep again in menus and while paused.
+- Activate powerups carried by bubbles captured by Orbit.
+- Fade persistent power graphics out smoothly when their effects end.
+- Clear hit indicators when the player stops, while retaining the completed shot's results.
+- Use matching game-styled dropdowns with selected-option checks and keyboard controls.
+
+<!-- development -->
+### Developer Notes
+
+- Route pool effects, membranes, trails and particles through PoolVisual; retain mode-specific aiming, score and music overlays in their callers.
+- Track input modality once for the whole interface, without removing accessible focus or text editing.
+- Check every power through direct and detached physics, at High and Low quality, and validate Wiki icon assets including development-only headings.
+- Share screen wake-lock ownership across gameplay screens, with visibility, pending-request and denial handling.
+- Route satellite pickups through powerCollect; keep turn-hit presentation separate from retained scoring history.
+- Retain bounded visual-only exit snapshots for 450 ms; renewing a power retires its outgoing snapshot.
+- Progressively enhance native select value/change contracts with one shared themed popup.
+<!-- /development -->
+
 ## v3.22.3
 
 ### Player Changes

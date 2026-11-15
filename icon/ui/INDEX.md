@@ -70,3 +70,7 @@ The Epic rarity icon is original artwork by Leviscus Tempris, licensed under the
 ## External website links
 
 - [external](external.md) — collection/navigation/external.svg, imported with the portable bundle exporter from Cure Interactive Icons commit `71d7cc7fb2bed4b9d61678e19e94e440d1b11324`. Preserves the complete MIT notice and [retained upstream artwork](external-original.svg).
+
+## Developer Notes
+
+- [code](code.md) — collection/interface/code.svg, exported with full portable attribution from Cure Interactive Icons commit `71d7cc7fb2bed4b9d61678e19e94e440d1b11324`. Artwork is unchanged; the game uses its normal monochrome CSS mask.

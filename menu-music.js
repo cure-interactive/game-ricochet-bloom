@@ -1,4 +1,4 @@
-import {PoolSound} from './sound.js?v=0899a7a01d27ae3e77a70952db0de50ff3ad5f838955144796b607884739ef6c';
+import {PoolSound} from './sound.js?v=c8f70e278ab198e418304bf5e55ae005c2202d1aa7635742c95ae02f974927a4';
 
 // Detached composition uses the game's finished arrangement/scheduler only.
 // Events teach the composer, but never play collision, launch or power sounds.
