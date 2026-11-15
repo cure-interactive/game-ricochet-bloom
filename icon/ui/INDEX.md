@@ -25,7 +25,7 @@ Cure Interactive Icons collection assets copied without artwork changes from com
 - [pencil](pencil.md) — collection/tool/pencil.svg
 - [upload](upload.md) — collection/file/upload.svg
 
-Original game fallbacks: [play](play.md), [pause](pause.md), [power](power.md), [check](check.md), [melody](melody.md), [bass](bass.md), [rhythm](rhythm.md).
+Original game fallbacks: [play](play.md), [pause](pause.md), [power](power.md), [melody](melody.md), [bass](bass.md), [rhythm](rhythm.md).
 
 ## Progression and gameplay additions
 
@@ -74,3 +74,17 @@ The Epic rarity icon is original artwork by Leviscus Tempris, licensed under the
 ## Developer Notes
 
 - [code](code.md) — collection/interface/code.svg, exported with full portable attribution from Cure Interactive Icons commit `71d7cc7fb2bed4b9d61678e19e94e440d1b11324`. Artwork is unchanged; the game uses its normal monochrome CSS mask.
+
+## Device and installation guide icons
+
+Monitor and phone were exported from Cure Interactive Icons commit `71d7cc7fb2bed4b9d61678e19e94e440d1b11324` with full notices. Safari, iOS Share and iOS Add to Home Screen are original instructional drawings; their adjacent credits distinguish them from official Apple artwork.
+
+- [monitor](monitor.md) — collection/device/monitor.svg
+
+- [phone](phone.md) — collection/device/phone.svg
+
+- [safari](safari.md) — original installation-guide illustration.
+
+- [ios-share](ios-share.md) — original installation-guide illustration.
+
+- [ios-home-screen](ios-home-screen.md) — original installation-guide illustration.

@@ -1,3 +1,4 @@
+import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 
 // A presentation-only tether, shared by the two large skin viewers.
@@ -16,13 +17,15 @@ export function skinSpringStep(state,seconds,{stiffness=150,damping=12}={}){
 export function skinPreviewMount(element){
  const orb=element.querySelector('i'),doc=element.ownerDocument,win=doc.defaultView;
  const bubble=orb.querySelector('player-bubble');
+ const renderReady=frameGate();
  let state={x:0,y:0,vx:0,vy:0},pointer=null,frame=0,last=0,destroyed=false;
  function paint(){bubble?.velocity?.(state.vx/(Math.max(1,orb.clientWidth)/28),state.vy/(Math.max(1,orb.clientWidth)/28));orb.style.transform=`translate(${state.x.toFixed(2)}px,${state.y.toFixed(2)}px)`;}
  function stop(){if(frame)win.cancelAnimationFrame(frame);frame=0;last=0;}
  function releaseCapture(){const id=pointer?.id;pointer=null;orb.classList.remove('is-dragging');if(id!==undefined&&orb.hasPointerCapture(id))orb.releasePointerCapture(id);}
  function reset(){stop();releaseCapture();bubble?.reset?.();state={x:0,y:0,vx:0,vy:0};paint();}
  function tick(time){
-  frame=0;if(destroyed||doc.hidden||!element.isConnected){reset();return;}
+  frame=0;if(destroyed||doc.hidden||!element.isConnected){stop();releaseCapture();return;}
+  if(!renderReady(time)){animate();return;}
   state=skinSpringStep(state,last?(time-last)/1000:1/60);last=time;paint();
   if(state.x||state.y||state.vx||state.vy)frame=win.requestAnimationFrame(tick);else last=0;
  }
@@ -44,11 +47,12 @@ export function skinPreviewMount(element){
   pointer.lastX=e.clientX;pointer.lastY=e.clientY;
  }
  function up(e){if(e.pointerId!==pointer?.id)return;releaseCapture();animate();} // The shared pressure field owns pointer-tap direction.
- function cancel(e){if(e.pointerId===pointer?.id)reset();}
+ function cancel(e){if(e.pointerId===pointer?.id){releaseCapture();animate();}}
  function key(e){const direction={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],Enter:[0,-1],' ':[0,-1]}[e.key];if(!direction||pointer)return;e.preventDefault();nudge(...direction);}
  function click(e){if(e.detail===0)nudge();} // Assistive activation without pointer events.
- function visibility(){if(doc.hidden)reset();}
- const listeners=[[orb,'pointerdown',down],[orb,'pointermove',move],[orb,'pointerup',up],[orb,'pointercancel',cancel],[orb,'lostpointercapture',cancel],[orb,'keydown',key],[orb,'click',click],[doc,'visibilitychange',visibility],[win,'blur',reset]];
+ function suspend(){stop();releaseCapture();}
+ function visibility(){if(doc.hidden)suspend();else animate();}
+ const listeners=[[orb,'pointerdown',down],[orb,'pointermove',move],[orb,'pointerup',up],[orb,'pointercancel',cancel],[orb,'lostpointercapture',cancel],[orb,'keydown',key],[orb,'click',click],[doc,'visibilitychange',visibility],[win,'blur',suspend],[win,'focus',visibility]];
  for(const [target,event,handler] of listeners)target.addEventListener(event,handler);
- return {reset,destroy(){destroyed=true;reset();for(const [target,event,handler] of listeners)target.removeEventListener(event,handler);}};
+ return {reset,destroy(){destroyed=true;suspend();for(const [target,event,handler] of listeners)target.removeEventListener(event,handler);}};
 }

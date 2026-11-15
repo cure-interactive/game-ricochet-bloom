@@ -5,9 +5,8 @@
 .dropdown-trigger[aria-expanded=true]{border-color:#a4efdb;box-shadow:0 0 0 1px #a4efdb}
 .dropdown-options{position:fixed;inset:auto;margin:0;padding:6px;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;border:1px solid #66828b;border-radius:14px;background:#102832;color:#e4f4f2;box-shadow:0 12px 36px #0009;z-index:10000}
 .dropdown-options[hidden]{display:none!important}
-.dropdown-options button{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;margin:0;padding:10px 12px;border:0;border-radius:8px;background:transparent;color:inherit;text-align:start;font:inherit;font-size:16px;box-shadow:none}
-.dropdown-options button::before{content:'';width:16px;flex:0 0 16px}
+:is(body,#settings-dialog) .dropdown-options button{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;margin:0;padding:10px 12px;border:0;border-radius:8px;background:transparent;color:inherit;text-align:start;justify-content:flex-start;font:inherit;font-size:16px;box-shadow:none}
+.dropdown-options button>.ui-icon{width:20px;height:20px;flex:0 0 20px}
 .dropdown-options button[aria-selected=true]{background:#b1f4db;color:#12382e;font-weight:600}
-.dropdown-options button[aria-selected=true]::before{content:'✓'}
 .dropdown-options button:hover:not(:disabled){background:#294955;color:#eefaf5}
 .dropdown-options button:focus-visible{outline:2px solid #eed496;outline-offset:-3px}

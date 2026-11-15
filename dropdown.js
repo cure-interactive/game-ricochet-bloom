@@ -1,3 +1,4 @@
+import { iconNode } from './ui-icon.js?v=0bef764d102dc0e159800242f682b3d49abfbf27a976ab9ca47f0d10b1c82188';
 // Native selects remain the value/change owner; one themed popup presents them.
 export function dropdownMount(doc=document,win=window){
  const entries=new Map();let opened=null,serial=0,queued=false,type='',typedAt=0;
@@ -19,7 +20,7 @@ export function dropdownMount(doc=document,win=window){
   const choices=[...item.select.options].filter(option=>!option.hidden);
   item.panel.replaceChildren(...choices.map(option=>{
    const button=doc.createElement('button');button.type='button';button.role='option';button.tabIndex=-1;button.disabled=option.disabled||option.parentElement?.disabled===true;
-   button.setAttribute('aria-selected',String(option.selected));button.textContent=option.textContent;
+   button.setAttribute('aria-selected',String(option.selected));button.append(iconNode(option.selected?'radio-on':'radio-off'),doc.createTextNode(option.textContent));
    button.onclick=()=>{if(button.disabled)return;item.select.value=option.value;item.select.dispatchEvent(new Event('input',{bubbles:true}));item.select.dispatchEvent(new Event('change',{bubbles:true}));refresh(item);close();};return button;
   }));
   item.panel.hidden=false;item.panel.showPopover?.();item.button.setAttribute('aria-expanded','true');

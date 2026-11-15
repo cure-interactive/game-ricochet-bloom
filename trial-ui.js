@@ -1,8 +1,10 @@
-import { gamemodeMount } from './gamemode-ui.js?v=d762e1c0072e603fd565fc0c2e13e5273557b3f2b5075f87ee46a1d1d2f9db90';
+import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
+const renderReady=frameGate();
+import { gamemodeMount } from './gamemode-ui.js?v=0ef1f5647fe3d757a389e0db472159be466d22b72fcda310e2f640507420023d';
 import { experimentSetup } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
-import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=9aaa9f8fa64b3392a62dbf0aa893c7abbe2f828e0982bd8ae44c034018ffccf8';
+import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=07ea05cffed23e8539bb0c0e4b57e2b8f65f889b78ffa9a945d0baa77830b1d0';
 import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
-import { screenHeader } from './screen-header.js?v=3b71d5c855dd4b471d831d7b322deefa0bba720a3eea641f906d8a003ec1e468';
+import { screenHeader } from './screen-header.js?v=ba224017463f62dbe26bd5a9cb443d01adafd0b81d74353ddee29501d9701838';
 import { songKeep } from './song.js?v=f967d4f585d3d5300be734f4ed6a4870e0de8c85450ff8f6bd9ad5fb49f1ae60';
 import { melodyDraw } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { experimentRewarded, experimentGoal, EXPERIMENT_RECIPES } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
@@ -10,7 +12,7 @@ import { experimentMedal, experimentRead, experimentSave, experimentWrite, exper
 import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialForGeneration,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=41dcf26ae54ee012572d2be70947d77e1c69db8ae45fad8fb954e237657f3118';
 import { trialRead,trialWrite } from './trial-store.js?v=270f39a7072ef8529f0a9aa32b5019b5f2560e8f2ce2f7b2a073bb0622396577';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { buttonHTML } from './ui-icon.js?v=fab92047db86060c2671b46474bb7cf366b388662fcaa98e2bd64d1b21d77da2';
+import { buttonHTML } from './ui-icon.js?v=0bef764d102dc0e159800242f682b3d49abfbf27a976ab9ca47f0d10b1c82188';
 const button=(id,label,icon='arrow-left')=>buttonHTML(label,icon,{id});
 const color={'music-note':'#a4f4cf','beat-gate':'#eb9bcd','sound-hazard':'#ff8b91',instrument:'#f2d279',keeper:'#ff8b91',gate:'#9ce6cf',power:'#c4a7ff',payload:'#ffb56e',player:'#f6f5cf',target:'#ed82bd',blast:'#ffb56e',fire:'#ff765f',gas:'#cadb78',cell:'#a4f4cf',cargo:'#8edbff',plug:'#c6b4ff',vent:'#bf89e8',mote:'#ec8ed7',mud:'#bba18c',spike:'#fa8c91'};
 export function trialMount(host){
@@ -53,7 +55,7 @@ export function trialMount(host){
     if(!blocked)$('trial-alert').textContent=paused?'Paused. Resume when you are ready.':game.phase==='flight'?'Shot in motionâ€¦':game.melody?.preview?'Watch and listen to the call. Launch unlocks after the phrase.':ended?game.reason:game.mode==='outbreak'?'Next: infection advances and vents follow their shown turn schedules. The infection cap is six.':'Drag backward and release, or set your aim and press Launch.';
     $('trial-log').replaceChildren(...game.log.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));canvas.dataset.phase=game.phase;canvas.dataset.tick=game.tick;canvas.dataset.layout=game.layout;canvas.dataset.mode=game.mode;canvas.dataset.shots=game.shots;
   }
-  function loop(now){frame=0;if(!active())return;const dt=Math.min(.05,(now-last)/1000);last=now;
+  function loop(now){frame=0;if(!active())return;if(!renderReady(now)){frame=requestAnimationFrame(loop);return;}const dt=Math.min(.05,(now-last)/1000);last=now;
     if(!blocked&&!document.hidden)host.sound.musicUpdate(game.setup?.experimentId==='087'?game.melody.chains/2:.35);
     if(!paused&&!blocked&&!document.hidden){accumulator+=dt;while(accumulator>=TRIAL_SIZE.step){const before=game.phase,beforePreview=!!game.melody?.preview,beforeHits=game.hit.length;effects(trialStep(game));accumulator-=TRIAL_SIZE.step;if(before!==game.phase||beforePreview!==!!game.melody?.preview){save();renderUI();}else if(game.mode==='music'&&beforeHits!==game.hit.length)renderUI();if(blocked)break;}
       if(game.tick-lastSaved>=60){save();lastSaved=game.tick;if(blocked)renderUI();}flashes=flashes.filter(f=>(f.life-=dt)>0);

@@ -1,8 +1,9 @@
+import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
 import {menuPoolView} from './menu-pool.js?v=7519519c05c10d989e0812a8dc056dd4651cbba92f1c83aa343877d1dcc87f3b';
-import {skinSpringStep} from './skin-preview.js?v=8e77b5504c857a83a814dcd61206c7f9fe8a72da3f327516a56db73a51645e2e';
+import {skinSpringStep} from './skin-preview.js?v=e6fa5d2b4812a18e495e4f673ba1d1c774eb5140702e19298017892c8fe38991';
 import {bubbleRender,bubblePath} from './bubble-render.js?v=0b5db9753621bde8a86ab88be698cb900831918934659548b20bbe78ef0599fc';
 
 // Decorative instances own only visual state. The surrounding button or large
@@ -15,20 +16,24 @@ export function registerPlayerBubble(win=window){
   const point={x,y};
   if(pulse&&!contacts.has(id))for(const el of instances)el.press(point);
   contacts.set(id,point);
- },release(id){contacts.delete(id);},clear(){contacts.clear();for(const el of instances)el.reset();}};
+ },release(id){contacts.delete(id);},clear(){contacts.clear();for(const el of instances)el.pulses=[];}};
  class PlayerBubble extends win.HTMLElement{
   connectedCallback(){
-   if(this.canvas)return;
+   if(this.resize)return;
+   if(!this.membrane){
    this.membrane=bubbleCreate();this.body={x:50.4,y:50.4,radius:14,vx:0,vy:0};
-   this.frame=0;this.last=0;this.visible=false;this.bounce=0;
+   this.renderReady=frameGate();this.frame=0;this.last=0;this.visible=false;this.bounce=0;
    this.pressure={x:0,y:0,vx:0,vy:0};this.pulses=[];
    this.phase=++sequence*2.4;this.age=0;this.nextRipple=1.1+(sequence%4)*.23;
+   }
+   if(!this.canvas){
    this.canvas=this.ownerDocument.createElement('canvas');this.canvas.setAttribute('aria-hidden','true');this.append(this.canvas);
    this.context=this.canvas.getContext('2d');
+   }
    this.target=this.closest('button')||this;
    this.activate=()=>{if(!contacts.size)this.kick(0,1);};
    this.change=()=>{if(this.visible)this.paint();this.request();};
-   this.visibility=()=>{if(this.ownerDocument.hidden)input.clear();else this.request();};
+   this.visibility=()=>{if(this.ownerDocument.hidden){input.clear();this.halt();}else this.request();};
    this.scrollPositions=new Map();
    for(let ancestor=this.parentElement;ancestor;ancestor=ancestor.parentElement)this.scrollPositions.set(ancestor,{x:ancestor.scrollLeft||0,y:ancestor.scrollTop||0});
    this.scrolled=event=>{
@@ -45,10 +50,10 @@ export function registerPlayerBubble(win=window){
    this.target.addEventListener('focusin',this.activate);
    instances.add(this);if(!unmount)unmount=bubbleContactMount(input,this.ownerDocument,win);
    this.ownerDocument.addEventListener('visibilitychange',this.visibility);
-   this.resize=new win.ResizeObserver(()=>{this.size=this.getBoundingClientRect().width;contacts.clear();this.reset();this.request();});this.resize.observe(this);
+   this.resize=new win.ResizeObserver(()=>{this.size=this.getBoundingClientRect().width;if(this.visible)this.paint();this.request();});this.resize.observe(this);
    this.intersection=new win.IntersectionObserver(entries=>{
     const visible=entries[0].isIntersecting&&entries[0].intersectionRect.width>0;
-    if(visible&&!this.visible){this.visible=true;this.kick(0,1,95);this.request();}else if(!visible){this.visible=false;this.reset();}
+    if(visible&&!this.visible){this.visible=true;if(!this.age)this.kick(0,1,95);this.request();}else if(!visible){this.visible=false;this.halt();}
    });this.intersection.observe(this);
    this.preferences=new win.MutationObserver(this.change);
    // Skin colors can be overridden on a reward button, preview or active profile.
@@ -77,6 +82,9 @@ export function registerPlayerBubble(win=window){
    if(!this.visible||this.ownerDocument.hidden)return;
    this.pressureHit(point,'tap');this.pulses.push({...point,age:0});if(this.pulses.length>8)this.pulses.shift();
   }
+  halt(){
+   if(this.frame)win.cancelAnimationFrame(this.frame);this.frame=0;this.last=0;
+  }
   reset(){
    if(this.frame)win.cancelAnimationFrame(this.frame);this.frame=0;this.last=0;this.bounce=0;
    this.membrane=bubbleCreate();if(this.body)this.body.vx=this.body.vy=0;
@@ -84,7 +92,8 @@ export function registerPlayerBubble(win=window){
    this.style.transform='';if(this.visible)this.paint();
   }
   tick(time){
-   this.frame=0;if(!this.isConnected||!this.visible||this.ownerDocument.hidden){this.reset();return;}
+   this.frame=0;if(!this.isConnected||!this.visible||this.ownerDocument.hidden){this.halt();return;}
+   if(!this.renderReady(time)){this.request();return;}
    const dt=this.last?Math.min(.05,(time-this.last)/1000):1/60;this.last=time;
    this.age+=dt;
    for(const point of contacts.values())this.pressureHit(point,'hold',dt);
@@ -128,12 +137,11 @@ export function registerPlayerBubble(win=window){
    }
   }
   disconnectedCallback(){
-   this.visible=false;this.reset();this.resize.disconnect();this.intersection.disconnect();this.preferences.disconnect();
+   this.visible=false;this.halt();this.resize.disconnect();this.resize=null;this.intersection.disconnect();this.preferences.disconnect();
    this.target.removeEventListener('focusin',this.activate);
    this.ownerDocument.removeEventListener('scroll',this.scrolled,true);this.scrollPositions.clear();
    instances.delete(this);if(!instances.size){unmount?.();unmount=null;}
    this.ownerDocument.removeEventListener('visibilitychange',this.visibility);
-   this.canvas.remove();this.canvas=null;
   }
  }
  win.customElements.define('player-bubble',PlayerBubble);

@@ -10,7 +10,7 @@
 [data-icon="fullscreen-enable"]{--ui-icon:url("./icon/ui/fullscreen-enable.svg?v=84a536cc7c092170b4aab9aa84d923293e304c377b77b80c8fd11274fd52f73a")}
 [data-icon="fullscreen-disable"]{--ui-icon:url("./icon/ui/fullscreen-disable.svg?v=975ac4b13ae83e04784f35d84c18b24d862ec703661c232dc22d3a2e2c5cb986")}
 [data-icon="reset"]{--ui-icon:url("./icon/ui/reset.svg?v=cb318f8964f31ff991917b35378d37b790e299eb4d5c7d31096a3d8e00f25357")}
-[data-icon="checkbox-on"]{--ui-icon:url("./icon/ui/checkbox-on.svg?v=1ab7a9db989a87aee6e2ec40bbd123a60c77366f247401c14aeae5c7cda2734a")}
+[data-icon="check"],[data-icon="checkbox-on"]{--ui-icon:url("./icon/ui/checkbox-on.svg?v=1ab7a9db989a87aee6e2ec40bbd123a60c77366f247401c14aeae5c7cda2734a")}
 [data-icon="checkbox-off"]{--ui-icon:url("./icon/ui/checkbox-off.svg?v=2d9f2d0348cf2b8b44fe00248a66a57b27d9a578364ea117afc6711724604699")}
 [data-icon="about"]{--ui-icon:url("./icon/ui/about.svg?v=0a454d7d1e1eb5af06a2de35e47981af84725636bcf944f5959310f2e217b1fb")}
 [data-icon="add"]{--ui-icon:url("./icon/ui/add.svg?v=6048066bf96b46ede96c85ff4334908578955a7d8d69bbefb94fc289be5add14")}
@@ -27,7 +27,7 @@
 [data-icon="play"]{--ui-icon:url("./icon/ui/play.svg?v=22473137eb691749e86432453fa32a94c247ba16598f7520f0bdbf68c062dd17")}
 [data-icon="pause"]{--ui-icon:url("./icon/ui/pause.svg?v=5345b64cdfe8e5d69ebc3e8f36fd4157871677e4a802e830a768cb02c51cfb7e")}
 [data-icon="power"]{--ui-icon:url("./icon/ui/power.svg?v=9f60d4e2610febf83f6eed452ae7b6a12784b6ef090b593ce2167078060719f5")}
-[data-icon="check"]{--ui-icon:url("./icon/ui/check.svg?v=dbfb25375111a708451f95cc8368967a85e91bf71444c8c060f8472d25d4754b")}
+
 [data-icon="bass"]{--ui-icon:url("./icon/ui/bass.svg?v=0501eb06ef0a998d62addbce445b39c3963cbc1b6a7e84411afa56a76c410d8d")}
 [data-icon="rhythm"]{--ui-icon:url("./icon/ui/rhythm.svg?v=96a7458821e044c6858d8ca64bbdc07e3366859fa8e12ee37bfa55cbe293cf5c")}
 button:has(>.ui-icon),a:has(>.ui-icon){display:inline-flex;align-items:center;justify-content:center;gap:8px}
@@ -37,11 +37,10 @@ button[hidden],a[hidden]{display:none!important}
 #fullscreen>.ui-icon{width:20px;height:20px}
 summary::after{content:"";display:inline-block;flex:none;width:10px;height:10px;background:currentColor;-webkit-mask:url("./icon/ui/arrow-down.svg?v=2b109afce1e5f40fbbfb3593910fb94a297252f8602c4614f6418bfab5d028e5") center/contain no-repeat;mask:url("./icon/ui/arrow-down.svg?v=2b109afce1e5f40fbbfb3593910fb94a297252f8602c4614f6418bfab5d028e5") center/contain no-repeat}
 summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{margin-left:auto}summary::-webkit-details-marker{display:none}details[open]>summary::after{transform:rotate(180deg)}
-.setting-toggle input[type="checkbox"]{appearance:none;-webkit-appearance:none;flex:none;width:21px;height:21px;min-width:21px;padding:0;border:0;border-radius:4px;background:#182b3a;box-shadow:inset 0 0 0 2px #b8cad7;-webkit-mask:url("./icon/ui/checkbox-off.svg?v=2d9f2d0348cf2b8b44fe00248a66a57b27d9a578364ea117afc6711724604699") center/contain no-repeat;mask:url("./icon/ui/checkbox-off.svg?v=2d9f2d0348cf2b8b44fe00248a66a57b27d9a578364ea117afc6711724604699") center/contain no-repeat;cursor:pointer}
+.setting-toggle input[type="checkbox"]{appearance:none;-webkit-appearance:none;flex:none;width:21px;height:21px;min-width:21px;padding:0;border:0;border-radius:4px;background:#b8cad7;box-shadow:none;-webkit-mask:url("./icon/ui/checkbox-off.svg?v=2d9f2d0348cf2b8b44fe00248a66a57b27d9a578364ea117afc6711724604699") center/contain no-repeat;mask:url("./icon/ui/checkbox-off.svg?v=2d9f2d0348cf2b8b44fe00248a66a57b27d9a578364ea117afc6711724604699") center/contain no-repeat;cursor:pointer}
 .setting-toggle input[type="checkbox"]:checked{background:#9ff5df;box-shadow:none;-webkit-mask-image:url("./icon/ui/checkbox-on.svg?v=1ab7a9db989a87aee6e2ec40bbd123a60c77366f247401c14aeae5c7cda2734a");mask-image:url("./icon/ui/checkbox-on.svg?v=1ab7a9db989a87aee6e2ec40bbd123a60c77366f247401c14aeae5c7cda2734a")}
 /* Availability is distinct from whether the setting is checked. */
 .setting-toggle input[type="checkbox"]:disabled{background:#66788a;box-shadow:none;cursor:not-allowed}
-.setting-toggle input[type="checkbox"]:disabled:not(:checked){-webkit-mask:none;mask:none;background:transparent;border:2px dashed #66788a}
 .setting-toggle input[type="checkbox"]:disabled+span{color:#8492a4}
 .setting-toggle:has(input:disabled){cursor:not-allowed}
 .setting-toggle:has(input:focus-visible){outline:2px solid #b9afff;outline-offset:4px;border-radius:5px}
@@ -114,3 +113,7 @@ summary{list-style:none;display:flex;align-items:center;gap:10px}summary::after{
    Preserve focus and keyboard behavior; suppress only the pointer decoration. */
 :root body[data-input-modality="pointer"] :is(:focus,:focus-visible),
 :root body[data-input-modality="pointer"] .setting-toggle:has(input:focus-visible){outline:none!important}
+
+[data-icon="monitor"]{--ui-icon:url("./icon/ui/monitor.svg?v=ea9baaaac4848ff89386a3b44f7dd1f3d0b78827fcdaaa503bc4ec5775a096be")}
+
+[data-icon="phone"]{--ui-icon:url("./icon/ui/phone.svg?v=5c987203d10c629b990306f1d3ce326a1f03ad4aee19a89b3fbc01c27da57ae2")}

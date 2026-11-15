@@ -122,7 +122,7 @@ body > main > :is(.hud,.hud-actions) { background: var(--reading-surface); borde
 
 @media(max-width:600px),(max-height:500px){
  :root body dialog:not(.hud-info-card):not(#menu-dialog):not(#development-dialog):not(#save-recovery-dialog):not(#support-dialog) > :is(.dialog-body,.campaign-scroll,.wiki-article,.skin-scroll,.credit-page,.trial-scroll){border-inline:0;border-radius:0;padding-inline:max(16px,env(safe-area-inset-left),env(safe-area-inset-right))}
- :root body :is(#development-dialog,#save-recovery-dialog,#support-dialog) > .dialog-body{padding-inline:0}
+ :root body :is(#development-dialog,#save-recovery-dialog,#support-dialog) > .dialog-body{padding-inline:max(16px,env(safe-area-inset-left),env(safe-area-inset-right))}
 }
 
 /* Full-page readers cover the pool; keep the simulation behind an opaque surface. */

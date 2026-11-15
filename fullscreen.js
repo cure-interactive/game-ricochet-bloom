@@ -1,4 +1,16 @@
-import { buttonLabel } from './ui-icon.js?v=fab92047db86060c2671b46474bb7cf366b388662fcaa98e2bd64d1b21d77da2';
+import { buttonLabel } from './ui-icon.js?v=0bef764d102dc0e159800242f682b3d49abfbf27a976ab9ca47f0d10b1c82188';
+import { assetURL } from './asset.js?v=503d42e78d7051a9b7c8fa01b513c73d03dcf4a74cbe0499107d5c13256e2a7c';
+import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
+
+export function displayDeviceIcon(win){
+ const nav=win.navigator||{};
+ return /iPhone|iPad|iPod|Android|Mobile/.test(nav.userAgent||'')||nav.userAgentData?.mobile===true||(nav.platform==='MacIntel'&&nav.maxTouchPoints>1)?'phone':'monitor';
+}
+function instructionHTML(step){
+ const icons={Safari:'safari',Share:'ios-share','Add to Home Screen':'ios-home-screen'};
+ return escapeHTML(step).replace(/Add to Home Screen|Open as Web App|Ricochet Bloom|Add to Dock|Install and create shortcut|Install app|Add to Home screen|View More|Home Screen|Applications|Safari|Chrome|Share|File|Add|Install/g,label=>
+  (icons[label]?`<span class="instruction-control"><img class="instruction-icon" src="${assetURL('icon/ui/'+icons[label]+'.svg')}" alt="" width="23" height="23">`:'')+'<strong>'+label+'</strong>'+(icons[label]?'</span>':''));
+}
 
 const appView=win=>!!win.navigator?.standalone||!!win.matchMedia?.('(display-mode: standalone)').matches;
 // Capability and actual browser state, never screen size, decide this action.
@@ -19,7 +31,7 @@ export function displayOptions(doc,win) {
   const installed=appView(win),mode=state.action==='exit'||state.browser?'Full screen':installed?'App view':'Browser view';
   const description=state.action==='exit'?'Full screen is on. Leave it here or use your browser’s exit command.':state.browser?'Your browser controls this full-screen view. Use its full-screen command to leave.':state.action==='enter'?'Hide browser controls for this session. You can return to this view at any time.':'This browser does not allow the game to enter full screen. App view is a separate option below.';
   if(installed)return {mode,description,title:'App View Is Active',copy:'You opened the game from its app icon. Your device may still show a status bar or home indicator.',steps:[],open:true};
-  if(apple)return {mode,description,title:'Add to Home Screen',copy:'Launch from the Home Screen to play without Safari’s toolbar.',steps:['Open this game in Safari.','Open Share (inside the browser menu if needed), then choose Add to Home Screen.','Keep Open as Web App enabled if shown, then tap Add.','Open Ricochet Bloom from its new Home Screen icon.'],open:state.action==='help'};
+  if(apple)return {mode,description,title:'Add to Home Screen',copy:'Launch from the Home Screen to play without Safari’s toolbar.',steps:['Open this game in Safari.','Open Share (inside the browser menu if needed), then scroll down to Add to Home Screen. Tap View More first if needed.','Keep Open as Web App enabled if shown, then tap Add.','Open Ricochet Bloom from its new Home Screen icon.'],open:state.action==='help'};
   if(android)return {mode,description,title:'Install on Your Home Screen',copy:'An app window is another way to play with fewer browser controls.',steps:['Open this game in Chrome.','Open the browser menu and choose Install and create shortcut → Install, if offered. Some versions call this Install app or Add to Home screen.','Follow the browser’s instructions, then launch the game from its app icon.'],open:state.action==='help'};
   if(safari)return {mode,description,title:'Add to Dock',copy:'On macOS Sonoma or later, Safari can open the game in its own app window.',steps:['In Safari, choose File → Add to Dock (or Share → Add to Dock).','Choose Add, then open Ricochet Bloom from the Dock or Applications.'],open:state.action==='help'};
   return {mode,description,title:'Play in an App Window',copy:'App installation depends on your browser. It is separate from full screen.',steps:['Look for an install icon in the address bar, or an Install app option in your browser menu.','If offered, follow the browser’s instructions and launch the game from its new app shortcut.','You can also use your browser’s own full-screen command in its menu.'],open:state.action==='help'};
@@ -44,7 +56,8 @@ export function fullscreenMount(doc,win) {
     doc.getElementById('display-mode').textContent=options.mode;
     doc.getElementById('display-description').textContent=options.description;
     doc.getElementById('display-app-title').textContent=options.title;
-    doc.getElementById('display-instructions').innerHTML='<p>'+options.copy+'</p>'+(options.steps.length?'<ol>'+options.steps.map(step=>'<li>'+step+'</li>').join('')+'</ol>':'');
+    const deviceIcon=doc.getElementById('display-device-icon');if(deviceIcon)deviceIcon.dataset.icon=displayDeviceIcon(win);
+    doc.getElementById('display-instructions').innerHTML='<p>'+options.copy+'</p>'+(options.steps.length?'<ol>'+options.steps.map(step=>'<li>'+instructionHTML(step)+'</li>').join('')+'</ol>':'');
     const key=options.title+options.open;
     if(key!==guideKey){details.open=options.open;guideKey=key;}
   };

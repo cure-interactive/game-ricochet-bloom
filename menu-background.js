@@ -1,11 +1,12 @@
+import {frameGate} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleContactMount as menuContactMount} from './bubble-pressure.js?v=0f0369c96892b587b973530192fa387903a71fa360cf582520cd16239bc7360c';
 export {menuContactMount};
 import {freePlayCreate,freePlayBuild} from './free-play.js?v=0756fd6c275d9b67a242f4bd1c6e4adb572e9b7bedd77ec79419dfae7e475473';
 import {playerBuild} from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import {progressionCreate} from './run.js?v=aa118d34e3e643b1a488bc8d307b99a54e66ae474452ddcf6575bb9bee2e84a1';
-import {menuMusicCreate} from './menu-music.js?v=eadf5534c4cc2c14e1ffb2b32d4ba8b1cf488c9cd7f993251ecddb3b196af2f0';
-import {PoolVisual} from './pool-visual.js?v=595cb4850528ef70e4d69bbdd1562183e05c8b1371bb9065a1618a63af3c7b29';
+import {menuMusicCreate} from './menu-music.js?v=95d08216a156f083b878ecfb1bedb4eab3316e855e043d02ca76940ac65f060a';
+import {PoolVisual} from './pool-visual.js?v=b6b1d2618ac412ee641c22bab4856dfb1f7a8c82d29dd91bf1c07a86bf647251';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
 import { bubbleHit } from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView } from './menu-pool.js?v=7519519c05c10d989e0812a8dc056dd4651cbba92f1c83aa343877d1dcc87f3b';
@@ -13,6 +14,7 @@ import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolReleas
 export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),visual=new PoolVisual();
   const skinFor=body=>visual.membrane(body);
+  const renderReady=frameGate();
   let active=false,audible=false,frame=0,previous=0,signature='';
   const covered=()=>[...(document.querySelectorAll?.('dialog[open]')||[])].some(dialog=>getComputedStyle(dialog).getPropertyValue('--pool-background-covered').trim()==='1');
   function draw(dt){
@@ -45,9 +47,10 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
   }
   function animate(now){
     frame=0;if((!active&&!audible)||document.hidden)return;
+    if(!renderReady(now)){frame=requestAnimationFrame(animate);return;}
     if(!active){music.update(bodiesFor(),menuPoolView(canvas.clientWidth,canvas.clientHeight).portrait);musicDiagnostics();frame=requestAnimationFrame(animate);return;}
     const dt=previous?Math.min(.05,(now-previous)/1000):0;
-    if(!previous||dt>=1/30){
+    if(!previous||dt>=1/30-.001){
       previous=now;
       const obscured=covered();
       if(obscured){clear();pool.pressure=[];visual.clear();}

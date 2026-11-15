@@ -1,48 +1,51 @@
+import {frameGate,performanceMount} from './performance.js?v=96d3b24da7cb64e9aca058671790f2492e43852e6c0669ccd169e7399c39a51b';
+const renderReady=frameGate();
+import {audioRecoveryMount} from './audio-recovery.js?v=a85fb9a491488097c2b0f96035839660330aad8818886f416d27aece76e4a1a1';
 import {turnHits} from './turn-hits.js?v=601ae75742860558121ef0d4bb066017b87650900bbeeb17e8bf8d359fbcdd5d';
 import {inputModalityMount} from './input-modality.js?v=ec290657f7857743c779cffb29f79cca250e53ba1c39cce335ca91e5309a43ee';
 import {scrollbarsMount} from './scrollbar.js?v=36d83e2b9ee3b2fb6d149c30dc02d73fa0eceddd7971ba41de716b035ff6e56b';
 import {QUALITY,qualityRead,qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import { uiSoundMount, uiSoundFeedback } from './ui-sound.js?v=34bd5b0d5d8b6e0549b0c4144d2e90855f0420eabc22530e9b94fa3532c1ceef';
-import {hudCardsMount} from './hud-help.js?v=08697ff3c2ff461222bd2ddac9b9dd24e7b65631d4ca25e5641e4d478790b0ae';
-import { hudMedal, hudMedalRender } from './hud-medal.js?v=d1ccb5156d06c7f9b74af3787de76f6c0aef7fb43f0043d38aa14be59ae9d6c1';
-import {poolBubbleIcons} from './pool-bubble.js?v=a02fee373c605593cc19ced091fb17f0ab66f857856e28039aeae134403c4a6e';
-import { playerMenuMount } from './player-menu.js?v=cb2a05168349614386d279c47819e0a43304d0041cb9b59aa08db9c2323ca694';
-import { playerStatsMount } from './player-stats-ui.js?v=ae949b007a906a884a4d722c4c73b6f4a18a9aaa7923e7c85629c4025fad8e84';
+import {hudCardsMount} from './hud-help.js?v=a67d36a412f94e307c9fb90dcc08d1c580c0ce622f1bb8765c6a289eeb08e8ce';
+import { hudMedal, hudMedalRender } from './hud-medal.js?v=93aefca3087a3c27ac1452af93d882368acd5e6cdf342016ebecf4881888941f';
+import {poolBubbleIcons} from './pool-bubble.js?v=d3f499fc9e2a39085c9a24fa671cc1872ef767071bfd18ffc0311080333883e3';
+import { playerMenuMount } from './player-menu.js?v=20cd58f02d8bf5ba5f45ab1422d5489811e0aba7344ce1f477318042bf04fda2';
+import { playerStatsMount } from './player-stats-ui.js?v=7ad3c2b3cb238ecef439d1276ce4516966032b4de663a0e2cb3f40b21e2506e4';
 import { playerBuild, playerSync } from './player-upgrade.js?v=2f8094123653e7654746e834352d2180922eb090ccd1d9e358a596ab2bcd37f9';
 import { poolMedalRecord, poolMedalRecords } from './storage.js?v=de38cca2b0bb64e517d3dda0ba557276e0b81a310b0786faee19f287c138be5c';
-import { medalIcon, medalBadge } from './medal-ui.js?v=9aaa9f8fa64b3392a62dbf0aa893c7abbe2f828e0982bd8ae44c034018ffccf8';
+import { medalIcon, medalBadge } from './medal-ui.js?v=07ea05cffed23e8539bb0c0e4b57e2b8f65f889b78ffa9a945d0baa77830b1d0';
 import { poolConditions, poolMedalKey, medalEvaluate, scoreConditions } from './medal.js?v=cd0d6145cbb29d0887e81e0978d8fd4d411c6c3ecac8f6eb29813d4d5677468e';
 import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=2bd388c092d72ffed771bdda3f02806000c2142c6f76d74517ca7bc3a87a41c2';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { trialMount } from './trial-ui.js?v=48d5589c1d7c613ee68bf83bbfede32bd16e5f6d95528cc674289a95792b8b98';
-import { GAME_VERSION } from './version.js?v=ae384ac23098df044199cf35a26ff55da218f2d1a2bd8198a4739b5ad422bc6a';
-import { powerSlots } from './power-ui.js?v=0c04c3a6b5569343efca11b46bfab2648748637bb7ff352e84709d9fb2061c96';
-import { creditsMount } from './credit.js?v=ab7deba354d1ea9778bd959bb4d18f5147026c032ef0e1160dbff00a65ab3cd4';
+import { trialMount } from './trial-ui.js?v=7e66bc2a7951b38f5dfe7d987458d309326146b9ce6e8da2392575f7f15f6f5a';
+import { GAME_VERSION } from './version.js?v=8eed927831aa808cf347c349daa77358a1fe0a469304b883b9f2b4a77823e0b2';
+import { powerSlots } from './power-ui.js?v=525a61efecabdd3e3004356bcb74232306e6a1fb91872b479f5f090373b3d6b3';
+import { creditsMount } from './credit.js?v=b8afe12a50149ffa9e158adb6f137ddbecbc39ae0d0391077d578fc54c1dfc38';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=c76004d132b2ea92ec0cecf92a15fae0a4ec85781d19df28f70222f5ed78b04a';
-import { edgeBackMount } from './edge-back.js?v=f5f6e92be6cc8b7887e6245a128bf98e444d81b7efcbf0b3e42d21b2f58c259d';
-import { wikiMount } from './wiki.js?v=676fa07b713c0d3495c03d3aa54589c5832ec2330a04312e07bcdb4db52ed526';
+import { edgeBackMount } from './edge-back.js?v=00ae74dc13cffb97ede9a4d243b4224cf0d6f7b4efd5c928867d525ecf03eae4';
+import { wikiMount } from './wiki.js?v=71ed536856a2d3a969b1854f11e3f0c5e321675047811494da93087b960dd9ce';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { POOL_NAMES } from './run.js?v=aa118d34e3e643b1a488bc8d307b99a54e66ae474452ddcf6575bb9bee2e84a1';
 import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=0756fd6c275d9b67a242f4bd1c6e4adb572e9b7bedd77ec79419dfae7e475473';
-import { fullscreenMount } from './fullscreen.js?v=3d8460e31ec9e43e5dac5caa2250ff4582b3fa98875b3b71b6836d11cc3e5b83';
-import {lifecycleMount} from './lifecycle.js?v=748e534e99e5d77a2695a1c9cadf48a5f695f18ef98ee437691640771511eaf0';
-import { gameMenuMount } from './game-menu.js?v=d8fd56f0addabe2cd1d2e1d78158d5393255dddc498490e2082832b6c5996bc3';
+import { fullscreenMount } from './fullscreen.js?v=fd233b2f5f893251373779d1401b8c2c5d986823b578969d7c4fd6792129685a';
+import {lifecycleMount} from './lifecycle.js?v=309cd3a1bafaf345d71190e7fd4da99a548caa83235fb8fd920e11e5b1126627';
+import { gameMenuMount } from './game-menu.js?v=0676bfcc56f3dcf56ad85d532fdc035eb1c60544074a0264edfb81326302b219';
 import { environmentRender, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=23b163f47bcdbe9dbfbdcf62fe05b9aff2fb9d879e90084377e7c217105d2aca';
-import { progressionMount } from './progression-ui.js?v=868511bfdaf29682053d5d2a746f69d2f369b28b17ceb0e158127def63712bf7';
-import {assetURL} from './asset.js?v=0ee88dff8da07de52fba70c1dd08771f5f90984e0661c9346b244d7a40676de9';
-import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=fab92047db86060c2671b46474bb7cf366b388662fcaa98e2bd64d1b21d77da2';
+import { progressionMount } from './progression-ui.js?v=442ef8718ec32dda59ad4e7037482b424424405767cd2d86276b685e12785a93';
+import {assetURL} from './asset.js?v=503d42e78d7051a9b7c8fa01b513c73d03dcf4a74cbe0499107d5c13256e2a7c';
+import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=0bef764d102dc0e159800242f682b3d49abfbf27a976ab9ca47f0d10b1c82188';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
-import {songLibrarySetup} from './song-ui.js?v=675f8a2f8fd0c08e04b3ecba49fade0479cb38b2ecc4eb307bba1e744377b0d6';
+import {songLibrarySetup} from './song-ui.js?v=b534331dd7710befb0317541a3a81938c0eb936bad2c9150a5cd6565a8d9219e';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=f4899d3bd5ff9863ae40a80efbf8165a13d901cd4597a6be6d3d36e65255cd3b';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet, poolPreferencesWrite } from './storage.js?v=de38cca2b0bb64e517d3dda0ba557276e0b81a310b0786faee19f287c138be5c';
-import { PoolSound, SOUND_CHECK_SECONDS } from './sound.js?v=c8f70e278ab198e418304bf5e55ae005c2202d1aa7635742c95ae02f974927a4';
+import { PoolSound, SOUND_CHECK_SECONDS } from './sound.js?v=f7a06674831fb1717f60e59b7d97c2e23f537458ab3ed8f58b0f759ba3ecca02';
 import { musicProgress, musicPhrasePreview } from './music.js?v=f7242d62cbdb10208c01d67fbb890f8a3feebd44c08971b2dc574fe5d49ea9fb';
-import {PoolVisual} from './pool-visual.js?v=595cb4850528ef70e4d69bbdd1562183e05c8b1371bb9065a1618a63af3c7b29';
+import {PoolVisual} from './pool-visual.js?v=b6b1d2618ac412ee641c22bab4856dfb1f7a8c82d29dd91bf1c07a86bf647251';
 import {wakeLockMount} from './wake-lock.js?v=154014a91b4cd2b75bb445ea16836bbcf58eb0e1b0e3c5ac6991b66dc38beea5';
-import {dropdownMount} from './dropdown.js?v=a8ceb6a79e963c9749725c6135dfe78471edd9846fc68eb2bcbe157d6ac17472';
+import {dropdownMount} from './dropdown.js?v=23d1d2c24a06ba426a52fc78cb69285cd1a5392550b75cf3149e9c22acc49017';
 viewportMount();
 inputModalityMount();
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
@@ -56,7 +59,8 @@ const modeName = mode => progression?.context==='challenge'?'Shared Challenge':m
 audio.musicRestore(savedMusic, game.blooms, game.launches);
 document.body.dataset.leftHanded = String(preferences.leftHanded === true);
 let assistedControls = preferences.assistedControls === true;
-let quality=qualityRead(preferences);
+preferences.quality=qualityRead(preferences);
+let quality=preferences.quality;
 let isStarted = false, isPaused = false, isLowQuality = quality==='low';
 let angle = -Math.PI / 2, power = .7, drag = null, previousTime = performance.now(), accumulator = 0, lastSaveTick = 0, lastUITick = -100;
 let scorePopups = [], toastTimer, frameCount = 0, noteCount = 0;
@@ -78,7 +82,7 @@ function save() {
   if (game.mode === 'challenge') best = Math.max(best, game.score);
   if(game.mode==='score-attack'){if(!scoreWrite(localStorage,game,audio.musicSave())){storageIsAvailable=false;isPaused=true;audio.pauseSet(true);$('save-status').textContent='Score Attack could not be saved. Keep this tab open and retry from Pause.';return false;}}
   else if(!progression||progression.context==='legacy')poolStoreSet(store, game, audio.musicSave());
-  else if(!physicsBatch&&progression.checkpoint(game,audio.musicSave())===false)return false; store.best = best; store.preferences = { ...preferences, volume: audio.volume, ambience: audio.ambience, muted: audio.isMuted, quality, assistedControls };
+  else if(!physicsBatch&&progression.checkpoint(game,audio.musicSave())===false)return false; store.best = best; store.preferences = { ...preferences, volume: audio.volume, ambience: audio.ambience, muted: audio.isMuted, quality:preferences.quality, assistedControls };
   if(!progression||progression.context==='legacy')poolMedalRecord(store,game,game.earning?.kind??progression?.trialKind??'normal');
   try { localStorage.setItem(STORAGE, JSON.stringify(store)); storageIsAvailable = true; } catch { storageIsAvailable = false; }
   $('save-status').textContent = storageIsAvailable ? '● Pool saved on this browser' : 'Save unavailable · keep this tab open'; lastSaveTick = game.tick;
@@ -150,6 +154,7 @@ function resize() { const { rect } = geometry(), ratio = qualityPixelRatio(quali
 new ResizeObserver(resize).observe(canvas);
 
 function render(now) {
+  if(!renderReady(now)){requestAnimationFrame(render);return;}
   if (navigation && navigation.current !== 'play') { if(audio.keepAmbient&&!document.hidden){audio.musicUpdate(0);canvas.dataset.songBar=String(audio.music.bar);canvas.dataset.musicVoices=String(audio.phraseVoices.size);canvas.dataset.musicPaused=String(audio.isMusicPaused);} previousTime=now;accumulator=0;requestAnimationFrame(render);return; }
   const view=geometry(), {rect,scale}=view, ratio=canvas.width/rect.width; portraitView=view.portrait; audio.portrait=portraitView;
   audio.musicUpdate(game.bodies.reduce((sum, body) => sum + Math.hypot(body.vx, body.vy), 0) / (game.bodies.length * 100));
@@ -314,7 +319,7 @@ function phraseRender() {
   const activeStep = isLive ? phrase && lastStrike && game.tick - lastStrike.tick < 42 ? phrase.steps.at(-1) : -1 : isAudible && audio.lastPlayback && now - audio.lastPlayback.at < .35 ? audio.lastPlayback.step : -1;
   for (const [step, item] of [...pattern.children].entries()) item.classList.toggle('active', step === activeStep);
 }
-function controlsRender() { $('left-handed').checked=preferences.leftHanded===true; document.body.dataset.leftHanded=String(preferences.leftHanded===true); $('button-controls').checked=assistedControls; document.querySelector('.control-strip').hidden=!assistedControls; document.body.classList.toggle('assisted-controls',assistedControls); $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').replaceChildren(iconNode('music-note'),document.createTextNode(audio.isMuted?'Sound is off. Enable Sound to listen.':'Sound on. Headphones make it lovelier.')); $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('quality').value=quality; $('quality-description').textContent=QUALITY[quality].description; document.body.dataset.quality=quality; }
+function controlsRender() { $('left-handed').checked=preferences.leftHanded===true; document.body.dataset.leftHanded=String(preferences.leftHanded===true); $('button-controls').checked=assistedControls; document.querySelector('.control-strip').hidden=!assistedControls; document.body.classList.toggle('assisted-controls',assistedControls); $('sound').checked = !audio.isMuted; document.querySelector('.sound-hint').replaceChildren(iconNode('music-note'),document.createTextNode(audio.isMuted?'Sound is off. Enable Sound to listen.':'Sound on. Headphones make it lovelier.')); $('volume').value = audio.volume * 100; $('ambience').value = audio.ambience * 100; $('quality').value=preferences.quality; $('quality-description').textContent=QUALITY[quality].description; document.body.dataset.quality=quality; }
 function freePlayRefresh(){if(progression?.context==='legacy'){freePlaySync(game,progression.state);playerSync(game,progression.state.profile);}}
 function shoot() { if(progression?.blocked)return; if(game.isFlying) return; if (!isStarted || isPaused || document.querySelector('dialog[open]')) return; freePlayRefresh(); audioUnlockAsync(); if(!progression.prepareShot(game))return; if (launch(game, angle, power)) { audio.eventPlay({ type: 'launch', x: game.bodies[0].x, y: game.bodies[0].y }); save(); uiRender(); } }
 function pauseSet(value) { if (!isStarted || game.isOver) return; isPaused = value; audio.pauseSet(value); dragCancel(); save(); uiRender(); if (!value) { audioUnlockAsync(); canvas.focus({ preventScroll: true }); } }
@@ -439,7 +444,7 @@ $('audition').onclick = async () => {
   } catch { status.textContent='Audio could not start. Tap Sound check to try again.'; }
   finally { button.disabled=false; buttonLabel(button,'Sound check','play'); }
 };
-$('quality').onchange = event => { quality=event.currentTarget.value; isLowQuality=quality==='low';  controlsRender(); resize(); save(); };
+
 creditsMount($('credits-dialog'));
 $('credits-open').onclick=()=>$('credits-dialog').showModal();
 $('left-handed').onchange=event=>{preferences.leftHanded=event.currentTarget.checked;store.preferences.leftHanded=preferences.leftHanded;controlsRender();$('left-handed-status').textContent=poolPreferencesWrite(localStorage,{leftHanded:preferences.leftHanded})?'':'Layout changed for this session. This browser could not save the preference.';};
@@ -454,7 +459,7 @@ document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('c
 $('copy-result').onclick = async () => { try { await navigator.clipboard.writeText(`Ricochet Bloom · ${gameWon(game) ? 'WIN · ' : ''}${game.score} score · ${game.blooms} blooms · ${game.bestChain} best chain · seed ${game.seed}`); buttonLabel($('copy-result'),'Copied','check'); } catch { buttonLabel($('copy-result'),'Clipboard unavailable','copy'); } };
 let restorePausedAmbient=false;
 lifecycleMount(document, window, () => {
-  restorePausedAmbient=audio.keepAmbient===true;
+  restorePausedAmbient ||= audio.keepAmbient===true;
   audio.pauseSet(true); dragCancel();
   if (isStarted && !game.isOver) pauseSet(true);
   else save();
@@ -508,7 +513,9 @@ navigation=gameMenuMount({
 });
 const uiFeedback=uiSoundFeedback(audio,document);
 uiSoundMount(audio,document,uiFeedback);
+audioRecoveryMount(audio,document,window);
 fullscreenMount(document,window);
+performanceMount({preferences,save:patch=>poolPreferencesWrite(localStorage,patch),apply:state=>{const changed=quality!==state.quality;quality=state.quality;isLowQuality=quality==='low';controlsRender();if(changed)resize();}});
 edgeBackMount(document,window,{feedback:uiFeedback});
 scrollbarsMount(document,window);
 wakeLockMount();

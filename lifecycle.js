@@ -2,7 +2,7 @@
 // cached page never launches a shot or resumes active play without a gesture.
 export function lifecycleMount(page, browser, suspend, visible) {
   const visibility = () => page.hidden ? suspend() : visible();
-  const restored = event => { if (event.persisted) suspend(); };
+  const restored = event => { if (event.persisted) { suspend(); if(!page.hidden)visible(); } };
   page.addEventListener('visibilitychange', visibility);
   page.addEventListener('freeze', suspend);
   browser.addEventListener('pagehide', suspend);

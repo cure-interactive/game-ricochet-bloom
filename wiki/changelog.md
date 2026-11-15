@@ -6,6 +6,30 @@ See what changed in each version. Open a version for its player-facing updates.
 Developer notes appear inside each version below.
 <!-- /development -->
 
+## v3.23.0
+
+### Player Changes
+
+- Choose a frame-rate limit and optional automatic battery saving: Low quality and 30 FPS at 20% battery or below while unplugged, on browsers that expose battery state.
+
+- Use Cure Interactive radio icons for single-choice dropdowns and matching checked/unchecked icons for checkboxes.
+- Place Change Logs beneath the game description and give About content more breathing room.
+- Illustrate iPhone installation steps with Safari, Share and Add to Home Screen symbols, with important control names in bold.
+- Use a phone or monitor icon for Display settings to match the device.
+- Keep Get Help, Progress Recovery and Development cards inset from the screen edges.
+- Preserve player icon and preview jiggle through resizing, scrolling, backgrounding and reconnection.
+- Recover sound after browser interruptions and returning to the game; preserve paused music through repeated background events.
+
+<!-- development -->
+### Developer Notes
+
+- Render decorative selection icons through the shared UI icon owner while preserving native select behavior and accessible labels.
+- Reuse the canonical icon collection assets with their existing attribution; disabled checkboxes retain their state artwork.
+- Keep device classification in the display owner, independent of viewport size, and format trusted installation steps with escaped text.
+- Apply mobile content padding separately from full-width navigation bars.
+- Share gesture, foreground and AudioContext interruption recovery across gameplay/UI and menu music; never resume gameplay or override mute. Preserve ambient intent until visibility restoration.
+<!-- /development -->
+
 ## v3.22.4
 
 ### Player Changes

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   width="800px"
+   height="800px"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="phone-svgrepo-com.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="0.91875"
+     inkscape:cx="400"
+     inkscape:cy="400"
+     inkscape:window-width="1920"
+     inkscape:window-height="974"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     d="M 9.815262,1.1243636 C 9.815262,1.1243636 9.335262,0 8.602172,0 7.8807175,0 7.5054449,0.33309091 7.2552633,0.56290909 7.0050816,0.79272727 2.8189019,4.2327273 2.8189019,4.2327273 c 0,0 -1.2174539,1.0632727 -1.1243631,3.0632727 0.078545,2 0.469818,4.846545 2.5003624,8.811636 2.015999,3.956364 7.0618148,10.001455 10.2501768,12.126546 0,0 2.954181,2.266182 5.70327,3.186909 C 20.946893,31.672727 22.543983,32 22.916346,32 c 0.378182,0 1.045819,0 1.812363,-0.56 0.779636,-0.565818 5.153453,-4.082909 5.153453,-4.082909 0,0 1.070544,-0.967273 -0.173091,-2.091636 -1.249455,-1.124364 -5.042907,-3.624728 -5.854543,-4.282182 -0.813091,-0.667637 -1.970908,-0.373818 -2.471271,0.07854 -0.49891,0.455273 -1.390545,1.204364 -1.499636,1.298909 -0.162909,0.125091 -0.609454,0.530909 -1.109818,0.328728 -0.63709,-0.251632 -3.249453,-1.669814 -5.67127,-4.983268 C 10.695262,14.395636 10.430534,13.313455 10.071262,12.144 a 0.81454504,0.81454545 0 0 1 0.327272,-0.955636 c 0.360727,-0.250182 1.688727,-1.3570913 1.688727,-1.3570913 0,0 0.859635,-0.848 0.500363,-1.8472727 C 12.228352,6.9847273 9.815262,1.1243636 9.815262,1.1243636 Z"
+     id="path1"
+     style="stroke-width:1.45455" />
+
+<!-- CURE-ICON-METADATA:START -->
+<metadata xmlns="http://www.w3.org/2000/svg" id="cure-icon-metadata">
+  <cure:record xmlns:cure="urn:cure-interactive:icon:metadata:1">
+{
+  "schema_version": 1,
+  "credit": "Phone, Flexicon, by blivesta.",
+  "sources": [
+    {
+      "title": "Phone, Flexicon",
+      "url": "https://github.com/blivesta/flexicon/blob/master/dist/svg/phone.svg",
+      "role": "Source artwork"
+    },
+    {
+      "title": "Flexicon 0.4.0",
+      "url": "https://registry.npmjs.org/flexicon/-/flexicon-0.4.0.tgz",
+      "role": "Published source package"
+    },
+    {
+      "title": "Phone, SVG Repo",
+      "url": "https://www.svgrepo.com/svg/506672/phone",
+      "role": "Catalogue"
+    }
+  ],
+  "license": {
+    "name": "MIT",
+    "url": "https://github.com/blivesta/flexicon#license",
+    "scope": "Applies to the credited artwork. Commercial use, modification and redistribution are permitted.",
+    "conditions": [
+      "Preserve the complete source-specific copyright and MIT permission notice with copies or substantial portions."
+    ],
+    "notices": [
+      {
+        "title": "Flexicon credit and MIT permission notice",
+        "path": "attribution/license/mit/flexicon.txt",
+        "sha256": "0b60f4e8371674159fa71a5fa693b14961808a98db3582f58705903922ee9fad",
+        "text": "Flexicon\nCreator: blivesta\nSource: https://github.com/blivesta/flexicon\nUpstream license declaration: Released under the MIT license.\n\nMIT License\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and\nassociated documentation files (the \"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the\nfollowing conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial\nportions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT\nLIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO\nEVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER\nIN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\nUSE OR OTHER DEALINGS IN THE SOFTWARE.\n"
+      }
+    ]
+  },
+  "use": {
+    "status": "Subject to the stated MIT license and notice condition.",
+    "conditions": [],
+    "sources": [
+      {
+        "title": "MIT",
+        "url": "https://github.com/blivesta/flexicon#license"
+      },
+      {
+        "title": "MIT license",
+        "url": "https://opensource.org/license/mit"
+      }
+    ],
+    "project": {
+      "status": "allowed",
+      "summary": "Yes, including commercial projects."
+    },
+    "redistribution": {
+      "status": "conditional",
+      "summary": "Yes, with the required notices and license conditions."
+    },
+    "requirements": [
+      "Keep the applicable copyright notice and complete MIT license with copies."
+    ],
+    "required_information": [
+      "credit"
+    ]
+  },
+  "changes": "Uniformly scaled and centered to fit the Cure Interactive Icons canvas. The source drawing is retained without an intentional redesign."
+}
+  </cure:record>
+</metadata>
+<!-- CURE-ICON-METADATA:END -->
+</svg>
