@@ -6,6 +6,22 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.29.3
+
+Build: 2026-11-16 03:53:47 UTC
+
+### Player Changes
+
+- Stack Skins and Music icons above their labels, matching Trails and Impacts in Player.
+- Keep skill-card names and types beside their artwork in either handedness layout.
+
+<!-- development -->
+### Developer Notes
+
+- Share one two-row Personalize button layout while preserving compact icon sizes and overflowing dynamic effects.
+- Align shared skill-card text toward its icon while preserving mirrored close-button placement.
+<!-- /development -->
+
 ## v3.29.2
 
 Build: 2026-11-16 02:55:25 UTC

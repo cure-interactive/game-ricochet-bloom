@@ -1,6 +1,6 @@
 # Player
 
-Open **Player** from the main menu to view your equipped skin. Personalize groups **Skins**, **Trails**, **Impacts** and **Music** in two columns when space permits; **Skills** and **Stats** sit below.
+Open **Player** from the main menu to view your equipped skin. Personalize groups **Skins**, **Trails**, **Impacts** and **Music** in two columns when space permits, with each icon above its label; **Skills** and **Stats** sit below.
 
 ## Player Viewer
 
