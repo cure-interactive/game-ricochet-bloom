@@ -1,4 +1,4 @@
-import {gamemodeNavigation} from './gamemode-navigation.js?v=340b0b392446696bf13d70c50dd8f83fc44921d6f8e3f8496f5110ac34328ba0';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=3804abefc4a3258637ad09c7e1c37df8b872946eb078531e62a9443a87aaec13';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { experimentMedal } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
 import { medalConditionsHTML } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';

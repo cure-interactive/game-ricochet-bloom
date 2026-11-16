@@ -1,12 +1,13 @@
-import {cosmeticPriceHTML} from './cosmetic-price.js?v=432c3d194b461d671900188d6f3e59e7a977fc44a480d4036f7b7d73dd6d052d';
-import {COSMETICS,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=7c5d5fe67a5e0487aea5bd8d550ef6e180c448733bba8665c3d4c8b6b8d9ebcf';
-import {rarityIconHTML} from './skill-icon.js?v=fd4d1a201bd99ef3fc9b7184cb9eaf976606208196c63bd4ca2884b18180636f';
+import {rarityFilterMount} from './rarity-filter.js?v=9036a6e0e6a0ab092a41b26734b5c63b356ac0f8d6ccdd37fe7d19295b2a5291';
+import {cosmeticPriceHTML} from './cosmetic-price.js?v=611fa256d02783b76447dfc751f02ae4babd4c57a994bd9cce46e59e3d4a4a4f';
+import {COSMETICS,cosmeticOrder,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
+import {rarityIconHTML} from './skill-icon.js?v=79f84be6812079dcd8b2766d28af69d11f4714dc8718f1c0ea3aa7b91a0d9f13';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=589afccbde94ea3151bcf119a929aca8430cd8adfc584bf88b1add584a8621a2';
-import { screenHeader } from './screen-header.js?v=8a5958d2c41c5236dcafa8611ed5ff3ccefdbee07ea3e34506efbc5147d3c476';
+import { screenHeader } from './screen-header.js?v=e4fc51334df6af630200527b6f9d7100a920f64dd5f28224bc98101baf22d912';
 import { TRACKS } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { completedTracks, unlockedTracks } from './run.js?v=18fc0ee42d604ca7c13682922c79fb19ea1653cc7ee38758fe4b5cb2c03cdfd9';
-import { iconHTML, staticIconHTML } from './ui-icon.js?v=68bbe4420b1782da4ec5a87ab925a840c21d5d87a2c31ca133867a512c8d3a0b';
+import { completedTracks, unlockedTracks } from './run.js?v=56f12a92ddc0734f42f9fb3a95d6b9bfca39766348ef37a593ef331dacb3f0eb';
+import { iconHTML, staticIconHTML } from './ui-icon.js?v=e7e1e0264b8d800aa16ee5e89ddb82b5bd4dfa68327d0cff8b81d788cb47de8c';
 
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 
@@ -14,7 +15,7 @@ const skins=[{id:'original',name:'Original',color:'#f1f9d7'},...TRACKS];
 export function skinOptions(state,showHidden=false){
   const unlocked=new Set(['original',...completedTracks(state)]),visible=new Set(['original',...unlockedTracks(state).map(t=>t.id)]);
   const chosen=cosmeticLoadout(state.profile).skin;
-  return [...skins.filter(skin=>showHidden||visible.has(skin.id)).map(skin=>({...skin,style:'original',rarity:'common',owned:unlocked.has(skin.id),equipped:chosen==='campaign'&&state.skin===skin.id})),...COSMETICS.filter(s=>s.kind==='skin').map(s=>({...s,owned:cosmeticOwned(state.profile,s),equipped:chosen===s.id}))];
+  return cosmeticOrder([...skins.filter(skin=>showHidden||visible.has(skin.id)).map(skin=>({...skin,style:'original',rarity:'common',owned:unlocked.has(skin.id),equipped:chosen==='campaign'&&state.skin===skin.id})),...COSMETICS.filter(s=>s.kind==='skin').map(s=>({...s,owned:cosmeticOwned(state.profile,s),equipped:chosen===s.id}))]);
 }
 export function skinSelection(state,id,enabled){
   const skin=skinOptions(state).find(s=>s.id===id);
@@ -27,9 +28,10 @@ export function skinMount(controller){
   const optionsName=id=>skinOptions(controller.get(),true).find(s=>s.id===id)?.name||'Skin';
   let selected=null,libraryScroll=0,preview=null;
   const dialog=document.createElement('dialog');dialog.id='skin-dialog';dialog.setAttribute('aria-labelledby','skin-title');
-  dialog.innerHTML=`${screenHeader({icon:'player-skin',className:'skin-heading',title:'Player Skins',titleId:'skin-title',back:`<button type="button" data-skin-back>${iconHTML('arrow-left')}<span>Back</span></button>`})}<div class="skin-scroll"><section class="skin-library"><p class="skin-intro">Choose a look from Common to Mythic with Points, or earn skins by completing campaign tracks.</p><div class="skin-grid"></div></section><section class="skin-detail" hidden></section><p class="skin-status" role="status"></p></div>`;
+  dialog.innerHTML=`${screenHeader({icon:'player-skin',className:'skin-heading',title:'Player Skins',titleId:'skin-title',back:`<button type="button" data-skin-back>${iconHTML('arrow-left')}<span>Back</span></button>`})}<div class="skin-content"><div class="skin-scroll"><section class="skin-library"><p class="skin-intro">Choose a look from Common to Mythic with Points, or earn skins by completing campaign tracks.</p><div class="skin-grid"></div></section><section class="skin-detail" hidden></section><p class="skin-status" role="status"></p></div></div>`;
   document.body.append(dialog);
   const scroll=dialog.querySelector('.skin-scroll'),detail=dialog.querySelector('.skin-detail'),status=dialog.querySelector('.skin-status'),back=dialog.querySelector('[data-skin-back]');
+  const filter=rarityFilterMount(dialog,{scroll,cards:()=>[...dialog.querySelectorAll('[data-player-skin]')]});
   function render(){
     preview?.destroy();preview=null;
     const options=skinOptions(controller.get(),controller.showHiddenContent?.()),skin=options.find(s=>s.id===selected);
@@ -38,8 +40,8 @@ export function skinMount(controller){
     // live bubble; the library title returns to the currently equipped skin.
     const titleSkin=skin||options.find(s=>s.equipped),titleIcon=dialog.querySelector('.screen-heading-title .ui-icon');
     titleIcon.style.setProperty('--skin-color',titleSkin?.color||'#f1f9d7');titleIcon.style.setProperty('--skin-style',titleSkin?.style||'original');
-    dialog.querySelector('.skin-grid').innerHTML=options.map(skin=>`<button type="button" class="skin-choice ${skin.equipped?'is-equipped':''} ${skin.owned?'':'is-locked'}" data-player-skin="${skin.id}" style="--skin-color:${skin.color};--skin-style:${skin.style}" aria-label="View ${skin.name}, ${skin.equipped?'Equipped':skin.owned?'Unlocked':'Locked'}"><span class="skin-preview" aria-hidden="true"><i><player-bubble></player-bubble></i></span><strong>${skin.name}</strong><span class="cosmetic-rarity">${rarityIconHTML(skin.rarity)}${RARITIES[skin.rarity].name}</span><span class="skin-choice-state">${iconHTML(skin.equipped?'check':skin.owned?'lock-open':'lock')}${skin.equipped?'Equipped':skin.owned?'Unlocked':skin.kind==='skin'?skin.cost+' Points':'Campaign reward'}</span>${cosmeticPriceHTML(skin,skin.owned,controller.showPurchasedCosts?.())}</button>`).join('');
-    dialog.querySelector('.skin-library').hidden=!!skin;detail.hidden=!skin;scroll.classList.toggle('is-detail',!!skin);
+    dialog.querySelector('.skin-grid').innerHTML=options.map(skin=>`<button type="button" class="skin-choice ${skin.equipped?'is-equipped':''} ${skin.owned?'':'is-locked'}" data-player-skin="${skin.id}" data-rarity="${skin.rarity}" style="--skin-color:${skin.color};--skin-style:${skin.style}" aria-label="View ${skin.name}, ${skin.equipped?'Equipped':skin.owned?'Unlocked':'Locked'}"><span class="skin-preview" aria-hidden="true"><i><player-bubble></player-bubble></i></span><strong>${skin.name}</strong><span class="cosmetic-rarity">${rarityIconHTML(skin.rarity)}${RARITIES[skin.rarity].name}</span><span class="skin-choice-state">${iconHTML(skin.equipped?'check':skin.owned?'lock-open':'lock')}${skin.equipped?'Equipped':skin.owned?'Unlocked':skin.kind==='skin'?skin.cost+' Points':'Campaign reward'}</span>${cosmeticPriceHTML(skin,skin.owned,controller.showPurchasedCosts?.())}</button>`).join('');
+    dialog.querySelector('.skin-library').hidden=!!skin;detail.hidden=!skin;scroll.classList.toggle('is-detail',!!skin);filter.show(!skin);
     dialog.querySelector('#skin-title').textContent=skin?skin.name:'Player Skins';back.setAttribute('aria-label',skin?'Back to Player Skins':'Back');
     if(!skin){detail.replaceChildren();return;}
     detail.style.setProperty('--skin-color',skin.color);detail.style.setProperty('--skin-style',skin.style);

@@ -1,20 +1,20 @@
 import {treeViewPaint} from './tree-view.js?v=0b38d934d7a963a4ff47b09178f23813ee12aa14737860aa5b8f05f97f788855';
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=e58ea278dabef2c19fbd2c0fe9111aaa057567c1af7dc8d2421163889d9797a8';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=04ced89ab83d02f67f41a594b547ce0f9ce5e5341738cedfbfcfda39913f95a7';
 import {playerSkillStats} from './player-skill-comparison.js?v=75decfaf5d896b3fa9b10253c26385c4360916c8de20e0a52f71bc51d9fde36b';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {playerTreeGraph} from './player-tree.js?v=4afea866ffb31d36eeec45f4e818665a0b5f993a28fc81ecae01d45d74dd2c4d';
 import {mapCameraMount,nearestMapNode} from './tree-map.js?v=599b1db6e077795c0de1a49014655c13a5821189a149b12e35d69f0731dcf222';
-import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=7395f5851dbd25b53c67179152f9a7631ad5a9b729c8d573ce34278d0bd1fa55';
-import {screenHeader} from './screen-header.js?v=8a5958d2c41c5236dcafa8611ed5ff3ccefdbee07ea3e34506efbc5147d3c476';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=68bbe4420b1782da4ec5a87ab925a840c21d5d87a2c31ca133867a512c8d3a0b';
+import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=75a10adb2353f831e0db74de642d5604db003af3995d194025f85fc1c7fef271';
+import {screenHeader} from './screen-header.js?v=e4fc51334df6af630200527b6f9d7100a920f64dd5f28224bc98101baf22d912';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=e7e1e0264b8d800aa16ee5e89ddb82b5bd4dfa68327d0cff8b81d788cb47de8c';
 
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 const rules='Every purchased upgrade stacks permanently. Open pools apply purchases between shots; Melody Journey applies them from the next pool. Score Attack fixes them at the start of a run. Fixed trials and shared challenges keep their authored rules.';
 
 export function playerUpgradeMount(host){
  const dialog=document.createElement('dialog');dialog.id='player-upgrade-dialog';dialog.setAttribute('aria-label','Player Skills');
- dialog.innerHTML=screenHeader({icon:'skill-tree',className:'tree-heading',title:'Skills',back:button('back','Back','arrow-left'),actions:'<div class="tree-wallet-summary"></div>'+treeSwitchHTML('player')})+
-  `<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected player tree"><div class="tree-map-stage">${skillLegendHTML('player-legend-content')}<div class="tree-map-scroll" tabindex="0" aria-label="Player skill map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom"></output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div></section></div><footer class="tree-map-hint">Tap a skill for details · Drag to move · Pinch or scroll to zoom</footer><section id="player-skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="player-skill-title" hidden></section>`;
+ dialog.innerHTML=screenHeader({icon:'skill-tree',className:'tree-heading',title:'Skills',back:button('back','Back','arrow-left'),actions:'<div class="tree-wallet-summary"></div>'})+
+  `<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected player tree"><div class="tree-map-stage">${skillLegendHTML('player-legend-content')}<div class="tree-map-scroll" tabindex="0" aria-label="Player skill map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom"></output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div>${treeSwitchHTML('player')}</section></div><footer class="tree-map-hint">Tap a skill for details · Drag to move · Pinch or scroll to zoom</footer><section id="player-skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="player-skill-title" hidden></section>`;
  document.body.append(dialog);
  const surface=dialog.querySelector('.tree-map-scroll'),map=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage'),tip=dialog.querySelector('.skill-tooltip');
  const {legend,legendContent,setLegend}=skillLegendMount(dialog);

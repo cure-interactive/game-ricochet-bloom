@@ -10,7 +10,7 @@ Your player name appears beneath the bubble. Tap or click it to edit in place (u
 
 ## Skins
 
-Open Player → Skins to inspect each look on a live, squishy bubble. Drag or tap the preview.
+Open Player → Skins to inspect each look on a live, squishy bubble. Drag or tap the preview. All cosmetic galleries order cards from Common through Mythic, keeping catalogue order within each rarity. The bottom rarity bar stays visible while browsing; choose All or one rarity. Back from a card preserves the filter and gallery position.
 
 Common through Mythic shop skins cost Points. Sea Glass is Common, Frost Crystal is Rare, Nebula is Epic, Solar and Cure Interactive are Legendary, and Spectrum is Mythic. The Cure skin uses the approved Cure Interactive artwork inside blue glass.
 
@@ -18,7 +18,7 @@ Unlock & Equip purchases a skin once. Owned skins can be equipped freely. Origin
 
 ## Trails and Impacts
 
-Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons animate your equipped styles. Wiki uses regular static icons. Skins, Trails and Impacts use the same gallery → detail → Back pattern: inspecting does not buy or equip, and wider galleries use the available row space before wrapping. Previews on hidden pages pause and keep their state; scrolling offscreen only culls their drawing. One trail follows the large Player viewer and selected skin preview during grabbing, dragging, scrolling, rebound and supported device motion. Equipped-player icons can trail their own movement, including the bounded nudge from scrolling; only the equipped skin gallery thumbnail has a trail from its local motion. Dedicated Trail and Impact previews continue to show their effects; impacts appear at player contacts and fade away smoothly.
+Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons animate your equipped styles. Wiki uses regular static icons. Skins, Trails and Impacts use the same gallery → detail → Back pattern: inspecting does not buy or equip, and wider galleries use the available row space before wrapping. Previews on hidden pages pause and keep their state; scrolling offscreen only culls their drawing. One trail follows the large Player viewer and selected skin preview during grabbing, dragging, scrolling, rebound and supported device motion. Equipped-player icons can trail their own movement, including the bounded nudge from scrolling; only the equipped skin gallery thumbnail has a trail from its local motion. Dedicated Trail and Impact previews continue to show their effects; impacts appear at player contacts and fade away smoothly. Scrolling moves and deforms previews but does not repeatedly trigger impact bursts.
 
 - Common styles cost 60 Points.
 - Rare styles cost 120 Points.
@@ -57,7 +57,9 @@ Open **Player → Music**. The shared tap/drag selector has **Instruments**, **S
 - **Soundstages** change the room around the music. Original keeps the familiar room; Small Room, Wooden Hall, Stone Chamber, Cathedral and Celestial Vault offer different reflection lengths, warmth and stereo diffusion. Gameplay effects are not sent through this room.
 - **Ambience** adds a quiet procedural background loop. None is free; Soft Rain, Quiet Shore, Night Forest, Ember Hearth and Orbital Drift provide independent atmospheres.
 
-Open a card and use **Preview Sound** for a six-second sample with your other equipped Music layers. It does not equip or spend Points. Background music fades out just before the sample and fades back in afterward. Replaying safely replaces the previous audition and its fade; changing category, leaving the preview, hiding the page or muting stops it. Previews and Music layers follow Music Volume, Master Volume and Sound.
+Open a card and toggle **Preview Sound** on or off. Music previews last up to ten seconds, with a simple bar showing playback progress. Instruments play a short musical sample; Ambience plays the atmosphere alone. These previews fade background music out just before playing and restore it afterward. Soundstage preview instead changes the acoustic space of the music already playing, then restores your equipped space when stopped or finished. Nothing is equipped or purchased by previewing. Changing category, leaving the preview, hiding the page or muting stops it; rapid toggles safely replace pending playback. Previews follow Music Volume, Master Volume and Sound.
+
+Night Forest, Ember Hearth and Orbital Drift use long, seamless atmospheres. Forest phrases and soft hearth details vary across a 48-second loop; Orbital Drift is a smooth, slowly breathing harmonic bed.
 
 **Unlock & Equip** buys once; equip owned items freely, including during a saved pool. Normal and Development purchases remain separate. **Show purchased items cost** applies to every category. All sounds use the local engine, without sampled sound-bank downloads.
 

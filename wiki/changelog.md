@@ -6,6 +6,26 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.32.0
+
+Build: 2026-11-16 11:28:59 UTC
+
+### Player Changes
+
+- Cosmetic cards sort by rarity, then catalogue order. A persistent bottom bar filters Skins, Trails, Impacts, Instruments, Soundstages and Ambience by rarity.
+- Tab selectors sit in bars inside their content panels. Improved touch dragging and removed clipping from the Player tab's animated outline.
+- Scrolling still moves previews naturally without generating a burst of impacts on every scroll event.
+- Music previews toggle on and off for up to ten seconds with a playback progress bar. Soundstage auditions apply to the music already playing and restore your equipped space afterward.
+- Reworked Night Forest, Ember Hearth and Orbital Drift into longer, smoother atmospheres with varied, softly shaped details.
+
+### Developer Notes
+
+- Shared segmented controls handle touch and pointer input without duplicate gestures; live outline clipping uses the actual selection edges beyond the icon slot.
+- Shared rarity filtering preserves card instances and detail return state. Catalogue projection keeps persistent IDs and authored within-tier order unchanged.
+- Scroll deformation no longer sets the shared collision flag. Real contact effects and timed Impact demonstrations remain independent.
+- Audition progress follows the audio clock; replacement and navigation invalidate pending starts. Soundstage overrides expire without mutating the equipped loadout, and room changes crossfade.
+- Ambience uses 48-second seamless buffers, smooth event envelopes and a bounded three-style cache. Physical iPhone listening and touch acceptance remain separate from automated/browser checks.
+
 ## v3.31.0
 
 Build: 2026-11-16 10:55:58 UTC

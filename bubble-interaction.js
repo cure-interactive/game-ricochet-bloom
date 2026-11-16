@@ -31,7 +31,8 @@ export function bubbleInteractionMount(surface,host){
    const dx=next.x-previous.x,dy=next.y-previous.y,distance=Math.hypot(dx,dy),g=host.geometry();if(!distance||!g?.unit)return;
    const impulse=Math.min(18,distance/g.unit*1.2),s=control.state;
    s.vx=Math.max(-18,Math.min(18,(dx/distance*impulse/9-s.x)*6));s.vy=Math.max(-18,Math.min(18,(dy/distance*impulse/9-s.y)*6));
-   host.hit(-dx/distance,-dy/distance,impulse*.35,true);host.request?.();
+   // Scrolling displaces and deforms the tether; it is not a collision.
+   host.hit(-dx/distance,-dy/distance,impulse*.35,false);host.request?.();
   },
   focus(){if(!host.active()||hub.contacts.size)return;control.state.vy-=60;host.hit(0,1,140,true);host.request?.();},
   step(dt){

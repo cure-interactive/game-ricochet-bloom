@@ -4,7 +4,7 @@
 .skin-heading h2{font-size:23px;margin:0}
 :is(#skin-dialog,#cosmetic-dialog) button{font:inherit;user-select:none;-webkit-user-select:none;touch-action:manipulation;color:#dceeea;cursor:pointer}
 .skin-heading button{display:flex;align-items:center;gap:8px;min-width:44px;min-height:44px;padding:10px 12px;border:1px solid #46606b;border-radius:12px;background:#162938}
-.skin-scroll{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;width:100%;padding:20px max(16px,calc((100% - 900px)/2)) max(20px,var(--content-safe-bottom,var(--safe-area-bottom,env(safe-area-inset-bottom))))}
+.skin-scroll{flex:1;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;width:100%;padding:20px max(16px,calc((100% - 900px)/2)) max(20px,var(--content-safe-bottom,var(--safe-area-bottom,env(safe-area-inset-bottom))))}
 .skin-intro{color:#abc5cf;font-size:14px;line-height:1.5;margin:0 0 18px}.skin-status{font-size:14px;color:#b7f1d6;margin:0 0 12px}.skin-status:empty{display:none}
 .skin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:12px;width:100%;margin:0}
 :is(#skin-dialog,#cosmetic-dialog) .skin-choice{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:7px;min-width:0;min-height:126px;padding:12px 8px;border:1px solid #3d566c;border-radius:18px;background:#122438}
@@ -52,3 +52,15 @@
 .skin-preview i{position:relative;border-radius:50%}
 player-bubble{display:block;position:absolute;inset:0;pointer-events:none}
 player-bubble canvas{position:absolute;display:block;width:360%;height:360%;left:-130%;top:-130%;aspect-ratio:1;background:transparent;pointer-events:none}
+
+.skin-content{--page-padding:0px;--page-inline-padding:0px;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+:root body :is(#skin-dialog,#cosmetic-dialog)>.skin-content{padding:0}
+.rarity-filter{flex:none;padding:0;border-top:1px solid #759aa340;background:#132530}
+.rarity-filter[hidden],.skin-choice[hidden]{display:none!important}
+:root body :is(#skin-dialog,#cosmetic-dialog) .rarity-filter button{flex-direction:column;gap:4px;padding:6px 2px;font-size:11px}
+.rarity-filter .rarity-icon,.rarity-filter .ui-icon{width:18px;height:18px;flex:none}
+.rarity-empty{text-align:center;padding:32px 12px}
+
+.cosmetic-sound-button{position:relative;padding-bottom:16px!important;overflow:hidden}
+.cosmetic-sound-progress{position:absolute;left:12px;right:12px;bottom:5px;height:3px;background:#759aa340;border-radius:2px;overflow:hidden}
+.cosmetic-sound-progress>i{display:block;width:100%;height:100%;background:#b4f2d8;transform-origin:left;transform:scaleX(var(--preview-progress,0))}

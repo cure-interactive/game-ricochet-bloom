@@ -1,14 +1,14 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';
 import { scoreConditions } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
-import { screenHeader } from './screen-header.js?v=8a5958d2c41c5236dcafa8611ed5ff3ccefdbee07ea3e34506efbc5147d3c476';
+import { screenHeader } from './screen-header.js?v=e4fc51334df6af630200527b6f9d7100a920f64dd5f28224bc98101baf22d912';
 import { gameCreate, objectiveProgress } from './engine.js?v=adc6d69546723ce9f5131bf144815dc0a4f6fc6682ee59318309f9f62ca6bed0';
 import { TRACKS, trackGet, LAYOUTS, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, campaignRestoration, campaignPoolAccess, POPULATIONS, POOL_NAMES, GOALS, completedTracks, unlockedTracks, progressionLoadout, GAME_CATALOGUE } from './run.js?v=18fc0ee42d604ca7c13682922c79fb19ea1653cc7ee38758fe4b5cb2c03cdfd9';
-import { profileSummary } from './profile.js?v=b0ca1a04f44d9f90c46b2a5e9dc6893e2fea2ab53a5a4b471b27bbfb6f6131fe';
-import { buttonHTML, iconHTML } from './ui-icon.js?v=68bbe4420b1782da4ec5a87ab925a840c21d5d87a2c31ca133867a512c8d3a0b';
+import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, campaignRestoration, campaignPoolAccess, POPULATIONS, POOL_NAMES, GOALS, completedTracks, unlockedTracks, progressionLoadout, GAME_CATALOGUE } from './run.js?v=56f12a92ddc0734f42f9fb3a95d6b9bfca39766348ef37a593ef331dacb3f0eb';
+import { profileSummary } from './profile.js?v=0dcc7686ee3ddd9ec65963b12458c72cda8e548c8afa9c8fbfa0fdaadf08c781';
+import { buttonHTML, iconHTML } from './ui-icon.js?v=e7e1e0264b8d800aa16ee5e89ddb82b5bd4dfa68327d0cff8b81d788cb47de8c';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
-import { SONG_STORAGE, SONG_LIMIT, songLibraryRead, songSnapshot } from './song.js?v=c14f6f44925a3864efb41d9f1610d74522f70fea3ea87a5bb24c613709305ae4';
+import { SONG_STORAGE, SONG_LIMIT, songLibraryRead, songSnapshot } from './song.js?v=bf2aa476b4f011a80b72c80023d6aefff3b88b7124e5a7d9b3174e809363884c';
 const button=(action,label,icon='play',attributes={})=>buttonHTML(label,icon,{'data-campaign':action,...attributes});
 export function restorationArt(state,track,large=false){
   const count=campaignRestoration(state,track.id);

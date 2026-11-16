@@ -11,3 +11,9 @@
 
 .gamemode-switch{margin-bottom:18px}
 @media(max-width:500px){:root body :is(dialog,#tree-dialog) .gamemode-switch>button{flex-direction:column;gap:4px;padding:6px 2px;font-size:11px}:root body .gamemode-switch .ui-icon{width:20px;height:20px}}
+
+.tab-bar{flex:none;min-width:0;width:100%;position:sticky;top:0;z-index:2;padding:10px 12px;margin-bottom:18px;background:#132530;border-bottom:1px solid #759aa340}
+.tab-bar[hidden]{display:none}
+:root body .tab-bar>.segmented-control{margin:0;width:100%}
+.tree-map-section>.tab-bar{position:relative;margin:0;border-top:1px solid #759aa340;border-bottom:0}
+.rarity-filter>.tab-bar{position:relative;margin:0;border-bottom:0}

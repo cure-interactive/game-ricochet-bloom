@@ -1,7 +1,7 @@
-import {audioEnvironment} from './audio-environment.js?v=991ee91a7cc04b779554789dc0bf8c0dbc45fd21fb294b890c865495bdf42cd3';
+import {audioEnvironment} from './audio-environment.js?v=c0ad3e93ff38a4a7ecb3c8a0fab2c3adc49f3f0b2d015fd87442b5f3dac6fd9a';
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=a60e71fef74fdec8b7dd85332250a173932596a5d4a6680ea91c217b73baf01b';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=c0db179bcb018380a8604c761694e0021f5b46aae7b41ff0986bf44e98136bce';
-import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=7c5d5fe67a5e0487aea5bd8d550ef6e180c448733bba8665c3d4c8b6b8d9ebcf';
+import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js?v=d31acea21b543a610f696e47d50a254ce52527d06e488d6e72309535656e4d38';
@@ -88,7 +88,8 @@ export class PoolSound {
     this.media?.update(!!this.context && this.context.state === 'running' && this.isMusicPlaying && !this.isMuted && !this.isMusicPaused && this.volume > 0 && this.ambience > 0);
     if (!this.musicOutput) return;
     const now = this.context.currentTime,loadout=typeof this.musicLoadout==='function'?this.musicLoadout():this.musicLoadout||{};
-    this.musicEnvironment?.stageSet(loadout.soundstage);
+    if(this.previewStage&&now>=this.previewUntil)this.previewStage=null;
+    this.musicEnvironment?.stageSet(this.previewStage||loadout.soundstage);
     this.musicEnvironment?.ambienceSet(loadout.ambience,!this.isMuted&&this.volume>0&&this.ambience>0&&!this.isMusicPaused&&this.isMusicPlaying&&!globalThis.document?.hidden);
     const level = this.isMuted || this.isMusicPaused || !this.isMusicPlaying ? 0 : this.ambience * (now < this.duckUntil ? .6 : 1);
     if (level !== this.lastMix) { this.musicOutput.gain.setTargetAtTime(level, now, level ? .35 : .04); this.lastMix = level; }
@@ -228,7 +229,8 @@ export class PoolSound {
     return true;
   }
   cosmeticStop(){this.cosmeticPreviewStop();voicesStop(this,'cosmetic');voicesStop(this,'cosmetic-preview');voicesStop(this,'cosmetic-travel');this.travelState=null;}
-  cosmeticPreviewStop({replace=false}={}){if(!replace)this.previewMusicFade(0);voicesStop(this,'cosmetic-preview');voicesStop(this,'music-theme-preview');this.previewEnvironment?.dispose();this.previewEnvironment=null;this.musicPreviewOutput?.disconnect();this.musicPreviewOutput=null;}
+  cosmeticPreviewStop({replace=false}={}){this.previewStage=null;this.previewUntil=0;if(!replace)this.previewMusicFade(0);voicesStop(this,'cosmetic-preview');voicesStop(this,'music-theme-preview');this.previewEnvironment?.dispose();this.previewEnvironment=null;this.musicPreviewOutput?.disconnect();this.musicPreviewOutput=null;if(this.context?.state!=='closed')this.mixUpdate();}
+  cosmeticPreviewStatus(){const now=this.context?.currentTime||0,duration=Math.max(0,(this.previewUntil||0)-(this.previewStarted||0));return {active:duration>0&&now<this.previewUntil,duration,progress:duration>0?Math.max(0,Math.min(1,(now-this.previewStarted)/duration)):0};}
   previewMusicFade(duration){
     if(!this.musicDuck)return 0;
     const now=this.context.currentTime,p=this.musicDuck.gain,e=this.previewEnvelope;
@@ -240,20 +242,27 @@ export class PoolSound {
     const delay=duration>0?.12:0,down=now+(delay||.35),end=duration>0?down+duration:down;
     p.linearRampToValueAtTime(duration>0?0:1,down);
     if(duration>0){p.setValueAtTime(0,end);p.linearRampToValueAtTime(1,end+.35);}
+    this.previewStarted=now;this.previewUntil=duration>0?end:0;
     this.previewEnvelope={start:now,down,end,from:value,to:duration>0?0:1};return delay;
   }
   cosmeticAudition(id){const item=cosmeticGet(id);if(['music','soundstage','ambience'].includes(item?.kind))return this.musicThemeAudition(id);return !!item&&this.cosmeticPlay({[item.kind]:id},{type:item.kind==='trail'?'launch':'cosmetic-hit'},{preview:true});}
   musicThemeAudition(id){
     if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||!this.ambience||globalThis.document?.hidden)return false;
-    this.cosmeticPreviewStop({replace:true});const delay=this.previewMusicFade(6),start=this.context.currentTime+delay;
+    const selected=cosmeticGet(id);if(!selected)return false;
+    this.cosmeticPreviewStop({replace:true});
+    if(selected.kind==='soundstage'){
+      this.previewMusicFade(0);this.previewStarted=this.context.currentTime;this.previewUntil=this.previewStarted+10;this.previewStage=id;this.mixUpdate();return true;
+    }
+    const delay=this.previewMusicFade(9.88),start=this.context.currentTime+delay,end=this.previewUntil;
     if(!this.musicPreviewOutput){this.musicPreviewOutput=this.context.createGain();this.musicPreviewOutput.connect(this.master);}
     this.musicPreviewOutput.gain.setValueAtTime(0,this.context.currentTime);this.musicPreviewOutput.gain.setValueAtTime(this.ambience,start);
-    const selected=cosmeticGet(id),loadout={...(typeof this.musicLoadout==='function'?this.musicLoadout():this.musicLoadout||{}),[selected.kind]:id};
+    const loadout={...(typeof this.musicLoadout==='function'?this.musicLoadout():this.musicLoadout||{}),[selected.kind]:id};
     const theme=loadout.music||(typeof this.musicTheme==='function'?this.musicTheme():this.musicTheme);
-    this.previewEnvironment=audioEnvironment(this.context,this.musicPreviewOutput);this.previewEnvironment.stageSet(loadout.soundstage);this.previewEnvironment.ambienceSet(loadout.ambience,true,6+delay);
-    this.musicPreviewOutput.gain.setValueAtTime(this.ambience,start+5);this.musicPreviewOutput.gain.linearRampToValueAtTime(0,start+6);
+    this.previewEnvironment=audioEnvironment(this.context,this.musicPreviewOutput);this.previewEnvironment.stageSet(loadout.soundstage);this.previewEnvironment.ambienceSet(loadout.ambience,true,10);
+    this.musicPreviewOutput.gain.setValueAtTime(this.ambience,end-1);this.musicPreviewOutput.gain.linearRampToValueAtTime(0,end);
+    if(selected.kind==='ambience')return true;
     const before=this.voiceCount;
-    for(const [i,midi] of [60,64,67,72].entries())instrumentNote(this,{role:'lead',midi,at:start+i*.45,duration:.9,attack:.035,level:.14,pan:(i-1.5)*.15,palette:'glass',musicTheme:theme,output:this.previewEnvironment.input,group:'music-theme-preview'});
+    for(const [i,midi] of [60,64,67,72].entries())instrumentNote(this,{role:'lead',midi,at:start+i*2,duration:1.8,attack:.035,level:.14,pan:Math.sin(i*.8)*.2,palette:'glass',musicTheme:theme,output:this.previewEnvironment.input,group:'music-theme-preview'});
     return this.voiceCount>before;
   }
   cosmeticPlay(loadout,event,{preview=false}={}){

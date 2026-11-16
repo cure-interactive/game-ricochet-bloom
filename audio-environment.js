@@ -6,10 +6,12 @@ export function audioEnvironment(context,output){
  const input=context.createGain(),low=context.createBiquadFilter(),high=context.createBiquadFilter(),dry=context.createGain();
  low.type='lowpass';low.frequency.value=2200;low.Q.value=.5;high.type='highpass';high.frequency.value=70;
  input.connect(low);low.connect(high);high.connect(dry);dry.connect(output);
- let stage=null,room=null,bed=null,bedId=null;const cache=new Map();
+ let stage=null,room=null,bed=null,bedId=null;const cache=new Map(),retired=[];
+ const disconnectRoom=old=>{high.disconnect(old.reverb);old.reverb.disconnect();old.wet.disconnect();};
  function stageSet(id){
+  for(let i=retired.length-1;i>=0;i--)if(context.currentTime>=retired[i].until){disconnectRoom(retired[i]);retired.splice(i,1);}
   const next=soundstageGet(id);if(stage===next.id)return;stage=next.id;
-  if(room){room.reverb.disconnect();room.wet.disconnect();high.disconnect(room.reverb);}
+  if(room){const gain=room.wet.gain,now=context.currentTime;if(gain.cancelAndHoldAtTime)gain.cancelAndHoldAtTime(now);else{gain.cancelScheduledValues(now);gain.setValueAtTime(gain.value,now);}gain.linearRampToValueAtTime(0,now+.2);retired.push({...room,until:now+.2});}
   let impulse=cache.get(stage);
   if(!impulse){
    const length=Math.ceil(context.sampleRate*next.seconds);impulse=context.createBuffer(2,length,context.sampleRate);let seed=8128;
@@ -39,29 +41,45 @@ export function audioEnvironment(context,output){
   if(Number.isFinite(duration)){gain.gain.setValueAtTime(.055,now+Math.max(.6,duration-1));gain.gain.linearRampToValueAtTime(0,now+duration);}
   const current={source,gain};bed=current;source.onended=()=>{source.disconnect();gain.disconnect();if(bed===current){bed=null;bedId=null;}};source.start(now);if(Number.isFinite(duration))source.stop(now+duration+.05);
  }
- return {input,stageSet,ambienceSet,get ambience(){return bedId;},dispose(){bedStop();input.disconnect();low.disconnect();high.disconnect();dry.disconnect();room?.reverb.disconnect();room?.wet.disconnect();cache.clear();}};
+ return {input,stageSet,ambienceSet,get stage(){return stage;},get ambience(){return bedId;},dispose(){bedStop();input.disconnect();low.disconnect();high.disconnect();dry.disconnect();room?.reverb.disconnect();room?.wet.disconnect();for(const old of retired){old.reverb.disconnect();old.wet.disconnect();}retired.length=0;cache.clear();}};
 }
 
-// Overlapped seeded noise joins across the loop seam; modulation is periodic.
-// Sixteen seconds of stereo atmosphere; generated once per context and style.
+// Long, seamless atmospheres. Recent buffers are shared across live playback
+// and auditions, with a bounded cache on memory-constrained devices.
 const ambienceCache=new WeakMap();
 export function ambienceBuffer(context,style){
- let cache=ambienceCache.get(context);if(!cache){cache=new Map();ambienceCache.set(context,cache);}if(cache.has(style))return cache.get(style);
- const seconds=16,rate=Math.min(12000,context.sampleRate),length=Math.round(rate*seconds),buffer=context.createBuffer(2,length,rate),tau=Math.PI*2;
+ let cache=ambienceCache.get(context);if(!cache){cache=new Map();ambienceCache.set(context,cache);}
+ if(cache.has(style)){const buffer=cache.get(style);cache.delete(style);cache.set(style,buffer);return buffer;}
+ const seconds=48,rate=Math.min(12000,context.sampleRate),length=Math.round(rate*seconds),buffer=context.createBuffer(2,length,rate),tau=Math.PI*2;
  for(let channel=0;channel<2;channel++){
-  const samples=buffer.getChannelData(channel);let seed=991+channel*71,peak=0;
+  const samples=buffer.getChannelData(channel);let seed=991+channel*71;
+  const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
   const overlap=Math.round(rate),raw=new Float32Array(length+overlap);let smooth=0;
-  const damping=style==='rain'?.35:style==='forest'?.7:style==='hearth'?.96:style==='orbit'?.985:.85;
-  for(let i=0;i<raw.length;i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;smooth=smooth*damping+(seed/2147483648-1)*(1-damping);raw[i]=smooth;}
-  for(let i=0;i<length;i++){const mix=i<overlap?Math.sin(Math.PI*.5*i/overlap)**2:1;samples[i]=raw[i]*mix+(i<overlap?raw[length+i]*(1-mix):0);}
+  const damping=style==='rain'?.35:style==='hearth'?.995:style==='forest'?.975:.85;
+  if(style!=='orbit')for(let i=0;i<raw.length;i++){smooth=smooth*damping+(random()*2-1)*(1-damping);raw[i]=smooth;}
   for(let i=0;i<length;i++){
-   const t=i/length,breath=.55+.45*Math.sin(tau*t*2-channel*.3)**2;
-   let value=samples[i]*(style==='rain'?.7:style==='shore'?breath:style==='hearth'?.55+.45*Math.sin(tau*t*19)**8:.45+.25*Math.sin(tau*t*3)**2);
-   if(style==='forest')value+=Math.sin(tau*24000*t)*Math.sin(tau*7*t)**12*.5;
-   if(style==='orbit')value+=(Math.sin(tau*1760*t)+.4*Math.sin(tau*2640*t))*(.35+.25*Math.sin(tau*t)**2);
-   samples[i]=value;peak=Math.max(peak,Math.abs(value));
+   const t=i/length,time=i/rate,mix=i<overlap?Math.sin(Math.PI*.5*i/overlap)**2:1;
+   const noise=raw[i]*mix+(i<overlap?raw[length+i]*(1-mix):0),breath=.55+.45*Math.sin(tau*t*5-channel*.3)**2;
+   let value=noise*(style==='rain'?.7:style==='shore'?breath:style==='hearth'?.5:.22);
+   if(style==='orbit')value=(Math.sin(tau*110*time)+.4*Math.sin(tau*165*time)+.12*Math.sin(tau*66*time))*(.32+.16*Math.sin(tau*t*2+channel*.35)**2);
+   if(style==='hearth')value+=.035*Math.sin(tau*50*time)*(.6+.4*Math.sin(tau*t*7)**2);
+   samples[i]=value;
   }
-  for(let i=0;i<length;i++)samples[i]/=Math.max(1,peak);
+  // Sparse, varied phrases with smooth attacks and releases, never a rapid
+  // periodic gate. Every phrase finishes before the shared loop seam.
+  if(style==='forest'||style==='hearth'){
+   for(let at=.7+random();at<seconds-2;at+=1.5+random()*3.5){
+    const duration=style==='forest'?.22+random()*.5:.18+random()*.6;
+    const count=Math.round(duration*rate),offset=Math.round(at*rate),pitch=1200+random()*900,sweep=(random()-.5)*400,level=.07+random()*.1;
+    for(let j=0;j<count;j++){
+     const t=j/rate,envelope=Math.sin(Math.PI*j/count)**2;
+     const voice=style==='forest'?Math.sin(tau*(pitch*t+sweep*t*t*.5)):raw[offset+j]*2;
+     samples[offset+j]+=voice*envelope*level;
+    }
+   }
+  }
+  let peak=1;for(const value of samples)peak=Math.max(peak,Math.abs(value));
+  for(let i=0;i<length;i++)samples[i]/=peak;
  }
- cache.set(style,buffer);return buffer;
+ cache.set(style,buffer);while(cache.size>3)cache.delete(cache.keys().next().value);return buffer;
 }

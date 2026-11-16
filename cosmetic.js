@@ -1,3 +1,4 @@
+import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {COSMETIC_COLLECTION} from './cosmetic-collection.js?v=5fffc248bcec63bc94d641fd08adb36b591a815fa2cd26ed62801ef5a1ea9cca';
 import {SOUNDSTAGES,AMBIENCES} from './music-environment.js?v=5b1988e50253a514f7dd89a12a36a17f8292a9118e212e49e82b91dee76f069a';
 import {MUSIC_THEMES} from './music-theme.js?v=88ea7b370c0695e982b380622f15db38e58496f3cd4335b7104b62ec49d0ad79';
@@ -24,6 +25,11 @@ export const COSMETICS=Object.freeze([
  {id:'skin.spectrum',kind:'skin',name:'Spectrum',rarity:'mythic',cost:550,color:'#c5b9ff',style:'spectrum',description:'Three shifting orbits surround a turning star that opens with speed.'},
  ...COSMETIC_COLLECTION
 ]);
+// Gallery order is a view of the catalogue; never reorder persistent identities.
+export function cosmeticOrder(items){
+ const ranks=Object.keys(RARITIES);
+ return items.map((item,index)=>({item,index})).sort((a,b)=>ranks.indexOf(a.item.rarity)-ranks.indexOf(b.item.rarity)||a.index-b.index).map(x=>x.item);
+}
 export const cosmeticGet=id=>COSMETICS.find(item=>item.id===id);
 export const cosmeticDefault=()=>({owned:{},trail:'trail.original',bounce:'bounce.none',skin:'campaign',music:'music.original',soundstage:'soundstage.original',ambience:'ambience.none'});
 export function cosmeticValidate(value){

@@ -1,5 +1,5 @@
 import { CATALOGUE, catalogueCreate, STARTERS } from './catalogue.js?v=c1d42ecf5ab5eb7f0a369fdccd0d8696079d69ac29f9676f4f854e39de9671ac';
-import { profileCreate, profileValidate, profilePurchase, profileReward, loadoutResolve } from './profile.js?v=b0ca1a04f44d9f90c46b2a5e9dc6893e2fea2ab53a5a4b471b27bbfb6f6131fe';
+import { profileCreate, profileValidate, profilePurchase, profileReward, loadoutResolve } from './profile.js?v=0dcc7686ee3ddd9ec65963b12458c72cda8e548c8afa9c8fbfa0fdaadf08c781';
 
 // This capability fixture is exclusively for the UI simulator, never the engine.
 export const SIMULATION_CATALOGUE = catalogueCreate(Object.keys(CATALOGUE.nodes));
