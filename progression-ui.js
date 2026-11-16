@@ -1,6 +1,6 @@
 import {cosmeticSkin,cosmeticLoadout} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
 import { screenHeader } from './screen-header.js?v=abdd601bfd00682c8e2df56bb78bf52f54d173e7c455d7ae92bba16d48c17860';
-import { playerUpgradeMount } from './player-upgrade-ui.js?v=b70e9f2dd19b923a492f69a0dcc06245fad4820c08c702a3d1e941c50c3766e9';
+import { playerUpgradeMount } from './player-upgrade-ui.js?v=3a2719778a776ee177c1ede309205966728e95b36ba52fee73e2cb42c11a69fe';
 import { saveRecoveryMount } from './save-recovery-ui.js?v=397198085e919b0d77ff8d86b01a5c64d90411deee8ddc51f4298ca5a147da20';
 import { progressionResetUnreadable } from './progression-store.js?v=07f58a8322aeb6530f81989cf379714e718d7c4d7d3be4f382c551b24e449cd9';
 import { medalIcon } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';
@@ -15,10 +15,10 @@ import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e7
 import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=13cddd0791aa2c8ea509a45b8136591b3e0359519cf8ebb3be6fefb2c61961d8';
 import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=07f58a8322aeb6530f81989cf379714e718d7c4d7d3be4f382c551b24e449cd9';
 import { gameCreate } from './engine.js?v=adc6d69546723ce9f5131bf144815dc0a4f6fc6682ee59318309f9f62ca6bed0';
-import { treeMount } from './tree-ui.js?v=4e4591d48a63e5fcee3c57f210f731e3f21dc8a8123c813c820eb94a314dab89';
+import { treeMount } from './tree-ui.js?v=484259810ac67ffc162c6bb6710aaab4a3a870c18e5b66d2f1f662ef6bf8ad8c';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
-import { skinMount } from './skin-ui.js?v=a8a0ec5f584d77845083a0166e7d692b0041c242655f41115025a044ee8cf705';
+import { skinMount } from './skin-ui.js?v=a6605d645590ead20440acfdb09b08cf631c96ff51c5c420dcb988e867c825c2';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;

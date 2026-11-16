@@ -6,6 +6,23 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.33.2
+
+Build: 2026-11-16 19:15:10 UTC
+
+### Player Changes
+
+- Swipe unselected tabs or empty bar space to scroll sideways. Only a drag starting on the highlighted selector moves the selection, with gentle edge following preserved.
+- Improved text and icon drawing during selector drags to address temporary rendering artifacts. Partial selection contrast remains.
+
+<!-- development -->
+### Developer Notes
+
+- Fixed a CSS specificity conflict that resolved tab buttons to pan-y inside a pan-x scrollable bar. Shared inherited axis rules preserve native horizontal input; selected buttons reserve drag gestures.
+- Added two-dimensional pill hit testing, prevented pointer-focus reveal during scrolling, and kept routine filter refreshes from snapping back to the old selection.
+- Replaced changing clip-path cuts on text and masks with pixel-aligned rectangular crops. Physical iOS rendering acceptance remains unverified.
+<!-- /development -->
+
 ## v3.33.1
 
 Build: 2026-11-16 14:55:23 UTC

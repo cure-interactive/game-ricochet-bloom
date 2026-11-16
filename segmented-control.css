@@ -1,7 +1,7 @@
-:root body .segmented-control{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:repeat(var(--segment-count),minmax(0,1fr));gap:6px;padding:4px;border:1px solid #759aa340;border-radius:14px;background:#08192580;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+:root body .segmented-control{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:repeat(var(--segment-count),minmax(0,1fr));gap:6px;padding:4px;border:1px solid #759aa340;border-radius:14px;background:#08192580;touch-action:var(--segment-pan,pan-y);user-select:none;-webkit-user-select:none}
 .segment-selection{position:absolute;z-index:-1;left:4px;top:4px;bottom:4px;border-radius:10px;background:#b4f2d8;pointer-events:none;transform-origin:left center}
-:root body :is(dialog,#tree-dialog) .segmented-control>button{border:0;background:transparent;min-width:0;min-height:44px;padding:10px 14px;display:flex;align-items:center;justify-content:center;gap:8px;touch-action:pan-y;direction:ltr}
-:root body :is(dialog,#tree-dialog) .segmented-control>button[aria-pressed=true]{background:transparent}
+:root body :is(dialog,#tree-dialog) .segmented-control>button{border:0;background:transparent;min-width:0;min-height:44px;padding:10px 14px;display:flex;align-items:center;justify-content:center;gap:8px;touch-action:var(--segment-pan,pan-y);direction:ltr}
+:root body :is(dialog,#tree-dialog) .segmented-control>button[aria-pressed=true]{background:transparent;touch-action:none}
 :root body :is(dialog,#tree-dialog) .segmented-control>button>span:not(.ui-icon){display:inline-block;position:relative;color:#dceeea}
 :root body[data-left-handed=true] .segmented-control{direction:rtl}
 @media(forced-colors:active){.segment-selection{background:Highlight;forced-color-adjust:none}:root body :is(dialog,#tree-dialog) .segmented-control>button>span:not(.ui-icon){color:ButtonText;background:none}:root body :is(dialog,#tree-dialog) .segmented-control>button[aria-pressed=true]>span:not(.ui-icon){color:HighlightText}}
@@ -17,14 +17,14 @@
 :root body .tab-bar>.segmented-control{margin:0;width:100%}
 .rarity-filter>.tab-bar{border-top:0}
 .tab-bar:has(>.segment-scrollable){overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
-:root body .tab-bar>.segmented-control.segment-scrollable{min-width:calc(var(--segment-count)*76px + 14px);touch-action:pan-x}
-:root body dialog .segment-scrollable>button{touch-action:pan-x}
+:root body .tab-bar>.segmented-control.segment-scrollable{min-width:calc(var(--segment-count)*76px + 14px);--segment-pan:pan-x}
 
 :root body dialog>.tab-panel{--page-padding:0;--page-inline-padding:0;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .tab-scroll{flex:1;min-height:0;overflow:auto;padding:20px}
 @media(max-width:600px){.tab-scroll{padding:16px}}
 
-.segment-contrast{position:absolute;inset:0;color:#12332e;pointer-events:none;clip-path:inset(0 var(--segment-clip-right,100%) 0 var(--segment-clip-left,0px))}
+.segment-contrast{position:absolute;top:0;bottom:0;left:var(--segment-clip-left,0px);width:var(--segment-clip-width,0px);overflow:hidden;color:#12332e;pointer-events:none}
+.segment-contrast>span{position:absolute;top:0;left:calc(-1 * var(--segment-clip-left,0px));white-space:nowrap}
 .segmented-control .segment-mask{position:relative;background:#dceeea}
-.segment-mask::after{content:"";position:absolute;inset:0;background:#12332e;clip-path:inset(0 var(--segment-clip-right,100%) 0 var(--segment-clip-left,0px))}
+.segment-mask::after{content:"";position:absolute;top:0;bottom:0;left:var(--segment-clip-left,0px);width:var(--segment-clip-width,0px);background:#12332e}
 @media(forced-colors:active){.segment-contrast,.segment-mask::after{display:none}}

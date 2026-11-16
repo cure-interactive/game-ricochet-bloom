@@ -5,7 +5,7 @@ export function segmentedHTML(buttons,{label,current,className=''}){
 // Works within one panel or across dialogs. The caller owns destinations only.
 export function segmentedMount(root,{attribute,change}){
  const doc=root.ownerDocument,win=doc.defaultView,selector=`[${attribute}]`;
- const overlays=new WeakMap();
+ const overlays=new WeakMap(),positioned=new WeakSet();
  let drag=null,suppressClick=false,frame=0,followNav=null,edgeFrame=0,edgeTime=0,edgeSpeed=0;
  const buttons=nav=>[...nav.querySelectorAll(selector)];
  const value=button=>button.getAttribute(attribute);
@@ -36,10 +36,11 @@ export function segmentedMount(root,{attribute,change}){
     let overlay=overlays.get(node);
     if(!overlay){
      if(node.classList.contains('ui-icon')){node.classList.add('segment-mask');overlay=node;}
-     else{overlay=doc.createElement('span');overlay.className='segment-contrast';overlay.setAttribute('aria-hidden','true');overlay.textContent=node.textContent;node.append(overlay);}
+     else{overlay=doc.createElement('span');overlay.className='segment-contrast';overlay.setAttribute('aria-hidden','true');const ink=doc.createElement('span');ink.textContent=node.textContent;overlay.append(ink);node.append(overlay);}
      overlays.set(node,overlay);
     }
-    overlay.style.setProperty('--segment-clip-left',left+'px');overlay.style.setProperty('--segment-clip-right',Math.max(0,r.width-right)+'px');
+    const ratio=win.devicePixelRatio||1,start=Math.round(left*ratio)/ratio,end=Math.round(right*ratio)/ratio;
+    for(const [key,value] of [['--segment-clip-left',start+'px'],['--segment-clip-width',Math.max(0,end-start)+'px']])if(overlay.style.getPropertyValue?.(key)!==value)overlay.style.setProperty(key,value);
    }
   }
  }
@@ -78,9 +79,11 @@ export function segmentedMount(root,{attribute,change}){
  function begin(e,point,id,touch=false){
   const nav=e.target.closest('.segmented-control');if(!nav||!buttons(nav).length)return;stopEdge();suppressClick=false;
   const pill=nav.querySelector('.segment-selection'),rect=pill.getBoundingClientRect(),bar=nav.parentElement;
-  const pan=nav.classList?.contains('segment-scrollable')&&bar.scrollWidth>bar.clientWidth+1&&(point.clientX<rect.left||point.clientX>rect.right);
-  // Swipe unselected tabs to scroll natively; the selected pill remains draggable.
-  if(pan&&touch){drag=null;return;}
+  const onPill=point.clientX>=rect.left&&point.clientX<=rect.right&&point.clientY>=rect.top&&point.clientY<=rect.bottom;
+  const pan=!onPill&&nav.classList?.contains('segment-scrollable')&&bar.scrollWidth>bar.clientWidth+1;
+  // Only the visible selected pill owns selection dragging. Unselected touch
+  // gestures remain native even when their path later crosses that pill.
+  if(!onPill&&(touch||!pan)){drag=null;return;}
   drag={id,touch,x:point.clientX,y:point.clientY,pointerX:point.clientX,nav,pill,moved:false,start:rect.left,pan,scroll:bar?.scrollLeft};
  }
  function move(e,point,id){
@@ -104,14 +107,14 @@ export function segmentedMount(root,{attribute,change}){
  root.addEventListener('touchstart',e=>{if(e.touches.length===1){const p=e.touches[0];begin(e,p,p.identifier,true);}else if(drag)finish(e,drag.id,false);},{passive:false});
  root.addEventListener('touchmove',e=>{if(!drag?.touch)return;if(e.touches.length!==1){finish(e,drag.id,false);return;}const p=e.touches[0];move(e,p,p.identifier);},{passive:false});
  for(const name of ['touchend','touchcancel'])root.addEventListener(name,e=>{if(!drag?.touch)return;const p=[...e.changedTouches].find(p=>p.identifier===drag.id);if(p)finish(e,p.identifier,name==='touchend');},{passive:false});
- const refresh=()=>{for(const nav of root.querySelectorAll('.segmented-control')){reveal(nav,buttons(nav).find(button=>value(button)===nav.dataset.current));position(nav);contrast(nav);}};
- root.addEventListener('focusin',e=>{const button=e.target.closest(selector),nav=button?.closest('.segmented-control');if(nav)reveal(nav,button);});
+ const refresh=(revealSelection=false)=>{for(const nav of root.querySelectorAll('.segmented-control')){if(!nav.getClientRects().length)continue;if(revealSelection===true||!positioned.has(nav))reveal(nav,buttons(nav).find(button=>value(button)===nav.dataset.current));positioned.add(nav);position(nav);contrast(nav);}};
+ root.addEventListener('focusin',e=>{const button=e.target.closest(selector),nav=button?.closest('.segmented-control');if(nav&&!drag&&doc.body?.dataset?.inputModality!=='pointer')reveal(nav,button);});
  const cancelDrag=()=>{stopEdge();if(drag){drag.pill.style.translate='';drag=null;refresh();}};
  doc.addEventListener?.('visibilitychange',()=>{if(doc.hidden)cancelDrag();});win.addEventListener('blur',cancelDrag);
  root.addEventListener('close',()=>{stopEdge();if(!followNav||root.contains(followNav))win.cancelAnimationFrame(frame);if(drag){drag.pill.style.translate='';drag=null;}});
  new win.MutationObserver(refresh).observe(root,{attributes:true,attributeFilter:['open']});
- new win.MutationObserver(refresh).observe(doc.body,{attributes:true,attributeFilter:['data-left-handed']});
- win.addEventListener('resize',refresh);return {refresh};
+ new win.MutationObserver(()=>refresh(true)).observe(doc.body,{attributes:true,attributeFilter:['data-left-handed']});
+ win.addEventListener('resize',()=>refresh(true));return {refresh};
 }
 
 export function segmentOverlap(rect,pill){return {left:Math.max(0,Math.min(rect.width,pill.left-rect.left)),right:Math.max(0,Math.min(rect.width,pill.right-rect.left))};}

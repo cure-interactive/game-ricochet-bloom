@@ -93,3 +93,5 @@ Trick Shots and Melody Trials have physical-shot fixtures for each authored Stan
 [Change Logs](changelog.md) includes player changes and developer notes for each release. Developer notes are visible while Development mode is enabled.
 
 Cosmetic favorites are optional validated profile IDs, independent of receipts and equipment. Galleries share sibling favorite buttons and a scrolling rarity selector; Favorites filters existing cards without sorting them. Rarity/index order remains stable.
+
+Tab gestures belong to their starting surface: selected-pill bounds own selection dragging; unselected touch gestures retain native scrolling. The nav and buttons inherit the same axis policy, with only the selected button reserving drag input. Contrast uses pixel-aligned rectangular crops instead of changing text/mask clip-paths. Physical iOS tearing acceptance remains a device check.
