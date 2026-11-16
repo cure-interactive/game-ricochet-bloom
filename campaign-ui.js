@@ -1,3 +1,4 @@
+import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';
 import { scoreConditions } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
@@ -8,7 +9,7 @@ import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, campaignRestor
 import { profileSummary } from './profile.js?v=77a1f73de2dacc19c8256f48f0f24a7b11703d553aac6e8b8f90066c5a175e7b';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
-import { SONG_STORAGE, SONG_LIMIT, songLibraryRead, songSnapshot } from './song.js?v=200a253e8a5be87242e75da089b20f2a7e5e61b287ff26d102061b42fb7286f3';
+import { SONG_STORAGE, SONG_LIMIT, songLibraryRead, songSnapshot } from './song.js?v=9e762d21906222e6ee87815160070b60eb96e4b979bbd46da94bc92d63440ad0';
 const button=(action,label,icon='play',attributes={})=>buttonHTML(label,icon,{'data-campaign':action,...attributes});
 export function restorationArt(state,track,large=false){
   const count=campaignRestoration(state,track.id);
@@ -75,5 +76,6 @@ export function campaignMount(controller) {
   };
   dialog.addEventListener('close',()=>controller.songsClose?.());
   dialog.addEventListener('cancel',event=>{event.preventDefault();back();});
+  rememberView(dialog,'campaign',()=>({tab,viewTrack,songsOpen}),state=>{if(state&&['tracks','play','challenge'].includes(state.tab))open(state.songsOpen?'songs':state.tab,state.viewTrack);});
   return {open,refresh:()=>{if(dialog.open)render();}};
 }

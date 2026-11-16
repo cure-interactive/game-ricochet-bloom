@@ -6,6 +6,27 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.34.1
+
+Build: 2026-11-16 20:40:47 UTC
+
+### Player Changes
+
+- Reloads and updates remember your screen, tabs, cosmetic details, wiki page, map position and gallery scroll. Returning to an active pool opens Pause.
+- Favorites appears only when that page has favorites. Removing the last one returns to All.
+- Selected tabs ease toward the center of overflowing bars. Dragging the selector keeps its rising/falling feedback while reaching more tabs; ordinary sideways scrolling stays silent.
+- Sliding feedback is slower, warmer and more hollow sounding.
+- Pause sits at the bottom-right of the play area, with centered goal text above and feedback at bottom-left. Left-Handed Layout mirrors the corner controls.
+- Further work on delayed audio after returning to the app and thin lines left behind by iPhone selector drags. Physical iPhone confirmation is still pending.
+
+<!-- development -->
+### Developer Notes
+
+- Hidden/blur/pagehide immediately disconnect audio and retire its graph. Foreground releases the hold before checking active owners, preventing menu listener ordering from reusing stale output. Reset clock-bound deadlines; expose output timestamps, latencies and graph-close diagnostics without interpreting clock differences as measured latency.
+- A single opaque canvas redraws each selector's static ink and pill together; native buttons retain semantics and input. The live player retains its deformation-aware backing. Wind clicks use four lower octave layers, 35ms envelopes and a 140ms throttle.
+- Versioned, profile-scoped UI memory restores explicit view adapters and scroll/disclosure state without replaying purchase or launch controls. Invalid UI memory falls back without modifying progression. Gameplay resumes only after the player chooses Resume.
+<!-- /development -->
+
 ## v3.34.0
 
 Build: 2026-11-16 19:47:59 UTC

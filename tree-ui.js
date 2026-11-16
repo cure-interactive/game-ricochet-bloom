@@ -1,12 +1,13 @@
+import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
 import {treeViewMount} from './tree-view.js?v=9911356cb12ea2fe7d5d66804eff580c4fc34212423f288b453ecd52a4b54f09';
 import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=69a8d08e49c0a9fb0c4f6f8a2e2f9044307a0f8d93b64a2722ac531d71bd5a2c';
 export {skillStatsHTML} from './skill-card.js?v=69a8d08e49c0a9fb0c4f6f8a2e2f9044307a0f8d93b64a2722ac531d71bd5a2c';
-import { treeSwitchHTML, treeSwitchMount } from './tree-switch.js?v=c5c173bada96696e0f723d58f1e5c7cb5eabe3f31e9831b0e254b55bb5dec7f0';
+import { treeSwitchHTML, treeSwitchMount } from './tree-switch.js?v=e215d115959f942114ee53c17bcd88d0d7c6c9d5af101b3f21b2adc10e0097b7';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { screenHeader } from './screen-header.js?v=abdd601bfd00682c8e2df56bb78bf52f54d173e7c455d7ae92bba16d48c17860';
 import { purchaseComparison, skillStats } from './skill-comparison.js?v=45293648fc7ce4a6c5ca896f839e7e6c73d80b167c91b7e53c8921162ae14f33';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=599b1db6e077795c0de1a49014655c13a5821189a149b12e35d69f0731dcf222';
+import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=036d0d778228999f61ece74251473ecb2f0e6eda12f39d560a593090f6f89568';
 import { POWER_TREES } from './power-tree.js?v=2a64a8c4a0ad6dc1f93d8385f13952b46869143cbf7dc606ecd40164a825481b';
 import { profilePurchase, profileSummary } from './profile.js?v=77a1f73de2dacc19c8256f48f0f24a7b11703d553aac6e8b8f90066c5a175e7b';
 import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=13cddd0791aa2c8ea509a45b8136591b3e0359519cf8ebb3be6fefb2c61961d8';
@@ -172,5 +173,6 @@ export function treeMount(controller){
    if(cat.nodes[focusSkill])selected=focusSkill;controller.screen?.();document.querySelectorAll('dialog[open]').forEach(d=>d.close());
    state=controller.get();status('');setLegend(false);render();dialog.showModal();camera.focus(layout.nodes[selected]||{x:100,y:90},.85,.12);dialog.querySelector('[data-tree-action=back]').focus({preventScroll:true});
  }
+ rememberView(dialog,'selection',()=>selected,id=>{if(cat.nodes[id]){selected=id;selectionRender();}},20);
  render();if(new URL(location.href).searchParams.get('view')==='tree')open();return {open,refresh(){state=controller.get();render();}};
 }

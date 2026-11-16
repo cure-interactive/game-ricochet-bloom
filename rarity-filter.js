@@ -1,5 +1,5 @@
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import {segmentedHTML,segmentedMount} from './segmented-control.js?v=1e468d73b757e0bde736e26cea5c8fb3ffaf1b69e7e21e158fb10491f0630bac';
+import {segmentedHTML,segmentedMount} from './segmented-control.js?v=92df2b5cd5c50845eb7c607a06cea29a0ba17fd18808f6c8179ada84eb591f47';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {rarityIconHTML} from './skill-icon.js?v=323da47ec6044e57d9571db79d2e73cc83e5d962daf53f03192092c7de37fdc8';
 import {staticIconHTML} from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
@@ -16,6 +16,10 @@ export function rarityFilterMount(root,{scroll,cards,profile,act,status}){
  const empty=root.ownerDocument.createElement('p');empty.className='rarity-empty';empty.setAttribute('role','status');empty.textContent='No styles in this rarity.';empty.hidden=true;scroll.append(empty);
  function refresh(){
   const list=cards(),favorites=profile?.()?.cosmeticFavorites||[];
+  const favoriteTab=footer.querySelector('[data-rarity-filter="favorites"]'),nav=footer.querySelector('.segmented-control');
+  favoriteTab.hidden=!list.some(card=>favorites.includes(card.dataset.cosmeticCard));
+  if(favoriteTab.hidden&&rarity==='favorites')rarity='all';
+  nav.dataset.current=rarity;for(const button of nav.querySelectorAll('[data-rarity-filter]'))button.setAttribute('aria-pressed',String(button.dataset.rarityFilter===rarity));
   for(const card of list){
    const starred=favorites.includes(card.dataset.cosmeticCard),button=card.querySelector('[data-cosmetic-favorite]');
    card.hidden=rarity==='favorites'?!starred:rarity!=='all'&&card.dataset.rarity!==rarity;
@@ -29,7 +33,7 @@ export function rarityFilterMount(root,{scroll,cards,profile,act,status}){
   event.preventDefault();event.stopPropagation();const result=act?.({type:'favorite-cosmetic',id:button.dataset.cosmeticFavorite});
   if(!result?.ok){if(status)status.textContent=result?.reason||'Could not save this favorite. Please try again.';return;}
   refresh();if(status)status.textContent='';
-  if(button.closest('.cosmetic-card').hidden)(cards().find(card=>!card.hidden)?.querySelector('[data-cosmetic-favorite]')||footer.querySelector('[data-rarity-filter="favorites"]')).focus({preventScroll:true});
+  if(button.closest('.cosmetic-card').hidden)(cards().find(card=>!card.hidden)?.querySelector('[data-cosmetic-favorite]')||footer.querySelector('[data-rarity-filter="all"]')).focus({preventScroll:true});
  });
  const control=segmentedMount(root,{attribute:'data-rarity-filter',change(next){rarity=next;refresh();scroll.scrollTop=0;}});
  return {refresh,show(visible){footer.hidden=!visible;refresh();}};

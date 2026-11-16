@@ -1,5 +1,6 @@
-import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=4f83bafeaccdc7fcd29ea941ab14f933f984eee0f53a4f3e8336fbb87c3aa2ec';
-import {segmentedHTML,segmentedMount} from './segmented-control.js?v=1e468d73b757e0bde736e26cea5c8fb3ffaf1b69e7e21e158fb10491f0630bac';
+import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
+import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=33b57334bfe5dae634acc06ed1abe98c3743f3c9cde0054ea3922d70e945f145';
+import {segmentedHTML,segmentedMount} from './segmented-control.js?v=92df2b5cd5c50845eb7c607a06cea29a0ba17fd18808f6c8179ada84eb591f47';
 import {cosmeticPriceHTML} from './cosmetic-price.js?v=a87813cd95ebe513b3e4c54a07af3848d82ebd3d5045c4fe337e594f69e20bb8';
 import {COSMETICS,cosmeticOrder,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
 import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=c296ac0ac90dd7ea30ecea08d10d89a91d9fb1dc9ad267e68df5376ec69b75ef';
@@ -83,5 +84,6 @@ export function cosmeticMount(host){
   if(choice){stop();libraryScroll=scroll.scrollTop;selected=choice.dataset.cosmetic;render();status.textContent='';scroll.scrollTop=0;back.focus({preventScroll:true});}
   else if(e.target.closest('[data-cosmetic-equip]')){stop();const item=cosmeticGet(selected),result=host.act({type:cosmeticOwned(host.profile(),item)?'equip-cosmetic':'buy-cosmetic',id:selected});render();status.textContent=result.ok?item.name+' equipped.':result.reason;const equip=detail.querySelector('[data-cosmetic-equip]');(equip.disabled?back:equip).focus({preventScroll:true});}
  });
+ rememberView(dialog,'detail',()=>({selected,libraryScroll}),state=>{const item=cosmeticGet(state?.selected);if(item?.kind===kind){selected=item.id;libraryScroll=Number.isFinite(state.libraryScroll)?state.libraryScroll:0;render();}},20);
  return {open(destination='trails'){stop();kind=destination==='music-themes'?'music':destination==='bounce-effects'?'bounce':'trail';selected=null;libraryScroll=0;host.screen(destination);document.querySelectorAll('dialog[open]').forEach(d=>d.close());render();status.textContent='';dialog.showModal();scroll.scrollTop=0;back.focus({preventScroll:true});}};
 }

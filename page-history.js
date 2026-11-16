@@ -4,6 +4,8 @@ export function pageHistory(initial, key=value=>value) {
   return {
     get current(){return path.at(-1);},
     get depth(){return path.length;},
+    get snapshot(){return [...path];},
+    restore(pages){path=[...pages];return path.at(-1);},
     visit(page){const index=path.findIndex(value=>key(value)===key(page));if(index<0)path.push(page);else{path=path.slice(0,index+1);path[index]=page;}return page;},
     back(){if(path.length<=1)return null;path.pop();return path.at(-1);},
     reset(page){path=[page];return page;}

@@ -1,4 +1,5 @@
-import {gamemodeNavigation} from './gamemode-navigation.js?v=675c9e3af73da331df62ad725b4dcfb0dbbed33aeb39c1b663dec4ba010760cc';
+import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=a0bcf4795ea578a5a6361ccb5162fef8b8be587fa30133ae9e2fe06d63a9d33a';
 import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=cd1efc7fa33273d53d46cd1e4fe5b154e594d1209be37d62c18adf92f52b3987';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { experimentRead, experimentFavourite } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
@@ -11,16 +12,18 @@ export function gamemodeGalleryMount({content,heading,storage, ...host}) {
   const $=id=>content.querySelector('#'+id);
   const art=mode=>assetURL(`artwork/mode/${mode}.svg`);
   const galleryState=new Map();
-  let rememberGallery=()=>{};
+  let rememberGallery=()=>{},currentView='';
   const starArt='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.3.9-4.5 4.4 1.1 6.2-5.7-3-5.7 3 1.1-6.2L3.2 9.6l6.3-.9Z"/></svg>';
   function gallery(view=''){
     rememberGallery();
     if(!['','favourites','development',...GAMEMODE_GROUPS.map(g=>'group:'+g.id)].includes(view))view='';
-    const state=galleryState.get(view)??{query:'',category:'',scroll:0};galleryState.set(view,state);
+    const hasFavorites=()=>!!experimentRead(storage,host.kind()).library?.favourites?.some(id=>GAMEMODE_CARDS.some(card=>card.id===id));
+    if(view==='favourites'&&!hasFavorites())view='';
+    currentView=view;const state=galleryState.get(view)??{query:'',category:'',scroll:0};galleryState.set(view,state);
     host.screen(view?'gamemodes:'+view:'gamemodes');
     const group=GAMEMODE_GROUPS.find(g=>view==='group:'+g.id),title=group?.name??(view==='favourites'?'Favourites':view==='development'?'In Development':'Gamemodes');
     heading.textContent=title;
-    content.innerHTML=`${gamemodeNavigation(view.startsWith('group:')?'':view)}<p class="mode-intro">${group?escape(group.description):view==='favourites'?'Your starred games, ready to open directly.':view==='development'?'Explore ideas whose gameplay is still being built.':'Choose a game or explore a collection of related challenges.'}</p><div class="gamemode-filter"><label>Search All Gamemodes<input id="gamemode-search" type="search" placeholder="Name, mechanic or idea number" value="${escape(state.query)}"></label>${view==='development'?`<label>Category<select id="gamemode-category"><option value="">All categories</option>${GAMEMODE_CATEGORIES.map(m=>`<option value="${m.id}"${state.category===m.id?' selected':''}>${m.name}</option>`).join('')}</select></label>`:''}</div><p id="gamemode-count" class="gamemode-count" role="status" aria-live="polite"></p><div id="gamemode-list"></div><p id="gamemode-save-status" role="status"></p>`;
+    content.innerHTML=`${gamemodeNavigation(view.startsWith('group:')?'':view,hasFavorites())}<p class="mode-intro">${group?escape(group.description):view==='favourites'?'Your starred games, ready to open directly.':view==='development'?'Explore ideas whose gameplay is still being built.':'Choose a game or explore a collection of related challenges.'}</p><div class="gamemode-filter"><label>Search All Gamemodes<input id="gamemode-search" type="search" placeholder="Name, mechanic or idea number" value="${escape(state.query)}"></label>${view==='development'?`<label>Category<select id="gamemode-category"><option value="">All categories</option>${GAMEMODE_CATEGORIES.map(m=>`<option value="${m.id}"${state.category===m.id?' selected':''}>${m.name}</option>`).join('')}</select></label>`:''}</div><p id="gamemode-count" class="gamemode-count" role="status" aria-live="polite"></p><div id="gamemode-list"></div><p id="gamemode-save-status" role="status"></p>`;
     function card(e,favourites,readable){
       const starred=favourites.includes(e.id),label=`${starred?'Unstar':'Star'} ${e.name}`;
       return `<article class="mode-card-shell"><button type="button" class="mode-card" data-gamemode="${e.id}"><span class="mode-card-top"><small class="mode-category">${GAMEMODE_CATEGORIES.find(c=>c.id===e.category)?.name??''}${/^\d/.test(e.id)?' · #'+e.id:''}</small></span>${e.art?`<img src="${art(e.art)}" alt="" width="480" height="240">`:experimentArt(e.id)}<span><strong>${escape(e.name)}</strong><small>${escape(e.description)}</small><em>${e.playable?(e.route==='casual'?'No Points · Just Play':e.route==='setup'?'Three Difficulty Levels':'Play & Settings'):'In Development · View Idea'}</em></span></button><button type="button" class="mode-star" data-favourite="${e.id}" aria-label="${escape(label)}" aria-pressed="${starred}" title="${escape(label)}" ${readable?'':'disabled'}>${starArt}</button></article>`;
@@ -38,7 +41,8 @@ export function gamemodeGalleryMount({content,heading,storage, ...host}) {
       for(const b of content.querySelectorAll('[data-favourite]'))b.onclick=()=>{
         const id=b.dataset.favourite,scroll=content.scrollTop,result=experimentFavourite(storage,host.kind(),id);
         if(!result.ok){$('gamemode-save-status').textContent='Could not save this favourite. Your existing notebook is preserved. Please try again.';return;}
-        cards();content.scrollTop=scroll;(content.querySelector(`[data-favourite="${id}"]`)??content.querySelector('[data-favourite]')??content.closest('dialog').querySelector('#gamemode-favourites')).focus({preventScroll:true});
+        if(view==='favourites'&&!hasFavorites()){gallery('');return;}
+        cards();host.refreshTabs?.(hasFavorites());content.scrollTop=scroll;(content.querySelector(`[data-favourite="${id}"]`)??content.querySelector('[data-favourite]')??content.closest('dialog').querySelector('#gamemode-favourites')).focus({preventScroll:true});
         $('gamemode-save-status').textContent=result.active?'Added to Favourites.':'Removed from Favourites.';
       };
     }
@@ -46,7 +50,8 @@ export function gamemodeGalleryMount({content,heading,storage, ...host}) {
     $('gamemode-search').oninput=e=>{state.query=e.target.value;state.scroll=0;cards();};
     $('gamemode-category')?.addEventListener('change',e=>{state.category=e.target.value;state.scroll=0;cards();});
     cards();host.show();content.scrollTop=state.scroll;
-    rememberGallery=()=>{state.scroll=content.scrollTop;rememberGallery=()=>{};};
+    rememberGallery=()=>{state.scroll=content.scrollTop;};
   }
+  rememberView(content,'gallery',()=>{if(!$('gamemode-search'))return;rememberGallery();return {view:currentView,entries:[...galleryState]};},saved=>{for(const [key,state] of Array.isArray(saved?.entries)?saved.entries:[])if(state&&typeof state.query==='string'&&typeof state.category==='string')galleryState.set(key,{query:state.query.slice(0,300),category:state.category,scroll:Number.isFinite(state.scroll)?state.scroll:0});const current=content.closest('dialog').querySelector('.gamemode-switch')?.dataset.current;if(current!=='saved')gallery(typeof saved?.view==='string'?saved.view:current||'');},-10);
   return {open:gallery,remember:()=>rememberGallery()};
 }

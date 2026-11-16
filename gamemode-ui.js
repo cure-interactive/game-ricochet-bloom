@@ -1,12 +1,12 @@
-import {segmentedMount} from './segmented-control.js?v=1e468d73b757e0bde736e26cea5c8fb3ffaf1b69e7e21e158fb10491f0630bac';
+import {segmentedMount} from './segmented-control.js?v=92df2b5cd5c50845eb7c607a06cea29a0ba17fd18808f6c8179ada84eb591f47';
 import { screenHeader } from './screen-header.js?v=abdd601bfd00682c8e2df56bb78bf52f54d173e7c455d7ae92bba16d48c17860';
 import { buttonHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
 import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=cd1efc7fa33273d53d46cd1e4fe5b154e594d1209be37d62c18adf92f52b3987';
-import { gamemodeGalleryMount } from './gamemode-gallery.js?v=cc56a1c2b094f7f381aad60b17d67e4ee71d053e0b6865b06a8ca8ff2d8b6101';
-import { scoreAttackMount } from './score-attack-ui.js?v=0e55c3f58570fa056da72ca1f89c0946ad0b080ecc48f3d3361902b0f41b0206';
-import { experimentMount } from './experiment-ui.js?v=e4b7dbae942e7b2a38b4baa7100c20e174bf21e24b2ed23f8999d3d0e396e34e';
+import { gamemodeGalleryMount } from './gamemode-gallery.js?v=3fb6b9c852db9bd6735e3561d727b142c59f0f8cf9006fc61e9c2c4b1a79e504';
+import { scoreAttackMount } from './score-attack-ui.js?v=0622d52c310b366915e20cdaafc5e1af5f652242115d4e7426bd9c025888178c';
+import { experimentMount } from './experiment-ui.js?v=a34287e05f3b9ecb47e16fcc713b33ddff7bb1b0f2bd50b1a746b219304990d4';
 import { poolConditions } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
 import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';
 
@@ -21,7 +21,7 @@ export function gamemodeMount(host) {
   const storage=localStorage,art=mode=>assetURL(`artwork/mode/${mode}.svg`);
   let tabFrame=0;
   function showMenu(){cancelAnimationFrame(tabFrame);tabFrame=requestAnimationFrame(()=>{tabFrame=0;const bar=content.querySelector(".tab-bar");content.parentElement.querySelector(":scope>.tab-bar")?.remove();if(bar)content.after(bar);navigationTabs.refresh();});if(!menu.open)menu.showModal();$('gamemodes-back').focus({preventScroll:true});}
-  const gallery=gamemodeGalleryMount({content,heading,storage,screen:host.screen,kind:host.kind,show:showMenu,notebook:()=>hub.hub(),open(card){
+  const gallery=gamemodeGalleryMount({content,heading,storage,screen:host.screen,kind:host.kind,show:showMenu,refreshTabs(hasFavorites){const nav=menu.querySelector('.gamemode-switch'),button=nav?.querySelector('[data-gamemode-tab="favourites"]');if(button)button.hidden=!hasFavorites;else if(hasFavorites){const all=nav?.querySelector('[data-gamemode-tab=""]');all?.insertAdjacentHTML('afterend',buttonHTML('Favorites','star',{id:'gamemode-favourites','data-gamemode-tab':'favourites','aria-pressed':false}));}navigationTabs.refresh();},notebook:()=>hub.hub(),open(card){
     if(card.route==='legacy'){if(card.id==='campaign'){menu.close();host.legacy(card.id);}else poolSetup(card.id);}
     else if(card.route==='casual'){menu.close();host.drift();}
     else if(card.route==='destination')score.open();

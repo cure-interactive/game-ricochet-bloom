@@ -1,3 +1,4 @@
+import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
 // Layout and connections share the single-parent graph used by purchases.
 export function treeLayout(powers,nodes) {
  const children=Object.fromEntries(Object.keys(nodes).map(id=>[id,[]]));
@@ -148,6 +149,7 @@ export function mapCameraMount(surface,world,change) {
   surface.addEventListener('click',e=>{if(suppress&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();}},true);
   surface.addEventListener('wheel',e=>{stopAnimation();e.preventDefault();suppress=true;if(e.shiftKey)apply({...camera,x:camera.x-e.deltaY,y:camera.y-e.deltaX});else apply(zoomAt(camera,camera.scale*Math.exp(-Math.max(-150,Math.min(150,e.deltaY))*.003),local(e)));},{passive:false});
   surface.addEventListener('keydown',e=>{if(e.target!==surface)return;const move={ArrowLeft:[80,0],ArrowRight:[-80,0],ArrowUp:[0,80],ArrowDown:[0,-80]}[e.key];if(move){stopAnimation();e.preventDefault();apply({...camera,x:camera.x+move[0],y:camera.y+move[1]});}});
+  rememberView(surface,'camera',()=>camera,state=>{if(state&&['x','y','scale'].every(key=>Number.isFinite(state[key]))&&state.scale>0){stopAnimation();apply(state);}},30);
   const observer=new ResizeObserver(()=>{if(surface.clientWidth&&surface.clientHeight){stopAnimation();apply(camera);}});observer.observe(surface);
   return {get value(){return {...camera};},zoom(factor){stopAnimation();const v=size();apply(zoomAt(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){stopAnimation();apply(focusTarget(point,scale,vertical));},focusAnimated,refresh(){stopAnimation();apply(camera);},fit(bounds={x:world.x||0,y:world.y||0,width:world.width,height:world.height}){stopAnimation();apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel};
 }

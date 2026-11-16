@@ -1,6 +1,6 @@
 :root body .segmented-control{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:repeat(var(--segment-count),minmax(0,1fr));gap:6px;padding:4px;border:1px solid #759aa340;border-radius:14px;background:#08192580;touch-action:var(--segment-pan,pan-y);user-select:none;-webkit-user-select:none}
 .segment-selection{position:absolute;z-index:0;left:4px;top:4px;bottom:4px;border-radius:10px;background:#b4f2d8;pointer-events:none}
-:root body :is(dialog,#tree-dialog) .segmented-control>button{position:relative;z-index:1;border:0;background:transparent;min-width:0;min-height:44px;padding:10px 14px;display:flex;align-items:center;justify-content:center;gap:8px;touch-action:var(--segment-pan,pan-y);direction:ltr}
+:root body :is(dialog,#tree-dialog) .segmented-control>button{position:relative;border:0;background:transparent;min-width:0;min-height:44px;padding:10px 14px;display:flex;align-items:center;justify-content:center;gap:8px;touch-action:var(--segment-pan,pan-y);direction:ltr}
 :root body :is(dialog,#tree-dialog) .segmented-control>button[aria-pressed=true]{background:transparent;touch-action:none}
 :root body :is(dialog,#tree-dialog) .segmented-control>button>span:not(.ui-icon){display:inline-block;position:relative;color:#dceeea}
 :root body[data-left-handed=true] .segmented-control{direction:rtl}
@@ -23,8 +23,8 @@
 .tab-scroll{flex:1;min-height:0;overflow:auto;padding:20px}
 @media(max-width:600px){.tab-scroll{padding:16px}}
 
-.segment-contrast{position:absolute;top:0;bottom:0;left:var(--segment-clip-left,0px);width:var(--segment-clip-width,0px);overflow:hidden;color:#12332e;pointer-events:none}
-.segment-contrast>span{position:absolute;top:0;left:calc(-1 * var(--segment-clip-left,0px));white-space:nowrap}
-.segmented-control .segment-mask{position:relative;background:#dceeea}
-.segment-mask::after{content:"";position:absolute;top:0;bottom:0;left:var(--segment-clip-left,0px);width:var(--segment-clip-width,0px);background:#12332e}
-@media(forced-colors:active){.segment-contrast,.segment-mask::after{display:none}}
+.segment-paint{position:absolute;left:0;top:0;z-index:1;pointer-events:none}
+:root body :is(dialog,#tree-dialog) .segmented-control>button[hidden]{display:none}
+.segment-canvas>.segment-selection{visibility:hidden}
+.segmented-control>button>.ui-icon[data-icon="player-skin"]{position:relative;z-index:2}
+@media(forced-colors:active){.segment-paint{display:none}.segment-canvas>.segment-selection{visibility:visible}}

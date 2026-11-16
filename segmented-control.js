@@ -1,3 +1,5 @@
+import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
+import {segmentedPainter} from './segmented-paint.js?v=f3fcc78ca5b54f7fb6d7fce668b601d74b373a11d0d030833ba9c8a52c685508';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import {uiWind} from './ui-sound.js?v=c8318423c1565fbab4d63567ad32cdd01eaf2bef81da713cf2f2060b3ca69e7d';
 export function segmentedHTML(buttons,{label,current,className=''}){
@@ -6,9 +8,9 @@ export function segmentedHTML(buttons,{label,current,className=''}){
 // Works within one panel or across dialogs. The caller owns destinations only.
 export function segmentedMount(root,{attribute,change}){
  const doc=root.ownerDocument,win=doc.defaultView,selector=`[${attribute}]`;
- const overlays=new WeakMap(),positioned=new WeakSet();
+ const draw=segmentedPainter(doc,win),positioned=new WeakSet();
  let drag=null,suppressClick=false,frame=0,followNav=null,edgeFrame=0,edgeTime=0,edgeSpeed=0;
- const buttons=nav=>[...nav.querySelectorAll(selector)];
+ const buttons=nav=>[...nav.querySelectorAll(selector)].filter(button=>!button.hidden);
  const value=button=>button.getAttribute(attribute);
  const pixel=value=>Math.round(value*(win.devicePixelRatio||1))/(win.devicePixelRatio||1);
  function paint(nav,left,width){const pill=nav.querySelector('.segment-selection');pill.style.left=pixel(left)+'px';pill.style.width=pixel(width)+'px';contrast(nav);}
@@ -20,6 +22,7 @@ export function segmentedMount(root,{attribute,change}){
   else if(b.right>r.right-4)bar.scrollLeft+=b.right-r.right+4;
  }
  function position(nav){
+  nav.style?.setProperty('--segment-count',String(buttons(nav).length));
   const selected=buttons(nav).find(b=>value(b)===nav.dataset.current),pill=nav.querySelector('.segment-selection');
   if(!selected||!nav.getClientRects().length)return;
   const n=nav.getBoundingClientRect(),b=selected.getBoundingClientRect();
@@ -27,36 +30,24 @@ export function segmentedMount(root,{attribute,change}){
  }
  function contrast(nav){
   const pill=nav.querySelector('.segment-selection').getBoundingClientRect();
-  for(const button of buttons(nav))for(const node of [button.querySelector('span:not(.ui-icon)'),button.querySelector('.ui-icon')]){
-   if(!node)continue;const r=node.getBoundingClientRect(),{left,right}=segmentOverlap(r,pill);
-   if(node.dataset?.icon==='player-skin'){
-    // The membrane and backing overflow the nominal icon slot. Clip at the
-    // actual pill edges, not the slot edges used by text and masked icons.
-    node.style.color='#12332e';node.style.setProperty('--player-bubble-backing','1');
-    node.style.setProperty('--player-backing-start',String((pill.left-r.left)/Math.max(1,r.width)));node.style.setProperty('--player-backing-end',String((pill.right-r.left)/Math.max(1,r.width)));
-   }else{
-    // Solid layers avoid WebKit's stale text-gradient raster fragments while
-    // keeping contrast spatial under a moving selection, including masked SVGs.
-    let overlay=overlays.get(node);
-    if(!overlay){
-     if(node.classList.contains('ui-icon')){node.classList.add('segment-mask');overlay=node;}
-     else{overlay=doc.createElement('span');overlay.className='segment-contrast';overlay.setAttribute('aria-hidden','true');const ink=doc.createElement('span');ink.textContent=node.textContent;overlay.append(ink);node.append(overlay);}
-     overlays.set(node,overlay);
-    }
-    const ratio=win.devicePixelRatio||1,start=Math.round(left*ratio)/ratio,end=Math.round(right*ratio)/ratio;
-    for(const [key,value] of [['--segment-clip-left',start+'px'],['--segment-clip-width',Math.max(0,end-start)+'px']])if(overlay.style.getPropertyValue?.(key)!==value)overlay.style.setProperty(key,value);
-   }
+  for(const button of buttons(nav)){
+   const node=button.querySelector('.ui-icon');if(node?.dataset?.icon!=='player-skin')continue;
+   const r=node.getBoundingClientRect();node.style.color='#12332e';node.style.setProperty('--player-bubble-backing','1');
+   node.style.setProperty('--player-backing-start',String((pill.left-r.left)/Math.max(1,r.width)));node.style.setProperty('--player-backing-end',String((pill.right-r.left)/Math.max(1,r.width)));
   }
+  draw(nav,buttons(nav),pill);
  }
+
  function select(nav,next,old){
   stopSettle();
   if(next!==nav.dataset.current)nav=change(next)||nav;
   nav.dataset.current=next;for(const button of buttons(nav))button.setAttribute('aria-pressed',String(value(button)===next));
-  reveal(nav,buttons(nav).find(button=>value(button)===next));
-  const selected=buttons(nav).find(button=>value(button)===next),n=nav.getBoundingClientRect(),end=selected.getBoundingClientRect();
-  const from=old.left-n.left-nav.clientLeft,to=end.left-n.left-nav.clientLeft;let start;
+  const selected=buttons(nav).find(button=>value(button)===next);if(!selected){position(nav);return;}
+  const n=nav.getBoundingClientRect(),end=selected.getBoundingClientRect();
+  const from=old.left-n.left-nav.clientLeft,to=end.left-n.left-nav.clientLeft,bar=nav.parentElement,scrollFrom=bar?.scrollLeft||0;
+  const scrollTo=nav.classList?.contains('segment-scrollable')?segmentCenter(bar,end):scrollFrom;let start;
   followNav=nav;paint(nav,from,old.width);
-  const tick=time=>{start??=time;const progress=Math.min(1,(time-start)/320),ease=1-(1-progress)**3;paint(nav,from+(to-from)*ease,old.width+(end.width-old.width)*ease);if(progress<1)frame=win.requestAnimationFrame(tick);else{frame=0;followNav=null;}};
+  const tick=time=>{if(nav.dataset.current!==next){stopSettle();position(nav);return;}start??=time;const progress=Math.min(1,(time-start)/320),ease=1-(1-progress)**3;if(bar)bar.scrollLeft=scrollFrom+(scrollTo-scrollFrom)*ease;paint(nav,from+(to-from)*ease,old.width+(end.width-old.width)*ease);if(progress<1)frame=win.requestAnimationFrame(tick);else{frame=0;followNav=null;}};
   frame=win.requestAnimationFrame(tick);
  }
  root.addEventListener('click',e=>{const button=e.target.closest(selector),nav=button?.closest('.segmented-control');if(!nav)return;if(suppressClick){suppressClick=false;e.preventDefault();e.stopPropagation();return;}select(nav,value(button),nav.querySelector('.segment-selection').getBoundingClientRect());});
@@ -79,11 +70,11 @@ export function segmentedMount(root,{attribute,change}){
   edgeSpeed+=(side*.55*depth*depth-edgeSpeed)*(1-Math.exp(-dt/70));
   const before=bar.scrollLeft,next=Math.max(0,Math.min(max,before+edgeSpeed*dt));
   if(Math.abs(next-before)<.001)return stopEdge();
-  bar.scrollLeft=next;paintDrag(d);edgeFrame=win.requestAnimationFrame(edgeFollow);
+  bar.scrollLeft=next;paintDrag(d);uiWind(d.nav,(next-before)/Math.max(1,d.pill.getBoundingClientRect().width),d.event);edgeFrame=win.requestAnimationFrame(edgeFollow);
  }
  function followEdge(){if(!edgeFrame)edgeFrame=win.requestAnimationFrame(edgeFollow);}
  function begin(e,point,id,touch=false){
-  const nav=e.target.closest('.segmented-control');if(!nav||!buttons(nav).length)return;stopEdge();suppressClick=false;
+  const nav=e.target.closest('.segmented-control')||e.target.closest('.tab-bar')?.querySelector('.segmented-control');if(!nav||!buttons(nav).length)return;stopEdge();if(followNav){stopSettle();position(nav);}suppressClick=false;
   const pill=nav.querySelector('.segment-selection'),rect=pill.getBoundingClientRect(),bar=nav.parentElement;
   const onPill=point.clientX>=rect.left&&point.clientX<=rect.right&&point.clientY>=rect.top&&point.clientY<=rect.bottom;
   const pan=!onPill&&nav.classList?.contains('segment-scrollable')&&bar.scrollWidth>bar.clientWidth+1;
@@ -91,7 +82,7 @@ export function segmentedMount(root,{attribute,change}){
   // gestures remain native even when their path later crosses that pill.
   if(!onPill&&(touch||!pan)){drag=null;return;}
   stopSettle();
-  drag={id,touch,x:point.clientX,y:point.clientY,pointerX:point.clientX,nav,pill,moved:false,start:rect.left,pan,scroll:bar?.scrollLeft};
+  drag={id,touch,event:e,x:point.clientX,y:point.clientY,pointerX:point.clientX,nav,pill,moved:false,start:rect.left,pan,scroll:bar?.scrollLeft};
  }
  function move(e,point,id){
   if(drag?.id!==id)return;const dx=point.clientX-drag.x,dy=point.clientY-drag.y;
@@ -114,14 +105,19 @@ export function segmentedMount(root,{attribute,change}){
  root.addEventListener('touchstart',e=>{if(e.touches.length===1){const p=e.touches[0];begin(e,p,p.identifier,true);}else if(drag)finish(e,drag.id,false);},{passive:false});
  root.addEventListener('touchmove',e=>{if(!drag?.touch)return;if(e.touches.length!==1){finish(e,drag.id,false);return;}const p=e.touches[0];move(e,p,p.identifier);},{passive:false});
  for(const name of ['touchend','touchcancel'])root.addEventListener(name,e=>{if(!drag?.touch)return;const p=[...e.changedTouches].find(p=>p.identifier===drag.id);if(p)finish(e,p.identifier,name==='touchend');},{passive:false});
- const refresh=(revealSelection=false)=>{for(const nav of root.querySelectorAll('.segmented-control')){if(!nav.getClientRects().length||followNav===nav||drag?.nav===nav)continue;if(revealSelection===true||!positioned.has(nav))reveal(nav,buttons(nav).find(button=>value(button)===nav.dataset.current));positioned.add(nav);position(nav);contrast(nav);}};
- root.addEventListener('focusin',e=>{const button=e.target.closest(selector),nav=button?.closest('.segmented-control');if(nav&&!drag&&doc.body?.dataset?.inputModality!=='pointer')reveal(nav,button);});
+ const refresh=(revealSelection=false)=>{for(const nav of root.querySelectorAll('.segmented-control')){if(!buttons(nav).length||!nav.getClientRects().length||followNav===nav||drag?.nav===nav)continue;if(revealSelection===true||!positioned.has(nav))reveal(nav,buttons(nav).find(button=>value(button)===nav.dataset.current));positioned.add(nav);position(nav);contrast(nav);}};
+ root.addEventListener('focusin',e=>{const button=e.target.closest(selector),nav=button?.closest('.segmented-control');if(nav){if(!drag&&doc.body?.dataset?.inputModality!=='pointer')reveal(nav,button);contrast(nav);}});
  const cancelDrag=()=>{stopEdge();stopSettle();drag=null;refresh();};
  doc.addEventListener?.('visibilitychange',()=>{if(doc.hidden)cancelDrag();});win.addEventListener('blur',cancelDrag);
  root.addEventListener('close',cancelDrag);
+ root.addEventListener('wheel',()=>{if(followNav){const nav=followNav;stopSettle();position(nav);}},{passive:true});
+ root.addEventListener('focusout',()=>queueMicrotask(()=>{for(const nav of root.querySelectorAll('.segmented-control'))if(buttons(nav).length&&nav.getClientRects().length)contrast(nav);}));
  new win.MutationObserver(refresh).observe(root,{attributes:true,attributeFilter:['open']});
  new win.MutationObserver(()=>refresh(true)).observe(doc.body,{attributes:true,attributeFilter:['data-left-handed']});
+ rememberView(root,attribute,()=>[...root.querySelectorAll('.segmented-control')].filter(nav=>nav.querySelector(selector)).map(nav=>({label:nav.getAttribute('aria-label'),value:nav.dataset.current})),items=>{for(const item of Array.isArray(items)?items:[]){let nav=[...root.querySelectorAll('.segmented-control')].find(nav=>nav.getAttribute('aria-label')===item.label);const button=nav&&buttons(nav).find(button=>value(button)===item.value);if(!button||item.value===nav.dataset.current)continue;nav=change(item.value)||nav;nav.dataset.current=item.value;for(const b of buttons(nav))b.setAttribute('aria-pressed',String(value(b)===item.value));}refresh();},attribute==='data-rarity-filter'?10:0);
  win.addEventListener('resize',()=>refresh(true));return {refresh};
 }
 
 export function segmentOverlap(rect,pill){return {left:Math.max(0,Math.min(rect.width,pill.left-rect.left)),right:Math.max(0,Math.min(rect.width,pill.right-rect.left))};}
+
+export function segmentCenter(bar,button){const r=bar.getBoundingClientRect();return Math.max(0,Math.min(Math.max(0,bar.scrollWidth-bar.clientWidth),bar.scrollLeft+button.left+button.width/2-r.left-bar.clientWidth/2));}

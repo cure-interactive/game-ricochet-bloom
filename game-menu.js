@@ -1,9 +1,9 @@
 import {menuSummaryRender} from './menu-summary.js?v=ae45281d84da1bab2004670a7e08413c46eec38f2c344291b3c7b345710e5910';
 import {cosmeticLoadout} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
-import { menuLayoutMount } from './menu-title.js?v=e7c4f96a5e747a40baed58d737cf4cd12a942c8a2cf7dfa8922d9389dfee08b0';
-import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
+import { menuLayoutMount } from './menu-title.js?v=2687f729186e15e3b642d1d358bcd52357e105d6c8a6c739b2b13965bd5748bd';
+import { pageHistory } from './page-history.js?v=54c1c0aaacb43da66e5503f9ea5ea7948dfd1efd2ededbc6b416434a1792e935';
 import { buttonHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
-import { menuBackgroundMount } from './menu-background.js?v=3c33e223d6f6b5765f55472cfa84104b5bf6ff3062893c5e44146c01f8474182';
+import { menuBackgroundMount } from './menu-background.js?v=c191f55edd418a6b97ffccb2521177de75af794769e00f3301134e84ead3191e';
 
 import { driftMount } from './drift-ui.js?v=432e96f5f34281ca19da9e8cfbdbaf776171ffd4a8790f2aa3e58dd492889500';
 
@@ -39,6 +39,16 @@ export function gameMenuMount(host) {
   function homeOpen(){close();casual=false;route.reset('home');present('home');home.querySelector(host.info().resume?'#home-continue':'#home-gamemodes').focus({preventScroll:true});}
   function pauseOpen(){close();const name=casual?'drift-pause':'pause';present(name);host.open(name);}
   function resume(){if(casual){close();present('drift');}else host.resume();}
+  function restore(pages,play){
+    const allowed=name=>['home','play','pause','drift','drift-pause','gamemodes','score-setup','trial-setup','experiment-family','experiment-detail','experiment-hub','levels','player','stats','trails','bounce-effects','music-themes','tree','skins','player-upgrades','wiki','help','settings'].includes(name)||/^gamemodes:/.test(name)||/^pool-setup:(free|waves|challenge)$/.test(name);
+    const path=pages.filter(allowed);if(!path.length)return;
+    let target=path.at(-1);close();
+    if(path.includes('play')||path.includes('pause')){if(host.restorePlay){if(host.restorePlay(play)===false){homeOpen();return;}}else host.continue();pauseOpen();}
+    if(target==='play')target='pause';
+    if(target==='drift'||target==='drift-pause'){casual=true;target='drift-pause';}
+    if(target==='home')homeOpen();else{present(target);host.open(target);}
+    route.restore([...path.slice(0,-1),route.current]);
+  }
   function back(){const target=route.back();if(target===null)return;close();if(target==='play')host.resume();else if(target==='home')homeOpen();else {present(target);host.open(target);}}
   home.querySelector('#home-continue').onclick=()=>host.continue();
   home.querySelector('#home-gamemodes').onclick=()=>host.open('gamemodes');
@@ -55,5 +65,5 @@ export function gameMenuMount(host) {
     queueMicrotask(recoverDestination);
   },true);
   refresh();present('home');
-  return {refresh,home:homeOpen,back,show:present,get musicAudio(){return background.audio;},drift(){close();casual=true;present('drift');},pause:pauseOpen,resume,play(){close();casual=false;route.reset('play');present('play');},get current(){return route.current;}};
+  return {restore,get playIdentity(){return host.playIdentity?.();},get snapshot(){return route.snapshot;},refresh,home:homeOpen,back,show:present,get musicAudio(){return background.audio;},drift(){close();casual=true;present('drift');},pause:pauseOpen,resume,play(){close();casual=false;route.reset('play');present('play');},get current(){return route.current;}};
 }

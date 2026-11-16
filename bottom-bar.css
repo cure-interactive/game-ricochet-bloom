@@ -45,15 +45,15 @@ body > main > .hud { pointer-events: auto; grid-column: 1; grid-row: 2; display:
 .hud-balance .run-score .label, .hud .label { font-size: 10px; line-height: 12px; }
 .hud .pluck, body[data-left-handed=true] .hud .pluck { padding: 0; display: flex; flex-direction: column; justify-content: center; gap: 3px; }
 .hud .pluck strong { font-size: 17px; }
-.pool-shell > #pause { position: absolute; z-index: 4; top: 8px; right: 8px; left: auto; width: 44px; height: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 0; padding: 0; border: 1px solid #7b9faf66; border-radius: 14px; background: #122837d9; color: #d9f3ed; }
+.pool-shell > #pause { position: absolute; z-index: 4; top: auto; bottom: 8px; right: 8px; left: auto; width: 44px; height: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 0; padding: 0; border: 1px solid #7b9faf66; border-radius: 14px; background: #122837d9; color: #d9f3ed; }
 body[data-left-handed=true] .pool-shell > #pause { left: 8px; right: auto; }
-.pool-shell > .goal-strip { position: absolute; z-index: 2; top: 10px; left: 10px; right: 62px; width: fit-content; max-width: calc(100% - 76px); min-height: 22px; margin: 0; padding: 4px 8px; border-radius: 10px; background: #0d202ad9; font-size: 10px; line-height: 1.35; pointer-events: none; }
+.pool-shell > .goal-strip { position: absolute; z-index: 2; top: 10px; left: 50%; right: auto; transform: translateX(-50%); width: max-content; max-width: calc(100% - 20px); text-align: center; justify-content: center; min-height: 22px; margin: 0; padding: 4px 8px; border-radius: 10px; background: #0d202ad9; font-size: 10px; line-height: 1.35; pointer-events: none; }
 .pool-shell > .goal-strip button { pointer-events: auto; }
-body[data-left-handed=true] .pool-shell > .goal-strip { left: 62px; right: 10px; }
+
 .goal-strip progress { width: 32px; }
-.pool-shell > .edge-feedback { position: absolute; z-index: 3; left: 12px; right: 12px; bottom: 10px; min-height: 0; height: 30px; pointer-events: none; }
+.pool-shell > .edge-feedback { position: absolute; z-index: 3; left: 12px; right: 64px; bottom: 10px; min-height: 0; height: 30px; text-align: left; pointer-events: none; }
 .edge-feedback #edge-idle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.edge-feedback .toast { border-radius: 12px; background: #0c2028e8; padding: 4px 8px; font-size: 11px; }
+.pool-shell > .edge-feedback .toast { justify-items: start; text-align: left; border-radius: 12px; background: #0c2028e8; padding: 4px 8px; font-size: 11px; }
 .hud-actions { grid-row: 3; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1.1fr); align-items: stretch; gap: 6px; min-height: 52px; padding: 4px 8px; }
 .hud-actions .hud-label, .hud-actions .power-dock > button .button-label { display: block; color: #adc3cf; font-size: 10px; line-height: 12px; letter-spacing: .4px; text-transform: uppercase; }
 .hud-actions .power-dock { grid-area: 1 / 1; width: auto; min-height: 44px; display: flex; justify-content: center; align-items: flex-end; padding: 15px 0 2px; }
@@ -146,3 +146,6 @@ body[data-development=true]:not([data-screen=drift]):not([data-screen=drift-paus
 #note-meter { position:relative; }
 #note-meter[data-count]:not([data-count=""]) i { visibility:hidden; }
 #note-meter[data-count]:not([data-count=""])::after { content:attr(data-count); position:absolute; inset:0; display:grid; place-items:center; color:var(--mint); font-size:16px; font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:0; }
+
+body[data-left-handed=true] .pool-shell > .edge-feedback { left: 64px; right: 12px; text-align: right; }
+body[data-left-handed=true] .pool-shell > .edge-feedback .toast { justify-items: end; text-align: right; }

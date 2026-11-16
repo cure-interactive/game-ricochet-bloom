@@ -6,7 +6,7 @@ export function audioEnvironment(context,output){
  const input=context.createGain(),low=context.createBiquadFilter(),high=context.createBiquadFilter(),dry=context.createGain();
  low.type='lowpass';low.frequency.value=2200;low.Q.value=.5;high.type='highpass';high.frequency.value=70;
  input.connect(low);low.connect(high);high.connect(dry);dry.connect(output);
- let stage=null,room=null,bed=null,bedId=null;const cache=new Map(),retired=[];
+ let stage=null,room=null,bed=null,bedId=null;const cache=new Map(),retired=[],beds=new Set();
  const disconnectRoom=old=>{high.disconnect(old.reverb);old.reverb.disconnect();old.wet.disconnect();};
  function stageSet(id){
   for(let i=retired.length-1;i>=0;i--)if(context.currentTime>=retired[i].until){disconnectRoom(retired[i]);retired.splice(i,1);}
@@ -39,9 +39,9 @@ export function audioEnvironment(context,output){
   source.buffer=buffer;source.loop=true;source.connect(gain);gain.connect(output);
   const now=context.currentTime;gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(.1,now+.6);
   if(Number.isFinite(duration)){gain.gain.setValueAtTime(.1,now+Math.max(.6,duration-1));gain.gain.linearRampToValueAtTime(0,now+duration);}
-  const current={source,gain};bed=current;source.onended=()=>{source.disconnect();gain.disconnect();if(bed===current){bed=null;bedId=null;}};source.start(now);if(Number.isFinite(duration))source.stop(now+duration+.05);
+  const current={source,gain};bed=current;beds.add(current);source.onended=()=>{source.disconnect();gain.disconnect();beds.delete(current);if(bed===current){bed=null;bedId=null;}};source.start(now);if(Number.isFinite(duration))source.stop(now+duration+.05);
  }
- return {input,stageSet,ambienceSet,get stage(){return stage;},get ambience(){return bedId;},dispose(){bedStop();input.disconnect();low.disconnect();high.disconnect();dry.disconnect();room?.reverb.disconnect();room?.wet.disconnect();for(const old of retired){old.reverb.disconnect();old.wet.disconnect();}retired.length=0;cache.clear();}};
+ return {input,stageSet,ambienceSet,get stage(){return stage;},get ambience(){return bedId;},dispose(){for(const old of beds){try{old.source.stop();}catch{}old.source.disconnect();old.gain.disconnect();}beds.clear();bed=null;bedId=null;input.disconnect();low.disconnect();high.disconnect();dry.disconnect();room?.reverb.disconnect();room?.wet.disconnect();for(const old of retired){old.reverb.disconnect();old.wet.disconnect();}retired.length=0;cache.clear();}};
 }
 
 // Long, seamless atmospheres. Recent buffers are shared across live playback

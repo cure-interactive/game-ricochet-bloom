@@ -1,4 +1,5 @@
-import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=4f83bafeaccdc7fcd29ea941ab14f933f984eee0f53a4f3e8336fbb87c3aa2ec';
+import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
+import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=33b57334bfe5dae634acc06ed1abe98c3743f3c9cde0054ea3922d70e945f145';
 import {cosmeticPriceHTML} from './cosmetic-price.js?v=a87813cd95ebe513b3e4c54a07af3848d82ebd3d5045c4fe337e594f69e20bb8';
 import {COSMETICS,cosmeticOrder,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
 import {rarityIconHTML} from './skill-icon.js?v=323da47ec6044e57d9571db79d2e73cc83e5d962daf53f03192092c7de37fdc8';
@@ -67,5 +68,6 @@ export function skinMount(controller){
     status.textContent=result.ok?`${optionsName(selected)} equipped.`:result.reason;
     const toggle=dialog.querySelector('#skin-use');(toggle.disabled?back:toggle).focus({preventScroll:true});
   });
+  rememberView(dialog,'detail',()=>({selected,libraryScroll}),state=>{if(state?.selected&&(skins.some(x=>x.id===state.selected)||COSMETICS.some(x=>x.kind==='skin'&&x.id===state.selected))){selected=state.selected;libraryScroll=Number.isFinite(state.libraryScroll)?state.libraryScroll:0;render();}},20);
   return {refresh(){if(dialog.open)render();},open(){selected=null;libraryScroll=0;controller.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());render();status.textContent='';dialog.showModal();scroll.scrollTop=0;back.focus({preventScroll:true});}};
 }

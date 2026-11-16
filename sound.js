@@ -1,4 +1,4 @@
-import {audioEnvironment} from './audio-environment.js?v=0dc0b66a5b5a03a77e83bf958a1f5c59ed6c44467e284f45830b917578f8edad';
+import {audioEnvironment} from './audio-environment.js?v=f158172737f95504630ba2e293108977c102cc42ae0fd8f4025bb94984a39cdb';
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=a60e71fef74fdec8b7dd85332250a173932596a5d4a6680ea91c217b73baf01b';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=c0db179bcb018380a8604c761694e0021f5b46aae7b41ff0986bf44e98136bce';
 import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
@@ -13,7 +13,7 @@ export const SOUND_CHECK_SECONDS = 2.8;
 // Wrapping phase changes voice indices, never the audible spectrum.
 export function uiWindTones(phase){
  const fraction=((phase%1)+1)%1;
- return Array.from({length:5},(_,i)=>{const octave=i+fraction;return {pitch:110*2**octave,level:Math.sin(Math.PI*octave/5)**2};});
+ return Array.from({length:4},(_,i)=>{const octave=i+fraction;return {pitch:70*2**octave,level:Math.sin(Math.PI*octave/4)**2};});
 }
 export class PoolSound {
   constructor({media=true}={}) { this.media = media?new PoolMedia():null; this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
@@ -23,12 +23,12 @@ export class PoolSound {
   musicSave() { return musicCreate(this.music, this.bloomCount); }
   musicRestore(saved, blooms, plucks = null) { this.phraseClear(); this.music = musicCreate(saved, blooms, plucks); this.activeChord = null; this.passage = 0; this.previousPitch = 67; this.stage = 0; this.section = 'Quiet pool'; }
   async unlockAsync() {
-    if (this.isMuted) return false;
+    if (this.isMuted||this.outputHeld||globalThis.document?.hidden) return false;
     // Music playback uses the media route on supporting iOS versions, including
     // when the ringer is silent. The optional API must never block other browsers.
     try { if (globalThis.navigator?.audioSession) globalThis.navigator.audioSession.type = 'playback'; } catch { /* Unsupported session policy: retain ordinary Web Audio. */ }
     if(this.refreshOutput||this.context?.state==='closed'||this.resumeTimedOut||this.clockStalled())this.graphReset();
-    this.context ||= new (window.AudioContext || window.webkitAudioContext)({latencyHint:'interactive'});
+    if(!this.context){this.context=new (window.AudioContext || window.webkitAudioContext)({latencyHint:'interactive'});this.outputGeneration=(this.outputGeneration||0)+1;}
     const audioContext = this.context;
     // Call resume and start a source synchronously inside the tap handler. Safari
     // also reports "interrupted" after app switches, calls, or screen locking.
@@ -66,14 +66,28 @@ export class PoolSound {
     return wall-previous.wall>1800;
   }
   outputRefresh(){if(this.context)this.refreshOutput=true;}
+  outputHold(){
+    if(this.outputHeld)return;
+    this.outputHeld=true;this.outputHiddenAt=performance.now();this.graphReset();
+  }
+  outputRelease(){this.outputHeld=false;this.outputVisibleAt=performance.now();}
+  get outputDiagnostics(){
+    const context=this.context,round=value=>Number.isFinite(value)?Math.round(value*1000)/1000:null;
+    let stamp;try{stamp=context?.getOutputTimestamp?.();}catch{}
+    return {generation:this.outputGeneration||0,held:!!this.outputHeld,state:context?.state||'none',contextTime:round(context?.currentTime),baseLatency:round(context?.baseLatency),outputLatency:round(context?.outputLatency),outputTimestamp:stamp?{contextTime:round(stamp.contextTime),performanceTime:round(stamp.performanceTime)}:null,closePending:this.outputClosing||0,lastCloseMs:round(this.outputCloseMs),hiddenAt:round(this.outputHiddenAt),visibleAt:round(this.outputVisibleAt)};
+  }
   graphReset(){
     this.refreshOutput=false;
+    const retired=this.context,closedAt=performance.now();
+    // Disconnect before any fade or close promise. A frozen audio clock must
+    // not retain a future fade, delay tail or looping ambience through return.
+    if(this.master){this.master.gain.cancelScheduledValues(0);this.master.gain.setValueAtTime(0,retired.currentTime);this.master.disconnect();}
     const mediaKey=this.media?.key,mediaEnv=this.media?.env;
     this.cosmeticPreviewStop();this.musicEnvironment?.dispose();this.musicEnvironment=null;voicesStop(this);this.phraseClear();this.media?.dispose();
     if(this.media){this.media=new PoolMedia(mediaEnv);if(mediaKey)this.media.describe(mediaKey);}
-    try{void this.context?.close?.().catch(()=>{});}catch{}
     this.context=null;this.master=null;this.musicInput=null;this.musicOutput=null;this.musicDuck=null;this.previewEnvelope=null;this.delay=null;
-    this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};this.travelState=null;
+    this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.strengthAt=-Infinity;this.duckUntil=0;this.previewStarted=0;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};this.travelState=null;
+    if(retired?.close){this.outputClosing=(this.outputClosing||0)+1;try{Promise.resolve(retired.close()).catch(()=>{}).finally(()=>{this.outputClosing--;this.outputCloseMs=performance.now()-closedAt;});}catch{this.outputClosing--;}}
   }
   harmonySet(blooms) {
     const count = Number.isSafeInteger(blooms) && blooms > 0 ? blooms : 0;
@@ -95,7 +109,7 @@ export class PoolSound {
   ambienceSet(value) { this.ambience = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 1; if (!this.ambience){this.phraseClear();this.cosmeticPreviewStop();} this.mixUpdate(); }
   mixUpdate() {
     this.media?.update(!!this.context && this.context.state === 'running' && this.isMusicPlaying && !this.isMuted && !this.isMusicPaused && this.volume > 0 && this.ambience > 0);
-    if (!this.musicOutput) return;
+    if (!this.musicOutput||this.outputHeld) return;
     const now = this.context.currentTime,loadout=typeof this.musicLoadout==='function'?this.musicLoadout():this.musicLoadout||{};
     if(this.previewSelection&&now>=this.previewUntil)this.previewSelection=null;
     this.musicEnvironment?.stageSet(this.previewSelection?.kind==='soundstage'?this.previewSelection.id:loadout.soundstage);
@@ -141,12 +155,12 @@ export class PoolSound {
   pauseSet(value,{ambient=false}={}) { this.isPaused=value; this.keepAmbient=value&&ambient; if(value){this.cosmeticStop();if(!ambient)this.phraseClear();} this.mixUpdate(); }
   notePitch(tone) { return this.harmony ? frequency(this.harmony.notes[tone % 5]) : SCALE[tone % 5]; }
   settingsSet(volume, isMuted) { this.volume = volume; this.isMuted = isMuted; if (isMuted) this.phraseClear(); if(isMuted||!volume)this.cosmeticStop(); if (this.master) this.master.gain.setTargetAtTime(isMuted ? 0 : volume * .48, this.context.currentTime, .03); this.mixUpdate(); }
-  tone(frequency, end, duration, level, pan = 0, offset = 0, type = 'sine', echo = false, phrase = false, { allowPaused = false,group,fadeOut=duration } = {}) {
+  tone(frequency, end, duration, level, pan = 0, offset = 0, type = 'sine', echo = false, phrase = false, { allowPaused = false,group,fadeOut=duration,attack=.008 } = {}) {
     voicesReap(this);
     if (!this.context || this.context.state !== 'running' || this.isMuted || (this.isPaused && !allowPaused && !(phrase&&this.keepAmbient)) || this.voiceCount >= (group==='audition'?55:46)) return;
     const context = this.context, start = context.currentTime + offset, oscillator = context.createOscillator(), gain = context.createGain(), stereo = context.createStereoPanner();
     oscillator.type = type; oscillator.frequency.setValueAtTime(frequency, start); oscillator.frequency.exponentialRampToValueAtTime(Math.max(20, end), start + duration);
-    gain.gain.setValueAtTime(.0001, start); gain.gain.exponentialRampToValueAtTime(Math.max(.001, level), start + .008); if(fadeOut<duration)gain.gain.setValueAtTime(Math.max(.001,level),start+duration-fadeOut); gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
+    gain.gain.setValueAtTime(.0001, start); gain.gain.exponentialRampToValueAtTime(Math.max(.001, level), start + Math.min(attack,duration*.5)); if(fadeOut<duration)gain.gain.setValueAtTime(Math.max(.001,level),start+duration-fadeOut); gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
     stereo.pan.value = Math.max(-.85, Math.min(.85, pan)); oscillator.connect(gain); gain.connect(stereo); stereo.connect(this.master); if (echo) stereo.connect(this.delay);
     const voice = { oscillator, gain, start,group }; if (phrase) this.phraseVoices.add(voice);
     voiceTrack(this,voice,start+duration+.02,[oscillator,gain,stereo]);
@@ -230,11 +244,11 @@ export class PoolSound {
     const now=this.context.currentTime;
     const wind=kind?.type==='wind'&&Number.isFinite(kind.delta);
     if(wind)this.uiWindPhase=((this.uiWindPhase||0)+Math.max(-.25,Math.min(.25,kind.delta))*2)%1;
-    if(kind!=='back-complete'&&now-(this.uiLastAt??-Infinity)<.06)return false;
+    if(kind!=='back-complete'&&now-(this.uiLastAt??-Infinity)<(wind?.14:.06))return false;
     this.uiLastAt=now;
     const back=kind==='back'||kind==='back-complete';
     const pitch=kind==='back-start'?300:back?440:kind==='confirm'?660:560;
-    if(wind){for(const {pitch,level} of uiWindTones(this.uiWindPhase))if(level>.001)this.tone(pitch,pitch,.055,.035*level,0,0,'sine',false,false,{allowPaused:true});}
+    if(wind){for(const {pitch,level} of uiWindTones(this.uiWindPhase))if(level>.001)this.tone(pitch,pitch,.035,.035*level,0,0,'sine',false,false,{allowPaused:true,attack:.002});}
     else this.tone(pitch,back?330:pitch*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true});
     if(kind==='confirm')this.tone(880,880,.09,.055,0,.055,'sine',false,false,{allowPaused:true});
     this.uiCount=(this.uiCount||0)+1;

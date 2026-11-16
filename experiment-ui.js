@@ -1,4 +1,5 @@
-import {gamemodeNavigation} from './gamemode-navigation.js?v=675c9e3af73da331df62ad725b4dcfb0dbbed33aeb39c1b663dec4ba010760cc';
+import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=a0bcf4795ea578a5a6361ccb5162fef8b8be587fa30133ae9e2fe06d63a9d33a';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { experimentMedal } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
 import { medalConditionsHTML } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';
@@ -7,7 +8,7 @@ import { melodyStages } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e1
 import { EXPERIMENT_MODES, DIFFICULTIES, experimentMode } from './experiment-mode.js?v=8691672ebafa0ee909e0adfbe1058bb7a29634ac3aef011c8c8a34ad0b9eb1bf';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { EXPERIMENT_CATALOGUE, EXPERIMENT_FAMILIES } from './experiment-catalogue.js?v=46fd868b7899d3825edca249ee222d0822e27a53f260e03d7069491bca53ea1e';
-import { EXPERIMENT_RECIPES, EXPERIMENT_DESTINATIONS, EXPERIMENT_PRESETS, EXPERIMENT_VERDICTS, experimentSetup, experimentKey, experimentOptions, experimentGoal, experimentRewarded } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
+import { EXPERIMENT_RECIPES, EXPERIMENT_DESTINATIONS, EXPERIMENT_PRESETS, EXPERIMENT_VERDICTS, experimentSetup, experimentValidate, experimentKey, experimentOptions, experimentGoal, experimentRewarded } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
 import { experimentRead, experimentFavourite, experimentWrite, experimentBest, experimentExport, experimentImport, experimentLegacy, experimentStoreKey, experimentEmpty } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
 import { TRIAL_MODES, trialCreate } from './trial.js?v=ee88fa6819c43397fd16a782519a3e055707b4f141bd667e1be4ec2db2f3209a';
 const label=s=>s.replaceAll('-',' ').replace(/\b\w/g,c=>c.toUpperCase());
@@ -42,7 +43,7 @@ export function experimentMount(host){
   function hub(){
     const l=library(),playable=Object.keys(EXPERIMENT_RECIPES).length;cardReviews=l.reviews;
     page('Saved Runs & Notes','experiment-hub',`<p class="experiment-lead">Continue a saved gamemode, revisit favourites, or keep your playtest notes here.</p><div class="experiment-toolbar"><button id="experiment-play" aria-pressed="${view==='play'}">Saved Runs</button><button id="experiment-catalogue" aria-pressed="${view==='catalogue'}">Find Notes</button><span>${playable} playable prototypes · 210 ideas · ${label(host.kind())} Profile</span></div><div id="experiment-main"></div>`);
-    content.insertAdjacentHTML('afterbegin',gamemodeNavigation('saved'));
+    content.insertAdjacentHTML('afterbegin',gamemodeNavigation('saved',library().favourites.length>0));
     $('experiment-play').onclick=()=>{view='play';hub();};$('experiment-catalogue').onclick=()=>{view='catalogue';hub();};
     const main=$('experiment-main');
     if(view==='play'){
@@ -107,5 +108,6 @@ export function experimentMount(host){
     favourite(id);review(id);
     const runs=l.results.filter(v=>experimentKey(v.setup)===experimentKey(draft)).slice(-10).reverse();if(runs.length){const list=document.createElement('div');list.innerHTML='<h3 class="section-title"><span class="ui-icon" data-icon="stats" aria-hidden="true"></span><span>Recent Results for This Setup</span></h3><ul>'+runs.map(v=>`<li>${new Date(v.at).toLocaleString()} · ${label(v.outcome)} · ${v.shots} shots${v.reason?' · '+escape(v.reason):''}</li>`).join('')+'</ul>';content.append(list);}
   }
+  rememberView(content,'experiment',()=>{const screen=document.body.dataset.screen;return ['trial-setup','experiment-detail','experiment-family','experiment-hub'].includes(screen)?{screen,view,family,selected,draft}:undefined;},state=>{if(!state)return;view=['play','catalogue'].includes(state.view)?state.view:'play';if(entries.some(e=>e.id===state.selected))selected=state.selected;draft=experimentValidate(state.draft);if(state.screen==='trial-setup')setup(selected);else if(state.screen==='experiment-detail')detail(selected);else if(state.screen==='experiment-family')familyPage(state.family);else if(state.screen==='experiment-hub')hub();},-10);
   return {hub,family:familyPage,setup,detail,select(value){selected=value.experimentId;draft=structuredClone(value);}};
 }
