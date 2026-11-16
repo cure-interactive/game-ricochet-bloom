@@ -1,7 +1,7 @@
-import { iconHTML, staticIconHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
+import { iconHTML, staticIconHTML } from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
 import { CATALOGUE } from './catalogue.js?v=c1d42ecf5ab5eb7f0a369fdccd0d8696079d69ac29f9676f4f854e39de9671ac';
 import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=323da47ec6044e57d9571db79d2e73cc83e5d962daf53f03192092c7de37fdc8';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=dd2d97f9a3b98c5f4419448e85a329e2836b1fc7c1c1705f941979676502ffc1';
 import { medalIcon } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';
 
 // Only known topics and catalogue identities produce decoration. Markdown never

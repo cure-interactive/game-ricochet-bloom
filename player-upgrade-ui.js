@@ -1,13 +1,13 @@
 import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
 import {treeViewMount} from './tree-view.js?v=9911356cb12ea2fe7d5d66804eff580c4fc34212423f288b453ecd52a4b54f09';
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=69a8d08e49c0a9fb0c4f6f8a2e2f9044307a0f8d93b64a2722ac531d71bd5a2c';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=d91171ea80b72ed4649072bd2f1fe316190493aba55201b79df70cd6da29fa26';
 import {playerSkillStats} from './player-skill-comparison.js?v=75decfaf5d896b3fa9b10253c26385c4360916c8de20e0a52f71bc51d9fde36b';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {playerTreeGraph} from './player-tree.js?v=b15b2a9ffb2bafb64fb904e9c81ab2a03024cc1e947689b503659df569e5746a';
 import {mapCameraMount,nearestMapNode} from './tree-map.js?v=036d0d778228999f61ece74251473ecb2f0e6eda12f39d560a593090f6f89568';
-import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=e215d115959f942114ee53c17bcd88d0d7c6c9d5af101b3f21b2adc10e0097b7';
-import {screenHeader} from './screen-header.js?v=abdd601bfd00682c8e2df56bb78bf52f54d173e7c455d7ae92bba16d48c17860';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
+import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=39711eec504429e516c1f48ee1df435f2cc0e91b6d567347c3a7f86d1f44a957';
+import {screenHeader} from './screen-header.js?v=7db753fa19626839b08a41fd5d2583821cbc0774ad262a06dd328bb3f050c988';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
 
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 const rules='Every purchased upgrade stacks permanently. Open pools apply purchases between shots; Melody Journey applies them from the next pool. Score Attack fixes them at the start of a run. Fixed trials and shared challenges keep their authored rules.';

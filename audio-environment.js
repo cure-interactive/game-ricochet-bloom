@@ -1,4 +1,4 @@
-import {soundstageGet,ambienceGet} from './music-environment.js?v=5b1988e50253a514f7dd89a12a36a17f8292a9118e212e49e82b91dee76f069a';
+import {soundstageGet,ambienceGet} from './music-environment.js?v=09dcc5aa06da815b08ac721d6fe505e7c6abd27d237928af2e681a09764eb1a4';
 
 // One music-only acoustic graph, shared by playback, auditions and WAV export.
 // No feedback loop: all reverberation has a finite, bounded impulse response.
@@ -67,7 +67,7 @@ export function ambienceBuffer(context,style){
   }
   // Sparse, varied phrases with smooth attacks and releases, never a rapid
   // periodic gate. Every phrase finishes before the shared loop seam.
-  if(style==='forest'||style==='hearth'){
+  if(style==='hearth'){
    for(let at=.7+random();at<seconds-2;at+=1.5+random()*3.5){
     const duration=style==='forest'?.22+random()*.5:.18+random()*.6;
     const count=Math.round(duration*rate),offset=Math.round(at*rate),pitch=1200+random()*900,sweep=(random()-.5)*400,level=.07+random()*.1;
@@ -75,6 +75,28 @@ export function ambienceBuffer(context,style){
      const t=j/rate,envelope=Math.sin(Math.PI*j/count)**2;
      const voice=style==='forest'?Math.sin(tau*(pitch*t+sweep*t*t*.5)):raw[offset+j]*2;
      samples[offset+j]+=voice*envelope*level;
+    }
+   }
+  }
+  if(style==='forest'){
+   // Separate callers make short pulse groups, not sliding sine whistles.
+   // Each caller keeps its own register; soft pulse edges sit above the breeze.
+   for(let caller=0;caller<2;caller++){
+    const pitch=2700+random()*1100,pace=.8+random()*.8;
+    for(let at=.45+random()*1.6;at<seconds-1;at+=pace+.5+random()*2.1){
+     const pulses=3+Math.floor(random()*4),level=.035+random()*.035;
+     let onset=at,phase=random()*tau;
+     for(let pulse=0;pulse<pulses;pulse++){
+      const duration=.022+random()*.014,count=Math.round(duration*rate),offset=Math.round(onset*rate),hz=pitch*(.996+random()*.008);
+      const strength=level*(.75+.25*Math.sin(Math.PI*(pulse+1)/(pulses+1)));
+      for(let j=0;j<count&&offset+j<length;j++){
+       const envelope=Math.sin(Math.PI*j/(count-1))**2;
+       phase+=tau*hz/rate;
+       // A faint rough sideband gives texture without a harsh noise impulse.
+       samples[offset+j]+=(Math.sin(phase)+.12*Math.sin(phase*1.017))*envelope*strength;
+      }
+      onset+=duration+.018+random()*.014;
+     }
     }
    }
   }

@@ -1,8 +1,8 @@
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import {segmentedHTML,segmentedMount} from './segmented-control.js?v=92df2b5cd5c50845eb7c607a06cea29a0ba17fd18808f6c8179ada84eb591f47';
+import {segmentedHTML,segmentedMount} from './segmented-control.js?v=79d9dc2afffdf8e2d0437966daf0e149020526f6318e90ae02353ebe8f882460';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import {rarityIconHTML} from './skill-icon.js?v=323da47ec6044e57d9571db79d2e73cc83e5d962daf53f03192092c7de37fdc8';
-import {staticIconHTML} from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
+import {rarityIconHTML} from './skill-icon.js?v=dd2d97f9a3b98c5f4419448e85a329e2836b1fc7c1c1705f941979676502ffc1';
+import {staticIconHTML} from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
 
 export const rarityPreviewHTML=(rarity,art)=>`<span class="rarity-preview">${art}<span class="rarity-preview-badge" aria-hidden="true">${rarityIconHTML(rarity)}</span></span>`;
 

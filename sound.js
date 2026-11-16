@@ -1,7 +1,7 @@
-import {audioEnvironment} from './audio-environment.js?v=f158172737f95504630ba2e293108977c102cc42ae0fd8f4025bb94984a39cdb';
+import {audioEnvironment} from './audio-environment.js?v=5f951fd5c399f22b78c1cf60e0482d14934549e7a2fbb76fb8d3dc6751900570';
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=a60e71fef74fdec8b7dd85332250a173932596a5d4a6680ea91c217b73baf01b';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=c0db179bcb018380a8604c761694e0021f5b46aae7b41ff0986bf44e98136bce';
-import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
+import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js?v=d31acea21b543a610f696e47d50a254ce52527d06e488d6e72309535656e4d38';
@@ -13,8 +13,10 @@ export const SOUND_CHECK_SECONDS = 2.8;
 // Wrapping phase changes voice indices, never the audible spectrum.
 export function uiWindTones(phase){
  const fraction=((phase%1)+1)%1;
- return Array.from({length:4},(_,i)=>{const octave=i+fraction;return {pitch:70*2**octave,level:Math.sin(Math.PI*octave/4)**2};});
+ return Array.from({length:4},(_,i)=>{const octave=i+fraction;return {pitch:140*2**octave,level:Math.sin(Math.PI*octave/4)**2};});
 }
+// A rounded attack and release avoid broadband spikes in these short taps.
+const windEnvelope=Float32Array.from({length:129},(_,i)=>{const t=i/128;return i===0||i===128?0:t<.16?Math.sin(Math.PI*t/.32)**2:Math.cos(Math.PI*(t-.16)/1.68)**2;});
 export class PoolSound {
   constructor({media=true}={}) { this.media = media?new PoolMedia():null; this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
   get isMusicPaused() { return this.isPaused&&!this.keepAmbient; }
@@ -26,7 +28,7 @@ export class PoolSound {
     if (this.isMuted||this.outputHeld||globalThis.document?.hidden) return false;
     // Music playback uses the media route on supporting iOS versions, including
     // when the ringer is silent. The optional API must never block other browsers.
-    try { if (globalThis.navigator?.audioSession) globalThis.navigator.audioSession.type = 'playback'; } catch { /* Unsupported session policy: retain ordinary Web Audio. */ }
+    try { if (globalThis.navigator?.audioSession&&globalThis.navigator.audioSession.type!=='playback') globalThis.navigator.audioSession.type = 'playback'; } catch { /* Unsupported session policy: retain ordinary Web Audio. */ }
     if(this.refreshOutput||this.context?.state==='closed'||this.resumeTimedOut||this.clockStalled())this.graphReset();
     if(!this.context){this.context=new (window.AudioContext || window.webkitAudioContext)({latencyHint:'interactive'});this.outputGeneration=(this.outputGeneration||0)+1;}
     const audioContext = this.context;
@@ -38,7 +40,11 @@ export class PoolSound {
     primer.connect(audioContext.destination); primer.onended = () => primer.disconnect(); primer.start();
     if (!this.master) {
       const context = this.context; this.master = context.createGain(); this.master.gain.value = this.isMuted ? 0 : this.volume * .48;
-      const compressor = context.createDynamicsCompressor(); compressor.threshold.value = -18; compressor.ratio.value = 5; this.master.connect(compressor); compressor.connect(context.destination);
+      const compressor = context.createDynamicsCompressor(); compressor.threshold.value = -18; compressor.ratio.value = 5; this.master.connect(compressor);
+      // Gate after the compressor: its lookahead buffer must not survive an
+      // output retirement. New output enters gently after route activation.
+      this.outputGate=context.createGain();this.outputGate.gain.setValueAtTime(0,context.currentTime);this.outputGate.gain.linearRampToValueAtTime(1,context.currentTime+.06);
+      compressor.connect(this.outputGate);this.outputGate.connect(context.destination);this.compressor=compressor;
       this.delay = context.createDelay(.6); this.delay.delayTime.value = .21;
       const feedback = context.createGain(); feedback.gain.value = .19; const wet = context.createGain(); wet.gain.value = .24;
       this.delay.connect(feedback); feedback.connect(this.delay); this.delay.connect(wet); wet.connect(this.master);
@@ -79,14 +85,15 @@ export class PoolSound {
   graphReset(){
     this.refreshOutput=false;
     const retired=this.context,closedAt=performance.now();
+    if(this.outputGate){this.outputGate.gain.cancelScheduledValues(0);this.outputGate.gain.setValueAtTime(0,retired.currentTime);this.outputGate.disconnect();this.compressor?.disconnect();}
     // Disconnect before any fade or close promise. A frozen audio clock must
     // not retain a future fade, delay tail or looping ambience through return.
     if(this.master){this.master.gain.cancelScheduledValues(0);this.master.gain.setValueAtTime(0,retired.currentTime);this.master.disconnect();}
     const mediaKey=this.media?.key,mediaEnv=this.media?.env;
     this.cosmeticPreviewStop();this.musicEnvironment?.dispose();this.musicEnvironment=null;voicesStop(this);this.phraseClear();this.media?.dispose();
     if(this.media){this.media=new PoolMedia(mediaEnv);if(mediaKey)this.media.describe(mediaKey);}
-    this.context=null;this.master=null;this.musicInput=null;this.musicOutput=null;this.musicDuck=null;this.previewEnvelope=null;this.delay=null;
-    this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.strengthAt=-Infinity;this.duckUntil=0;this.previewStarted=0;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};this.travelState=null;
+    this.context=null;this.master=null;this.outputGate=null;this.compressor=null;this.musicInput=null;this.musicOutput=null;this.musicDuck=null;this.previewEnvelope=null;this.delay=null;
+    this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.uiWindLastAt=-Infinity;this.strengthAt=-Infinity;this.duckUntil=0;this.previewStarted=0;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};this.travelState=null;
     if(retired?.close){this.outputClosing=(this.outputClosing||0)+1;try{Promise.resolve(retired.close()).catch(()=>{}).finally(()=>{this.outputClosing--;this.outputCloseMs=performance.now()-closedAt;});}catch{this.outputClosing--;}}
   }
   harmonySet(blooms) {
@@ -155,12 +162,13 @@ export class PoolSound {
   pauseSet(value,{ambient=false}={}) { this.isPaused=value; this.keepAmbient=value&&ambient; if(value){this.cosmeticStop();if(!ambient)this.phraseClear();} this.mixUpdate(); }
   notePitch(tone) { return this.harmony ? frequency(this.harmony.notes[tone % 5]) : SCALE[tone % 5]; }
   settingsSet(volume, isMuted) { this.volume = volume; this.isMuted = isMuted; if (isMuted) this.phraseClear(); if(isMuted||!volume)this.cosmeticStop(); if (this.master) this.master.gain.setTargetAtTime(isMuted ? 0 : volume * .48, this.context.currentTime, .03); this.mixUpdate(); }
-  tone(frequency, end, duration, level, pan = 0, offset = 0, type = 'sine', echo = false, phrase = false, { allowPaused = false,group,fadeOut=duration,attack=.008 } = {}) {
+  tone(frequency, end, duration, level, pan = 0, offset = 0, type = 'sine', echo = false, phrase = false, { allowPaused = false,group,fadeOut=duration,attack=.008,envelope=null,at=null } = {}) {
     voicesReap(this);
     if (!this.context || this.context.state !== 'running' || this.isMuted || (this.isPaused && !allowPaused && !(phrase&&this.keepAmbient)) || this.voiceCount >= (group==='audition'?55:46)) return;
-    const context = this.context, start = context.currentTime + offset, oscillator = context.createOscillator(), gain = context.createGain(), stereo = context.createStereoPanner();
+    const context = this.context, start = at ?? context.currentTime + offset, oscillator = context.createOscillator(), gain = context.createGain(), stereo = context.createStereoPanner();
     oscillator.type = type; oscillator.frequency.setValueAtTime(frequency, start); oscillator.frequency.exponentialRampToValueAtTime(Math.max(20, end), start + duration);
-    gain.gain.setValueAtTime(.0001, start); gain.gain.exponentialRampToValueAtTime(Math.max(.001, level), start + Math.min(attack,duration*.5)); if(fadeOut<duration)gain.gain.setValueAtTime(Math.max(.001,level),start+duration-fadeOut); gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
+    if(envelope)gain.gain.setValueCurveAtTime(envelope.map(value=>value*level),start,duration);
+    else {gain.gain.setValueAtTime(.0001, start); gain.gain.exponentialRampToValueAtTime(Math.max(.001, level), start + Math.min(attack,duration*.5)); if(fadeOut<duration)gain.gain.setValueAtTime(Math.max(.001,level),start+duration-fadeOut); gain.gain.exponentialRampToValueAtTime(.0001, start + duration);}
     stereo.pan.value = Math.max(-.85, Math.min(.85, pan)); oscillator.connect(gain); gain.connect(stereo); stereo.connect(this.master); if (echo) stereo.connect(this.delay);
     const voice = { oscillator, gain, start,group }; if (phrase) this.phraseVoices.add(voice);
     voiceTrack(this,voice,start+duration+.02,[oscillator,gain,stereo]);
@@ -244,11 +252,12 @@ export class PoolSound {
     const now=this.context.currentTime;
     const wind=kind?.type==='wind'&&Number.isFinite(kind.delta);
     if(wind)this.uiWindPhase=((this.uiWindPhase||0)+Math.max(-.25,Math.min(.25,kind.delta))*2)%1;
-    if(kind!=='back-complete'&&now-(this.uiLastAt??-Infinity)<(wind?.14:.06))return false;
-    this.uiLastAt=now;
+    const last=wind?'uiWindLastAt':'uiLastAt';
+    if(kind!=='back-complete'&&now-(this[last]??-Infinity)<(wind?.14:.06))return false;
+    this[last]=now;
     const back=kind==='back'||kind==='back-complete';
     const pitch=kind==='back-start'?300:back?440:kind==='confirm'?660:560;
-    if(wind){for(const {pitch,level} of uiWindTones(this.uiWindPhase))if(level>.001)this.tone(pitch,pitch,.035,.035*level,0,0,'sine',false,false,{allowPaused:true,attack:.002});}
+    if(wind){for(const {pitch,level} of uiWindTones(this.uiWindPhase))if(level>.001)this.tone(pitch,pitch,.05,.035*level,0,0,'sine',false,false,{allowPaused:true,envelope:windEnvelope,at:now+.006});}
     else this.tone(pitch,back?330:pitch*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true});
     if(kind==='confirm')this.tone(880,880,.09,.055,0,.055,'sine',false,false,{allowPaused:true});
     this.uiCount=(this.uiCount||0)+1;

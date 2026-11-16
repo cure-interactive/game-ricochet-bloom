@@ -11,7 +11,7 @@ export const AMBIENCES=Object.freeze([
  {id:'ambience.none',kind:'ambience',name:'None',rarity:'common',cost:0,color:'#b1edd6',description:'Let the instruments and their acoustic space stand alone.',style:'none'},
  {id:'ambience.rain',kind:'ambience',name:'Soft Rain',rarity:'common',cost:60,color:'#c5dfbb',description:'A quiet, even wash of rain behind your music.',style:'rain'},
  {id:'ambience.shore',kind:'ambience',name:'Quiet Shore',rarity:'rare',cost:120,color:'#90dbf5',description:'Slow waves arrive and recede along a sheltered shore.',style:'shore'},
- {id:'ambience.forest',kind:'ambience',name:'Night Forest',rarity:'epic',cost:220,color:'#cba6ee',description:'A soft canopy breeze with distant, delicate insect tones.',style:'forest'},
+ {id:'ambience.forest',kind:'ambience',name:'Night Forest',rarity:'epic',cost:220,color:'#cba6ee',description:'A soft canopy breeze with distant, varied insect calls.',style:'forest'},
  {id:'ambience.hearth',kind:'ambience',name:'Ember Hearth',rarity:'legendary',cost:360,color:'#ffd17e',description:'A warm, low hearth with tiny softened crackles and drifting air.',style:'hearth'},
  {id:'ambience.orbit',kind:'ambience',name:'Orbital Drift',rarity:'mythic',cost:550,color:'#b4b2ff',description:'An abstract, slowly breathing atmosphere of air and harmonic light.',style:'orbit'}
 ]);

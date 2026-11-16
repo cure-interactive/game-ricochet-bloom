@@ -1,6 +1,6 @@
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {COSMETIC_COLLECTION} from './cosmetic-collection.js?v=5fffc248bcec63bc94d641fd08adb36b591a815fa2cd26ed62801ef5a1ea9cca';
-import {SOUNDSTAGES,AMBIENCES} from './music-environment.js?v=5b1988e50253a514f7dd89a12a36a17f8292a9118e212e49e82b91dee76f069a';
+import {SOUNDSTAGES,AMBIENCES} from './music-environment.js?v=09dcc5aa06da815b08ac721d6fe505e7c6abd27d237928af2e681a09764eb1a4';
 import {MUSIC_THEMES} from './music-theme.js?v=88ea7b370c0695e982b380622f15db38e58496f3cd4335b7104b62ec49d0ad79';
 // Stable cosmetic identities and historical paid prices belong to the profile.
 export const COSMETICS=Object.freeze([

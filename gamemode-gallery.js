@@ -1,6 +1,6 @@
 import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
-import {gamemodeNavigation} from './gamemode-navigation.js?v=a0bcf4795ea578a5a6361ccb5162fef8b8be587fa30133ae9e2fe06d63a9d33a';
-import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=cd1efc7fa33273d53d46cd1e4fe5b154e594d1209be37d62c18adf92f52b3987';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=82f55fe962c5c0cac286784f075898d416ec26b994e3f5c59470931ab877db56';
+import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=58d41217ecc92bd6024091ec98467f5fcfc1a090d39fa3e09758d3248380ec68';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { experimentRead, experimentFavourite } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';

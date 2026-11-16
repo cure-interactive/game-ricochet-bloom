@@ -1,5 +1,5 @@
 import {trailDesign,impactDesign} from './cosmetic-design.js?v=5b25db6c70e995cb17ec5124f92bdb3e6e662cbc3b11373d85739d1868ee2b67';
-import {cosmeticGet} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
+import {cosmeticGet} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
 const tau=Math.PI*2;
 const line=(c,x,y,r,a)=>{c.moveTo(x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.55);c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);};
 // Cosmetics draw only: no collisions, random engine state, audio or rewards.

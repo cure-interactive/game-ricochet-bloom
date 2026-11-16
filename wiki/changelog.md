@@ -6,6 +6,28 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.34.2
+
+Build: 2026-11-16 21:38:35 UTC
+
+### Player Changes
+
+- Keep the tab highlight aligned when its bar moves into the bottom panel. Finishing a selector drag now plays the regular button sound.
+- Night Forest uses short, varied insect calls with pauses between phrases.
+- Audio output disconnects fully when leaving the app and fades in on return to reduce transition distortion.
+- Raised the rising/falling click pitch after feedback that it sounded too low.
+- Softened the beginning and end of each tap to address crackling, while keeping the slower click rate and drag-only feedback.
+
+<!-- development -->
+### Developer Notes
+
+- Remeasure the selected tab during settling after footer reparenting or resizing. Drag commits emit delegated activation feedback with a separate throttle from winding.
+- Replace Forest whistles with stable-pitch pulse groups from independent callers; retain seamless loops and bounded synthesis.
+- Disconnect a terminal output gate and compressor on retirement, fade new output in over 60ms, and avoid redundant audio-session category writes. This addresses transition risks; physical iPhone distortion acceptance remains open.
+- Shift the four-octave winding register up an octave (140 Hz base, 560 Hz strongest phase-zero layer). Replace the 2ms exponential attack with a 50ms raised-cosine envelope: 8ms attack, 42ms release and exact zero endpoints.
+- Schedule all layers at one audio-clock timestamp 6ms ahead; retain the 140ms cadence, bounded voices, direction changes and stale-cue rejection. Envelope tests cover synchronization, endpoint slopes, headroom and sample continuity across the octave cycle. Physical iPhone acoustic acceptance remains open.
+<!-- /development -->
+
 ## v3.34.1
 
 Build: 2026-11-16 20:40:47 UTC

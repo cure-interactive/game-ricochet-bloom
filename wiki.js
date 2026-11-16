@@ -1,13 +1,13 @@
 import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { screenHeader } from './screen-header.js?v=abdd601bfd00682c8e2df56bb78bf52f54d173e7c455d7ae92bba16d48c17860';
+import { screenHeader } from './screen-header.js?v=7db753fa19626839b08a41fd5d2583821cbc0774ad262a06dd328bb3f050c988';
 import { pageHistory } from './page-history.js?v=54c1c0aaacb43da66e5503f9ea5ea7948dfd1efd2ededbc6b416434a1792e935';
-import { iconHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=dd4e4e6c9eb4689ef5b0e3bfa50552448b3a58c2529bf9c88e39056524dca652';
+import { iconHTML } from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=fffd523cb4433e8330de32e3dc5b9abbf318004a0761ecc6a8383ede0aa3477d';
 
 export const WIKI_PAGES = Object.freeze({
   'cosmetic-rarity':{title:'Cosmetic Rarity',url:'./wiki/cosmetic-rarity.md?v=347ed0bb71c4b93e0c2c9e947ead96c5714dd752fb4a35658766abb5bbd30543'},
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=6b85af176a28901d08c95e2abd78e598e1f122f1de70bccfee524728fa50af8f' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=6e9f47ef6acf4ac8ee3a752e01305518eff9e29fddb411c387ce399111447917' },
   player: { title: 'Player', url: './wiki/player.md?v=0c38f46b581192d96145cd1c1a85569ccc571ae4dc94401b6546a67af077b787' },
   developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=1fe84040818660452a57fe2d535171badfba1733dfda772ea176e823fd7a4101' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=f43259f3d42301b05c30588b2e1335e8ec1ca9d0f2f1a3a7a2287bbd4e709eca' },
@@ -16,7 +16,7 @@ export const WIKI_PAGES = Object.freeze({
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=76d41fb0cd2c9a17bde4187f69e4b31570e5d49a5c33b4e2a32053553185f457' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=941b0fdf11b0e94d22e69c8e45dc214c953cc790f3ba805d876bf03443103c12' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=9012410a52b6fcb322e519085b4b7ccd48440990e182a31ecc012c6fcfead585' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=9e29430869a54ce658e41756407cbbc1cd388ed07e9ae36c84b3ebdbf8129ce7' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=c7d2965c7a1c36d0a7891df9b8ca49e03594d78e63c17a06e1c41cfecead07a9' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=7f0d55d08094b85dbfa312fd3cf36379a0666676b0fd6a8c04feca8f0ce86c19' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=3226c8202c5ec9c396c1c4abe0e5e00d931094617edf98ea6ff8945e8feff623' },

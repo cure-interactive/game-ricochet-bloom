@@ -1,7 +1,7 @@
 import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
 import {segmentedPainter} from './segmented-paint.js?v=f3fcc78ca5b54f7fb6d7fce668b601d74b373a11d0d030833ba9c8a52c685508';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import {uiWind} from './ui-sound.js?v=c8318423c1565fbab4d63567ad32cdd01eaf2bef81da713cf2f2060b3ca69e7d';
+import {uiWind,uiSelect} from './ui-sound.js?v=1b8a8570abaa76e05b9dfb824b38d1355a2c2bbbe162ed5a2918c3391a45ce8d';
 export function segmentedHTML(buttons,{label,current,className=''}){
  return `<div class="tab-bar"><nav class="segmented-control ${escapeHTML(className)}" data-current="${escapeHTML(current)}" aria-label="${escapeHTML(label)}" style="--segment-count:${buttons.length}"><span class="segment-selection" aria-hidden="true"></span>${buttons.join('')}</nav></div>`;
 }
@@ -43,11 +43,20 @@ export function segmentedMount(root,{attribute,change}){
   if(next!==nav.dataset.current)nav=change(next)||nav;
   nav.dataset.current=next;for(const button of buttons(nav))button.setAttribute('aria-pressed',String(value(button)===next));
   const selected=buttons(nav).find(button=>value(button)===next);if(!selected){position(nav);return;}
-  const n=nav.getBoundingClientRect(),end=selected.getBoundingClientRect();
-  const from=old.left-n.left-nav.clientLeft,to=end.left-n.left-nav.clientLeft,bar=nav.parentElement,scrollFrom=bar?.scrollLeft||0;
-  const scrollTo=nav.classList?.contains('segment-scrollable')?segmentCenter(bar,end):scrollFrom;let start;
+  const n=nav.getBoundingClientRect();
+  const from=old.left-n.left-nav.clientLeft,scrollFrom=nav.parentElement?.scrollLeft||0;let start;
   followNav=nav;paint(nav,from,old.width);
-  const tick=time=>{if(nav.dataset.current!==next){stopSettle();position(nav);return;}start??=time;const progress=Math.min(1,(time-start)/320),ease=1-(1-progress)**3;if(bar)bar.scrollLeft=scrollFrom+(scrollTo-scrollFrom)*ease;paint(nav,from+(to-from)*ease,old.width+(end.width-old.width)*ease);if(progress<1)frame=win.requestAnimationFrame(tick);else{frame=0;followNav=null;}};
+  const tick=time=>{
+   if(nav.dataset.current!==next){stopSettle();position(nav);return;}
+   start??=time;const progress=Math.min(1,(time-start)/320),ease=1-(1-progress)**3;
+   // Navigation can reparent the bar into its footer on the next frame. Read
+   // its current geometry throughout settling, including after scroll changes.
+   const bar=nav.parentElement;
+   if(bar&&nav.classList?.contains('segment-scrollable')){const to=segmentCenter(bar,selected.getBoundingClientRect());bar.scrollLeft=scrollFrom+(to-scrollFrom)*ease;}
+   const n=nav.getBoundingClientRect(),end=selected.getBoundingClientRect(),to=end.left-n.left-nav.clientLeft;
+   paint(nav,from+(to-from)*ease,old.width+(end.width-old.width)*ease);
+   if(progress<1)frame=win.requestAnimationFrame(tick);else{frame=0;followNav=null;position(nav);}
+  };
   frame=win.requestAnimationFrame(tick);
  }
  root.addEventListener('click',e=>{const button=e.target.closest(selector),nav=button?.closest('.segmented-control');if(!nav)return;if(suppressClick){suppressClick=false;e.preventDefault();e.stopPropagation();return;}select(nav,value(button),nav.querySelector('.segment-selection').getBoundingClientRect());});
@@ -95,7 +104,7 @@ export function segmentedMount(root,{attribute,change}){
   if(d.pan){suppressClick=true;if(d.nav.hasPointerCapture(id))d.nav.releasePointerCapture(id);return;}
   const old=d.pill.getBoundingClientRect(),center=old.left+old.width/2;
   const next=commit?value(buttons(d.nav).sort((a,b)=>{const ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();return Math.abs(ar.left+ar.width/2-center)-Math.abs(br.left+br.width/2-center);})[0]):d.nav.dataset.current;
-  suppressClick=true;if(d.touch&&e.cancelable)e.preventDefault();if(!d.touch&&d.nav.hasPointerCapture(id))d.nav.releasePointerCapture(id);select(d.nav,next,old);
+  suppressClick=true;if(d.touch&&e.cancelable)e.preventDefault();if(!d.touch&&d.nav.hasPointerCapture(id))d.nav.releasePointerCapture(id);if(commit)uiSelect(d.nav,e);select(d.nav,next,old);
  }
  root.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch'&&e.button===0)begin(e,e,e.pointerId);});
  root.addEventListener('pointermove',e=>{if(e.pointerType!=='touch')move(e,e,e.pointerId);});

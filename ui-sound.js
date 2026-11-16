@@ -19,8 +19,16 @@ export function uiWind(target,delta,event){
  const EventType=target.ownerDocument?.defaultView?.CustomEvent||globalThis.CustomEvent;
  target.dispatchEvent(new EventType('ui-wind',{bubbles:true,detail:{type:'wind',delta}}));
 }
+// Drag completion has no native click on touch screens. Keep its finite
+// activation cue on the same delegated route as buttons.
+export function uiSelect(target,event){
+ if(event?.isTrusted===false)return;
+ const EventType=target.ownerDocument?.defaultView?.CustomEvent||globalThis.CustomEvent;
+ target.dispatchEvent(new EventType('ui-select',{bubbles:true}));
+}
 export function uiSoundMount(sound,doc=document,play=uiSoundFeedback(sound,doc)){
  const wind=event=>play(event.detail);
+ const select=()=>play('select');
  function click(event){
   if(event.isTrusted===false)return;
   const button=event.target?.closest?.('button,a[href],summary,[role="button"],[role="tab"]');
@@ -35,5 +43,6 @@ export function uiSoundMount(sound,doc=document,play=uiSoundFeedback(sound,doc))
  doc.addEventListener('click',click,true);
  doc.addEventListener('change',change);
  doc.addEventListener('ui-wind',wind);
- return ()=>{doc.removeEventListener('click',click,true);doc.removeEventListener('change',change);doc.removeEventListener('ui-wind',wind);};
+ doc.addEventListener('ui-select',select);
+ return ()=>{doc.removeEventListener('click',click,true);doc.removeEventListener('change',change);doc.removeEventListener('ui-wind',wind);doc.removeEventListener('ui-select',select);};
 }
