@@ -1,5 +1,5 @@
-import {GAME_VERSION} from './version.js?v=d41cd1fe5aa8e1fb137d5d211a08b9b6e0d93f095550008be34d83661599b0be';
-import {BUILD_TIME} from './build.js?v=7064723e9edf3f081599d913a6fe05fc4decd3ff2cc19f6c4e025ad5ffcf4905';
+import {GAME_VERSION} from './version.js?v=d8ff8aa5c5d984d0e6fcbacee08ce9ecc5b97bfb4e6721733cdf470c65fc03f4';
+import {BUILD_TIME} from './build.js?v=48c65541c92681dae504d61ef7040a5705dd81b5f91e13537f4d491e1af6b8f3';
 import {buttonHTML,iconHTML} from './ui-icon.js?v=b97a13e492ce3889e47a205f1e9246f2161ee728ca7630e71570cedfd636805d';
 export const isAppView=win=>!!win.navigator?.standalone||!!win.matchMedia?.('(display-mode: standalone)').matches||!!win.matchMedia?.('(display-mode: fullscreen)').matches;
 export function newerBuild(remote,version=GAME_VERSION,time=BUILD_TIME){

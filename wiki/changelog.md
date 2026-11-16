@@ -6,6 +6,20 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.29.4
+
+Build: 2026-11-16 03:58:13 UTC
+
+### Player Changes
+
+- Remove the extra checkmark from purchased skills and their detail cards, keeping the artwork and rarity visible.
+
+<!-- development -->
+### Developer Notes
+
+- Shared skill-node rendering retains only lock and borrowed badges; preserve accessible ownership text and active styling. Align the legend and guide with that presentation.
+<!-- /development -->
+
 ## v3.29.3
 
 Build: 2026-11-16 03:53:47 UTC

@@ -1,6 +1,6 @@
 import {menuSummaryRender} from './menu-summary.js?v=ae45281d84da1bab2004670a7e08413c46eec38f2c344291b3c7b345710e5910';
 import {cosmeticLoadout} from './cosmetic.js?v=c1c123b7a3926c29cd0f81c9f79402f0bab12505a0d3d8511563ad7f6f33c054';
-import { menuLayoutMount } from './menu-title.js?v=38e109c717362c7ba01204edc852230eb73c8430660e99880fb8879eb06cca78';
+import { menuLayoutMount } from './menu-title.js?v=c138321101b3af0605347bc8d604d00e257bce6768ef23250ae89c7de995ee28';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { buttonHTML } from './ui-icon.js?v=b97a13e492ce3889e47a205f1e9246f2161ee728ca7630e71570cedfd636805d';
 import { menuBackgroundMount } from './menu-background.js?v=c028fb517a3ecd201093335447a7bda2d5a9362f291d9cd6757da9691b77c2a3';

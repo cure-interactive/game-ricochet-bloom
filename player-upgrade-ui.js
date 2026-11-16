@@ -1,4 +1,4 @@
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=21d3da26eac59297e8dbd4a645230a0d0181b882cbcd44de26cb49d0d66b63ae';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=63ed9999e87f292cd85e6b21d921d7e912b434e036ab2efdf2334292887a0a90';
 import {playerSkillStats} from './player-skill-comparison.js?v=5413d93733478c5c3d73d00b0f092c6f044b3ee96887cab2636e891526bba17e';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {playerTreeGraph} from './player-tree.js?v=210238b9f0ec28aad2a319ced9ab6cb7cc2a67d8ef569cf3fa9c1aabae772674';

@@ -5,7 +5,7 @@ import { iconHTML } from './ui-icon.js?v=b97a13e492ce3889e47a205f1e9246f2161ee72
 import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=b81eb0a520dd2af0320397c6084213dd4044b5417db1fcd506b127c13ff1c18a';
 
 export const WIKI_PAGES = Object.freeze({
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=dc8e94357de785af3df9b9301b9ba64047e878dba329870abb87f39ddcd80d10' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=ec28b07c60083a899f0af9a2ead8357b7228553c4ee07e7991ad8515ee9766ee' },
   player: { title: 'Player', url: './wiki/player.md?v=1a11dff55487ea8f5af4da7c5fe6d16da35f714736f8ece61406e9fb7427d816' },
   developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=8bbd51ef13042a46fa7ace852798c897795fd7ec22cc778d2a1bd19e606099a5' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=8e4bd3a9087a3772f6c6f6eecd7b835c3419fddfc7372f20360fdbb87a1529c0' },
@@ -14,11 +14,11 @@ export const WIKI_PAGES = Object.freeze({
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=e55368d7bc59e118d866c5f0413bc9f20f5493013b5c6b6ccf7c39f697aff1c5' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=d382f8b927a0152da0e2f7e1b65778e8a11a5eb2edc2980c740418a011e2de54' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=288c4782a4c5dacfee67f28cbf76c6418b1e2b5628a787f843f11a0a780f37cf' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=543ce8c11fb5723231312405b2d53945c5e12fa5d38a6b72224c5e12dcfa3e8a' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=be1529e94417ad6a4a0c268f61e340a8b1495d05b8a7f2d9f7d1b468c4377b0d' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=e166e94ad082d547335aa1ca6c455fd820c36f200553ee9c4d68d4c724f5b0ca' },
-  'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=4cf363cc37a58140f0270a5614bae00da85998a3f868a5e59a4b0594f63393f4' },
+  'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=a2fe43e02ad2b75313cdf4f5808432c438a6ebea1eebd2cde9b935ecdc2a7168' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=5c721e16568c92d734d7e53fa7e78511ad8aa2eda61d4677fe81eb3cc1258b80' },
   settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=c2d6e311922519c7a91efa9eda21760270b0fd991bfb98c2e8651e0bf1f864fd' }
 });

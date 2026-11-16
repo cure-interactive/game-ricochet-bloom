@@ -219,8 +219,6 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .status-legend>span{display:flex;align-items:center;gap:5px;min-height:24px;white-space:nowrap}
 .status-legend>span:before{content:'';width:9px;height:9px;border:1px solid #c8d5df;border-radius:50%;box-shadow:none!important}
 .status-legend .legend-active:before{background:#dce7ee;border-color:#dce7ee}
-.status-legend .legend-owned:before{display:none}
-.status-legend .legend-owned>.ui-icon{width:14px;height:14px;flex:none}
 .status-legend .legend-available:before{border:3px double #c8d5df;background:none}
 .status-legend .legend-locked:before{border:1px dashed #c8d5df;background:none}
 #reward-dialog .reward-card{border-color:var(--rarity-color)}
