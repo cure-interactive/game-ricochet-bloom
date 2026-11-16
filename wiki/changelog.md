@@ -6,6 +6,32 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.29.2
+
+Build: 2026-11-16 02:55:25 UTC
+
+### Player Changes
+
+- Center the live Player skill root in the same square frame as the Powers tree, including while zooming.
+- Give compact Trail icons less reserved width and more vertical movement.
+- Buy and equip Music and other cosmetics without finishing an active pool first.
+- Arrange Skins, Trails, Impacts and Music in two columns in Player.
+- Drag the large Player and skin previews farther across their available area, then release to spring back; compact icons retain their smaller range.
+- Keep skill-tree artwork sharp when zooming.
+- Keep skin gallery thumbnails trail-free. Equipped-player icons trail their own movement, without trails caused by scrolling.
+- Use regular static icons throughout Wiki.
+- Restore outer margins and a gap around rounded page containers and title bars on larger screens.
+
+<!-- development -->
+### Developer Notes
+
+- Separate screen-pixel canvas bounds from local CSS placement under transformed parents; share base-node frame and icon sizing.
+- Use a two-diameter Trail slot and a minimum vertical trajectory for compact icons; retain dynamic paint bounds.
+- Exempt cosmetic transactions from the active-pool gameplay-build guard while preserving validation and saved physics.
+- Derive large-view tether limits from current viewer dimensions; keep compact icon motion local and gallery trails disabled. Add zoom, compact motion, active-run cosmetic and responsive drag regressions.
+- Remove persistent transform-layer promotion from the tree, use allowlisted static Wiki artwork, and scope flush reader margins to compact layouts.
+<!-- /development -->
+
 ## v3.29.1
 
 Build: 2026-11-16 02:24:55 UTC

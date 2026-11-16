@@ -1,7 +1,7 @@
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=7529ca05961ee4ba37e91a835b4a4ee3215cfbd74837da808dca52460df3993e';
 import {CosmeticVisual} from './cosmetic-visual.js?v=6741340dcdbdeb9b7b21d3fcd03716bc3a3116707fec766e58ae0070be444e3e';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {bubbleRender} from './bubble-render.js?v=b26dad8c0868a3614c00288590630ebf09bb7cc4add9ea7196755d4546702946';
+import {bubbleRender} from './bubble-render.js?v=f25a643baed6ffc965fc81a0b97759f70642eb68bf2a24a410ae8d0d4b0e7eb9';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
@@ -59,7 +59,7 @@ export function cosmeticPreviewMount(canvas,host){
    origin={left:rect.left,top:rect.top,scale};
   }
   if(host.thumbnail){
-   const t=visual.elapsed,padding=host.icon?body.radius:host.motionArea<1?body.radius+4:host.compact?54:host.thumbnail==='trail'?body.radius+(42-body.radius)/2:72,area=host.motionArea||1,rx=Math.max(0,worldWidth*area/2-padding),ry=Math.max(0,worldHeight*area/2-padding);
+   const t=visual.elapsed,padding=host.icon?body.radius:host.motionArea<1?body.radius+4:host.compact?54:host.thumbnail==='trail'?body.radius+(42-body.radius)/2:72,area=host.motionArea||1,rx=Math.max(0,worldWidth*area/2-padding),ry=Math.max(host.icon&&host.thumbnail==='trail'?body.radius:0,worldHeight*area/2-padding);
    body.x=worldWidth/2+(host.thumbnail==='trail'?Math.sin(t*2)*rx:0);body.y=worldHeight/2+(host.thumbnail==='trail'?Math.sin(t*4)*ry:0);
    body.vx=Math.cos(t*2)*rx*2;body.vy=Math.cos(t*4)*ry*4;
    if(host.thumbnail==='bounce'&&Math.floor(t/.9)!==pulse){pulse=Math.floor(t/.9);visual.hit(body.x,body.y);bubbleHit(membrane,body.radius,1,0,150);}

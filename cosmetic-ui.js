@@ -1,9 +1,9 @@
-import {cosmeticPriceHTML} from './cosmetic-price.js?v=be69e240ed21bb5954a60a289a3faffc45803ce5610206b683db01975d2b13ff';
+import {cosmeticPriceHTML} from './cosmetic-price.js?v=bbc88e114bbd844b136299cb3fb5d765e3dce973078761952421c25f660e8a0a';
 import {COSMETICS,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=c1c123b7a3926c29cd0f81c9f79402f0bab12505a0d3d8511563ad7f6f33c054';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=02db76a6d298641ff45ca7072b9b71eafac14711ec1cfec6d409058972636183';
-import {screenHeader} from './screen-header.js?v=4f5dee21e7c6bc04efbd839ba9a1d32a611b16905cdb37258dcb7188a585d554';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=abfd9b2167cf305a4cba7dbd63aa1fc6464aae57aecc6ffe6b6432448a773031';
-import {rarityIconHTML} from './skill-icon.js?v=afa2fbe999e7c47f09ca8843147f3a7c349aabe28199c42380fb80f574376e6b';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=11f46f8a5c5fa4f298e726e87d47c478fbfd3617039ee23e754a3896bf638f10';
+import {screenHeader} from './screen-header.js?v=df61a7f2f513341f38e4dd70e2e81e7add2d467c29ef9c55b24294ce7b6a6cf8';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=b97a13e492ce3889e47a205f1e9246f2161ee728ca7630e71570cedfd636805d';
+import {rarityIconHTML} from './skill-icon.js?v=5aec5b44b8a5820c3b9b4bb22f52fd5702faf17da3abbb60445a5265e1e244a5';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 export function cosmeticMount(host){

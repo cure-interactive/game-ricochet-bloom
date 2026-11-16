@@ -116,7 +116,7 @@ export function progressionAct(input,action){
     const state=progressionCreate('development');state.profile.playGeneration=generation;
     return {ok:true,state,message:'Development progress reset. Normal progress is unchanged.'};
   }
-  if(s.phase==='run'&&!['abandon','pin','buy','buy-player','grant','max','max-progress'].includes(action.type))return fail('Finish this pool before changing your build.');
+  if(s.phase==='run'&&!['abandon','pin','buy','buy-player','buy-cosmetic','equip-cosmetic','skin','grant','max','max-progress'].includes(action.type))return fail('Finish this pool before changing your build.');
   switch(action.type){
     case 'pin':if(action.id!==null&&!node)return fail('Choose a research target.');s.target=action.id;message=action.id?'Research goal pinned.':'Research goal cleared.';break;
     case 'discover':return discoveryUse(s,action.id,action.remove||[]);

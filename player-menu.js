@@ -1,8 +1,8 @@
 import {profileName} from './profile.js?v=a80b5d2b30594cf6ad9b2df2c82085e8c981c596a84754c5563ce6837c33e3c3';
-import {skinOptions} from './skin-ui.js?v=c1e41f6d33fdd9a75810ef1b0023e091320acd41819e475c0d76b21b5f932f17';
-import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=dffa0b15172b1535b0849715aec10f240c6cdfbb50a479ee8ce195b254fee193';
-import { screenHeader } from './screen-header.js?v=4f5dee21e7c6bc04efbd839ba9a1d32a611b16905cdb37258dcb7188a585d554';
-import { buttonHTML } from './ui-icon.js?v=abfd9b2167cf305a4cba7dbd63aa1fc6464aae57aecc6ffe6b6432448a773031';
+import {skinOptions} from './skin-ui.js?v=62a2949592e7a2ba46808dfa6f1a019bfd310a76ac42e388e76cb6f729125b27';
+import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=2b30ad7549c09c8d1a42694639d09b9e8ddbdd4724b020e1721487a5c5c28ab8';
+import { screenHeader } from './screen-header.js?v=df61a7f2f513341f38e4dd70e2e81e7add2d467c29ef9c55b24294ce7b6a6cf8';
+import { buttonHTML } from './ui-icon.js?v=b97a13e492ce3889e47a205f1e9246f2161ee728ca7630e71570cedfd636805d';
 
 // Player destinations share the game's existing screen history and profile.
 export function playerMenuMount(host){

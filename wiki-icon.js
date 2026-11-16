@@ -1,8 +1,8 @@
-import { iconHTML } from './ui-icon.js?v=abfd9b2167cf305a4cba7dbd63aa1fc6464aae57aecc6ffe6b6432448a773031';
+import { iconHTML } from './ui-icon.js?v=b97a13e492ce3889e47a205f1e9246f2161ee728ca7630e71570cedfd636805d';
 import { CATALOGUE } from './catalogue.js?v=5cfc599f22248911c8bcd4338b5eb7fd16e3fe4df92507bfdf3382d1366b52d1';
 import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=afa2fbe999e7c47f09ca8843147f3a7c349aabe28199c42380fb80f574376e6b';
-import { medalIcon } from './medal-ui.js?v=721fc52fb87b38a123d369b251fe57057384abbd0821287baee01663dd1809c6';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=5aec5b44b8a5820c3b9b4bb22f52fd5702faf17da3abbb60445a5265e1e244a5';
+import { medalIcon } from './medal-ui.js?v=3c06de546792c4af0efcbbbed08955e94d3385d16949123b14b47ac18644917e';
 
 // Only known topics and catalogue identities produce decoration. Markdown never
 // supplies an image URL, raw SVG or icon name to the renderer.
@@ -29,7 +29,8 @@ const topics={
  developer:'flask','development-concept':'flask','game-modes-to-try':'flask','economy-tuning':'coin','playtest-method':'check',workshop:'flask','development-tools':'gear'
 };
 const wrap=html=>html?`<span class="wiki-icon" aria-hidden="true">${html}</span>`:'';
-const topicHTML=name=>name==='medal'?medalIcon('Gold'):iconHTML(name);
+const topicHTML=name=>name==='medal'?medalIcon('Gold'):['player-skin','trails','bounce-effects'].includes(name)
+ ?`<span class="ui-icon wiki-static-icon" data-icon="${name==='player-skin'?'player-static':name}" aria-hidden="true"></span>`:iconHTML(name);
 export function wikiTopicIcon(page,anchor=''){
  const power=page==='power-ups'&&CATALOGUE.nodes[`${anchor}.base`];
  if(power)return wrap(skillIconHTML(power));

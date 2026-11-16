@@ -1,4 +1,4 @@
-import {skinMaterial} from './skin-material.js?v=0ebebcabafa388f6e6c6b561eebaaf518b0f53bd1806caf460519b17d6fed058';
+import {skinMaterial} from './skin-material.js?v=0c8d5d36ee5807eda8691062fb75a218545e316f713fa4ffd9e331e7976f7e80';
 export function bubblePath(points){
  const path=new Path2D(),first=points[0],last=points.at(-1);
  path.moveTo((first.x+last.x)/2,(first.y+last.y)/2);

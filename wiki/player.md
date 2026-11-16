@@ -1,10 +1,10 @@
 # Player
 
-Open **Player** from the main menu to view your equipped skin. Personalize groups **Skins**, **Trails**, **Impacts** and **Music** together; **Skills** and **Stats** sit below.
+Open **Player** from the main menu to view your equipped skin. Personalize groups **Skins**, **Trails**, **Impacts** and **Music** in two columns when space permits; **Skills** and **Stats** sit below.
 
 ## Player Viewer
 
-The large preview shows your equipped skin. Drag it to stretch its tether, or tap it to make it bounce. Previews and player icons respond gently when you scroll their containing panel and return smoothly to center. Previews keep moving when scrolled out of view on an open page; closing or hiding the page pauses them. These interactions are cosmetic and do not change a run.
+The large preview shows your equipped skin. Drag it across the available viewer area, or tap it to make it bounce. Its range follows the viewer size; release it to spring back smoothly. Large previews respond gently when you scroll their containing panel and return smoothly to center. Compact player icons keep their smaller movement range; scrolling gently deforms them without producing trails. Previews keep moving when scrolled out of view on an open page; closing or hiding the page pauses them. These interactions are cosmetic and do not change a run.
 
 Your player name appears beneath the bubble. Tap or click it to edit in place (up to 32 characters). Press Enter or tap away to save; Escape cancels. An empty edit keeps the previous name. Names belong to the selected profile and are included in progress backups.
 
@@ -18,7 +18,7 @@ Unlock & Equip purchases a skin once. Owned skins can be equipped freely. Origin
 
 ## Trails and Impacts
 
-Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons and Wiki cosmetic icons also animate your equipped styles. Skins, Trails and Impacts use the same gallery → detail → Back pattern: inspecting does not buy or equip, and wider galleries use the available row space before wrapping. Previews on hidden pages pause and keep their state; scrolling offscreen only culls their drawing. One trail follows each player’s actual movement, including grabbing, dragging, scrolling, rebound and supported device motion in icons and previews; impacts appear at player contacts and fade away smoothly.
+Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons animate your equipped styles. Wiki uses regular static icons. Skins, Trails and Impacts use the same gallery → detail → Back pattern: inspecting does not buy or equip, and wider galleries use the available row space before wrapping. Previews on hidden pages pause and keep their state; scrolling offscreen only culls their drawing. One trail follows the large Player viewer and selected skin preview during grabbing, dragging, scrolling, rebound and supported device motion. Equipped-player icons can trail their own movement, but page scrolling does not generate their trails; skin gallery thumbnails have no trails. Dedicated Trail and Impact previews continue to show their effects; impacts appear at player contacts and fade away smoothly.
 
 - Common styles cost 60 Points.
 - Rare styles cost 120 Points.
@@ -29,7 +29,7 @@ Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to 
 
 Legendary Ember adds a warm launch sound. Mythic Aurora adds a rising launch sound and a continuous airy shimmer while the player moves. Its ambient flow stays phase-continuous instead of replaying plucked notes; speed changes adjust it smoothly and stopping lets it fade. Mythic Prismatic Nova adds a crystalline accent to player impacts. Tap **Preview Sound** to hear the selected effect before purchasing. Aurora previews travel for a few seconds and fade over their final second. Sounds follow master volume and mute; gallery animations stay silent. Rapid impacts are limited to keep audio clear.
 
-Cosmetics do not alter power, speed, score or rewards. Your selections appear in normal play, experiments, Casual and the menu background. Power effects retain their own important visual feedback. Normal and Development purchases are separate.
+Buy and equip cosmetics during an unfinished pool without ending it. Points and ownership checks still apply; your current gameplay build stays intact. Cosmetics do not alter power, speed, score or rewards. Your selections appear in normal play, experiments, Casual and the menu background. Power effects retain their own important visual feedback. Normal and Development purchases are separate.
 
 ### Rarity and appearance
 

@@ -4,8 +4,8 @@ import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
 import {menuPoolView} from './menu-pool.js?v=d66dd93f756efc88d83a2916e508a39825ae5fec916e47ea0ae44d23f18e543e';
-import {skinSpringStep} from './skin-preview.js?v=dffa0b15172b1535b0849715aec10f240c6cdfbb50a479ee8ce195b254fee193';
-import {bubbleRender,bubblePath} from './bubble-render.js?v=b26dad8c0868a3614c00288590630ebf09bb7cc4add9ea7196755d4546702946';
+import {skinSpringStep} from './skin-preview.js?v=2b30ad7549c09c8d1a42694639d09b9e8ddbdd4724b020e1721487a5c5c28ab8';
+import {bubbleRender,bubblePath} from './bubble-render.js?v=f25a643baed6ffc965fc81a0b97759f70642eb68bf2a24a410ae8d0d4b0e7eb9';
 import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
 
 // Decorative instances own only visual state. The surrounding button or large
@@ -46,8 +46,10 @@ export function registerPlayerBubble(win=window){
     if(!this.canAnimate())return;
     const dx=next.x-previous.x,dy=next.y-previous.y,distance=Math.hypot(dx,dy);if(!distance)return;
     const impulse=Math.min(18,distance*28/Math.max(1,this.size)*1.2);
-    this.pressure.vx=Math.max(-18,Math.min(18,(dx/distance*impulse/9-this.pressure.x)*6));
-    this.pressure.vy=Math.max(-18,Math.min(18,(dy/distance*impulse/9-this.pressure.y)*6));
+    if(this.closest('.skin-preview-interactive')){
+     this.pressure.vx=Math.max(-18,Math.min(18,(dx/distance*impulse/9-this.pressure.x)*6));
+     this.pressure.vy=Math.max(-18,Math.min(18,(dy/distance*impulse/9-this.pressure.y)*6));
+    }
     bubbleHit(this.membrane,14,-dx/distance,-dy/distance,impulse*.35);this.request();
    };
    this.ownerDocument.addEventListener('scroll',this.scrolled,true);
@@ -93,7 +95,7 @@ export function registerPlayerBubble(win=window){
    if(this.frame)win.cancelAnimationFrame(this.frame);this.frame=0;this.last=0;this.trail?.breakTrail();
   }
   reset(){
-   if(this.frame)win.cancelAnimationFrame(this.frame);this.frame=0;this.last=0;this.bounce=0;
+   if(this.frame)win.cancelAnimationFrame(this.frame);this.frame=0;this.last=0;this.bounce=0;this.hop=0;
    this.membrane=bubbleCreate();this.trail?.breakTrail();if(this.body)this.body.vx=this.body.vy=0;
    this.pressure={x:0,y:0,vx:0,vy:0};this.pulses=[];
    this.style.transform='';if(this.visible)this.paint();
@@ -125,7 +127,8 @@ export function registerPlayerBubble(win=window){
    bubbleStep(this.membrane,{...this.body,vx:this.body.vx+this.pressure.vx,vy:this.body.vy+this.pressure.vy},dt,false,flow);
    this.bounce*=Math.exp(-dt*5);
    // A small tethered hop for decorative icons; the large viewer owns its drag tether.
-   this.style.transform=this.closest('.skin-preview-interactive')?'':`translateY(${(Math.sin(time*.018)*this.bounce*12).toFixed(3)}%)`;
+   this.hop=this.closest('.skin-preview-interactive')?0:Math.sin(time*.018)*this.bounce*12/100*28;
+   this.style.transform=this.closest('.skin-preview-interactive')?'':`translateY(${(this.hop/28*100).toFixed(3)}%)`;
    this.paint(dt);
    this.request();
   }
@@ -134,15 +137,17 @@ export function registerPlayerBubble(win=window){
    const c=this.context;
    const style=win.getComputedStyle(this),color=style.getPropertyValue('--skin-color').trim()||'#f1f9d7';
    const body={...this.body,x:this.body.x+this.pressure.x,y:this.body.y+this.pressure.y};
-   // Sample actual screen movement, including parent drag/scroll and the icon's
-   // own hop. Reproject the old points into this moving canvas so the tail stays
-   // behind, rather than moving with the element. Resizes are discontinuities.
-   const rect=this.getBoundingClientRect(),unit=this.size/28,x=(rect.left+rect.width/2)/unit,y=(rect.top+rect.height/2)/unit;
+   // Large previews follow their parent tether in screen space. Equipped icons
+   // sample only their own movement, so scrolling/layout cannot emit trails.
+   const rect=this.getBoundingClientRect();if(!rect.width)return;this.size=rect.width;
+   const parentScale=rect.width/(this.offsetWidth||rect.width),unit=this.size/28,x=(rect.left+rect.width/2)/unit,y=(rect.top+rect.height/2)/unit;
    if(this.trailUnit!==unit){this.trail.breakTrail();this.trailUnit=unit;}
-   this.trail.configure({trail:style.getPropertyValue('--player-trail').trim()});
+   const preview=!!this.closest('.skin-preview-interactive'),trails=preview||!this.closest('.skin-preview');
+   const tx=preview?x:0,ty=preview?y:(this.hop||0),tox=this.body.x-tx,toy=this.body.y-ty;
+   if(trails)this.trail.configure({trail:style.getPropertyValue('--player-trail').trim()});else this.trail.breakTrail();
    // Style observers repaint during a grabbed parent's transform. A repaint
    // has no elapsed simulation time and must not break the continuous trail.
-   if(dt>0)this.trail.step({x:x+this.pressure.x,y:y+this.pressure.y},dt);
+   if(trails&&dt>0)this.trail.step({x:tx+this.pressure.x,y:ty+this.pressure.y},dt);
    // The tail belongs to movement, not the icon's hit box. Extend this same
    // canvas around its live history, keeping the allocation viewport-bounded.
    // Quantized edges avoid reallocating the backing bitmap for every pixel.
@@ -152,8 +157,8 @@ export function registerPlayerBubble(win=window){
    let left=body.x-glow,top=body.y-glow,right=body.x+glow,bottom=body.y+glow;
    for(const point of points){left=Math.min(left,point.x-rim-glow);right=Math.max(right,point.x+rim+glow);top=Math.min(top,point.y-rim-glow);bottom=Math.max(bottom,point.y+rim+glow);}
    for(const point of this.trail.points){
-    left=Math.min(left,point.x+ox-pad);right=Math.max(right,point.x+ox+pad);
-    top=Math.min(top,point.y+oy-pad);bottom=Math.max(bottom,point.y+oy+pad);
+    left=Math.min(left,point.x+tox-pad);right=Math.max(right,point.x+tox+pad);
+    top=Math.min(top,point.y+toy-pad);bottom=Math.max(bottom,point.y+toy+pad);
    }
    const clipped=this.activity?.clip({left:(left-ox)*unit,top:(top-oy)*unit,right:(right-ox)*unit,bottom:(bottom-oy)*unit});
    if(this.canvas.hidden===!!clipped)this.canvas.hidden=!clipped;if(!clipped)return;
@@ -164,10 +169,10 @@ export function registerPlayerBubble(win=window){
    const pixelWidth=Math.ceil(width*ratio),pixelHeight=Math.ceil(height*ratio);
    if(this.canvas.width!==pixelWidth)this.canvas.width=pixelWidth;
    if(this.canvas.height!==pixelHeight)this.canvas.height=pixelHeight;
-   Object.assign(this.canvas.style,{width:`${width}px`,height:`${height}px`,left:`${(left-this.body.x)*unit+this.size/2}px`,top:`${(top-this.body.y)*unit+this.size/2}px`});
+   Object.assign(this.canvas.style,{width:`${width/parentScale}px`,height:`${height/parentScale}px`,left:`${((left-this.body.x)*unit+this.size/2)/parentScale}px`,top:`${((top-this.body.y)*unit+this.size/2)/parentScale}px`});
    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pixelWidth,pixelHeight);
    c.setTransform(unit*ratio,0,0,unit*ratio,-left*unit*ratio,-top*unit*ratio);
-   c.save();c.translate(this.body.x-x,this.body.y-y);this.trail.render(c,this.ownerDocument.body.dataset?.quality==='low',true);c.restore();
+   c.save();c.translate(tox,toy);if(trails)this.trail.render(c,this.ownerDocument.body.dataset?.quality==='low',true);c.restore();
    bubbleRender(c,body,points,color,{glowExtent:1.3,skinTime:this.age,skinStyle:style.getPropertyValue('--skin-style').trim()||style.getPropertyValue('--player-skin-style').trim(),lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
    if(style.getPropertyValue('--player-bubble-outline').trim()==='1'){
     // A separate contour follows the membrane, leaving its luminous rim intact.

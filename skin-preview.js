@@ -42,8 +42,10 @@ export function skinPreviewMount(element){
   if(e.pointerId!==pointer?.id)return;e.preventDefault();
   const dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;
   if(Math.hypot(dx,dy)>4)pointer.moved=true;
-  const x=pointer.originX+dx,y=pointer.originY+dy,limit=Math.min(64,orb.clientWidth*.36),distance=Math.hypot(x,y),scale=distance?limit*Math.tanh(distance/limit)/distance:1;
-  state={x:x*scale,y:y*scale,vx:0,vy:0};paint();
+  const x=pointer.originX+dx,y=pointer.originY+dy;
+  // Follow the pointer across the actual viewer, reserving the player's radius.
+  const limitX=Math.max(0,(element.clientWidth-orb.clientWidth)/2),limitY=Math.max(0,(element.clientHeight-orb.clientHeight)/2);
+  state={x:Math.max(-limitX,Math.min(limitX,x)),y:Math.max(-limitY,Math.min(limitY,y)),vx:0,vy:0};paint();
   {const dx=e.clientX-pointer.lastX,dy=e.clientY-pointer.lastY,d=Math.hypot(dx,dy);if(d>0)bubble?.kick?.(-dx/d,-dy/d,Math.min(160,d*12));}
   pointer.lastX=e.clientX;pointer.lastY=e.clientY;
  }

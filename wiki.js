@@ -1,12 +1,12 @@
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { screenHeader } from './screen-header.js?v=4f5dee21e7c6bc04efbd839ba9a1d32a611b16905cdb37258dcb7188a585d554';
+import { screenHeader } from './screen-header.js?v=df61a7f2f513341f38e4dd70e2e81e7add2d467c29ef9c55b24294ce7b6a6cf8';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
-import { iconHTML } from './ui-icon.js?v=abfd9b2167cf305a4cba7dbd63aa1fc6464aae57aecc6ffe6b6432448a773031';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=27ae184bc45765bf8f2b0c81d7a8820129e03350dde54120a6aaaba781527cf2';
+import { iconHTML } from './ui-icon.js?v=b97a13e492ce3889e47a205f1e9246f2161ee728ca7630e71570cedfd636805d';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=b81eb0a520dd2af0320397c6084213dd4044b5417db1fcd506b127c13ff1c18a';
 
 export const WIKI_PAGES = Object.freeze({
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=68c8e74aece37098ad06da7e84c0ec77dfdec0c5111b6cdab592befc64ae0a90' },
-  player: { title: 'Player', url: './wiki/player.md?v=638bd583126b94c92067cf0de14790a86a4916a5f2eff170b8263cfbc19a93a5' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=a83b7d205d61463dfc5d2e071250bbfd1c7b844c5eb671dd667fedcd7a6f8d7b' },
+  player: { title: 'Player', url: './wiki/player.md?v=55580fb551559acda62013e1123a0a348bb1f9bdab112f4adad8d49593587dae' },
   developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=8bbd51ef13042a46fa7ace852798c897795fd7ec22cc778d2a1bd19e606099a5' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=8e4bd3a9087a3772f6c6f6eecd7b835c3419fddfc7372f20360fdbb87a1529c0' },
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=c607b2d4e304d343c0815a81882356b4613b7d19554b3e82aa3383def0720193' },
@@ -14,7 +14,7 @@ export const WIKI_PAGES = Object.freeze({
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=dcc952e821bf4579a59a3d5a7dada9cc83b5d191ad4b12c3b250fdfb0bb74c88' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=e55368d7bc59e118d866c5f0413bc9f20f5493013b5c6b6ccf7c39f697aff1c5' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=affff50c3849c5b41a0d7e2e3183fa610665654ee39ab2382aee3492f8322e6e' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=d3cf6ad7835cdb5872e6e87f8fabecbe5f08e75162a8eff9e4627a450139051e' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=543ce8c11fb5723231312405b2d53945c5e12fa5d38a6b72224c5e12dcfa3e8a' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=be1529e94417ad6a4a0c268f61e340a8b1495d05b8a7f2d9f7d1b468c4377b0d' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=e166e94ad082d547335aa1ca6c455fd820c36f200553ee9c4d68d4c724f5b0ca' },

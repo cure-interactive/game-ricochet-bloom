@@ -124,6 +124,7 @@ Monitor and phone were exported from Cure Interactive Icons commit `71d7cc7fb2be
 ## Player cosmetics
 
 - [Trails](trails.md) and [Impacts](bounce-effects.md) — original geometric artwork.
+- [Player](player-static.md) — original static bubble artwork for Wiki navigation.
 - Mobile Device now uses a solid silhouette with earpiece and microphone cutouts; the original Cure-created provenance is unchanged.
 - Skin material patterns are original canvas artwork; the Cure skin reuses the approved, unmodified `brand/cure-interactive.svg` wordmark already credited in About.
 

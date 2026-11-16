@@ -3,7 +3,7 @@ import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=c0db179bcb018
 import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=c1c123b7a3926c29cd0f81c9f79402f0bab12505a0d3d8511563ad7f6f33c054';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
-import { PoolMedia } from './media.js?v=d49c05cabf017cc3bd9ac1385c96338e0f73fa501677de8bddc3be00b3610a79';
+import { PoolMedia } from './media.js?v=3dd174e242c5346cb2f700f59297539a462f0af79fd04ec1aa1640f17f6d606c';
 import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, musicPower, bubbleRole } from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
