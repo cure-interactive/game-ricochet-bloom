@@ -31,8 +31,8 @@ export function edgeBackMount(doc=document,win=window,{feedback=()=>{}}={}) {
     const ready=edgeBackReady(g.dx,g.dy,win.innerWidth);
     g.cue.classList.toggle('is-ready',ready);
     const threshold=Math.min(100,Math.max(60,win.innerWidth*.22));
-    const stage=Math.min(3,Math.floor(Math.max(0,g.dx)/threshold*3));
-    if(stage!==g.stage){g.stage=stage;feedback('back-wind-'+stage);}
+    const stage=Math.floor(Math.max(0,g.dx)/threshold*20);
+    if(stage!==g.stage){feedback({type:'wind',delta:(stage-g.stage)/20});g.stage=stage;}
   }
   function finish(event,point){
     if(!gesture)return;move(event,point);if(!gesture)return;

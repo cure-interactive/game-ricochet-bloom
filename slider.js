@@ -1,3 +1,4 @@
+import {uiWind} from './ui-sound.js?v=c8318423c1565fbab4d63567ad32cdd01eaf2bef81da713cf2f2060b3ca69e7d';
 // Native ranges retain values, labels, keyboard and assistive-technology behavior.
 // Shared DOM paints every slider; pointer mapping does not depend on host widgets.
 export function sliderValue(min,max,step,fraction){
@@ -12,22 +13,22 @@ export function sliderMount(doc=document,win=window){
   rail.className='slider-rail';fill.className='slider-fill';thumb.className='slider-thumb';
   for(const el of [rail,thumb])el.setAttribute('aria-hidden','true');
   input.before(wrap);rail.append(fill);wrap.append(rail,thumb,input);
-  let drag=null;
+  let drag=null,previous=Number(input.value);
   const limits=()=>({min:input.min===''?0:Number(input.min),max:input.max===''?100:Number(input.max),step:input.step==='any'?0:Number(input.step)||1});
-  const refresh=()=>{const {min,max}=limits();wrap.style.setProperty('--slider-value',String(max>min?Math.max(0,Math.min(1,(Number(input.value)-min)/(max-min))):0));wrap.dataset.disabled=String(input.disabled);};
+  const refresh=()=>{const {min,max}=limits();previous=Number(input.value);wrap.style.setProperty('--slider-value',String(max>min?Math.max(0,Math.min(1,(Number(input.value)-min)/(max-min))):0));wrap.dataset.disabled=String(input.disabled);};
   // Existing settings owners assign .value directly when restoring a profile.
   const descriptor=Object.getOwnPropertyDescriptor(win.HTMLInputElement.prototype,'value');
   Object.defineProperty(input,'value',{configurable:true,get(){return descriptor.get.call(this);},set(value){descriptor.set.call(this,value);refresh();}});
   const update=e=>{
    const r=rail.getBoundingClientRect(),{min,max,step}=limits(),rtl=win.getComputedStyle(input).direction==='rtl';
    const fraction=(e.clientX-r.left)/Math.max(1,r.width),value=String(sliderValue(min,max,step,rtl?1-fraction:fraction));
-   if(value!==input.value){input.value=value;input.dispatchEvent(new win.Event('input',{bubbles:true}));}
+   if(value!==input.value){const before=Number(input.value);input.value=value;input.dispatchEvent(new win.Event('input',{bubbles:true}));uiWind(input,(Number(value)-before)/Math.max(1,max-min),e);}
   };
   const end=e=>{if(!drag||e.pointerId!==drag.id)return;const changed=input.value!==drag.start;drag=null;delete wrap.dataset.held;if(input.hasPointerCapture(e.pointerId))input.releasePointerCapture(e.pointerId);if(changed)input.dispatchEvent(new win.Event('change',{bubbles:true}));};
   input.addEventListener('pointerdown',e=>{if(input.disabled||e.button!==0||drag)return;e.preventDefault();input.focus({preventScroll:true});drag={id:e.pointerId,start:input.value};input.setPointerCapture(e.pointerId);wrap.dataset.held='true';update(e);});
   input.addEventListener('pointermove',e=>{if(drag?.id===e.pointerId){e.preventDefault();update(e);}});
   for(const name of ['pointerup','pointercancel','lostpointercapture'])input.addEventListener(name,end);
-  input.addEventListener('input',refresh);input.addEventListener('change',refresh);
+  input.addEventListener('input',e=>{const {min,max}=limits();if(!drag)uiWind(input,(Number(input.value)-previous)/Math.max(1,max-min),e);refresh();});input.addEventListener('change',refresh);
   const observer=new win.MutationObserver(refresh);observer.observe(input,{attributes:true,attributeFilter:['value','min','max','step','disabled']});
   entries.set(input,{refresh,observer});refresh();
  }

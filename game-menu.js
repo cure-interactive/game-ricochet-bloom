@@ -1,9 +1,9 @@
 import {menuSummaryRender} from './menu-summary.js?v=ae45281d84da1bab2004670a7e08413c46eec38f2c344291b3c7b345710e5910';
 import {cosmeticLoadout} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
-import { menuLayoutMount } from './menu-title.js?v=43091946f21ac49f38daceb31cbb6b1996d3800d5e202905ca16780c66a59ceb';
+import { menuLayoutMount } from './menu-title.js?v=e7c4f96a5e747a40baed58d737cf4cd12a942c8a2cf7dfa8922d9389dfee08b0';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { buttonHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
-import { menuBackgroundMount } from './menu-background.js?v=dd372cc731d2f011482db02f279b0bc0796c8a004119d8c6b21a776214bb8e48';
+import { menuBackgroundMount } from './menu-background.js?v=3c33e223d6f6b5765f55472cfa84104b5bf6ff3062893c5e44146c01f8474182';
 
 import { driftMount } from './drift-ui.js?v=432e96f5f34281ca19da9e8cfbdbaf776171ffd4a8790f2aa3e58dd492889500';
 

@@ -9,6 +9,12 @@ import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish,
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export const SOUND_CHECK_SECONDS = 2.8;
+// Octave-spaced clicks crossfade through a fixed register, with silent ends.
+// Wrapping phase changes voice indices, never the audible spectrum.
+export function uiWindTones(phase){
+ const fraction=((phase%1)+1)%1;
+ return Array.from({length:5},(_,i)=>{const octave=i+fraction;return {pitch:110*2**octave,level:Math.sin(Math.PI*octave/5)**2};});
+}
 export class PoolSound {
   constructor({media=true}={}) { this.media = media?new PoolMedia():null; this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
   get isMusicPaused() { return this.isPaused&&!this.keepAmbient; }
@@ -21,8 +27,8 @@ export class PoolSound {
     // Music playback uses the media route on supporting iOS versions, including
     // when the ringer is silent. The optional API must never block other browsers.
     try { if (globalThis.navigator?.audioSession) globalThis.navigator.audioSession.type = 'playback'; } catch { /* Unsupported session policy: retain ordinary Web Audio. */ }
-    if(this.context?.state==='closed'||this.resumeTimedOut||this.clockStalled())this.graphReset();
-    this.context ||= new (window.AudioContext || window.webkitAudioContext)();
+    if(this.refreshOutput||this.context?.state==='closed'||this.resumeTimedOut||this.clockStalled())this.graphReset();
+    this.context ||= new (window.AudioContext || window.webkitAudioContext)({latencyHint:'interactive'});
     const audioContext = this.context;
     // Call resume and start a source synchronously inside the tap handler. Safari
     // also reports "interrupted" after app switches, calls, or screen locking.
@@ -48,7 +54,8 @@ export class PoolSound {
     this.media?.update(this.isMusicPlaying && !this.isMusicPaused && this.volume > 0 && this.ambience > 0);
     this.media?.retry();
     let timeout;
-    try{await Promise.race([resuming,new Promise((_,reject)=>{timeout=setTimeout(()=>{this.resumeTimedOut=true;reject(new Error('Audio resume timed out'));},1800);})]);}finally{clearTimeout(timeout);}
+    try{await Promise.race([resuming,new Promise((_,reject)=>{timeout=setTimeout(()=>{if(this.context===audioContext)this.resumeTimedOut=true;reject(new Error('Audio resume timed out'));},1800);})]);}finally{clearTimeout(timeout);}
+    if(this.context!==audioContext)return false;
     this.musicUpdate();
     return this.context.state === 'running';
   }
@@ -58,7 +65,9 @@ export class PoolSound {
     if(!previous||time!==previous.time){this.clockSample={wall,time};return false;}
     return wall-previous.wall>1800;
   }
+  outputRefresh(){if(this.context)this.refreshOutput=true;}
   graphReset(){
+    this.refreshOutput=false;
     const mediaKey=this.media?.key,mediaEnv=this.media?.env;
     this.cosmeticPreviewStop();this.musicEnvironment?.dispose();this.musicEnvironment=null;voicesStop(this);this.phraseClear();this.media?.dispose();
     if(this.media){this.media=new PoolMedia(mediaEnv);if(mediaKey)this.media.describe(mediaKey);}
@@ -216,14 +225,17 @@ export class PoolSound {
     if (event.type === 'over') [523.25, 392, 329.63, 261.63].forEach((pitch, index) => this.tone(pitch, pitch, .75, .15, 0, index * .12, 'sine', true));
   }
   uiPlay(kind='select') {
-    if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.voiceCount>42)return false;
+    voicesReap(this);
+    if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.voiceCount>40)return false;
     const now=this.context.currentTime;
+    const wind=kind?.type==='wind'&&Number.isFinite(kind.delta);
+    if(wind)this.uiWindPhase=((this.uiWindPhase||0)+Math.max(-.25,Math.min(.25,kind.delta))*2)%1;
     if(kind!=='back-complete'&&now-(this.uiLastAt??-Infinity)<.06)return false;
     this.uiLastAt=now;
-    const wind={'back-start':300,'back-wind-0':300,'back-wind-1':380,'back-wind-2':480,'back-wind-3':620};
     const back=kind==='back'||kind==='back-complete';
-    const pitch=wind[kind]||(back?440:kind==='confirm'?660:560);
-    this.tone(pitch,back?330:pitch*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true});
+    const pitch=kind==='back-start'?300:back?440:kind==='confirm'?660:560;
+    if(wind){for(const {pitch,level} of uiWindTones(this.uiWindPhase))if(level>.001)this.tone(pitch,pitch,.055,.035*level,0,0,'sine',false,false,{allowPaused:true});}
+    else this.tone(pitch,back?330:pitch*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true});
     if(kind==='confirm')this.tone(880,880,.09,.055,0,.055,'sine',false,false,{allowPaused:true});
     this.uiCount=(this.uiCount||0)+1;
     return true;

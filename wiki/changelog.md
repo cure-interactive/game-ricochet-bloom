@@ -6,6 +6,24 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.34.0
+
+Build: 2026-11-16 19:47:59 UTC
+
+### Player Changes
+
+- Sliders, dragged tab selectors and edge-back gestures share crisp clicks that seem to keep rising as you move forward and falling as you reverse.
+- Improved sound recovery after returning to the app. Old interaction sounds are discarded rather than playing late.
+- Revised selector movement to address the thin lines reported during iOS drags, while retaining partial text/icon contrast and sideways scrolling.
+
+<!-- development -->
+### Developer Notes
+
+- Rebuild the audio output once after a real departure/return, retaining music memory, volume and pause state. Interactive latency is requested; obsolete resume completions and timeouts cannot affect replacement contexts.
+- UI cues expire after 150ms and coalesce. Shared signed movement drives five octave-spaced, weighted 55ms clicks with a 60ms throttle and finite voice budget.
+- The selector uses pixel-aligned left/width animation and ordinary positive stacking, without transformed or scaled pill layers. Contrast is updated in the same frame. Physical iOS rendering and audible latency acceptance remain unverified.
+<!-- /development -->
+
 ## v3.33.2
 
 Build: 2026-11-16 19:15:10 UTC

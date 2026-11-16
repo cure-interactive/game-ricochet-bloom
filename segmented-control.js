@@ -1,4 +1,5 @@
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
+import {uiWind} from './ui-sound.js?v=c8318423c1565fbab4d63567ad32cdd01eaf2bef81da713cf2f2060b3ca69e7d';
 export function segmentedHTML(buttons,{label,current,className=''}){
  return `<div class="tab-bar"><nav class="segmented-control ${escapeHTML(className)}" data-current="${escapeHTML(current)}" aria-label="${escapeHTML(label)}" style="--segment-count:${buttons.length}"><span class="segment-selection" aria-hidden="true"></span>${buttons.join('')}</nav></div>`;
 }
@@ -9,6 +10,9 @@ export function segmentedMount(root,{attribute,change}){
  let drag=null,suppressClick=false,frame=0,followNav=null,edgeFrame=0,edgeTime=0,edgeSpeed=0;
  const buttons=nav=>[...nav.querySelectorAll(selector)];
  const value=button=>button.getAttribute(attribute);
+ const pixel=value=>Math.round(value*(win.devicePixelRatio||1))/(win.devicePixelRatio||1);
+ function paint(nav,left,width){const pill=nav.querySelector('.segment-selection');pill.style.left=pixel(left)+'px';pill.style.width=pixel(width)+'px';contrast(nav);}
+ function stopSettle(){win.cancelAnimationFrame(frame);frame=0;followNav=null;}
  function reveal(nav,button){
   if(!button||!nav.classList?.contains('segment-scrollable'))return;
   const bar=nav.parentElement,r=bar.getBoundingClientRect(),b=button.getBoundingClientRect();
@@ -19,7 +23,7 @@ export function segmentedMount(root,{attribute,change}){
   const selected=buttons(nav).find(b=>value(b)===nav.dataset.current),pill=nav.querySelector('.segment-selection');
   if(!selected||!nav.getClientRects().length)return;
   const n=nav.getBoundingClientRect(),b=selected.getBoundingClientRect();
-  pill.style.left=`${b.left-n.left-nav.clientLeft}px`;pill.style.width=b.width+'px';
+  paint(nav,b.left-n.left-nav.clientLeft,b.width);
  }
  function contrast(nav){
   const pill=nav.querySelector('.segment-selection').getBoundingClientRect();
@@ -44,14 +48,16 @@ export function segmentedMount(root,{attribute,change}){
    }
   }
  }
- function follow(nav){followNav=nav;win.cancelAnimationFrame(frame);const tick=()=>{contrast(nav);frame=nav.querySelector('.segment-selection').getAnimations().length?win.requestAnimationFrame(tick):0;};tick();}
  function select(nav,next,old){
+  stopSettle();
   if(next!==nav.dataset.current)nav=change(next)||nav;
   nav.dataset.current=next;for(const button of buttons(nav))button.setAttribute('aria-pressed',String(value(button)===next));
   reveal(nav,buttons(nav).find(button=>value(button)===next));
-  const pill=nav.querySelector('.segment-selection');for(const a of pill.getAnimations())a.cancel();position(nav);
-  const end=pill.getBoundingClientRect(),dx=old.left-end.left;
-  pill.animate?.([{translate:`${dx}px 0`,scale:`${old.width/Math.max(1,end.width)} 1`},{offset:.65,translate:`${dx*.03}px 0`,scale:'.96 1'},{translate:'0 0',scale:'1 1'}],{duration:420,easing:'ease-out'});follow(nav);
+  const selected=buttons(nav).find(button=>value(button)===next),n=nav.getBoundingClientRect(),end=selected.getBoundingClientRect();
+  const from=old.left-n.left-nav.clientLeft,to=end.left-n.left-nav.clientLeft;let start;
+  followNav=nav;paint(nav,from,old.width);
+  const tick=time=>{start??=time;const progress=Math.min(1,(time-start)/320),ease=1-(1-progress)**3;paint(nav,from+(to-from)*ease,old.width+(end.width-old.width)*ease);if(progress<1)frame=win.requestAnimationFrame(tick);else{frame=0;followNav=null;}};
+  frame=win.requestAnimationFrame(tick);
  }
  root.addEventListener('click',e=>{const button=e.target.closest(selector),nav=button?.closest('.segmented-control');if(!nav)return;if(suppressClick){suppressClick=false;e.preventDefault();e.stopPropagation();return;}select(nav,value(button),nav.querySelector('.segment-selection').getBoundingClientRect());});
  function stopEdge(){win.cancelAnimationFrame(edgeFrame);edgeFrame=0;edgeTime=0;edgeSpeed=0;}
@@ -59,8 +65,8 @@ export function segmentedMount(root,{attribute,change}){
   const rects=buttons(d.nav).map(b=>b.getBoundingClientRect()),width=d.pill.getBoundingClientRect().width;
   let min=Math.min(...rects.map(r=>r.left)),max=Math.max(...rects.map(r=>r.right))-width;
   if(d.nav.classList?.contains('segment-scrollable')){const r=d.nav.parentElement.getBoundingClientRect();min=Math.max(min,r.left+4);max=Math.min(max,r.right-width-4);}
-  const base=parseFloat(d.pill.style.left)+d.nav.getBoundingClientRect().left+d.nav.clientLeft;
-  d.pill.style.translate=`${Math.max(min,Math.min(max,d.start+d.pointerX-d.x))-base}px 0`;contrast(d.nav);
+  const base=d.nav.getBoundingClientRect().left+d.nav.clientLeft;
+  paint(d.nav,Math.max(min,Math.min(max,d.start+d.pointerX-d.x))-base,width);
  }
  function edgeFollow(time){
   edgeFrame=0;const d=drag;if(!d?.moved||d.pan||!d.nav.classList?.contains('segment-scrollable'))return stopEdge();
@@ -84,20 +90,21 @@ export function segmentedMount(root,{attribute,change}){
   // Only the visible selected pill owns selection dragging. Unselected touch
   // gestures remain native even when their path later crosses that pill.
   if(!onPill&&(touch||!pan)){drag=null;return;}
+  stopSettle();
   drag={id,touch,x:point.clientX,y:point.clientY,pointerX:point.clientX,nav,pill,moved:false,start:rect.left,pan,scroll:bar?.scrollLeft};
  }
  function move(e,point,id){
   if(drag?.id!==id)return;const dx=point.clientX-drag.x,dy=point.clientY-drag.y;
   if(!drag.moved&&Math.abs(dy)>Math.abs(dx)+6){stopEdge();drag=null;return;}if(!drag.moved&&Math.abs(dx)<6)return;
-  if(!drag.moved){drag.moved=true;if(!drag.touch)drag.nav.setPointerCapture(id);for(const a of drag.pill.getAnimations())a.cancel();position(drag.nav);}
+  if(!drag.moved){drag.moved=true;if(!drag.touch)drag.nav.setPointerCapture(id);}
   if(drag.pan){e.preventDefault();drag.nav.parentElement.scrollLeft=drag.scroll-dx;return;}
-  e.preventDefault();e.stopPropagation();drag.pointerX=point.clientX;paintDrag(drag);followEdge();
+  e.preventDefault();e.stopPropagation();const before=drag.pill.getBoundingClientRect().left;drag.pointerX=point.clientX;paintDrag(drag);uiWind(drag.nav,(drag.pill.getBoundingClientRect().left-before)/Math.max(1,drag.pill.getBoundingClientRect().width),e);followEdge();
  }
  function finish(e,id,commit){if(drag?.id!==id)return;const d=drag;stopEdge();drag=null;if(!d.moved)return;
   if(d.pan){suppressClick=true;if(d.nav.hasPointerCapture(id))d.nav.releasePointerCapture(id);return;}
   const old=d.pill.getBoundingClientRect(),center=old.left+old.width/2;
   const next=commit?value(buttons(d.nav).sort((a,b)=>{const ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();return Math.abs(ar.left+ar.width/2-center)-Math.abs(br.left+br.width/2-center);})[0]):d.nav.dataset.current;
-  d.pill.style.translate='';suppressClick=true;if(d.touch&&e.cancelable)e.preventDefault();if(!d.touch&&d.nav.hasPointerCapture(id))d.nav.releasePointerCapture(id);select(d.nav,next,old);
+  suppressClick=true;if(d.touch&&e.cancelable)e.preventDefault();if(!d.touch&&d.nav.hasPointerCapture(id))d.nav.releasePointerCapture(id);select(d.nav,next,old);
  }
  root.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch'&&e.button===0)begin(e,e,e.pointerId);});
  root.addEventListener('pointermove',e=>{if(e.pointerType!=='touch')move(e,e,e.pointerId);});
@@ -107,11 +114,11 @@ export function segmentedMount(root,{attribute,change}){
  root.addEventListener('touchstart',e=>{if(e.touches.length===1){const p=e.touches[0];begin(e,p,p.identifier,true);}else if(drag)finish(e,drag.id,false);},{passive:false});
  root.addEventListener('touchmove',e=>{if(!drag?.touch)return;if(e.touches.length!==1){finish(e,drag.id,false);return;}const p=e.touches[0];move(e,p,p.identifier);},{passive:false});
  for(const name of ['touchend','touchcancel'])root.addEventListener(name,e=>{if(!drag?.touch)return;const p=[...e.changedTouches].find(p=>p.identifier===drag.id);if(p)finish(e,p.identifier,name==='touchend');},{passive:false});
- const refresh=(revealSelection=false)=>{for(const nav of root.querySelectorAll('.segmented-control')){if(!nav.getClientRects().length)continue;if(revealSelection===true||!positioned.has(nav))reveal(nav,buttons(nav).find(button=>value(button)===nav.dataset.current));positioned.add(nav);position(nav);contrast(nav);}};
+ const refresh=(revealSelection=false)=>{for(const nav of root.querySelectorAll('.segmented-control')){if(!nav.getClientRects().length||followNav===nav||drag?.nav===nav)continue;if(revealSelection===true||!positioned.has(nav))reveal(nav,buttons(nav).find(button=>value(button)===nav.dataset.current));positioned.add(nav);position(nav);contrast(nav);}};
  root.addEventListener('focusin',e=>{const button=e.target.closest(selector),nav=button?.closest('.segmented-control');if(nav&&!drag&&doc.body?.dataset?.inputModality!=='pointer')reveal(nav,button);});
- const cancelDrag=()=>{stopEdge();if(drag){drag.pill.style.translate='';drag=null;refresh();}};
+ const cancelDrag=()=>{stopEdge();stopSettle();drag=null;refresh();};
  doc.addEventListener?.('visibilitychange',()=>{if(doc.hidden)cancelDrag();});win.addEventListener('blur',cancelDrag);
- root.addEventListener('close',()=>{stopEdge();if(!followNav||root.contains(followNav))win.cancelAnimationFrame(frame);if(drag){drag.pill.style.translate='';drag=null;}});
+ root.addEventListener('close',cancelDrag);
  new win.MutationObserver(refresh).observe(root,{attributes:true,attributeFilter:['open']});
  new win.MutationObserver(()=>refresh(true)).observe(doc.body,{attributes:true,attributeFilter:['data-left-handed']});
  win.addEventListener('resize',()=>refresh(true));return {refresh};
