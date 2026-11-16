@@ -6,6 +6,28 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.29.0
+
+Build: 2026-11-16 02:00:15 UTC
+
+### Player Changes
+
+- Buy and equip Music instrument themes from Common to Mythic in Player. Preview their sound before spending Points; themes use the local audio engine.
+- Match Trail and Impact icon player sizes to Skins, use more of each Trail button’s space, and keep effects sharp and unclipped. Shorter Impact previews and narrower card widths retain two columns on phones.
+- Check for updates automatically when opening or returning to the game. Automatic updates start enabled and can be disabled in Settings → Updates.
+- Use one complete Copy Report in Get Help, matching Email and Share. Remove the redundant upgrade instruction.
+- Anchor the skill tree’s repeating dot background to the same world as its nodes, including during zoom.
+- Add scoped AI-development and artwork disclosure in About, with attribution in Icon Credits.
+
+<!-- development -->
+### Developer Notes
+
+- Share cosmetic-icon across titles, Player buttons and Wiki; render dynamic visual bounds independently of layout slots at backing-store pixel density. Continue visible-page offscreen simulation and sample one movement history.
+- Add backwards-compatible Music receipts to the cosmetic catalogue, theme parameters to shared finite instruments, and grouped cancellable auditions. Menu/Casual and newly rendered song highlights use the selected timbre.
+- Coalesce update lifecycle signals and retain coherent-build/save/visibility guards before restart. Keep startup diagnostics available separately from the unified support action.
+- Use a fixed repeating CSS dot texture on the transformed map world; whole-tile overscan retains its phase without a second camera or frame loop.
+<!-- /development -->
+
 ## v3.28.4
 
 Build: 2026-11-16 00:58:25 UTC

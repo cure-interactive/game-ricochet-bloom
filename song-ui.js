@@ -1,6 +1,6 @@
-import {buttonLabel} from './ui-icon.js?v=a20146c857cd0ea4970cede6aaae8fa6c844ad19464d4b8f34a9c5ba16326dbf';
-import {SONG_STORAGE,SONG_LIMIT,songLibraryRead,songSnapshot,songRender} from './song.js?v=490c28dfcf9cb065c698c1d1d66cf57067e308cfaf0db3ec20c3b23b6ea9aeb8';
-export function songLibrarySetup(current,open) {
+import {buttonLabel} from './ui-icon.js?v=38ca69c062e7f070053503afe2ecc1bb3d94f32cc42f76760cbf1495ddfef877';
+import {SONG_STORAGE,SONG_LIMIT,songLibraryRead,songSnapshot,songRender} from './song.js?v=4e12120dfda070e87be316ab04c031d639ccc3871ec511276da79aa14c809089';
+export function songLibrarySetup(current,open,musicTheme=()=> 'music.original') {
   const panel=document.getElementById('library-panel'),$=id=>panel.querySelector('#'+id)||document.getElementById(id);let library={version:1,songs:[]},selected=null,url=null,file=null,job=0;
   let initialized=false,track=null;
   const matches=song=>!track||!song.music.run||song.music.run.track===track;
@@ -28,7 +28,7 @@ export function songLibrarySetup(current,open) {
   $('song-delete').onclick=()=>{if(!selected)return;if($('song-delete').textContent!=='Confirm deletion'){ buttonLabel($('song-delete'),'Confirm deletion','trashcan-close');status('Tap Confirm deletion to remove this saved song. Your pool is unaffected.');return;}if(write({...library,songs:library.songs.filter(s=>s.id!==selected)})){selected=null;clearPreview();render();status('Saved song removed.');}};
   $('song-prepare').onclick=async()=>{
     const selectedSource=source();if(!selectedSource){status('Choose a saved song from this track first.');return;}clearPreview();const ticket=job;$('song-prepare').disabled=true;status('Preparing your highlight…');
-    try{const blob=await songRender(selectedSource.music);if(ticket!==job||!panel.closest('dialog')?.open||!panel.closest('details')?.open)return;url=URL.createObjectURL(blob);const name=($('song-name').value.trim()||selectedSource.name).replace(/[^\p{L}\p{N} _-]/gu,'').slice(0,60)||'Ricochet Bloom';file=new File([blob],`${name}.wav`,{type:'audio/wav'});$('song-audio').src=url;$('song-download').href=url;$('song-download').download=file.name;$('song-export').hidden=false;$('song-share').hidden=!navigator.canShare?.({files:[file]});status('Ready · 26 seconds · stereo WAV. Press play to listen, download, or share.');}
+    try{const blob=await songRender(selectedSource.music,{musicTheme:musicTheme()});if(ticket!==job||!panel.closest('dialog')?.open||!panel.closest('details')?.open)return;url=URL.createObjectURL(blob);const name=($('song-name').value.trim()||selectedSource.name).replace(/[^\p{L}\p{N} _-]/gu,'').slice(0,60)||'Ricochet Bloom';file=new File([blob],`${name}.wav`,{type:'audio/wav'});$('song-audio').src=url;$('song-download').href=url;$('song-download').download=file.name;$('song-export').hidden=false;$('song-share').hidden=!navigator.canShare?.({files:[file]});status('Ready · 26 seconds · stereo WAV. Press play to listen, download, or share.');}
     catch(error){if(ticket===job)status(error.message||'Could not render audio. Your saved song is safe.');}finally{if(ticket===job)$('song-prepare').disabled=!source();}
   };
   $('song-share').onclick=async()=>{if(!file)return;try{await navigator.share({files:[file],title:file.name.replace('.wav','')});}catch(error){if(error.name!=='AbortError')status('Sharing unavailable. Use Download WAV instead.');}};

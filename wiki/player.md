@@ -1,10 +1,10 @@
 # Player
 
-Open **Player** from the main menu to view your equipped skin. Appearance groups **Skins**, **Trails** and **Impacts** together; **Skills** and **Stats** sit below.
+Open **Player** from the main menu to view your equipped skin. Personalize groups **Skins**, **Trails**, **Impacts** and **Music** together; **Skills** and **Stats** sit below.
 
 ## Player Viewer
 
-The large preview shows your equipped skin. Drag it to stretch its tether, or tap it to make it bounce. Previews and player icons respond gently when you scroll their containing panel and return smoothly to center. Hidden previews pause their animation and retain their shape. These interactions are cosmetic and do not change a run.
+The large preview shows your equipped skin. Drag it to stretch its tether, or tap it to make it bounce. Previews and player icons respond gently when you scroll their containing panel and return smoothly to center. Previews keep moving when scrolled out of view on an open page; closing or hiding the page pauses them. These interactions are cosmetic and do not change a run.
 
 Your player name appears beneath the bubble. Tap or click it to edit in place (up to 32 characters). Press Enter or tap away to save; Escape cancels. An empty edit keeps the previous name. Names belong to the selected profile and are included in progress backups.
 
@@ -48,6 +48,14 @@ Open **Player → Stats** to see your researched launch speed, aiming-guide leng
 The screen also shows Melody Journey clears, separate 5/10/15-shot Score Attack bests, experiment results and Bronze/Silver/Gold records by gamemode. Standard and Relaxed campaign records stay separate. Each saved record counts only its best medal. **5-Chains** counts five-unique-contact chains and uses the Ripple icon. Medal totals with none earned show a slightly faded **—**, rather than 0. Overview, Records and Medals use the same tap/drag selector pattern as Skills.
 
 Stats belong to the selected Normal or Development profile in this browser. Older play may not have been recorded, and unreadable records appear as unavailable. Development grants and unlocks are not counted as earned Points or completed tracks. The displayed attributes describe your researched build; active runs and fixed challenges can retain a different build.
+
+## Music
+
+Open **Player → Music** to browse instrument themes and select **Preview Theme** before buying. Original is free and keeps each song’s Glass, Velvet or Wood palette. Felt Keys is Common (60 Points), Crystal Chimes Rare (120), Velvet Strings Epic (220), Golden Celesta Legendary (360), and Aurora Choir Mythic (550).
+
+**Unlock & Equip** buys once; equip owned themes freely. Themes use the existing local synthesizer, with no sampled sound banks or downloads. The equipped theme changes the instruments in gameplay, Casual, menu music and newly prepared song highlights. It does not change melody, rhythm, saved composition, score or rewards. A previously prepared highlight keeps its rendered sound until you prepare it again.
+
+**Preview Theme** plays a short sample without equipping, spending Points or changing your song. It follows Music Volume, Master Volume and Sound; replay replaces the previous sample, and leaving the preview or hiding the page stops it. Normal and Development ownership stays separate. **Show purchased items cost** also applies to Music themes.
 
 ## Skills
 

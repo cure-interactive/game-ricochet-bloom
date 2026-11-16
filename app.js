@@ -8,49 +8,49 @@ import {inputModalityMount} from './input-modality.js?v=ec290657f7857743c779cffb
 import {scrollbarsMount} from './scrollbar.js?v=bedffbc34c92dbb368ef6d33d29cf0fcb241259ecbcaec5abd379d2937190e2a';
 import {QUALITY,qualityRead,qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import { uiSoundMount, uiSoundFeedback } from './ui-sound.js?v=34bd5b0d5d8b6e0549b0c4144d2e90855f0420eabc22530e9b94fa3532c1ceef';
-import {hudCardsMount} from './hud-help.js?v=5f4a54d043f59cfd2693c9c0f7847db59a36e924f9c7b85734aa8c6091cf0016';
-import { hudMedal, hudMedalRender } from './hud-medal.js?v=32737757cb8940fa265ec256ebae7a47cb90029c69db4d6a01577dc8e4680408';
-import {poolBubbleIcons} from './pool-bubble.js?v=e7e1246732c56d2262531fab4de3bea0efb0bd45245a9329dd44c04f3f1a1205';
-import {appUpdateMount} from './app-update.js?v=c64f8c4d6b85b1205fa55211d0711d2e58b7e08a341d7c43431b57226eb74f36';
-import {BUILD_TIME} from './build.js?v=04cfc24c50e58213e975718abf06c5a6e547b05f630f73fc3e4511a8553d3df0';
-import {cosmeticMount} from './cosmetic-ui.js?v=c072e25e717e2840d3c797a3267e715b49f50f2557a7b25e9447cd5ba38029df';
-import { playerMenuMount } from './player-menu.js?v=7207f52546e35d0586c4166131e0f9faf22c8b2538ee09e858148306977a94b2';
-import { playerStatsMount } from './player-stats-ui.js?v=fdb6b67042a2a21e975d0939498aa05a9b38829e2ee2af0c76c683bd7bddbb67';
+import {hudCardsMount} from './hud-help.js?v=04f964458172dcf29a34ec5fc027fd4b5903924d3017a1b087def70699ae0ee0';
+import { hudMedal, hudMedalRender } from './hud-medal.js?v=5241ce395bef8c7098b14e8b784129108410efd5900dc22c6589efb785928dd7';
+import {poolBubbleIcons} from './pool-bubble.js?v=a3fb26d51eddcdb6a75893c33248741f59f31f2d6a899f8af492dd25c52f1c1f';
+import {appUpdateMount} from './app-update.js?v=cdbdcc951312c5642501cffa77c8ed0f94f78beedfee3c89b5db1aa3ce4f697f';
+import {BUILD_TIME} from './build.js?v=d1f884b18720f27a73b28a2f2fdb06b9ed38db2474c2686600f03c27e22c478e';
+import {cosmeticMount} from './cosmetic-ui.js?v=b3aab18d9b9f4ba3fb29272e8e2582cc5880231976427d32595d31fb7b68b968';
+import { playerMenuMount } from './player-menu.js?v=538b586ec92b01f8511bb08cfadd803f7339a04d4485592f07869f24c5d850e6';
+import { playerStatsMount } from './player-stats-ui.js?v=b209c5629384a579cb3db96adc5ad2f2b8abd0da2bfd8351e48082d406a15944';
 import { playerBuild, playerSync } from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
 import { poolMedalRecord, poolMedalRecords } from './storage.js?v=dfbfb9d0949bcb99987df67ee21179a5e05ccd7018c40a4e4add81b50e771048';
-import { medalIcon, medalBadge } from './medal-ui.js?v=b66de041ee2d9f60adfb88f52c358438190802a3f8dc744542f54dc430e58530';
+import { medalIcon, medalBadge } from './medal-ui.js?v=4f153519a785af105fd067372914e80658af5bc58dfd8a5134a1762b79eb1249';
 import { poolConditions, poolMedalKey, medalEvaluate, scoreConditions } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
 import { SCORE_DEFAULT, SCORE_SEED, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { scoreRead, scoreWrite } from './score-attack-store.js?v=57d08353b2dfac41f93e1d5e1d88bb8387652b1a9d3223e2d9ed7b07150e6d5e';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { trialMount } from './trial-ui.js?v=d9cf5155845be33aba58b6670aa0b56505d9d3e6ee5c704ba19443445fbdd473';
-import { GAME_VERSION } from './version.js?v=6b1783455676343163bb1f5c5bc1ae91f149aacd7c125ac24c748e650354d623';
-import { powerSlots } from './power-ui.js?v=f71934c98acf11e9746b5b0bcb2d7437076a43a0e082eda5a2ba53c27c8a9f5e';
-import { creditsMount } from './credit.js?v=90dd55e30e99005f5fe83536c9dfd68da321220ef5d2e50cfa862c85048f9a46';
+import { trialMount } from './trial-ui.js?v=ad2a9acc2b8c2ca0ae48271bd03df8ab4da796a19ecdb00a605de539b5a12825';
+import { GAME_VERSION } from './version.js?v=4b864b479c5327749a93e1dafb9b7d116910f948d704a6fabe5e0dbf6002fa0e';
+import { powerSlots } from './power-ui.js?v=f5ead5862c287127e73a4d5041281f203bb7625bf15132e0d3ee0c26a95f8817';
+import { creditsMount } from './credit.js?v=65cae9ec18eb346cc6d46d84ee6d820c11545ed0b8a00faa7adbfb7df88ed256';
 import { liveBubbles, WAVE_ENTRY } from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import { viewportMount } from './viewport.js?v=c7cd3ffd13579341c8b8dc3cc012a6b9cf58387595eaca2a5e88260863c31b20';
-import { edgeBackMount } from './edge-back.js?v=dbd9452a28898ef17e8183b48298a33970c3b0efd2463754adfa50e0bc49ea88';
-import { wikiMount } from './wiki.js?v=dd7091a8d18bd88db10381c20db34edb8490eb5b94e7b78241f5c18f41c85105';
+import { edgeBackMount } from './edge-back.js?v=b8c4e6b8db7b64321a287dd690cc8a4355962666a07aa88e87cd77d1d50cff5c';
+import { wikiMount } from './wiki.js?v=32eebac60e4cefad437d3d3cb27e5027645ee404576884f078e7ab108566d6c7';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { POOL_NAMES } from './run.js?v=f9e883627484ce377a5de4f226aa97c6b6087f3523545b778ccbc731948a514e';
-import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=672ea491726e23dc80192448789b2930b402f365a04f387959a2c112784fc35c';
-import { fullscreenMount } from './fullscreen.js?v=adbc549227e615428758af685ed84dcc44704a6af52e45a0f324c804e4053774';
+import { POOL_NAMES } from './run.js?v=6061035dd706c6b2311d8c5a06f0dbec102f07a37eea56a730ebda243a50ebe9';
+import { freePlaySync, freePlayBuild, freePlayCreate } from './free-play.js?v=5c392117c9dfb0057ba8b2a2e6290792efbd5cbb738b6cfc2bf74dc110c7009a';
+import { fullscreenMount } from './fullscreen.js?v=46405159c10f0df732b12b4333d5b5fcea3e4a0d6abd04d11efbc7ca666ae1cd';
 import {lifecycleMount} from './lifecycle.js?v=037e17bc4ecc56d32887a05e67bc7381675f4584af115e9ac420c622eaea0871';
-import { gameMenuMount } from './game-menu.js?v=c8ebc7df8f7626bb1e7e79506f6516fe1d3d8d3a3727ae450b3eb3b4ebdaa672';
+import { gameMenuMount } from './game-menu.js?v=d2fc85573ca77ed3423895a19399038bc9bdb1d0e00e7037f9645b83ca6f4304';
 import { environmentRender, trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { POWER_TREES } from './power-tree.js?v=34729e03c64597e84f1839d5ee9fd913ee7e9a4bdfb952f4edfd241a8bd26feb';
-import { progressionMount } from './progression-ui.js?v=3c3787a016ff0ad268ed4bedba104da185061171b8829b6e588ee5fe7147e822';
-import {assetURL} from './asset.js?v=088862b3a656c6f1107998eef742251f591f278feccffeabbe3a08e65a29731d';
-import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=a20146c857cd0ea4970cede6aaae8fa6c844ad19464d4b8f34a9c5ba16326dbf';
+import { progressionMount } from './progression-ui.js?v=211df0432e10d74e26abaee8bbefd87e33c01c607ab6857f0297416307b4bdb1';
+import {assetURL} from './asset.js?v=1bbc4066856f6f881b0eeb6245232bd43b92047015764002fc7a10d730f15af0';
+import {buttonLabel,iconHTML,iconNode} from './ui-icon.js?v=38ca69c062e7f070053503afe2ecc1bb3d94f32cc42f76760cbf1495ddfef877';
 import {poolView} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
-import {songLibrarySetup} from './song-ui.js?v=f2ee8cd2d3129a1325f420cd85f5fc702c72063b6a2777bde137007832d906f3';
+import {songLibrarySetup} from './song-ui.js?v=45612cbd6488fa06b03f0c70e548a54bb94f5632c8f81bc2958e5a2375658990';
 import { RULE, COLORS, gameCreate, gameWon, continueFree, launch, physicsStep, powerAvailable, powerAllowance, powerMarkers, effectGet, frozenHit, seedBodies, POWERS, OBJECTIVES, objectiveProgress, aimPreview, blasterTarget } from './engine.js?v=27a29e6d2cba5ed4d8a714591cb6751bcf16bb1cea5790adfc71e5146d80876e';
 import { STORAGE, LEGACY_STORAGE, poolStoreRead, poolStoreSet, poolPreferencesWrite } from './storage.js?v=dfbfb9d0949bcb99987df67ee21179a5e05ccd7018c40a4e4add81b50e771048';
-import { PoolSound, SOUND_CHECK_SECONDS } from './sound.js?v=90944499d79efd5cecdbd55134db652ac3d47bf902c91099004cd06272882a17';
+import { PoolSound, SOUND_CHECK_SECONDS } from './sound.js?v=5f2a363329eee86d3b5500e46e72ad459390925ce0b35129ce067512fc64700f';
 import { musicProgress, musicPhrasePreview } from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
-import {PoolVisual} from './pool-visual.js?v=17f96af19aebab854bcfdba83892ef08521fcc8d6f0d0e48ca458522923eab06';
+import {PoolVisual} from './pool-visual.js?v=a4dd071b3a8ceaea79b5cb3d54c0db56a15a981f870c041a17014c8bb7b6e11f';
 import {wakeLockMount} from './wake-lock.js?v=154014a91b4cd2b75bb445ea16836bbcf58eb0e1b0e3c5ac6991b66dc38beea5';
-import {dropdownMount} from './dropdown.js?v=87699c0f51e9ec1f223f8cd8ec4da9475554ae750e743ac1d3d0439ad9aea3d0';
+import {dropdownMount} from './dropdown.js?v=9cadaa228982f2ff8849879a99f169730d18a3131bd976f7a45e6067950e8b9e';
 viewportMount();
 inputModalityMount();
 const $ = id => document.getElementById(id), canvas = $('arena'), context = canvas.getContext('2d'), audio = new PoolSound();
@@ -488,7 +488,7 @@ audio.media.actions(() => {
   else if (!game.isOver) pauseSet(false);
   else { audio.pauseSet(false); audioUnlockAsync(); }
 }, () => { if(trials?.active){trials.pause();return;}audio.pauseSet(true); if (isStarted && !game.isOver) pauseSet(true); });
-const songLibrary=songLibrarySetup(()=>({name:`${game.seed} · ${game.blooms} 5-Chains`,music:audio.musicSave()}),()=>progression.campaign('songs'));
+const songLibrary=songLibrarySetup(()=>({name:`${game.seed} · ${game.blooms} 5-Chains`,music:audio.musicSave()}),()=>progression.campaign('songs'),()=>progression.cosmetics.music);
 controlsRender(); uiRender(); requestAnimationFrame(render);
 if (['127.0.0.1', 'localhost', '[::1]'].includes(location.hostname)) {
   fetch('/api/status').then(response => response.ok ? response.json() : null).then(status => {
@@ -505,12 +505,13 @@ if(progression.state.run)progression.settle(progression.state.run.game,false);
 
 $('game-version').textContent='Version '+GAME_VERSION;
 const buildDate=document.createElement('p');buildDate.className='about-build';buildDate.textContent='Built '+new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'long'}).format(new Date(BUILD_TIME));$('game-version').after(buildDate);
-appUpdateMount({save:()=>{const status=progression.saveDiagnostics;return !status.blocked&&!status.pending&&save();}});
+audio.musicTheme=()=>progression.cosmetics.music;
+appUpdateMount({getAutomatic:()=>preferences.automaticUpdates!==false,setAutomatic:value=>{preferences.automaticUpdates=value;store.preferences.automaticUpdates=value;return poolPreferencesWrite(localStorage,{automaticUpdates:value});},save:()=>{const status=progression.saveDiagnostics;return !status.blocked&&!status.pending&&save();}});
 trials=trialMount({cosmetics:()=>progression.cosmetics,skin:()=>progression.skin,skinStyle:()=>progression.skinStyle,drift:()=>navigation?.drift(),poolMedals:mode=>poolMedalRecords(store,{kind:progression.trialKind,mode}),wiki:id=>wiki.open(/^\d{3}$/.test(id)&&progression.developmentEnabled?'game-modes':'experiments',/^\d{3}$/.test(id)&&progression.developmentEnabled?'experiment-'+id:''),scorePlay,sound:audio,unlock:audioUnlockAsync,save,kind:()=>progression.trialKind,generation:()=>progression.trialGeneration,points:()=>progression.points,reward:e=>progression.trialReward(e),screen:name=>navigation?.show(name),back:()=>navigation?.back(),home:()=>navigation?.home(),legacy(mode){if(mode==='campaign')progression.campaign('tracks');else if(mode==='free')freePlay();else if(mode==='waves')wavesPlay();else {if(progression.context!=='legacy')progression.leave();save();const entry=store.pools.challenge;loadPool(entry?.game||gameCreate('LAGOON','challenge'),entry?.music);}}});
 
 const wiki=wikiMount({development:()=>progression.developmentEnabled,screen:()=>navigation?.show('wiki'),back:()=>navigation?.back()});
 $('game-changelog').onclick=()=>{navigation.show('settings');wiki.open('changelog');};
-const playerMenuScreen=playerMenuMount({get:()=>progression.statsProfile.state,profile:()=>progression.statsProfile.state.profile,rename:name=>progression.renamePlayer(name),gentle:()=>isLowQuality,screen:()=>navigation?.show('player'),back:()=>navigation?.back(),open:destination=>{if(destination==='skins')progression.skins();else if(destination==='stats')playerStatsScreen.open();else if(destination==='skills')progression.players();else if(['trails','bounce-effects'].includes(destination))cosmeticsScreen.open(destination);}});
+const playerMenuScreen=playerMenuMount({get:()=>progression.statsProfile.state,profile:()=>progression.statsProfile.state.profile,rename:name=>progression.renamePlayer(name),gentle:()=>isLowQuality,screen:()=>navigation?.show('player'),back:()=>navigation?.back(),open:destination=>{if(destination==='skins')progression.skins();else if(destination==='stats')playerStatsScreen.open();else if(destination==='skills')progression.players();else if(['trails','bounce-effects','music-themes'].includes(destination))cosmeticsScreen.open(destination);}});
 const cosmeticsScreen=cosmeticMount({showPurchasedCosts:()=>progression.showPurchasedCosts,unlock:()=>audio.unlockAsync().catch(()=>false),sound:id=>audio.cosmeticAudition(id),stopSound:()=>audio.cosmeticPreviewStop(),profile:()=>progression.statsProfile.state.profile,act:action=>{const result=progression.cosmeticAct(action);navigation?.refresh();return result;},color:()=>progression.skin,style:()=>progression.skinStyle,screen:name=>navigation?.show(name),back:()=>navigation?.back()});
 const playerStatsScreen=playerStatsMount({get:()=>({...progression.statsProfile,storage:localStorage,poolStore:store}),screen:()=>navigation?.show('stats'),back:()=>navigation?.back(),open:destination=>destination==='upgrades'?progression.players():progression.tree()});
 navigation=gameMenuMount({
@@ -518,13 +519,13 @@ navigation=gameMenuMount({
   gentle:()=>isLowQuality,
   skin:()=>progression.skin,skinStyle:()=>progression.skinStyle,
   profile:()=>progression.statsProfile.state,
-  audioSettings:()=>({volume:audio.volume,ambience:audio.ambience,muted:audio.isMuted}),
+  audioSettings:()=>({musicTheme:progression.cosmetics.music,volume:audio.volume,ambience:audio.ambience,muted:audio.isMuted}),
   suspend({ambient=false}={}){dragCancel();if(isStarted)save();isPaused=true;audio.pauseSet(true,{ambient:ambient&&isStarted});uiRender();},
   resume:start,
   freePlay, wavesPlay,
   info(){if(preferences.lastPlay==='score-attack'){const attack=scoreRead(localStorage,progression.trialKind,preferences.scoreBudget||SCORE_DEFAULT).entry;if(attack&&!attack.game.isOver)return {resume:{artwork:assetURL('artwork/mode/score-attack.svg'),detail:`Score Attack · ${attack.game.attack.budget} Shots · ${attack.game.plucks} Left`}};}const wave=store.pools.waves;if(preferences.lastPlay==='waves'&&wave&&!wave.game.isOver)return {resume:{artwork:assetURL('artwork/pool-512.png'),detail:`Endless Waves · Wave ${wave.game.wave.number} · ${wave.game.plucks} Shots Left`}};const s=progression.state;if(s.phase==='shop')return {resume:null};const next=s.phase==='interlude',pool=s.pool+(next?1:0);return {resume:{artwork:assetURL('artwork/'+s.track+'.svg'),detail:trackGet(s.track).name+' · '+(next?'Next: ':'')+'Pool '+(pool+1)+' — '+POOL_NAMES[pool]}};},
   continue(){if(preferences.lastPlay==='score-attack'){const attack=scoreRead(localStorage,progression.trialKind,preferences.scoreBudget||SCORE_DEFAULT).entry;if(attack&&!attack.game.isOver){scorePlay(preferences.scoreBudget||SCORE_DEFAULT);return;}}if(preferences.lastPlay==='waves'&&store.pools.waves&&!store.pools.waves.game.isOver){wavesPlay();return;}if(progression.state.phase==='run')progression.play();else if(progression.state.phase==='interlude')progression.campaign();else start();},
-  open(screen){if(screen==='gamemodes')trials.gallery();else if(screen.startsWith('gamemodes:'))trials.gallery(screen.slice(10));else if(screen.startsWith('pool-setup:'))trials.poolSetup(screen.slice(11));else if(screen==='score-setup')trials.scoreSetup();else if(screen==='trial-setup')trials.setup();else if(screen==='experiment-hub')trials.hub();else if(screen==='experiment-family')trials.family();else if(screen==='experiment-detail')trials.detail();else if(screen==='pause'||screen==='drift-pause'){if(screen==='drift-pause')$('menu-mode').textContent='Casual';$('menu-dialog').showModal();}else if(screen==='levels')progression.campaign('tracks');else if(screen==='player')playerMenuScreen.open();else if(screen==='stats')playerStatsScreen.open();else if(['trails','bounce-effects'].includes(screen))cosmeticsScreen.open(screen);else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='player-upgrades')progression.players();else if(screen==='wiki')wiki.open();else if(screen==='help')wiki.open('how-to-play');else $('settings-dialog').showModal();}
+  open(screen){if(screen==='gamemodes')trials.gallery();else if(screen.startsWith('gamemodes:'))trials.gallery(screen.slice(10));else if(screen.startsWith('pool-setup:'))trials.poolSetup(screen.slice(11));else if(screen==='score-setup')trials.scoreSetup();else if(screen==='trial-setup')trials.setup();else if(screen==='experiment-hub')trials.hub();else if(screen==='experiment-family')trials.family();else if(screen==='experiment-detail')trials.detail();else if(screen==='pause'||screen==='drift-pause'){if(screen==='drift-pause')$('menu-mode').textContent='Casual';$('menu-dialog').showModal();}else if(screen==='levels')progression.campaign('tracks');else if(screen==='player')playerMenuScreen.open();else if(screen==='stats')playerStatsScreen.open();else if(['trails','bounce-effects','music-themes'].includes(screen))cosmeticsScreen.open(screen);else if(screen==='tree')progression.tree();else if(screen==='skins')progression.skins();else if(screen==='player-upgrades')progression.players();else if(screen==='wiki')wiki.open();else if(screen==='help')wiki.open('how-to-play');else $('settings-dialog').showModal();}
 });
 const uiFeedback=uiSoundFeedback(audio,document);
 uiSoundMount(audio,document,uiFeedback);
@@ -544,5 +545,5 @@ $('menu-wiki').onclick=()=>wiki.open();
 $('menu-help').onclick=()=>wiki.open('how-to-play');
 $('menu-settings').onclick=()=>$('settings-dialog').showModal();
 if($('tree-dialog').open)navigation.show('tree');
-window.ricochetDiagnostics?.setContext(()=>({initialized:true,mode:game.mode,progressAvailable:progression.statsProfile.available,progressSave:progression.saveDiagnostics,poolAvailable:storageIsAvailable}));
+window.ricochetDiagnostics?.setContext(()=>({initialized:true,mode:game.mode,progressAvailable:progression.statsProfile.available,progressSave:progression.saveDiagnostics,poolAvailable:storageIsAvailable,audio:{state:audio.context?.state||'not initialized',muted:audio.isMuted,master:audio.volume,music:audio.ambience,voices:audio.voiceCount,paused:audio.isMusicPaused},rendering:{quality,frameRate:preferences.frameRate||'default'},automaticUpdates:preferences.automaticUpdates!==false}));
 window.dispatchEvent(new Event('ricochet-ready'));

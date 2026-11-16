@@ -19,6 +19,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 - [Player Viewer](player.md#player-viewer)
 - [Skins](player.md#skins)
 - [Trails and Impacts](player.md#trails-and-impacts)
+- [Music](player.md#music)
 - [Stats](player.md#stats)
 - [Skills](player.md#skills)
 
@@ -197,6 +198,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Change Logs
 
 - [Change Logs](changelog.md)
+- [v3.29.0](changelog.md#v3-29-0)
 - [v3.28.4](changelog.md#v3-28-4)
 - [v3.28.3](changelog.md#v3-28-3)
 - [v3.28.2](changelog.md#v3-28-2)

@@ -1,4 +1,4 @@
-import {PoolSound} from './sound.js?v=90944499d79efd5cecdbd55134db652ac3d47bf902c91099004cd06272882a17';
+import {PoolSound} from './sound.js?v=5f2a363329eee86d3b5500e46e72ad459390925ce0b35129ce067512fc64700f';
 import {audioRecoveryMount} from './audio-recovery.js?v=a6c4d89f44e22020e88ab00079ef6450ddf0043a7591b50bf7e0d5a7e3fbcfb8';
 
 // Detached composition uses the game's finished arrangement/scheduler only.
@@ -7,7 +7,7 @@ export function menuMusicCreate(settings, sound=new PoolSound({media:false})){
  let active=false,preferences='';
  function sync(){
   const value=settings(),key=JSON.stringify(value);
-  if(key!==preferences){preferences=key;sound.settingsSet(value.volume,value.muted);sound.ambienceSet(value.ambience);}
+  if(key!==preferences){preferences=key;sound.musicTheme=value.musicTheme;sound.settingsSet(value.volume,value.muted);sound.ambienceSet(value.ambience);}
  }
  function unlock(){sync();if(active&&!sound.isMuted&&sound.volume>0)void sound.unlockAsync().catch(()=>{});}
  sound.musicStart();sound.pauseSet(true);

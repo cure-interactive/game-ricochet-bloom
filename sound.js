@@ -1,9 +1,9 @@
-import {instrumentNote,instrumentPercussion} from './instrument.js?v=93b35985fdd4a57c460799ea92460242b39f4e3576bf6b7de2cf226d83a382e4';
+import {instrumentNote,instrumentPercussion} from './instrument.js?v=6920e7d1e4c0cd13cd776998bf8f549daa237a784000fc2b097218c2d7822c01';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=c0db179bcb018380a8604c761694e0021f5b46aae7b41ff0986bf44e98136bce';
-import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=97b306ab42d46dc2f32ef73e7417114b7e4c554d3db716a4334c31895c9d8d32';
+import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=c1c123b7a3926c29cd0f81c9f79402f0bab12505a0d3d8511563ad7f6f33c054';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
-import { PoolMedia } from './media.js?v=768fd2085fb48c8070f85109a5576972870f150254ad3d8924ab36fdd5fef962';
+import { PoolMedia } from './media.js?v=846e1e059489093bada3b567711d1adc91220a30e271e3793287145a4ca652c7';
 import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish, musicNextBar, musicAccent, musicPower, bubbleRole } from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
@@ -71,7 +71,7 @@ export class PoolSound {
     voicesStop(this);this.phraseClear();this.media?.dispose();
     if(this.media){this.media=new PoolMedia(mediaEnv);if(mediaKey)this.media.describe(mediaKey);}
     try{void this.context?.close?.().catch(()=>{});}catch{}
-    this.context=null;this.master=null;this.musicInput=null;this.musicOutput=null;this.delay=null;
+    this.context=null;this.musicPreviewOutput=null;this.master=null;this.musicInput=null;this.musicOutput=null;this.delay=null;
     this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};this.travelState=null;
   }
   harmonySet(blooms) {
@@ -91,7 +91,7 @@ export class PoolSound {
     }
   }
   musicStart() { this.isMusicPlaying = true; this.musicUpdate(); }
-  ambienceSet(value) { this.ambience = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 1; if (!this.ambience) this.phraseClear(); this.mixUpdate(); }
+  ambienceSet(value) { this.ambience = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 1; if (!this.ambience){this.phraseClear();voicesStop(this,'music-theme-preview');} if(this.musicPreviewOutput)this.musicPreviewOutput.gain.setTargetAtTime(this.ambience,this.context.currentTime,.03); this.mixUpdate(); }
   mixUpdate() {
     this.media?.update(!!this.context && this.context.state === 'running' && this.isMusicPlaying && !this.isMuted && !this.isMusicPaused && this.volume > 0 && this.ambience > 0);
     if (!this.musicOutput) return;
@@ -233,9 +233,18 @@ export class PoolSound {
     this.uiCount=(this.uiCount||0)+1;
     return true;
   }
-  cosmeticStop(){voicesStop(this,'cosmetic');voicesStop(this,'cosmetic-preview');voicesStop(this,'cosmetic-travel');this.travelState=null;}
-  cosmeticPreviewStop(){voicesStop(this,'cosmetic-preview');}
-  cosmeticAudition(id){const item=cosmeticGet(id);return !!item&&this.cosmeticPlay({[item.kind]:id},{type:item.kind==='trail'?'launch':'cosmetic-hit'},{preview:true});}
+  cosmeticStop(){voicesStop(this,'music-theme-preview');voicesStop(this,'cosmetic');voicesStop(this,'cosmetic-preview');voicesStop(this,'cosmetic-travel');this.travelState=null;}
+  cosmeticPreviewStop(){voicesStop(this,'cosmetic-preview');voicesStop(this,'music-theme-preview');}
+  cosmeticAudition(id){const item=cosmeticGet(id);if(item?.kind==='music')return this.musicThemeAudition(id);return !!item&&this.cosmeticPlay({[item.kind]:id},{type:item.kind==='trail'?'launch':'cosmetic-hit'},{preview:true});}
+  musicThemeAudition(id){
+    if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||!this.ambience||globalThis.document?.hidden)return false;
+    this.cosmeticPreviewStop();
+    if(!this.musicPreviewOutput){this.musicPreviewOutput=this.context.createGain();this.musicPreviewOutput.connect(this.master);}
+    this.musicPreviewOutput.gain.setValueAtTime(this.ambience,this.context.currentTime);
+    const before=this.voiceCount;
+    for(const [i,midi] of [60,64,67,72].entries())instrumentNote(this,{role:'lead',midi,at:this.context.currentTime+i*.45,duration:.9,attack:.035,level:.14,pan:(i-1.5)*.15,palette:'glass',musicTheme:id,output:this.musicPreviewOutput,group:'music-theme-preview'});
+    return this.voiceCount>before;
+  }
   cosmeticPlay(loadout,event,{preview=false}={}){
     const kind=event.type==='launch'?'trail':event.type==='cosmetic-hit'||event.type==='wall'&&event.id===0||event.type==='impact'&&(event.a===0||event.b===0)?'bounce':null;
     const item=cosmeticGet(loadout?.[kind]);

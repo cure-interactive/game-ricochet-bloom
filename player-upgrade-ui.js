@@ -1,11 +1,11 @@
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=c0d6b0d5532b2f0dc3b558bef736bd2f6efec498a8182eecacaf5102f98f37ad';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=64e1e7e01622258de90e7861208f7b04e89a006234a4e822e221e5f2d8902725';
 import {playerSkillStats} from './player-skill-comparison.js?v=5413d93733478c5c3d73d00b0f092c6f044b3ee96887cab2636e891526bba17e';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import {playerTreeGraph} from './player-tree.js?v=48ba72eee42207978a1009eeabbaf3012eafc0870cd2f10f9c2a1baf5ab3f5a1';
-import {mapCameraMount,nearestMapNode} from './tree-map.js?v=3796f253f5adde9641a9269883caf82cfcba3eea0317792412224f9da63cb35c';
-import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=cd601375fcdc9e4165fd6414902365d707c0904c8630c9563ef0ee64417dcae5';
-import {screenHeader} from './screen-header.js?v=c8cda870bed9473baeb2ad349763b2343883fbe94d38f7e6d6bc7165be6a0c22';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=a20146c857cd0ea4970cede6aaae8fa6c844ad19464d4b8f34a9c5ba16326dbf';
+import {playerTreeGraph} from './player-tree.js?v=210238b9f0ec28aad2a319ced9ab6cb7cc2a67d8ef569cf3fa9c1aabae772674';
+import {mapCameraMount,nearestMapNode} from './tree-map.js?v=70017d365646a9489aa24807b66eb3ff4f3df9819448a14471f3d9520a8dcb37';
+import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=3df4c9deb3470b94d66e00bdd0ad08b4b29b596961ff1ea5956a45ed2d27e0b9';
+import {screenHeader} from './screen-header.js?v=57509ff1361b653cf124512c52b06a629f4558ce6e8064f56d2d455d18e64942';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=38ca69c062e7f070053503afe2ecc1bb3d94f32cc42f76760cbf1495ddfef877';
 
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 const rules='Every purchased upgrade stacks permanently. Open pools apply purchases between shots; Melody Journey applies them from the next pool. Score Attack fixes them at the start of a run. Fixed trials and shared challenges keep their authored rules.';
