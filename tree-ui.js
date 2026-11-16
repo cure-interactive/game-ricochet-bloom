@@ -1,16 +1,16 @@
-import {treeViewPaint} from './tree-view.js?v=0b38d934d7a963a4ff47b09178f23813ee12aa14737860aa5b8f05f97f788855';
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=04ced89ab83d02f67f41a594b547ce0f9ce5e5341738cedfbfcfda39913f95a7';
-export {skillStatsHTML} from './skill-card.js?v=04ced89ab83d02f67f41a594b547ce0f9ce5e5341738cedfbfcfda39913f95a7';
-import { treeSwitchHTML, treeSwitchMount } from './tree-switch.js?v=75a10adb2353f831e0db74de642d5604db003af3995d194025f85fc1c7fef271';
+import {treeViewMount} from './tree-view.js?v=9911356cb12ea2fe7d5d66804eff580c4fc34212423f288b453ecd52a4b54f09';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=7fd0d0908fa0d6b54bd107a9f4a63ee9cf3db2d17802f5e1b862b883d5e2c034';
+export {skillStatsHTML} from './skill-card.js?v=7fd0d0908fa0d6b54bd107a9f4a63ee9cf3db2d17802f5e1b862b883d5e2c034';
+import { treeSwitchHTML, treeSwitchMount } from './tree-switch.js?v=557109dd2e53106e6a3cd80fdd98f46b400bd7e796259edc2b705d822d3ac10b';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { screenHeader } from './screen-header.js?v=e4fc51334df6af630200527b6f9d7100a920f64dd5f28224bc98101baf22d912';
+import { screenHeader } from './screen-header.js?v=abdd601bfd00682c8e2df56bb78bf52f54d173e7c455d7ae92bba16d48c17860';
 import { purchaseComparison, skillStats } from './skill-comparison.js?v=c8ecd31eb78416b46e7bbffc1ce80291cdf0f532d811a81c9e7a5753bea005ef';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import { treeLayout, mapCameraMount, nearestMapNode, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=599b1db6e077795c0de1a49014655c13a5821189a149b12e35d69f0731dcf222';
 import { POWER_TREES } from './power-tree.js?v=2a64a8c4a0ad6dc1f93d8385f13952b46869143cbf7dc606ecd40164a825481b';
 import { profilePurchase, profileSummary } from './profile.js?v=0dcc7686ee3ddd9ec65963b12458c72cda8e548c8afa9c8fbfa0fdaadf08c781';
 import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=56f12a92ddc0734f42f9fb3a95d6b9bfca39766348ef37a593ef331dacb3f0eb';
-import { buttonHTML, iconHTML } from './ui-icon.js?v=e7e1e0264b8d800aa16ee5e89ddb82b5bd4dfa68327d0cff8b81d788cb47de8c';
+import { buttonHTML, iconHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
 const button=(action,label,icon='add',attributes={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attributes});
 const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn Points in any game mode.','mastery':'Activate this power on 3 shots that hit at least 3 bubbles. Melody Journey clears also count.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
 
@@ -94,12 +94,12 @@ export function treeMount(controller){
    tip.hidden=true;tipId=null;source?.setAttribute('aria-expanded','false');
    if(restore)surface.focus({preventScroll:true});
  }
- const camera=mapCameraMount(surface,world,(view,limits)=>{
-   if(lastView&&(view.x!==lastView.x||view.y!==lastView.y||view.scale!==lastView.scale))hideTooltip();lastView={...view};treeViewPaint(mapElement,surface,view,visiblePositions);
+ const projection=treeViewMount(mapElement,surface,(view,limits)=>{
    dialog.querySelector('.tree-zoom').textContent=Math.round(view.scale*100)+'%';
    dialog.querySelector('[data-tree-action=zoom-out]').disabled=view.scale<=limits.minScale+1e-6;
    dialog.querySelector('[data-tree-action=zoom-in]').disabled=view.scale>=1.799;
  });
+ const camera=mapCameraMount(surface,world,(view,limits)=>{if(tipId&&lastView&&(view.x!==lastView.x||view.y!==lastView.y||view.scale!==lastView.scale))hideTooltip();lastView={...view};projection.paint(view,limits);});
  function selectionRender(){
    const route=researchRoute(cat.nodes,selected);
    for(const node of mapElement.querySelectorAll('.skill-node')){node.classList.toggle('is-route',route.has(node.dataset.node));node.setAttribute('aria-pressed',String(node.dataset.node===selected));}
@@ -120,7 +120,7 @@ export function treeMount(controller){
    Object.assign(world,researchBounds(visiblePositions));
    const edges=layout.edges.filter(e=>byId[e.from]&&byId[e.to]).map(e=>`<path class="${byId[e.to].owned?'is-active':byId[e.from].owned?'is-open':'is-locked'}" style="--rarity-color:${RARITIES[byId[e.to].rarity].color}" data-from="${e.from}" data-to="${e.to}" d="${e.path}"/>`).join('');
    mapElement.innerHTML=`<svg class="tree-world-links" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true">${edges}</svg>`+Object.keys(POWER_TREES).filter(power=>nodes.some(n=>n.power===power)).map(power=>`<section class="skill-power" data-power-tree="${power}" aria-label="${POWER_TREES[power].name} skills">${nodes.filter(n=>n.power===power).map(nodeButton).join('')}</section>`).join('');
-   selectionRender();if(dialog.open){camera.refresh();const point=layout.nodes[selected];if(point&&(point.x!==previous?.x||point.y!==previous?.y))camera.focus(point,camera.value.scale);}
+   projection.prepare(visiblePositions);selectionRender();if(dialog.open){camera.refresh();const point=layout.nodes[selected];if(point&&(point.x!==previous?.x||point.y!==previous?.y))camera.focus(point,camera.value.scale);}
  }
  function showTooltip(id){
    const info=skillInfo(state,id,controller.showPurchasedCosts?.());
@@ -164,7 +164,7 @@ export function treeMount(controller){
  });
  dialog.addEventListener('click',handle);
  dialog.addEventListener('cancel',event=>{event.preventDefault();if(!legendContent.hidden)setLegend(false);else if(!tip.hidden)hideTooltip(true);else controller.back?.();});
- dialog.addEventListener('close',()=>{hideTooltip();camera.cancel();});
+ dialog.addEventListener('close',()=>{hideTooltip();camera.cancel();projection.stop();});
  let viewport={width:window.innerWidth,height:window.innerHeight};
  window.addEventListener('resize',()=>{if(viewport.width!==window.innerWidth||viewport.height!==window.innerHeight)hideTooltip();viewport={width:window.innerWidth,height:window.innerHeight};});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)hideTooltip();});

@@ -1,12 +1,12 @@
-import {treeViewPaint} from './tree-view.js?v=0b38d934d7a963a4ff47b09178f23813ee12aa14737860aa5b8f05f97f788855';
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=04ced89ab83d02f67f41a594b547ce0f9ce5e5341738cedfbfcfda39913f95a7';
+import {treeViewMount} from './tree-view.js?v=9911356cb12ea2fe7d5d66804eff580c4fc34212423f288b453ecd52a4b54f09';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=7fd0d0908fa0d6b54bd107a9f4a63ee9cf3db2d17802f5e1b862b883d5e2c034';
 import {playerSkillStats} from './player-skill-comparison.js?v=75decfaf5d896b3fa9b10253c26385c4360916c8de20e0a52f71bc51d9fde36b';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {playerTreeGraph} from './player-tree.js?v=4afea866ffb31d36eeec45f4e818665a0b5f993a28fc81ecae01d45d74dd2c4d';
 import {mapCameraMount,nearestMapNode} from './tree-map.js?v=599b1db6e077795c0de1a49014655c13a5821189a149b12e35d69f0731dcf222';
-import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=75a10adb2353f831e0db74de642d5604db003af3995d194025f85fc1c7fef271';
-import {screenHeader} from './screen-header.js?v=e4fc51334df6af630200527b6f9d7100a920f64dd5f28224bc98101baf22d912';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=e7e1e0264b8d800aa16ee5e89ddb82b5bd4dfa68327d0cff8b81d788cb47de8c';
+import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=557109dd2e53106e6a3cd80fdd98f46b400bd7e796259edc2b705d822d3ac10b';
+import {screenHeader} from './screen-header.js?v=abdd601bfd00682c8e2df56bb78bf52f54d173e7c455d7ae92bba16d48c17860';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
 
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 const rules='Every purchased upgrade stacks permanently. Open pools apply purchases between shots; Melody Journey applies them from the next pool. Score Attack fixes them at the start of a run. Fixed trials and shared challenges keep their authored rules.';
@@ -21,13 +21,12 @@ export function playerUpgradeMount(host){
  let graph=playerTreeGraph(host.get(),host.showHiddenContent?.()),selected='player',tipId=null,lastView=null;
  const world={width:graph.width,height:graph.height};
  function hide(restore=false){tip.hidden=true;tipId=null;map.querySelectorAll('[aria-expanded=true]').forEach(n=>n.setAttribute('aria-expanded','false'));if(restore)map.querySelector(`[data-player-node="${selected}"]`)?.focus({preventScroll:true});}
- const camera=mapCameraMount(surface,world,(view,limits)=>{
-  if(lastView&&(view.x!==lastView.x||view.y!==lastView.y||view.scale!==lastView.scale))hide();lastView={...view};
-  treeViewPaint(map,surface,view,graph.byId);
+ const projection=treeViewMount(map,surface,(view,limits)=>{
   dialog.querySelector('.tree-zoom').textContent=Math.round(view.scale*100)+'%';
   dialog.querySelector('[data-tree-action=zoom-out]').disabled=view.scale<=limits.minScale+1e-6;
   dialog.querySelector('[data-tree-action=zoom-in]').disabled=view.scale>=1.799;
  });
+ const camera=mapCameraMount(surface,world,(view,limits)=>{if(tipId&&lastView&&(view.x!==lastView.x||view.y!==lastView.y||view.scale!==lastView.scale))hide();lastView={...view};projection.paint(view,limits);});
  function selection(){
   const route=new Set(['player']);let n=graph.byId[selected];while(n){route.add(n.id);n=graph.byId[n.requires];}
   map.querySelectorAll('[data-player-node]').forEach(n=>{n.setAttribute('aria-pressed',String(n.dataset.playerNode===selected));n.classList.toggle('is-route',route.has(n.dataset.playerNode));});
@@ -39,7 +38,7 @@ export function playerUpgradeMount(host){
   dialog.querySelector('.tree-wallet-summary').innerHTML=`<strong>${iconHTML('coin')}${state.profile.wallet.seeds}<span> Points</span></strong>`;
   dialog.querySelector('.tree-status').textContent=message;
   map.innerHTML=`<svg class="tree-world-links" viewBox="0 0 ${graph.width} ${graph.height}" aria-hidden="true">${graph.edges.map(e=>`<path data-from="${e.from}" data-to="${e.to}" class="${graph.byId[e.to].owned?'is-active':graph.byId[e.from].owned?'is-open':'is-locked'}" style="--rarity-color:${RARITIES[graph.byId[e.to].rarity].color}" d="${e.path}"/>`).join('')}</svg>`+
-   graph.nodes.map(n=>skillNodeHTML(n,{attribute:'data-player-node',tooltipId:'player-skill-tooltip',selected:n.id===selected,active:n.owned,available:n.canBuy,cost:n.owned&&!host.showPurchasedCosts?.()?null:n.cost})).join('');selection();
+   graph.nodes.map(n=>skillNodeHTML(n,{attribute:'data-player-node',tooltipId:'player-skill-tooltip',selected:n.id===selected,active:n.owned,available:n.canBuy,cost:n.owned&&!host.showPurchasedCosts?.()?null:n.cost})).join('');projection.prepare(graph.byId);selection();
   if(dialog.open){camera.refresh();const point=graph.byId[selected];if(point.x!==previous?.x||point.y!==previous?.y)camera.focus(point,camera.value.scale);}
  }
  function show(id,keyboard=false){
@@ -74,7 +73,7 @@ export function playerUpgradeMount(host){
   if(from&&direction){const next=nearestMapNode(graph.byId,from.dataset.playerNode,...direction);if(next){event.preventDefault();camera.ensure(graph.byId[next]);map.querySelector(`[data-player-node="${next}"]`).focus({preventScroll:true});}}
  });
  dialog.addEventListener('cancel',event=>{event.preventDefault();if(!legendContent.hidden)setLegend(false);else if(!tip.hidden)hide(true);else host.back();});
- dialog.addEventListener('close',()=>{hide();camera.cancel();});
+ dialog.addEventListener('close',()=>{hide();camera.cancel();projection.stop();});
  let viewport={width:window.innerWidth,height:window.innerHeight};
  window.addEventListener('resize',()=>{if(viewport.width!==window.innerWidth||viewport.height!==window.innerHeight)hide();viewport={width:window.innerWidth,height:window.innerHeight};});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)hide();});

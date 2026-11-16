@@ -1,4 +1,4 @@
-import {gamemodeNavigation} from './gamemode-navigation.js?v=3804abefc4a3258637ad09c7e1c37df8b872946eb078531e62a9443a87aaec13';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=0ace8bc9560db7434c10840e73ddb1065ee298ba77d254da4ee64e75bd76b61a';
 import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=a6de993dc4e384f1336b715e6de3d12adc598c6bd468b3f5a94dcac3d6fb51e3';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { experimentRead, experimentFavourite } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
@@ -38,7 +38,7 @@ export function gamemodeGalleryMount({content,heading,storage, ...host}) {
       for(const b of content.querySelectorAll('[data-favourite]'))b.onclick=()=>{
         const id=b.dataset.favourite,scroll=content.scrollTop,result=experimentFavourite(storage,host.kind(),id);
         if(!result.ok){$('gamemode-save-status').textContent='Could not save this favourite. Your existing notebook is preserved. Please try again.';return;}
-        cards();content.scrollTop=scroll;(content.querySelector(`[data-favourite="${id}"]`)??content.querySelector('[data-favourite]')??$('gamemode-favourites')).focus({preventScroll:true});
+        cards();content.scrollTop=scroll;(content.querySelector(`[data-favourite="${id}"]`)??content.querySelector('[data-favourite]')??content.closest('dialog').querySelector('#gamemode-favourites')).focus({preventScroll:true});
         $('gamemode-save-status').textContent=result.active?'Added to Favourites.':'Removed from Favourites.';
       };
     }

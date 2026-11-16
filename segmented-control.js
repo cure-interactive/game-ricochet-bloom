@@ -5,6 +5,7 @@ export function segmentedHTML(buttons,{label,current,className=''}){
 // Works within one panel or across dialogs. The caller owns destinations only.
 export function segmentedMount(root,{attribute,change}){
  const doc=root.ownerDocument,win=doc.defaultView,selector=`[${attribute}]`;
+ const overlays=new WeakMap();
  let drag=null,suppressClick=false,frame=0,followNav=null;
  const buttons=nav=>[...nav.querySelectorAll(selector)];
  const value=button=>button.getAttribute(attribute);
@@ -19,11 +20,21 @@ export function segmentedMount(root,{attribute,change}){
   for(const button of buttons(nav))for(const node of [button.querySelector('span:not(.ui-icon)'),button.querySelector('.ui-icon')]){
    if(!node)continue;const r=node.getBoundingClientRect(),{left,right}=segmentOverlap(r,pill);
    if(node.dataset?.icon==='player-skin'){
-    // The membrane and outline overflow the nominal icon slot. Clip at the
+    // The membrane and backing overflow the nominal icon slot. Clip at the
     // actual pill edges, not the slot edges used by text and masked icons.
-    node.style.color='#12332e';node.style.setProperty('--player-bubble-outline','1');
-    node.style.setProperty('--player-outline-start',String((pill.left-r.left)/Math.max(1,r.width)));node.style.setProperty('--player-outline-end',String((pill.right-r.left)/Math.max(1,r.width)));
-   }else node.style.backgroundImage=`linear-gradient(to right,#dceeea 0px,#dceeea ${left}px,#12332e ${left}px,#12332e ${right}px,#dceeea ${right}px)`;
+    node.style.color='#12332e';node.style.setProperty('--player-bubble-backing','1');
+    node.style.setProperty('--player-backing-start',String((pill.left-r.left)/Math.max(1,r.width)));node.style.setProperty('--player-backing-end',String((pill.right-r.left)/Math.max(1,r.width)));
+   }else{
+    // Solid layers avoid WebKit's stale text-gradient raster fragments while
+    // keeping contrast spatial under a moving selection, including masked SVGs.
+    let overlay=overlays.get(node);
+    if(!overlay){
+     if(node.classList.contains('ui-icon')){node.classList.add('segment-mask');overlay=node;}
+     else{overlay=doc.createElement('span');overlay.className='segment-contrast';overlay.setAttribute('aria-hidden','true');overlay.textContent=node.textContent;node.append(overlay);}
+     overlays.set(node,overlay);
+    }
+    overlay.style.setProperty('--segment-clip-left',left+'px');overlay.style.setProperty('--segment-clip-right',Math.max(0,r.width-right)+'px');
+   }
   }
  }
  function follow(nav){followNav=nav;win.cancelAnimationFrame(frame);const tick=()=>{contrast(nav);frame=nav.querySelector('.segment-selection').getAnimations().length?win.requestAnimationFrame(tick):0;};tick();}

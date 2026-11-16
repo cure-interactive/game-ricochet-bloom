@@ -303,11 +303,13 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 
 /* Distant nodes retain shape, rarity and ownership; readable detail returns on zoom. */
 :is(#tree-dialog,#player-upgrade-dialog) .skill-node.is-culled{visibility:hidden;pointer-events:none}
-:is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-detail=overview] .skill-node{filter:none}
-:is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-detail=overview] .skill-orb{box-shadow:none;background:#132334}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-map:is([data-detail=overview],[data-detail=compact]) .skill-node{filter:none}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-map:is([data-detail=overview],[data-detail=compact]) .skill-orb{box-shadow:none;background:#132334}
 :is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-detail=overview] .skill-node>strong,
 :is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-detail=overview] .skill-node>small{visibility:hidden}
 
 /* One tiny SVG tile, clipped to the viewport. No background paint at overview. */
 .tree-map::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:url('./tree-grid.svg?v=e100da656982052284e2dc5002c05b0d47bf794c3400a393de97cbcd4dd1e143');background-repeat:repeat;background-position:inherit;background-size:inherit;opacity:var(--map-grid-opacity,1)}
 .tree-map[data-grid=hidden]::before{display:none}
+
+.tree-map[data-detail=overview] .skill-orb>:is(img,.ui-icon){visibility:hidden}

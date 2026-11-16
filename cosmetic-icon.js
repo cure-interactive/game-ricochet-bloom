@@ -1,4 +1,4 @@
-import {cosmeticThumbnailMount} from './cosmetic-preview.js?v=33b1802d59d8fcb875b80ce7a043f1a515fdc5559e90f67794c0e4137b91e2ab';
+import {cosmeticThumbnailMount} from './cosmetic-preview.js?v=c296ac0ac90dd7ea30ecea08d10d89a91d9fb1dc9ad267e68df5376ec69b75ef';
 import {cosmeticGet} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
 export function registerCosmeticIcon(win=window){
  if(win.customElements.get('cosmetic-icon'))return;

@@ -1,7 +1,7 @@
-import {segmentedHTML,segmentedMount} from './segmented-control.js?v=e01092f1909350f2de0d577c1402eff5b6621367607d815de120299d3f0ab153';
+import {segmentedHTML,segmentedMount} from './segmented-control.js?v=f00bd781036223fc2f7395a6946a17e7106fd0d6d55191f99b6325b4f7da4bc2';
 import { playerStats } from './player-stats.js?v=e8e8dbba61f7e48959259f872108b6d20e5380c3cb5cd255f6fd8cdcc1500e60';
-import { screenHeader } from './screen-header.js?v=e4fc51334df6af630200527b6f9d7100a920f64dd5f28224bc98101baf22d912';
-import { buttonHTML, iconHTML } from './ui-icon.js?v=e7e1e0264b8d800aa16ee5e89ddb82b5bd4dfa68327d0cff8b81d788cb47de8c';
+import { screenHeader } from './screen-header.js?v=abdd601bfd00682c8e2df56bb78bf52f54d173e7c455d7ae92bba16d48c17860';
+import { buttonHTML, iconHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
 import { medalIcon } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';
 import { MEDAL_NAMES } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
 import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
@@ -33,10 +33,10 @@ export function playerStatsHTML(s,view='overview'){
 export function playerStatsMount(host){
  let view='overview';
  const dialog=document.createElement('dialog');dialog.id='player-stats-dialog';dialog.className='standard-dialog';dialog.setAttribute('aria-labelledby','player-stats-title');
- dialog.innerHTML=screenHeader({icon:'stats',className:'dialog-heading',title:'Player Stats',titleId:'player-stats-title',back:buttonHTML('Back','arrow-left',{'data-stats-back':true})})+'<div class="dialog-body player-stats-body"></div>';
+ dialog.innerHTML=screenHeader({icon:'stats',className:'dialog-heading',title:'Player Stats',titleId:'player-stats-title',back:buttonHTML('Back','arrow-left',{'data-stats-back':true})})+'<div class="dialog-body tab-panel"><div class="tab-scroll player-stats-body"></div></div>';
  document.body.append(dialog);const content=dialog.querySelector('.player-stats-body'),back=dialog.querySelector('[data-stats-back]');
  back.onclick=()=>host.back();dialog.addEventListener('cancel',e=>{e.preventDefault();host.back();});
- const segments=segmentedMount(dialog,{attribute:'data-stats-view',change(next){view=selectedView(next);for(const panel of content.querySelectorAll('.stats-panel'))panel.hidden=panel.id!=='stats-panel-'+view;content.scrollTop=0;return content.querySelector('.stats-view-nav');}});
+ const segments=segmentedMount(dialog,{attribute:'data-stats-view',change(next){view=selectedView(next);for(const panel of content.querySelectorAll('.stats-panel'))panel.hidden=panel.id!=='stats-panel-'+view;content.scrollTop=0;return dialog.querySelector('.stats-view-nav');}});
  dialog.addEventListener('click',e=>{const destination=e.target.closest('[data-stats-open]')?.dataset.statsOpen;if(destination)host.open(destination);});
- return {open(){host.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());content.innerHTML=playerStatsHTML(playerStats(host.get()),view);dialog.showModal();segments.refresh();content.scrollTop=0;back.focus({preventScroll:true});}};
+ return {open(){host.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());content.innerHTML=playerStatsHTML(playerStats(host.get()),view);content.parentElement.querySelector(':scope>.tab-bar')?.remove();const bar=content.querySelector('.tab-bar');if(bar)content.after(bar);dialog.showModal();segments.refresh();content.scrollTop=0;back.focus({preventScroll:true});}};
 }

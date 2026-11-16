@@ -1,11 +1,11 @@
-import {rarityFilterMount} from './rarity-filter.js?v=9036a6e0e6a0ab092a41b26734b5c63b356ac0f8d6ccdd37fe7d19295b2a5291';
-import {segmentedHTML,segmentedMount} from './segmented-control.js?v=e01092f1909350f2de0d577c1402eff5b6621367607d815de120299d3f0ab153';
-import {cosmeticPriceHTML} from './cosmetic-price.js?v=611fa256d02783b76447dfc751f02ae4babd4c57a994bd9cce46e59e3d4a4a4f';
+import {rarityFilterMount} from './rarity-filter.js?v=82cdfc4ba278c4cd6c7a7bc8877ed111cac162e6859b424c1f1d98934a1450a1';
+import {segmentedHTML,segmentedMount} from './segmented-control.js?v=f00bd781036223fc2f7395a6946a17e7106fd0d6d55191f99b6325b4f7da4bc2';
+import {cosmeticPriceHTML} from './cosmetic-price.js?v=a87813cd95ebe513b3e4c54a07af3848d82ebd3d5045c4fe337e594f69e20bb8';
 import {COSMETICS,cosmeticOrder,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=33b1802d59d8fcb875b80ce7a043f1a515fdc5559e90f67794c0e4137b91e2ab';
-import {screenHeader} from './screen-header.js?v=e4fc51334df6af630200527b6f9d7100a920f64dd5f28224bc98101baf22d912';
-import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=e7e1e0264b8d800aa16ee5e89ddb82b5bd4dfa68327d0cff8b81d788cb47de8c';
-import {rarityIconHTML} from './skill-icon.js?v=79f84be6812079dcd8b2766d28af69d11f4714dc8718f1c0ea3aa7b91a0d9f13';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=c296ac0ac90dd7ea30ecea08d10d89a91d9fb1dc9ad267e68df5376ec69b75ef';
+import {screenHeader} from './screen-header.js?v=abdd601bfd00682c8e2df56bb78bf52f54d173e7c455d7ae92bba16d48c17860';
+import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
+import {rarityIconHTML} from './skill-icon.js?v=323da47ec6044e57d9571db79d2e73cc83e5d962daf53f03192092c7de37fdc8';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 export function cosmeticMount(host){
@@ -29,6 +29,7 @@ export function cosmeticMount(host){
   soundButton(true,state.progress);soundFrame=win.requestAnimationFrame(followSound);
  }
  const filter=rarityFilterMount(dialog,{scroll,cards:()=>[...dialog.querySelectorAll('[data-cosmetic]')]});
+ dialog.querySelector('.skin-content').append(dialog.querySelector('.music-category').closest('.tab-bar'));
  function render(){
   if(heading.dataset.icon!==glyph()){heading.outerHTML=iconHTML(glyph());heading=dialog.querySelector('.screen-heading-title>.ui-icon');}
   const profile=host.profile(),loadout=cosmeticLoadout(profile),item=selected?cosmeticGet(selected):null;

@@ -39,8 +39,8 @@
    Screen navigation refreshes the inherited color for the active profile. */
 .ui-icon[data-icon="player-skin"]{--skin-color:var(--player-skin-color,#f1f9d7);-webkit-mask:none;mask:none;background:none;overflow:visible;position:relative}
 .home-primary .ui-icon[data-icon="player-skin"]{width:24px;height:24px}
-.ui-icon[data-icon="player-skin"]{--player-bubble-outline:0}
-:is([aria-pressed="true"],[aria-selected="true"])>.ui-icon[data-icon="player-skin"]{--player-bubble-outline:1}
+.ui-icon[data-icon="player-skin"]{--player-bubble-backing:0}
+:is([aria-pressed="true"],[aria-selected="true"])>.ui-icon[data-icon="player-skin"]{--player-bubble-backing:1}
 
 /* The outer control retains its stable hit target while the membrane deforms. */
 .skin-preview-interactive{padding:40px;min-height:220px;overflow:visible}
@@ -55,7 +55,7 @@ player-bubble canvas{position:absolute;display:block;width:360%;height:360%;left
 
 .skin-content{--page-padding:0px;--page-inline-padding:0px;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 :root body :is(#skin-dialog,#cosmetic-dialog)>.skin-content{padding:0}
-.rarity-filter{flex:none;padding:0;border-top:1px solid #759aa340;background:#132530}
+.rarity-filter{flex:none;width:100%;padding:0;border-top:1px solid #759aa340;background:#132530}
 .rarity-filter[hidden],.skin-choice[hidden]{display:none!important}
 :root body :is(#skin-dialog,#cosmetic-dialog) .rarity-filter button{flex-direction:column;gap:4px;padding:6px 2px;font-size:11px}
 .rarity-filter .rarity-icon,.rarity-filter .ui-icon{width:18px;height:18px;flex:none}

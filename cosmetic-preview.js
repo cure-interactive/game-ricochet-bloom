@@ -35,13 +35,14 @@ export function cosmeticPreviewStep(body,dt,width,height,hit){
   hit(axis==='x'?(side<0?0:max):Math.max(0,Math.min(width,body.x)),axis==='y'?(side<0?0:max):Math.max(0,Math.min(height,body.y)),axis==='x'?side:0,axis==='y'?side:0);
  }
 }
+let previewSequence=0;
 // Detached presentation: the same membrane, materials and effect renderer as play.
 export function cosmeticPreviewMount(canvas,host){
  const c=canvas.getContext('2d'),visual=new CosmeticVisual(),membrane=bubbleCreate(),body={id:0,x:90,y:100,radius:host.icon?14:host.compact?26:17,vx:130,vy:85},ready=frameGate();
  const doc=canvas.ownerDocument,win=doc.defaultView;
- let frame=0,last=0,active=true,activity,pulse=-1,origin=null,geometry=null,offset={x:0,y:0,vx:0,vy:0};
- const surface=host.surface||canvas;
- const interaction=bubbleInteractionMount(surface,{active:()=>active&&!doc.hidden&&activity?.isActive()!==false,geometry:()=>{if(!geometry)return null;const r=surface.getBoundingClientRect(),unit=(r.width||r.right-r.left)/geometry.width;return {x:r.left+body.x*unit,y:r.top+body.y*unit,unit:unit*body.radius/14,visible:!!activity.clip(r)};},hit:(x,y,speed,impact)=>{bubbleHit(membrane,body.radius,x,y,speed*body.radius/14);if(impact)visual.hit(body.x,body.y);}});
+ let frame=0,last=0,active=true,activity,nextRipple=0,origin=null,geometry=null,offset={x:0,y:0,vx:0,vy:0};
+ const surface=host.surface||canvas,phase=++previewSequence*2.4;
+ const interaction=bubbleInteractionMount(surface,{active:()=>active&&!doc.hidden&&activity?.isActive()!==false,geometry:()=>{if(!geometry)return null;const r=surface.getBoundingClientRect(),unit=(r.width||r.right-r.left)/geometry.width;return {x:r.left+body.x*unit,y:r.top+body.y*unit,unit:unit*body.radius/14,visible:!!activity.clip(r)};},hit:(x,y,speed)=>bubbleHit(membrane,body.radius,x,y,speed*body.radius/14)});
  function draw(now){
   frame=0;if(!active||doc.hidden||activity?.isActive()===false)return;
   frame=win.requestAnimationFrame(draw);if(!ready(now))return;
@@ -59,7 +60,12 @@ export function cosmeticPreviewMount(canvas,host){
    const t=visual.elapsed,padding=host.icon?body.radius:host.motionArea<1?body.radius+4:host.compact?54:host.thumbnail==='trail'?body.radius+(42-body.radius)/2:72,area=host.motionArea||1,rx=Math.max(0,worldWidth*area/2-padding)+(host.icon&&host.thumbnail==='trail'?4:0),ry=Math.max(host.icon&&host.thumbnail==='trail'?body.radius:0,worldHeight*area/2-padding);
    body.x=worldWidth/2+(host.thumbnail==='trail'?Math.sin(t*2)*rx:0);body.y=worldHeight/2+(host.thumbnail==='trail'?Math.sin(t*4)*ry:0);
    body.vx=Math.cos(t*2)*rx*2;body.vy=Math.cos(t*4)*ry*4;
-   if(host.thumbnail==='bounce'&&Math.floor(t/.9)!==pulse){pulse=Math.floor(t/.9);visual.hit(body.x,body.y);bubbleHit(membrane,body.radius,1,0,150);}
+   if(host.thumbnail==='bounce'&&t>=nextRipple){
+    // Match the regular player current: changing phase, direction and spacing.
+    const angle=phase+t*1.7,nx=Math.cos(angle),ny=Math.sin(angle);
+    visual.hit(body.x+nx*body.radius,body.y+ny*body.radius);bubbleHit(membrane,body.radius,nx,ny,150);
+    nextRipple=t+1.35+.35*(1+Math.sin(angle));
+   }
   }else{
    cosmeticPreviewStep(body,dt,worldWidth,worldHeight,(x,y,nx,ny)=>{
     visual.hit(x,y);bubbleHit(membrane,body.radius,nx,ny,210);

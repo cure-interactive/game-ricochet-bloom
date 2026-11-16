@@ -6,6 +6,26 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.32.1
+
+Build: 2026-11-16 12:40:09 UTC
+
+### Player Changes
+
+- Music, Gamemodes and Stats keep their tab selectors at the bottom of the content panel. Music places its rarity filter above the category selector.
+- Tab labels and icons retain partial selection contrast while dragging without moving text gradients. The Player tab uses a filled backing that follows the bubble's shape.
+- Taps, dragging, focus and scrolling no longer trigger extra cosmetic impacts. Automatic Impact previews vary their contact points around the bubble.
+- Skills maps reuse prepared detail and simplify distant artwork to reduce repeated work while zooming.
+
+<!-- development -->
+### Developer Notes
+
+- Shared selector contrast uses solid clipped layers; Player backing draws before the material using the same membrane path. Native content scrolling remains separate from bottom tab bars.
+- Both skill maps cache node references on graph rebuild, coalesce camera projection per frame and skip unchanged DOM writes. Asynchronous artwork decoding uses two concurrent jobs and a bounded 160-source cache, without world-sized raster allocation.
+- Cosmetic input and intentional effect demonstrations remain distinct. Automated checks cover varied rim contacts, bounded decoding, cache reuse, graph invalidation and camera burst coalescing. Physical iPhone rendering and zoom acceptance remain pending.
+- Restored the Development-only gate around the previous release's technical notes.
+<!-- /development -->
+
 ## v3.32.0
 
 Build: 2026-11-16 11:28:59 UTC
@@ -18,6 +38,7 @@ Build: 2026-11-16 11:28:59 UTC
 - Music previews toggle on and off for up to ten seconds with a playback progress bar. Soundstage auditions apply to the music already playing and restore your equipped space afterward.
 - Reworked Night Forest, Ember Hearth and Orbital Drift into longer, smoother atmospheres with varied, softly shaped details.
 
+<!-- development -->
 ### Developer Notes
 
 - Shared segmented controls handle touch and pointer input without duplicate gestures; live outline clipping uses the actual selection edges beyond the icon slot.
@@ -25,6 +46,7 @@ Build: 2026-11-16 11:28:59 UTC
 - Scroll deformation no longer sets the shared collision flag. Real contact effects and timed Impact demonstrations remain independent.
 - Audition progress follows the audio clock; replacement and navigation invalidate pending starts. Soundstage overrides expire without mutating the equipped loadout, and room changes crossfade.
 - Ambience uses 48-second seamless buffers, smooth event envelopes and a bounded three-style cache. Physical iPhone listening and touch acceptance remain separate from automated/browser checks.
+<!-- /development -->
 
 ## v3.31.0
 

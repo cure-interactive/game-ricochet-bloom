@@ -127,15 +127,16 @@ export function registerPlayerBubble(win=window){
    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pixelWidth,pixelHeight);
    c.setTransform(unit*ratio,0,0,unit*ratio,-left*unit*ratio,-top*unit*ratio);
    c.save();c.translate(tox,toy);if(trails)this.trail.render(c,this.ownerDocument.body.dataset?.quality==='low',true);c.restore();
-   bubbleRender(c,body,points,color,{glowExtent:1.3,skinTime:this.age,skinStyle:style.getPropertyValue('--skin-style').trim()||style.getPropertyValue('--player-skin-style').trim(),lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
-   if(style.getPropertyValue('--player-bubble-outline').trim()==='1'){
-    // A separate contour follows the membrane, leaving its luminous rim intact.
-    const gap=.8+84/this.size;
+
+   if(style.getPropertyValue('--player-bubble-backing').trim()==='1'){
+    // A filled backing follows the same membrane and sits beneath its material.
+    const gap=.5+56/this.size;
     const outside=points.map(point=>{const dx=point.x-body.x,dy=point.y-body.y,d=Math.hypot(dx,dy);return {x:point.x+dx/d*gap,y:point.y+dy/d*gap};});
-    c.save();const start=style.getPropertyValue('--player-outline-start').trim(),end=style.getPropertyValue('--player-outline-end').trim();
+    c.save();const start=style.getPropertyValue('--player-backing-start').trim(),end=style.getPropertyValue('--player-backing-end').trim();
     if(start!==''&&end!==''){c.beginPath();c.rect(this.body.x-14+28*Number(start),-10000,28*(Number(end)-Number(start)),20000);c.clip();}
-    c.strokeStyle=style.color;c.lineWidth=42/this.size;c.stroke(bubblePath(outside));c.restore();
+    c.fillStyle=style.color;c.fill(bubblePath(outside));c.restore();
    }
+   bubbleRender(c,body,points,color,{glowExtent:1.3,skinTime:this.age,skinStyle:style.getPropertyValue('--skin-style').trim()||style.getPropertyValue('--player-skin-style').trim(),lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
   }
   disconnectedCallback(){
    this.visible=false;this.halt();this.activity?.destroy();this.activity=null;this.resize.disconnect();this.resize=null;this.intersection.disconnect();this.preferences.disconnect();
