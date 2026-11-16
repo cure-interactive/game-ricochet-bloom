@@ -1,6 +1,6 @@
 import {musicTheme} from './music-theme.js?v=88ea7b370c0695e982b380622f15db38e58496f3cd4335b7104b62ec49d0ad79';
 // Shared finite instruments for live music and offline highlights.
-import {voiceTrack,voicesReap} from './audio-voice.js?v=c0db179bcb018380a8604c761694e0021f5b46aae7b41ff0986bf44e98136bce';
+import {voiceTrack,voicesReap} from './audio-voice.js?v=7904f3fab24003c6251442f7604d5d8fc7ef9163a8a1abb32f41975690c0162d';
 const frequency=midi=>440*2**((midi-69)/12);
 export function instrumentNote(rack,event) {
     voicesReap(rack);

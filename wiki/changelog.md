@@ -6,6 +6,27 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.34.3
+
+Build: 2026-11-16 22:10:57 UTC
+
+### Player Changes
+
+- Sound fades out quickly when leaving the app instead of stopping abruptly.
+- Welcome Back offers a Continue button to restore sound after returning or reloading, while preserving your page and keeping gameplay paused. Muted players are not prompted.
+- Rising and falling feedback uses the same softer click voice as buttons, with a narrower pitch blend and the existing slower cadence.
+- The player name keeps clear space below its preview on small screens and in landscape.
+
+<!-- development -->
+### Developer Notes
+
+- Capture departure before pause listeners, detach scheduling immediately, and fade the retired output gate for 20ms before disposing voices and closing its context. Old voice cleanup owns its original sets and cannot decrement a replacement graph's voice count.
+- Do not resume from interrupted/suspended state-change events. Require a positive foreground or trusted activation; stale touches after blur cannot release the hold.
+- A shared return dialog collects menu/gameplay unlock callbacks and invokes them synchronously inside Continue. A session marker survives reload; navigation restoration cannot dismiss the pending return screen. Failed activation remains retryable with a no-audio fallback.
+- Shared 85ms sine taps have an 8ms smooth attack, silent endpoints and the button's small pitch rise. Two adjacent octave layers retain continuous winding without the previous four-octave spread.
+- Reserve preview diameter plus its existing 80px padding before placing the player name. Physical iPhone acoustic acceptance remains separate from automated and desktop checks.
+<!-- /development -->
+
 ## v3.34.2
 
 Build: 2026-11-16 21:38:35 UTC

@@ -2,8 +2,9 @@
 // ended events through interruptions; expired nodes must not exhaust the budget.
 export function voiceTrack(rack,voice,end,nodes){
  const voices=rack.audioVoices||(rack.audioVoices=new Set());
+ const phrases=rack.phraseVoices;
  voice.end=end;let released=false;
- voice.release=()=>{if(released)return;released=true;for(const node of nodes)node.disconnect();voices.delete(voice);rack.phraseVoices.delete(voice);rack.voiceCount=Math.max(0,rack.voiceCount-1);};
+ voice.release=()=>{if(released)return;released=true;for(const node of nodes)node.disconnect();voices.delete(voice);phrases.delete(voice);if(rack.audioVoices===voices)rack.voiceCount=Math.max(0,rack.voiceCount-1);};
  voices.add(voice);rack.voiceCount++;voice.oscillator.onended=voice.release;
  return voice;
 }

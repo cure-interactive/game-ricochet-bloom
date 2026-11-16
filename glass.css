@@ -36,8 +36,8 @@
 }
 :root body[data-menu-mode=home] :is(dialog,#tree-dialog)::backdrop { background: transparent; }
 :root body[data-menu-mode=home]:has(dialog[open]) #main-menu { visibility: hidden; }
-:root body :is(#tree-dialog,#player-upgrade-dialog)[open],
-:root body[data-menu-mode=home] :is(#tree-dialog,#player-upgrade-dialog)[open]{--pool-background-covered:1;background:#0b1423;backdrop-filter:none;-webkit-backdrop-filter:none}
+:root body :is(#tree-dialog,#player-upgrade-dialog,#audio-welcome-dialog)[open],
+:root body[data-menu-mode=home] :is(#tree-dialog,#player-upgrade-dialog,#audio-welcome-dialog)[open]{--pool-background-covered:1;background:#0b1423;backdrop-filter:none;-webkit-backdrop-filter:none}
 :root body :is(#tree-dialog,#player-upgrade-dialog) .tree-map-stage{background:#091422}
 
 /* Child dialogs replace Settings visually while its native modal state, section

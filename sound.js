@@ -1,6 +1,6 @@
 import {audioEnvironment} from './audio-environment.js?v=5f951fd5c399f22b78c1cf60e0482d14934549e7a2fbb76fb8d3dc6751900570';
-import {instrumentNote,instrumentPercussion} from './instrument.js?v=a60e71fef74fdec8b7dd85332250a173932596a5d4a6680ea91c217b73baf01b';
-import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=c0db179bcb018380a8604c761694e0021f5b46aae7b41ff0986bf44e98136bce';
+import {instrumentNote,instrumentPercussion} from './instrument.js?v=774fbf1c691f54dafa415de78b2b32a6a8d7ffadc96e05d5bda4ec17db9831eb';
+import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=7904f3fab24003c6251442f7604d5d8fc7ef9163a8a1abb32f41975690c0162d';
 import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
@@ -13,10 +13,10 @@ export const SOUND_CHECK_SECONDS = 2.8;
 // Wrapping phase changes voice indices, never the audible spectrum.
 export function uiWindTones(phase){
  const fraction=((phase%1)+1)%1;
- return Array.from({length:4},(_,i)=>{const octave=i+fraction;return {pitch:140*2**octave,level:Math.sin(Math.PI*octave/4)**2};});
+ return Array.from({length:2},(_,i)=>{const octave=i+fraction;return {pitch:280*2**octave,level:Math.sin(Math.PI*octave/2)**2};});
 }
 // A rounded attack and release avoid broadband spikes in these short taps.
-const windEnvelope=Float32Array.from({length:129},(_,i)=>{const t=i/128;return i===0||i===128?0:t<.16?Math.sin(Math.PI*t/.32)**2:Math.cos(Math.PI*(t-.16)/1.68)**2;});
+const uiTapEnvelope=Float32Array.from({length:129},(_,i)=>{const t=i/128,attack=.008/.085;return i===0||i===128?0:t<attack?Math.sin(Math.PI*t/(2*attack))**2:Math.cos(Math.PI*(t-attack)/(2*(1-attack)))**2;});
 export class PoolSound {
   constructor({media=true}={}) { this.media = media?new PoolMedia():null; this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
   get isMusicPaused() { return this.isPaused&&!this.keepAmbient; }
@@ -43,7 +43,7 @@ export class PoolSound {
       const compressor = context.createDynamicsCompressor(); compressor.threshold.value = -18; compressor.ratio.value = 5; this.master.connect(compressor);
       // Gate after the compressor: its lookahead buffer must not survive an
       // output retirement. New output enters gently after route activation.
-      this.outputGate=context.createGain();this.outputGate.gain.setValueAtTime(0,context.currentTime);this.outputGate.gain.linearRampToValueAtTime(1,context.currentTime+.06);
+      this.outputOpenedAt=context.currentTime;this.outputGate=context.createGain();this.outputGate.gain.setValueAtTime(0,context.currentTime);this.outputGate.gain.linearRampToValueAtTime(1,context.currentTime+.06);
       compressor.connect(this.outputGate);this.outputGate.connect(context.destination);this.compressor=compressor;
       this.delay = context.createDelay(.6); this.delay.delayTime.value = .21;
       const feedback = context.createGain(); feedback.gain.value = .19; const wet = context.createGain(); wet.gain.value = .24;
@@ -74,7 +74,7 @@ export class PoolSound {
   outputRefresh(){if(this.context)this.refreshOutput=true;}
   outputHold(){
     if(this.outputHeld)return;
-    this.outputHeld=true;this.outputHiddenAt=performance.now();this.graphReset();
+    this.outputHeld=true;this.outputHiddenAt=performance.now();this.graphReset({fade:true});
   }
   outputRelease(){this.outputHeld=false;this.outputVisibleAt=performance.now();}
   get outputDiagnostics(){
@@ -82,19 +82,30 @@ export class PoolSound {
     let stamp;try{stamp=context?.getOutputTimestamp?.();}catch{}
     return {generation:this.outputGeneration||0,held:!!this.outputHeld,state:context?.state||'none',contextTime:round(context?.currentTime),baseLatency:round(context?.baseLatency),outputLatency:round(context?.outputLatency),outputTimestamp:stamp?{contextTime:round(stamp.contextTime),performanceTime:round(stamp.performanceTime)}:null,closePending:this.outputClosing||0,lastCloseMs:round(this.outputCloseMs),hiddenAt:round(this.outputHiddenAt),visibleAt:round(this.outputVisibleAt)};
   }
-  graphReset(){
+  graphReset({fade=false}={}){
     this.refreshOutput=false;
-    const retired=this.context,closedAt=performance.now();
-    if(this.outputGate){this.outputGate.gain.cancelScheduledValues(0);this.outputGate.gain.setValueAtTime(0,retired.currentTime);this.outputGate.disconnect();this.compressor?.disconnect();}
-    // Disconnect before any fade or close promise. A frozen audio clock must
-    // not retain a future fade, delay tail or looping ambience through return.
-    if(this.master){this.master.gain.cancelScheduledValues(0);this.master.gain.setValueAtTime(0,retired.currentTime);this.master.disconnect();}
+    const retired=this.context,closedAt=performance.now(),master=this.master,gate=this.outputGate,compressor=this.compressor,environment=this.musicEnvironment;
+    const voices={audioVoices:this.audioVoices,phraseVoices:this.phraseVoices,voiceCount:this.voiceCount};
     const mediaKey=this.media?.key,mediaEnv=this.media?.env;
-    this.cosmeticPreviewStop();this.musicEnvironment?.dispose();this.musicEnvironment=null;voicesStop(this);this.phraseClear();this.media?.dispose();
+    // Detach scheduling immediately, but let the old output finish its short
+    // audio-clock fade. Background timer throttling cannot extend audible sound.
+    if(gate){
+      const now=retired.currentTime,p=gate.gain;
+      if(p.cancelAndHoldAtTime)p.cancelAndHoldAtTime(now);
+      else {p.cancelScheduledValues(now);p.setValueAtTime(Math.max(0,Math.min(1,(now-(this.outputOpenedAt??now-.06))/.06)),now);}
+      if(fade)p.linearRampToValueAtTime(0,now+.02);else p.setValueAtTime(0,now);
+    }
+    this.media?.dispose();
     if(this.media){this.media=new PoolMedia(mediaEnv);if(mediaKey)this.media.describe(mediaKey);}
-    this.context=null;this.master=null;this.outputGate=null;this.compressor=null;this.musicInput=null;this.musicOutput=null;this.musicDuck=null;this.previewEnvelope=null;this.delay=null;
+    this.context=null;this.master=null;this.outputGate=null;this.compressor=null;this.musicEnvironment=null;this.musicInput=null;this.musicOutput=null;this.musicDuck=null;this.previewEnvelope=null;this.delay=null;
+    this.audioVoices=new Set();this.phraseVoices=new Set();this.phraseClear();this.previewSelection=null;this.previewUntil=0;
     this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.uiWindLastAt=-Infinity;this.strengthAt=-Infinity;this.duckUntil=0;this.previewStarted=0;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};this.travelState=null;
-    if(retired?.close){this.outputClosing=(this.outputClosing||0)+1;try{Promise.resolve(retired.close()).catch(()=>{}).finally(()=>{this.outputClosing--;this.outputCloseMs=performance.now()-closedAt;});}catch{this.outputClosing--;}}
+    const finish=()=>{
+      gate?.disconnect();compressor?.disconnect();master?.disconnect();environment?.dispose();voicesStop(voices);
+      if(retired?.suspend&&retired.state!=='closed'){try{Promise.resolve(retired.suspend()).catch(()=>{});}catch{}}
+      if(retired?.close){this.outputClosing=(this.outputClosing||0)+1;try{Promise.resolve(retired.close()).catch(()=>{}).finally(()=>{this.outputClosing--;this.outputCloseMs=performance.now()-closedAt;});}catch{this.outputClosing--;}}
+    };
+    if(fade&&retired&&gate)setTimeout(finish,30);else finish();
   }
   harmonySet(blooms) {
     const count = Number.isSafeInteger(blooms) && blooms > 0 ? blooms : 0;
@@ -246,6 +257,7 @@ export class PoolSound {
     if (event.type === 'win') { [this.notePitch(0), this.notePitch(2), this.notePitch(3), this.notePitch(0) * 2].forEach((pitch, index) => this.tone(pitch, pitch, 1.2, .12, 0, index * .22, 'sine', true)); }
     if (event.type === 'over') [523.25, 392, 329.63, 261.63].forEach((pitch, index) => this.tone(pitch, pitch, .75, .15, 0, index * .12, 'sine', true));
   }
+  uiTap(pitch,end,level,at){this.tone(pitch,end,.085,level,0,0,'sine',false,false,{allowPaused:true,envelope:uiTapEnvelope,at});}
   uiPlay(kind='select') {
     voicesReap(this);
     if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.voiceCount>40)return false;
@@ -257,9 +269,9 @@ export class PoolSound {
     this[last]=now;
     const back=kind==='back'||kind==='back-complete';
     const pitch=kind==='back-start'?300:back?440:kind==='confirm'?660:560;
-    if(wind){for(const {pitch,level} of uiWindTones(this.uiWindPhase))if(level>.001)this.tone(pitch,pitch,.05,.035*level,0,0,'sine',false,false,{allowPaused:true,envelope:windEnvelope,at:now+.006});}
-    else this.tone(pitch,back?330:pitch*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true});
-    if(kind==='confirm')this.tone(880,880,.09,.055,0,.055,'sine',false,false,{allowPaused:true});
+    if(wind){for(const {pitch,level} of uiWindTones(this.uiWindPhase))if(level>.001)this.uiTap(pitch,pitch*1.08,.09*level,now+.006);}
+    else this.uiTap(pitch,back?330:pitch*1.08,.09,now+.006);
+    if(kind==='confirm')this.uiTap(880,880,.055,now+.061);
     this.uiCount=(this.uiCount||0)+1;
     return true;
   }
