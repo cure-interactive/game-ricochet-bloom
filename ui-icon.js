@@ -1,4 +1,4 @@
-import {registerCosmeticIcon} from './cosmetic-icon.js?v=bf35992c4f5e3968a34349718c62fa9085a6ca0c75ffd33a8672d366e3d4bc53';
+import {registerCosmeticIcon} from './cosmetic-icon.js?v=b97006eaa4135092dd1cdeca633091cae3a4ca8cc2e2c1518c4a21b04407cdc7';
 if(typeof window!=='undefined')registerCosmeticIcon();
 import {registerPlayerBubble} from './player-bubble.js?v=691f47bc947cde5b9cf62f8a5eee932753f5f89a19360b117fc243fd5f7c620b';
 if(typeof window!=='undefined')registerPlayerBubble();

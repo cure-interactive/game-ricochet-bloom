@@ -1,4 +1,4 @@
-import {buttonLabel} from './ui-icon.js?v=23254d5124a1e10208687f81fc9971554edfeeb2b34e4c17b4d273dc2d5cad13';
+import {buttonLabel} from './ui-icon.js?v=a20146c857cd0ea4970cede6aaae8fa6c844ad19464d4b8f34a9c5ba16326dbf';
 import {SONG_STORAGE,SONG_LIMIT,songLibraryRead,songSnapshot,songRender} from './song.js?v=490c28dfcf9cb065c698c1d1d66cf57067e308cfaf0db3ec20c3b23b6ea9aeb8';
 export function songLibrarySetup(current,open) {
   const panel=document.getElementById('library-panel'),$=id=>panel.querySelector('#'+id)||document.getElementById(id);let library={version:1,songs:[]},selected=null,url=null,file=null,job=0;

@@ -17,9 +17,21 @@ export function cosmeticThumbnail(canvas,item,{color='#f1f9d7',style=''}={}){
 }
 // Small previews stay silent and use the same visibility/quality lifecycle as
 // the selected viewer. The caller owns destruction when replacing its cards.
-export function cosmeticThumbnailMount(canvas,item,{color,style,compact=false}={}){
+export function cosmeticThumbnailMount(canvas,item,{color,style,compact=false,motionArea=1}={}){
  const get=()=>typeof item==='function'?item():item,value=x=>typeof x==='function'?x():x;
- return cosmeticPreviewMount(canvas,{thumbnail:get().kind,compact,loadout:()=>({[get().kind]:get().id}),color:()=>value(color),style:()=>value(style)});
+ return cosmeticPreviewMount(canvas,{thumbnail:get().kind,compact,motionArea,loadout:()=>({[get().kind]:get().id}),color:()=>value(color),style:()=>value(style)});
+}
+// Full detail arenas collide at the physical bubble edge, not an inner margin.
+export function cosmeticPreviewStep(body,dt,width,height,hit){
+ body.x+=body.vx*dt;body.y+=body.vy*dt;
+ for(const [axis,velocity,max] of [['x','vx',width],['y','vy',height]]){
+  const low=Math.min(body.radius,max/2),high=Math.max(low,max-body.radius),position=body[axis];
+  body[axis]=Math.max(low,Math.min(high,position));
+  const side=position<=low&&body[velocity]<0?-1:position>=high&&body[velocity]>0?1:0;
+  if(!side)continue;
+  body[velocity]*=-1;
+  hit(axis==='x'?(side<0?0:max):Math.max(0,Math.min(width,body.x)),axis==='y'?(side<0?0:max):Math.max(0,Math.min(height,body.y)),axis==='x'?side:0,axis==='y'?side:0);
+ }
 }
 // Detached presentation: the same membrane, materials and effect renderer as play.
 export function cosmeticPreviewMount(canvas,host){
@@ -31,18 +43,19 @@ export function cosmeticPreviewMount(canvas,host){
   frame=win.requestAnimationFrame(draw);if(!ready(now))return;
   const dt=last?Math.min(.05,(now-last)/1000):0;last=now;
   const ratio=qualityPixelRatio(doc.body.dataset.quality,win.devicePixelRatio||1),width=Math.max(1,canvas.clientWidth),height=Math.max(1,canvas.clientHeight);
-  // Gallery cards reserve 192px instead of 64px: a fixed 180-unit height
-  // makes their artwork exactly three times larger, independently of columns.
-  const scale=host.thumbnail&&!host.compact?180/height:Math.max((host.compact?160:180)/height,(host.compact?160:400)/width),worldHeight=height*scale,worldWidth=width*scale;
+  // Keep gallery artwork at its enlarged scale independently of stage height.
+  // Trail stages can be shorter without shrinking their bubble or trail.
+  const scale=host.thumbnail&&!host.compact?180/192:Math.max((host.compact?160:180)/height,(host.compact?160:400)/width),worldHeight=height*scale,worldWidth=width*scale;
   visual.configure(host.loadout());
   if(host.thumbnail){
-   const t=visual.elapsed,padding=host.compact?54:host.thumbnail==='trail'?42:72,rx=Math.max(0,worldWidth/2-padding),ry=Math.max(0,worldHeight/2-padding);
+   const t=visual.elapsed,padding=host.motionArea<1?body.radius+4:host.compact?54:host.thumbnail==='trail'?body.radius+(42-body.radius)/2:72,area=host.motionArea||1,rx=Math.max(0,worldWidth*area/2-padding),ry=Math.max(0,worldHeight*area/2-padding);
    body.x=worldWidth/2+(host.thumbnail==='trail'?Math.sin(t*2)*rx:0);body.y=worldHeight/2+(host.thumbnail==='trail'?Math.sin(t*4)*ry:0);
    body.vx=Math.cos(t*2)*rx*2;body.vy=Math.cos(t*4)*ry*4;
    if(host.thumbnail==='bounce'&&Math.floor(t/.9)!==pulse){pulse=Math.floor(t/.9);visual.hit(body.x,body.y);bubbleHit(membrane,body.radius,1,0,150);}
   }else{
-   body.x+=body.vx*dt;body.y+=body.vy*dt;
-   for(const [axis,velocity,max] of [['x','vx',worldWidth],['y','vy',worldHeight]])if(body[axis]<72||body[axis]>max-72){body[axis]=Math.max(72,Math.min(max-72,body[axis]));body[velocity]*=-1;visual.hit(body.x,body.y);bubbleHit(membrane,body.radius,axis==='x'?-Math.sign(body.vx):0,axis==='y'?-Math.sign(body.vy):0,210);}
+   cosmeticPreviewStep(body,dt,worldWidth,worldHeight,(x,y,nx,ny)=>{
+    visual.hit(x,y);bubbleHit(membrane,body.radius,nx,ny,210);
+   });
   }
   bubbleStep(membrane,body,dt);visual.step(body,dt,true);
   if(!activity.clip(canvas.getBoundingClientRect()))return;

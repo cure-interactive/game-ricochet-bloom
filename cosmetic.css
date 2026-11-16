@@ -1,9 +1,12 @@
 .cosmetic-rarity,.cosmetic-wallet{display:inline-flex;align-items:center;gap:6px;font-size:14px}
 .cosmetic-rarity img{width:17px;height:17px}.cosmetic-wallet .ui-icon{width:16px;height:16px}
 .cosmetic-thumbnail{display:block;width:100%;height:192px;min-height:0;max-height:none;background:transparent;pointer-events:none}
+.skin-choice[data-cosmetic^="trail."] .cosmetic-thumbnail{height:96px}
 #cosmetic-dialog .skin-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,168px),1fr))}
-.cosmetic-heading-preview{display:block;flex:none;width:44px;height:36px;min-height:0;max-height:none;background:transparent;pointer-events:none}
-.ui-icon[data-icon="bounce-effects"],.player-effect-thumbnail[data-kind="bounce"],.cosmetic-heading-preview[data-kind="bounce"]{zoom:2}
+/* Artwork overscans one normal title slot; its size never expands the bar. */
+.cosmetic-heading-icon{position:relative;display:block;flex:none;width:44px;height:36px;overflow:visible}
+.cosmetic-heading-preview{position:absolute;display:block;left:-50%;top:-50%;width:200%;height:200%;min-height:0;max-height:none;background:transparent;pointer-events:none}
+.ui-icon[data-icon="bounce-effects"],.player-effect-thumbnail[data-kind="bounce"]{zoom:2}
 #cosmetic-dialog .skin-detail{display:grid;grid-template-rows:minmax(260px,1fr) auto;align-items:stretch;max-width:none;margin:0;padding:0;gap:20px}
 #cosmetic-dialog .skin-selection{max-width:440px;justify-self:center}
 .cosmetic-preview-large{position:relative;width:100%;min-width:0;min-height:260px;overflow:hidden;border:1px solid #304855;border-radius:18px;background:radial-gradient(ellipse at 50% 45%,#122238,#080f1d 80%);box-shadow:inset 0 2px 14px #0004}

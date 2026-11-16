@@ -1,9 +1,9 @@
-import {cosmeticPriceHTML} from './cosmetic-price.js?v=eb7d71fa1088128a0e3e9cab957b32dc65243872b4dad7326b8c47dcb9f87a7f';
+import {cosmeticPriceHTML} from './cosmetic-price.js?v=6acddea2453c5d8eb0094eda1894207cecfead7c56a6e136429b32136c82c2bb';
 import {COSMETICS,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=97b306ab42d46dc2f32ef73e7417114b7e4c554d3db716a4334c31895c9d8d32';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=ef44992b33f6bb0df473aa3f210064ff51da16c16abafa758f7446d7247d986e';
-import {screenHeader} from './screen-header.js?v=a02e1ebe93884ea0c07d9f50db4c6ab18e894db9e76e3d49cef38ae629ecf5f0';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=23254d5124a1e10208687f81fc9971554edfeeb2b34e4c17b4d273dc2d5cad13';
-import {rarityIconHTML} from './skill-icon.js?v=1c2f5eee791faf64e03b823e4023429c1f648d6d0da38a719a8b6ce8ec0f8e4a';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=d54b67e2a597953c8212469ac99a3c5128e6c844101450271447f583c18de2b0';
+import {screenHeader} from './screen-header.js?v=c8cda870bed9473baeb2ad349763b2343883fbe94d38f7e6d6bc7165be6a0c22';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=a20146c857cd0ea4970cede6aaae8fa6c844ad19464d4b8f34a9c5ba16326dbf';
+import {rarityIconHTML} from './skill-icon.js?v=a654b473a35597636b7d0aa217be3c4cf815186b1308ec652d57db6d203521ea';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 export function cosmeticMount(host){
@@ -12,7 +12,8 @@ export function cosmeticMount(host){
  dialog.innerHTML=screenHeader({icon:'trails',title:'Trails',titleId:'cosmetic-title',className:'skin-heading',back:buttonHTML('Back','arrow-left',{'data-cosmetic-back':true})})+`<div class="skin-scroll"><section class="skin-library"><p class="skin-intro"></p><div class="skin-grid"></div></section><section class="skin-detail" hidden><div class="cosmetic-preview-large"><canvas aria-label="Animated cosmetic preview"></canvas></div><section class="skin-selection cosmetic-detail"></section></section><p class="skin-status" role="status"></p></div>`;
  document.body.append(dialog);
  const back=dialog.querySelector('[data-cosmetic-back]'),detail=dialog.querySelector('.cosmetic-detail'),status=dialog.querySelector('.skin-status'),scroll=dialog.querySelector('.skin-scroll'),large=dialog.querySelector('.cosmetic-preview-large canvas');
- const heading=document.createElement('canvas');heading.className='cosmetic-heading-preview';heading.setAttribute('aria-hidden','true');dialog.querySelector('.screen-heading-title>.ui-icon').replaceWith(heading);
+ const headingSlot=document.createElement('span');headingSlot.className='cosmetic-heading-icon';headingSlot.setAttribute('aria-hidden','true');
+ const heading=document.createElement('canvas');heading.className='cosmetic-heading-preview';headingSlot.append(heading);dialog.querySelector('.screen-heading-title>.ui-icon').replaceWith(headingSlot);
  const title=()=>kind==='trail'?'Trails':'Impacts';
  const stop=()=>{audition++;host.stopSound?.();};
  function render(){
@@ -25,7 +26,7 @@ export function cosmeticMount(host){
    for(const control of thumbnails)control.destroy();thumbnails.length=0;headingPreview?.destroy();renderedKind=kind;
    dialog.querySelector('.skin-grid').innerHTML=COSMETICS.filter(x=>x.kind===kind).map(x=>`<button type="button" class="skin-choice" data-cosmetic="${x.id}"><canvas class="cosmetic-thumbnail" aria-hidden="true"></canvas><strong>${escapeHTML(x.name)}</strong><span class="cosmetic-rarity">${rarityIconHTML(x.rarity)}${RARITIES[x.rarity].name}</span><span class="skin-choice-state"></span><span class="cosmetic-price-slot"></span></button>`).join('');
    for(const canvas of dialog.querySelectorAll('.cosmetic-thumbnail'))thumbnails.push(cosmeticThumbnailMount(canvas,cosmeticGet(canvas.closest('[data-cosmetic]').dataset.cosmetic),{color:host.color,style:host.style}));
-   headingPreview=cosmeticThumbnailMount(heading,()=>cosmeticGet(selected||cosmeticLoadout(host.profile())[kind]),{color:host.color,style:host.style,compact:true});
+   headingPreview=cosmeticThumbnailMount(heading,()=>cosmeticGet(selected||cosmeticLoadout(host.profile())[kind]),{color:host.color,style:host.style,compact:true,motionArea:.5});
   }
   for(const button of dialog.querySelectorAll('[data-cosmetic]')){
    const x=cosmeticGet(button.dataset.cosmetic),owned=cosmeticOwned(profile,x),equipped=loadout[kind]===x.id;

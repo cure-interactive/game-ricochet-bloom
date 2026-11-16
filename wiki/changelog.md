@@ -6,6 +6,23 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.28.4
+
+Build: 2026-11-16 00:58:25 UTC
+
+### Player Changes
+
+- Keep the Impacts title icon in the same compact space as other titles and double the Trails title artwork within that space.
+- Halve Trail card preview height while keeping the artwork size and letting the bubble move closer to the card edges.
+- Make Trail and Impact detail previews bounce off the visible play-area walls.
+
+<!-- development -->
+### Developer Notes
+
+- Separate cosmetic title layout slots from their larger drawing canvases, avoiding low-resolution bitmap stretching. Preserve enlarged gallery artwork independently of stage height.
+- Use radius-aware cosmetic arena collisions and wall-contact effect positions, with inward-velocity protection during resizing.
+<!-- /development -->
+
 ## v3.28.3
 
 Build: 2026-11-16 00:20:17 UTC
