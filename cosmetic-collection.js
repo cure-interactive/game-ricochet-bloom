@@ -1,0 +1,35 @@
+// Original additions: presentation only; tier prices match the shared catalogue.
+const prices={common:60,rare:120,epic:220,legendary:360,mythic:550};
+const entries=[
+ ['skin','porcelain','Porcelain','common','#e9eadc','Ivory glaze with a deep blue ink band.'],
+ ['skin','copper','Copper','common','#cf9669','Brushed copper with a fine green patina rim.'],
+ ['skin','tidepool','Tidepool','rare','#6dd8cd','Translucent teal water with drifting caustic light.'],
+ ['skin','honeycomb','Honeycomb','rare','#efc06b','Amber cells surround a honey-colored core.'],
+ ['skin','circuit','Circuit','epic','#80e8db','Luminous circuit traces light around the living membrane.'],
+ ['skin','inkswirl','Ink Swirl','epic','#b8b4ed','Two suspended inks curl inside a clear surface.'],
+ ['skin','stormheart','Stormheart','legendary','#a0b9ed','Layered clouds shelter a pulsing interior storm and charged rim.'],
+ ['skin','clockwork','Clockwork','legendary','#deb77a','Turning brass mechanisms surround a responsive iris.'],
+ ['skin','eventhorizon','Event Horizon','mythic','#b9a0ed','A dark core lenses an accretion ring that stretches with movement.'],
+ ['skin','worldseed','Worldseed','mythic','#a9dfab','A living seed opens its luminous leaves with motion.'],
+ ['trail','mist','Mist','common','#c9e3e9','A narrow vapor ribbon disperses behind your movement.'],
+ ['trail','dashes','Dashes','common','#d7f4ea','Separated light bars soften and shorten as they age.'],
+ ['trail','fireflies','Fireflies','rare','#f6de89','Golden motes wander gently away from your path.'],
+ ['trail','rainstream','Rainstream','rare','#9bcfe9','A fine stream separates into drifting droplets.'],
+ ['trail','lattice','Lattice','epic','#a8d9e9','Connected hexagonal links form and dissolve along your wake.'],
+ ['trail','inkbrush','Inkbrush','epic','#c7a5e2','A flowing ink stroke feathers into curling droplets.'],
+ ['trail','stormwake','Stormwake','legendary','#a9ccff','Branching light follows a storm-blue path, with a soft electric launch accent.'],
+ ['trail','clockstream','Clockstream','legendary','#e8c589','Turning segmented brass arcs follow your path with a mechanical launch accent.'],
+ ['trail','riftwake','Riftwake','mythic','#c4a1ef','A folded violet slit sheds refracted fragments, then seals; a quiet airy tone follows motion.'],
+ ['trail','livingvine','Living Vine','mythic','#a2e6b9','Tendrils unfurl into leaves and spores; a soft flowing tone accompanies movement.'],
+ ['bounce','droplet','Droplet','common','#a7e1ec','A small liquid crown and one ring spread from contact.'],
+ ['bounce','crossflash','Crossflash','common','#e6f4cd','Four short rays soften into a central glow.'],
+ ['bounce','iceshards','Ice Shards','rare','#c1e8ff','Translucent chips spread in a compact icy fan.'],
+ ['bounce','honeycombpulse','Honeycomb Pulse','rare','#ebc77f','An amber cell lights its neighbors in a single pulse.'],
+ ['bounce','circuitbloom','Circuit Bloom','epic','#99edd6','Circuit paths illuminate outward in a coordinated sequence.'],
+ ['bounce','inksplash','Ink Splash','epic','#c8a5e1','An ink bloom breaks into soft rounded drops.'],
+ ['bounce','thunderseal','Thunder Seal','legendary','#b3d5ff','A central flash releases a branching seal and a fading outer ring.'],
+ ['bounce','clockburst','Clockburst','legendary','#edc98f','A radial brass iris opens, turns and fades in layers.'],
+ ['bounce','horizoncollapse','Horizon Collapse','mythic','#c4a4f2','Light contracts, releases a lensed ring and dissolves into dust with a deep accent.'],
+ ['bounce','worldbloom','Worldbloom','mythic','#a8edbd','Luminous petals unfold into a canopy, then dissolve into seeds with a bright accent.']
+];
+export const COSMETIC_COLLECTION=Object.freeze(entries.map(([kind,style,name,rarity,color,description])=>Object.freeze({id:`${kind}.${style}`,kind,style,name,rarity,color,description,cost:prices[rarity]})));

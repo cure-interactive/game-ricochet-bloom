@@ -1,8 +1,8 @@
 import {escapeHTML as escape} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import {skillIconHTML,rarityIconHTML,typeIconHTML} from './skill-icon.js?v=30e163fa7cf9ecff14317a409c1038691cee610af060f411d678d628dacc7f96';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=6c99c7aabe02590f700c101241c5f5bc6c6ba38a67af533a14b8cef863768aaa';
-import {tooltipPosition} from './skill-comparison.js?v=c4596433c3f0ee66bcf8a1e7bc986065781bcdb41d2d3538f8b3fa0a5a930936';
+import {skillIconHTML,rarityIconHTML,typeIconHTML} from './skill-icon.js?v=fd4d1a201bd99ef3fc9b7184cb9eaf976606208196c63bd4ca2884b18180636f';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=68bbe4420b1782da4ec5a87ab925a840c21d5d87a2c31ca133867a512c8d3a0b';
+import {tooltipPosition} from './skill-comparison.js?v=96e112c7ca780558b817bf9ca0a4d59db931394ff6e7e074449d1460b5e0e89e';
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 
 function statCurveHTML(curve,stats){
@@ -32,7 +32,7 @@ export function skillStatsHTML(stats){
 export function skillNodeHTML(n,{position=n,attribute='data-node',tooltipId='skill-tooltip',selected=false,active=false,available=false,cost=null}={}){
  if(!['data-node','data-player-node'].includes(attribute))throw new Error('Unknown skill node attribute');
  const base=n.kind==='base',locked=!n.owned&&!n.borrowed&&!available;
- const badge=n.borrowed&&!n.owned?'clock':locked?'lock':null;
+ const badge=n.owned?null:n.borrowed?'clock':'lock';
  const label=active?'Active':n.owned?'Owned':available?'Available to Purchase':n.borrowed?'Borrowed':'Locked';
  return `<button type="button" ${attribute}="${escape(n.id)}" data-kind="${n.kind}" data-rarity="${n.rarity}" class="skill-node ${base?'is-base':''} ${n.kind==='capstone'?'is-capstone':''} ${n.owned?'is-owned':''} ${n.dimmed?'is-unavailable':''} ${active?'is-active':''} ${available?'is-available':''} ${locked?'is-locked':''} ${n.borrowed?'is-borrowed':''}" style="--rarity-color:${RARITIES[n.rarity].color};--node-x:${position.x}px;--node-y:${position.y}px" aria-label="${escape(n.name+', '+label+(cost===null?'':', Cost: '+cost+' Points'))}" aria-pressed="${selected}" aria-haspopup="dialog" aria-controls="${escape(tooltipId)}" aria-expanded="false"><span class="skill-orb">${skillIconHTML(n)}<span class="skill-rarity" aria-hidden="true">${rarityIconHTML(n.rarity)}</span>${badge?'<i class="skill-badge">'+iconHTML(badge)+'</i>':''}</span><strong>${escape(n.name)}</strong>${cost===null?'':`<small class="skill-node-cost">${iconHTML('coin')}<span>${cost} Points</span></small>`}</button>`;
 }

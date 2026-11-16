@@ -1,8 +1,8 @@
-import {gamemodeNavigation} from './gamemode-navigation.js?v=f03ba0e2439da29f290efa4fd8e7bf6ef90ff498a1f911005f6f971d6b3b6a8d';
-import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=c64dec5ea4a3375c5a2e09531e8d4d30831fac278db3b4d7010dc4d7417805da';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=340b0b392446696bf13d70c50dd8f83fc44921d6f8e3f8496f5110ac34328ba0';
+import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=f029478a0b098db03c6e65990f581e86ce2d9d537ee2788627337038049b5229';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { experimentRead, experimentFavourite } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
-import { assetURL } from './asset.js?v=4a033879d71b1eddd370a80d7afdf3ea8124008623c9c74936a12526b13e3e9c';
+import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 
 // Owns gallery view state only. Starting games and opening other screens are

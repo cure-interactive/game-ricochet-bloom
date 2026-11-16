@@ -1,11 +1,12 @@
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=1e0e5729228d8ec9eac6fbede5f3a8f0587c640bb52826e3fb71e67bc65a40f6';
+import {treeViewPaint} from './tree-view.js?v=0b38d934d7a963a4ff47b09178f23813ee12aa14737860aa5b8f05f97f788855';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=e58ea278dabef2c19fbd2c0fe9111aaa057567c1af7dc8d2421163889d9797a8';
 import {playerSkillStats} from './player-skill-comparison.js?v=75decfaf5d896b3fa9b10253c26385c4360916c8de20e0a52f71bc51d9fde36b';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import {playerTreeGraph} from './player-tree.js?v=210238b9f0ec28aad2a319ced9ab6cb7cc2a67d8ef569cf3fa9c1aabae772674';
-import {mapCameraMount,nearestMapNode} from './tree-map.js?v=70017d365646a9489aa24807b66eb3ff4f3df9819448a14471f3d9520a8dcb37';
-import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=afc77036f20e08d7d0c6e858f25b63580a8eb26ac3f50203eee029cd3685af8d';
-import {screenHeader} from './screen-header.js?v=786f504b0d8e7c345d1c30428db16e12dc5b1c2513f004bec1c0c4c0b2618c9a';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=6c99c7aabe02590f700c101241c5f5bc6c6ba38a67af533a14b8cef863768aaa';
+import {playerTreeGraph} from './player-tree.js?v=4afea866ffb31d36eeec45f4e818665a0b5f993a28fc81ecae01d45d74dd2c4d';
+import {mapCameraMount,nearestMapNode} from './tree-map.js?v=599b1db6e077795c0de1a49014655c13a5821189a149b12e35d69f0731dcf222';
+import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=7395f5851dbd25b53c67179152f9a7631ad5a9b729c8d573ce34278d0bd1fa55';
+import {screenHeader} from './screen-header.js?v=8a5958d2c41c5236dcafa8611ed5ff3ccefdbee07ea3e34506efbc5147d3c476';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=68bbe4420b1782da4ec5a87ab925a840c21d5d87a2c31ca133867a512c8d3a0b';
 
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 const rules='Every purchased upgrade stacks permanently. Open pools apply purchases between shots; Melody Journey applies them from the next pool. Score Attack fixes them at the start of a run. Fixed trials and shared challenges keep their authored rules.';
@@ -22,7 +23,7 @@ export function playerUpgradeMount(host){
  function hide(restore=false){tip.hidden=true;tipId=null;map.querySelectorAll('[aria-expanded=true]').forEach(n=>n.setAttribute('aria-expanded','false'));if(restore)map.querySelector(`[data-player-node="${selected}"]`)?.focus({preventScroll:true});}
  const camera=mapCameraMount(surface,world,(view,limits)=>{
   if(lastView&&(view.x!==lastView.x||view.y!==lastView.y||view.scale!==lastView.scale))hide();lastView={...view};
-  map.style.transform=`translate(${view.x}px,${view.y}px) scale(${view.scale})`;
+  treeViewPaint(map,surface,view,graph.byId);
   dialog.querySelector('.tree-zoom').textContent=Math.round(view.scale*100)+'%';
   dialog.querySelector('[data-tree-action=zoom-out]').disabled=view.scale<=limits.minScale+1e-6;
   dialog.querySelector('[data-tree-action=zoom-in]').disabled=view.scale>=1.799;
@@ -37,7 +38,6 @@ export function playerUpgradeMount(host){
   if(!graph.byId[selected])selected='player';Object.assign(world,{width:graph.width,height:graph.height});
   dialog.querySelector('.tree-wallet-summary').innerHTML=`<strong>${iconHTML('coin')}${state.profile.wallet.seeds}<span> Points</span></strong>`;
   dialog.querySelector('.tree-status').textContent=message;
-  map.style.width=graph.width+'px';map.style.height=graph.height+'px';
   map.innerHTML=`<svg class="tree-world-links" viewBox="0 0 ${graph.width} ${graph.height}" aria-hidden="true">${graph.edges.map(e=>`<path data-from="${e.from}" data-to="${e.to}" class="${graph.byId[e.to].owned?'is-active':graph.byId[e.from].owned?'is-open':'is-locked'}" style="--rarity-color:${RARITIES[graph.byId[e.to].rarity].color}" d="${e.path}"/>`).join('')}</svg>`+
    graph.nodes.map(n=>skillNodeHTML(n,{attribute:'data-player-node',tooltipId:'player-skill-tooltip',selected:n.id===selected,active:n.owned,available:n.canBuy,cost:n.owned&&!host.showPurchasedCosts?.()?null:n.cost})).join('');selection();
   if(dialog.open){camera.refresh();const point=graph.byId[selected];if(point.x!==previous?.x||point.y!==previous?.y)camera.focus(point,camera.value.scale);}

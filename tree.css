@@ -24,14 +24,14 @@
 .tree-map-scroll{position:relative;flex:1;min-height:0;width:100%;overflow:clip;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;overscroll-behavior:contain}
 .tree-map-scroll.is-panning,.tree-map-scroll.is-panning *{cursor:grabbing!important}
 /* All map content shares this transform; only the surrounding controls stay screen-sized. */
-.tree-map{position:absolute;left:0;top:0;transform-origin:0 0;max-width:none;margin:0}
-.tree-world-links{position:absolute;inset:0;width:100%;height:100%;max-width:none;overflow:visible;pointer-events:none}
+.tree-map{position:absolute;inset:0;max-width:none;margin:0;contain:layout paint;overflow:hidden;--map-scale:1;--map-x:0px;--map-y:0px}
+.tree-world-links{position:absolute;inset:0;width:100%;height:100%;max-width:none;overflow:hidden;pointer-events:none}
 .tree-world-links path{fill:none;stroke:#405b70;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.tree-world-links .is-locked{stroke-dasharray:6 8}.tree-world-links .is-open{stroke:#6d9a97}.tree-world-links .is-active{stroke:#a4e9ce;stroke-width:4;filter:drop-shadow(0 0 4px #79e3bc55)}
 .bridge-label{fill:#e4ce9e;font-size:17px;paint-order:stroke;stroke:#091422;stroke-width:6px}
 
 
 
-:is(#tree-dialog,#player-upgrade-dialog) .skill-node{position:absolute;left:var(--node-x);top:var(--node-y);transform:translate(-50%,-32px);width:160px;max-width:none;min-height:116px;display:flex;flex-direction:column;gap:4px;padding:0;border:0;border-radius:12px;background:transparent;text-align:center;justify-content:flex-start;align-items:center;font-size:13px;z-index:1;cursor:pointer}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node{position:absolute;left:calc(var(--node-x) * var(--map-scale) + var(--map-x));top:calc(var(--node-y) * var(--map-scale) + var(--map-y));transform-origin:50% 28px;transform:translate(-50%,-28px) scale(var(--map-scale));width:160px;max-width:none;min-height:116px;display:flex;flex-direction:column;gap:4px;padding:0;border:0;border-radius:12px;background:transparent;text-align:center;justify-content:flex-start;align-items:center;font-size:13px;z-index:1;cursor:pointer}
 
 :is(#tree-dialog,#player-upgrade-dialog) .skill-branch{width:100%;justify-content:flex-start;text-align:left;margin:0 0 12px;background:#1b2638;border-color:#665b43;font-size:13px}.skill-branch small{display:block;font-size:11px;color:#bbced7;margin-top:3px}
 .skill-orb{grid-column:1;grid-row:1 / span 3;justify-self:center;align-self:center}
@@ -69,7 +69,7 @@
 
 
 /* Reserve label clearance for the outer ring and the low rarity badge. */
-:is(#tree-dialog,#player-upgrade-dialog) .skill-node{width:116px;min-height:94px;gap:14px;transform:translate(-50%,-28px)}
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node{width:116px;min-height:94px;gap:14px}
 :is(#tree-dialog,#player-upgrade-dialog) .skill-node .skill-orb{width:48px;height:48px}:is(#tree-dialog,#player-upgrade-dialog) .skill-node.is-base .skill-orb{width:64px;height:64px;margin-top:-8px}
 :is(#tree-dialog,#player-upgrade-dialog) .skill-node>strong{font-size:12px;max-width:116px}:is(#tree-dialog,#player-upgrade-dialog) .skill-node.is-base>strong{font-size:15px}:is(#tree-dialog,#player-upgrade-dialog) .skill-node>small{font-size:10px}
 :is(#tree-dialog,#player-upgrade-dialog) .skill-node>.skill-node-cost{display:inline-flex;align-items:center;gap:4px;margin-top:-11px;font-size:11px;line-height:13px;white-space:nowrap}
@@ -202,7 +202,7 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .skill-rarity .rarity-icon{width:20px;height:20px}
 :is(#tree-dialog,#player-upgrade-dialog) .tree-world-links path{stroke:var(--rarity-color);opacity:.75;filter:none}
 :is(#tree-dialog,#player-upgrade-dialog) .tree-world-links path.is-active{stroke:var(--rarity-color);stroke-width:4;opacity:1}
-:is(#tree-dialog,#player-upgrade-dialog) .tree-world-links path.is-route{stroke:var(--rarity-color);stroke-width:5;opacity:1;filter:drop-shadow(0 0 3px var(--rarity-color))}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-world-links path.is-route{stroke:var(--rarity-color);stroke-width:5;opacity:1;filter:none}
 :is(#tree-dialog,#player-upgrade-dialog) .tree-world-links path.is-locked:not(.is-route){stroke:var(--rarity-color);stroke-width:3;opacity:.65}
 :is(#tree-dialog,#player-upgrade-dialog) .tree-legend{position:absolute;z-index:5;top:12px;right:12px;display:block;box-sizing:border-box;width:max-content;max-width:calc(100% - 24px);max-height:calc(100% - 56px);overflow:auto;overscroll-behavior:contain;padding:10px 12px;text-align:left;line-height:1.35;border-radius:14px;cursor:pointer}
 :is(#tree-dialog,#player-upgrade-dialog) .tree-legend[aria-expanded=true]{width:320px;padding:16px}
@@ -300,4 +300,14 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 
 .connection-legend{display:grid;gap:10px}.legend-connection{display:flex;align-items:center;gap:10px;font-size:12px;color:#bcd2dd}.legend-connection:before{content:"";width:26px;border-top:2px solid currentColor}.legend-connection.is-unpurchased:before{border-top-style:dashed}
 
-.tree-map::before{content:"";position:absolute;inset:calc(-1 * var(--map-ground-padding,1200px));background:radial-gradient(#8fb8cd24 1px,transparent 1px) 0 0/24px 24px;pointer-events:none}
+
+/* Distant nodes retain shape, rarity and ownership; readable detail returns on zoom. */
+:is(#tree-dialog,#player-upgrade-dialog) .skill-node.is-culled{visibility:hidden;pointer-events:none}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-detail=overview] .skill-node{filter:none}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-detail=overview] .skill-orb{box-shadow:none;background:#132334}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-detail=overview] .skill-node>strong,
+:is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-detail=overview] .skill-node>small{visibility:hidden}
+
+/* One tiny SVG tile, clipped to the viewport. No background paint at overview. */
+.tree-map::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:url('./tree-grid.svg?v=e100da656982052284e2dc5002c05b0d47bf794c3400a393de97cbcd4dd1e143');background-repeat:repeat;background-position:inherit;background-size:inherit;opacity:var(--map-grid-opacity,1)}
+.tree-map[data-grid=hidden]::before{display:none}

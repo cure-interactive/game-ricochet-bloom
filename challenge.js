@@ -1,7 +1,7 @@
 import { buildValidate } from './skill-effect.js?v=b00900f06233cdeb7ee756f7a77164fb4fce302e8b9f5fa270e5b96742ffcda8';
 import { RULE, gameCreate } from './engine.js?v=adc6d69546723ce9f5131bf144815dc0a4f6fc6682ee59318309f9f62ca6bed0';
 import { trackGet, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { POPULATIONS } from './run.js?v=4eb96a8e4a7db4025b4fc665f3148c7d62147766620e7e1abd0c8ea3507f6b3c';
+import { POPULATIONS } from './run.js?v=18fc0ee42d604ca7c13682922c79fb19ea1653cc7ee38758fe4b5cb2c03cdfd9';
 
 // A code describes initial conditions, not a verified score or a global ranking.
 export function challengeValidate(value) {

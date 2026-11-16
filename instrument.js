@@ -1,4 +1,4 @@
-import {musicTheme} from './music-theme.js?v=1de2c6b5f2f33cc88ba48d0575b821f718ca45cba596ecbd24b7c03e3a8b58f8';
+import {musicTheme} from './music-theme.js?v=88ea7b370c0695e982b380622f15db38e58496f3cd4335b7104b62ec49d0ad79';
 // Shared finite instruments for live music and offline highlights.
 import {voiceTrack,voicesReap} from './audio-voice.js?v=c0db179bcb018380a8604c761694e0021f5b46aae7b41ff0986bf44e98136bce';
 const frequency=midi=>440*2**((midi-69)/12);

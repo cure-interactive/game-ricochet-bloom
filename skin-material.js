@@ -1,11 +1,13 @@
-import {assetURL} from './asset.js?v=4a033879d71b1eddd370a80d7afdf3ea8124008623c9c74936a12526b13e3e9c';
+import {skinDesign,SKIN_DESIGNS} from './skin-design.js?v=6597baed6f0b10b9b0c9000a359d18dd101b8e339a6cc78a961107e0f9eb101c';
+import {assetURL} from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
 let cure;
 export function skinMaterial(c,body,points,style,rotation=0,time=0,low=false){
- if(!['cure','frost','nebula','solar','seaglass','spectrum'].includes(style))return;
+ if(!['cure','frost','nebula','solar','seaglass','spectrum'].includes(style)&&!SKIN_DESIGNS.has(style))return;
  const {x,y,radius:r}=body,tau=Math.PI*2,speed=Math.min(1,Math.hypot(body.vx||0,body.vy||0)/500),phase=time*.65;
  // The decoration stretches with the real membrane and remains clipped to it.
  const xs=points.map(p=>p.x),ys=points.map(p=>p.y),sx=(Math.max(...xs)-Math.min(...xs))/(r*2),sy=(Math.max(...ys)-Math.min(...ys))/(r*2);
  c.save();c.translate(x,y);c.scale(sx,sy);c.rotate(rotation);c.lineWidth=r*.065;c.strokeStyle='#ffffffb0';c.fillStyle='#ffffffb0';c.lineCap='round';
+ if(skinDesign(c,style,r,time,speed,low)){c.restore();return;}
  if(style==='cure'){
   if(!cure&&typeof Image!=='undefined'){cure=new Image();cure.src=assetURL('brand/cure-interactive.svg');}
   c.strokeStyle='#9feaff';for(const [i,radius] of [.64,.83].entries()){c.beginPath();c.arc(0,0,r*radius,phase*(i?-1:1),phase*(i?-1:1)+tau*.78);c.stroke();}

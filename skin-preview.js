@@ -26,7 +26,7 @@ export function skinPreviewMount(element){
  const bubble=orb.querySelector('player-bubble');
  const renderReady=frameGate();
  let state={x:0,y:0,vx:0,vy:0},pointer=null,frame=0,last=0,destroyed=false,activity;
- function paint(){bubble?.velocity?.(state.vx/(Math.max(1,orb.clientWidth)/28),state.vy/(Math.max(1,orb.clientWidth)/28));orb.style.transform=`translate(${state.x.toFixed(2)}px,${state.y.toFixed(2)}px)`;}
+ function paint(){const unit=Math.max(1,orb.clientWidth)/28;bubble?.tether?.(state.x/unit,state.y/unit);bubble?.velocity?.(state.vx/(Math.max(1,orb.clientWidth)/28),state.vy/(Math.max(1,orb.clientWidth)/28));orb.style.transform=`translate(${state.x.toFixed(2)}px,${state.y.toFixed(2)}px)`;}
  function stop(){if(frame)win.cancelAnimationFrame(frame);frame=0;last=0;}
  function releaseCapture(){const id=pointer?.id;pointer=null;orb.classList.remove('is-dragging');if(id!==undefined&&orb.hasPointerCapture(id))orb.releasePointerCapture(id);}
  function reset(){stop();releaseCapture();bubble?.reset?.();state={x:0,y:0,vx:0,vy:0};paint();}

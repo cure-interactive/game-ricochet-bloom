@@ -1,4 +1,4 @@
-import {iconHTML} from './ui-icon.js?v=6c99c7aabe02590f700c101241c5f5bc6c6ba38a67af533a14b8cef863768aaa';
+import {iconHTML} from './ui-icon.js?v=68bbe4420b1782da4ec5a87ab925a840c21d5d87a2c31ca133867a512c8d3a0b';
 
 // Owned catalogue prices are inspection-only; ownership and equip actions remain separate.
 // Free defaults and campaign rewards have no paid catalogue price to reveal.

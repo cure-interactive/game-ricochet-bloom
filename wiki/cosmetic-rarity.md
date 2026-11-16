@@ -12,7 +12,7 @@ The current paid catalogue uses **Common: 60 Points**, **Rare: 120**, **Epic: 22
 - **Legendary:** a strong authored identity with coordinated moving parts or motion response; Solar and Cure Interactive use distinct cores and orbits.
 - **Mythic:** multiple coordinated layers that respond together to movement; Spectrum combines shifting orbits and an opening star.
 
-Skin decoration stays on the bubble. Trails and Impacts are separate equipped choices. In the skin gallery, only the equipped preview may produce its trail, from its own movement; scrolling never draws a trail. Large previews also show the equipped trail.
+Skin decoration stays on the bubble. Trails and Impacts are separate equipped choices. In the skin gallery, only the equipped preview may produce its trail, from its own movement, including a gentle local nudge from scrolling. Page displacement itself is never drawn into the trail. Large previews also show the equipped trail.
 
 ## Trails
 
@@ -65,3 +65,14 @@ Soundstages process music only. Their reverberation is finite, with no accumulat
 Ambience loops without restarting at musical phrases. It remains behind the composition, follows Music and Master volume, and stops when music is inactive or muted. **None** removes it. Ambience, Soundstage and Instrument selections are independent, so any rarity can be mixed with any other.
 
 See [Player Music](player.md#music) for previews, purchases and saved-song behavior.
+
+
+## Expanded Collection
+
+These additional items are available in Player, with the same tier prices and permanent purchase rules. Each skin, trail and impact uses its own artwork; Instruments use distinct synthesized timbres.
+
+- **Common:** Skins — Porcelain, Copper; Trails — Mist, Dashes; Impacts — Droplet, Crossflash; Instrument — Wooden Keys.
+- **Rare:** Skins — Tidepool, Honeycomb; Trails — Fireflies, Rainstream; Impacts — Ice Shards, Honeycomb Pulse; Instrument — Reed Flute.
+- **Epic:** Skins — Circuit, Ink Swirl; Trails — Lattice, Inkbrush; Impacts — Circuit Bloom, Ink Splash; Instrument — Neon Ensemble.
+- **Legendary:** Skins — Stormheart, Clockwork; Trails — Stormwake, Clockstream; Impacts — Thunder Seal, Clockburst; Instrument — Brass Halo.
+- **Mythic:** Skins — Event Horizon, Worldseed; Trails — Riftwake, Living Vine; Impacts — Horizon Collapse, Worldbloom; Instrument — Glass Harmonica.

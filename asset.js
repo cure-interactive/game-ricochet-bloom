@@ -397,7 +397,8 @@ const assets = {
   "icon/upgrade/wrap.a.svg": "./icon/upgrade/wrap.a.svg?v=fa670b9a8565ad1d6aca5440f35c241284259854e450173215f60ebe81c0cd10",
   "icon/upgrade/wrap.b.svg": "./icon/upgrade/wrap.b.svg?v=a14b23793d367f0c6789e10213df7f0e9819979ffc5adee86fbaff6b0c12a481",
   "icon/upgrade/wrap.capstone.svg": "./icon/upgrade/wrap.capstone.svg?v=6e4beae744751e8293120a44c831365344ffa6fcc89da3cb674f8f528a875119",
-  "icon/upgrade/wrap.foundation.svg": "./icon/upgrade/wrap.foundation.svg?v=407b0ab2308c34a7fb037727d01edf5b5423f300b3e4b86d008b7f7354087fa3"
+  "icon/upgrade/wrap.foundation.svg": "./icon/upgrade/wrap.foundation.svg?v=407b0ab2308c34a7fb037727d01edf5b5423f300b3e4b86d008b7f7354087fa3",
+  "tree-grid.svg": "./tree-grid.svg?v=e100da656982052284e2dc5002c05b0d47bf794c3400a393de97cbcd4dd1e143"
 };
 export function assetURL(name) {
   const url = assets[name.startsWith('./') ? name.slice(2) : name];

@@ -1,4 +1,5 @@
-import {cosmeticGet} from './cosmetic.js?v=d1d645c2cb1e77c1ae227eac07869113efb83df2de1d21c30e530c67252d96c7';
+import {trailDesign,impactDesign} from './cosmetic-design.js?v=5b25db6c70e995cb17ec5124f92bdb3e6e662cbc3b11373d85739d1868ee2b67';
+import {cosmeticGet} from './cosmetic.js?v=7c5d5fe67a5e0487aea5bd8d550ef6e180c448733bba8665c3d4c8b6b8d9ebcf';
 const tau=Math.PI*2;
 const line=(c,x,y,r,a)=>{c.moveTo(x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.55);c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);};
 // Cosmetics draw only: no collisions, random engine state, audio or rewards.
@@ -23,6 +24,7 @@ export class CosmeticVisual{
   if(style&&(style!=='original'||showOriginal))for(let i=1;i<this.points.length;i++){
    const p=this.points[i],a=this.points[i-1];if(p.break)continue;const fade=Math.max(0,1-p.age/.85),angle=Math.atan2(p.y-a.y,p.x-a.x),nx=-Math.sin(angle),ny=Math.cos(angle);
    c.globalAlpha=fade*.7;c.strokeStyle=item.color;c.fillStyle=item.color;
+   if(trailDesign(c,item,a,p,i,low))continue;
    if(style==='original'){c.globalAlpha=fade*.22;c.strokeStyle='#bff6e2';c.lineWidth=fade*10;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(p.x,p.y);c.stroke();}
    else if(style==='stardust'){
     if(i%(low?4:2))continue;const x=p.x,y=p.y;c.lineWidth=1.4;c.beginPath();line(c,x,y,4*fade,0);line(c,x,y,4*fade,Math.PI);line(c,x,y,4*fade,Math.PI/2);line(c,x,y,4*fade,-Math.PI/2);c.stroke();
@@ -40,6 +42,7 @@ export class CosmeticVisual{
    }
   }
   for(const b of this.bounces){const item=cosmeticGet(b.id),t=b.age/.7,r=8+55*t,fade=(1-t)**2,count=low?6:12;c.globalAlpha=fade*.85;c.strokeStyle=item.color;c.fillStyle=item.color;c.lineWidth=2;
+   if(impactDesign(c,item,b,low))continue;
    if(item.style==='nova'){
     const colors=['#99e9ff','#e1a2ff','#aaf5cf'];for(let k=0;k<3;k++){const stage=Math.max(0,(t-k*.13)/(1-k*.13));if(!stage)continue;c.strokeStyle=colors[k];c.globalAlpha=(1-stage)**2*.8;c.lineWidth=low?1.5:2.5;c.beginPath();c.arc(b.x,b.y,6+55*stage,0,tau);c.stroke();}
     c.globalAlpha=fade*.9;c.strokeStyle='#f5eaff';c.lineWidth=2;c.beginPath();for(let i=0;i<12;i++){const a=i*tau/12+t*.6,reach=(i%2?.32:1)*(9+22*Math.sin(Math.min(1,t*2)*Math.PI/2));i?c.lineTo(b.x+Math.cos(a)*reach,b.y+Math.sin(a)*reach):c.moveTo(b.x+Math.cos(a)*reach,b.y+Math.sin(a)*reach);}c.closePath();c.stroke();

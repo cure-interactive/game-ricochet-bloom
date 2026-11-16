@@ -1,7 +1,8 @@
+import {bubbleInteractionMount} from './bubble-interaction.js?v=0f14111bafcb74a2e2a986936f199bbaca25569e598a55a5333db2f49cb6ce4b';
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=7529ca05961ee4ba37e91a835b4a4ee3215cfbd74837da808dca52460df3993e';
-import {CosmeticVisual} from './cosmetic-visual.js?v=d2dfd408a59efedadf795dafbc89880e0da1cf9e6de3dd23277b9c9df98a7e02';
+import {CosmeticVisual} from './cosmetic-visual.js?v=7f229cc42315688b0bdf17e7f5b0d1ac77eb03cb67d765615671aadd9114aa21';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
-import {bubbleRender} from './bubble-render.js?v=d6880307de631dfa1357c83f8761b2bb7d6949cf62705023df35914c27cca07a';
+import {bubbleRender} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
@@ -18,9 +19,9 @@ export function cosmeticThumbnail(canvas,item,{color='#f1f9d7',style=''}={}){
 }
 // Small previews stay silent and use the same visibility/quality lifecycle as
 // the selected viewer. The caller owns destruction when replacing its cards.
-export function cosmeticThumbnailMount(canvas,item,{color,style,compact=false,motionArea=1,surface,diameter,icon=false}={}){
+export function cosmeticThumbnailMount(canvas,item,{color,style,compact=false,motionArea=1,surface,diameter,icon=false,loadout,trailEnabled}={}){
  const get=()=>typeof item==='function'?item():item,value=x=>typeof x==='function'?x():x;
- return cosmeticPreviewMount(canvas,{thumbnail:get().kind,compact,motionArea,surface,diameter,icon,loadout:()=>({[get().kind]:get().id}),color:()=>value(color),style:()=>value(style)});
+ return cosmeticPreviewMount(canvas,{thumbnail:get().kind,compact,motionArea,surface,diameter,icon,loadout:()=>({...value(loadout),[get().kind]:get().id}),trailEnabled:()=>get().kind==='trail'||(trailEnabled!==undefined?!!value(trailEnabled):icon),color:()=>value(color),style:()=>value(style)});
 }
 // Full detail arenas collide at the physical bubble edge, not an inner margin.
 export function cosmeticPreviewStep(body,dt,width,height,hit){
@@ -38,7 +39,9 @@ export function cosmeticPreviewStep(body,dt,width,height,hit){
 export function cosmeticPreviewMount(canvas,host){
  const c=canvas.getContext('2d'),visual=new CosmeticVisual(),membrane=bubbleCreate(),body={id:0,x:90,y:100,radius:host.icon?14:host.compact?26:17,vx:130,vy:85},ready=frameGate();
  const doc=canvas.ownerDocument,win=doc.defaultView;
- let frame=0,last=0,active=true,activity,pulse=-1,origin=null;
+ let frame=0,last=0,active=true,activity,pulse=-1,origin=null,geometry=null,offset={x:0,y:0,vx:0,vy:0};
+ const surface=host.surface||canvas;
+ const interaction=bubbleInteractionMount(surface,{active:()=>active&&!doc.hidden&&activity?.isActive()!==false,geometry:()=>{if(!geometry)return null;const r=surface.getBoundingClientRect(),unit=(r.width||r.right-r.left)/geometry.width;return {x:r.left+body.x*unit,y:r.top+body.y*unit,unit:unit*body.radius/14,visible:!!activity.clip(r)};},hit:(x,y,speed,impact)=>{bubbleHit(membrane,body.radius,x,y,speed*body.radius/14);if(impact)visual.hit(body.x,body.y);}});
  function draw(now){
   frame=0;if(!active||doc.hidden||activity?.isActive()===false)return;
   frame=win.requestAnimationFrame(draw);if(!ready(now))return;
@@ -48,18 +51,12 @@ export function cosmeticPreviewMount(canvas,host){
   // Trail stages can be shorter without shrinking their bubble or trail.
   const scale=host.icon?28/Math.max(1,host.diameter()):host.thumbnail&&!host.compact?180/192:Math.max((host.compact?160:180)/height,(host.compact?160:400)/width),worldHeight=height*scale,worldWidth=width*scale;
   visual.configure(host.loadout());
-  if(host.surface){
-   const rect=host.surface.getBoundingClientRect();
-   if(origin&&origin.scale!==scale)visual.breakTrail();
-   else if(origin){
-    const dx=(rect.left-origin.left)*scale,dy=(rect.top-origin.top)*scale;
-    for(const p of visual.points){p.x-=dx;p.y-=dy;}
-    if(visual.last){visual.last.x-=dx;visual.last.y-=dy;}
-   }
-   origin={left:rect.left,top:rect.top,scale};
-  }
+  // Trail history belongs to local simulation, never scrolling or layout offsets.
+  if(origin&&(Math.abs(origin.scale-scale)>.001||origin.width!==width||origin.height!==height))visual.breakTrail();
+  origin={scale,width,height};geometry={width:worldWidth,height:worldHeight};
+  body.x-=offset.x;body.y-=offset.y;body.vx-=offset.vx;body.vy-=offset.vy;
   if(host.thumbnail){
-   const t=visual.elapsed,padding=host.icon?body.radius:host.motionArea<1?body.radius+4:host.compact?54:host.thumbnail==='trail'?body.radius+(42-body.radius)/2:72,area=host.motionArea||1,rx=Math.max(0,worldWidth*area/2-padding),ry=Math.max(host.icon&&host.thumbnail==='trail'?body.radius:0,worldHeight*area/2-padding);
+   const t=visual.elapsed,padding=host.icon?body.radius:host.motionArea<1?body.radius+4:host.compact?54:host.thumbnail==='trail'?body.radius+(42-body.radius)/2:72,area=host.motionArea||1,rx=Math.max(0,worldWidth*area/2-padding)+(host.icon&&host.thumbnail==='trail'?4:0),ry=Math.max(host.icon&&host.thumbnail==='trail'?body.radius:0,worldHeight*area/2-padding);
    body.x=worldWidth/2+(host.thumbnail==='trail'?Math.sin(t*2)*rx:0);body.y=worldHeight/2+(host.thumbnail==='trail'?Math.sin(t*4)*ry:0);
    body.vx=Math.cos(t*2)*rx*2;body.vy=Math.cos(t*4)*ry*4;
    if(host.thumbnail==='bounce'&&Math.floor(t/.9)!==pulse){pulse=Math.floor(t/.9);visual.hit(body.x,body.y);bubbleHit(membrane,body.radius,1,0,150);}
@@ -68,7 +65,11 @@ export function cosmeticPreviewMount(canvas,host){
     visual.hit(x,y);bubbleHit(membrane,body.radius,nx,ny,210);
    });
   }
-  bubbleStep(membrane,body,dt);if(dt>0)visual.step(body,dt,true);
+  const sensor=interaction.step(dt),motion=interaction.state,factor=body.radius/14;
+  offset={x:motion.x*factor,y:motion.y*factor,vx:motion.vx*factor,vy:motion.vy*factor};body.x+=offset.x;body.y+=offset.y;body.vx+=offset.vx;body.vy+=offset.vy;
+  const trails=host.trailEnabled?.()!==false;
+  if(!trails&&visual.points.length)visual.breakTrail();
+  bubbleStep(membrane,body,dt,false,{vx:sensor.x,vy:sensor.y});if(dt>0)visual.step(body,dt,trails);
   const outline=bubbleOutline(membrane,body),paint=context=>{
    visual.render(context,doc.body.dataset.quality==='low',true);
    bubbleRender(context,body,outline,host.color?.()||'#f1f9d7',{skinTime:visual.elapsed,skinStyle:host.style?.(),lowQuality:doc.body.dataset.quality==='low',glowExtent:host.icon?1.3:2});
@@ -78,7 +79,7 @@ export function cosmeticPreviewMount(canvas,host){
   if(canvas.width!==Math.round(width*ratio)||canvas.height!==Math.round(height*ratio)){canvas.width=Math.round(width*ratio);canvas.height=Math.round(height*ratio);}
   c.setTransform(canvas.width/worldWidth,0,0,canvas.height/worldHeight,0,0);c.clearRect(0,0,worldWidth,worldHeight);paint(c);
  }
- function sync(){win.cancelAnimationFrame(frame);frame=0;last=0;if(active&&!doc.hidden&&activity?.isActive()!==false)frame=win.requestAnimationFrame(draw);}
+ function sync(){if(doc.hidden||activity?.isActive()===false)interaction.clear();win.cancelAnimationFrame(frame);frame=0;last=0;if(active&&!doc.hidden&&activity?.isActive()!==false)frame=win.requestAnimationFrame(draw);}
  activity=visualActivityMount(host.surface||canvas,sync,{intersection:false});sync();
- return {destroy(){active=false;activity.destroy();win.cancelAnimationFrame(frame);}};
+ return {destroy(){active=false;interaction.destroy();activity.destroy();win.cancelAnimationFrame(frame);}};
 }

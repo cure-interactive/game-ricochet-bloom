@@ -6,6 +6,27 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.31.0
+
+Build: 2026-11-16 10:55:58 UTC
+
+### Player Changes
+
+- Added 35 purchasable cosmetics: two Skins, Trails and Impacts per rarity, plus one Instrument per rarity. The regular Wiki lists the collection and rarity rules.
+- Player, Trail and Impact previews share contact, scroll, keyboard-focus and device-motion response. Only the equipped Impact card shows your equipped trail; compact Trail icons travel slightly farther without taking more layout space.
+- Sound previews fade background music out before the audition and back afterward, including rapid replays.
+- Unpurchased skill nodes retain their top-right lock, including affordable nodes. Purchased checkmarks remain hidden.
+- Skills maps now draw within the viewport, cull offscreen nodes and simplify distant detail to reduce memory pressure on large trees. The tiny repeating SVG dot background fades away and stops rendering at overview scale.
+- Scrollbar updates avoid repeated whole-page measurements and yield to native elastic scrolling; thickness still eases.
+
+<!-- development -->
+### Developer Notes
+
+- Shared bubble interaction supplies passive contact, focus, scroll and sensor pressure. Large drag trails use explicit local tether positions, not viewport displacement.
+- Cosmetic additions extend existing receipts, material/effect histories and synthesis. Audition ducking uses a separate audio-clock envelope with continuous replacement and no recovery timer races.
+- Both trees share viewport projection and SVG viewBox ownership. Removed inverse-zoom background overscan and whole-world transforms. Full-tree phone-sized stress checks do not establish physical iOS acceptance.
+<!-- /development -->
+
 ## v3.30.0
 
 Build: 2026-11-16 04:33:01 UTC

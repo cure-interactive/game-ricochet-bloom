@@ -100,10 +100,6 @@ export function mapCameraMount(surface,world,change) {
   const zoomAt=(from,scale,anchor)=>cameraZoom(from,scale,anchor,minimumScale());
   function apply(next){
     camera=cameraClamp(next,size(),world);
-    // A repeating texture belongs to the transformed world, like its nodes.
-    // Whole-tile overscan covers fit/edge pans without changing the dot phase.
-    const padding=Math.ceil(Math.max(size().width,size().height)/minimumScale()/24)*24;
-    surface.style?.setProperty?.('--map-ground-padding',padding+'px');
     change(camera,{minScale:minimumScale()});
   }
   function stopAnimation(){if(!animation)return;const current=animation;animation=null;win.cancelAnimationFrame(current.frame);current.resolve(false);}

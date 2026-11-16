@@ -1,8 +1,8 @@
-import { iconHTML, staticIconHTML } from './ui-icon.js?v=6c99c7aabe02590f700c101241c5f5bc6c6ba38a67af533a14b8cef863768aaa';
+import { iconHTML, staticIconHTML } from './ui-icon.js?v=68bbe4420b1782da4ec5a87ab925a840c21d5d87a2c31ca133867a512c8d3a0b';
 import { CATALOGUE } from './catalogue.js?v=c1d42ecf5ab5eb7f0a369fdccd0d8696079d69ac29f9676f4f854e39de9671ac';
 import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=30e163fa7cf9ecff14317a409c1038691cee610af060f411d678d628dacc7f96';
-import { medalIcon } from './medal-ui.js?v=e8fa49c953be7279e0e38c8a83bda332e8cda4441b22046248191cac3299fc3d';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=fd4d1a201bd99ef3fc9b7184cb9eaf976606208196c63bd4ca2884b18180636f';
+import { medalIcon } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';
 
 // Only known topics and catalogue identities produce decoration. Markdown never
 // supplies an image URL, raw SVG or icon name to the renderer.

@@ -13,7 +13,8 @@ export function scrollbarInput(track,thumb,{geometry,position,move,active,view},
  function coast(time){
   momentum=0;const g=geometry();if(!g||track.hidden)return;
   const dt=Math.min(32,Math.max(0,time-lastTime));lastTime=time;
-  const before=position();move(before+velocity*dt);velocity*=Math.exp(-dt/240);
+  const before=position();if(before<0||before>g.max){stop();return;}
+  move(before+velocity*dt);velocity*=Math.exp(-dt/240);
   if(Math.abs(velocity)>.015&&Math.abs(position()-before)>.01)momentum=win.requestAnimationFrame(coast);
  }
  const down=e=>{
@@ -44,11 +45,20 @@ export function scrollbarInput(track,thumb,{geometry,position,move,active,view},
  track.addEventListener('pointerdown',down);track.addEventListener('pointermove',moving);
  for(const name of ['pointerup','pointercancel','lostpointercapture'])track.addEventListener(name,end);
  track.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();});
- const doc=track.ownerDocument;doc.addEventListener('pointerdown',interrupt,true);doc.addEventListener('wheel',cancel,{passive:true});doc.addEventListener('visibilitychange',cancel);win.addEventListener('blur',cancel);
- return ()=>{cancel();doc.removeEventListener('pointerdown',interrupt,true);doc.removeEventListener('wheel',cancel);doc.removeEventListener('visibilitychange',cancel);win.removeEventListener('blur',cancel);};
+ const doc=track.ownerDocument;doc.addEventListener('pointerdown',interrupt,true);doc.addEventListener('touchstart',interrupt,{capture:true,passive:true});doc.addEventListener('wheel',cancel,{passive:true});doc.addEventListener('visibilitychange',cancel);win.addEventListener('blur',cancel);
+ return ()=>{cancel();doc.removeEventListener('pointerdown',interrupt,true);doc.removeEventListener('touchstart',interrupt,true);doc.removeEventListener('wheel',cancel);doc.removeEventListener('visibilitychange',cancel);win.removeEventListener('blur',cancel);};
+}
+// Overscroll is native state. Only the painted thumb is clamped; never write it
+// back to the scrolling element, and don't remeasure layout for each scroll.
+export function scrollbarPaintPosition(item,position,axis){
+ const g=item.geometry;if(!g||item.track.hidden)return;
+ const offset=g.travel*Math.max(0,Math.min(g.max,position))/g.max;
+ const transform=`translate${axis==='y'?'Y':'X'}(${offset}px)`;
+ if(item.thumb.style.transform!==transform)item.thumb.style.transform=transform;
+ g.offset=offset;
 }
 export function scrollbarsMount(doc=document,win=window){
- const records=new Map();let frame=0,disposed=false;
+ const records=new Map(),scrolled=new Set();let frame=0,scrollFrame=0,disposed=false;
  const schedule=()=>{if(!disposed&&!frame)frame=win.requestAnimationFrame(refresh);};
  const resize=new win.ResizeObserver(schedule);
  function active(item){win.clearTimeout(item.timer);item.track.dataset.active='true';item.timer=win.setTimeout(()=>{delete item.track.dataset.active;},750);}
@@ -94,13 +104,23 @@ export function scrollbarsMount(doc=document,win=window){
     // Reserve both the doubled 6px thumb and its constant 3px edge inset.
     lane=Math.max(9,lane);
     Object.assign(item.track.style,{left:`${vertical?edge-lane:clip.left}px`,top:`${vertical?clip.top:edge-lane}px`,width:`${vertical?lane:clip.right-clip.left}px`,height:`${vertical?clip.bottom-clip.top:lane}px`});
-    item.thumb.style[vertical?'height':'width']=`${geometry.length}px`;item.thumb.style.transform=`translate${vertical?'Y':'X'}(${geometry.offset}px)`;
+    item.thumb.style[vertical?'height':'width']=`${geometry.length}px`;scrollbarPaintPosition(item,vertical?el.scrollTop:Math.abs(el.scrollLeft),axis);
    }
   }
  }
  const observer=new win.MutationObserver(changes=>{if(changes.some(r=>!r.target.closest?.('.scroll-indicator')&&(r.type==='attributes'||[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1))))schedule();});
  observer.observe(doc.body,{childList:true,subtree:true,attributes:true,attributeFilter:['open','hidden','data-screen']});
- const scroll=e=>{const r=records.get(e.target);if(r)for(const item of r.items)if(!item.track.hidden)active(item);schedule();};
+ function paintScroll(){
+  scrollFrame=0;
+  for(const el of scrolled){const r=records.get(el);if(r){scrollbarPaintPosition(r.items[0],el.scrollTop,'y');scrollbarPaintPosition(r.items[1],Math.abs(el.scrollLeft),'x');}}
+  scrolled.clear();
+ }
+ const scroll=e=>{
+  const el=e.target,r=records.get(el);
+  if(r){for(const item of r.items)if(!item.track.hidden)active(item);scrolled.add(el);if(!scrollFrame)scrollFrame=win.requestAnimationFrame(paintScroll);}
+  // Only scrolling ancestors can move another indicator's screen geometry.
+  if(el===doc||[...records].some(([child,r])=>child!==el&&el.contains?.(child)&&r.items.some(i=>!i.track.hidden)))schedule();
+ };
  doc.addEventListener('scroll',scroll,true);win.addEventListener('resize',schedule);win.visualViewport?.addEventListener('resize',schedule);win.visualViewport?.addEventListener('scroll',schedule);doc.fonts?.addEventListener('loadingdone',schedule);schedule();
- return ()=>{disposed=true;win.cancelAnimationFrame(frame);observer.disconnect();resize.disconnect();doc.removeEventListener('scroll',scroll,true);win.removeEventListener('resize',schedule);win.visualViewport?.removeEventListener('resize',schedule);win.visualViewport?.removeEventListener('scroll',schedule);doc.fonts?.removeEventListener('loadingdone',schedule);for(const [el,r] of records){delete el.dataset.scrollbar;for(const item of r.items){item.dispose();win.clearTimeout(item.timer);item.track.remove();}}records.clear();};
+ return ()=>{disposed=true;win.cancelAnimationFrame(frame);win.cancelAnimationFrame(scrollFrame);scrolled.clear();observer.disconnect();resize.disconnect();doc.removeEventListener('scroll',scroll,true);win.removeEventListener('resize',schedule);win.visualViewport?.removeEventListener('resize',schedule);win.visualViewport?.removeEventListener('scroll',schedule);doc.fonts?.removeEventListener('loadingdone',schedule);for(const [el,r] of records){delete el.dataset.scrollbar;for(const item of r.items){item.dispose();win.clearTimeout(item.timer);item.track.remove();}}records.clear();};
 }

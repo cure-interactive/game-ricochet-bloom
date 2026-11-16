@@ -1,5 +1,6 @@
+import {COSMETIC_COLLECTION} from './cosmetic-collection.js?v=5fffc248bcec63bc94d641fd08adb36b591a815fa2cd26ed62801ef5a1ea9cca';
 import {SOUNDSTAGES,AMBIENCES} from './music-environment.js?v=5b1988e50253a514f7dd89a12a36a17f8292a9118e212e49e82b91dee76f069a';
-import {MUSIC_THEMES} from './music-theme.js?v=1de2c6b5f2f33cc88ba48d0575b821f718ca45cba596ecbd24b7c03e3a8b58f8';
+import {MUSIC_THEMES} from './music-theme.js?v=88ea7b370c0695e982b380622f15db38e58496f3cd4335b7104b62ec49d0ad79';
 // Stable cosmetic identities and historical paid prices belong to the profile.
 export const COSMETICS=Object.freeze([
  ...MUSIC_THEMES,...SOUNDSTAGES,...AMBIENCES,
@@ -20,7 +21,8 @@ export const COSMETICS=Object.freeze([
  {id:'skin.nebula',kind:'skin',name:'Nebula',rarity:'epic',cost:220,color:'#b99af1',style:'nebula',description:'A slow-turning constellation floats inside a violet nebula.'},
  {id:'skin.solar',kind:'skin',name:'Solar',rarity:'legendary',cost:360,color:'#ffd182',style:'solar',description:'A living corona turns around a sun, flaring as you move.'},
  {id:'skin.cure',kind:'skin',name:'Cure Interactive',rarity:'legendary',cost:360,color:'#7dcce3',style:'cure',description:'The Cure emblem rests inside moving blue orbits that glow with motion.'},
- {id:'skin.spectrum',kind:'skin',name:'Spectrum',rarity:'mythic',cost:550,color:'#c5b9ff',style:'spectrum',description:'Three shifting orbits surround a turning star that opens with speed.'}
+ {id:'skin.spectrum',kind:'skin',name:'Spectrum',rarity:'mythic',cost:550,color:'#c5b9ff',style:'spectrum',description:'Three shifting orbits surround a turning star that opens with speed.'},
+ ...COSMETIC_COLLECTION
 ]);
 export const cosmeticGet=id=>COSMETICS.find(item=>item.id===id);
 export const cosmeticDefault=()=>({owned:{},trail:'trail.original',bounce:'bounce.none',skin:'campaign',music:'music.original',soundstage:'soundstage.original',ambience:'ambience.none'});

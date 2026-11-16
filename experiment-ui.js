@@ -1,7 +1,7 @@
-import {gamemodeNavigation} from './gamemode-navigation.js?v=f03ba0e2439da29f290efa4fd8e7bf6ef90ff498a1f911005f6f971d6b3b6a8d';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=340b0b392446696bf13d70c50dd8f83fc44921d6f8e3f8496f5110ac34328ba0';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { experimentMedal } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
-import { medalConditionsHTML } from './medal-ui.js?v=e8fa49c953be7279e0e38c8a83bda332e8cda4441b22046248191cac3299fc3d';
+import { medalConditionsHTML } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';
 import { trialConditions } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
 import { melodyStages } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { EXPERIMENT_MODES, DIFFICULTIES, experimentMode } from './experiment-mode.js?v=8691672ebafa0ee909e0adfbe1058bb7a29634ac3aef011c8c8a34ad0b9eb1bf';

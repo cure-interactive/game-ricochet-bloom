@@ -1,5 +1,5 @@
-import {cosmeticThumbnailMount} from './cosmetic-preview.js?v=3a8fb581790496471bc0ba0b420c1dea49ef881da791f6bcab5299d573aab2eb';
-import {cosmeticGet} from './cosmetic.js?v=d1d645c2cb1e77c1ae227eac07869113efb83df2de1d21c30e530c67252d96c7';
+import {cosmeticThumbnailMount} from './cosmetic-preview.js?v=5dc37aae9703152de5353b4d45cbf3d77028bd213c32b03c988a8779f18a3897';
+import {cosmeticGet} from './cosmetic.js?v=7c5d5fe67a5e0487aea5bd8d550ef6e180c448733bba8665c3d4c8b6b8d9ebcf';
 export function registerCosmeticIcon(win=window){
  if(win.customElements.get('cosmetic-icon'))return;
  class CosmeticIcon extends win.HTMLElement{
@@ -15,7 +15,7 @@ export function registerCosmeticIcon(win=window){
     const wiki=parent.closest('.wiki-icon');if(wiki&&wiki.style.minWidth!==minimum+'px')wiki.style.minWidth=minimum+'px';
     return d;
    };
-   this.preview=cosmeticThumbnailMount(this.canvas,()=>cosmeticGet(style().getPropertyValue('--cosmetic-id').trim()||style().getPropertyValue(kind==='trail'?'--player-trail':'--player-impact').trim())||cosmeticGet(kind==='trail'?'trail.original':'bounce.none'),{icon:true,surface:this,diameter,color:()=>style().getPropertyValue('--skin-color').trim()||style().getPropertyValue('--player-skin-color').trim(),style:()=>style().getPropertyValue('--skin-style').trim()||style().getPropertyValue('--player-skin-style').trim()});
+   this.preview=cosmeticThumbnailMount(this.canvas,()=>cosmeticGet(style().getPropertyValue('--cosmetic-id').trim()||style().getPropertyValue(kind==='trail'?'--player-trail':'--player-impact').trim())||cosmeticGet(kind==='trail'?'trail.original':'bounce.none'),{icon:true,surface:this,diameter,loadout:()=>({trail:style().getPropertyValue('--player-trail').trim()}),color:()=>style().getPropertyValue('--skin-color').trim()||style().getPropertyValue('--player-skin-color').trim(),style:()=>style().getPropertyValue('--skin-style').trim()||style().getPropertyValue('--player-skin-style').trim()});
   }
   disconnectedCallback(){this.preview?.destroy();this.preview=null;}
  }

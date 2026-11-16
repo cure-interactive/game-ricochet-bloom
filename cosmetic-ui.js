@@ -1,10 +1,10 @@
 import {segmentedHTML,segmentedMount} from './segmented-control.js?v=1a318092255fb007cafc5d85b01f9155f2a6962c7558c1623c1ab76b7ad5f298';
-import {cosmeticPriceHTML} from './cosmetic-price.js?v=9a0d945c37ceec5a2b10b4895eb976d64b35aa18bd76a070f26a9e457d59dc97';
-import {COSMETICS,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=d1d645c2cb1e77c1ae227eac07869113efb83df2de1d21c30e530c67252d96c7';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=3a8fb581790496471bc0ba0b420c1dea49ef881da791f6bcab5299d573aab2eb';
-import {screenHeader} from './screen-header.js?v=786f504b0d8e7c345d1c30428db16e12dc5b1c2513f004bec1c0c4c0b2618c9a';
-import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=6c99c7aabe02590f700c101241c5f5bc6c6ba38a67af533a14b8cef863768aaa';
-import {rarityIconHTML} from './skill-icon.js?v=30e163fa7cf9ecff14317a409c1038691cee610af060f411d678d628dacc7f96';
+import {cosmeticPriceHTML} from './cosmetic-price.js?v=432c3d194b461d671900188d6f3e59e7a977fc44a480d4036f7b7d73dd6d052d';
+import {COSMETICS,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=7c5d5fe67a5e0487aea5bd8d550ef6e180c448733bba8665c3d4c8b6b8d9ebcf';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=5dc37aae9703152de5353b4d45cbf3d77028bd213c32b03c988a8779f18a3897';
+import {screenHeader} from './screen-header.js?v=8a5958d2c41c5236dcafa8611ed5ff3ccefdbee07ea3e34506efbc5147d3c476';
+import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=68bbe4420b1782da4ec5a87ab925a840c21d5d87a2c31ca133867a512c8d3a0b';
+import {rarityIconHTML} from './skill-icon.js?v=fd4d1a201bd99ef3fc9b7184cb9eaf976606208196c63bd4ca2884b18180636f';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 export function cosmeticMount(host){
@@ -32,7 +32,7 @@ export function cosmeticMount(host){
   if(renderedKind!==kind){
    for(const control of thumbnails)control.destroy();thumbnails.length=0;renderedKind=kind;
    dialog.querySelector('.skin-grid').innerHTML=COSMETICS.filter(x=>x.kind===kind).map(x=>`<button type="button" class="skin-choice" data-cosmetic="${x.id}">${isAudio()?musicArt(x):'<span class="cosmetic-thumbnail-slot"><canvas class="cosmetic-thumbnail" aria-hidden="true"></canvas></span>'}<strong>${escapeHTML(x.name)}</strong><span class="cosmetic-rarity">${rarityIconHTML(x.rarity)}${RARITIES[x.rarity].name}</span><span class="skin-choice-state"></span><span class="cosmetic-price-slot"></span></button>`).join('');
-   for(const canvas of dialog.querySelectorAll('.cosmetic-thumbnail'))thumbnails.push(cosmeticThumbnailMount(canvas,cosmeticGet(canvas.closest('[data-cosmetic]').dataset.cosmetic),{color:host.color,style:host.style,surface:canvas.parentElement}));
+   for(const canvas of dialog.querySelectorAll('.cosmetic-thumbnail'))thumbnails.push(cosmeticThumbnailMount(canvas,cosmeticGet(canvas.closest('[data-cosmetic]').dataset.cosmetic),{color:host.color,style:host.style,surface:canvas.parentElement,loadout:()=>cosmeticLoadout(host.profile()),trailEnabled:()=>canvas.closest('[data-cosmetic]').classList.contains('is-equipped')}));
   }
   for(const button of dialog.querySelectorAll('[data-cosmetic]')){
    const x=cosmeticGet(button.dataset.cosmetic),owned=cosmeticOwned(profile,x),equipped=loadout[kind]===x.id;
@@ -59,7 +59,7 @@ export function cosmeticMount(host){
  back.onclick=goBack;dialog.addEventListener('cancel',e=>{e.preventDefault();goBack();});
  dialog.addEventListener('close',()=>{stop();preview?.destroy();preview=null;});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
- dialog.addEventListener('click',async e=>{if(!e.target.closest('[data-cosmetic-sound]'))return;const id=selected,token=++audition;host.stopSound?.();const ready=await host.unlock?.();if(token!==audition||!dialog.open||selected!==id)return;detail.querySelector('.cosmetic-sound-hint').textContent=ready!==false&&host.sound?.(id)?'Sound preview started. Tap to replay.':'Sound is muted or unavailable. Check Audio settings.';});
+ dialog.addEventListener('click',async e=>{if(!e.target.closest('[data-cosmetic-sound]'))return;const id=selected,token=++audition;const ready=await host.unlock?.();if(token!==audition||!dialog.open||selected!==id)return;detail.querySelector('.cosmetic-sound-hint').textContent=ready!==false&&host.sound?.(id)?'Sound preview started. Tap to replay.':'Sound is muted or unavailable. Check Audio settings.';});
  dialog.addEventListener('click',e=>{
   const choice=e.target.closest('[data-cosmetic]');
   if(choice){stop();libraryScroll=scroll.scrollTop;selected=choice.dataset.cosmetic;render();status.textContent='';scroll.scrollTop=0;back.focus({preventScroll:true});}
