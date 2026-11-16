@@ -1,9 +1,28 @@
 # Change Logs
 
-See what changed in each version. Open a version for its player-facing updates.
+See what changed in each version. These are historical release notes; use the guides for current controls and rules. Open a version for its player-facing updates.
 
 <!-- development -->
 Open Developer Notes inside a version for its technical changes.
+<!-- /development -->
+
+## v3.32.2
+
+Build: 2026-11-16 13:00:26 UTC
+
+### Player Changes
+
+- Refocused the Wiki on playing, choosing cosmetics, understanding upgrades and keeping progress safe.
+- Corrected skill ownership and mastery explanations, Music Volume naming, newer instrument choices and gamemode navigation.
+- Kept rarity rules for all six cosmetic types in the regular Wiki. Development details now live in the Developer area.
+- Clarified that older release notes describe past versions; use the guides for current behavior.
+
+<!-- development -->
+### Developer Notes
+
+- Audited registered Wiki pages against current catalogue, reward, upgrade, preview and menu owners. Moved rendering, audio synthesis, experiment coverage and test evidence into Developer sections.
+- Updated canonical Power-Ups and Medals generators and moved generated experiment coverage to the Developer page. Corrected current research totals while preserving historical economy samples.
+- Added rendered-link coverage for both profiles, including hidden-section boundaries. Gameplay behavior is unchanged.
 <!-- /development -->
 
 ## v3.32.1
@@ -13,9 +32,9 @@ Build: 2026-11-16 12:40:09 UTC
 ### Player Changes
 
 - Music, Gamemodes and Stats keep their tab selectors at the bottom of the content panel. Music places its rarity filter above the category selector.
-- Tab labels and icons retain partial selection contrast while dragging without moving text gradients. The Player tab uses a filled backing that follows the bubble's shape.
+- Tab labels and icons retain partial selection contrast as you drag. The Player tab uses a filled backing that follows the bubble's shape.
 - Taps, dragging, focus and scrolling no longer trigger extra cosmetic impacts. Automatic Impact previews vary their contact points around the bubble.
-- Skills maps reuse prepared detail and simplify distant artwork to reduce repeated work while zooming.
+- Skills maps simplify distant artwork to help zooming stay responsive.
 
 <!-- development -->
 ### Developer Notes
@@ -58,8 +77,8 @@ Build: 2026-11-16 10:55:58 UTC
 - Player, Trail and Impact previews share contact, scroll, keyboard-focus and device-motion response. Only the equipped Impact card shows your equipped trail; compact Trail icons travel slightly farther without taking more layout space.
 - Sound previews fade background music out before the audition and back afterward, including rapid replays.
 - Unpurchased skill nodes retain their top-right lock, including affordable nodes. Purchased checkmarks remain hidden.
-- Skills maps now draw within the viewport, cull offscreen nodes and simplify distant detail to reduce memory pressure on large trees. The tiny repeating SVG dot background fades away and stops rendering at overview scale.
-- Scrollbar updates avoid repeated whole-page measurements and yield to native elastic scrolling; thickness still eases.
+- Large Skills maps simplify distant detail when zoomed out. The dotted background fades away at overview scale.
+- Scrollbars follow the page as it bounces at the scroll limits; thickness still changes smoothly.
 
 <!-- development -->
 ### Developer Notes
@@ -175,7 +194,7 @@ Build: 2026-11-16 02:00:15 UTC
 
 ### Player Changes
 
-- Buy and equip Music instrument themes from Common to Mythic in Player. Preview their sound before spending Points; themes use the local audio engine.
+- Buy and equip Music instrument themes from Common to Mythic in Player. Preview their sound before spending Points.
 - Match Trail and Impact icon player sizes to Skins, use more of each Trail button’s space, and keep effects sharp and unclipped. Shorter Impact previews and narrower card widths retain two columns on phones.
 - Check for updates automatically when opening or returning to the game. Automatic updates start enabled and can be disabled in Settings → Updates.
 - Use one complete Copy Report in Get Help, matching Email and Share. Remove the redundant upgrade instruction.
@@ -334,7 +353,7 @@ Build: 2026-11-15 18:21:23 UTC
 ### Player Changes
 
 - Adjust bottom spacing for installed iPhone apps that already reserve a strip outside the game, including Home, Casual, Pause and the Development bar.
-- Use the full available fixed viewport when app mode reports a shorter dynamic height.
+- Use the full available screen height in app mode.
 - Find Technical Diagnostics in Settings → Get Help. Clear descriptions explain when to copy diagnostics and what a full Support Report includes.
 
 <!-- development -->
@@ -461,7 +480,7 @@ Build: 2026-11-15 10:26:42 UTC
 - Fill the actual screen with the Home and Casual pool, without letterboxed play areas.
 - Grab, drag, fling or tap scrollbars using their existing blank edge space, including skill cards.
 - Find Updates and Get Help in separate Settings sections. Update feedback stays below its button without shifting it.
-- Restart Sound Check on every press, even while a previous check is playing. Recover expired audio voices after interruptions.
+- Restart Sound Check on every press, even while a previous check is playing. Restore gameplay sounds after interruptions.
 - Keep the Development indicator visibly thin; the home-indicator clearance uses the surrounding screen color.
 - Use filled device motion and battery saver icons with clear cutouts.
 - Tap or drag the Skills tab selection with elastic settling. Power starting nodes are rounded squares, final upgrades are round, and unpurchased connections are dashed.
@@ -656,7 +675,7 @@ Build: 2026-11-15 03:03:16 UTC
 - Keep the player's glowing rim and add a separate, jiggling selection outline in Skills.
 - Let player icons and previews react to scrolling, with more room for movement and glow.
 - Remove background strips and gaps from full-page menus and guides.
-- Stop covered backgrounds from reacting to taps while their simulation continues.
+- Stop covered backgrounds from reacting to taps through a page.
 - Restore the main menu if a screen closes without another destination.
 - Give skin selection a clearer Equip Skin button and checked Equipped state.
 - Play edge-back feedback when swiping both forward and backward.
@@ -857,7 +876,7 @@ Build: 2026-11-15 00:45:26 UTC
 
 ### Player Changes
 
-- Remove unused player-skin artwork.
+- Player appearance is unchanged in this maintenance release.
 
 <!-- development -->
 ### Developer Notes
@@ -1253,7 +1272,7 @@ Build: 2026-11-14 15:33:17 UTC
 
 ### Player Changes
 
-- Use the game's elastic player rendering for previews and icons.
+- Give player previews and icons the same squishy motion as the player in the pool.
 
 <!-- development -->
 ### Developer Notes

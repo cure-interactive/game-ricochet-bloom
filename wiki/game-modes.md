@@ -1,10 +1,10 @@
 # Game Modes to Try
 
-**210 experiment ideas, grounded in the workshop mind map and game research.** Start with [Mind Map and Research Connections](#mind-map-and-research-connections) and [Direct Mind Map Experiments](#direct-mind-map-experiments). Browse the [Experiment Catalogue](#experiment-catalogue), [First Experiments to Compare](#first-experiments-to-compare) and [Experiment Guardrails](#experiment-guardrails). The developer approved all three recommended experiments for v3.0.0. The current hub at Main Menu → Gamemodes → Experiments contains those original trials, three controlled variations and Capture Transport Release, with three layouts each. See [Play the Experiments](experiments.md) for implemented rules and controls. Pressure Survival and Reaction Lab remain proposals. Trial values are starting points, not validated balance.
+**210 experiment ideas, grounded in the workshop mind map and game research.** Start with [Mind Map and Research Connections](#mind-map-and-research-connections) and [Direct Mind Map Experiments](#direct-mind-map-experiments). Browse the [Experiment Catalogue](#experiment-catalogue), [First Experiments to Compare](#first-experiments-to-compare) and [Experiment Guardrails](#experiment-guardrails). The developer approved all three recommended experiments for v3.0.0. The current Main Menu → Gamemodes hub includes those original trials, three controlled variations, ten Trick Shots, ten Melody Trials and Capture Transport Release, with three difficulty layouts each. See [Play the Experiments](experiments.md) for implemented rules and controls. Pressure Survival and Reaction Lab remain proposals. Trial values are starting points, not validated balance.
 
 ## Current Baseline
 
-[Score Attack](score-attack.md) adds 5/10/15-shot runs, separate personal bests and explicit score medals. It joins the playable modes in v3.3.0. Melody Journey’s 25 level medals are already published in v3.2.0.
+[Score Attack](score-attack.md) adds 5/10/15-shot runs, separate personal bests and explicit score medals. It joined the playable modes in v3.3.0. Melody Journey’s 25 level medals shipped in v3.2.0.
 
 The shipped game already has drag-and-release launches, drifting circular bodies, wall banks, contact powers, generated music, persistence, Melody Journey, Free Play and [Endless Waves](waves.md). Waves already pops contacted bubbles and gives five plucks to clear each wave. It is an existing comparison mode, not a new proposal.
 

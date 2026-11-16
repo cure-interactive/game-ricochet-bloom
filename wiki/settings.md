@@ -1,16 +1,16 @@
 # Sound, Settings & Saves
 
-The full-screen pause menu shares the main menu’s bubble background, game title and version. It offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skills and Player Skins from the Main Menu. Settings → About displays the Cure Interactive logo and game information, with access to Icon Credits and [Change Logs](changelog.md).
+The full-screen pause menu shares the main menu’s bubble background, game title and version. It offers Resume Game, Main Menu, Wiki, How to Play and Settings. Open Skills and Player Skins from the Main Menu. Settings → About displays the installed game version, Cure Interactive logo and game information, with access to Icon Credits and [Change Logs](changelog.md).
 
 ## Audio
 
-Settings → Audio contains the sound toggle, master volume and ambience volume. Both volume sliders start at 100%. Drag the thumb or tap the track; keyboard users can focus a slider and use arrow keys, Home or End. Sound Check can be pressed again to restart it, interrupting the previous check. Lower ambience to hear the contact and bubble sounds more prominently. Sound Check plays three gameplay notes: low, medium, then full strength, at your current master volume. It uses the same note sound and output path as gameplay, works while paused, and does not depend on the ambience slider or change your song. Overlapping gameplay sounds can still make the overall mix louder than a single note.
+Settings → Audio contains **Sound**, **Master Volume** and **Music Volume**. Both volume sliders start at 100%. Drag the thumb or tap the track; keyboard users can focus a slider and use arrow keys, Home or End. Lower Music Volume to hear contact and bubble sounds more prominently. **Sound Check** plays three gameplay notes at low, medium and full strength, following Master Volume. Press it again to restart the check. It works while paused, is unaffected by Music Volume, and does not change your song. Overlapping gameplay sounds can still make the mix louder than a single note.
 
-Audio tries to start as soon as the app or page gains focus or returns to view. If your browser requires interaction, tap anywhere in the game to retry; there is no need to open Settings. Your Sound and volume choices still apply. The pause menu freezes play while ambient music continues. Sound and Music Volume still control it. Leaving the page suspends sound and play; use Resume when you return. Resume also retries audio interrupted by the browser. Returning after switching away opens the full pause menu for an active pool or Casual session. Resume deliberately when ready; an already-open settings/help page stays where you left it. The music panel offers Glass, Velvet and Wood instrument palettes. Player → Music adds purchasable synthesized instrument themes.
+Audio tries to start as soon as the app or page gains focus or returns to view. If your browser requires interaction, tap anywhere in the game to retry; there is no need to open Settings. Your Sound and volume choices still apply. The pause menu freezes play while ambient music continues. Sound and Music Volume still control it. Leaving the page suspends sound and play; use Resume when you return. Resume also retries audio interrupted by the browser. Returning after switching away opens the full pause menu for an active pool or Casual session. Resume deliberately when ready; an already-open settings/help page stays where you left it. Open **Player → Music** to choose and preview Instruments, Soundstages and Ambience.
 
 Buttons, navigation and settings changes play short UI sounds, including while paused. These use Sound and Master Volume; Music Volume does not change them. Turning Sound off also silences UI sounds.
 
-The main-menu background is a self-playing Free Play pool using your unlocked powers, player upgrades and equipped skin. It plays only its generated musical arrangement, without collision or power sound effects. Sound and Music Volume control it too. Menu play does not earn Points or change your saved game or song.
+The main-menu background is a self-playing Free Play pool using your unlocked powers, player upgrades and equipped skin. It plays its musical arrangement, without collision or power sound effects. Sound and Music Volume control it too. Menu play does not earn Points or change your saved game or song.
 
 ## Accessibility and Display
 
@@ -18,7 +18,7 @@ An available unchecked setting has a bright solid outline; checked settings are 
 
 Show on-screen controls adds shot-control buttons and skill-tree camera controls. It is off by default; touch gestures and keyboard controls remain available.
 
-Rendering Quality offers High, Balanced and Low. High keeps full detail, Balanced lowers rendering resolution, and Low also reduces decorative effects. All levels keep bubble deformation, player jiggle and interaction active. Previous Gentle Visuals preferences become Low quality; the operating system’s reduced-motion preference does not override game animation. Frame Rate offers **Device default**, **60 FPS** and **30 FPS** as maximum drawing rates; gameplay speed stays the same. **Automatic Battery Saver** selects Low quality and 30 FPS at 20% battery or below while unplugged, where the browser provides usable battery information. Turn it off to keep your choices. Browsers cannot reliably report the operating system’s Low Power Mode; manual Low/30 FPS remains available. **Device Motion** lets supported previews react to tilt and movement, with an explicit permission action where required. Screen Mode explains the fullscreen or app-view options available on your current device; browser support differs. Installation steps use platform-specific icons and bold action names. **Settings → Updates → Automatic updates** is on by default in browsers and installed apps. It checks when the game opens, gains focus or returns to view. A newer coherent build restarts only after progress saves successfully. Turn it off to check manually with **Check for Updates**. Your choice persists; offline or failed checks retry on a later return.
+Rendering Quality offers High, Balanced and Low. High keeps full detail, Balanced softens fine detail, and Low also reduces decorative effects. All levels keep bubble deformation, player jiggle and interaction active. Previous Gentle Visuals preferences become Low quality; the operating system’s reduced-motion preference does not override game animation. Frame Rate offers **Device default**, **60 FPS** and **30 FPS** as maximum drawing rates; gameplay speed stays the same. **Automatic Battery Saver** selects Low quality and 30 FPS at 20% battery or below while unplugged, where the browser provides usable battery information. Turn it off to keep your choices. Browsers cannot reliably report the operating system’s Low Power Mode; manual Low/30 FPS remains available. **Device Motion** lets supported previews react to tilt and movement, with an explicit permission action where required. Screen Mode explains the fullscreen or app-view options available on your current device; browser support differs. Installation steps use platform-specific icons and bold action names. **Settings → Updates → Automatic updates** is on by default in browsers and installed apps. It checks when the game opens, gains focus or returns to view. An available update restarts the game only after progress saves successfully. Turn it off to check manually with **Check for Updates**. Your choice persists; offline or failed checks retry on a later return.
 
 ## Left-Handed Layout
 
@@ -40,11 +40,9 @@ Your pool, song and campaign progress save in this browser. They do not automati
 
 Use the backup export and import controls in Settings → Advanced → Development & Backups to keep or transfer your progress. Keep a backup before replacing browser data.
 
-Development controls use a separate test profile. They can reset test progress, maximize campaign access or maximize the skill tree without awarding normal campaign receipts. **Show Hidden Tracks, Skills and Skins** reveals locked tracks, research and player skins for inspection in either profile without changing unlocks or progress. Your previous Show All Skills preference carries over to this combined setting. **Show purchased items cost** displays catalogue Points prices on owned power and player skills, skins, trails, impacts and Music themes, including their cards and detail pages. Equipped and unlocked labels remain visible. Free defaults and campaign rewards do not show purchase prices. This is a view preference in either profile; it does not change purchases or saved prices. Both view toggles are off by default. During Development gameplay, press the bottom **Development Profile Active** bar to expand the music panel; press it again to collapse. An arrow indicates this action and changes direction when open. The thin bar keeps the same text and height. The panel starts collapsed on reload and collapses when leaving gameplay. This rule also applies to Melody Journey and saved-song listening: neither forces it open. On menus and dialogs, the bar only identifies the Development profile. Normal and temporary shared profiles have no music disclosure; generated music still plays. These toggles, Development mode and the Points-to-add amount are remembered in this browser, including after reopening the game. Test unlocks, Points and runs also remain saved; reloading does not repeat grants or maximize actions. Switch Development mode off to return to your normal progress. Clearing browser data clears these preferences, and other browsers or devices keep their own settings.
+Normal and Development use separate progress. Switching back to Normal restores your normal profile; test purchases and runs do not overwrite it. View preferences such as **Show Hidden Tracks, Skills and Skins** and **Show purchased items cost** do not grant items or change purchase prices. Reloading keeps your choices; another browser or device has its own settings.
 
 [Back to Wiki](wiki.md).
-
-Settings → About shows the currently installed game version.
 
 ## Screen Rotation
 
@@ -54,10 +52,10 @@ The game supports portrait and landscape. Rotate your device to change the layou
 
 ### Sources
 
-Ricochet Bloom gameplay, campaign, progression and audio source in this release.
+The in-game rules, controls and item descriptions in this release.
 
 ### Contributions
 
 #### Codex on behalf of `leviscustempris`
 
-Authored and checked against the game implementation.
+Guide authored for Cure Interactive.

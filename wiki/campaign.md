@@ -2,7 +2,7 @@
 
 ## Choose a Track
 
-**Melody Journey** is the original musical campaign, available from **Gamemodes**. It shows the tracks you have unlocked. Select a track to open its own page with goals, rewards and a start or continue action. The full-width Play or Resume action stays visible at the bottom of the content frame while its details scroll. Track illustrations use round membrane bubbles. Locked tracks stay hidden until you unlock them. Music continues during the campaign. The optional music panel is opened through the **Development Profile Active** disclosure in Development gameplay; it never opens automatically.
+**Melody Journey** is the original musical campaign, available from **Gamemodes**. It shows the tracks you have unlocked. Select a track to open its own page with goals, rewards and a start or continue action. Play or Resume stays visible while you browse the track details. Locked tracks stay hidden until you unlock them. Music continues during the campaign.
 
 The sequence is **First Light → Crosscurrent → Glasswater → Afterimage → Night Bloom**. Completing a track opens the next one and unlocks its player skin. Open **Player → Skins** and tap a card for an enlarged preview. Use **Equip Skin** to equip an earned skin; equip Original to restore the default. The skin list shows Original and rewards associated with unlocked tracks. A visible skin that you have not earned can be previewed and shows its completion requirement. Skins for locked tracks remain hidden. Back returns to the skin list. Development → **Show Hidden Tracks, Skills and Skins** reveals the complete catalogues without unlocking them.
 
@@ -30,7 +30,7 @@ All 25 levels have these targets for their respective pool:
 - **Bridge pool:** Bronze 900, Silver 1,250, Gold 1,600.
 - **Finale pool:** Bronze 1,750, Silver 2,750, Gold 4,000.
 
-You must also clear the pool's gameplay goal to earn a medal. The full final shot counts before the result is graded, including a successful last available shot. The HUD shows targets during play; the selected level shows its best score and medal. Best results are separate for Standard and Relaxed. Fewer shots break an equal-score tie. Older saves retain their progress and songs, but their track totals cannot reconstruct individual level scores; those levels show “not recorded yet” until cleared again.
+You must also clear the pool's gameplay goal to earn a medal. The full final shot counts before the result is graded, including a successful last available shot. The HUD shows targets during play; the selected level shows its best score and medal. Best results are separate for Standard and Relaxed. Fewer shots break an equal-score tie. Older saves retain their progress and songs, but older individual level scores may be missing; those levels show “not recorded yet” until cleared again.
 
 Track awards remain separate: Bronze for finishing all five pools, Silver for at least three bonuses, and Gold for all five bonuses within 20 shots. They do not replace the score medals awarded to individual pools.
 
@@ -38,7 +38,7 @@ Track awards remain separate: Bronze for finishing all five pools, Silver for at
 
 Productive shots earn **5 Points** when they settle. A Campaign bonus adds **1 Point per difficulty level**: Three Voices pays 1, Seven-Note Run pays 2, and Double-Bank 5-Chain pays 3. The award stays earned even if the pool later fails. Contacts and 5-Chains do not stack extra base Points, and pool clears and track finishes do not add currency. Spend Points in [Skills](skill-tree.md). The large in-pool Score measures performance separately.
 
-Activate an owned power in a shot hitting at least three bubbles to build its mastery in any mode. Successfully cleared Campaign pools also count. Three mastery uses satisfy a capstone requirement. Your unlocked powers appear randomly during play, with all researched upgrades applied automatically. There is no between-pool upgrade draft. Temporary upgrades already granted in an older saved run remain active until that run ends.
+Activate an owned power in a shot hitting at least three bubbles to build its mastery in scoring modes with your researched powers. Successfully cleared Campaign pools also count. Three mastery uses satisfy a capstone requirement. Your unlocked powers appear randomly during play, with all researched upgrades applied automatically. There is no between-pool upgrade draft. Temporary upgrades already granted in an older saved run remain active until that run ends.
 
 ## Continue or Start Again
 
@@ -48,16 +48,16 @@ Free Play is a separate Gamemodes choice with unlimited shots and the powers you
 
 Open a track in Melody Journey and expand **Songs** to find its recordings, latest attempt and saved versions. Free Play and older saved songs without track information remain available under **Free Play & Older Songs**. Browser saves belong to this device and site; see [Saves](settings.md#saves-and-backups) before moving to another device.
 
+See [Medals](medals.md) for every gamemode and level’s conditions.
+
 ## Attribution
 
 ### Sources
 
-Ricochet Bloom gameplay, campaign, progression and audio source in this release.
+The in-game rules, controls and item descriptions in this release.
 
 ### Contributions
 
 #### Codex on behalf of `leviscustempris`
 
-Authored and checked against the game implementation.
-
-See [Medals](medals.md) for every gamemode and level’s conditions.
+Guide authored for Cure Interactive.

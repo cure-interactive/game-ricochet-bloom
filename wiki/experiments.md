@@ -4,48 +4,27 @@ Open **Main Menu → Gamemodes**. Standalone games appear directly. Related game
 
 ## Find and Favourite Games
 
-The shared selector offers **All**, **Favorites**, **Development**, and **Saved**, using grid, filled-star, beaker and floppy-disk icons. Tap a section or drag the highlight between sections. Saved opens your existing runs and notes. Browse pages use the available width with outer margins on larger screens.
+The selector offers **All**, **Favorites**, **Development**, and **Saved**, using grid, filled-star, beaker and floppy-disk icons. Tap a section or drag the highlight between sections. Saved opens your existing runs and notes. Browse pages use the available width with outer margins on larger screens.
 
-Use **Search All Gamemodes** from any collection to find an individual game by name, mechanic or idea number. Results open the game’s setup directly. **In Development** holds unfinished ideas, with an optional category filter; these cards do not imply playable rules.
+Use **Search All Gamemodes** from any collection to find an individual game by name, mechanic or idea number. Results open the game’s setup directly. **Development** holds unfinished ideas, with an optional category filter; these cards do not imply playable rules.
 
-Press the star at the top-right of a game card to add it to **Favourites** without opening the game. A filled star means it is saved; press it again to remove it. Favourites opens individual games directly, including games from collections and the original modes. Stars are saved in this browser, separately for normal and Development profiles, and share the existing notebook’s favourites. Search also finds unfinished ideas, which can be starred for later.
+Press the star at the top-right of a game card to add it to **Favorites** without opening the game. A filled star means it is saved; press it again to remove it. Favorites opens individual games directly, including games from collections and the original modes. Stars are saved in this browser, separately for normal and Development profiles, and share the existing notebook’s favourites. Search also finds unfinished ideas, which can be starred for later.
 
-**Saved Runs & Notes** retains unfinished runs, configurations, verdicts and notebook backups. Existing saves and stable game IDs are preserved.
+**Saved** opens Saved Runs & Notes, with unfinished runs, configurations, verdicts and notebook backups.
 
-The 210 catalogue ideas use 18 categories for browsing and related simulation code. Categories are not playable replacements for their individual gamemodes. Coverage below is generated from the actual registry; the full implementation is still in progress.
+The **Development** tab lists ideas that cannot yet be played. Their descriptions are proposals; a card without Start does not offer a playable challenge.
 
-<!-- BEGIN MODE COVERAGE -->
-- **Trick Shots:** 10/10 catalogue ideas implemented. Difficulty levels: First Line · Bank and Bend · The Final Pocket.
-- **Reaction Puzzle:** 1/20 catalogue ideas implemented. Difficulty levels: First Spark · Firebreak · Chain of Islands.
-- **Cargo Rescue:** 1/10 catalogue ideas implemented. Difficulty levels: Open Water · Narrow Passage · The Long Way.
-- **Outbreak Containment:** 1/10 catalogue ideas implemented. Difficulty levels: First Response · Crossfire · Quarantine.
-- **Pressure Survival:** 0/10 catalogue ideas implemented — In Development. Planned levels: Breathing Room · Closing In · Last Refuge.
-- **Pool Engineer:** 0/20 catalogue ideas implemented — In Development. Planned levels: Open Channel · Crossed Paths · The Switchyard.
-- **Score Attack:** 1/10 catalogue ideas implemented. Planned levels: Clean Break · Risk and Reward · High Stakes.
-- **Power Expedition:** 0/10 catalogue ideas implemented — In Development. Planned levels: First Choice · Trade-Off · Final Build.
-- **Melody Trials:** 10/10 catalogue ideas implemented. Difficulty levels: First Phrase · Two Voices · Full Arrangement.
-- **Memory Pool:** 0/10 catalogue ideas implemented — In Development. Planned levels: Remember Three · Hidden Route · Final Deduction.
-- **Living Pool:** 0/20 catalogue ideas implemented — In Development. Planned levels: One Cell · Shared Resources · The Whole Organ.
-- **Pool Adventures:** 0/10 catalogue ideas implemented — In Development. Planned levels: The Entrance · The Detour · The Escape.
-- **Pool Duel:** 0/10 catalogue ideas implemented — In Development. Planned levels: First Round · Contested Ground · The Decider.
-- **Together:** 0/10 catalogue ideas implemented — In Development. Planned levels: Meet in the Middle · Separate Roles · One Last Chance.
-- **Pool Workshop:** 0/10 catalogue ideas implemented — In Development. Planned levels: First Creation · Working System · The Showcase.
-- **Capture and Release:** 1/10 catalogue ideas implemented. Difficulty levels: Around the Wall · Lower Passage · The Return.
-- **Split and Merge:** 0/10 catalogue ideas implemented — In Development. Planned levels: Two Halves · Unequal Shares · Exact Balance.
-- **Source Works:** 0/10 catalogue ideas implemented — In Development. Planned levels: First Output · Supply Chain · The Factory.
-<!-- END MODE COVERAGE -->
+In **Saved → Find Notes**, search the idea library or filter by gamemode, kind, availability or your playtest verdict. Proposed challenges have descriptions and notes but no Start button.
 
-**Challenge Library** is an optional searchable index, not a required step before playing. Browse the illustrated mode overview or search all 210 ideas and the three original rule sets. Filter by gamemode, kind, implementation or local playtest verdict. Every challenge has a graphic thumbnail. Proposed challenges have descriptions and notes but no Start button.
+Use the **All** tab to return to the gamemode list. Opening a game starts at the top of its setup screen. **Back** returns through your previous pages.
 
-The location bar gives a direct **Gamemodes** return. Opening a mode starts at the top of its setup screen. The mode name remains visible; a challenge is selected inside that mode. The existing Back history is preserved.
-
-Implementation and feedback remain separate. **Playable Prototype** means rules exist; **Available Mode** opens an existing mode; **Proposed** means implementation is pending. **Untested**, **Promising**, **Needs Work**, **Keep** and **Shelve** are local human verdicts. Automated checks do not set them. Stable IDs 001–210 identify the entries in [Game Modes to Try](game-modes.md).
+**Playable Prototype** has playable rules; **Available Mode** opens an existing mode; **Proposed** is an idea you cannot play yet. Your verdicts — **Untested**, **Promising**, **Needs Work**, **Keep** and **Shelve** — record what you think of a game. They do not change which games are available.
 
 ## Three Levels and Settings
 
 Choose a gamemode card, select one of its three illustrated difficulty boards, and press Start. Each setup has its own goal, failure rules and settings. The shared category describes related mechanics; it does not require another navigation step.
 
-**Settings** contains bounded presets and options. Changing an option creates a Custom setup with separate records. Goal and failure rules are visible before Start. **Saved Configurations** holds named setups; up to 64 are retained. Removing a saved name does not delete its run or results. Each challenge, difficulty, preset, resolved option set and rules version has its own save and record. Retry repeats that exact setup.
+**Settings** contains bounded presets and options. Changing an option creates a Custom setup with separate records. Goal and failure rules are visible before Start. **Saved Configurations** holds named setups; up to 64 are retained. Removing a saved name does not delete its run or results. Different challenges, difficulties and settings keep separate saves and records. Retry repeats the same setup.
 
 ## Trick Shots
 
@@ -62,8 +41,6 @@ The Trick Shots category contains ten individual gamemodes. Each exposes First L
 - **Landing Zone (#009):** collect the targets and come to rest fully inside the finish region.
 - **Narrow Escape (#010):** pass gates in order without touching forbidden walls or the boundary.
 
-All three difficulties have checked physical shot solutions for each challenge. This establishes solvability, not a human fun or balance verdict.
-
 ## Melody Trials
 
 The Melody Trials category contains ten individual gamemodes. Each exposes First Phrase, Two Voices and Full Arrangement. These musical spaces add staggered keys and cover as difficulty rises:
@@ -79,13 +56,13 @@ The Melody Trials category contains ten individual gamemodes. Each exposes First
 - **Phrase Repair (#089):** replace shown missing or incorrect notes in the indicated order.
 - **Free Composition (#090):** choose a pitch palette and play without a losing condition. At rest, Save Composition keeps the song in the existing Song Library and the setup notebook. A full or unavailable Song Library prevents completion until the save can succeed. The composition workspace supports up to 4,096 launches before it must be saved; reaching capacity does not lose the song.
 
-Every challenge has a checked physical solution on all three levels. Pitch labels agree with played and stored notes. Musical clues have visible equivalents; audio is not required. The board stays still during aim, while rhythm windows and call previews continue until Pause.
+Musical clues have visible equivalents; audio is not required. The board stays still during aim, while rhythm windows and call previews continue until Pause.
 
 ## Controls and Saves
 
 Physical bodies wait while you aim. Melody Trials beat windows and call previews keep their own clock. Drag backward anywhere on the board and release to launch, or use Aim and Power followed by Launch. With the board focused, Left/Right adjust direction, Up/Down adjust power and Space launches. Escape pauses. Every finished game offers Main Menu; it saves the result before returning home. A shot ends after all motion settles. Capture adds a Release Payload button while carrying and aiming; release uses one shot.
 
-Pausing or leaving saves the full board and generated song, including an unfinished flight. Continuing a flight opens it paused. Original version-one trial saves remain under Earlier Trial Saves and retain their existing rules; new setups do not replace them. Starting another unfinished run for the exact same configuration asks before replacing it. Other configurations remain intact.
+Pausing or leaving saves the full board and generated song, including an unfinished flight. Continuing a flight opens it paused. Earlier trial saves remain under Earlier Trial Saves and retain their existing rules; new setups do not replace them. Starting another unfinished run for the exact same configuration asks before replacing it. Other configurations remain intact.
 
 The notebook is local to this browser, with separate Normal and Development profiles. **Notebook Backup and Storage** exports or imports that profile's setups, saves, results, favourites and feedback. Import replaces the notebook after confirmation and rejects a different profile or unsupported data. Legacy trial saves and Skills progress remain separate. Export before clearing browser data.
 
@@ -121,30 +98,26 @@ All three targets must be cleared by the release. Solid walls block its blast. S
 
 ## Results and Feedback
 
-Completed wins and losses are recorded once per attempt. The setup screen shows completed runs, wins, the fewest shots in a win, and its latest ten results. Completed totals and personal bests survive pruning of the 200-result history; up to 2,000 distinct rule configurations retain records. This is not a global leaderboard. Normal, Development, Custom and different rule configurations never share a record.
+Completed wins and losses are recorded once per attempt. The setup screen shows completed runs, wins, the fewest shots in a win, and its latest ten results. Completed totals and personal bests remain when older results leave the 200-result history; up to 2,000 distinct rule configurations retain records. This is not a global leaderboard. Normal, Development, Custom and different rule configurations never share a record.
 
-After a result, choose **Review / Change Setup** to write a verdict and notes, or **Retry Same Setup** to repeat the experiment. Feedback belongs to the experiment ID across its configurations; describe the layout and settings in your note when relevant. Save Feedback confirms the write. A favourite makes an idea or prototype easy to revisit from Play.
+After a result, choose **Review / Change Setup** to write a verdict and notes, or **Retry Same Setup** to repeat the experiment. Feedback belongs to the same game across its configurations; describe the layout and settings in your note when relevant. Save Feedback confirms the write. A favourite makes an idea or prototype easy to revisit from Play.
 
 ## Points and Music
 
-Every playable experiment preset, including Custom, earns Points from productive settled shots. Reaction Puzzle, Cargo Rescue and Outbreak Containment award 3 Points; Trick Shots, Melody Trials and Capture Transport Release award 4. A shot must touch a target or complete its goal. Repeated contacts, 5-Chains and finishing a trial do not stack extra currency. Misses, previews, waiting and restarting pay nothing. Earlier earned receipts are preserved and resuming never pays twice.
+Every playable experiment preset, including Custom, earns Points from productive settled shots. Reaction Puzzle, Cargo Rescue and Outbreak Containment award 3 Points; Trick Shots, Melody Trials and Capture Transport Release award 4. A shot must touch a target or complete its goal. Repeated contacts, 5-Chains and finishing a trial do not stack extra currency. Misses, previews, waiting and restarting pay nothing. Previously earned Points are preserved and resuming never pays twice.
 
 Fixed environmental tools keep existing research from changing a puzzle. Trials do not train permanent power mastery. Contact-generated music accompanies play; goals and the reaction log explain outcomes with sound muted.
 
-## What to Test
-
-The nine original layouts, nine variant layouts and three capture layouts have real-shot simulation solutions at Standard settings. Checks cover exact saved continuation, profile and configuration isolation, malformed data, result deduplication, import/export and save failures. These establish mechanical behavior. Balance, enjoyment, physical-device touch comfort and the usefulness of each variation still need human playtesting.
+See [Medals](medals.md) for every gamemode and level’s conditions.
 
 ## Attribution
 
 ### Sources
 
-Ricochet Bloom's authored trial engine, experiment catalogue, setup rules and notebook implementation; the developer's mind map and [research connections](development-concept.md#research-and-sources).
+The in-game trial rules, setup descriptions and notebook controls in this release.
 
 ### Contributions
 
 #### Codex on behalf of `leviscustempris`
 
-Implemented and documented the experiment hub, stable catalogue IDs, versioned setups, notebook, controlled variations and capture prototype. Human playtest verdicts remain separate from automated verification.
-
-See [Medals](medals.md) for every gamemode and level’s conditions.
+Guide authored for Cure Interactive.

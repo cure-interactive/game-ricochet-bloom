@@ -1,6 +1,6 @@
 # Endless Waves
 
-An endless score chase with **five shots per wave**. Open **Endless Waves** on the main menu to start or resume it.
+An endless score chase with **five shots per wave**. Open **Gamemodes → Endless Waves** to start or resume it.
 
 ## Clear the Board
 
@@ -16,7 +16,7 @@ Start with 12 bubbles. Every two waves adds one, up to 20. Each wave also makes 
 
 ## Powers and Music
 
-Only permanently unlocked powers and all researched upgrades enter your random power pool. A 5-Chain increases your next shot's power allowance up to three, subject to the number of distinct unlocked powers and bubbles remaining.
+Only permanently unlocked powers and all researched upgrades enter your random power pool. A 5-Chain increases your next shot's power allowance up to three, limited by the bubbles remaining. If you have fewer unlocked powers than available slots, offers can repeat. Collecting a repeated power refreshes its effect rather than stacking a duplicate.
 
 Main-player, Split, Echo and Blaster contacts pop bubbles. Lightning strikes pop their targets too. Relay sends a short hit pulse from a popped carrier to a nearby bubble, including its marked power. Pressure effects move bubbles; merely pushing one does not pop it.
 

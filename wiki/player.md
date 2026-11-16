@@ -1,10 +1,10 @@
 # Player
 
-Open **Player** from the main menu to view your equipped skin. Personalize groups **Skins**, **Trails**, **Impacts** and **Music** in two columns when space permits, with each icon above its label; **Skills** and **Stats** sit below.
+Open **Player** from the main menu to view your equipped skin, personalize Skins, Trails, Impacts and Music, or open Skills and Stats.
 
 ## Player Viewer
 
-The large preview shows your equipped skin. Drag it across the available viewer area, or tap it to make it bounce. Its range follows the viewer size; release it to spring back smoothly. Large previews respond gently when you scroll their containing panel and return smoothly to center. Compact player icons keep their smaller movement range; scrolling gently nudges their local motion and trails. Previews keep moving when scrolled out of view on an open page; closing or hiding the page pauses them. These interactions are cosmetic and do not change a run.
+Drag the large bubble or tap it to make it bounce. Dragging resists more as you approach its circular reach limit; release it to spring back smoothly. Scrolling gently nudges previews and their trails, and supported device motion can move them too. Compact icons have a smaller range. These interactions are cosmetic and do not change a run.
 
 Your player name appears beneath the bubble. Tap or click it to edit in place (up to 32 characters). Press Enter or tap away to save; Escape cancels. An empty edit keeps the previous name. Names belong to the selected profile and are included in progress backups.
 
@@ -12,13 +12,15 @@ Your player name appears beneath the bubble. Tap or click it to edit in place (u
 
 Open Player → Skins to inspect each look on a live, squishy bubble. Drag or tap the preview. All cosmetic galleries order cards from Common through Mythic, keeping catalogue order within each rarity. The bottom rarity bar stays visible while browsing; choose All or one rarity. Back from a card preserves the filter and gallery position.
 
-Common through Mythic shop skins cost Points. Sea Glass is Common, Frost Crystal is Rare, Nebula is Epic, Solar and Cure Interactive are Legendary, and Spectrum is Mythic. The Cure skin uses the approved Cure Interactive artwork inside blue glass.
+Common through Mythic shop skins cost Points. Sea Glass is Common, Frost Crystal is Rare, Nebula is Epic, Solar and Cure Interactive are Legendary, and Spectrum is Mythic. The Cure skin uses the Cure Interactive emblem inside blue glass.
 
 Unlock & Equip purchases a skin once. Owned skins can be equipped freely. Original is always free, and completing campaign tracks still unlocks their existing skins. Inspecting a skin never equips it or spends Points.
 
 ## Trails and Impacts
 
-Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons animate your equipped styles. Wiki uses regular static icons. Skins, Trails and Impacts use the same gallery → detail → Back pattern: inspecting does not buy or equip, and wider galleries use the available row space before wrapping. Previews on hidden pages pause and keep their state; scrolling offscreen only culls their drawing. One trail follows the large Player viewer and selected skin preview during grabbing, dragging, scrolling, rebound and supported device motion. Equipped-player icons can trail their own movement, including the bounded nudge from scrolling; only the equipped skin gallery thumbnail has a trail from its local motion. Dedicated Trail and Impact previews keep their natural motion and deformation without generating impact effects from taps, dragging, focus or scrolling. Impact icons and cards demonstrate their effect automatically at varying contact points around the bubble. Full preview arenas still show natural wall collisions, and effects fade away smoothly.
+Open **Player → Trails** or **Impacts** and tap a style for a larger animated preview and its purchase or equip card. **Back** returns to your place in the gallery. Browsing never buys or equips an item. The title bar shows the style you are inspecting, or your equipped style while browsing.
+
+Your equipped trail follows the Player viewer and large skin previews as they move and settle. In the skin gallery, only the equipped skin has a trail. Trail and Impact previews move and deform when you interact, but taps, dragging, focus and scrolling do not create extra impact bursts. Impact previews demonstrate their effect automatically at different points around the bubble; larger preview arenas also show wall collisions. Effects fade naturally after movement or contact.
 
 - Common styles cost 60 Points.
 - Rare styles cost 120 Points.
@@ -27,7 +29,7 @@ Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to 
 - Mythic styles cost 550 Points.
 - Original options remain free. Purchases are permanent within the current profile, and equipping an owned style is free.
 
-Legendary Ember adds a warm launch sound. Mythic Aurora adds a rising launch sound and a continuous airy shimmer while the player moves. Its ambient flow stays phase-continuous instead of replaying plucked notes; speed changes adjust it smoothly and stopping lets it fade. Mythic Prismatic Nova adds a crystalline accent to player impacts. Tap **Preview Sound** to hear the selected effect before purchasing. Aurora previews travel for a few seconds and fade over their final second. Sounds follow master volume and mute; gallery animations stay silent. Rapid impacts are limited to keep audio clear.
+Legendary Ember adds a warm launch sound. Mythic Aurora adds a rising launch sound and a continuous airy shimmer while the player moves. The shimmer changes gently with speed and fades as the player stops. Mythic Prismatic Nova adds a crystalline accent to player impacts. Tap **Preview Sound** to hear the selected effect before purchasing. Aurora previews travel for a few seconds and fade over their final second. Sounds follow master volume and mute; gallery animations stay silent. Rapid impacts are limited to keep audio clear.
 
 Buy and equip cosmetics during an unfinished pool without ending it. Points and ownership checks still apply; your current gameplay build stays intact. Cosmetics do not alter power, speed, score or rewards. Your selections appear in normal play, experiments, Casual and the menu background. Power effects retain their own important visual feedback. Normal and Development purchases are separate.
 
@@ -51,19 +53,19 @@ Stats belong to the selected Normal or Development profile in this browser. Olde
 
 ## Music
 
-Open **Player → Music**. The shared tap/drag selector at the bottom of the content panel has **Instruments**, **Soundstages**, and **Ambience** tabs. The rarity filter sits directly above it, and the Music title and Back bar sit below it. Each category has its own equipped item, so you can combine any instrument, acoustic space and background atmosphere.
+Open **Player → Music**. The tap/drag selector at the bottom of the content panel has **Instruments**, **Soundstages**, and **Ambience** tabs. The rarity filter sits directly above it, and the Music title and Back bar sit below it. Each category has its own equipped item, so you can combine any instrument, acoustic space and background atmosphere.
 
-- **Instruments** change the voices, preserving melody, rhythm and percussion. Original preserves each song's Glass, Velvet or Wood palette. Paid choices are Felt Keys, Crystal Chimes, Velvet Strings, Golden Celesta and Aurora Choir.
-- **Soundstages** change the room around the music. Original keeps the familiar room; Small Room, Wooden Hall, Stone Chamber, Cathedral and Celestial Vault offer different reflection lengths, warmth and stereo diffusion. Gameplay effects are not sent through this room.
-- **Ambience** adds a quiet procedural background loop. None is free; Soft Rain, Quiet Shore, Night Forest, Ember Hearth and Orbital Drift provide independent atmospheres.
+- **Instruments** change the voices, preserving melody, rhythm and percussion. Original preserves each song's Glass, Velvet or Wood palette. Paid choices include Wooden Keys, Felt Keys, Crystal Chimes, Reed Flute, Velvet Strings, Neon Ensemble, Golden Celesta, Brass Halo, Aurora Choir and Glass Harmonica.
+- **Soundstages** change the room around the music. Original keeps the familiar room; Small Room, Wooden Hall, Stone Chamber, Cathedral and Celestial Vault offer different echo lengths, warmth and spaciousness. Gameplay effects are not sent through this room.
+- **Ambience** adds a quiet background atmosphere. None is free; Soft Rain, Quiet Shore, Night Forest, Ember Hearth and Orbital Drift provide independent atmospheres.
 
-Open a card and toggle **Preview Sound** on or off. Music previews last up to ten seconds, with a simple bar showing playback progress. Instruments play a short musical sample; Ambience plays the atmosphere alone. These previews fade background music out just before playing and restore it afterward. Soundstage preview instead changes the acoustic space of the music already playing, then restores your equipped space when stopped or finished. Nothing is equipped or purchased by previewing. Changing category, leaving the preview, hiding the page or muting stops it; rapid toggles safely replace pending playback. Previews follow Music Volume, Master Volume and Sound.
+Open a card and toggle **Preview Sound** on or off. Music previews last up to ten seconds, with a simple bar showing playback progress. Instruments play a short musical sample; Ambience plays the atmosphere alone. These previews fade background music out just before playing and restore it afterward. Soundstage preview instead changes the acoustic space of the music already playing, then restores your equipped space when stopped or finished. Nothing is equipped or purchased by previewing. Changing category, leaving the preview, hiding the page or muting stops it; starting another preview ends the previous one. Previews follow Music Volume, Master Volume and Sound.
 
-Night Forest, Ember Hearth and Orbital Drift use long, seamless atmospheres. Forest phrases and soft hearth details vary across a 48-second loop; Orbital Drift is a smooth, slowly breathing harmonic bed.
+Night Forest, Ember Hearth and Orbital Drift use long, seamless atmospheres. Forest phrases and soft hearth details vary over time; Orbital Drift is a smooth, slowly breathing harmonic bed.
 
-**Unlock & Equip** buys once; equip owned items freely, including during a saved pool. Normal and Development purchases remain separate. **Show purchased items cost** applies to every category. All sounds use the local engine, without sampled sound-bank downloads.
+**Unlock & Equip** buys once; equip owned items freely, including during a saved pool. Normal and Development purchases remain separate. **Show purchased items cost** applies to every category.
 
-Selections affect gameplay music, Casual, menu music and newly prepared song highlights. A prepared highlight keeps its rendered sound until you prepare it again. Your saved composition, score, rewards and gameplay build are unchanged.
+Selections affect gameplay music, Casual, menu music and newly prepared song highlights. Prepare an existing highlight again to hear your new selections. Your saved composition, score, rewards and gameplay build are unchanged.
 
 See [Cosmetic Rarity](cosmetic-rarity.md) for the tier rules for each asset type and current prices.
 
@@ -77,14 +79,10 @@ See [Player Upgrades](skill-tree.md#player-upgrades) for effects, costs and wher
 
 ### Sources
 
-Ricochet Bloom gameplay, campaign, progression and audio source in this release.
+The in-game rules, controls and item descriptions in this release.
 
 ### Contributions
 
 #### Codex on behalf of `leviscustempris`
 
-Authored and checked against the game implementation.
-
-Player icons and previews keep simulating while their page is visible, even when you scroll them out of view. Drawing continues while any part of the bubble, glow or trail remains in the visible area; it stops only after the whole effect leaves. Scrolling back reveals the ongoing motion. Switching away from the page or closing its menu suspends that work without resetting the preview.
-
-Large player previews use a circular distance limit fitted to the viewer. Dragging follows the pointer near the origin and progressively resists toward the outer radius; it never clamps independent x/y coordinates into a square. Compact icons retain their small tether.
+Guide authored for Cure Interactive.

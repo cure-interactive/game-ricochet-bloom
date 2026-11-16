@@ -16,7 +16,7 @@ Each different bubble touched during a shot adds 25 times its position in the ch
 - **10 shots:** Bronze 3,000, Silver 6,000, Gold 10,000.
 - **15 shots:** Bronze 4,500, Silver 9,000, Gold 15,000.
 
-Targets are inclusive. Finish every shot to record a best, even if your score is below Bronze. A medal requires reaching its score target. The HUD shows progress toward all three targets throughout the run. These are initial balance values; real simulation verifies Gold is possible with starter Ripple in every budget.
+Targets are inclusive. Finish every shot to record a best, even if your score is below Bronze. A medal requires reaching its score target. The HUD shows progress toward all three targets throughout the run.
 
 ## Points and Saves
 
@@ -24,6 +24,6 @@ Score measures performance; **Points** are the spendable Skills currency. Each p
 
 Every budget keeps a separate resumable run and completed personal best. Normal and Development profiles are separate. Reloading can resume a flight without paying twice. Restarting replaces that budget's current run while preserving its completed best and earned Points. An unreadable save is preserved until you explicitly replace it; an unreadable best cannot be recovered by replacement.
 
-These are personal records across your skill progression, not equal-loadout competitive rankings. Music is still generated, while its panel follows the Development disclosure outside Melody Journey.
+These are personal records across your skill progression, not equal-loadout competitive rankings. Your song continues developing during play.
 
 See [Medals](medals.md) for every gamemode and level’s conditions.

@@ -17,7 +17,8 @@ Find a guide for your next game, your player or your progress. Use Back or swipe
 
 ## Grow
 
-- [Player](player.md) — your equipped skin, appearance, Stats and Player Skills.
+- [Player](player.md) — your appearance, music, Stats and Player Skills.
+- [Cosmetic Rarity](cosmetic-rarity.md) — tier rules and prices for Skins, Trails, Impacts, Instruments, Soundstages and Ambience.
 - [Skills](skill-tree.md) — spend Points on cumulative player and power upgrades.
 - [Power-Ups](power-ups.md) — every power and its upgrade chain.
 - [Medals](medals.md) — Bronze, Silver and Gold conditions for every mode and level.
@@ -36,13 +37,13 @@ Find a guide for your next game, your player or your progress. Use Back or swipe
 
 ### Sources
 
-Ricochet Bloom gameplay, campaign, progression and audio source in this release.
+The in-game rules, controls and item descriptions in this release.
 
 ### Contributions
 
 #### Codex on behalf of `leviscustempris`
 
-Authored and checked against the game implementation.
+Guide authored for Cure Interactive.
 
 ## Change Logs
 

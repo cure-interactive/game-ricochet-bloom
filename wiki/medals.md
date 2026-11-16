@@ -6,7 +6,7 @@ Every scoring gamemode has **Bronze**, **Silver** and **Gold** conditions. Casua
 
 A higher medal includes the lower tiers. Finite challenges must finish their objective; a failed or unfinished attempt earns no medal, even if a score target was reached. The whole final shot counts. Medals do not spend or replace Points.
 
-Your best medal never goes down after a retry. Experiment records belong to the exact difficulty, preset and settings and travel with notebook exports. Normal and Development records are separate. Earlier saves are preserved; missing historical evidence is not invented. A retained completed experiment can establish its medal when opened again.
+Your best medal never goes down after a retry. Experiment records belong to the exact difficulty, preset and settings and travel with notebook exports. Normal and Development records are separate. Earlier saves are preserved; older results without enough recorded information may not show a medal. A retained completed experiment can establish its medal when opened again.
 
 ## Melody Journey
 
@@ -220,4 +220,4 @@ Free Composition medals require saving a composition with 1, 3 or 5 different pi
 
 ## Ideas in Development
 
-Ideas without playable rules do not award medals. Every new playable recipe must supply medal conditions and a tested Gold route for each authored Standard level.
+Ideas without playable rules do not award medals. Choose a game with a Start action to play for its listed medals.

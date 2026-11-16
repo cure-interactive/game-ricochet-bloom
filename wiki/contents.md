@@ -125,7 +125,6 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 - [Capture Transport Release](experiments.md#capture-transport-release)
 - [Results and Feedback](experiments.md#results-and-feedback)
 - [Points and Music](experiments.md#points-and-music)
-- [What to Test](experiments.md#what-to-test)
 
 ## Sound, Settings & Saves
 
@@ -142,6 +141,11 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Developer
 
 - [Developer](developer.md)
+- [Rendering and Preview Implementation](developer.md#rendering-and-preview-implementation)
+- [Audio Implementation](developer.md#audio-implementation)
+- [Reference Maintenance](developer.md#reference-maintenance)
+- [Experiment Coverage](developer.md#experiment-coverage)
+- [What to Test](developer.md#what-to-test)
 - [Release Notes](developer.md#release-notes)
 - [Economy Tuning](developer.md#economy-tuning)
 - [Playtest Method](developer.md#playtest-method)
@@ -209,6 +213,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Change Logs
 
 - [Change Logs](changelog.md)
+- [v3.32.2](changelog.md#v3-32-2)
 - [v3.32.1](changelog.md#v3-32-1)
 - [v3.32.0](changelog.md#v3-32-0)
 - [v3.31.0](changelog.md#v3-31-0)

@@ -29,9 +29,9 @@ Every scoring gamemode and playable experiment preset earns permanent **Points**
 - **Melody Journey, Free Play, Endless Waves, Score Attack and Challenge: +5 Points per productive shot.** Touch at least one bubble or complete the goal. More contacts, 5-Chains and cleared waves do not stack extra base Points.
 - **Reaction Puzzle, Cargo Rescue and Outbreak Containment: +3 Points per productive shot.** Their shorter shots use a smaller award.
 - **Trick Shots, Melody Trials and Capture Transport Release: +4 Points per productive shot.**
-- **Bonus challenges: +1 Point per difficulty level.** The current challenges pay 1–3 Points, with support for five tiers. They bank once at rest. Campaign pool and track clears do not add another currency payout.
+- **Bonus challenges: +1 Point per difficulty level.** The current challenges pay 1–3 Points. They bank once at rest. Campaign pool and track clears do not add another currency payout.
 
-Research prices and action awards aim for about two average purchases per five minutes of typical play. There is no timed payout, cooldown or purchase limit: misses and waiting earn nothing, and better play can earn faster. Different skills have different costs. Existing balances and owned upgrades are preserved; new prices apply to future purchases.
+There is no timed payout, cooldown or purchase limit: misses and waiting earn nothing, and better play can earn faster. Different skills have different costs. Existing balances and owned upgrades are preserved; new prices apply to future purchases.
 
 Every scoring game mode displays your available **Points** balance during play, matching Skills for your current profile. Experiment modes also show Points earned in that run separately. The balance updates when rewards are saved. A short message shows Points banked and your available balance. Your pool's Score remains separate. Reopening a save does not pay twice. Casual, listening, menu animation and missed shots do not earn Points. Development play pays only the separate Development profile. Shared challenges pay play Points to the profile you entered from, without awarding Melody Journey track completion to that profile.
 
@@ -55,7 +55,7 @@ Shots collect melodic ideas; 5-Chains add harmony and musical layers. Bubble mar
 
 Three different bubbles establish a recurring melody. Later notes develop the music over time rather than replacing it after every collision. A short answering phrase plays after a shot, and the arrangement continues between shots. New musical layers join on the beat.
 
-In any mode, activate the Development profile and press its bottom bar to expand the music panel. Use the panel to change the instrument palette. Use Settings to balance the ambience against contact sounds.
+Open **Player → Music** to choose Instruments, Soundstages and Ambience without changing your composition. In **Settings → Audio**, use Music Volume to balance the music against contact sounds.
 
 ## Controls
 
@@ -65,7 +65,9 @@ The compact HUD keeps score, spendable Points, shots, power slots, chain dots an
 - Keyboard: left/right arrows aim, up/down arrows change shot strength, Space launches, and P pauses.
 - Optional buttons: Settings → Accessibility → Show on-screen controls.
 
-The main menu and its menus share a living bubble background. Press an empty area for a pulse; hold or move one or more fingers to keep pushing nearby bubbles away. Menu controls and scrolling still work normally. Opaque pages cover the pool completely: it keeps simulating but does not react to touches through the page. This background does not affect your run or progress.
+The pause menu identifies your current mode, track or pool and remaining goal. Resume keeps the current pool.
+
+The main menu and its menus share a living bubble background. Press an empty area for a pulse; hold or move one or more fingers to keep pushing nearby bubbles away. Menu controls and scrolling still work normally. The background does not react to taps through an opaque menu or guide. This background does not affect your run or progress.
 
 [Explore the Melody Journey](campaign.md) or [learn about research](skill-tree.md).
 
@@ -73,12 +75,10 @@ The main menu and its menus share a living bubble background. Press an empty are
 
 ### Sources
 
-Ricochet Bloom gameplay, campaign, progression and audio source in this release.
+The in-game rules, controls and item descriptions in this release.
 
 ### Contributions
 
 #### Codex on behalf of `leviscustempris`
 
-Authored and checked against the game implementation.
-
-The pause card uses the same artwork-and-text layout as Continue: mode name, track and pool, then the remaining objective. Resume keeps the current pool.
+Guide authored for Cure Interactive.
