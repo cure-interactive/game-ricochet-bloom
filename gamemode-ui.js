@@ -1,5 +1,5 @@
-import { screenHeader } from './screen-header.js?v=787a0f26e9ce958dd7fc39d6f8a8060e54493bdd6e428a4b02dc4cbf3e02b5f6';
-import { buttonHTML } from './ui-icon.js?v=67494bc447e88045ecfb056d422d1fe9d650a74f0aeff78377a52630b16c73fb';
+import { screenHeader } from './screen-header.js?v=a02e1ebe93884ea0c07d9f50db4c6ab18e894db9e76e3d49cef38ae629ecf5f0';
+import { buttonHTML } from './ui-icon.js?v=23254d5124a1e10208687f81fc9971554edfeeb2b34e4c17b4d273dc2d5cad13';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { assetURL } from './asset.js?v=088862b3a656c6f1107998eef742251f591f278feccffeabbe3a08e65a29731d';
 import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=9d494c33a3fc8c5dbc79b6e8b44ffd8fe1df60cf2cfab6f54afd142fb7f4b410';

@@ -30,10 +30,13 @@ export function cosmeticPreviewMount(canvas,host){
   frame=0;if(!active||doc.hidden||activity?.isActive()===false)return;
   frame=win.requestAnimationFrame(draw);if(!ready(now))return;
   const dt=last?Math.min(.05,(now-last)/1000):0;last=now;
-  const ratio=qualityPixelRatio(doc.body.dataset.quality,win.devicePixelRatio||1),width=Math.max(1,canvas.clientWidth),height=Math.max(1,canvas.clientHeight),scale=Math.max((host.compact?160:180)/height,(host.compact?160:host.thumbnail?280:400)/width),worldHeight=height*scale,worldWidth=width*scale;
+  const ratio=qualityPixelRatio(doc.body.dataset.quality,win.devicePixelRatio||1),width=Math.max(1,canvas.clientWidth),height=Math.max(1,canvas.clientHeight);
+  // Gallery cards reserve 192px instead of 64px: a fixed 180-unit height
+  // makes their artwork exactly three times larger, independently of columns.
+  const scale=host.thumbnail&&!host.compact?180/height:Math.max((host.compact?160:180)/height,(host.compact?160:400)/width),worldHeight=height*scale,worldWidth=width*scale;
   visual.configure(host.loadout());
   if(host.thumbnail){
-   const t=visual.elapsed,padding=host.compact?54:72,rx=Math.max(0,worldWidth/2-padding),ry=Math.max(0,worldHeight/2-padding);
+   const t=visual.elapsed,padding=host.compact?54:host.thumbnail==='trail'?42:72,rx=Math.max(0,worldWidth/2-padding),ry=Math.max(0,worldHeight/2-padding);
    body.x=worldWidth/2+(host.thumbnail==='trail'?Math.sin(t*2)*rx:0);body.y=worldHeight/2+(host.thumbnail==='trail'?Math.sin(t*4)*ry:0);
    body.vx=Math.cos(t*2)*rx*2;body.vy=Math.cos(t*4)*ry*4;
    if(host.thumbnail==='bounce'&&Math.floor(t/.9)!==pulse){pulse=Math.floor(t/.9);visual.hit(body.x,body.y);bubbleHit(membrane,body.radius,1,0,150);}

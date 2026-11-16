@@ -1,7 +1,7 @@
 import {cosmeticSkin,cosmeticLoadout} from './cosmetic.js?v=97b306ab42d46dc2f32ef73e7417114b7e4c554d3db716a4334c31895c9d8d32';
-import { screenHeader } from './screen-header.js?v=787a0f26e9ce958dd7fc39d6f8a8060e54493bdd6e428a4b02dc4cbf3e02b5f6';
-import { playerUpgradeMount } from './player-upgrade-ui.js?v=332d80db1af2748a03bca61b5c0973ae5101097e3a4cf886a018d12643d599d5';
-import { saveRecoveryMount } from './save-recovery-ui.js?v=35bc1eafe277922edaf4db5a13ff869a074eacb692b12f743254091ffbc5d599';
+import { screenHeader } from './screen-header.js?v=a02e1ebe93884ea0c07d9f50db4c6ab18e894db9e76e3d49cef38ae629ecf5f0';
+import { playerUpgradeMount } from './player-upgrade-ui.js?v=e66f8a1e9bc0a117671853f5575c6fdb68a235396139c617bfc7edb67c70bc95';
+import { saveRecoveryMount } from './save-recovery-ui.js?v=9aae426dadba86a4087d59ef2c244e8bb9512fe644396fb8de310535e83d81dc';
 import { progressionResetUnreadable } from './progression-store.js?v=929e86789ec9365c90c8dbb9982e13a73b2f3ca13dda3253240578b15e34b3eb';
 import { medalIcon } from './medal-ui.js?v=b66de041ee2d9f60adfb88f52c358438190802a3f8dc744542f54dc430e58530';
 
@@ -9,16 +9,16 @@ import { earningPrepare, earningId } from './earning.js?v=6e78b642b40a8b5067bb53
 import { profilePlayReward, profileDevelopmentCopy, profileRename, profileName } from './profile.js?v=ff0d5bd39c348b5e77e65e08c9073076fa5df9194776f8a8ac297063482529da';
 import { developmentBarMount } from './development-bar.js?v=0b71d362f1a5c406c6eb36aad31483846558bb98b33e4104fe1e950e5e969940';
 import { titleCase } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { campaignMount } from './campaign-ui.js?v=1339beb081b97fed0e725f696ca59400ce37feeda4b5ce049e539ff71967c23f';
+import { campaignMount } from './campaign-ui.js?v=02e9d55d1f581a8e72aeb61c831cf3959a03ac37a3ec101a372b29e33e75a96e';
 import { challengeEncode, challengeDecode } from './challenge.js?v=8993991a2e9e5bd8f635822ba9a0a318450d6bd863fe2aa1768169454362df28';
 import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=f9e883627484ce377a5de4f226aa97c6b6087f3523545b778ccbc731948a514e';
 import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=929e86789ec9365c90c8dbb9982e13a73b2f3ca13dda3253240578b15e34b3eb';
 import { gameCreate } from './engine.js?v=27a29e6d2cba5ed4d8a714591cb6751bcf16bb1cea5790adfc71e5146d80876e';
-import { treeMount } from './tree-ui.js?v=15491a0934efad7a0fddfa9810f512148076b9e1b39bfd06ae8d5c3290dcd711';
-import { buttonHTML, iconHTML } from './ui-icon.js?v=67494bc447e88045ecfb056d422d1fe9d650a74f0aeff78377a52630b16c73fb';
+import { treeMount } from './tree-ui.js?v=d3f90d312db1bd10d76d0e60c0147b2e6004aa025b70463adac4b27a802bda77';
+import { buttonHTML, iconHTML } from './ui-icon.js?v=23254d5124a1e10208687f81fc9971554edfeeb2b34e4c17b4d273dc2d5cad13';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
-import { skinMount } from './skin-ui.js?v=0abc679a44a5d9e3f9f6c6f4dc20875b3db32e761924c8e26245dcc66ece5438';
+import { skinMount } from './skin-ui.js?v=1627b428ac52f2ee57bb0a64d8a2a79dda17a48c069d612067f650382de96210';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;
@@ -80,7 +80,7 @@ export function progressionMount(host){
   const dev=document.createElement('dialog');dev.id='development-dialog';dev.className='standard-dialog';dev.setAttribute('aria-label','Development settings');
   dev.innerHTML=`${screenHeader({className:'dialog-heading',title:'Development',icon:'flask',back:button('dev-close','Close','close')})}<div class="dialog-body"><div class="dev-controls">
 <section class="reading-card"><h3 class="section-title"><span class="ui-icon" data-icon="flask" aria-hidden="true"></span><span>Development Profile</span></h3><p>Test progress is saved separately from normal progress. These settings are remembered in this browser.</p><p id="dev-status" role="status"></p><label class="setting-toggle"><input id="dev-switch" type="checkbox"><span><span class="ui-icon" data-icon="flask" aria-hidden="true"></span><span>Development mode</span></span></label></section>
-<section class="reading-card"><h3 class="section-title"><span class="ui-icon" data-icon="eye" aria-hidden="true"></span><span>Visibility</span></h3><div class="dev-option"><label class="setting-toggle"><input id="dev-show-hidden-content" type="checkbox"><span><span class="ui-icon" data-icon="eye" aria-hidden="true"></span><span>Show Hidden Tracks, Skills and Skins</span></span></label><small>Reveal hidden tracks, research and player skins in either profile. This does not unlock them.</small></div><div class="dev-option"><label class="setting-toggle"><input id="dev-show-purchased-costs" type="checkbox"><span><span class="ui-icon" data-icon="coin" aria-hidden="true"></span><span>Show Purchased Skill Costs</span></span></label><small>Show catalogue Points costs on owned skill nodes and cards in either profile.</small></div></section>
+<section class="reading-card"><h3 class="section-title"><span class="ui-icon" data-icon="eye" aria-hidden="true"></span><span>Visibility</span></h3><div class="dev-option"><label class="setting-toggle"><input id="dev-show-hidden-content" type="checkbox"><span><span class="ui-icon" data-icon="eye" aria-hidden="true"></span><span>Show Hidden Tracks, Skills and Skins</span></span></label><small>Reveal hidden tracks, research and player skins in either profile. This does not unlock them.</small></div><div class="dev-option"><label class="setting-toggle"><input id="dev-show-purchased-costs" type="checkbox"><span><span class="ui-icon" data-icon="coin" aria-hidden="true"></span><span>Show purchased items cost</span></span></label><small>Show catalogue Points costs for owned skills, skins, trails and impacts in either profile.</small></div></section>
 <section class="reading-card"><h3 class="section-title"><span class="ui-icon" data-icon="coin" aria-hidden="true"></span><span>Points</span></h3><small>Changes only the Development profile.</small><div class="dev-grant-row"><label for="dev-amount">Points to add<input id="dev-amount" type="number" min="1" max="1000000" step="1" value="100"></label>${button('dev-grant','Add Points','coin')}</div><div class="grant-presets" role="group" aria-label="Quick add Points">${[10,100,1000].map(n=>button('dev-add-'+n,'+'+n,'coin')).join('')}</div></section>
 <section class="reading-card"><h3 class="section-title"><span class="ui-icon" data-icon="skill-tree" aria-hidden="true"></span><span>Test Progress</span></h3><small>Changes only the Development profile.</small>${button('dev-seed','Copy normal progress into test profile','copy')}<div class="dev-option">${button('dev-max-progress','Maximize level progress','grid')}<small>Open every level and campaign skin, and set Points to at least 10,000. Research is unchanged.</small></div><div class="dev-option">${button('dev-max','Max out skill tree','skill-tree')}<small>Unlock all 25 powers, their upgrades and all player upgrades. Level progress is unchanged.</small></div></section>
 <section class="reading-card"><h3 class="section-title"><span class="ui-icon" data-icon="reset" aria-hidden="true"></span><span>Reset Test Progress</span></h3><p>Clear test levels, research, Points, songs and the active test run. Normal progress stays unchanged.</p>${button('dev-reset','Reset all test progress','reset')}<section id="dev-reset-confirmation" class="tree-confirm" hidden aria-label="Confirm reset"><strong>Reset all Development progress?</strong><p>Test levels, research, Points, saved songs and the active test run will be reset. Normal progress stays unchanged.</p>${button('dev-reset-cancel','Keep test progress','arrow-left')}${button('dev-reset-confirm','Reset Development profile','reset')}</section></section>
@@ -109,7 +109,7 @@ export function progressionMount(host){
   }
   const players=playerUpgradeMount({showHiddenContent:()=>developmentSettings.showHiddenContent,powers:()=>tree.open(),showPurchasedCosts:()=>developmentSettings.showPurchasedCosts,get:()=>suspended?.state||state,act:treeAct,screen:()=>host.screen?.('player-upgrades'),back:()=>host.back?.()});
   tree=treeMount({players:()=>players.open(),get:()=>suspended?.state||state,showHiddenContent:()=>developmentSettings.showHiddenContent,showPurchasedCosts:()=>developmentSettings.showPurchasedCosts,act:treeAct,open,screen:()=>host.screen?.('tree'),back:()=>host.back?.()});
-  const skins=skinMount({gentle:host.gentle,get:()=>suspended?.state||state,showHiddenContent:()=>developmentSettings.showHiddenContent,act:treeAct,screen:()=>host.screen?.('skins'),back:()=>host.back?.()});
+  const skins=skinMount({showPurchasedCosts:()=>developmentSettings.showPurchasedCosts,gentle:host.gentle,get:()=>suspended?.state||state,showHiddenContent:()=>developmentSettings.showHiddenContent,act:treeAct,screen:()=>host.screen?.('skins'),back:()=>host.back?.()});
   const listen=(record,seconds=0)=>{clearTimeout(listenTimer);host.save();context='listening';listening={campaign:seconds>0,track:record.track};close();back.hidden=false;back.lastElementChild.textContent=seconds?'Stop preview':'Leave listening';const listeningGame=gameCreate(record.seed,'free');listeningGame.blooms=record.music.blooms;listeningGame.launches=record.music.plucks;host.play(listeningGame,record.music);host.message('Listening to '+trackGet(record.track).name+'. Leave listening to return to your saved run.');if(seconds)listenTimer=setTimeout(()=>{if(context==='listening'&&host.currentScreen?.()==='play'){leave();campaign.open('play',record.track);}},seconds*1000);};
   campaign=campaignMount({showHiddenContent:()=>developmentSettings.showHiddenContent,screen:()=>host.screen?.('levels'),songsMount:host.songsMount,songsClose:host.songsClose,songsRefresh:host.songsRefresh,back:()=>host.back?.(),get:()=>({...state,shared:!!shared}),act,open,listen,
     code(){const build=progressionLoadout(state);if(!build.ok)return {ok:false,reason:'Your power pool could not be read.'};try{return {ok:true,code:challengeEncode({version:2,rules:18,track:state.track,seed:state.seed,relaxed:state.relaxed,build:build.powers,routes:[0,0,0,0,0]})};}catch{return {ok:false,reason:'This build cannot be shared.'};}},
@@ -141,7 +141,7 @@ export function progressionMount(host){
   };
   $('dev-show-purchased-costs').onchange=()=>{
     const saved=developmentSettingsWrite(localStorage,{...developmentSettings,showPurchasedCosts:$('dev-show-purchased-costs').checked});
-    if(saved.ok){developmentSettings=saved.settings;tree.refresh();devRender();}
+    if(saved.ok){developmentSettings=saved.settings;tree.refresh();players.refresh();skins.refresh();devRender();}
     else {$('dev-show-purchased-costs').checked=developmentSettings.showPurchasedCosts;$('dev-status').textContent=saved.reason;}
   };
   $('dev-amount').oninput=()=>{
@@ -173,6 +173,7 @@ export function progressionMount(host){
     get points(){return (suspended?.state||state).profile.wallet.seeds;},
     get trialKind(){return (suspended||{kind}).kind;},
     get trialGeneration(){return (suspended?.state||state).profile.playGeneration??0;},
+    get showPurchasedCosts(){return developmentSettings.showPurchasedCosts;},
     get statsProfile(){return {state:suspended?.state||state,available:loaded.available,kind:(suspended||{kind}).kind};},
     trialReward:earning=>settleEarning(earning,false),
     profileIndicator(){profileBar.set(kind,!!shared);},

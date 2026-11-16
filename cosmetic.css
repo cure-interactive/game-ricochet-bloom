@@ -1,11 +1,20 @@
 .cosmetic-rarity,.cosmetic-wallet{display:inline-flex;align-items:center;gap:6px;font-size:14px}
 .cosmetic-rarity img{width:17px;height:17px}.cosmetic-wallet .ui-icon{width:16px;height:16px}
-.cosmetic-thumbnail{display:block;width:100%;height:64px;min-height:0;max-height:none;background:transparent;pointer-events:none}
+.cosmetic-thumbnail{display:block;width:100%;height:192px;min-height:0;max-height:none;background:transparent;pointer-events:none}
+#cosmetic-dialog .skin-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,168px),1fr))}
 .cosmetic-heading-preview{display:block;flex:none;width:44px;height:36px;min-height:0;max-height:none;background:transparent;pointer-events:none}
-.cosmetic-preview-large{flex:1;width:100%;min-height:220px;display:grid;place-items:center}
-.cosmetic-preview-large canvas{display:block;width:100%;height:clamp(220px,35dvh,320px);min-height:0;max-height:none;background:transparent;pointer-events:none}
+.ui-icon[data-icon="bounce-effects"],.player-effect-thumbnail[data-kind="bounce"],.cosmetic-heading-preview[data-kind="bounce"]{zoom:2}
+#cosmetic-dialog .skin-detail{display:grid;grid-template-rows:minmax(260px,1fr) auto;align-items:stretch;max-width:none;margin:0;padding:0;gap:20px}
+#cosmetic-dialog .skin-selection{max-width:440px;justify-self:center}
+.cosmetic-preview-large{position:relative;width:100%;min-width:0;min-height:260px;overflow:hidden;border:1px solid #304855;border-radius:18px;background:radial-gradient(ellipse at 50% 45%,#122238,#080f1d 80%);box-shadow:inset 0 2px 14px #0004}
+.cosmetic-preview-large canvas{position:absolute;inset:0;display:block;width:100%;height:100%;min-height:0;max-height:none;background:transparent;pointer-events:none}
 .skin-choice .cosmetic-rarity{font-size:12px}.skin-selection .cosmetic-wallet{justify-content:center;width:100%;font-size:13px}.skin-selection .cosmetic-rarity{display:flex}
 .about-build{font-size:12px;color:#9eb8c5;margin-top:4px!important}
 .cosmetic-sound-button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:44px;margin-top:12px}
 .cosmetic-sound-hint{display:block;min-height:2.8em;margin-top:8px;font-size:12px;line-height:1.4;color:#aac8cc}
-@media(max-height:500px) and (min-width:500px){.cosmetic-preview-large{flex:none;width:42%;min-height:220px}.cosmetic-preview-large canvas{height:220px}}
+@media(min-width:800px),(max-height:500px) and (min-width:600px){#cosmetic-dialog .skin-detail{grid-template-columns:minmax(0,1fr) minmax(240px,360px);grid-template-rows:minmax(260px,1fr)}#cosmetic-dialog .skin-selection{align-self:center}}
+
+.cosmetic-price{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:#aac8cc}
+.cosmetic-price .ui-icon{width:14px;height:14px;flex:none}
+.cosmetic-price-slot:empty{display:none}
+.skin-selection>.cosmetic-price{display:flex;margin:0 0 12px}

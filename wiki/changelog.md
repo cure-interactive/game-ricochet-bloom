@@ -6,6 +6,25 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.28.3
+
+Build: 2026-11-16 00:20:17 UTC
+
+### Player Changes
+
+- Make the animated artwork in Trails and Impacts cards three times larger, with responsive card spacing for complete effects.
+- Make the general Impacts icon twice as large in buttons, title bars and Wiki links.
+- Give Trail and Impact detail previews a larger dark play area that fills available space, with information beside it on wide screens and below on phones.
+- Rename the Development view option to Show purchased items cost and include owned skins, trails and impacts alongside both skill trees.
+
+<!-- development -->
+### Developer Notes
+
+- Give gallery thumbnails a 192px stage at a fixed vertical world scale and wider responsive columns. Scale general Impact icons with layout-aware spacing; preserve Trail title icon size.
+- Remove the cosmetic detail width and canvas-height caps; use a responsive arena/information layout with the shared renderer following actual dimensions.
+- Reuse the persisted purchased-cost preference across cosmetic galleries and details through one price renderer; preserve ownership, receipts and campaign reward presentation.
+<!-- /development -->
+
 ## v3.28.2
 
 Build: 2026-11-15 23:35:29 UTC

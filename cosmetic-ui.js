@@ -1,8 +1,9 @@
+import {cosmeticPriceHTML} from './cosmetic-price.js?v=eb7d71fa1088128a0e3e9cab957b32dc65243872b4dad7326b8c47dcb9f87a7f';
 import {COSMETICS,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=97b306ab42d46dc2f32ef73e7417114b7e4c554d3db716a4334c31895c9d8d32';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=5bcce0eb71dcfa0a2670076c0c6fcf7ffc879a26eb35852f918016696d8de3d3';
-import {screenHeader} from './screen-header.js?v=787a0f26e9ce958dd7fc39d6f8a8060e54493bdd6e428a4b02dc4cbf3e02b5f6';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=67494bc447e88045ecfb056d422d1fe9d650a74f0aeff78377a52630b16c73fb';
-import {rarityIconHTML} from './skill-icon.js?v=de0c4c023e1c7afad3dacbf7330c997ee32f98a7d56f8426bfd4fdc9d9ff8447';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=ef44992b33f6bb0df473aa3f210064ff51da16c16abafa758f7446d7247d986e';
+import {screenHeader} from './screen-header.js?v=a02e1ebe93884ea0c07d9f50db4c6ab18e894db9e76e3d49cef38ae629ecf5f0';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=23254d5124a1e10208687f81fc9971554edfeeb2b34e4c17b4d273dc2d5cad13';
+import {rarityIconHTML} from './skill-icon.js?v=1c2f5eee791faf64e03b823e4023429c1f648d6d0da38a719a8b6ce8ec0f8e4a';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 export function cosmeticMount(host){
@@ -15,13 +16,14 @@ export function cosmeticMount(host){
  const title=()=>kind==='trail'?'Trails':'Impacts';
  const stop=()=>{audition++;host.stopSound?.();};
  function render(){
+  heading.dataset.kind=kind;
   const profile=host.profile(),loadout=cosmeticLoadout(profile),item=selected?cosmeticGet(selected):null;
   dialog.querySelector('.skin-library').hidden=!!item;dialog.querySelector('.skin-detail').hidden=!item;scroll.classList.toggle('is-detail',!!item);
   dialog.querySelector('#cosmetic-title').textContent=item?.name||title();back.setAttribute('aria-label',item?'Back to '+title():'Back');
   dialog.querySelector('.skin-intro').textContent=`Choose ${kind==='trail'?'a trail':'an impact'} from Common to Mythic. Open a style to see it in motion before unlocking it with Points.`;
   if(renderedKind!==kind){
    for(const control of thumbnails)control.destroy();thumbnails.length=0;headingPreview?.destroy();renderedKind=kind;
-   dialog.querySelector('.skin-grid').innerHTML=COSMETICS.filter(x=>x.kind===kind).map(x=>`<button type="button" class="skin-choice" data-cosmetic="${x.id}"><canvas class="cosmetic-thumbnail" aria-hidden="true"></canvas><strong>${escapeHTML(x.name)}</strong><span class="cosmetic-rarity">${rarityIconHTML(x.rarity)}${RARITIES[x.rarity].name}</span><span class="skin-choice-state"></span></button>`).join('');
+   dialog.querySelector('.skin-grid').innerHTML=COSMETICS.filter(x=>x.kind===kind).map(x=>`<button type="button" class="skin-choice" data-cosmetic="${x.id}"><canvas class="cosmetic-thumbnail" aria-hidden="true"></canvas><strong>${escapeHTML(x.name)}</strong><span class="cosmetic-rarity">${rarityIconHTML(x.rarity)}${RARITIES[x.rarity].name}</span><span class="skin-choice-state"></span><span class="cosmetic-price-slot"></span></button>`).join('');
    for(const canvas of dialog.querySelectorAll('.cosmetic-thumbnail'))thumbnails.push(cosmeticThumbnailMount(canvas,cosmeticGet(canvas.closest('[data-cosmetic]').dataset.cosmetic),{color:host.color,style:host.style}));
    headingPreview=cosmeticThumbnailMount(heading,()=>cosmeticGet(selected||cosmeticLoadout(host.profile())[kind]),{color:host.color,style:host.style,compact:true});
   }
@@ -29,12 +31,13 @@ export function cosmeticMount(host){
    const x=cosmeticGet(button.dataset.cosmetic),owned=cosmeticOwned(profile,x),equipped=loadout[kind]===x.id;
    button.classList.toggle('is-equipped',equipped);button.classList.toggle('is-locked',!owned);
    button.setAttribute('aria-label',`View ${x.name}, ${equipped?'Equipped':owned?'Unlocked':'Locked'}`);
+   button.querySelector('.cosmetic-price-slot').innerHTML=cosmeticPriceHTML(x,owned,host.showPurchasedCosts?.());
    button.querySelector('.skin-choice-state').innerHTML=iconHTML(equipped?'check':owned?'lock-open':'lock')+(equipped?'Equipped':owned?'Unlocked':x.cost+' Points');
   }
   if(!item)return;
   const owned=cosmeticOwned(profile,item),equipped=loadout[kind]===selected,points=profile.wallet.seeds;
   detail.classList.toggle('is-equipped',equipped);detail.style.setProperty('--skin-color',item.color);
-  detail.innerHTML=`<div class="skin-selection-title">${iconHTML(equipped?'check':owned?'lock-open':'lock')}<div><small class="cosmetic-rarity">${rarityIconHTML(item.rarity)}${RARITIES[item.rarity].name} · ${kind==='trail'?'Trail':'Impact'}</small><h3>${escapeHTML(item.name)}</h3></div></div><p class="skin-unlock">${escapeHTML(item.description)}</p><button type="button" data-cosmetic-equip ${equipped||!owned&&points<item.cost?'disabled':''} class="skin-equip ${equipped?'is-equipped':''}">${iconHTML(equipped?'check':owned?(kind==='trail'?'trails':'bounce-effects'):'lock')}<span>${equipped?'Equipped':owned?'Equip '+(kind==='trail'?'Trail':'Impact'):'Unlock &amp; Equip · '+item.cost+' Points'}</span></button>${!owned?`<p class="cosmetic-wallet">${iconHTML('coin')}${points} Points${points<item.cost?' · '+(item.cost-points)+' more needed':''}</p>`:''}`;
+  detail.innerHTML=`<div class="skin-selection-title">${iconHTML(equipped?'check':owned?'lock-open':'lock')}<div><small class="cosmetic-rarity">${rarityIconHTML(item.rarity)}${RARITIES[item.rarity].name} · ${kind==='trail'?'Trail':'Impact'}</small><h3>${escapeHTML(item.name)}</h3></div></div><p class="skin-unlock">${escapeHTML(item.description)}</p>${cosmeticPriceHTML(item,owned,host.showPurchasedCosts?.())}<button type="button" data-cosmetic-equip ${equipped||!owned&&points<item.cost?'disabled':''} class="skin-equip ${equipped?'is-equipped':''}">${iconHTML(equipped?'check':owned?(kind==='trail'?'trails':'bounce-effects'):'lock')}<span>${equipped?'Equipped':owned?'Equip '+(kind==='trail'?'Trail':'Impact'):'Unlock &amp; Equip · '+item.cost+' Points'}</span></button>${!owned?`<p class="cosmetic-wallet">${iconHTML('coin')}${points} Points${points<item.cost?' · '+(item.cost-points)+' more needed':''}</p>`:''}`;
   if(cosmeticHasSound(item))detail.insertAdjacentHTML('beforeend',`<button type="button" class="quiet cosmetic-sound-button" data-cosmetic-sound>${iconHTML('play')}<span>Preview Sound</span></button><small class="cosmetic-sound-hint" role="status">${item.kind==='trail'&&item.rarity==='mythic'?'Launch and travel · fades during the final second.':'Launch or impact accent.'} Follows master volume and mute.</small>`);
   preview ||=cosmeticPreviewMount(large,{loadout:()=>({...cosmeticLoadout(host.profile()),...(selected?{[kind]:selected}:{})}),color:host.color,style:host.style});
  }
