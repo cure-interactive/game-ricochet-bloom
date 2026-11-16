@@ -140,3 +140,9 @@ body[data-development=true]:not([data-screen=drift]):not([data-screen=drift-paus
 .hud-help-chain { display: flex; gap: 10px; margin: 18px 0; }
 .hud-help-chain i { width: 20px; height: 20px; border-radius: 50%; background: #718b9f33; border: 1px solid #aac6ca66; }
 .hud-help-chain i.active { background: var(--mint); box-shadow: 0 0 12px #9ff5df55; }
+
+.hud .points-value { display:flex; align-items:center; justify-content:center; gap:4px; }
+.hud .points-value .ui-icon { width:14px; height:14px; }
+#note-meter { position:relative; }
+#note-meter[data-count]:not([data-count=""]) i { visibility:hidden; }
+#note-meter[data-count]:not([data-count=""])::after { content:attr(data-count); position:absolute; inset:0; display:grid; place-items:center; color:var(--mint); font-size:16px; font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:0; }

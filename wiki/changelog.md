@@ -6,6 +6,25 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.29.1
+
+Build: 2026-11-16 02:24:55 UTC
+
+### Player Changes
+
+- Give the pause status card the same artwork and clear text hierarchy as Continue.
+- Prefix the HUD Points balance with its coin and show exact chains beyond five without growing the HUD.
+- Use a solid challenge flag with a checkmark cutout for clearer small icons.
+- Restore Development Points and Test Progress controls while an unfinished pool is saved. Keep the current pool build and Normal profile unchanged.
+
+<!-- development -->
+### Developer Notes
+
+- Share menu-summary presentation; retain a fixed five-contact meter footprint when displaying larger totals.
+- Replace blanket active-pool restrictions with profile/shared/save guards. Preserve buildBeforeResearch for max research and leave the old session before copying a readable Normal save.
+- Add a persistence regression covering grants, level and research unlocks during a pool, next-pool adoption and Normal isolation.
+<!-- /development -->
+
 ## v3.29.0
 
 Build: 2026-11-16 02:00:15 UTC

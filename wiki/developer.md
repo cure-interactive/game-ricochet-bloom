@@ -33,7 +33,7 @@ The v3.17.0 reference samples produce about 1.76–2.14 average purchases per fi
 
 ## Development Tools
 
-Development mode uses an isolated profile. Currency grants and maximum-research controls are test tools; they are not normal earnings. Copy Diagnostics is available in Settings → Get Help → Technical Diagnostics and startup recovery. Export a backup before replacing progress. Keep confidential credentials and private information out of this area: the in-game visibility switch is not authentication for files on the public static host.
+Development mode uses an isolated profile. Currency grants and maximum-research controls are test tools; they are not normal earnings. Copy Report in Settings → Get Help includes diagnostics and progress; startup recovery also offers diagnostics when the game cannot load. Points grants, maximum research and maximum level progress work with an unfinished test pool. Its current build stays fixed until the next pool. Copy Normal Progress replaces the test profile and exits its previous session; it refuses an unreadable Normal save. Shared challenges and unresolved save failures must be left or resolved before using these tools. Export a backup before replacing progress. Keep confidential credentials and private information out of this area: the in-game visibility switch is not authentication for files on the public static host.
 
 ## Release Notes
 

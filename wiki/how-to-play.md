@@ -55,11 +55,11 @@ Shots collect melodic ideas; 5-Chains add harmony and musical layers. Bubble mar
 
 Three different bubbles establish a recurring melody. Later notes develop the music over time rather than replacing it after every collision. A short answering phrase plays after a shot, and the arrangement continues between shots. New musical layers join on the beat.
 
-Melody Journey shows its music panel during play. In other modes, activate the Development profile and press its bottom bar to expand the music panel. Use the panel to change the instrument palette. Use Settings to balance the ambience against contact sounds.
+In any mode, activate the Development profile and press its bottom bar to expand the music panel. Use the panel to change the instrument palette. Use Settings to balance the ambience against contact sounds.
 
 ## Controls
 
-The compact HUD keeps score, spendable Points, shots, power slots, chain dots and the bonus reward below the pool. Tap any HUD item for an information card. Score and Points explain their different roles; shots explain the budget; chain dots show 5-Chain progress. The medal lists every condition, power slots explain the current powers, and the checkmarked challenge flag opens the bonus objective with progress and its Points reward. Tap outside a card, press Escape or use Close to dismiss it. Pause floats in the pool corner and follows Left-Handed Layout.
+The compact HUD keeps score, spendable Points, shots, power slots, chain dots and the bonus reward below the pool. Tap any HUD item for an information card. Score and Points explain their different roles; shots explain the budget; chain dots show progress up to five contacts, then the exact count replaces them in the same space. The Points value carries its coin icon. The medal lists every condition, power slots explain the current powers, and the checkmarked challenge flag opens the bonus objective with progress and its Points reward. Tap outside a card, press Escape or use Close to dismiss it. Pause floats in the pool corner and follows Left-Handed Layout.
 
 - Touch or mouse: drag and release in the pool.
 - Keyboard: left/right arrows aim, up/down arrows change shot strength, Space launches, and P pauses.
@@ -80,3 +80,5 @@ Ricochet Bloom gameplay, campaign, progression and audio source in this release.
 #### Codex on behalf of `leviscustempris`
 
 Authored and checked against the game implementation.
+
+The pause card uses the same artwork-and-text layout as Continue: mode name, track and pool, then the remaining objective. Resume keeps the current pool.
