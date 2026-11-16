@@ -1,4 +1,4 @@
-import {gamemodeNavigation} from './gamemode-navigation.js?v=5c389c55d3ee5bb17a3162bd08a20c9f4a1933b7170a64f6011c5b4f9a9807fd';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=f6f662054fb256eb7e17136f5e5e06ed704682da58940332cd0d58b0811c1a57';
 import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=cd1efc7fa33273d53d46cd1e4fe5b154e594d1209be37d62c18adf92f52b3987';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { experimentRead, experimentFavourite } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';

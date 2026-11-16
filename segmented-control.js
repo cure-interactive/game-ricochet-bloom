@@ -6,7 +6,7 @@ export function segmentedHTML(buttons,{label,current,className=''}){
 export function segmentedMount(root,{attribute,change}){
  const doc=root.ownerDocument,win=doc.defaultView,selector=`[${attribute}]`;
  const overlays=new WeakMap();
- let drag=null,suppressClick=false,frame=0,followNav=null;
+ let drag=null,suppressClick=false,frame=0,followNav=null,edgeFrame=0,edgeTime=0,edgeSpeed=0;
  const buttons=nav=>[...nav.querySelectorAll(selector)];
  const value=button=>button.getAttribute(attribute);
  function reveal(nav,button){
@@ -53,24 +53,44 @@ export function segmentedMount(root,{attribute,change}){
   pill.animate?.([{translate:`${dx}px 0`,scale:`${old.width/Math.max(1,end.width)} 1`},{offset:.65,translate:`${dx*.03}px 0`,scale:'.96 1'},{translate:'0 0',scale:'1 1'}],{duration:420,easing:'ease-out'});follow(nav);
  }
  root.addEventListener('click',e=>{const button=e.target.closest(selector),nav=button?.closest('.segmented-control');if(!nav)return;if(suppressClick){suppressClick=false;e.preventDefault();e.stopPropagation();return;}select(nav,value(button),nav.querySelector('.segment-selection').getBoundingClientRect());});
+ function stopEdge(){win.cancelAnimationFrame(edgeFrame);edgeFrame=0;edgeTime=0;edgeSpeed=0;}
+ function paintDrag(d){
+  const rects=buttons(d.nav).map(b=>b.getBoundingClientRect()),width=d.pill.getBoundingClientRect().width;
+  let min=Math.min(...rects.map(r=>r.left)),max=Math.max(...rects.map(r=>r.right))-width;
+  if(d.nav.classList?.contains('segment-scrollable')){const r=d.nav.parentElement.getBoundingClientRect();min=Math.max(min,r.left+4);max=Math.min(max,r.right-width-4);}
+  const base=parseFloat(d.pill.style.left)+d.nav.getBoundingClientRect().left+d.nav.clientLeft;
+  d.pill.style.translate=`${Math.max(min,Math.min(max,d.start+d.pointerX-d.x))-base}px 0`;contrast(d.nav);
+ }
+ function edgeFollow(time){
+  edgeFrame=0;const d=drag;if(!d?.moved||d.pan||!d.nav.classList?.contains('segment-scrollable'))return stopEdge();
+  const bar=d.nav.parentElement,r=bar.getBoundingClientRect(),max=Math.max(0,bar.scrollWidth-bar.clientWidth),zone=Math.min(64,bar.clientWidth*.2);
+  const side=d.pointerX<r.left+zone?-1:d.pointerX>r.right-zone?1:0;
+  if(!side||!max)return stopEdge();
+  const depth=Math.min(1,Math.max(0,side<0?(r.left+zone-d.pointerX)/zone:(d.pointerX-r.right+zone)/zone));
+  const dt=edgeTime?Math.min(32,Math.max(0,time-edgeTime)):16;edgeTime=time;
+  if(Math.sign(edgeSpeed)!==side)edgeSpeed=0;
+  edgeSpeed+=(side*.55*depth*depth-edgeSpeed)*(1-Math.exp(-dt/70));
+  const before=bar.scrollLeft,next=Math.max(0,Math.min(max,before+edgeSpeed*dt));
+  if(Math.abs(next-before)<.001)return stopEdge();
+  bar.scrollLeft=next;paintDrag(d);edgeFrame=win.requestAnimationFrame(edgeFollow);
+ }
+ function followEdge(){if(!edgeFrame)edgeFrame=win.requestAnimationFrame(edgeFollow);}
  function begin(e,point,id,touch=false){
-  const nav=e.target.closest('.segmented-control');if(!nav||!buttons(nav).length)return;suppressClick=false;
+  const nav=e.target.closest('.segmented-control');if(!nav||!buttons(nav).length)return;stopEdge();suppressClick=false;
   const pill=nav.querySelector('.segment-selection'),rect=pill.getBoundingClientRect(),bar=nav.parentElement;
   const pan=nav.classList?.contains('segment-scrollable')&&bar.scrollWidth>bar.clientWidth+1&&(point.clientX<rect.left||point.clientX>rect.right);
   // Swipe unselected tabs to scroll natively; the selected pill remains draggable.
   if(pan&&touch){drag=null;return;}
-  drag={id,touch,x:point.clientX,y:point.clientY,nav,pill,moved:false,start:rect.left,pan,scroll:bar?.scrollLeft};
+  drag={id,touch,x:point.clientX,y:point.clientY,pointerX:point.clientX,nav,pill,moved:false,start:rect.left,pan,scroll:bar?.scrollLeft};
  }
  function move(e,point,id){
   if(drag?.id!==id)return;const dx=point.clientX-drag.x,dy=point.clientY-drag.y;
-  if(!drag.moved&&Math.abs(dy)>Math.abs(dx)+6){drag=null;return;}if(!drag.moved&&Math.abs(dx)<6)return;
+  if(!drag.moved&&Math.abs(dy)>Math.abs(dx)+6){stopEdge();drag=null;return;}if(!drag.moved&&Math.abs(dx)<6)return;
   if(!drag.moved){drag.moved=true;if(!drag.touch)drag.nav.setPointerCapture(id);for(const a of drag.pill.getAnimations())a.cancel();position(drag.nav);}
   if(drag.pan){e.preventDefault();drag.nav.parentElement.scrollLeft=drag.scroll-dx;return;}
-  e.preventDefault();e.stopPropagation();const rects=buttons(drag.nav).map(b=>b.getBoundingClientRect()),min=Math.min(...rects.map(r=>r.left)),max=Math.max(...rects.map(r=>r.right))-drag.pill.getBoundingClientRect().width;
-  const base=parseFloat(drag.pill.style.left)+drag.nav.getBoundingClientRect().left+drag.nav.clientLeft;
-  drag.pill.style.translate=`${Math.max(min,Math.min(max,drag.start+dx))-base}px 0`;contrast(drag.nav);
+  e.preventDefault();e.stopPropagation();drag.pointerX=point.clientX;paintDrag(drag);followEdge();
  }
- function finish(e,id,commit){if(drag?.id!==id)return;const d=drag;drag=null;if(!d.moved)return;
+ function finish(e,id,commit){if(drag?.id!==id)return;const d=drag;stopEdge();drag=null;if(!d.moved)return;
   if(d.pan){suppressClick=true;if(d.nav.hasPointerCapture(id))d.nav.releasePointerCapture(id);return;}
   const old=d.pill.getBoundingClientRect(),center=old.left+old.width/2;
   const next=commit?value(buttons(d.nav).sort((a,b)=>{const ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();return Math.abs(ar.left+ar.width/2-center)-Math.abs(br.left+br.width/2-center);})[0]):d.nav.dataset.current;
@@ -86,7 +106,9 @@ export function segmentedMount(root,{attribute,change}){
  for(const name of ['touchend','touchcancel'])root.addEventListener(name,e=>{if(!drag?.touch)return;const p=[...e.changedTouches].find(p=>p.identifier===drag.id);if(p)finish(e,p.identifier,name==='touchend');},{passive:false});
  const refresh=()=>{for(const nav of root.querySelectorAll('.segmented-control')){reveal(nav,buttons(nav).find(button=>value(button)===nav.dataset.current));position(nav);contrast(nav);}};
  root.addEventListener('focusin',e=>{const button=e.target.closest(selector),nav=button?.closest('.segmented-control');if(nav)reveal(nav,button);});
- root.addEventListener('close',()=>{if(!followNav||root.contains(followNav))win.cancelAnimationFrame(frame);if(drag){drag.pill.style.translate='';drag=null;}});
+ const cancelDrag=()=>{stopEdge();if(drag){drag.pill.style.translate='';drag=null;refresh();}};
+ doc.addEventListener?.('visibilitychange',()=>{if(doc.hidden)cancelDrag();});win.addEventListener('blur',cancelDrag);
+ root.addEventListener('close',()=>{stopEdge();if(!followNav||root.contains(followNav))win.cancelAnimationFrame(frame);if(drag){drag.pill.style.translate='';drag=null;}});
  new win.MutationObserver(refresh).observe(root,{attributes:true,attributeFilter:['open']});
  new win.MutationObserver(refresh).observe(doc.body,{attributes:true,attributeFilter:['data-left-handed']});
  win.addEventListener('resize',refresh);return {refresh};

@@ -1,5 +1,5 @@
 import {profileName} from './profile.js?v=77a1f73de2dacc19c8256f48f0f24a7b11703d553aac6e8b8f90066c5a175e7b';
-import {skinOptions} from './skin-ui.js?v=0b4cab44cc5824cfe9a6bffb4745d9c75510cb9f52f838b127d9a2b9310cbe93';
+import {skinOptions} from './skin-ui.js?v=a8a0ec5f584d77845083a0166e7d692b0041c242655f41115025a044ee8cf705';
 import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=589afccbde94ea3151bcf119a929aca8430cd8adfc584bf88b1add584a8621a2';
 import { screenHeader } from './screen-header.js?v=abdd601bfd00682c8e2df56bb78bf52f54d173e7c455d7ae92bba16d48c17860';
 import { buttonHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';

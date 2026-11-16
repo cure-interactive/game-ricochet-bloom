@@ -6,6 +6,22 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.33.1
+
+Build: 2026-11-16 14:55:23 UTC
+
+### Player Changes
+
+- Keep dragging the selected rarity tab near either edge to gently reveal more choices. Moving back toward the middle or releasing stops the scroll.
+- Favorites stays immediately after All. Favorites and All retain rarity and catalogue order; you can still swipe unselected tabs to scroll directly.
+
+<!-- development -->
+### Developer Notes
+
+- Shared segmented controls use bounded, frame-driven edge following only during a selected-pill drag. The pill stays within the visible bar as content scrolls beneath its grab point.
+- Added mouse/touch and both-direction checks for easing, center stop, endpoints, selection, release and cancellation. Hidden pages and closed panels cancel pending follow frames.
+<!-- /development -->
+
 ## v3.33.0
 
 Build: 2026-11-16 14:47:43 UTC
