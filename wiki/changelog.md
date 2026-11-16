@@ -6,6 +6,26 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.33.0
+
+Build: 2026-11-16 14:47:43 UTC
+
+### Player Changes
+
+- Star cosmetic cards at the top-right and find them under Favorites, immediately after All in the sideways-scrolling rarity bar. Cards keep their usual rarity and catalogue order.
+- Gallery rarity icons now sit at the bottom-left of previews, without repeating the rarity name below each card.
+- Instrument previews change the current music's upcoming notes. Soundstages change its acoustic space, and Ambience plays underneath it. Each ten-second toggle restores your equipped choice afterward.
+- Balanced background atmosphere levels so Forest and Hearth remain audible alongside other styles.
+- Renamed the skill-tree root to Player and made covered menu backgrounds release held interaction immediately.
+
+<!-- development -->
+### Developer Notes
+
+- Captured the active menu/gameplay PoolSound for preview start, progress and cleanup. Music overrides preserve arrangement scheduling and profile state; standalone cosmetic SFX retain ducking.
+- Added optional validated per-profile cosmetic favorites, shared card controls, native horizontal filter panning and focused-tab reveal. Preserved legacy save shape when no favorites exist.
+- Normalized long ambience buffers with peak headroom while preserving smooth phrase envelopes and loop seams. Added audio, persistence and hidden-input regressions.
+<!-- /development -->
+
 ## v3.32.2
 
 Build: 2026-11-16 13:00:26 UTC

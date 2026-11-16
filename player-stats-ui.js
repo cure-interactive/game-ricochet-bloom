@@ -1,5 +1,5 @@
-import {segmentedHTML,segmentedMount} from './segmented-control.js?v=f00bd781036223fc2f7395a6946a17e7106fd0d6d55191f99b6325b4f7da4bc2';
-import { playerStats } from './player-stats.js?v=e8e8dbba61f7e48959259f872108b6d20e5380c3cb5cd255f6fd8cdcc1500e60';
+import {segmentedHTML,segmentedMount} from './segmented-control.js?v=88c19769f1d86e14dcfe4da12279c2906865eadc22b962f1bfb7b58535c11c59';
+import { playerStats } from './player-stats.js?v=319d4c92e83cb95ffc507c662b7c78a1b153e6f7e69d682604a8c7d4de42aebd';
 import { screenHeader } from './screen-header.js?v=abdd601bfd00682c8e2df56bb78bf52f54d173e7c455d7ae92bba16d48c17860';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
 import { medalIcon } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';

@@ -1,4 +1,4 @@
-import {audioEnvironment} from './audio-environment.js?v=c0ad3e93ff38a4a7ecb3c8a0fab2c3adc49f3f0b2d015fd87442b5f3dac6fd9a';
+import {audioEnvironment} from './audio-environment.js?v=0dc0b66a5b5a03a77e83bf958a1f5c59ed6c44467e284f45830b917578f8edad';
 import {musicCreate,musicFinish,musicNextBar,BAR_SECONDS} from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
 import {instrumentNote} from './instrument.js?v=a60e71fef74fdec8b7dd85332250a173932596a5d4a6680ea91c217b73baf01b';
 export const SONG_STORAGE='ricochet-bloom-songs-v1', SONG_LIMIT=24;

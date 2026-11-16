@@ -10,7 +10,7 @@ Your player name appears beneath the bubble. Tap or click it to edit in place (u
 
 ## Skins
 
-Open Player → Skins to inspect each look on a live, squishy bubble. Drag or tap the preview. All cosmetic galleries order cards from Common through Mythic, keeping catalogue order within each rarity. The bottom rarity bar stays visible while browsing; choose All or one rarity. Back from a card preserves the filter and gallery position.
+Open Player → Skins to inspect each look on a live, squishy bubble. Drag or tap the preview. All cosmetic galleries order cards from Common through Mythic, keeping catalogue order within each rarity. The bottom rarity bar stays visible while browsing; choose All, Favorites or one rarity. Swipe the filter bar sideways to reach more tabs, or drag its selected tab to change the filter. Star a card at its top-right corner to add it to Favorites; star it again to remove it. Favorites keep the same rarity and catalogue order, and All stays unchanged. Each card shows its rarity icon at the bottom-left of its preview. Favorites are saved separately for Normal and Development profiles. Back from a card preserves the filter and gallery position.
 
 Common through Mythic shop skins cost Points. Sea Glass is Common, Frost Crystal is Rare, Nebula is Epic, Solar and Cure Interactive are Legendary, and Spectrum is Mythic. The Cure skin uses the Cure Interactive emblem inside blue glass.
 
@@ -59,7 +59,7 @@ Open **Player → Music**. The tap/drag selector at the bottom of the content pa
 - **Soundstages** change the room around the music. Original keeps the familiar room; Small Room, Wooden Hall, Stone Chamber, Cathedral and Celestial Vault offer different echo lengths, warmth and spaciousness. Gameplay effects are not sent through this room.
 - **Ambience** adds a quiet background atmosphere. None is free; Soft Rain, Quiet Shore, Night Forest, Ember Hearth and Orbital Drift provide independent atmospheres.
 
-Open a card and toggle **Preview Sound** on or off. Music previews last up to ten seconds, with a simple bar showing playback progress. Instruments play a short musical sample; Ambience plays the atmosphere alone. These previews fade background music out just before playing and restore it afterward. Soundstage preview instead changes the acoustic space of the music already playing, then restores your equipped space when stopped or finished. Nothing is equipped or purchased by previewing. Changing category, leaving the preview, hiding the page or muting stops it; starting another preview ends the previous one. Previews follow Music Volume, Master Volume and Sound.
+Open a card and toggle **Preview Sound** on or off. Music previews last up to ten seconds, with a simple bar showing playback progress. Instruments change the voice of the music already playing as its next notes arrive. Soundstages change that music's acoustic space, and Ambience adds the selected atmosphere underneath it. Stopping or finishing a preview restores your equipped choice. Preview while music is playing to hear the difference. Nothing is equipped or purchased by previewing. Changing category, leaving the preview, hiding the page or muting stops it; starting another preview ends the previous one. Previews follow Music Volume, Master Volume and Sound.
 
 Night Forest, Ember Hearth and Orbital Drift use long, seamless atmospheres. Forest phrases and soft hearth details vary over time; Orbital Drift is a smooth, slowly breathing harmonic bed.
 

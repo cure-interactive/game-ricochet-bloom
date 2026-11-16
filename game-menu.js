@@ -1,9 +1,9 @@
 import {menuSummaryRender} from './menu-summary.js?v=ae45281d84da1bab2004670a7e08413c46eec38f2c344291b3c7b345710e5910';
 import {cosmeticLoadout} from './cosmetic.js?v=0b32f7936068fa17090bc0edec50d142f4f145642fd37ef3110a6b59b56a93de';
-import { menuLayoutMount } from './menu-title.js?v=09ae890e0cd7bc8fd194e32c0113c8cb51032680b28ed1721a149182b9e3d4ac';
+import { menuLayoutMount } from './menu-title.js?v=3509186f46a7aa50efcc620bdaec0bea1b3a345d3a4862bc44d3976939e9bc4c';
 import { pageHistory } from './page-history.js?v=6ad2ef8fd27ea449bb23b6db6c55a5a18db153cbedf1b339111b2218522f1ad7';
 import { buttonHTML } from './ui-icon.js?v=b24f7ce2c068f52a69b32f410f4eb83685b949c9f2d77286fc6e72083b51fedb';
-import { menuBackgroundMount } from './menu-background.js?v=ffc3c14b53d52f64d05530896a1af16c17a61287511e959bfac82e97f587dea9';
+import { menuBackgroundMount } from './menu-background.js?v=dd372cc731d2f011482db02f279b0bc0796c8a004119d8c6b21a776214bb8e48';
 
 import { driftMount } from './drift-ui.js?v=432e96f5f34281ca19da9e8cfbdbaf776171ffd4a8790f2aa3e58dd492889500';
 
@@ -55,5 +55,5 @@ export function gameMenuMount(host) {
     queueMicrotask(recoverDestination);
   },true);
   refresh();present('home');
-  return {refresh,home:homeOpen,back,show:present,drift(){close();casual=true;present('drift');},pause:pauseOpen,resume,play(){close();casual=false;route.reset('play');present('play');},get current(){return route.current;}};
+  return {refresh,home:homeOpen,back,show:present,get musicAudio(){return background.audio;},drift(){close();casual=true;present('drift');},pause:pauseOpen,resume,play(){close();casual=false;route.reset('play');present('play');},get current(){return route.current;}};
 }

@@ -2,7 +2,7 @@ import { PLAYER_UPGRADES, playerBuild } from './player-upgrade.js?v=205999fde590
 import { buildValidate } from './skill-effect.js?v=b00900f06233cdeb7ee756f7a77164fb4fce302e8b9f5fa270e5b96742ffcda8';
 import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=c1d42ecf5ab5eb7f0a369fdccd0d8696079d69ac29f9676f4f854e39de9671ac';
 import { POWER_TREES } from './power-tree.js?v=2a64a8c4a0ad6dc1f93d8385f13952b46869143cbf7dc606ecd40164a825481b';
-import { profileCosmetic, profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=0dcc7686ee3ddd9ec65963b12458c72cda8e548c8afa9c8fbfa0fdaadf08c781';
+import { profileCosmeticFavorite, profileCosmetic, profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=77a1f73de2dacc19c8256f48f0f24a7b11703d553aac6e8b8f90066c5a175e7b';
 import { gameCreate, saveValidate, RULE } from './engine.js?v=adc6d69546723ce9f5131bf144815dc0a4f6fc6682ee59318309f9f62ca6bed0';
 import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
 
@@ -116,7 +116,7 @@ export function progressionAct(input,action){
     const state=progressionCreate('development');state.profile.playGeneration=generation;
     return {ok:true,state,message:'Development progress reset. Normal progress is unchanged.'};
   }
-  if(s.phase==='run'&&!['abandon','pin','buy','buy-player','buy-cosmetic','equip-cosmetic','skin','grant','max','max-progress'].includes(action.type))return fail('Finish this pool before changing your build.');
+  if(s.phase==='run'&&!['abandon','pin','buy','buy-player','buy-cosmetic','equip-cosmetic','favorite-cosmetic','skin','grant','max','max-progress'].includes(action.type))return fail('Finish this pool before changing your build.');
   switch(action.type){
     case 'pin':if(action.id!==null&&!node)return fail('Choose a research target.');s.target=action.id;message=action.id?'Research goal pinned.':'Research goal cleared.';break;
     case 'discover':return discoveryUse(s,action.id,action.remove||[]);
@@ -154,6 +154,7 @@ export function progressionAct(input,action){
     case 'start':if(s.phase!=='shop')return fail('A run already exists.');s.attempt++;poolCreate(s);message=trackGet(s.track).name+' · Intro';break;
     case 'continue':if(s.phase!=='interlude')return fail('Clear this pool first.');{const music=s.run.music;s.pool++;poolCreate(s,music);message=POOL_NAMES[s.pool];}break;
     case 'abandon':if(!s.run)return fail('No active run.');reward(s,{type:'failure',poolIndex:s.pool+(s.phase==='interlude'?1:0),blooms:0,abandoned:true});s.retry=s.run.initial;finish(s);message='Run ended. Earned Points and research remain.';break;
+    case 'favorite-cosmetic':r=profileCosmeticFavorite(s.profile,action.id);if(!r.ok)return r;s.profile=r.profile;message='Favorite updated.';break;
     case 'buy-cosmetic':case 'equip-cosmetic':r=profileCosmetic(s.profile,action.id,action.type==='buy-cosmetic');if(!r.ok)return r;s.profile=r.profile;message='Cosmetic equipped.';break;
     case 'skin':if(action.skin!=='original'&&!completedTracks(s).includes(action.skin))return fail('Complete that track to unlock its skin.');s.skin=action.skin;if(s.profile.cosmetics)s.profile.cosmetics.skin='campaign';break;
     case 'grant':r=profileCurrencyGrant(s.profile,'seeds',action.amount,cat);if(!r.ok)return r;s.profile=r.profile;message=`Added ${action.amount} development Points.`;break;

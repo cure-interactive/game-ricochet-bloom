@@ -6,20 +6,20 @@ import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=dd4e4e6c9eb4689e
 
 export const WIKI_PAGES = Object.freeze({
   'cosmetic-rarity':{title:'Cosmetic Rarity',url:'./wiki/cosmetic-rarity.md?v=347ed0bb71c4b93e0c2c9e947ead96c5714dd752fb4a35658766abb5bbd30543'},
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=86a2b2bdec92243bfc8107eba971260e2bdfaed32c1a7ed32036698efe6c4bed' },
-  player: { title: 'Player', url: './wiki/player.md?v=538bff2f1fb161e0979b8ecec7beaaf421ceb792e8fbb884260707c409ad153f' },
-  developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=ff46b78e1c552a27e922a89ca1dd2536917fc7332c54335cbe4ec2f501a0383c' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=c6056758ebdf313a451b276e144b5bdec39e4d9e4e9c8e8c66546b678de47d2f' },
+  player: { title: 'Player', url: './wiki/player.md?v=d7508166f2f6ddcdda4e5241026bbb730f9bfd3a914123fd96679925f790e69d' },
+  developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=4b639aafb5fbc1c0d0d84a7772c75093aef41837959e3cc5727cc32a49974533' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=f43259f3d42301b05c30588b2e1335e8ec1ca9d0f2f1a3a7a2287bbd4e709eca' },
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=d6278e8639a6e191b88cb7e39346754f332346f490fa3678f44913799e749137' },
   experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=dce80e9365221d4fdfc91886aae8ea149d80c477e02b246bc914d4e64170368d' },
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=76d41fb0cd2c9a17bde4187f69e4b31570e5d49a5c33b4e2a32053553185f457' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=941b0fdf11b0e94d22e69c8e45dc214c953cc790f3ba805d876bf03443103c12' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=da57bb5ba5da405b105a700b16ab8a1cc1c52291723378e1c5385b35dcc06676' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=f46552bd57db4884b260d9220e23f8504abaee314d1d9fd1895ff864274ae476' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=c7d2965c7a1c36d0a7891df9b8ca49e03594d78e63c17a06e1c41cfecead07a9' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=be86390d575d6d8e329a81d9040943addbf25802020a51615a87d1a3b18c6d9d' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=3226c8202c5ec9c396c1c4abe0e5e00d931094617edf98ea6ff8945e8feff623' },
-  'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=df6c91994392e3fad08416b12bac9268cb9a81d60a3738f0e8a764ac1d70e11c' },
+  'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=878a330d1e22b6c26b9deea8ff2e2958bf4a624ee9fc62f97817125c958f832a' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=85f25a8d2896fbb481d837d5b7bb3995f7aa330e30fcb681bd61f3c366732e51' },
   settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=c6316e35fab7710828c46b42d69424b7c35cf9f27fe0481ce38e08b49bb74fe7' }
 });

@@ -14,6 +14,7 @@ const rejected = reason => ({ ok: false, reason });
 const accepted = (profile, extra = {}) => ({ ok: true, profile, ...extra });
 const advance = profile => { if (!integer(profile.revision + 1)) return false; profile.revision++; return true; };
 const nodeGet = (catalogue,id) => typeof id==='string' ? catalogueNode(catalogue,id) : null;
+const cosmeticFavoriteValid=id=>id==='original'||TRACKS.includes(id)||!!cosmeticGet(id);
 const playerNameValid = value => typeof value==='string' && value.length>=1 && value.length<=32 && value===value.trim() && !/[\u0000-\u001f\u007f]/.test(value);
 export const profileName = profile => profile?.name ?? 'Player';
 
@@ -115,6 +116,7 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
   if(input.playerResearch!==undefined&&!playerResearchValid(input.playerResearch))return null;
   if(input.playGeneration!==undefined&&!integer(input.playGeneration))return null;
   if(input.name!==undefined&&!playerNameValid(input.name))return null;
+  if(input.cosmeticFavorites!==undefined&&(!unique(input.cosmeticFavorites)||!input.cosmeticFavorites.every(cosmeticFavoriteValid)))return null;
   const cosmetics=cosmeticValidate(input.cosmetics);if(cosmetics===null)return null;
   const summary = rewardsInspect(input.rewards, catalogue);
   if (!summary||input.rewards.some(r=>r.event.type==='play'&&r.event.play.kind!==input.kind)) return null;
@@ -132,7 +134,7 @@ export function profileValidate(input, catalogue = CATALOGUE, expectedKind = nul
   const familyUnlocks=input.familyUnlocks===undefined?[...FAMILIES]:input.familyUnlocks;
   if(!unique(familyUnlocks)||familyUnlocks.some(f=>!FAMILIES.includes(f)))return null;
   return { version: PROFILE_VERSION, familyUnlocks:[...familyUnlocks], familyAccess:{...familyAccess}, kind: input.kind, revision: input.revision, wallet: { seeds: input.wallet.seeds },
-    research, ...(cosmetics===undefined?{}:{cosmetics}), ...(input.playGeneration===undefined?{}:{playGeneration:input.playGeneration}), ...(input.name===undefined?{}:{name:input.name}), ...(input.playerResearch===undefined?{}:{playerResearch:structuredClone(input.playerResearch)}), rewards: [...summary.receipts.values()] };
+    research, ...(input.cosmeticFavorites===undefined?{}:{cosmeticFavorites:[...input.cosmeticFavorites]}), ...(cosmetics===undefined?{}:{cosmetics}), ...(input.playGeneration===undefined?{}:{playGeneration:input.playGeneration}), ...(input.name===undefined?{}:{name:input.name}), ...(input.playerResearch===undefined?{}:{playerResearch:structuredClone(input.playerResearch)}), rewards: [...summary.receipts.values()] };
 }
 export function profileSummary(input, catalogue = CATALOGUE) {
   const profile = profileValidate(input, catalogue);
@@ -286,4 +288,14 @@ export function profileCosmetic(input,id,buy=false){
  if(!owned){profile.wallet.seeds-=item.cost;profile.cosmetics.owned[id]={paid:item.cost};}
  profile.cosmetics[item.kind]=id;
  return accepted(profile,{paid:owned?0:item.cost,purchased:!owned});
+}
+
+export function profileCosmeticFavorite(input,id){
+ const profile=profileValidate(input);
+ if(!profile)return rejected('Invalid saved profile.');
+ if(!cosmeticFavoriteValid(id))return rejected('This cosmetic is unavailable.');
+ if(!advance(profile))return rejected('Profile revision limit reached.');
+ const favorites=profile.cosmeticFavorites??[];
+ profile.cosmeticFavorites=favorites.includes(id)?favorites.filter(value=>value!==id):[...favorites,id];
+ return accepted(profile);
 }

@@ -1,5 +1,5 @@
 // Native scroll positions remain authoritative, including thumb drag and fling.
-export const SCROLL_SURFACES='dialog,.dialog-body,.tab-scroll,#main-menu,.overlay,.skin-scroll,.cosmetic-choice-scroll,.song-list,.tree-detail-body,.campaign-scroll,.track-strip,.reward-scroll,#upgrade-preview,.tree-legend,.skill-tooltip-body,.trial-scroll,.wiki-article,.wave-medal-summary,textarea';
+export const SCROLL_SURFACES='.tab-bar:has(>.segment-scrollable),dialog,.dialog-body,.tab-scroll,#main-menu,.overlay,.skin-scroll,.cosmetic-choice-scroll,.song-list,.tree-detail-body,.campaign-scroll,.track-strip,.reward-scroll,#upgrade-preview,.tree-legend,.skill-tooltip-body,.trial-scroll,.wiki-article,.wave-medal-summary,textarea';
 export function scrollbarGeometry(view,total,position,visible=view){
  const track=Math.max(0,visible-8),max=Math.max(0,total-view);
  if(!max||track<16)return null;

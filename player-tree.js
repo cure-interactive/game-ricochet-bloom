@@ -4,7 +4,7 @@ const branches={player:{name:'Player'},...Object.fromEntries(PLAYER_UPGRADES.map
 // Use the power tree's prerequisite layout and discoverable research frontier.
 export function playerTreeGraph(state,showAll=false){
  const profile=state.profile,owned=profile.playerResearch??{};
- const nodes=[{id:'player',name:'Your Player',power:'player',kind:'base',requires:null,icon:'player-skin',type:'Motion',rarity:'common',owned:true,cost:null,reason:null}];
+ const nodes=[{id:'player',name:'Player',power:'player',kind:'base',requires:null,icon:'player-skin',type:'Motion',rarity:'common',owned:true,cost:null,reason:null}];
  for(const n of PLAYER_UPGRADES){
   const has=Object.hasOwn(owned,n.id),reason=state.powerMode==='shared'?'Shared challenges use their fixed build.':playerUpgradeReason(profile,n.id);
   if(showAll||has||state.powerMode!=='shared'&&(!n.requires||Object.hasOwn(owned,n.requires)))

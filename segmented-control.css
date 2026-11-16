@@ -16,6 +16,9 @@
 .tab-bar[hidden]{display:none}
 :root body .tab-bar>.segmented-control{margin:0;width:100%}
 .rarity-filter>.tab-bar{border-top:0}
+.tab-bar:has(>.segment-scrollable){overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
+:root body .tab-bar>.segmented-control.segment-scrollable{min-width:calc(var(--segment-count)*76px + 14px);touch-action:pan-x}
+:root body dialog .segment-scrollable>button{touch-action:pan-x}
 
 :root body dialog>.tab-panel{--page-padding:0;--page-inline-padding:0;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .tab-scroll{flex:1;min-height:0;overflow:auto;padding:20px}

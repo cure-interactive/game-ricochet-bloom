@@ -37,8 +37,8 @@ export function audioEnvironment(context,output){
   bedStop();bedId=item.id;
   const source=context.createBufferSource(),gain=context.createGain(),buffer=ambienceBuffer(context,item.style);
   source.buffer=buffer;source.loop=true;source.connect(gain);gain.connect(output);
-  const now=context.currentTime;gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(.055,now+.6);
-  if(Number.isFinite(duration)){gain.gain.setValueAtTime(.055,now+Math.max(.6,duration-1));gain.gain.linearRampToValueAtTime(0,now+duration);}
+  const now=context.currentTime;gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(.1,now+.6);
+  if(Number.isFinite(duration)){gain.gain.setValueAtTime(.1,now+Math.max(.6,duration-1));gain.gain.linearRampToValueAtTime(0,now+duration);}
   const current={source,gain};bed=current;source.onended=()=>{source.disconnect();gain.disconnect();if(bed===current){bed=null;bedId=null;}};source.start(now);if(Number.isFinite(duration))source.stop(now+duration+.05);
  }
  return {input,stageSet,ambienceSet,get stage(){return stage;},get ambience(){return bedId;},dispose(){bedStop();input.disconnect();low.disconnect();high.disconnect();dry.disconnect();room?.reverb.disconnect();room?.wet.disconnect();for(const old of retired){old.reverb.disconnect();old.wet.disconnect();}retired.length=0;cache.clear();}};
@@ -78,8 +78,12 @@ export function ambienceBuffer(context,style){
     }
    }
   }
-  let peak=1;for(const value of samples)peak=Math.max(peak,Math.abs(value));
-  for(let i=0;i<length;i++)samples[i]/=peak;
+  // Match perceived background energy: filtered hearth/forest noise is much
+  // quieter than rain or sustained tones. One constant gain preserves seams
+  // and envelopes; peak headroom prevents clipping without a hard limiter.
+  let peak=0,energy=0;for(const value of samples){peak=Math.max(peak,Math.abs(value));energy+=value*value;}
+  const scale=Math.min(.8/Math.max(peak,.0001),.1/Math.max(Math.sqrt(energy/length),.0001));
+  for(let i=0;i<length;i++)samples[i]*=scale;
  }
  cache.set(style,buffer);while(cache.size>3)cache.delete(cache.keys().next().value);return buffer;
 }

@@ -2,10 +2,10 @@ import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066f
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleContactMount as menuContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
 export {menuContactMount};
-import {freePlayCreate,freePlayBuild} from './free-play.js?v=379cd8b6f17819f884de5eb3a44fe78cef19964a499d25adaf923e93f03edfd0';
+import {freePlayCreate,freePlayBuild} from './free-play.js?v=e88f49ff1076d3ac319c33099dcb495a99d32ba426fe0d458462baa2a8cef924';
 import {playerBuild} from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
-import {progressionCreate} from './run.js?v=56f12a92ddc0734f42f9fb3a95d6b9bfca39766348ef37a593ef331dacb3f0eb';
-import {menuMusicCreate} from './menu-music.js?v=bba8104277a4dc9a858f123875aa100d762ece4b90c5639fa583b57c327f052d';
+import {progressionCreate} from './run.js?v=13cddd0791aa2c8ea509a45b8136591b3e0359519cf8ebb3be6fefb2c61961d8';
+import {menuMusicCreate} from './menu-music.js?v=b27cd096d841b9f14d28b5e2f522233ef6171de24c12090172a550500a479822';
 import {PoolVisual} from './pool-visual.js?v=27d09978be91922cd44fd73ef79fa3476636a5ada91045a820cafc7fe5c945d6';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=adc6d69546723ce9f5131bf144815dc0a4f6fc6682ee59318309f9f62ca6bed0';
 import { bubbleHit } from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
@@ -56,7 +56,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
       visual.configure(profile().profile?.cosmetics);
       menuPoolResize(pool,canvas.clientWidth,canvas.clientHeight);
       const obscured=covered();
-      if(obscured){clear();pool.pressure=[];visual.clear();}
+      if(obscured){clear();visual.clear();}
       for(const event of menuPoolStep(pool,dt)){
         music.event(event);if(obscured)continue;
         visual.event(event,pool.game,gentle());
@@ -72,14 +72,14 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
   const bodiesFor=()=>[...seedBodies(pool.game),...pool.game.bodies.slice(1)];
   function musicDiagnostics(){if(music.diagnostics)for(const [key,value] of Object.entries(music.diagnostics))canvas.dataset['music'+key[0].toUpperCase()+key.slice(1)]=String(value);}
   function sync(){music.active(audible&&!document.hidden);if(!active||document.hidden||document.body?.dataset?.screen!=='drift')music.cosmeticStop?.();musicDiagnostics(); cancelAnimationFrame(frame);frame=0;previous=0;if((active||audible)&&!document.hidden)frame=requestAnimationFrame(animate);}
-  function clear(){pool.contacts.clear();canvas.dataset.contacts='0';}
+  function clear(){pool.contacts.clear();pool.pressure=[];canvas.dataset.contacts='0';}
   document.addEventListener('visibilitychange',()=>{clear();sync();});window.addEventListener('resize',()=>{clear();sync();});
   // App height settles after the window event; redraw the actual canvas size.
   new ResizeObserver(()=>{if(!active&&!document.hidden)draw(0);}).observe(canvas);
   // Native dialog open/close mutations arrive before the next paint. Prime the
   // uncovered canvas synchronously instead of waiting for a throttled pool tick.
-  if(typeof MutationObserver!=='undefined')new MutationObserver(()=>{if(active&&!document.hidden&&!covered())draw(0);}).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open','hidden','data-screen']});
-  const background={refresh(){
+  if(typeof MutationObserver!=='undefined')new MutationObserver(()=>{if(!active||document.hidden||covered())clear();else draw(0);}).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open','hidden','data-screen']});
+  const background={get audio(){return audible?music.audio:null;},refresh(){
     const progress=profile(),next=JSON.stringify([freePlayBuild(progress),playerBuild(progress.profile)]);
     if(signature===next)return;signature=next;
     Object.assign(pool,menuPoolCreate(freePlayCreate('MENU BLOOM',progress)));visual.clear();music.reset();canvas.dataset.contacts='0';draw(0);

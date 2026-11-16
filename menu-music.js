@@ -1,4 +1,4 @@
-import {PoolSound} from './sound.js?v=31615c3d2cfba3299f1e1cfad8df8525561bc4dbd6363ad10f13edf5c2183582';
+import {PoolSound} from './sound.js?v=416b250c4efa989afbf4b8c674d1517af6e81b59358a8f154013a37f0db01b72';
 import {audioRecoveryMount} from './audio-recovery.js?v=a6c4d89f44e22020e88ab00079ef6450ddf0043a7591b50bf7e0d5a7e3fbcfb8';
 
 // Detached composition uses the game's finished arrangement/scheduler only.
@@ -13,6 +13,7 @@ export function menuMusicCreate(settings, sound=new PoolSound({media:false})){
  sound.musicStart();sound.pauseSet(true);
  if(typeof document!=='undefined')audioRecoveryMount(sound,document,window,()=>{sync();return active;});
  return {
+  get audio(){return active?sound:null;},
   event(event){sound.eventPlay(event,{effects:false});},
   cosmetic(event,loadout){sync();if(active)sound.cosmeticPlay(loadout,event);},
   travel(loadout,body,enabled){sync();sound.cosmeticTravel(loadout,body,active&&enabled);},
@@ -21,6 +22,6 @@ export function menuMusicCreate(settings, sound=new PoolSound({media:false})){
   active(value){const entering=value&&!active;active=value;sync();sound.pauseSet(!value);if(entering)unlock();},
   unlock(){if(sound.context?.state!=='running')unlock();},
   reset(){sound.musicRestore(null,0,0);},
-  get diagnostics(){return {bars:sound.music.bar,effectEvents:sound.eventCount,voices:sound.voiceCount,state:sound.isPaused?'paused':sound.context?.state||'locked'};},
+  get diagnostics(){return {preview:sound.previewSelection?.id||'',soundstage:sound.musicEnvironment?.stage||'',ambience:sound.musicEnvironment?.ambience||'',bars:sound.music.bar,effectEvents:sound.eventCount,voices:sound.voiceCount,state:sound.isPaused?'paused':sound.context?.state||'locked'};},
  };
 }

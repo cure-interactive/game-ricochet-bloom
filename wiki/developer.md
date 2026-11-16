@@ -49,7 +49,7 @@ The shared selector uses clipped solid contrast layers. The Player tab draws a f
 
 Instrument voices are synthesized locally; they do not download sampled sound banks. Soundstages use finite impulse responses in a music-only graph with no accumulating feedback. Ambience uses 48-second seamless buffers, smooth event envelopes and a bounded three-style cache. Night Forest and Ember Hearth add sparse varied phrases; Orbital Drift uses continuous tones. `audio-environment.js`, `audio-voice.js`, `music-theme.js` and `music-environment.js` own these sounds and catalogue settings.
 
-Preview ownership uses the audio clock and invalidates pending starts on replacement, navigation, mute or page hiding. Instrument and Ambience auditions duck background music; a Soundstage audition overrides the live room temporarily. Music previews expire after ten seconds and expose elapsed progress. Realtime playback and WAV highlights share environment processing; already prepared audio must be rendered again to include changed selections. Automated continuity checks cannot replace listening on the affected physical device.
+Preview ownership uses the audio clock and invalidates pending starts on replacement, navigation, mute or page hiding. All Music auditions capture the currently audible PoolSound owner (menu or gameplay). Instrument overrides voice upcoming arrangement notes, Soundstage overrides the live room, and Ambience overrides the background layer without changing saved selections. Standalone cosmetic SFX auditions retain background ducking. Atmosphere buffers share normalized energy and peak headroom. Music previews expire after ten seconds and expose elapsed progress. Realtime playback and WAV highlights share environment processing; already prepared audio must be rendered again to include changed selections. Automated continuity checks cannot replace listening on the affected physical device.
 
 ## Reference Maintenance
 
@@ -91,3 +91,5 @@ Trick Shots and Melody Trials have physical-shot fixtures for each authored Stan
 ## Release Notes
 
 [Change Logs](changelog.md) includes player changes and developer notes for each release. Developer notes are visible while Development mode is enabled.
+
+Cosmetic favorites are optional validated profile IDs, independent of receipts and equipment. Galleries share sibling favorite buttons and a scrolling rarity selector; Favorites filters existing cards without sorting them. Rarity/index order remains stable.
