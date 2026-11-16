@@ -1,9 +1,9 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=6741340dcdbdeb9b7b21d3fcd03716bc3a3116707fec766e58ae0070be444e3e';
-import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=27a29e6d2cba5ed4d8a714591cb6751bcf16bb1cea5790adfc71e5146d80876e';
+import {CosmeticVisual} from './cosmetic-visual.js?v=d2dfd408a59efedadf795dafbc89880e0da1cf9e6de3dd23277b9c9df98a7e02';
+import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=adc6d69546723ce9f5131bf144815dc0a4f6fc6682ee59318309f9f62ca6bed0';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
-import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=3b7783a8c10ae6261f599728abb9708b91745a626d57e3f608488455a7390785';
-import {PowerVisual} from './power-visual.js?v=99e31341890e2474f25107e3d8d9c21a23a9a5f265411efc1bcd7161905ae1ac';
+import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
+import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=db713a3ad171686413f7cbb4f8069d892417e3e053f302e7723e86f15da4b947';
+import {PowerVisual} from './power-visual.js?v=ce8d16a80973689216b45777c6eee368e33282ce3e88e89661174ea00697366f';
 
 // One presentation owner for every physics pool: play, Casual and menu autoplay.
 // Scores, aiming, audio and persistence belong to the caller, never this component.
@@ -48,7 +48,7 @@ export class PoolVisual {
    if(event.kind==='split'){this.trails=[];this.membranes.delete(0);}
    const color=POWERS[event.kind].color;
    this.rings.push({x:event.x,y:event.y,radius:['attract','stasis'].includes(event.kind)?RULE.powerRadius:8,life:1.6,color,kind:event.kind,bloom:true});
-   if(event.kind==='swap'){this.trails=[];this.membranes.clear();this.rings.push({x:event.exitX,y:event.exitY,radius:8,life:1.6,color,kind:'swap',bloom:true});burst(event.exitX,event.exitY,color,24);}
+   if(event.kind==='swap'){this.trails=[];this.rings.push({x:event.exitX,y:event.exitY,radius:8,life:1.6,color,kind:'swap',bloom:true});burst(event.exitX,event.exitY,color,24);}
    burst(event.x,event.y,color,24);
   }
   if(event.type==='bloom'){this.rings.push({x:event.x,y:event.y,radius:20,life:2.5,color:'#c1b4ff',bloom:true});burst(event.x,event.y,'#ddcbff',80);}

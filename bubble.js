@@ -2,7 +2,7 @@
 const COUNT = 24, TAU = Math.PI * 2;
 const clamp = (value, limit) => Math.max(-limit, Math.min(limit, value));
 export function bubbleCreate() {
-  return { offset: Array(COUNT).fill(0), speed: Array(COUNT).fill(0), strain: [0, 0], strainSpeed: [0, 0], core: [0, 0], coreSpeed: [0, 0], glow: 0, frost: 0 };
+  return { offset: Array(COUNT).fill(0), speed: Array(COUNT).fill(0), strain: [0, 0], strainSpeed: [0, 0], core: [0, 0], coreSpeed: [0, 0], glow: 0, frost: 0, permeability: 0 };
 }
 export function bubbleHit(bubble, radius, nx, ny, speed, isFrozen = false) {
   speed *= isFrozen ? .18 : 1;
@@ -45,7 +45,7 @@ export function bubbleRipple(ripple, body) {
 }
 export function bubbleStep(bubble, body, elapsed, gentle = false, flow = { vx: 0, vy: 0 }, isFrozen = false) {
   const frame = Math.min(.08, Math.max(0, elapsed));
-  bubble.frost += ((isFrozen ? 1 : 0) - bubble.frost) * (1 - Math.exp(-frame * (isFrozen ? 14 : 7)));
+  bubble.frost += ((isFrozen ? 1 : 0) - bubble.frost) * (1 - Math.exp(-frame * (isFrozen ? 14 : 3.5)));
   const frost = bubble.frost, softness = 1 - frost * .82;
   if (gentle) {
     bubble.offset.fill(0); bubble.speed.fill(0); bubble.strain.fill(0); bubble.strainSpeed.fill(0); bubble.core.fill(0); bubble.coreSpeed.fill(0);

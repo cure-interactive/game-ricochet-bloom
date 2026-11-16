@@ -1,6 +1,6 @@
-import {registerCosmeticIcon} from './cosmetic-icon.js?v=c934d3b304c561c21cf3f9bc59db70cedee1b9fb69550d3a8b9501c96044bc5a';
+import {registerCosmeticIcon} from './cosmetic-icon.js?v=ae755d2f715a50a4ebf3dd8a8c32a8fe0d2c70ce608a1e8005b22ad136f5194e';
 if(typeof window!=='undefined')registerCosmeticIcon();
-import {registerPlayerBubble} from './player-bubble.js?v=1b5e047540a5e8c7e06ac8fcc05f586b071c05b300d006600dfd4777ec5f6ae1';
+import {registerPlayerBubble} from './player-bubble.js?v=bcb57e93a1bf9829013d701ad1d1ab47c777d7b5b9529cb3b9103f1f3f0e28ff';
 if(typeof window!=='undefined')registerPlayerBubble();
 import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 // Decorative icons share one renderer. player-skin uses the equipped skin
@@ -8,6 +8,7 @@ import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03
 export function iconHTML(name) {
   return `<span class="ui-icon" data-icon="${escapeHTML(name)}" aria-hidden="true">${name==='player-skin'?'<player-bubble></player-bubble>':['trails','bounce-effects'].includes(name)?`<cosmetic-icon kind="${name==='trails'?'trail':'bounce'}"></cosmetic-icon>`:''}</span>`;
 }
+export function staticIconHTML(name){return iconHTML({'player-skin':'player-static',trails:'trails-static','bounce-effects':'impact-static'}[name]||name);}
 export function iconNode(name) {
   const icon=document.createElement('span');
   icon.className='ui-icon';icon.dataset.icon=name;icon.setAttribute('aria-hidden','true');

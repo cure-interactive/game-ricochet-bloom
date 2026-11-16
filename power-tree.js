@@ -1140,7 +1140,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Wide Echo",
-        "description": "Let the Echo stray farther from its delayed path. Combine with Seeking echo to reach more nearby bubbles.",
+        "description": "Increase Echo reach from 48 to 70 units from its delayed path. Combine with Seeking Echo to reach more nearby bubbles.",
         "key": "b",
         "kind": "b",
         "effects": [
@@ -1222,7 +1222,7 @@ export const POWER_TREES = {
       },
       {
         "name": "Lasting Fan",
-        "description": "Keep side seeds alive longer without narrowing their launch angles.",
+        "description": "Increase side seed duration from 3 to 3.5 seconds without narrowing their launch angles.",
         "key": "b",
         "kind": "b",
         "effects": [

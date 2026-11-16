@@ -1,11 +1,11 @@
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=63ed9999e87f292cd85e6b21d921d7e912b434e036ab2efdf2334292887a0a90';
-import {playerSkillStats} from './player-skill-comparison.js?v=5413d93733478c5c3d73d00b0f092c6f044b3ee96887cab2636e891526bba17e';
+import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=1e0e5729228d8ec9eac6fbede5f3a8f0587c640bb52826e3fb71e67bc65a40f6';
+import {playerSkillStats} from './player-skill-comparison.js?v=75decfaf5d896b3fa9b10253c26385c4360916c8de20e0a52f71bc51d9fde36b';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {playerTreeGraph} from './player-tree.js?v=210238b9f0ec28aad2a319ced9ab6cb7cc2a67d8ef569cf3fa9c1aabae772674';
 import {mapCameraMount,nearestMapNode} from './tree-map.js?v=70017d365646a9489aa24807b66eb3ff4f3df9819448a14471f3d9520a8dcb37';
-import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=c8cf01d0ef06ec40973b2c6b6034a2f3911bb7041133e8667e01a6fbb3b70416';
-import {screenHeader} from './screen-header.js?v=df61a7f2f513341f38e4dd70e2e81e7add2d467c29ef9c55b24294ce7b6a6cf8';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=b97a13e492ce3889e47a205f1e9246f2161ee728ca7630e71570cedfd636805d';
+import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=afc77036f20e08d7d0c6e858f25b63580a8eb26ac3f50203eee029cd3685af8d';
+import {screenHeader} from './screen-header.js?v=786f504b0d8e7c345d1c30428db16e12dc5b1c2513f004bec1c0c4c0b2618c9a';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=6c99c7aabe02590f700c101241c5f5bc6c6ba38a67af533a14b8cef863768aaa';
 
 const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 const rules='Every purchased upgrade stacks permanently. Open pools apply purchases between shots; Melody Journey applies them from the next pool. Score Attack fixes them at the start of a run. Fixed trials and shared challenges keep their authored rules.';

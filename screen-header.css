@@ -1,10 +1,10 @@
 /* One navigation component across menus, wiki, campaign, skins, tree and trials.
    Position stays with the owning screen; this owns every visual state. */
 :root{--menu-gutter:12px;--navigation-radius:16px;--navigation-control-radius:12px;--navigation-border:#668a9a66;--navigation-text:#e2f2ee;--navigation-surface:#142d3bea}
-#gamemodes-dialog{--navigation-width:760px}#wiki-dialog{--navigation-width:900px}:is(#tree-dialog,#player-upgrade-dialog){--navigation-width:1460px}
+#wiki-dialog{--navigation-width:900px}
 :root body :is(dialog,#tree-dialog)>.screen-heading{
   display:flex;align-items:center;justify-content:flex-start;gap:14px;flex:none;
-  width:calc(100% - 2 * var(--menu-gutter));max-width:var(--navigation-width,1100px);height:auto;min-height:68px;
+  width:calc(100% - 2 * var(--menu-gutter));max-width:var(--navigation-width,none);height:auto;min-height:68px;
   margin:10px auto max(12px,var(--content-safe-bottom,var(--safe-area-bottom,env(safe-area-inset-bottom))));padding:10px 14px;
   border:1px solid var(--navigation-border);border-radius:var(--navigation-radius);
   background:var(--navigation-surface);color:var(--navigation-text);box-shadow:0 8px 24px #0002;

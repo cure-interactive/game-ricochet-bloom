@@ -1,5 +1,5 @@
 /* Player branches use the shared map, node, camera and detail-card styles. */
-#player-upgrade-dialog{--navigation-width:1460px}
+
 body[data-left-handed=true] :is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip-heading{flex-direction:row-reverse}
 body:not([data-left-handed=true]) :is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip-heading>:is(.skill-card-title,h3){order:1;text-align:left}
 body:not([data-left-handed=true]) :is(#tree-dialog,#player-upgrade-dialog) .skill-tooltip-heading>button{order:2}

@@ -1,13 +1,17 @@
-import { iconHTML } from './ui-icon.js?v=b97a13e492ce3889e47a205f1e9246f2161ee728ca7630e71570cedfd636805d';
-import { CATALOGUE } from './catalogue.js?v=5cfc599f22248911c8bcd4338b5eb7fd16e3fe4df92507bfdf3382d1366b52d1';
+import { iconHTML, staticIconHTML } from './ui-icon.js?v=6c99c7aabe02590f700c101241c5f5bc6c6ba38a67af533a14b8cef863768aaa';
+import { CATALOGUE } from './catalogue.js?v=c1d42ecf5ab5eb7f0a369fdccd0d8696079d69ac29f9676f4f854e39de9671ac';
 import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=5aec5b44b8a5820c3b9b4bb22f52fd5702faf17da3abbb60445a5265e1e244a5';
-import { medalIcon } from './medal-ui.js?v=3c06de546792c4af0efcbbbed08955e94d3385d16949123b14b47ac18644917e';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=30e163fa7cf9ecff14317a409c1038691cee610af060f411d678d628dacc7f96';
+import { medalIcon } from './medal-ui.js?v=e8fa49c953be7279e0e38c8a83bda332e8cda4441b22046248191cac3299fc3d';
 
 // Only known topics and catalogue identities produce decoration. Markdown never
 // supplies an image URL, raw SVG or icon name to the renderer.
-const pages={changelog:'list',developer:'flask','development-concept':'flask','game-modes':'flask',wiki:'book',contents:'list','how-to-play':'gamepad',waves:'wave',campaign:'campaign','skill-tree':'skill-tree','power-ups':'powers',settings:'gear',medals:'medal',experiments:'flask','score-attack':'speedometer',player:'player-skin'};
+const pages={'cosmetic-rarity':'epic',changelog:'list',developer:'flask','development-concept':'flask','game-modes':'flask',wiki:'book',contents:'list','how-to-play':'gamepad',waves:'wave',campaign:'campaign','skill-tree':'skill-tree','power-ups':'powers',settings:'gear',medals:'medal',experiments:'flask','score-attack':'speedometer',player:'player-skin'};
 const topics={
+ 'cosmetic-rarity':'epic',trails:'trails',impacts:'bounce-effects',instruments:'music-note',soundstages:'sound',ambience:'wave',
+ 'release-notes':'list','direction-and-boundaries':'shield','mind-map':'skill-tree','bubble-actions':'player-static','independent-properties':'switches','elements-and-status-effects':'powers','chain-reactions':'pulse','environment-and-layout':'grid','bubble-sources':'add','enemies':'warning-triangle','cellular-campaign':'campaign','objectives-and-loss':'check','research-inspired-branches':'skill-tree','research-and-sources':'book','decisions-still-open':'about',
+ 'current-baseline':'check','mind-map-and-research-connections':'skill-tree','experiment-catalogue':'list','precision-and-shot-planning':'control-gun','reactions-and-logic':'pulse','cargo-and-rescue':'shield','containment-and-defense':'shield','survival-and-time-pressure':'clock','terrain-and-navigation':'grid','score-and-risk':'coin','builds-and-power-choices':'powers','music-and-composition':'music-note','memory-and-hidden-information':'eye','growth-and-material-systems':'player-static','journeys-and-campaign-formats':'campaign','competition-and-party-play':'gamepad','cooperation':'gamepad','sandboxes-and-gentle-play':'wave','direct-mind-map-experiments':'flask','capture-carry-and-release':'lock','division-fusion-and-payload-accounting':'pulse','elements-status-and-chain-interruption':'powers','sources-as-resources':'add','anchors-connections-and-changing-routes':'grid','fictional-cellular-missions':'campaign','first-experiments-to-compare':'flask','experiment-guardrails':'shield','recommended-order':'list','pressure-survival':'clock','reaction-lab-and-playtest-method':'flask','scope-and-implementation-decision':'check',
+ 'glide-and-steady-shell':'player-glide','getting-help':'about',
  'trails-and-impacts':'bounce-effects','trails-and-bounces':'bounce-effects',
  'change-logs':'list','player-changes':'gamepad','developer-notes':'code',
  'ricochet-bloom-wiki':'book','table-of-contents':'list','how-to-play':'gamepad',waves:'wave',campaign:'campaign','skill-tree':'skill-tree','power-ups':'powers','sound-settings-saves':'gear',
@@ -29,12 +33,12 @@ const topics={
  developer:'flask','development-concept':'flask','game-modes-to-try':'flask','economy-tuning':'coin','playtest-method':'check',workshop:'flask','development-tools':'gear'
 };
 const wrap=html=>html?`<span class="wiki-icon" aria-hidden="true">${html}</span>`:'';
-const topicHTML=name=>name==='medal'?medalIcon('Gold'):['player-skin','trails','bounce-effects'].includes(name)
- ?`<span class="ui-icon wiki-static-icon" data-icon="${name==='player-skin'?'player-static':name}" aria-hidden="true"></span>`:iconHTML(name);
+const topicHTML=name=>name==='medal'?medalIcon('Gold'):staticIconHTML(name);
 export function wikiTopicIcon(page,anchor=''){
+ if(Object.hasOwn(Object.prototype,anchor)||Object.hasOwn(Object.prototype,page))return '';
  const power=page==='power-ups'&&CATALOGUE.nodes[`${anchor}.base`];
  if(power)return wrap(skillIconHTML(power));
- const name=anchor?(Object.hasOwn(topics,anchor)?topics[anchor]:null):(Object.hasOwn(pages,page)?pages[page]:null);
+ const name=anchor?(Object.hasOwn(topics,anchor)?topics[anchor]:(Object.hasOwn(pages,page)?pages[page]:null)):(Object.hasOwn(pages,page)?pages[page]:null);
  return name?wrap(topicHTML(name)):'';
 }
 export function wikiStrongHTML(text,page,section,escaped){

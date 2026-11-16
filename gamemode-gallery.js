@@ -1,7 +1,8 @@
-import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=8c59150b827f38937000856c314ca6ea7446fd1bf0c85b308ee50a31aa20de29';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=f03ba0e2439da29f290efa4fd8e7bf6ef90ff498a1f911005f6f971d6b3b6a8d';
+import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=c64dec5ea4a3375c5a2e09531e8d4d30831fac278db3b4d7010dc4d7417805da';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { experimentRead, experimentFavourite } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
-import { assetURL } from './asset.js?v=4bfc215978ddb2faa5f215313763b4a44ba960a1982aaa13417639cc1020a545';
+import { assetURL } from './asset.js?v=4a033879d71b1eddd370a80d7afdf3ea8124008623c9c74936a12526b13e3e9c';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 
 // Owns gallery view state only. Starting games and opening other screens are
@@ -19,7 +20,7 @@ export function gamemodeGalleryMount({content,heading,storage, ...host}) {
     host.screen(view?'gamemodes:'+view:'gamemodes');
     const group=GAMEMODE_GROUPS.find(g=>view==='group:'+g.id),title=group?.name??(view==='favourites'?'Favourites':view==='development'?'In Development':'Gamemodes');
     heading.textContent=title;
-    content.innerHTML=`<nav class="gamemode-navigation" aria-label="Gamemode navigation">${view?'<button id="gamemode-root">Gamemodes</button>':''}<button id="gamemode-favourites" aria-pressed="${view==='favourites'}">${starArt} Favourites</button><button id="gamemode-development" aria-pressed="${view==='development'}">In Development</button><button id="gamemode-notebook">Saved Runs & Notes</button></nav><p class="mode-intro">${group?escape(group.description):view==='favourites'?'Your starred games, ready to open directly.':view==='development'?'Explore ideas whose gameplay is still being built.':'Choose a game or explore a collection of related challenges.'}</p><div class="gamemode-filter"><label>Search All Gamemodes<input id="gamemode-search" type="search" placeholder="Name, mechanic or idea number" value="${escape(state.query)}"></label>${view==='development'?`<label>Category<select id="gamemode-category"><option value="">All categories</option>${GAMEMODE_CATEGORIES.map(m=>`<option value="${m.id}"${state.category===m.id?' selected':''}>${m.name}</option>`).join('')}</select></label>`:''}</div><p id="gamemode-count" class="gamemode-count" role="status" aria-live="polite"></p><div id="gamemode-list"></div><p id="gamemode-save-status" role="status"></p>`;
+    content.innerHTML=`${gamemodeNavigation(view.startsWith('group:')?'':view)}<p class="mode-intro">${group?escape(group.description):view==='favourites'?'Your starred games, ready to open directly.':view==='development'?'Explore ideas whose gameplay is still being built.':'Choose a game or explore a collection of related challenges.'}</p><div class="gamemode-filter"><label>Search All Gamemodes<input id="gamemode-search" type="search" placeholder="Name, mechanic or idea number" value="${escape(state.query)}"></label>${view==='development'?`<label>Category<select id="gamemode-category"><option value="">All categories</option>${GAMEMODE_CATEGORIES.map(m=>`<option value="${m.id}"${state.category===m.id?' selected':''}>${m.name}</option>`).join('')}</select></label>`:''}</div><p id="gamemode-count" class="gamemode-count" role="status" aria-live="polite"></p><div id="gamemode-list"></div><p id="gamemode-save-status" role="status"></p>`;
     function card(e,favourites,readable){
       const starred=favourites.includes(e.id),label=`${starred?'Unstar':'Star'} ${e.name}`;
       return `<article class="mode-card-shell"><button type="button" class="mode-card" data-gamemode="${e.id}"><span class="mode-card-top"><small class="mode-category">${GAMEMODE_CATEGORIES.find(c=>c.id===e.category)?.name??''}${/^\d/.test(e.id)?' · #'+e.id:''}</small></span>${e.art?`<img src="${art(e.art)}" alt="" width="480" height="240">`:experimentArt(e.id)}<span><strong>${escape(e.name)}</strong><small>${escape(e.description)}</small><em>${e.playable?(e.route==='casual'?'No Points · Just Play':e.route==='setup'?'Three Difficulty Levels':'Play & Settings'):'In Development · View Idea'}</em></span></button><button type="button" class="mode-star" data-favourite="${e.id}" aria-label="${escape(label)}" aria-pressed="${starred}" title="${escape(label)}" ${readable?'':'disabled'}>${starArt}</button></article>`;
@@ -42,10 +43,6 @@ export function gamemodeGalleryMount({content,heading,storage, ...host}) {
       };
     }
     function navigate(next){state.scroll=content.scrollTop;gallery(next);}
-    $('gamemode-root')?.addEventListener('click',()=>navigate(''));
-    $('gamemode-favourites').onclick=()=>navigate('favourites');
-    $('gamemode-development').onclick=()=>navigate('development');
-    $('gamemode-notebook').onclick=()=>{rememberGallery();host.notebook();};
     $('gamemode-search').oninput=e=>{state.query=e.target.value;state.scroll=0;cards();};
     $('gamemode-category')?.addEventListener('change',e=>{state.category=e.target.value;state.scroll=0;cards();});
     cards();host.show();content.scrollTop=state.scroll;

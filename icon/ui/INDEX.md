@@ -131,3 +131,9 @@ Monitor and phone were exported from Cure Interactive Icons commit `71d7cc7fb2be
 ## AI disclosure
 
 [EU Basic icon and scoped community pills](../ai/INDEX.md) used in Settings About.
+
+- [floppy-disk](floppy-disk.md) — original Ricochet Bloom artwork for Saved.
+
+Play was updated from Cure Interactive Icons commit a424f44659a41e2628622aad7ffb3b828a1cdaed, retaining the complete original MIT attribution. The original Impacts and Waves/Casual drawings use filled center bubbles.
+
+- [player-attributes](player-attributes.md) — original player-and-bars artwork.

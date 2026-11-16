@@ -1,7 +1,13 @@
 :root body .segmented-control{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:repeat(var(--segment-count),minmax(0,1fr));gap:6px;padding:4px;border:1px solid #759aa340;border-radius:14px;background:#08192580;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .segment-selection{position:absolute;z-index:-1;left:4px;top:4px;bottom:4px;border-radius:10px;background:#b4f2d8;pointer-events:none;transform-origin:left center}
-:root body :is(#tree-dialog,#player-upgrade-dialog,#player-stats-dialog) .segmented-control>button{border:0;background:transparent;min-width:0;min-height:44px;padding:10px 14px;display:flex;align-items:center;justify-content:center;gap:8px;touch-action:pan-y;direction:ltr}
-:root body :is(#tree-dialog,#player-upgrade-dialog,#player-stats-dialog) .segmented-control>button[aria-pressed=true]{background:transparent}
-:root body :is(#tree-dialog,#player-upgrade-dialog,#player-stats-dialog) .segmented-control>button>span:not(.ui-icon){display:inline;color:transparent;background-clip:text;-webkit-background-clip:text;background-color:#dceeea}
+:root body :is(dialog,#tree-dialog) .segmented-control>button{border:0;background:transparent;min-width:0;min-height:44px;padding:10px 14px;display:flex;align-items:center;justify-content:center;gap:8px;touch-action:pan-y;direction:ltr}
+:root body :is(dialog,#tree-dialog) .segmented-control>button[aria-pressed=true]{background:transparent}
+:root body :is(dialog,#tree-dialog) .segmented-control>button>span:not(.ui-icon){display:inline;color:transparent;background-clip:text;-webkit-background-clip:text;background-color:#dceeea}
 :root body[data-left-handed=true] .segmented-control{direction:rtl}
-@media(forced-colors:active){.segment-selection{background:Highlight;forced-color-adjust:none}:root body :is(#tree-dialog,#player-upgrade-dialog,#player-stats-dialog) .segmented-control>button>span:not(.ui-icon){color:ButtonText;background:none}:root body :is(#tree-dialog,#player-upgrade-dialog,#player-stats-dialog) .segmented-control>button[aria-pressed=true]>span:not(.ui-icon){color:HighlightText}}
+@media(forced-colors:active){.segment-selection{background:Highlight;forced-color-adjust:none}:root body :is(dialog,#tree-dialog) .segmented-control>button>span:not(.ui-icon){color:ButtonText;background:none}:root body :is(dialog,#tree-dialog) .segmented-control>button[aria-pressed=true]>span:not(.ui-icon){color:HighlightText}}
+
+.music-category{margin-bottom:18px}
+@media(max-width:400px){:root body :is(dialog,#tree-dialog) .music-category>button{font-size:12px;padding-inline:4px;gap:4px}}
+
+.gamemode-switch{margin-bottom:18px}
+@media(max-width:500px){:root body :is(dialog,#tree-dialog) .gamemode-switch>button{flex-direction:column;gap:4px;padding:6px 2px;font-size:11px}:root body .gamemode-switch .ui-icon{width:20px;height:20px}}

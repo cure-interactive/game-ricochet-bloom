@@ -1,4 +1,4 @@
-import { iconHTML } from './ui-icon.js?v=b97a13e492ce3889e47a205f1e9246f2161ee728ca7630e71570cedfd636805d';
+import { iconHTML } from './ui-icon.js?v=6c99c7aabe02590f700c101241c5f5bc6c6ba38a67af533a14b8cef863768aaa';
 
 export function edgeBackReady(dx,dy,width) {
   return dx>=Math.min(100,Math.max(60,width*.22))&&dx>Math.abs(dy)*1.5;
@@ -13,22 +13,21 @@ export function edgeBackMount(doc=document,win=window,{feedback=()=>{}}={}) {
   let gesture=null,suppressClick=false;
   const stop=event=>{if(event.cancelable)event.preventDefault();event.stopImmediatePropagation();};
   function cancel(){if(!gesture)return;gesture.cue.remove();gesture=null;}
+  function position(g){const r=g.dialog.getBoundingClientRect();g.cue.style.top=Math.max(12,Math.min(r.height-56,g.y-r.top-22))+'px';g.cue.style.left=Math.max(8,Math.min(80,g.dx*.35))+'px';}
   function begin(event,point,id){
     cancel();suppressClick=false;
     const dialog=event.target.closest?.('dialog[open]');
     if(!dialog||point.clientX>24||point.clientX<0)return false;
     const cue=doc.createElement('div');cue.className='edge-back-feedback';cue.setAttribute('aria-hidden','true');
     cue.innerHTML=iconHTML('arrow-left')+'<span>Back</span>';dialog.append(cue);
-    gesture={dialog,cue,id,x:point.clientX,y:point.clientY,dx:0,dy:0,stage:0};suppressClick=false;feedback('back-start');stop(event);return true;
+    gesture={dialog,cue,id,x:point.clientX,y:point.clientY,dx:0,dy:0,stage:0};position(gesture);suppressClick=false;feedback('back-start');stop(event);return true;
   }
   function move(event,point){
     if(!gesture)return;
     if(!gesture.dialog.open){cancel();return;}
     stop(event);suppressClick=true;const g=gesture;g.dx=point.clientX-g.x;g.dy=point.clientY-g.y;
     if(g.dx < -12||Math.abs(g.dy)>Math.max(18,g.dx*1.2)){cancel();return;}
-    const r=g.dialog.getBoundingClientRect();
-    g.cue.style.top=Math.max(12,Math.min(r.height-56,g.y-r.top-22))+'px';
-    g.cue.style.left=Math.max(8,Math.min(80,g.dx*.35))+'px';
+    position(g);
     const ready=edgeBackReady(g.dx,g.dy,win.innerWidth);
     g.cue.classList.toggle('is-ready',ready);
     const threshold=Math.min(100,Math.max(60,win.innerWidth*.22));

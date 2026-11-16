@@ -16,10 +16,12 @@ export function segmentedMount(root,{attribute,change}){
  }
  function contrast(nav){
   const pill=nav.querySelector('.segment-selection').getBoundingClientRect();
-  for(const button of buttons(nav)){
-   const label=button.querySelector('span:not(.ui-icon)'),icon=button.querySelector('.ui-icon');
-   if(label){const r=label.getBoundingClientRect(),left=Math.max(0,Math.min(r.width,pill.left-r.left)),right=Math.max(0,Math.min(r.width,pill.right-r.left));label.style.backgroundImage=`linear-gradient(to right,#dceeea 0px,#dceeea ${left}px,#12332e ${left}px,#12332e ${right}px,#dceeea ${right}px)`;}
-   if(icon){const r=icon.getBoundingClientRect();icon.style.color=r.left+r.width/2>=pill.left&&r.left+r.width/2<=pill.right?'#12332e':'#dceeea';}
+  for(const button of buttons(nav))for(const node of [button.querySelector('span:not(.ui-icon)'),button.querySelector('.ui-icon')]){
+   if(!node)continue;const r=node.getBoundingClientRect(),{left,right}=segmentOverlap(r,pill);
+   if(node.dataset?.icon==='player-skin'){
+    node.style.color='#12332e';node.style.setProperty('--player-bubble-outline',right>left?'1':'0');
+    node.style.setProperty('--player-outline-start',String(left/Math.max(1,r.width)));node.style.setProperty('--player-outline-end',String(right/Math.max(1,r.width)));
+   }else node.style.backgroundImage=`linear-gradient(to right,#dceeea 0px,#dceeea ${left}px,#12332e ${left}px,#12332e ${right}px,#dceeea ${right}px)`;
   }
  }
  function follow(nav){followNav=nav;win.cancelAnimationFrame(frame);const tick=()=>{contrast(nav);frame=nav.querySelector('.segment-selection').getAnimations().length?win.requestAnimationFrame(tick):0;};tick();}
@@ -51,3 +53,5 @@ export function segmentedMount(root,{attribute,change}){
  new win.MutationObserver(refresh).observe(doc.body,{attributes:true,attributeFilter:['data-left-handed']});
  win.addEventListener('resize',refresh);return {refresh};
 }
+
+export function segmentOverlap(rect,pill){return {left:Math.max(0,Math.min(rect.width,pill.left-rect.left)),right:Math.max(0,Math.min(rect.width,pill.right-rect.left))};}

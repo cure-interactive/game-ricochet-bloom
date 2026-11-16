@@ -18,7 +18,7 @@ Unlock & Equip purchases a skin once. Owned skins can be equipped freely. Origin
 
 ## Trails and Impacts
 
-Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons animate your equipped styles. Wiki uses regular static icons. Skins, Trails and Impacts use the same gallery → detail → Back pattern: inspecting does not buy or equip, and wider galleries use the available row space before wrapping. Previews on hidden pages pause and keep their state; scrolling offscreen only culls their drawing. One trail follows the large Player viewer and selected skin preview during grabbing, dragging, scrolling, rebound and supported device motion. Equipped-player icons can trail their own movement, but page scrolling does not generate their trails; skin gallery thumbnails have no trails. Dedicated Trail and Impact previews continue to show their effects; impacts appear at player contacts and fade away smoothly.
+Open **Player → Trails** or **Impacts** to browse the gallery. Tap a style to open its larger animated preview and selection card before buying. **Back** returns to your place in the gallery. Each gallery card animates the actual effect; the title bar previews the selected style or your equipped style while browsing. The Player buttons animate your equipped styles. Wiki uses regular static icons. Skins, Trails and Impacts use the same gallery → detail → Back pattern: inspecting does not buy or equip, and wider galleries use the available row space before wrapping. Previews on hidden pages pause and keep their state; scrolling offscreen only culls their drawing. One trail follows the large Player viewer and selected skin preview during grabbing, dragging, scrolling, rebound and supported device motion. Equipped-player icons can trail their own movement, but page scrolling does not generate their trails; only the equipped skin gallery thumbnail has a trail from its local motion. Dedicated Trail and Impact previews continue to show their effects; impacts appear at player contacts and fade away smoothly.
 
 - Common styles cost 60 Points.
 - Rare styles cost 120 Points.
@@ -51,11 +51,19 @@ Stats belong to the selected Normal or Development profile in this browser. Olde
 
 ## Music
 
-Open **Player → Music** to browse instrument themes and select **Preview Theme** before buying. Original is free and keeps each song’s Glass, Velvet or Wood palette. Felt Keys is Common (60 Points), Crystal Chimes Rare (120), Velvet Strings Epic (220), Golden Celesta Legendary (360), and Aurora Choir Mythic (550).
+Open **Player → Music**. The shared tap/drag selector has **Instruments**, **Soundstages**, and **Ambience** tabs. Each category has its own equipped item, so you can combine any instrument, acoustic space and background atmosphere.
 
-**Unlock & Equip** buys once; equip owned themes freely. Themes use the existing local synthesizer, with no sampled sound banks or downloads. The equipped theme changes the instruments in gameplay, Casual, menu music and newly prepared song highlights. It does not change melody, rhythm, saved composition, score or rewards. A previously prepared highlight keeps its rendered sound until you prepare it again.
+- **Instruments** change the voices, preserving melody, rhythm and percussion. Original preserves each song's Glass, Velvet or Wood palette. Paid choices are Felt Keys, Crystal Chimes, Velvet Strings, Golden Celesta and Aurora Choir.
+- **Soundstages** change the room around the music. Original keeps the familiar room; Small Room, Wooden Hall, Stone Chamber, Cathedral and Celestial Vault offer different reflection lengths, warmth and stereo diffusion. Gameplay effects are not sent through this room.
+- **Ambience** adds a quiet procedural background loop. None is free; Soft Rain, Quiet Shore, Night Forest, Ember Hearth and Orbital Drift provide independent atmospheres.
 
-**Preview Theme** plays a short sample without equipping, spending Points or changing your song. It follows Music Volume, Master Volume and Sound; replay replaces the previous sample, and leaving the preview or hiding the page stops it. Normal and Development ownership stays separate. **Show purchased items cost** also applies to Music themes.
+Open a card and use **Preview Sound** for a six-second sample with your other equipped Music layers. It does not equip or spend Points. Replaying replaces the previous audition; changing category, leaving the preview, hiding the page or muting stops it. Previews and Music layers follow Music Volume, Master Volume and Sound.
+
+**Unlock & Equip** buys once; equip owned items freely, including during a saved pool. Normal and Development purchases remain separate. **Show purchased items cost** applies to every category. All sounds use the local engine, without sampled sound-bank downloads.
+
+Selections affect gameplay music, Casual, menu music and newly prepared song highlights. A prepared highlight keeps its rendered sound until you prepare it again. Your saved composition, score, rewards and gameplay build are unchanged.
+
+See [Cosmetic Rarity](cosmetic-rarity.md) for the tier rules for each asset type and current prices.
 
 ## Skills
 
@@ -76,3 +84,5 @@ Ricochet Bloom gameplay, campaign, progression and audio source in this release.
 Authored and checked against the game implementation.
 
 Player icons and previews keep simulating while their page is visible, even when you scroll them out of view. Drawing continues while any part of the bubble, glow or trail remains in the visible area; it stops only after the whole effect leaves. Scrolling back reveals the ongoing motion. Switching away from the page or closing its menu suspends that work without resetting the preview.
+
+Large player previews use a circular distance limit fitted to the viewer. Dragging follows the pointer near the origin and progressively resists toward the outer radius; it never clamps independent x/y coordinates into a square. Compact icons retain their small tether.

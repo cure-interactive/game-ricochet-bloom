@@ -15,6 +15,12 @@ export function skinSpringStep(state,seconds,{stiffness=150,damping=25}={}){
  if(Math.hypot(next.x,next.y)<.08&&Math.hypot(next.vx,next.vy)<.4)return {x:0,y:0,vx:0,vy:0};
  return next;
 }
+// Free movement near the origin, then a radial spring that approaches the limit smoothly.
+export function skinDragPoint(x,y,limit,inverse=false){
+ const distance=Math.hypot(x,y),half=limit/2;if(!distance||limit<=0)return {x:0,y:0};
+ const radius=distance<=half?distance:inverse?half-half*Math.log(Math.max(1e-9,1-(distance-half)/half)):half+half*(1-Math.exp(-(distance-half)/half));
+ return {x:x*radius/distance,y:y*radius/distance};
+}
 export function skinPreviewMount(element){
  const orb=element.querySelector('i'),doc=element.ownerDocument,win=doc.defaultView;
  const bubble=orb.querySelector('player-bubble');
@@ -32,10 +38,12 @@ export function skinPreviewMount(element){
  }
  function animate(){if(!destroyed&&!doc.hidden&&activity?.isActive()!==false&&!frame)frame=win.requestAnimationFrame(tick);}
  function nudge(x=0,y=-1){stop();bubble?.kick?.(-x,-y);state={x:x*24,y:y*24,vx:0,vy:0};paint();animate();}
+ const dragRadius=()=>Math.max(0,Math.min(element.clientWidth-orb.clientWidth,element.clientHeight-orb.clientHeight)/2);
  function down(e){
   if(pointer||e.isPrimary===false||e.button!==0)return;
   e.preventDefault();stop();orb.focus({preventScroll:true});
-  pointer={id:e.pointerId,x:e.clientX,y:e.clientY,originX:state.x,originY:state.y,lastX:e.clientX,lastY:e.clientY,moved:false};
+  const origin=skinDragPoint(state.x,state.y,dragRadius(),true);
+  pointer={id:e.pointerId,x:e.clientX,y:e.clientY,originX:origin.x,originY:origin.y,lastX:e.clientX,lastY:e.clientY,moved:false};
   state.vx=state.vy=0;orb.setPointerCapture(e.pointerId);orb.classList.add('is-dragging');
  }
  function move(e){
@@ -43,9 +51,7 @@ export function skinPreviewMount(element){
   const dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;
   if(Math.hypot(dx,dy)>4)pointer.moved=true;
   const x=pointer.originX+dx,y=pointer.originY+dy;
-  // Follow the pointer across the actual viewer, reserving the player's radius.
-  const limitX=Math.max(0,(element.clientWidth-orb.clientWidth)/2),limitY=Math.max(0,(element.clientHeight-orb.clientHeight)/2);
-  state={x:Math.max(-limitX,Math.min(limitX,x)),y:Math.max(-limitY,Math.min(limitY,y)),vx:0,vy:0};paint();
+  state={...skinDragPoint(x,y,dragRadius()),vx:0,vy:0};paint();
   {const dx=e.clientX-pointer.lastX,dy=e.clientY-pointer.lastY,d=Math.hypot(dx,dy);if(d>0)bubble?.kick?.(-dx/d,-dy/d,Math.min(160,d*12));}
   pointer.lastX=e.clientX;pointer.lastY=e.clientY;
  }

@@ -1,3 +1,4 @@
+import {audioEnvironment} from './audio-environment.js?v=991ee91a7cc04b779554789dc0bf8c0dbc45fd21fb294b890c865495bdf42cd3';
 import {musicCreate,musicFinish,musicNextBar,BAR_SECONDS} from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
 import {instrumentNote} from './instrument.js?v=6920e7d1e4c0cd13cd776998bf8f549daa237a784000fc2b097218c2d7822c01';
 export const SONG_STORAGE='ricochet-bloom-songs-v1', SONG_LIMIT=24;
@@ -25,18 +26,17 @@ export function wavEncode(buffer) {
   for(let i=0;i<frames;i++)for(let c=0;c<channels;c++){const n=Math.max(-1,Math.min(1,samples[c][i]||0));view.setInt16(44+(i*channels+c)*2,Math.round(n*(n<0?32768:32767)),true);}
   return data;
 }
-export async function songRender(music,{musicTheme='music.original'}={}) {
+export async function songRender(music,{musicTheme='music.original',soundstage='soundstage.original',ambience='ambience.none'}={}) {
   const Offline=globalThis.OfflineAudioContext||globalThis.webkitOfflineAudioContext;
   if(!Offline)throw new Error('Audio export is unavailable in this browser. Your saved song is safe.');
-  const context=new Offline(2,44100*26,44100),input=context.createGain(),low=context.createBiquadFilter(),high=context.createBiquadFilter(),master=context.createGain();
-  low.type='lowpass';low.frequency.value=2200;high.type='highpass';high.frequency.value=70;input.connect(low);low.connect(high);high.connect(master);master.connect(context.destination);
+  const context=new Offline(2,44100*26,44100),master=context.createGain();master.connect(context.destination);
+  const environment=audioEnvironment(context,master),input=environment.input;environment.stageSet(soundstage);environment.ambienceSet(ambience,true,25.5);
   master.gain.setValueAtTime(.7,0);master.gain.setValueAtTime(.7,22.5);master.gain.linearRampToValueAtTime(0,25.5);
-  const delay=context.createDelay(.6),wet=context.createGain();delay.delayTime.value=.21;wet.gain.value=.18;high.connect(delay);delay.connect(wet);wet.connect(master);
   const noise=context.createBuffer(1,Math.ceil(context.sampleRate*.15),context.sampleRate);let seed=8128;
   for(let i=0;i<noise.length;i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;noise.getChannelData(0)[i]=seed/2147483648-1;}
   const copy=songSnapshot(music),rack={context,musicTheme,musicInput:input,music:copy,percussionNoise:noise,phraseVoices:new Set(),voiceCount:0,voiceLimit:Infinity,playbackQueue:[]};let previous=67;
   for(let bar=0;bar<8;bar++) {const score=musicNextBar(copy,.35,previous);previous=score.nextPitch;for(const event of score.events)if(event.role)instrumentNote(rack,{...event,at:event.at+bar*BAR_SECONDS});}
-  const rendered=await context.startRendering();let peak=0;
+  const rendered=await context.startRendering();environment.dispose();let peak=0;
   for(let c=0;c<rendered.numberOfChannels;c++)for(const sample of rendered.getChannelData(c))peak=Math.max(peak,Math.abs(sample));
   // A Quiet pool still makes a listenable keepsake; retain dynamics and headroom.
   const gain=peak>0?Math.min(10,.75/peak):1;

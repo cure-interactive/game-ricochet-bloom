@@ -23,6 +23,16 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 - [Stats](player.md#stats)
 - [Skills](player.md#skills)
 
+## Cosmetic Rarity
+
+- [Cosmetic Rarity](cosmetic-rarity.md)
+- [Skins](cosmetic-rarity.md#skins)
+- [Trails](cosmetic-rarity.md#trails)
+- [Impacts](cosmetic-rarity.md#impacts)
+- [Instruments](cosmetic-rarity.md#instruments)
+- [Soundstages](cosmetic-rarity.md#soundstages)
+- [Ambience](cosmetic-rarity.md#ambience)
+
 ## Skills
 
 - [Skills](skill-tree.md)
@@ -198,6 +208,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Change Logs
 
 - [Change Logs](changelog.md)
+- [v3.30.0](changelog.md#v3-30-0)
 - [v3.29.4](changelog.md#v3-29-4)
 - [v3.29.3](changelog.md#v3-29-3)
 - [v3.29.2](changelog.md#v3-29-2)

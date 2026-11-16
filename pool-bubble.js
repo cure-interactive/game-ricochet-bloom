@@ -1,10 +1,10 @@
 import {turnHits} from './turn-hits.js?v=601ae75742860558121ef0d4bb066017b87650900bbeeb17e8bf8d359fbcdd5d';
-import {bubbleRender} from './bubble-render.js?v=f25a643baed6ffc965fc81a0b97759f70642eb68bf2a24a410ae8d0d4b0e7eb9';
-import {bubbleStep,bubbleOutline,bubbleFlow,bubbleHit} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
-import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers,poolBounds} from './engine.js?v=27a29e6d2cba5ed4d8a714591cb6751bcf16bb1cea5790adfc71e5146d80876e';
+import {bubbleRender,bubbleColor} from './bubble-render.js?v=d6880307de631dfa1357c83f8761b2bb7d6949cf62705023df35914c27cca07a';
+import {bubbleStep,bubbleOutline,bubbleFlow,bubbleHit} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
+import {RULE,COLORS,POWERS,effectGet,frozenHit,powerMarkers,poolBounds} from './engine.js?v=adc6d69546723ce9f5131bf144815dc0a4f6fc6682ee59318309f9f62ca6bed0';
 import {regionFrozen} from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import {BUBBLE_ROLES,bubbleRole} from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
-import {assetURL} from './asset.js?v=4bfc215978ddb2faa5f215313763b4a44ba960a1982aaa13417639cc1020a545';
+import {assetURL} from './asset.js?v=4a033879d71b1eddd370a80d7afdf3ea8124008623c9c74936a12526b13e3e9c';
 let sharedIcons;
 export function poolBubbleIcons(){
  return sharedIcons??=Object.fromEntries([['powerIcons','power',Object.keys(POWERS)],['roleIcons','ui',Object.keys(BUBBLE_ROLES)]].map(([name,folder,kinds])=>[name,Object.fromEntries(kinds.map(kind=>{const icon=new Image();icon.src=new URL(assetURL(`./icon/${folder}/${kind}.svg`),import.meta.url).href;return [kind,icon];}))]));
@@ -46,8 +46,13 @@ function frostRender(context,body, points, skin, frost,isGentle) {
 }
 export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGentle=false,skinColor='#f1f9d7',skinStyle='',portrait:portraitView=false,replayGlow=0,markings=true,powerMarkings=markings,icons=null}={}) {
   const {powerIcons,roleIcons}=markings||powerMarkings?(icons||poolBubbleIcons()):{};
-  const isSeed = body.id <= 0, isBubble = body.id === 0 && !!effectGet(game, 'bubble'), hue = isSeed ? body.id === -3 ? POWERS.echo.color : body.id < 0 ? POWERS.split.color : isBubble ? POWERS.bubble.color : (skinColor||'#f1f9d7') : COLORS[body.tone], radius = body.radius;
-  const isPermeable = !isSeed && frozenHit(game, body.id);
+  const isSeed=body.id<=0, bubbleTarget=body.id===0&&!!effectGet(game,'bubble')?1:0, blend=1-Math.exp(-Math.min(.08,Math.max(0,dt))*8);
+  membrane.bubbleAmount=(membrane.bubbleAmount||0)+(bubbleTarget-(membrane.bubbleAmount||0))*blend;
+  if(body.id===0){membrane.renderRadius??=body.radius;membrane.renderRadius+=(body.radius-membrane.renderRadius)*blend;body={...body,radius:membrane.renderRadius};}
+  const isBubble=membrane.bubbleAmount, hue = isSeed ? body.id === -3 ? POWERS.echo.color : body.id < 0 ? POWERS.split.color : bubbleColor(skinColor||'#f1f9d7',POWERS.bubble.color,isBubble).slice(0,7) : COLORS[body.tone], radius = body.radius;
+  const permeabilityTarget = !isSeed && frozenHit(game, body.id) ? 1 : 0;
+  membrane.permeability = (membrane.permeability||0) + (permeabilityTarget-(membrane.permeability||0))*(1-Math.exp(-Math.min(.08,Math.max(0,dt))* (permeabilityTarget?14:3.5)));
+  const isPermeable=membrane.permeability, alpha=(normal,frozen)=>Math.round(parseInt(normal,16)+(parseInt(frozen,16)-parseInt(normal,16))*isPermeable).toString(16).padStart(2,'0');
   membrane.glow = Math.max(0, membrane.glow - dt * 1.4);
   const light = Math.max(membrane.glow, replayGlow);
   bubbleStep(membrane, body, dt, false, bubbleFlow(body, game.bodies), !isSeed && (!!effectGet(game, 'stasis')?.targets.includes(body.id)||regionFrozen(game,body.id)));
@@ -58,8 +63,8 @@ export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGe
   if (!isSeed) {
     // A pearly nucleus and drifting flecks make each bubble feel inhabited.
     const x = body.x + membrane.core[0], y = body.y + radius * .1 + membrane.core[1];
-    const nucleus = context.createRadialGradient(x, y, 0, x, y, radius * .34); nucleus.addColorStop(0, hue + (isPermeable ? '20' : 'd0')); nucleus.addColorStop(1, hue + '00'); context.fillStyle = nucleus; context.beginPath(); context.arc(x, y, radius * .34, 0, Math.PI * 2); context.fill();
-    for (let index = 0; index < 5; index++) { const point = points[(index * 5 + body.id) % points.length]; context.beginPath(); context.arc(x + (point.x - body.x) * .45, y + (point.y - body.y) * .4, 1.4, 0, Math.PI * 2); context.fillStyle = hue + (isPermeable ? '25' : 'a0'); context.fill(); }
+    const nucleus = context.createRadialGradient(x, y, 0, x, y, radius * .34); nucleus.addColorStop(0, hue + alpha('d0','20')); nucleus.addColorStop(1, hue + '00'); context.fillStyle = nucleus; context.beginPath(); context.arc(x, y, radius * .34, 0, Math.PI * 2); context.fill();
+    for (let index = 0; index < 5; index++) { const point = points[(index * 5 + body.id) % points.length]; context.beginPath(); context.arc(x + (point.x - body.x) * .45, y + (point.y - body.y) * .4, 1.4, 0, Math.PI * 2); context.fillStyle = hue + alpha('a0','25'); context.fill(); }
   }
   if (!isSeed && membrane.frost > .01) frostRender(context,body, points, skin, membrane.frost,isGentle);
   if (isBubble) {
@@ -105,5 +110,5 @@ export function poolBubbleRender(context,game,body,membrane,dt,time,{gentle:isGe
     else { context.fillStyle = '#f3fff5'; context.font = '32px Arial'; context.textAlign = 'center'; context.textBaseline = 'middle'; context.fillText(p.symbol, 0, 0); }
     context.restore();
   }
-  if (!isSeed && turnHits(game).includes(body.id)) { context.strokeStyle = hue + (isPermeable ? '28' : '88'); context.lineWidth = 1; context.beginPath(); for (const [index, point] of points.entries()) { const x = body.x + (point.x - body.x) * 1.1, y = body.y + (point.y - body.y) * 1.1; if (!index) context.moveTo(x, y); else context.lineTo(x, y); } context.closePath(); context.stroke(); }
+  if (!isSeed && turnHits(game).includes(body.id)) { context.strokeStyle = hue + alpha('88','28'); context.lineWidth = 1; context.beginPath(); for (const [index, point] of points.entries()) { const x = body.x + (point.x - body.x) * 1.1, y = body.y + (point.y - body.y) * 1.1; if (!index) context.moveTo(x, y); else context.lineTo(x, y); } context.closePath(); context.stroke(); }
 }

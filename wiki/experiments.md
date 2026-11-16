@@ -4,6 +4,8 @@ Open **Main Menu → Gamemodes**. Standalone games appear directly. Related game
 
 ## Find and Favourite Games
 
+The shared selector offers **All**, **Favorites**, **Development**, and **Saved**, using grid, filled-star, beaker and floppy-disk icons. Tap a section or drag the highlight between sections. Saved opens your existing runs and notes. Browse pages use the available width with outer margins on larger screens.
+
 Use **Search All Gamemodes** from any collection to find an individual game by name, mechanic or idea number. Results open the game’s setup directly. **In Development** holds unfinished ideas, with an optional category filter; these cards do not imply playable rules.
 
 Press the star at the top-right of a game card to add it to **Favourites** without opening the game. A filled star means it is saved; press it again to remove it. Favourites opens individual games directly, including games from collections and the original modes. Stars are saved in this browser, separately for normal and Development profiles, and share the existing notebook’s favourites. Search also finds unfinished ideas, which can be starred for later.

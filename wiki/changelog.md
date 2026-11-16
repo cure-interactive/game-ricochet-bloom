@@ -6,6 +6,31 @@ See what changed in each version. Open a version for its player-facing updates.
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.30.0
+
+Build: 2026-11-16 04:33:01 UTC
+
+### Player Changes
+
+- Bubble shrinks and fades back to the player smoothly when its power ends. Stasis frost and translucency ease back to normal together; Swap preserves membrane visual tails. Wide Echo and Lasting Fan now state their reach and duration increases explicitly.
+- Music now has independent Instruments, Soundstages and Ambience tabs. Purchase acoustic spaces and quiet background atmospheres, preview combinations, and use them in gameplay, menus, Casual and newly prepared highlights.
+- Read the regular Wiki's Cosmetic Rarity guide for the rules for all six asset types.
+- Browse pages use available width with desktop margins. Campaign Play/Resume stays full width at the bottom of its content frame; track artwork uses round bubbles.
+- Gamemodes uses the shared All, Favorites, Development and Saved selector with matching icons. Sliding contrast crosses both text and icons smoothly.
+- The equipped skin card shows its trail from local motion. Large player previews have a circular drag range with progressively increasing resistance.
+- Updated the shared Play icon, filled the centers of Impacts and Casual icons, added Player Attributes artwork, and completed Wiki topic icons.
+- Equip Skin, Trail and Impact use regular icons. Preview trails survive release and fade naturally.
+- Back gesture feedback starts at your contact height. Scrollbar thickness eases on grab and release.
+
+<!-- development -->
+### Developer Notes
+
+- Music environment ownership is shared by realtime playback and WAV export; finite impulse responses, cached seamless noise loops, independent legacy-compatible selections and bounded auditions preserve save and lifecycle boundaries.
+- Campaign content and footer share a flex frame. Shared page shells default to available width; Wiki retains its prose measure.
+- Segmented masks and text use spatial gradients; the live player contour clips against the highlight. Initial edge feedback shares the move-position owner. Preview tethers use radial soft limits and inverse mapping when grabbed again.
+- Wiki topic lookup uses a static icon for every known page and explicit semantic topic overrides, with complete Contents coverage.
+<!-- /development -->
+
 ## v3.29.4
 
 Build: 2026-11-16 03:58:13 UTC

@@ -1,6 +1,7 @@
+import {gamemodeNavigation} from './gamemode-navigation.js?v=f03ba0e2439da29f290efa4fd8e7bf6ef90ff498a1f911005f6f971d6b3b6a8d';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { experimentMedal } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
-import { medalConditionsHTML } from './medal-ui.js?v=3c06de546792c4af0efcbbbed08955e94d3385d16949123b14b47ac18644917e';
+import { medalConditionsHTML } from './medal-ui.js?v=e8fa49c953be7279e0e38c8a83bda332e8cda4441b22046248191cac3299fc3d';
 import { trialConditions } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
 import { melodyStages } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { EXPERIMENT_MODES, DIFFICULTIES, experimentMode } from './experiment-mode.js?v=8691672ebafa0ee909e0adfbe1058bb7a29634ac3aef011c8c8a34ad0b9eb1bf';
@@ -41,7 +42,7 @@ export function experimentMount(host){
   function hub(){
     const l=library(),playable=Object.keys(EXPERIMENT_RECIPES).length;cardReviews=l.reviews;
     page('Saved Runs & Notes','experiment-hub',`<p class="experiment-lead">Continue a saved gamemode, revisit favourites, or keep your playtest notes here.</p><div class="experiment-toolbar"><button id="experiment-play" aria-pressed="${view==='play'}">Saved Runs</button><button id="experiment-catalogue" aria-pressed="${view==='catalogue'}">Find Notes</button><span>${playable} playable prototypes · 210 ideas · ${label(host.kind())} Profile</span></div><div id="experiment-main"></div>`);
-    breadcrumbs(null,'Saved Runs & Notes');
+    content.insertAdjacentHTML('afterbegin',gamemodeNavigation('saved'));
     $('experiment-play').onclick=()=>{view='play';hub();};$('experiment-catalogue').onclick=()=>{view='catalogue';hub();};
     const main=$('experiment-main');
     if(view==='play'){

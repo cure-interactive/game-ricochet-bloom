@@ -148,7 +148,7 @@ Upgrade in this order:
 
 - **Elastic Echo (Rare):** Give the delayed ghost a stronger elastic deflection and spring response. Smooth movement back toward its route is always included.
 - **Seeking Echo (Rare):** Gently steer the Echo toward nearby unhit bubbles beside its delayed path.
-- **Wide Echo (Epic):** Let the Echo stray farther from its delayed path. Combine with Seeking echo to reach more nearby bubbles.
+- **Wide Echo (Epic):** Increase Echo reach from 48 to 70 units from its delayed path. Combine with Seeking Echo to reach more nearby bubbles.
 - **Final Reply (Legendary):** When the main player settles, let the existing ghost finish its queued half-second route. It does not spawn another ghost, refresh itself or repeat already-earned contacts. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)
@@ -347,7 +347,7 @@ Upgrade in this order:
 
 - **Twin Split (Rare):** Add the second side seed.
 - **Wide Fan (Epic):** Launch at wider opposing angles for coverage.
-- **Lasting Fan (Epic):** Keep side seeds alive longer without narrowing their launch angles.
+- **Lasting Fan (Epic):** Increase side seed duration from 3 to 3.5 seconds without narrowing their launch angles.
 - **Reunion (Legendary):** Surviving side seeds bend toward the main player during their final half-second, allowing a converging finish without extra spawns. Requires three mastery uses: activate this power on a shot hitting at least three bubbles, or in a cleared Melody Journey pool.
 
 [All Powers](#find-a-power)

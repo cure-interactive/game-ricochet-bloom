@@ -1,11 +1,11 @@
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
-import {CosmeticVisual} from './cosmetic-visual.js?v=6741340dcdbdeb9b7b21d3fcd03716bc3a3116707fec766e58ae0070be444e3e';
+import {CosmeticVisual} from './cosmetic-visual.js?v=d2dfd408a59efedadf795dafbc89880e0da1cf9e6de3dd23277b9c9df98a7e02';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
-import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=385baeaa905192ab9831eba4809c9c2370062e45dd55402b892d2ea214a30bac';
+import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
-import {menuPoolView} from './menu-pool.js?v=d66dd93f756efc88d83a2916e508a39825ae5fec916e47ea0ae44d23f18e543e';
-import {skinSpringStep} from './skin-preview.js?v=2b30ad7549c09c8d1a42694639d09b9e8ddbdd4724b020e1721487a5c5c28ab8';
-import {bubbleRender,bubblePath} from './bubble-render.js?v=f25a643baed6ffc965fc81a0b97759f70642eb68bf2a24a410ae8d0d4b0e7eb9';
+import {menuPoolView} from './menu-pool.js?v=783c021cf6f11a52924efa9ab4e95a85fa34bc1887604a4ced50a0b5ea93b2dc';
+import {skinSpringStep} from './skin-preview.js?v=18ffd23993b6d5cca1ef07433534c7facb9f35b6108875ac98d28c6d420fb096';
+import {bubbleRender,bubblePath} from './bubble-render.js?v=d6880307de631dfa1357c83f8761b2bb7d6949cf62705023df35914c27cca07a';
 import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
 
 // Decorative instances own only visual state. The surrounding button or large
@@ -140,9 +140,10 @@ export function registerPlayerBubble(win=window){
    // Large previews follow their parent tether in screen space. Equipped icons
    // sample only their own movement, so scrolling/layout cannot emit trails.
    const rect=this.getBoundingClientRect();if(!rect.width)return;this.size=rect.width;
-   const parentScale=rect.width/(this.offsetWidth||rect.width),unit=this.size/28,x=(rect.left+rect.width/2)/unit,y=(rect.top+rect.height/2)/unit;
+   const measuredUnit=this.size/28,unit=this.trailUnit&&Math.abs(this.trailUnit-measuredUnit)<.001?this.trailUnit:measuredUnit;
+   const parentScale=rect.width/(this.offsetWidth||rect.width),x=(rect.left+rect.width/2)/unit,y=(rect.top+rect.height/2)/unit;
    if(this.trailUnit!==unit){this.trail.breakTrail();this.trailUnit=unit;}
-   const preview=!!this.closest('.skin-preview-interactive'),trails=preview||!this.closest('.skin-preview');
+   const preview=!!this.closest('.skin-preview-interactive'),trails=preview||!this.closest('.skin-preview')||!!this.closest('.skin-choice.is-equipped');
    const tx=preview?x:0,ty=preview?y:(this.hop||0),tox=this.body.x-tx,toy=this.body.y-ty;
    if(trails)this.trail.configure({trail:style.getPropertyValue('--player-trail').trim()});else this.trail.breakTrail();
    // Style observers repaint during a grabbed parent's transform. A repaint
@@ -178,7 +179,9 @@ export function registerPlayerBubble(win=window){
     // A separate contour follows the membrane, leaving its luminous rim intact.
     const gap=.8+84/this.size;
     const outside=points.map(point=>{const dx=point.x-body.x,dy=point.y-body.y,d=Math.hypot(dx,dy);return {x:point.x+dx/d*gap,y:point.y+dy/d*gap};});
-    c.strokeStyle=style.color;c.lineWidth=42/this.size;c.stroke(bubblePath(outside));
+    c.save();const start=style.getPropertyValue('--player-outline-start').trim(),end=style.getPropertyValue('--player-outline-end').trim();
+    if(start!==''&&end!==''){c.beginPath();c.rect(this.body.x-14+28*Number(start),-10000,28*(Number(end)-Number(start)),20000);c.clip();}
+    c.strokeStyle=style.color;c.lineWidth=42/this.size;c.stroke(bubblePath(outside));c.restore();
    }
   }
   disconnectedCallback(){

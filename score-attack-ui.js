@@ -1,8 +1,8 @@
 import { SCORE_BUDGETS, SCORE_DEFAULT, scoreTargets, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
-import { scoreRead } from './score-attack-store.js?v=57d08353b2dfac41f93e1d5e1d88bb8387652b1a9d3223e2d9ed7b07150e6d5e';
+import { scoreRead } from './score-attack-store.js?v=91c32040ebff52d0172d69c733500a09949982b068bf12d7060e225f58000a47';
 import { scoreConditions } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
-import { medalConditionsHTML } from './medal-ui.js?v=3c06de546792c4af0efcbbbed08955e94d3385d16949123b14b47ac18644917e';
-import { assetURL } from './asset.js?v=4bfc215978ddb2faa5f215313763b4a44ba960a1982aaa13417639cc1020a545';
+import { medalConditionsHTML } from './medal-ui.js?v=e8fa49c953be7279e0e38c8a83bda332e8cda4441b22046248191cac3299fc3d';
+import { assetURL } from './asset.js?v=4a033879d71b1eddd370a80d7afdf3ea8124008623c9c74936a12526b13e3e9c';
 
 export function scoreAttackMount({content,heading,storage,...host}) {
   const $=id=>content.querySelector('#'+id);
