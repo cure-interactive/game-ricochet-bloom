@@ -15,11 +15,12 @@ export function uiSoundFeedback(sound,doc=document,clock=()=>performance.now()){
 }
 // Components own value/geometry; one distance rule sets feedback density.
 export const uiWindMoved=(from,to,increment=false)=>increment||Math.abs(to-from)>=8;
-// Components report position and direction; ordinary container scrolling is silent.
+// Sliders and selectors keep their position/direction but use the lowest tap.
+// Ordinary container scrolling is silent; edge Back owns its stepped register.
 export function uiWind(target,delta,event,position){
  if(event?.isTrusted===false||!Number.isFinite(delta)||!delta||!Number.isFinite(position))return;
  const EventType=target.ownerDocument?.defaultView?.CustomEvent||globalThis.CustomEvent;
- target.dispatchEvent(new EventType('ui-wind',{bubbles:true,detail:{type:'wind',delta,position:Math.max(0,Math.min(1,position))}}));
+ target.dispatchEvent(new EventType('ui-wind',{bubbles:true,detail:{type:'wind',tone:'low',delta,position:Math.max(0,Math.min(1,position))}}));
 }
 // Drag completion has no native click on touch screens. Keep its finite
 // activation cue on the same delegated route as buttons.

@@ -1,4 +1,4 @@
-import {uiWindMoved} from './ui-sound.js?v=3590d73bc8b86d549ef02d07bfbe69b1109b1c53a71d1b582d0f5af09e46db20';
+import {uiWindMoved} from './ui-sound.js?v=4a2a1d353744aeef5ade6b422cecb774bf3d9a7eb3241eea60df1cf0b4cd4236';
 import { iconHTML } from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
 
 export function edgeBackReady(dx,dy,width) {

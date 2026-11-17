@@ -12,7 +12,7 @@ Buttons, navigation and settings changes play short UI sounds, including while p
 
 The main-menu background is a self-playing Free Play pool using your unlocked powers, player upgrades and equipped skin. It plays its musical arrangement, without collision or power sound effects. Sound and Music Volume control it too. Menu play does not earn Points or change your saved game or song.
 
-Dragging sliders, tab selectors or edge-pull Back plays the original four tones, rising and falling with position. Feedback occurs at each value increment or eight pixels of travel, whichever comes first. Scrolling a tab row without dragging its selector stays silent.
+Dragging sliders or tab selectors plays the lowest original tone at every position. Edge-pull Back keeps its four rising and falling tones. Feedback occurs at each value increment or eight pixels of travel, whichever comes first. Scrolling a tab row without dragging its selector stays silent.
 
 ## Accessibility and Display
 

@@ -1,7 +1,7 @@
 import {treeViewMount} from './tree-view.js?v=6c60e38ef55428e65f0e6c41b1a9ab2528659482fcbd918c531ef33c0d717bc3';
 import {mapCameraMount,nearestMapNode} from './tree-map.js?v=036d0d778228999f61ece74251473ecb2f0e6eda12f39d560a593090f6f89568';
 import {skillLegendHTML} from './skill-card.js?v=d91171ea80b72ed4649072bd2f1fe316190493aba55201b79df70cd6da29fa26';
-import {treeSwitchHTML} from './tree-switch.js?v=0be1ef30df08b2ad4cf1487a12fe8451014f7e3119ff7c4522541934f0e6801b';
+import {treeSwitchHTML} from './tree-switch.js?v=119456af51c3c858f432bd8494d48280fb10b8b53204f05a344665f5b5d95d8c';
 import {screenHeader} from './screen-header.js?v=7db753fa19626839b08a41fd5d2583821cbc0774ad262a06dd328bb3f050c988';
 import {buttonHTML} from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
 

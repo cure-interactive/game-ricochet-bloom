@@ -1,8 +1,8 @@
 import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
-import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=53654c1032e344ccd7e36e389ea7a596fd2bd534c3d1ea057c9fda9218a0b104';
+import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=fc705afab5fe68a8259a4f61d5a9d38147917615fe3eaaa6fd421a0111086fd5';
 import {skillNodeHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=d91171ea80b72ed4649072bd2f1fe316190493aba55201b79df70cd6da29fa26';
 export {skillStatsHTML} from './skill-card.js?v=d91171ea80b72ed4649072bd2f1fe316190493aba55201b79df70cd6da29fa26';
-import { treeSwitchMount } from './tree-switch.js?v=0be1ef30df08b2ad4cf1487a12fe8451014f7e3119ff7c4522541934f0e6801b';
+import { treeSwitchMount } from './tree-switch.js?v=119456af51c3c858f432bd8494d48280fb10b8b53204f05a344665f5b5d95d8c';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { purchaseComparison, skillStats } from './skill-comparison.js?v=e119e7889e9522c1824e23706bc469b3fbfd5be7702c253a00c4ee264ae53a73';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';

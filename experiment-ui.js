@@ -1,5 +1,5 @@
 import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
-import {gamemodeNavigation} from './gamemode-navigation.js?v=27434b2b049d51706891107fa6b580b2a2b796157d4ac33b8bc8c0bedb92eb71';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=7c63097db0f44ff3db9acfa3b7cbabd3aed8fddebf123e54668e0ca8a69652c1';
 import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
 import { experimentMedal } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
 import { medalConditionsHTML } from './medal-ui.js?v=06712ea7606e557f4f58ab781e63550ed1e2d5ec646b691e108df5a16d62d646';

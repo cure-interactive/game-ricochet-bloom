@@ -6,6 +6,22 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.34.7
+
+Build: 2026-11-17 01:42:53 UTC
+
+### Player Changes
+
+- Sliders and dragged tab selectors use only the lowest original feedback tone, whichever direction you move.
+- Keep feedback at each increment or eight pixels of travel, along with the separate release click.
+
+<!-- development -->
+### Developer Notes
+
+- Shared slider/selector movement events request the original 300 Hz tap without changing their reported position or direction. Preserve its 85ms sine envelope and 8% pitch rise.
+- Edge Back keeps its four-tone position-based register. Test the shared control-event route through oscillator scheduling at multiple positions and both directions.
+<!-- /development -->
+
 ## v3.34.6
 
 Build: 2026-11-17 01:29:43 UTC

@@ -265,7 +265,7 @@ export class PoolSound {
     this[last]=now;
     const back=kind==='back'||kind==='back-complete';
     const pitch=kind==='back-start'?300:back?440:kind==='confirm'?660:560;
-    if(wind||kind==='back-start'){const note=wind?uiWindPitch(kind.position):300;this.tone(note,note*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true,at:now+.006});}
+    if(wind||kind==='back-start'){const note=wind?uiWindPitch(kind.tone==='low'?0:kind.position):300;this.tone(note,note*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true,at:now+.006});}
     else this.uiTap(pitch,back?330:pitch*1.08,.09,now+.006);
     if(kind==='confirm')this.uiTap(880,880,.055,now+.061);
     this.uiCount=(this.uiCount||0)+1;
