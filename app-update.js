@@ -1,5 +1,5 @@
-import {GAME_VERSION} from './version.js?v=b9fad452b6c3de9b02953c29644f50859364ab7fbee32ffe50790390f0898d00';
-import {BUILD_TIME} from './build.js?v=9fe156243a1bf53b2af63d7b2b6cc8fd126892040b0c9fb0411455a49fc8bc40';
+import {GAME_VERSION} from './version.js?v=9092d4b04f2d57b76ad92d0915368ecf1d25af0ee0a7ac3829bbb25924392c89';
+import {BUILD_TIME} from './build.js?v=3a8023776ddcb3e20ce6448f1c681e135780f75d81c947d6d7da5e4aac7eb99e';
 import {buttonHTML,iconHTML} from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
 export const isAppView=win=>!!win.navigator?.standalone||!!win.matchMedia?.('(display-mode: standalone)').matches||!!win.matchMedia?.('(display-mode: fullscreen)').matches;
 export function newerBuild(remote,version=GAME_VERSION,time=BUILD_TIME){
@@ -38,7 +38,7 @@ export function updateLifecycleMount({enabled=()=>true,check,onState=()=>{}},doc
  function schedule(){cancel();if(!disposed&&!doc.hidden&&enabled())timer=win.setTimeout(()=>{timer=null;run(true);},250);}
  doc.addEventListener('visibilitychange',schedule);win.addEventListener('focus',schedule);win.addEventListener('pageshow',schedule);
  schedule();
- return {run:()=>run(false),changed:schedule,destroy(){disposed=true;cancel();doc.removeEventListener('visibilitychange',schedule);win.removeEventListener('focus',schedule);win.removeEventListener('pageshow',schedule);}};
+ return {ready:()=>run(true),run:()=>run(false),changed:schedule,destroy(){disposed=true;cancel();doc.removeEventListener('visibilitychange',schedule);win.removeEventListener('focus',schedule);win.removeEventListener('pageshow',schedule);}};
 }
 export function appUpdateMount({save,getAutomatic=()=>true,setAutomatic=()=>true},doc=document,win=window){
  const help=doc.querySelector('.settings-help');if(!help)return;

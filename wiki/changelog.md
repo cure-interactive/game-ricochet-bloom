@@ -6,6 +6,23 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.34.4
+
+Build: 2026-11-17 00:19:01 UTC
+
+### Player Changes
+
+- Loading stays over your saved page while it is restored and updates are checked, then fades away to reveal it. The main menu no longer plays a separate entrance animation.
+- Moving between buttons, closing dialogs and pressing Continue no longer cuts off sound as though you had left the app.
+
+<!-- development -->
+### Developer Notes
+
+- Keep the startup cover in the browser top layer above restored dialogs; reveal all prepared destinations beneath one 450ms opacity fade, with a bounded completion fallback.
+- Mount and await the initial automatic update check after navigation restoration. An update saves the restored destination and keeps the outgoing build covered until reload. Offline checks and opt-out still allow startup.
+- Filter captured blur by its window target before retiring either audio graph. Descendant control blur, including focus transfer and disabled Continue, must not enter background recovery. Physical iPhone output remains a separate verification requirement.
+<!-- /development -->
+
 ## v3.34.3
 
 Build: 2026-11-16 22:10:57 UTC

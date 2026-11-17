@@ -54,8 +54,11 @@ export function audioRecoveryMount(sound,doc=document,win=window,active=()=>true
  // the detached graph must retain those voices until its output fade finishes.
  doc.addEventListener('visibilitychange',departure,true);
  doc.addEventListener('visibilitychange',visible);win.addEventListener('pageshow',visible);win.addEventListener('focus',visible);bind();
- win.addEventListener('pagehide',background,true);win.addEventListener('blur',leave,true);
+ // Captured blur also sees every input/button losing focus. Only the window
+ // departing may retire audio; ordinary focus movement must keep its graph.
+ const windowBlur=event=>{if(!event.target||event.target===win)leave(event);};
+ win.addEventListener('pagehide',background,true);win.addEventListener('blur',windowBlur,true);
  doc.addEventListener('freeze',background,true);
  if(doc.hasFocus?.())visible();
- return ()=>{disposed=true;context?.removeEventListener?.('statechange',changed);for(const name of gestures)doc.removeEventListener(name,activate,true);doc.removeEventListener('visibilitychange',departure,true);doc.removeEventListener('visibilitychange',visible);doc.removeEventListener('freeze',background,true);win.removeEventListener('pageshow',visible);win.removeEventListener('focus',visible);win.removeEventListener('pagehide',background,true);win.removeEventListener('blur',leave,true);};
+ return ()=>{disposed=true;context?.removeEventListener?.('statechange',changed);for(const name of gestures)doc.removeEventListener(name,activate,true);doc.removeEventListener('visibilitychange',departure,true);doc.removeEventListener('visibilitychange',visible);doc.removeEventListener('freeze',background,true);win.removeEventListener('pageshow',visible);win.removeEventListener('focus',visible);win.removeEventListener('pagehide',background,true);win.removeEventListener('blur',windowBlur,true);};
 }

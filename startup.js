@@ -36,6 +36,15 @@
   var details = document.getElementById('startup-details');
   var retry = document.getElementById('startup-retry');
   var body = document.body;
+  // A restored modal is in the browser top layer, above any ordinary z-index.
+  // Keep the splash in that same layer and raise it after restoration finishes.
+  function cover() {
+    if (!panel.showPopover) return;
+    panel.setAttribute('popover', 'manual');
+    panel.hidePopover();
+    panel.showPopover();
+  }
+  cover();
   var exitTimer;
   var started = Date.now();
   var complete = false;
@@ -81,6 +90,7 @@
     complete = true;
     clearTimeout(exitTimer);
     body.dataset.startup = 'ready';
+    if (panel.hidePopover) panel.hidePopover();
     panel.hidden = true;
     panel.style.display = 'none';
     var home = document.getElementById('main-menu');
@@ -105,17 +115,15 @@
     progress.setAttribute('data-complete', 'true');
     progress.setAttribute('aria-valuenow', '100');
     progress.setAttribute('aria-label', 'Game ready');
-    var reduced = false;
-    // Give cached loads a readable beat, then let the splash clear before the
-    // menu arrives. Keep input blocked until every entrance has settled.
+    // The restored destination is already laid out. Fade this cover only;
+    // neither the main menu nor another destination gets a second entrance.
     setTimeout(function () {
       requestAnimationFrame(function () { requestAnimationFrame(function () {
-        body.dataset.startupMotion = reduced ? 'reduced' : 'full';
+        cover();
         panel.inert = true;
         body.dataset.startup = 'entering';
-        // A short opacity-only fade also works with Gentle/reduced motion.
-        exitTimer = setTimeout(finish, reduced ? 450 : 2300);
+        exitTimer = setTimeout(finish, 650);
       }); });
-    }, Math.max(0, (reduced ? 350 : 900) - (Date.now() - started)));
+    }, Math.max(0, 350 - (Date.now() - started)));
   }, { once: true });
 }());

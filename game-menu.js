@@ -1,9 +1,9 @@
 import {menuSummaryRender} from './menu-summary.js?v=ae45281d84da1bab2004670a7e08413c46eec38f2c344291b3c7b345710e5910';
 import {cosmeticLoadout} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
-import { menuLayoutMount } from './menu-title.js?v=e57bd2bd1cda511f57d824490ccdbb2870a60528d40712e5943f80e4da4ac785';
+import { menuLayoutMount } from './menu-title.js?v=d8a4434797dc247a3cdde9889c3794528b3ad14a988b95a5816c3e4b0008fcf4';
 import { pageHistory } from './page-history.js?v=54c1c0aaacb43da66e5503f9ea5ea7948dfd1efd2ededbc6b416434a1792e935';
 import { buttonHTML } from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
-import { menuBackgroundMount } from './menu-background.js?v=ea19b082c64336ddef6793c3a00fc13aba7b072ff79b3b3aa242385d412a1dd4';
+import { menuBackgroundMount } from './menu-background.js?v=1f47bbc88dc7bb7a065dc40d793f818736779efdcb740cb4128a73d82c1eb4d7';
 
 import { driftMount } from './drift-ui.js?v=db51f5e0dd1e9baef6c5a54b022f6b55cd872ef230798a407edf15fd557a2657';
 
