@@ -1,16 +1,16 @@
-import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
-import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=3b4a9c217ad2120a306b4cbe8fb902a38e5caa80c2df201ea64ae4c3f310e86c';
-import {skillNodeHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=d91171ea80b72ed4649072bd2f1fe316190493aba55201b79df70cd6da29fa26';
-export {skillStatsHTML} from './skill-card.js?v=d91171ea80b72ed4649072bd2f1fe316190493aba55201b79df70cd6da29fa26';
-import { treeSwitchMount } from './tree-switch.js?v=6b3c6ac08f059fe36591c8ccf6cae8e5480db26f7f8fa0eb3ef1fa13f93bf050';
-import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { purchaseComparison, skillStats } from './skill-comparison.js?v=e119e7889e9522c1824e23706bc469b3fbfd5be7702c253a00c4ee264ae53a73';
+import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
+import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=34d590ffe7ff5f8c76d3854a62d36a4080737a92fcec3682c5da8f5c0d8c7794';
+import {skillNodeHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=7c7f8558b13f8038ec967a3c9ce5391a8c18dca43ea54df0fd62e6f7c63b359c';
+export {skillStatsHTML} from './skill-card.js?v=7c7f8558b13f8038ec967a3c9ce5391a8c18dca43ea54df0fd62e6f7c63b359c';
+import { treeSwitchMount } from './tree-switch.js?v=d1d4dc9266fa245530c027ce5142d5d1f541bd0ac46081b40d16d7a9e9f9e84c';
+import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
+import { purchaseComparison, skillStats } from './skill-comparison.js?v=750d7ba8294087d6c9efcac6dafcaa35f94c7601578ca34df112cbe12fcffe08';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { treeLayout, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=036d0d778228999f61ece74251473ecb2f0e6eda12f39d560a593090f6f89568';
+import { treeLayout, researchRoute, researchBounds, researchLayout } from './tree-map.js?v=7ec02d1e9cd146b9e061b453c9b7b2376be706aed2d2d0ad8b925ca88451890f';
 import { POWER_TREES } from './power-tree.js?v=2a64a8c4a0ad6dc1f93d8385f13952b46869143cbf7dc606ecd40164a825481b';
 import { profilePurchase, profileSummary } from './profile.js?v=6e2f55bc3e634f44abda0bba37ac84a494ca47497058fe0850adbf1df9ec6610';
-import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=49c69ba715be180502075f8d03373783a6385189ac7faa63780fbe40e8c853a8';
-import { iconHTML } from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
+import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=9833b54af374a8b337f5b85e020f9c1f8549d4a4a2e51944787cba2936ff9ed8';
+import { iconHTML } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn Points in any game mode.','mastery':'Activate this power on 3 shots that hit at least 3 bubbles. Melody Journey clears also count.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
 
 // Explain the same gate used by purchases, beside the affected power.

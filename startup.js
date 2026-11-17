@@ -45,7 +45,7 @@
     panel.showPopover();
   }
   cover();
-  var exitTimer;
+  var exitTimer, enterTimer, cycle = 0;
   var started = Date.now();
   var complete = false;
   var ready = false;
@@ -86,7 +86,7 @@
   window.addEventListener('error', onError, true);
   window.addEventListener('ricochet-startup-failed', onFailure);
   function finish() {
-    if (complete) return;
+    if (complete || body.dataset.startup !== 'entering') return;
     complete = true;
     clearTimeout(exitTimer);
     body.dataset.startup = 'ready';
@@ -98,6 +98,21 @@
   }
   panel.addEventListener('animationend', function (event) {
     if (event.target === panel && (event.animationName === 'startup-exit' || event.animationName === 'startup-fade-out')) finish();
+  });
+  window.addEventListener('ricochet-loading', function () {
+    // The same cover owns startup and return-time update checks. Invalidate
+    // the previous fade so a late frame cannot reveal an unfinished return.
+    cycle++;
+    clearTimeout(exitTimer);clearTimeout(enterTimer);
+    complete = false;ready = false;
+    started = Date.now();
+    body.dataset.startup = 'loading';
+    panel.hidden = false;panel.inert = false;panel.style.display = '';
+    panel.setAttribute('aria-busy', 'true');
+    progress.setAttribute('data-complete', 'false');
+    progress.removeAttribute('aria-valuenow');
+    progress.setAttribute('aria-label', 'Loading Game');
+    cover();
   });
   window.addEventListener('ricochet-ready', function () {
     if (ready) return;
@@ -114,16 +129,18 @@
     progress.hidden = false;
     progress.setAttribute('data-complete', 'true');
     progress.setAttribute('aria-valuenow', '100');
-    progress.setAttribute('aria-label', 'Game ready');
+    progress.setAttribute('aria-label', 'Game Ready');
     // The restored destination is already laid out. Fade this cover only;
     // neither the main menu nor another destination gets a second entrance.
-    setTimeout(function () {
+    var current = cycle;
+    enterTimer = setTimeout(function () {
       requestAnimationFrame(function () { requestAnimationFrame(function () {
+        if (current !== cycle || !ready) return;
         cover();
         panel.inert = true;
         body.dataset.startup = 'entering';
         exitTimer = setTimeout(finish, 650);
       }); });
     }, Math.max(0, 350 - (Date.now() - started)));
-  }, { once: true });
+  });
 }());

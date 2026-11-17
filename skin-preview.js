@@ -1,10 +1,10 @@
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
-import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
+import {escapeHTML} from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
 
 // A presentation-only tether, shared by the two large skin viewers.
 export function skinPreviewHTML(name){
- return `<div class="skin-preview skin-preview-large skin-preview-interactive"><i role="button" tabindex="0" aria-label="${escapeHTML(name)} player preview. Drag or tap to bounce; arrow keys also move it."><player-bubble></player-bubble></i></div>`;
+ return `<div class="skin-preview skin-preview-large skin-preview-interactive"><i role="button" tabindex="0" aria-label="${escapeHTML(name)} player preview. Drag or tap to bounce; arrow keys also move it."><player-bubble motion="tether"></player-bubble></i></div>`;
 }
 export function skinSpringStep(state,seconds,{stiffness=150,damping=25}={}){
  const next={...state};
@@ -26,7 +26,7 @@ export function skinPreviewMount(element){
  const bubble=orb.querySelector('player-bubble');
  const renderReady=frameGate();
  let state={x:0,y:0,vx:0,vy:0},pointer=null,frame=0,last=0,destroyed=false,activity;
- function paint(){const unit=Math.max(1,orb.clientWidth)/28;bubble?.tether?.(state.x/unit,state.y/unit);bubble?.velocity?.(state.vx/(Math.max(1,orb.clientWidth)/28),state.vy/(Math.max(1,orb.clientWidth)/28));orb.style.transform=`translate(${state.x.toFixed(2)}px,${state.y.toFixed(2)}px)`;}
+ function paint(){const unit=Math.max(1,orb.clientWidth)/28;bubble?.motionSet?.({x:state.x/unit,y:state.y/unit,vx:state.vx/unit,vy:state.vy/unit});orb.style.transform=`translate(${state.x.toFixed(2)}px,${state.y.toFixed(2)}px)`;}
  function stop(){if(frame)win.cancelAnimationFrame(frame);frame=0;last=0;}
  function releaseCapture(){const id=pointer?.id;pointer=null;orb.classList.remove('is-dragging');if(id!==undefined&&orb.hasPointerCapture(id))orb.releasePointerCapture(id);}
  function reset(){stop();releaseCapture();bubble?.reset?.();state={x:0,y:0,vx:0,vy:0};paint();}

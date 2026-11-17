@@ -3,7 +3,7 @@
 #startup[hidden]{display:none!important}
 .startup-content{flex:none;width:min(440px,100%);margin:auto}
 #startup h1{margin:12px 0;font-size:clamp(32px,7vw,48px);font-weight:500;letter-spacing:-1px;line-height:1.15;color:#d8f8ed}
-.startup-eyebrow{margin:22px 0 0;text-transform:uppercase;font-size:10px;letter-spacing:3px;color:#9fdcca}
+.startup-eyebrow{margin:22px 0 0;font-size:10px;letter-spacing:3px;color:#9fdcca}
 #startup-message{margin:16px 0 0;min-height:1.5em;font-size:16px;line-height:1.6;color:#b2c9d2}
 .startup-bubbles{position:relative;width:160px;height:130px;margin:auto;animation:startup-drift 2.4s ease-in-out infinite}
 .startup-bubbles i{position:absolute;display:block;width:76px;height:76px;border-radius:50%;border:1px solid #b9f8e8bb;box-shadow:inset 6px 7px 16px #d4ffed18,0 0 35px #8fe6c31c;background:radial-gradient(circle at 32% 26%,#e7ffe94d,transparent 40%),#5fbeaa18}

@@ -1,4 +1,4 @@
-import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
+import {escapeHTML} from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 // Continue and the pause status card share the same image/text hierarchy.
 export function menuSummaryRender(element,{artwork,title,detail='',progress=''}){
  const signature=JSON.stringify([artwork,title,detail,progress]);

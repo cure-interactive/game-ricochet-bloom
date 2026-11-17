@@ -55,7 +55,7 @@ body[data-left-handed=true] .pool-shell > #pause { left: 8px; right: auto; }
 .edge-feedback #edge-idle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .pool-shell > .edge-feedback .toast { justify-items: start; text-align: left; border-radius: 12px; background: #0c2028e8; padding: 4px 8px; font-size: 11px; }
 .hud-actions { grid-row: 3; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1.1fr); align-items: stretch; gap: 6px; min-height: 52px; padding: 4px 8px; }
-.hud-actions .hud-label, .hud-actions .power-dock > button .button-label { display: block; color: #adc3cf; font-size: 10px; line-height: 12px; letter-spacing: .4px; text-transform: uppercase; }
+.hud-actions .hud-label, .hud-actions .power-dock > button .button-label { display: block; color: #adc3cf; font-size: 10px; line-height: 12px; letter-spacing: .4px; }
 .hud-actions .power-dock { grid-area: 1 / 1; width: auto; min-height: 44px; display: flex; justify-content: center; align-items: flex-end; padding: 15px 0 2px; }
 .hud-actions .power-dock > button { min-height: 44px; border-radius: 8px; }
 .hud-actions .power-dock > button > .ui-icon { display: none; }

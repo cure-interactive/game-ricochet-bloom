@@ -1,28 +1,28 @@
-import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
-import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import { screenHeader } from './screen-header.js?v=7db753fa19626839b08a41fd5d2583821cbc0774ad262a06dd328bb3f050c988';
+import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
+import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
+import { screenHeader } from './screen-header.js?v=67a25012d00131734bc7cf604e403b29da6580e9d3b12d0154df0a3e73f7a5fd';
 import { pageHistory } from './page-history.js?v=54c1c0aaacb43da66e5503f9ea5ea7948dfd1efd2ededbc6b416434a1792e935';
-import { iconHTML } from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
-import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=fffd523cb4433e8330de32e3dc5b9abbf318004a0761ecc6a8383ede0aa3477d';
+import { iconHTML } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
+import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=b32bb97d33160ef0792f7e89af7d147fa82cde8c0047be12c16c1498827967e5';
 
 export const WIKI_PAGES = Object.freeze({
   'cosmetic-rarity':{title:'Cosmetic Rarity',url:'./wiki/cosmetic-rarity.md?v=347ed0bb71c4b93e0c2c9e947ead96c5714dd752fb4a35658766abb5bbd30543'},
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=e0bb6012056671a086e8d21d4f412f0264d0ee16b5bba5fc1bcd18a9388d8bc9' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=686bdec744b1a28bcd9eb2049bd0ecae02cb98237da548d9e594edb27fdb3753' },
   player: { title: 'Player', url: './wiki/player.md?v=0c38f46b581192d96145cd1c1a85569ccc571ae4dc94401b6546a67af077b787' },
-  developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=c3534dd32e29934e79c3ee286ccbb6d73bba97dffc2d8774cb86ce2b8a976557' },
+  developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=e7cdfb724aba5b6dc5e487742b7ca785d6d2f90ff84ac67cad21c79d8623612d' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=f43259f3d42301b05c30588b2e1335e8ec1ca9d0f2f1a3a7a2287bbd4e709eca' },
   'score-attack': { title: 'Score Attack', url: './wiki/score-attack.md?v=d6278e8639a6e191b88cb7e39346754f332346f490fa3678f44913799e749137' },
   experiments: { title: 'Play the Experiments', url: './wiki/experiments.md?v=dce80e9365221d4fdfc91886aae8ea149d80c477e02b246bc914d4e64170368d' },
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=76d41fb0cd2c9a17bde4187f69e4b31570e5d49a5c33b4e2a32053553185f457' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=941b0fdf11b0e94d22e69c8e45dc214c953cc790f3ba805d876bf03443103c12' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=f8d4f4da25422a5c3e1ac0db2b7f9c72989886805931e2bb9fc1e56089358fa8' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=f13b5bc6806c5914649c15e08360e74303bc4705ff92fb94ab08cff96082eb49' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=c7d2965c7a1c36d0a7891df9b8ca49e03594d78e63c17a06e1c41cfecead07a9' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=7f0d55d08094b85dbfa312fd3cf36379a0666676b0fd6a8c04feca8f0ce86c19' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=3226c8202c5ec9c396c1c4abe0e5e00d931094617edf98ea6ff8945e8feff623' },
-  'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=878a330d1e22b6c26b9deea8ff2e2958bf4a624ee9fc62f97817125c958f832a' },
+  'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=e970bf14f0bb3b13e286d4d3ae7f50beb8475f3c76c30d07d575172670601ac0' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=85f25a8d2896fbb481d837d5b7bb3995f7aa330e30fcb681bd61f3c366732e51' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=3f22ae11eb5e663f968b9ecbb328f86bebcdd630e84b4b72dd1dd80e6d213431' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=f1c83eddbfd9ba288cf4d8061b8328cff2a65e8c71cd50b082ea1a0dc43f8529' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.
 export const WIKI_SOURCES = Object.freeze([
@@ -106,7 +106,7 @@ export function revealWikiHeading(heading){
 }
 export function wikiMount(host) {
   const dialog=document.createElement('dialog');dialog.id='wiki-dialog';dialog.setAttribute('aria-labelledby','wiki-title');
-  dialog.innerHTML=`${screenHeader({icon:'book',className:'wiki-heading',title:'Wiki',titleId:'wiki-title',back:`<button type="button" data-wiki-back aria-label="Back">${iconHTML('arrow-left')}<span>Back</span></button>`,actions:`<button type="button" data-wiki-contents>${iconHTML('list')}<span>Contents</span></button>`})}<article class="wiki-article" tabindex="0" aria-label="Wiki page"></article>`;
+  dialog.innerHTML=`${screenHeader({icon:'book',className:'wiki-heading',title:'Wiki',titleId:'wiki-title',back:`<button type="button" data-wiki-back aria-label="Back">${iconHTML('arrow-left')}<span>Back</span></button>`,actions:`<button type="button" data-wiki-contents>${iconHTML('list')}<span>Contents</span></button>`})}<article class="wiki-article" tabindex="0" aria-label="Wiki Page"></article>`;
   document.body.append(dialog);
   const article=dialog.querySelector('article'), title=dialog.querySelector('h2'), contents=dialog.querySelector('[data-wiki-contents]');
   let current={page:'wiki',anchor:''}, request=null;const history=pageHistory(current,target=>target.page);
@@ -116,7 +116,7 @@ export function wikiMount(host) {
     if(!available(target.page)){target={page:'wiki',anchor:''};history.reset(target);remember=false;}
     if(remember)history.visit(target);current=target;request?.abort();const active=new AbortController();request=active;
     title.textContent=WIKI_PAGES[target.page].title;contents.hidden=target.page==='contents';article.setAttribute('data-wiki-view',target.page);
-    article.setAttribute('aria-busy','true');article.innerHTML='<div class="loading-state"><div class="loading-bar" role="progressbar" aria-label="Loading Wiki page"><span></span></div></div>';article.scrollTop=0;
+    article.setAttribute('aria-busy','true');article.innerHTML='<div class="loading-state"><div class="loading-bar" role="progressbar" aria-label="Loading Wiki Page"><span></span></div></div>';article.scrollTop=0;
     try {
       const response=await fetch(WIKI_PAGES[target.page].url,{cache:'no-cache',signal:active.signal});
       if(!response.ok)throw new Error('Page unavailable');const source=await response.text();

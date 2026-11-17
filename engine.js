@@ -134,6 +134,20 @@ function blasterStep(state, events) {
 export function effectGet(state, kind) { return state.effects.find(effect => effect.kind === kind); }
 export function frozenHit(state, id) { return state.isFlying && state.chain.includes(id) && (!!effectGet(state, 'stasis')?.targets.includes(id)||regionFrozen(state,id)); }
 export function seedBodies(state) { return [state.bodies[0], ...(effectGet(state, 'split')?.shards || []), ...(effectGet(state, 'echo')?.isReady ? [effectGet(state, 'echo').ghost] : [])]; }
+export function seedIsPhysical(body) { return body.id >= -2 && body.id <= 0; }
+// Position has one owner at a time. Derive it where consumed: a contact can
+// activate a power during this tick, and expiry can return ownership to physics.
+// Motion ownership does not imply collision or collection permission: Echo
+// still scores, and Rewind contacts remain live while it follows its route.
+export function bodyMotion(state, body) {
+  if (body.id === -3) return 'echo';
+  if (body.id === 0) {
+    if (effectGet(state, 'slingshot')) return 'slingshot';
+    if (effectGet(state, 'rewind')?.returning) return 'rewind';
+  }
+  if (effectGet(state, 'orbit')?.satellites.includes(body.id)) return 'orbit';
+  return 'physics';
+}
 function flightCoast(age) {
   const t = Math.max(0, Math.min(1, (age - (RULE.flightSeconds - RULE.settleSeconds)) / RULE.settleSeconds));
   return t * t * (3 - 2 * t);
@@ -144,13 +158,12 @@ export function flightDrag(age) {
 }
 // Shared by steering and its target cue; selection has no hidden state to save.
 export function homingTarget(state, seed) {
-  if (!state.isFlying || !effectGet(state, 'homing') || seed.id === -3 ||
-      seed.id === 0 && (effectGet(state, 'slingshot') || effectGet(state, 'rewind')?.returning)) return null;
+  if (!state.isFlying || !effectGet(state, 'homing') || bodyMotion(state, seed) !== 'physics') return null;
   const speed = Math.hypot(seed.vx, seed.vy);
   if (speed < 45) return null;
   let target = null, best = Infinity;
   for (const body of liveBubbles(state)) {
-    if (state.chain.includes(body.id) || effectGet(state, 'orbit')?.satellites.includes(body.id)) continue;
+    if (state.chain.includes(body.id) || bodyMotion(state, body) === 'orbit') continue;
     const dx = body.x - seed.x, dy = body.y - seed.y, distance = Math.hypot(dx, dy);
     if (distance < 1 || distance > skillConfig(state,'homing').reach) continue;
     const ahead = (dx * seed.vx + dy * seed.vy) / (distance * speed);
@@ -235,7 +248,7 @@ function effectStep(state, events) {
     const turn = drunkSway(RULE.drunkSeconds - effect.seconds,config) - drunkSway(RULE.drunkSeconds - previousSeconds,config);
     const cos = Math.cos(turn), sin = Math.sin(turn);
     for (const body of [seed, ...(effectGet(state, 'split')?.shards || [])]) {
-      if (body.id === 0 && effectGet(state, 'slingshot')) continue;
+      if (bodyMotion(state, body) === 'slingshot') continue;
       const vx = body.vx; body.vx = vx * cos - body.vy * sin; body.vy = vx * sin + body.vy * cos;
     }
   }
@@ -384,7 +397,7 @@ function scoreContact(state, body, collector, events) {
   const relay=effectGet(state,'relay');
   if(relay && collector.id<=0 && relay.remaining>0) {relay.armed.push(body.id);relay.remaining--;}
   const speed=Math.hypot(collector.vx,collector.vy),boost=Math.max(1,390/Math.max(1,speed));
-  if(speed>1 && collector.id<=0 && collector.id!==-3 && !effectGet(state,'slingshot')) {collector.vx*=boost;collector.vy*=boost;}
+  if(speed>1 && seedIsPhysical(collector) && !effectGet(state,'slingshot')) {collector.vx*=boost;collector.vy*=boost;}
   if(chain===RULE.bloomNotes) {
     const blaster=effectGet(state,'blaster');
     if(blaster && skillFlags(state,'blaster').capstone && !blaster.reloaded) {blaster.ammo=skillConfig(state,'blaster').ammo;blaster.reloaded=true;events.push({type:'blaster-reload',x:state.bodies[0].x,y:state.bodies[0].y});}
@@ -529,7 +542,7 @@ export function physicsStep(state) {
   const bodies = [...seedBodies(state), ...liveBubbles(state)];
   for (const body of bodies) {
     body.cooldown = Math.max(0, body.cooldown - dt);
-    if (body.id === -3 || effectGet(state, 'orbit')?.satellites.includes(body.id) || body.id === 0 && (effectGet(state, 'slingshot') || effectGet(state,'rewind')?.returning)) continue;
+    if (bodyMotion(state, body) !== 'physics') continue;
     if(state.mode==='waves'&&body.id>0){const speed=Math.hypot(body.vx,body.vy),target=waveConfig(state.wave.number).speed;if(speed>0&&speed<target&&!effectGet(state,'stasis')){body.vx*=1+dt*.65;body.vy*=1+dt*.65;}}
     if (body.id > 0) { body.vx += Math.cos(state.tick * .002 + body.id * 1.7) * 4 * dt; body.vy += Math.sin(state.tick * .0025 + body.id * 2.1) * 4 * dt; }
     const drag = Math.exp(-(body.id <= 0 ? state.isFlying ? playerCruiseDrag(state.playerBuild,state.flightAge,flightDrag(state.flightAge))*(effectGet(state,'comet')&&state.flightAge>3?skillConfig(state,'comet').lateDrag:1) : 3 : (effectGet(state, 'stasis')?.targets.includes(body.id)||regionFrozen(state,body.id)) ? 5 : .65) * dt);
@@ -567,7 +580,7 @@ export function physicsStep(state) {
     }
     if (speed > 25) { if (body.id <= 0 && state.isFlying) state.banks++; skillWall(state,body,normalX,normalY,events);events.push({ type: 'wall', id: body.id, x: body.x, y: body.y, nx: normalX, ny: normalY, speed }); }
   }
-  if (effectGet(state, 'portal')?.cooldown === 0 && !effectGet(state, 'slingshot') && !effectGet(state,'rewind')?.returning) {
+  if (effectGet(state, 'portal')?.cooldown === 0 && bodyMotion(state, seed) === 'physics') {
     const effect = effectGet(state, 'portal');
     for (const [index, gate] of effect.gates.entries()) if (Math.hypot(seed.x - gate.x, seed.y - gate.y) < skillConfig(state,'portal').gateRadius + seed.radius) {
       const exit = effect.gates[1 - index], speed = Math.hypot(seed.vx, seed.vy);
@@ -581,14 +594,15 @@ export function physicsStep(state) {
   for (let pass = 0; pass < 3; pass++) for (let first = 0; first < bodies.length; first++) for (let second = first + 1; second < bodies.length; second++) {
     const a = bodies[first], b = bodies[second];
     if(a.popped||b.popped)continue;
-    if (a.id <= 0 && b.id <= 0 || a.id === 0 && effectGet(state, 'slingshot')) continue;
-    if (effectGet(state,'orbit')?.satellites.some(id=>id===a.id||id===b.id)) continue;
+    if (a.id <= 0 && b.id <= 0) continue;
+    const motion=bodyMotion(state,a);
+    if (motion === 'slingshot' || motion === 'orbit' || bodyMotion(state,b) === 'orbit') continue;
     const dx = b.x - a.x, dy = b.y - a.y;
     const distance = Math.hypot(dx, dy), target = a.radius + b.radius;
     if (distance >= target) continue;
     // Physical split seeds collect from the same set; the delayed Echo only scores.
-    const marker = a.id <= 0 && a.id >= -2 && state.isFlying ? state.power.markers.find(marker => marker.target === b.id) : null;
-    const isFrozenContact = a.id <= 0 && a.id >= -2 && state.isFlying && (effectGet(state, 'stasis') || marker?.kind === 'stasis'||regionFrozen(state,b.id));
+    const marker = seedIsPhysical(a) && state.isFlying ? state.power.markers.find(marker => marker.target === b.id) : null;
+    const isFrozenContact = seedIsPhysical(a) && state.isFlying && (effectGet(state, 'stasis') || marker?.kind === 'stasis'||regionFrozen(state,b.id));
     const nx = distance > .0001 ? dx / distance : 1, ny = distance > .0001 ? dy / distance : 0;
     const isBubble = a.id === 0 && state.isFlying && (!!effectGet(state, 'bubble') || marker?.kind === 'bubble');
     const isPermeable = a.id <= 0 && frozenHit(state, b.id);
@@ -616,7 +630,7 @@ export function physicsStep(state) {
       const reaction=skillConfig(state,'bubble').reaction/skillConfig(state,'bubble').pressure;
       a.vx -= nx * pressure * .18 * reaction; a.vy -= ny * pressure * .18 * reaction; velocityLimit(a);
     }
-    const dozer=a.id<=0&&a.id>=-2&&state.isFlying&&(effectGet(state,'bulldozer')||marker?.kind==='bulldozer');
+    const dozer=seedIsPhysical(a)&&state.isFlying&&(effectGet(state,'bulldozer')||marker?.kind==='bulldozer');
     const inverseA = a.id === -3 ? .55 : a.id <= 0 ? 1 : 900 / (a.radius * a.radius), inverseB = 900 / (b.radius * b.radius), inverseSum = inverseA + inverseB;
     const correction = Math.max(0, solidTarget - distance - .01) * .92 / inverseSum;
     if(dozer){b.x+=nx*correction*inverseSum;b.y+=ny*correction*inverseSum;}
@@ -667,7 +681,7 @@ export function physicsStep(state) {
     if (a.id <= 0 && state.isFlying) scoreContact(state,b,a,events);
     // Apply research after the normal first-contact speed floor, so that
     // recovery helps both new notes and repeat collisions without replacing it.
-    if(collisionSpeed!==null&&!dozer&&a.id<=0&&a.id>=-2&&state.isFlying){
+    if(collisionSpeed!==null&&!dozer&&seedIsPhysical(a)&&state.isFlying){
       const speed=Math.hypot(a.vx,a.vy),retained=playerCollisionSpeed(state.playerBuild,collisionSpeed,speed);
       if(speed>.0001){a.vx*=retained/speed;a.vy*=retained/speed;}velocityLimit(a);
     }

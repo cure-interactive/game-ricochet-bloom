@@ -6,6 +6,33 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.35.1
+
+Build: 2026-11-17 02:50:54 UTC
+
+### Player Changes
+
+- Keep tab dragging aligned with the selected tab while the bar scrolls.
+- Keep skin-card trails tied to the equipped skin and keep preview interactions from triggering cosmetic impact effects.
+- Improve sound recovery when returning from the background.
+- Use consistent title case for buttons and interface labels, while preserving your player and saved song names.
+- Skills labels fade out when too small to read and return steadily as you zoom in. Selected and keyboard-focused skills retain their labels.
+- Restore scroll and expanded sections by their identity, so added or reordered panels cannot receive another panel's position. Wait for page content before restoring its scroll.
+- Finish loading and automatic updates before showing Welcome Back, so returning to the game no longer asks you to continue twice around an update.
+- Keep your saved page ready behind the welcome screen. Offline or unsuccessful update checks still let you continue.
+
+<!-- development -->
+### Developer Notes
+
+- Derive selector feedback from shared geometry, body interactions from motion ownership, preview presentation from explicit policy, and audio recovery from lifecycle transitions.
+- Format authored controls through the shared title-case helper; retain explicit saved-name preservation and casing-compatible tab-state restoration.
+- Share the camera's resize/open viewport snapshot with both Skills projections, removing dimension reads from camera motion and paint. Derive name/base/cost label bands from CSS text size with hysteresis; preserve bounded SVG, shadow/artwork LOD and accessible names.
+- Navigation snapshots use semantic geometry keys, retain legacy snapshot reads, and restore disclosures before layout and scroll.
+- Coordinate startup and foreground readiness through one owner; queue audio activation until navigation and automatic update work have settled.
+- Reuse the loading cover and invalidate stale fade, update and Continue callbacks across repeated departures.
+- Add lifecycle integration regressions for reload, no update, offline checks, opt-out, muted audio and interrupted returns.
+<!-- /development -->
+
 ## v3.35.0
 
 Build: 2026-11-17 01:54:01 UTC

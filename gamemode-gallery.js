@@ -1,10 +1,10 @@
-import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
-import {gamemodeNavigation} from './gamemode-navigation.js?v=e57ff3516ce4f643af8bc681ece66ab93402d116d3d5a7e311e83b20249e3629';
-import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=58d41217ecc92bd6024091ec98467f5fcfc1a090d39fa3e09758d3248380ec68';
-import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
-import { experimentRead, experimentFavourite } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';
+import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=3f3915de3b04163dd0de435412a17655a508eaafc207a6a98663480283195c6a';
+import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=eb42f7ce86ed0cc43469ac661bc6509e2f0e30f53ea03246ba47d9b965be901d';
+import { experimentArt } from './experiment-art.js?v=09dd5f9461863df45496d0c0bba3eadf656be9d31e956f761ddfe93c6d39d6d9';
+import { experimentRead, experimentFavourite } from './experiment-store.js?v=2b8bcb7d2ba84c47f7a84d9fa4ddf7019dd2ec0371eda4efd1db31d584152f5c';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
-import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
+import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 
 // Owns gallery view state only. Starting games and opening other screens are
 // callbacks, so browsing cannot reach into the live simulation controller.
@@ -23,7 +23,7 @@ export function gamemodeGalleryMount({content,heading,storage, ...host}) {
     host.screen(view?'gamemodes:'+view:'gamemodes');
     const group=GAMEMODE_GROUPS.find(g=>view==='group:'+g.id),title=group?.name??(view==='favourites'?'Favourites':view==='development'?'In Development':'Gamemodes');
     heading.textContent=title;
-    content.innerHTML=`${gamemodeNavigation(view.startsWith('group:')?'':view,hasFavorites())}<p class="mode-intro">${group?escape(group.description):view==='favourites'?'Your starred games, ready to open directly.':view==='development'?'Explore ideas whose gameplay is still being built.':'Choose a game or explore a collection of related challenges.'}</p><div class="gamemode-filter"><label>Search All Gamemodes<input id="gamemode-search" type="search" placeholder="Name, mechanic or idea number" value="${escape(state.query)}"></label>${view==='development'?`<label>Category<select id="gamemode-category"><option value="">All categories</option>${GAMEMODE_CATEGORIES.map(m=>`<option value="${m.id}"${state.category===m.id?' selected':''}>${m.name}</option>`).join('')}</select></label>`:''}</div><p id="gamemode-count" class="gamemode-count" role="status" aria-live="polite"></p><div id="gamemode-list"></div><p id="gamemode-save-status" role="status"></p>`;
+    content.innerHTML=`${gamemodeNavigation(view.startsWith('group:')?'':view,hasFavorites())}<p class="mode-intro">${group?escape(group.description):view==='favourites'?'Your starred games, ready to open directly.':view==='development'?'Explore ideas whose gameplay is still being built.':'Choose a game or explore a collection of related challenges.'}</p><div class="gamemode-filter"><label>Search All Gamemodes<input id="gamemode-search" type="search" placeholder="Name, Mechanic or Idea Number" value="${escape(state.query)}"></label>${view==='development'?`<label>Category<select id="gamemode-category"><option value="">All Categories</option>${GAMEMODE_CATEGORIES.map(m=>`<option value="${m.id}"${state.category===m.id?' selected':''}>${m.name}</option>`).join('')}</select></label>`:''}</div><p id="gamemode-count" class="gamemode-count" role="status" aria-live="polite"></p><div id="gamemode-list"></div><p id="gamemode-save-status" role="status"></p>`;
     function card(e,favourites,readable){
       const starred=favourites.includes(e.id),label=`${starred?'Unstar':'Star'} ${e.name}`;
       return `<article class="mode-card-shell"><button type="button" class="mode-card" data-gamemode="${e.id}"><span class="mode-card-top"><small class="mode-category">${GAMEMODE_CATEGORIES.find(c=>c.id===e.category)?.name??''}${/^\d/.test(e.id)?' · #'+e.id:''}</small></span>${e.art?`<img src="${art(e.art)}" alt="" width="480" height="240">`:experimentArt(e.id)}<span><strong>${escape(e.name)}</strong><small>${escape(e.description)}</small><em>${e.playable?(e.route==='casual'?'No Points · Just Play':e.route==='setup'?'Three Difficulty Levels':'Play & Settings'):'In Development · View Idea'}</em></span></button><button type="button" class="mode-star" data-favourite="${e.id}" aria-label="${escape(label)}" aria-pressed="${starred}" title="${escape(label)}" ${readable?'':'disabled'}>${starArt}</button></article>`;

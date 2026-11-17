@@ -1,21 +1,21 @@
-import {treeViewMount} from './tree-view.js?v=6c60e38ef55428e65f0e6c41b1a9ab2528659482fcbd918c531ef33c0d717bc3';
-import {mapCameraMount,nearestMapNode} from './tree-map.js?v=036d0d778228999f61ece74251473ecb2f0e6eda12f39d560a593090f6f89568';
-import {skillLegendHTML} from './skill-card.js?v=d91171ea80b72ed4649072bd2f1fe316190493aba55201b79df70cd6da29fa26';
-import {treeSwitchHTML} from './tree-switch.js?v=6b3c6ac08f059fe36591c8ccf6cae8e5480db26f7f8fa0eb3ef1fa13f93bf050';
-import {screenHeader} from './screen-header.js?v=7db753fa19626839b08a41fd5d2583821cbc0774ad262a06dd328bb3f050c988';
-import {buttonHTML} from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
+import {treeViewMount} from './tree-view.js?v=bab5fafde3d09838fa51a34e9789e10a19db9d607d3dedbcdff80bca46b29f9d';
+import {mapCameraMount,nearestMapNode} from './tree-map.js?v=7ec02d1e9cd146b9e061b453c9b7b2376be706aed2d2d0ad8b925ca88451890f';
+import {skillLegendHTML} from './skill-card.js?v=7c7f8558b13f8038ec967a3c9ce5391a8c18dca43ea54df0fd62e6f7c63b359c';
+import {treeSwitchHTML} from './tree-switch.js?v=d1d4dc9266fa245530c027ce5142d5d1f541bd0ac46081b40d16d7a9e9f9e84c';
+import {screenHeader} from './screen-header.js?v=67a25012d00131734bc7cf604e403b29da6580e9d3b12d0154df0a3e73f7a5fd';
+import {buttonHTML} from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 
 const button=(action,label,icon)=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action});
 // Both skill domains provide graph/state/actions; this owner supplies the map UI.
 export function skillTreeHTML(kind){
  const player=kind==='player',legend=player?'player-legend-content':'tree-legend-content',tooltip=player?'player-skill-tooltip':'skill-tooltip',title=player?'player-skill-title':'skill-tooltip-title';
  return screenHeader({icon:'skill-tree',className:'tree-heading',title:'Skills',back:button('back','Back','arrow-left'),actions:'<div class="tree-wallet-summary"></div>'})+
- `<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected ${player?'player':'power'} tree"><div class="tree-map-stage">${skillLegendHTML(legend)}<div class="tree-map-scroll" tabindex="0" aria-label="${player?'Player skill':'Skills'} map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom"></output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div>${treeSwitchHTML(kind)}</section></div><footer class="tree-map-hint">Tap a skill for details · Drag to move · Pinch or scroll to zoom</footer><section id="${tooltip}" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="${title}" hidden></section>`;
+ `<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected ${player?'player':'power'} tree"><div class="tree-map-stage">${skillLegendHTML(legend)}<div class="tree-map-scroll" tabindex="0" aria-label="${player?'Player skill':'Skills'} map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map Controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom Out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map Zoom"></output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div>${treeSwitchHTML(kind)}</section></div><footer class="tree-map-hint">Tap a skill for details · Drag to move · Pinch or scroll to zoom</footer><section id="${tooltip}" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="${title}" hidden></section>`;
 }
 export function skillTreeMount(dialog,world,{selected,onMove}){
  const surface=dialog.querySelector('.tree-map-scroll'),map=dialog.querySelector('.tree-map');
  let positions={},lastView=null;
- const projection=treeViewMount(map,surface,(view,limits)=>{
+ const projection=treeViewMount(map,(view,limits)=>{
   dialog.querySelector('.tree-zoom').textContent=Math.round(view.scale*100)+'%';
   dialog.querySelector('[data-tree-action=zoom-out]').disabled=view.scale<=limits.minScale+1e-6;
   dialog.querySelector('[data-tree-action=zoom-in]').disabled=view.scale>=1.799;

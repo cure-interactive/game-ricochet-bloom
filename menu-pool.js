@@ -1,5 +1,5 @@
 import {bubblePressure} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
-import {gameCreate,launch,physicsStep,powerMarkers,seedBodies,RULE} from './engine.js?v=adc6d69546723ce9f5131bf144815dc0a4f6fc6682ee59318309f9f62ca6bed0';
+import {gameCreate,launch,physicsStep,powerMarkers,seedBodies,RULE} from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 
 // Only the aiming decision and delay are menu-specific. The detached session
 // uses the normal Free Play launch, pickup, effect and collision rules.

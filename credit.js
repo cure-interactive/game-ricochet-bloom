@@ -1,7 +1,7 @@
-import { escapeHTML as escape } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
+import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
-import { renderMarkdown } from './wiki.js?v=0a570088e70966715e08832d77f00b41ee64dbc1ad055bb22f721a58a4ce5c4d';
-import { buttonLabel } from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
+import { renderMarkdown } from './wiki.js?v=59555308110ada4e153ef1c108e795d0c240b939558d9d33e94b55c4da4ff70a';
+import { buttonLabel } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 import { pageHistory } from './page-history.js?v=54c1c0aaacb43da66e5503f9ea5ea7948dfd1efd2ededbc6b416434a1792e935';
 // Only shipped attribution/assets may navigate inside the viewer.
 export function creditTarget(href, current='icon/ui/INDEX.md') {
@@ -41,7 +41,7 @@ export function creditMarkdown(source,current) {
 export function creditsMount(dialog) {
   const original=dialog.querySelector('.dialog-body'),page=document.createElement('div');
   page.className='dialog-body credit-page';page.hidden=true;
-  page.innerHTML=`<article class="wiki-article" aria-label="Icon credits" tabindex="0"></article>`;
+  page.innerHTML=`<article class="wiki-article" aria-label="Icon Credits" tabindex="0"></article>`;
   dialog.append(page);
   const article=page.querySelector('article'),dismiss=dialog.querySelector('[data-close]'),history=pageHistory('index');let request=null,current=null;
   async function load(name,remember=true){

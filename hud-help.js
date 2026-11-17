@@ -1,5 +1,5 @@
-import {iconHTML} from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
-import {screenHeader} from './screen-header.js?v=7db753fa19626839b08a41fd5d2583821cbc0774ad262a06dd328bb3f050c988';
+import {iconHTML} from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
+import {screenHeader} from './screen-header.js?v=67a25012d00131734bc7cf604e403b29da6580e9d3b12d0154df0a3e73f7a5fd';
 
 const number=value=>value.toLocaleString('en-US');
 export function hudHelpView(kind,{score=0,points=0,shots=0,mode='free',contacts=0}={}){
@@ -18,7 +18,7 @@ export function hudCardsMount(read){
   const card=document.createElement('dialog');card.id='hud-help-dialog';card.className='standard-dialog hud-info-card';card.setAttribute('aria-labelledby','hud-help-title');document.body.append(card);
   for(const trigger of document.querySelectorAll('[data-hud-help]'))trigger.onclick=()=>{
     const view=hudHelpView(trigger.dataset.hudHelp,read());
-    card.innerHTML=screenHeader({className:'dialog-heading',title:view.title,titleId:'hud-help-title',icon:view.icon,back:`<button type="button" class="close" aria-label="Close information">${iconHTML('close')}</button>`})+`<div class="dialog-body"><strong class="hud-help-value">${view.value}</strong>${view.dots===undefined?'':`<div class="hud-help-chain" aria-label="${view.dots} of 5 contacts">${Array.from({length:5},(_,i)=>`<i class="${i<view.dots?'active':''}"></i>`).join('')}</div>`}<p>${view.text}</p></div>`;
+    card.innerHTML=screenHeader({className:'dialog-heading',title:view.title,titleId:'hud-help-title',icon:view.icon,back:`<button type="button" class="close" aria-label="Close Information">${iconHTML('close')}</button>`})+`<div class="dialog-body"><strong class="hud-help-value">${view.value}</strong>${view.dots===undefined?'':`<div class="hud-help-chain" aria-label="${view.dots} of 5 contacts">${Array.from({length:5},(_,i)=>`<i class="${i<view.dots?'active':''}"></i>`).join('')}</div>`}<p>${view.text}</p></div>`;
     card.querySelector('button').onclick=()=>card.close();card.showModal();
   };
   for(const dialog of document.querySelectorAll('.hud-info-card')){

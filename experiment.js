@@ -20,7 +20,7 @@ export const EXPERIMENT_VERDICTS=['untested','promising','needs-work','keep','sh
 export function experimentOptions(id){
   const r=EXPERIMENT_RECIPES[id];if(!r)return [];
   return [{key:'shots',label:'Shot Budget',values:r.mode==='precision'?[PRECISION_RULES[id].shots]:r.mode==='music'?[MELODY_RULES[id].shots]:[4,6,8,10,12]},
-    ...(id==='082'?[{key:'timing',label:'Gate Timing',values:[0,1],labels:{0:'Untimed',1:'Timed'}},{key:'offset',label:'Timing Offset',values:[-24,-12,0,12,24],labels:{'-24':'−200 ms','-12':'−100 ms',0:'No offset',12:'+100 ms',24:'+200 ms'}}]:[]),
+    ...(id==='082'?[{key:'timing',label:'Gate Timing',values:[0,1],labels:{0:'Untimed',1:'Timed'}},{key:'offset',label:'Timing Offset',values:[-24,-12,0,12,24],labels:{'-24':'−200 ms','-12':'−100 ms',0:'No Offset',12:'+100 ms',24:'+200 ms'}}]:[]),
     ...(id==='090'?[{key:'palette',label:'Pitch Palette',values:[0,1],labels:{0:'C D E G A',1:'D E G A B'}}]:[]),
     ...(r.mode==='cargo'?[{key:'cargoQuota',label:'Cargo Required',values:[1,2,3]},{key:'currentScale',label:'Current Strength',values:[0,.5,1,1.5]}]:[]),
     ...(r.mode==='outbreak'?[{key:'sourceEvery',label:'Source Interval (Turns)',values:[1,2,3]}]:[]),

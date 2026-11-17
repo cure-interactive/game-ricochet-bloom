@@ -1,4 +1,4 @@
-import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
+import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
 // Layout and connections share the single-parent graph used by purchases.
 export function treeLayout(powers,nodes) {
  const children=Object.fromEntries(Object.keys(nodes).map(id=>[id,[]]));
@@ -94,17 +94,21 @@ export function nearestMapNode(nodes,id,dx,dy) {
 }
 export function mapCameraMount(surface,world,change) {
   let camera={x:0,y:0,scale:1},points=new Map(),start=null,suppress=false,animation=null;
-  const size=()=>({width:surface.clientWidth,height:surface.clientHeight});
+  // Geometry belongs to the camera's resize/open lifecycle, never to projection.
+  // Share one snapshot so several maps cannot interleave size reads with paints.
+  let viewport=null;
+  const measure=()=>viewport={width:surface.clientWidth,height:surface.clientHeight};
+  const size=()=>viewport||measure();
   const local=e=>{const r=surface.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};};
   const center=ps=>({x:ps.reduce((s,p)=>s+p.x,0)/ps.length,y:ps.reduce((s,p)=>s+p.y,0)/ps.length});
   const minimumScale=()=>cameraFit(world,size()).scale;
   const zoomAt=(from,scale,anchor)=>cameraZoom(from,scale,anchor,minimumScale());
   function apply(next){
     camera=cameraClamp(next,size(),world);
-    change(camera,{minScale:minimumScale()});
+    change(camera,{minScale:minimumScale(),viewport:size()});
   }
   function stopAnimation(){if(!animation)return;const current=animation;animation=null;win.cancelAnimationFrame(current.frame);current.resolve(false);}
-  function focusTarget(point,scale,vertical){const v=size();return cameraClamp({x:v.width/2-point.x*scale,y:Math.min(140,v.height*vertical)-point.y*scale,scale},v,world);}
+  function focusTarget(point,scale,vertical){const v=measure();return cameraClamp({x:v.width/2-point.x*scale,y:Math.min(140,v.height*vertical)-point.y*scale,scale},v,world);}
   function focusAnimated(point,scale=Math.max(.85,camera.scale),vertical=.25,duration=450){
     cancel();const from={...camera},to=focusTarget(point,scale,vertical);
     if(duration<=0){apply(to);return Promise.resolve(true);}
@@ -150,6 +154,6 @@ export function mapCameraMount(surface,world,change) {
   surface.addEventListener('wheel',e=>{stopAnimation();e.preventDefault();suppress=true;if(e.shiftKey)apply({...camera,x:camera.x-e.deltaY,y:camera.y-e.deltaX});else apply(zoomAt(camera,camera.scale*Math.exp(-Math.max(-150,Math.min(150,e.deltaY))*.003),local(e)));},{passive:false});
   surface.addEventListener('keydown',e=>{if(e.target!==surface)return;const move={ArrowLeft:[80,0],ArrowRight:[-80,0],ArrowUp:[0,80],ArrowDown:[0,-80]}[e.key];if(move){stopAnimation();e.preventDefault();apply({...camera,x:camera.x+move[0],y:camera.y+move[1]});}});
   rememberView(surface,'camera',()=>camera,state=>{if(state&&['x','y','scale'].every(key=>Number.isFinite(state[key]))&&state.scale>0){stopAnimation();apply(state);}},30);
-  const observer=new ResizeObserver(()=>{if(surface.clientWidth&&surface.clientHeight){stopAnimation();apply(camera);}});observer.observe(surface);
-  return {get value(){return {...camera};},zoom(factor){stopAnimation();const v=size();apply(zoomAt(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){stopAnimation();apply(focusTarget(point,scale,vertical));},focusAnimated,refresh(){stopAnimation();apply(camera);},fit(bounds={x:world.x||0,y:world.y||0,width:world.width,height:world.height}){stopAnimation();apply(cameraFit(bounds,size()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel};
+  const observer=new ResizeObserver(()=>{const v=measure();if(v.width&&v.height){stopAnimation();apply(camera);}});observer.observe(surface);
+  return {get value(){return {...camera};},zoom(factor){stopAnimation();const v=size();apply(zoomAt(camera,camera.scale*factor,{x:v.width/2,y:v.height/2}));},focus(point,scale=Math.max(.85,camera.scale),vertical=.25){stopAnimation();apply(focusTarget(point,scale,vertical));},focusAnimated,refresh(){stopAnimation();measure();apply(camera);},fit(bounds={x:world.x||0,y:world.y||0,width:world.width,height:world.height}){stopAnimation();apply(cameraFit(bounds,measure()));},ensure(point){const v=size(),x=point.x*camera.scale+camera.x,y=point.y*camera.scale+camera.y;if(x<90||x>v.width-90||y<70||y>v.height-80)this.focus(point);},cancel};
 }

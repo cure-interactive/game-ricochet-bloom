@@ -1,6 +1,6 @@
 import { melodyCreate, melodyPlayer, melodyClock, melodyLaunch, melodyTouch, melodyDestinations, melodySettle, melodyOutcome, melodyAction, melodyStatus, melodyValid } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { precisionCreate, precisionLaunch, precisionTouch, precisionDrag, precisionWrap, precisionBank, precisionOutcome, precisionSettle, precisionStatus, precisionValid, precisionAction } from './precision.js?v=fe3f5f9fbfc5e54cc353d2bd4dd10fcabc5bdff5850a4977b2c3ce3ad7a96ee3';
-import { experimentValidate, experimentSetup, EXPERIMENT_RECIPES } from './experiment.js?v=9e917253523cf3fb5c7073b9b981a58461add6544b08e68392ea2b00819d0e72';
+import { experimentValidate, experimentSetup, EXPERIMENT_RECIPES } from './experiment.js?v=8ea8233f2a63ec7914c38d27cef2dda06f00ef2e61a346f83b06d3d19f285958';
 import { earningId, earningValid, earningUpgrade } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 
 // A trial has a frozen aiming phase and a finite physical shot. Campaign's

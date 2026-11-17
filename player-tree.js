@@ -1,5 +1,5 @@
 import {PLAYER_UPGRADES,playerUpgradeReason} from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
-import {researchLayout} from './tree-map.js?v=036d0d778228999f61ece74251473ecb2f0e6eda12f39d560a593090f6f89568';
+import {researchLayout} from './tree-map.js?v=7ec02d1e9cd146b9e061b453c9b7b2376be706aed2d2d0ad8b925ca88451890f';
 const branches={player:{name:'Player'},...Object.fromEntries(PLAYER_UPGRADES.map(n=>[n.branch,{name:n.branch}]))};
 // Use the power tree's prerequisite layout and discoverable research frontier.
 export function playerTreeGraph(state,showAll=false){

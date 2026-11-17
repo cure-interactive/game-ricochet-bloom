@@ -1,6 +1,6 @@
-import {GAME_VERSION} from './version.js?v=0f1b41086f7ab0e90d6e269a5f1edc5c4f7823e450268e9439ccbab5ee940bf8';
-import {BUILD_TIME} from './build.js?v=813cae609c247e2cad46398ba39b9a484c038c6b8686a0e4fd55d654b31feb2a';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
+import {GAME_VERSION} from './version.js?v=26b1fd0d6d413f104b080ba58317f75e0982ec08f1271e97eae284d3b0ad62ab';
+import {BUILD_TIME} from './build.js?v=6fccfe81c6de502be0a59fe38d7c9685fc0582add4e2cdb8d198c8f70ae266df';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 export const isAppView=win=>!!win.navigator?.standalone||!!win.matchMedia?.('(display-mode: standalone)').matches||!!win.matchMedia?.('(display-mode: fullscreen)').matches;
 export function newerBuild(remote,version=GAME_VERSION,time=BUILD_TIME){
  if(!remote||!/^\d+\.\d+\.\d+$/.test(remote.version)||!Number.isFinite(Date.parse(remote.commitTime)))throw new Error('Invalid release information');
@@ -23,7 +23,7 @@ export async function checkUpdate({fetch:request=fetch,version=GAME_VERSION,time
  restart();return {updated:true,version:release.version};
 }
 // Foreground signals share one request and one restart decision.
-export function updateLifecycleMount({enabled=()=>true,check,onState=()=>{}},doc=document,win=window){
+export function updateLifecycleMount({enabled=()=>true,check,onState=()=>{},foreground=true},doc=document,win=window){
  let timer=null,pending=null,disposed=false;
  const cancel=()=>{if(timer!==null){win.clearTimeout(timer);timer=null;}};
  function run(automatic=false){
@@ -36,17 +36,16 @@ export function updateLifecycleMount({enabled=()=>true,check,onState=()=>{}},doc
   return pending;
  }
  function schedule(){cancel();if(!disposed&&!doc.hidden&&enabled())timer=win.setTimeout(()=>{timer=null;run(true);},250);}
- doc.addEventListener('visibilitychange',schedule);win.addEventListener('focus',schedule);win.addEventListener('pageshow',schedule);
- schedule();
+ if(foreground){doc.addEventListener('visibilitychange',schedule);win.addEventListener('focus',schedule);win.addEventListener('pageshow',schedule);schedule();}
  return {ready:()=>run(true),run:()=>run(false),changed:schedule,destroy(){disposed=true;cancel();doc.removeEventListener('visibilitychange',schedule);win.removeEventListener('focus',schedule);win.removeEventListener('pageshow',schedule);}};
 }
-export function appUpdateMount({save,getAutomatic=()=>true,setAutomatic=()=>true},doc=document,win=window){
+export function appUpdateMount({save,getAutomatic=()=>true,setAutomatic=()=>true,foreground=true},doc=document,win=window){
  const help=doc.querySelector('.settings-help');if(!help)return;
  const group=doc.createElement('details');group.className='settings-section settings-updates';
- group.innerHTML=`<summary>${iconHTML('reset')}<span>Updates</span></summary><div class="settings-section-body"><label class="setting-toggle"><input id="automatic-updates" type="checkbox"><span>${iconHTML('reset')}<span>Automatic updates</span></span></label><p class="settings-hint">Check when the game opens or you return to it. When an update is ready, your progress is saved and the game restarts.</p>${buttonHTML('Check for Updates','reset',{id:'check-updates',class:'quiet'})}<p class="settings-update-status" role="status" aria-live="polite">Ready to check for updates.</p></div>`;
+ group.innerHTML=`<summary>${iconHTML('reset')}<span>Updates</span></summary><div class="settings-section-body"><label class="setting-toggle"><input id="automatic-updates" type="checkbox"><span>${iconHTML('reset')}<span>Automatic Updates</span></span></label><p class="settings-hint">Check when the game opens or you return to it. When an update is ready, your progress is saved and the game restarts.</p>${buttonHTML('Check for Updates','reset',{id:'check-updates',class:'quiet'})}<p class="settings-update-status" role="status" aria-live="polite">Ready to check for updates.</p></div>`;
  help.before(group);const button=group.querySelector('button'),toggle=group.querySelector('input'),status=group.querySelector('[role=status]');
  toggle.checked=getAutomatic();
- const control=updateLifecycleMount({enabled:getAutomatic,check:canRestart=>checkUpdate({save,canRestart,base:win.location.href,restart:()=>win.location.reload()}),onState:state=>{
+ const control=updateLifecycleMount({foreground,enabled:getAutomatic,check:canRestart=>checkUpdate({save,canRestart,base:win.location.href,restart:()=>win.location.reload()}),onState:state=>{
   if('checking' in state){button.disabled=state.checking;if(state.checking)status.textContent='Checking for updates…';}
   if(state.result)status.textContent=state.result.updated?'Update ready. Restarting…':state.result.deferred?'Update ready. It will be checked when you return.':'You have the latest version.';
   if(state.error)status.textContent=win.navigator.onLine===false?'You are offline. Updates will be checked when you return.':state.error.message||'Could not check for updates. Try again.';

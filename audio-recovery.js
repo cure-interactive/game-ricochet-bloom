@@ -1,64 +1,99 @@
-// Retry browser audio permission at gestures and after interruptions, without
-// changing the game's pause state or the player's mute/volume preferences.
+// Recovery owns output permission, not gameplay pause or musical arrangement.
+// Browser facts enter here; effects run only after the new state is installed.
+export function audioRecoveryTransition(state,event,facts){
+ let next={...state};const effects=[];
+ if(state.phase==='disposed')return {state:next,effects};
+ if(event==='dispose')return {state:{...next,phase:'disposed',generation:next.generation+1},effects};
+ if(event==='leave'||event==='background'){
+  if(next.phase==='active'){
+   next={...next,phase:'departed',hadOutput:facts.hasContext,welcome:false,generation:next.generation+1};effects.push('hold');
+  }else if(next.phase==='waiting')next={...next,phase:'departed',generation:next.generation+1};
+  if(event==='background'){next.welcome=next.hadOutput;if(next.welcome&&facts.audible)effects.push('persist');}
+  return {state:next,effects};
+ }
+ if(facts.hidden)return {state:next,effects};
+ if(event==='recover'){
+  if(next.phase==='waiting')return {state:next,effects};
+  if(next.phase==='departed'){
+   if(!facts.focused)return {state:next,effects};
+   if(next.welcome&&facts.audible&&facts.canRequest){next.phase='waiting';effects.push('welcome');return {state:next,effects};}
+   next.phase='active';next.welcome=false;effects.push('clear','release');
+  }
+  if(facts.active&&facts.audible)effects.push('unlock');
+ }else if(event==='acknowledge'){
+  if(!facts.focused)return {state:next,effects};
+  if(next.phase==='waiting'){next.phase='active';next.welcome=false;effects.push('clear','release');}
+  // Continue unlocks collected outputs synchronously, even if their owner
+  // becomes active only after the welcome dialog closes.
+  if(next.phase==='active'&&facts.audible)effects.push('unlock');
+ }else if(event==='running'&&next.phase==='active'&&facts.active&&facts.audible)effects.push('music');
+ return {state:next,effects};
+}
+
 export function audioRecoveryMount(sound,doc=document,win=window,active=()=>true){
  const pending=value=>{try{if(value===undefined)return win.sessionStorage?.getItem('ricochet-audio-return')==='1';if(value)win.sessionStorage?.setItem('ricochet-audio-return','1');else win.sessionStorage?.removeItem('ricochet-audio-return');}catch{}return false;};
- let context=null,disposed=false,needsWelcome=pending(),departed=needsWelcome,waiting=false,hadOutput=needsWelcome;
- if(departed)sound.outputHold?.();
- const allowed=()=>!disposed&&!departed&&!doc.hidden&&active()&&!sound.isMuted&&sound.volume>0;
+ const saved=pending();let state={phase:saved?'departed':'active',welcome:saved,hadOutput:saved,generation:0},context=null;
+ if(saved)sound.outputHold?.();
+ const facts=()=>({hidden:!!doc.hidden,focused:doc.hasFocus?.()!==false,active:active(),audible:!sound.isMuted&&sound.volume>0,hasContext:!!sound.context,canRequest:!!doc.dispatchEvent});
+ const allowed=()=>state.phase==='active'&&!doc.hidden&&active()&&!sound.isMuted&&sound.volume>0;
+ const gestures=['pointerdown','pointerup','touchend','click','keydown'];
  function bind(){
   if(context===sound.context)return;
   context?.removeEventListener?.('statechange',changed);context=sound.context;
   context?.addEventListener?.('statechange',changed);
  }
- function recover(event,prime=false,foreground=false){
-  if(event?.isTrusted===false||disposed||doc.hidden)return;
-  if(waiting)return;
-  // Release before the active-owner check: menu visibility may be updated by
-  // a later listener, whose direct unlock must also start a fresh graph.
-  if(departed){
-   if(!foreground||doc.hasFocus?.()===false)return;
-   if(needsWelcome&&!sound.isMuted&&sound.volume>0&&doc.dispatchEvent){
-    const EventType=win.CustomEvent||globalThis.CustomEvent;
-    const request=new EventType('audio-return',{cancelable:true,detail:{resume(){
-     waiting=false;needsWelcome=false;departed=false;pending(false);sound.outputRelease?.();
-     if(doc.hidden||sound.isMuted||!sound.volume)return Promise.resolve(true);
-     const result=sound.unlockAsync();bind();return result;
-    }}});
-    doc.dispatchEvent(request);if(request.defaultPrevented){waiting=true;if(gestures.includes(event?.type))event.stopImmediatePropagation?.();return;}
-   }
-   needsWelcome=false;departed=false;pending(false);sound.outputRelease?.();
+ function unlock(){
+  // Never queue trusted activation behind an unresolved foreground resume.
+  const generation=state.generation;let result;
+  try{result=sound.unlockAsync();}catch{return Promise.resolve(false);}
+  bind();const graph=sound.context,outputGeneration=sound.outputGeneration;
+  return Promise.resolve(result).then(value=>{
+   if(state.phase==='disposed'||state.generation!==generation||sound.context!==graph||sound.outputGeneration!==outputGeneration)return false;
+   if(value!==false&&allowed())sound.musicUpdate();return value;
+  }).catch(()=>false);
+ }
+ function requestWelcome(event){
+  const generation=state.generation;let completed=false;
+  const resume=()=>{
+   if(completed||state.phase==='disposed'||state.generation!==generation)return Promise.resolve(true);
+   if(doc.hidden||doc.hasFocus?.()===false)return Promise.resolve(false);
+   return Promise.resolve(send('acknowledge')).then(value=>{completed=value!==false;return value;});
+  };
+  const EventType=win.CustomEvent||globalThis.CustomEvent;
+  const request=new EventType('audio-return',{cancelable:true,detail:{resume}});
+  doc.dispatchEvent(request);
+  if(request.defaultPrevented){if(gestures.includes(event?.type))event.stopImmediatePropagation?.();}
+  else return send('acknowledge');
+ }
+ function send(type,event){
+  if(event?.isTrusted===false)return;
+  const transition=audioRecoveryTransition(state,type,facts());state=transition.state;let result=true;
+  for(const effect of transition.effects){
+   if(effect==='hold')sound.outputHold?.();
+   else if(effect==='release')sound.outputRelease?.();
+   else if(effect==='persist')pending(true);
+   else if(effect==='clear')pending(false);
+   else if(effect==='welcome')result=requestWelcome(event);
+   else if(effect==='unlock')result=unlock();
+   else if(effect==='music')sound.musicUpdate();
   }
-  if(!allowed())return;
-  bind();
-  // A running state alone does not prove the output route was unlocked. Keep
-  // source priming inside real activation, even after a provisional resume.
-  if(!prime&&context?.state==='running'&&!sound.clockStalled?.()){sound.media?.retry();sound.musicUpdate();return;}
-  try{Promise.resolve(sound.unlockAsync()).then(()=>{bind();if(allowed())sound.musicUpdate();}).catch(()=>{});bind();}catch{}
+  bind();return result;
  }
  function changed(){
-  // iOS can interrupt the context before blur/visibilitychange. Resuming here
-  // fights that interruption. Only a positive foreground/activation retries.
-  if(context?.state==='running'&&allowed())sound.musicUpdate();
+  // An OS interruption is not permission to resume. Only foreground or
+  // activation retries; retired graph notifications have no authority.
+  if(context===sound.context&&context?.state==='running')send('running');
  }
- // Focus/foreground is our first opportunity, including a fresh context.
- // If autoplay rejects it, the next real activation retries synchronously;
- // never queue that gesture behind an unresolved foreground resume promise.
- const leave=event=>{if(event?.isTrusted===false||departed)return;hadOutput=!!sound.context;departed=true;sound.outputHold?.();bind();};
- const background=event=>{if(event?.isTrusted===false)return;leave(event);needsWelcome=hadOutput;if(needsWelcome&&!sound.isMuted&&sound.volume>0)pending(true);};
- const visible=event=>{if(doc.hidden)background(event);else recover(event,true,true);};
+ const leave=event=>send('leave',event),background=event=>send('background',event);
+ const visible=event=>send(doc.hidden?'background':'recover',event);
  const departure=event=>{if(doc.hidden)background(event);};
- const activate=event=>recover(event,true,true);
- const gestures=['pointerdown','pointerup','touchend','click','keydown'];
+ const activate=event=>send('recover',event);
  for(const name of gestures)doc.addEventListener(name,activate,{capture:true,passive:true});
- // Capture departure before ordinary pause listeners stop individual voices;
- // the detached graph must retain those voices until its output fade finishes.
+ // Capture before ordinary pause listeners so the detached graph can fade.
  doc.addEventListener('visibilitychange',departure,true);
  doc.addEventListener('visibilitychange',visible);win.addEventListener('pageshow',visible);win.addEventListener('focus',visible);bind();
- // Captured blur also sees every input/button losing focus. Only the window
- // departing may retire audio; ordinary focus movement must keep its graph.
  const windowBlur=event=>{if(!event.target||event.target===win)leave(event);};
- win.addEventListener('pagehide',background,true);win.addEventListener('blur',windowBlur,true);
- doc.addEventListener('freeze',background,true);
+ win.addEventListener('pagehide',background,true);win.addEventListener('blur',windowBlur,true);doc.addEventListener('freeze',background,true);
  if(doc.hasFocus?.())visible();
- return ()=>{disposed=true;context?.removeEventListener?.('statechange',changed);for(const name of gestures)doc.removeEventListener(name,activate,true);doc.removeEventListener('visibilitychange',departure,true);doc.removeEventListener('visibilitychange',visible);doc.removeEventListener('freeze',background,true);win.removeEventListener('pageshow',visible);win.removeEventListener('focus',visible);win.removeEventListener('pagehide',background,true);win.removeEventListener('blur',windowBlur,true);};
+ return ()=>{send('dispose');context?.removeEventListener?.('statechange',changed);for(const name of gestures)doc.removeEventListener(name,activate,true);doc.removeEventListener('visibilitychange',departure,true);doc.removeEventListener('visibilitychange',visible);doc.removeEventListener('freeze',background,true);win.removeEventListener('pageshow',visible);win.removeEventListener('focus',visible);win.removeEventListener('pagehide',background,true);win.removeEventListener('blur',windowBlur,true);};
 }

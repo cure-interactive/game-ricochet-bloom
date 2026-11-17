@@ -1,17 +1,17 @@
-import {menuSummaryRender} from './menu-summary.js?v=ae45281d84da1bab2004670a7e08413c46eec38f2c344291b3c7b345710e5910';
+import {menuSummaryRender} from './menu-summary.js?v=88be0a3d0eefb7d6ff84518fc4e186dec329935a2399efe6f97308f69ae578e1';
 import {cosmeticLoadout} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
-import { menuLayoutMount } from './menu-title.js?v=4e51b12c0d7bd09228fd3c6a71c21a861a49180d4de46904f6e5bf496536128f';
+import { menuLayoutMount } from './menu-title.js?v=f79455358eec97bcbf86d8b397279ea8c741e7675cb1860d33d88b5cce6049f0';
 import { pageHistory } from './page-history.js?v=54c1c0aaacb43da66e5503f9ea5ea7948dfd1efd2ededbc6b416434a1792e935';
-import { buttonHTML } from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
-import { menuBackgroundMount } from './menu-background.js?v=125ed3687f12041bf997931f139d30380adcb3f18cdcaaa3a2307d7dbd5c4315';
+import { buttonHTML } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
+import { menuBackgroundMount } from './menu-background.js?v=71a39e233903b941b7613a978249eeda5fd631be8e2ee8ec1156d31bb6b6bad2';
 
-import { driftMount } from './drift-ui.js?v=db51f5e0dd1e9baef6c5a54b022f6b55cd872ef230798a407edf15fd557a2657';
+import { driftMount } from './drift-ui.js?v=ee3716ba1e8ad6aa7801616b2416e5c897894126a44b3a489ad6ee0711836e1a';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
   const home=document.createElement('section');home.id='main-menu';home.inert=document.body.dataset.startup!==undefined&&document.body.dataset.startup!=='ready';home.setAttribute('aria-label','Main Menu');
   const button=(id,label,icon,kind='')=>buttonHTML(label,icon,{id,class:kind});
-  home.innerHTML=`<div class="home-content"><div class="home-actions"><nav class="home-primary" aria-label="Main game actions"><button type="button" id="home-continue" class="primary"></button>${button('home-gamemodes','Gamemodes','grid','primary')}${button('home-tree','Skills','skill-tree')}${button('home-player','Player','player-skin')}</nav><nav class="home-secondary" aria-label="More game options">${button('home-wiki','Wiki','book')}${button('home-help','How to Play','book')}${button('home-settings','Settings','gear')}</nav></div></div>`;
+  home.innerHTML=`<div class="home-content"><div class="home-actions"><nav class="home-primary" aria-label="Main Game Actions"><button type="button" id="home-continue" class="primary"></button>${button('home-gamemodes','Gamemodes','grid','primary')}${button('home-tree','Skills','skill-tree')}${button('home-player','Player','player-skin')}</nav><nav class="home-secondary" aria-label="More Game Options">${button('home-wiki','Wiki','book')}${button('home-help','How to Play','book')}${button('home-settings','Settings','gear')}</nav></div></div>`;
   menuLayoutMount(home.querySelector('.home-content'));
   menuLayoutMount(document.querySelector('#menu-dialog>.dialog-body'));
   const backdrop=document.createElement('div');backdrop.id='menu-background';backdrop.setAttribute('aria-hidden','true');

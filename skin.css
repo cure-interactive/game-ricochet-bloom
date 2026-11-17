@@ -33,7 +33,7 @@
 .skin-selection.is-equipped{border-color:#b4f4db88}
 .skin-selection-title{display:flex;align-items:center;gap:12px}
 .skin-selection-title>.ui-icon{width:28px;height:28px;color:#b4f4db}
-.skin-selection-title small{font-size:11px;color:#a8c4ca;text-transform:uppercase;letter-spacing:.12em}
+.skin-selection-title small{font-size:11px;color:#a8c4ca;letter-spacing:.12em}
 .skin-selection-title h3{margin:3px 0 0;font-size:24px;font-weight:500;color:#e4f0f3}
 :is(#skin-dialog,#cosmetic-dialog) .skin-equip{width:100%;min-height:50px;margin-top:18px;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid #aee5ce88;border-radius:14px;background:#b4f4db;color:#153831;font-size:18px}
 :is(#skin-dialog,#cosmetic-dialog) .skin-equip.is-equipped{background:#1b3f3c;color:#c7f5df;opacity:1;cursor:default}

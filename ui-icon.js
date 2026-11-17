@@ -1,8 +1,8 @@
-import {registerCosmeticIcon} from './cosmetic-icon.js?v=926039536e9d0a411930848e9ece95125ac353752f0b5f6878e0cad9fb8c6a5c';
+import {registerCosmeticIcon} from './cosmetic-icon.js?v=0bae431848053f79bc8b0354a66dfc6d647082122b66da9a4815e233a5353e33';
 if(typeof window!=='undefined')registerCosmeticIcon();
-import {registerPlayerBubble} from './player-bubble.js?v=45be54df1bdd5b8ecbb29b701a2be009d3bfc8f12267a7010511657585b849c1';
+import {registerPlayerBubble} from './player-bubble.js?v=fd4c8d2e78d9f33a3a8c8fc7d1e59b66742f8ba5d5fed9d55d0ea3c029cc0168';
 if(typeof window!=='undefined')registerPlayerBubble();
-import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
+import { escapeHTML,titleCase } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 // Decorative icons share one renderer. player-skin uses the equipped skin
 // renderer, never an SVG mask or a duck/player glyph.
 export function iconHTML(name) {
@@ -16,10 +16,11 @@ export function iconNode(name) {
   if(['trails','bounce-effects'].includes(name)){const effect=document.createElement('cosmetic-icon');effect.setAttribute('kind',name==='trails'?'trail':'bounce');icon.append(effect);}
   return icon;
 }
-export function buttonLabel(button,text,name) {
-  const signature=`${name}:${text}`;
+export function buttonLabel(button,text,name,{preserveCase=false}={}) {
+  const signature=`${name}:${preserveCase}:${text}`;
   if(button.dataset.iconLabel===signature)return;
   button.dataset.iconLabel=signature;
+  if(!preserveCase)text=titleCase(text);
   const label=document.createElement('span');label.className='button-label';label.textContent=text;
   button.replaceChildren(iconNode(name),...(text?[label]:[]));
 }
@@ -31,8 +32,8 @@ export function buttonHTML(label,icon='play',attributes={}) {
   if(!allowed.test(key))throw new Error('Unsupported button attribute: '+key);
   if(value===null||value===undefined)return '';
   if(key==='disabled'||key==='hidden')return value?' '+key:'';
-  return ` ${key}="${escapeHTML(value)}"`;
+  return ` ${key}="${escapeHTML(key==='aria-label'||key==='title'?titleCase(value):value)}"`;
  }).join('');
- const text=escapeHTML(label);
+ const text=escapeHTML(titleCase(label));
  return `<button${attrs}>${iconHTML(icon)}${text?`<span>${text}</span>`:''}</button>`;
 }

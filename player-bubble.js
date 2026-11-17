@@ -1,4 +1,4 @@
-import {bubbleInteractionMount} from './bubble-interaction.js?v=4e66c00915eb440c33c87ebeac79a0949e54d243e39f0c0492e07c68acc04ee4';
+import {bubbleInteractionMount} from './bubble-interaction.js?v=3479767760180a37f4151682533ae16ec5f0a6f22f41d7a4c788a576855eb899';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 import {CosmeticVisual} from './cosmetic-visual.js?v=204988b969444cca440173387094e3c156748080d7d74b61e6cc002d40d6a83a';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
@@ -6,12 +6,21 @@ import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596
 import {bubbleRender,bubblePath} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';
 import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
 
+// Local movement is independent of DOM placement and the decorative current.
+// The outer element already applies offset; the membrane adds pressure locally.
+export function playerMotionSample(pressure,tether,hop=0){
+ const offset={x:tether?.x||0,y:(tether?.y||0)+hop};
+ return {x:offset.x+pressure.x,y:offset.y+pressure.y,vx:(tether?.vx||0)+pressure.vx,vy:(tether?.vy||0)+pressure.vy,offset};
+}
+
 // Decorative instances own only visual state. The surrounding button or large
 // preview keeps its existing input, focus, navigation and progression contract.
 export function registerPlayerBubble(win=window){
  if(win.customElements.get('player-bubble'))return;
  let sequence=0;
  class PlayerBubble extends win.HTMLElement{
+  static get observedAttributes(){return ['motion','trail'];}
+  attributeChangedCallback(){this.change?.();}
   connectedCallback(){
    if(this.resize)return;
    if(!this.membrane){
@@ -47,8 +56,10 @@ export function registerPlayerBubble(win=window){
    if(!this.membrane)return;
    bubbleHit(this.membrane,14,x,y,speed);this.bounce=-.9;this.request();
   }
-  tether(x,y){this.tetherPosition={x,y};}
-  velocity(x,y){if(!this.body)return;this.body.vx=x;this.body.vy=y;if(x||y)this.request();}
+  motionSet(value){this.motionState={...value};if(this.body)this.request();}
+  tether(x,y){this.motionSet({...this.motionState,x,y});}
+  velocity(vx,vy){this.motionSet({...this.motionState,vx,vy});}
+  motionSample(){return playerMotionSample(this.pressure,this.getAttribute('motion')==='tether'?this.motionState:null,this.hop||0);}
   get pressure(){return this.interaction?.state||this.savedPressure;}
   set pressure(value){this.savedPressure=value;if(this.interaction)this.interaction.state=value;}
   get pulses(){return this.interaction?.pulses||[];}
@@ -59,7 +70,7 @@ export function registerPlayerBubble(win=window){
   }
   reset(){
    if(this.frame)win.cancelAnimationFrame(this.frame);this.frame=0;this.last=0;this.bounce=0;this.hop=0;
-   this.membrane=bubbleCreate();this.trail?.breakTrail();if(this.body)this.body.vx=this.body.vy=0;
+   this.membrane=bubbleCreate();this.trail?.breakTrail();this.motionState={x:0,y:0,vx:0,vy:0};
    this.interaction?.reset();this.savedPressure=this.pressure;
    this.style.transform='';if(this.visible)this.paint();
   }
@@ -78,30 +89,31 @@ export function registerPlayerBubble(win=window){
     bubbleHit(this.membrane,14,Math.cos(angle),Math.sin(angle),60);
     this.nextRipple=this.age+1.35+.35*(1+Math.sin(angle));
    }
-   bubbleStep(this.membrane,{...this.body,vx:this.body.vx+this.pressure.vx,vy:this.body.vy+this.pressure.vy},dt,false,flow);
    this.bounce*=Math.exp(-dt*5);
    // A small tethered hop for decorative icons; the large viewer owns its drag tether.
-   this.hop=this.closest('.skin-preview-interactive')?0:Math.sin(time*.018)*this.bounce*12/100*28;
-   this.style.transform=this.closest('.skin-preview-interactive')?'':`translateY(${(this.hop/28*100).toFixed(3)}%)`;
-   this.paint(dt);
+   const tether=this.getAttribute('motion')==='tether';
+   this.hop=tether?0:Math.sin(time*.018)*this.bounce*12/100*28;
+   this.style.transform=tether?'':`translateY(${(this.hop/28*100).toFixed(3)}%)`;
+   const motion=this.motionSample();
+   bubbleStep(this.membrane,{...this.body,vx:motion.vx,vy:motion.vy},dt,false,flow);
+   this.paint(dt,motion);
    this.request();
   }
-  paint(dt=0){
+  paint(dt=0,motion=this.motionSample()){
    if(!this.context||!this.size||!this.canAnimate())return;
    const c=this.context;
    const style=win.getComputedStyle(this),color=style.getPropertyValue('--skin-color').trim()||'#f1f9d7';
-   const body={...this.body,x:this.body.x+this.pressure.x,y:this.body.y+this.pressure.y};
+   const body={...this.body,x:this.body.x+motion.x-motion.offset.x,y:this.body.y+motion.y-motion.offset.y};
    // Explicit local tether motion excludes scrolling/layout in every preview.
    const rect=this.getBoundingClientRect();if(!rect.width)return;this.size=rect.width;
    const measuredUnit=this.size/28,unit=this.trailUnit&&Math.abs(this.trailUnit-measuredUnit)<.001?this.trailUnit:measuredUnit;
    const parentScale=rect.width/(this.offsetWidth||rect.width),x=(rect.left+rect.width/2)/unit,y=(rect.top+rect.height/2)/unit;
    if(this.trailUnit!==unit){this.trail.breakTrail();this.trailUnit=unit;}
-   const preview=!!this.closest('.skin-preview-interactive'),trails=preview||!this.closest('.skin-preview')||!!this.closest('.skin-choice.is-equipped');
-   const tx=preview?(this.tetherPosition?.x||0):0,ty=preview?(this.tetherPosition?.y||0):(this.hop||0),tox=this.body.x-tx,toy=this.body.y-ty;
+   const trails=this.getAttribute('trail')!=='none',tox=this.body.x-motion.offset.x,toy=this.body.y-motion.offset.y;
    if(trails)this.trail.configure({trail:style.getPropertyValue('--player-trail').trim()});else this.trail.breakTrail();
    // Style observers repaint during a grabbed parent's transform. A repaint
    // has no elapsed simulation time and must not break the continuous trail.
-   if(trails&&dt>0)this.trail.step({x:tx+this.pressure.x,y:ty+this.pressure.y},dt);
+   if(trails&&dt>0)this.trail.step({x:motion.x,y:motion.y},dt);
    // The tail belongs to movement, not the icon's hit box. Extend this same
    // canvas around its live history, keeping the allocation viewport-bounded.
    // Quantized edges avoid reallocating the backing bitmap for every pixel.

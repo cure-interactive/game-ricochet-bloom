@@ -1,6 +1,6 @@
-import { buttonLabel } from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
+import { buttonLabel } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
-import { escapeHTML } from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
+import { escapeHTML } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 
 export function displayDeviceIcon(win){
  const nav=win.navigator||{};
@@ -21,10 +21,10 @@ const appView=win=>!!win.navigator?.standalone||!!win.matchMedia?.('(display-mod
 export function fullscreenState(doc, win) {
   const active=!!(doc.fullscreenElement||doc.webkitFullscreenElement),root=doc.documentElement;
   const supported=typeof root.requestFullscreen==='function'?doc.fullscreenEnabled!==false:typeof root.webkitRequestFullscreen==='function'&&doc.webkitFullscreenEnabled!==false;
-  if(active)return {action:'exit',label:'Exit full screen',icon:'fullscreen-disable'};
-  if(win.matchMedia?.('(display-mode: fullscreen)').matches)return {action:'help',label:'Full screen active',icon:'fullscreen-disable',browser:true};
-  if(supported)return {action:'enter',label:'Enter full screen',icon:'fullscreen-enable'};
-  return {action:'help',label:'Full screen unavailable',icon:'fullscreen-enable'};
+  if(active)return {action:'exit',label:'Exit Full Screen',icon:'fullscreen-disable'};
+  if(win.matchMedia?.('(display-mode: fullscreen)').matches)return {action:'help',label:'Full Screen Active',icon:'fullscreen-disable',browser:true};
+  if(supported)return {action:'enter',label:'Enter Full Screen',icon:'fullscreen-enable'};
+  return {action:'help',label:'Full Screen Unavailable',icon:'fullscreen-enable'};
 }
 
 export function displayOptions(doc,win) {
@@ -33,7 +33,7 @@ export function displayOptions(doc,win) {
   const android=/Android/.test(ua),mac=!apple&&/Mac/.test(nav.platform||ua);
   const edge=/Edg(?:A)?\//.test(ua),firefox=/Firefox\//.test(ua),chrome=/Chrome|Chromium|CrOS/.test(ua)&&!edge&&!/OPR|SamsungBrowser/.test(ua);
   const safari=mac&&/Safari/.test(ua)&&!/Chrome|Chromium|Edg|OPR/.test(ua);
-  const installed=appView(win),mode=state.action==='exit'||state.browser?'Full screen':installed?'App view':'Browser view';
+  const installed=appView(win),mode=state.action==='exit'||state.browser?'Full Screen':installed?'App View':'Browser View';
   const description=state.action==='exit'?'Full screen is on. Leave it here or use your browser’s exit command.':state.browser?'Your browser controls this full-screen view. Use its full-screen command to leave.':state.action==='enter'?'Hide browser controls for this session. You can return to this view at any time.':'This browser does not allow the game to enter full screen. App view is a separate option below.';
   if(installed)return {mode,description,title:'App View Is Active',copy:'You opened the game from its app icon. Your device may still show a status bar or home indicator.',steps:[],open:true};
   const guide=(id,title,copy,steps,icons)=>({mode,description,id,title,copy,steps,icons,open:state.action==='help'});

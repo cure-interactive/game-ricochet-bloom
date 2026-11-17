@@ -1,6 +1,6 @@
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
-import {skinSpringStep} from './skin-preview.js?v=589afccbde94ea3151bcf119a929aca8430cd8adfc584bf88b1add584a8621a2';
-import {menuPoolView} from './menu-pool.js?v=783c021cf6f11a52924efa9ab4e95a85fa34bc1887604a4ced50a0b5ea93b2dc';
+import {skinSpringStep} from './skin-preview.js?v=b46bca5bc442cdd7344540ae811a729c603404d562061865b86a0a763f14c141';
+import {menuPoolView} from './menu-pool.js?v=12b1ea36e45149e4c2229016ccdf23eba2431f6707f637c564ca7422762115d3';
 import {playerMotion} from './player-motion.js?v=577160ddcb2e76940b04bf9ae7ff772b6ea10e077ac294aaa5ce572fbd733ce7';
 
 // One input/response model for decorative players and cosmetic previews.
