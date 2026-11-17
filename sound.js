@@ -14,7 +14,7 @@ export const uiWindPitch=position=>[300,380,480,620][Math.min(3,Math.floor(Math.
 // A rounded attack and release avoid broadband spikes in these short taps.
 const uiTapEnvelope=Float32Array.from({length:129},(_,i)=>{const t=i/128,attack=.008/.085;return i===0||i===128?0:t<attack?Math.sin(Math.PI*t/(2*attack))**2:Math.cos(Math.PI*(t-attack)/(2*(1-attack)))**2;});
 export class PoolSound {
-  constructor({media=true}={}) { this.media = media?new PoolMedia():null; this.context = null; this.volume = 1; this.ambience = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
+  constructor({media=true}={}) { this.media = media?new PoolMedia():null; this.context = null; this.volume = 1; this.ambience = 1; this.interfaceVolume = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
   get isMusicPaused() { return this.isPaused&&!this.keepAmbient; }
   get bloomCount() { return this.music.blooms; }
   get harmony() { const chord = this.activeChord ?? this.music.history.at(-1)?.chord; return chord === undefined || chord === null ? null : CHORDS[chord]; }
@@ -36,6 +36,7 @@ export class PoolSound {
     primer.connect(audioContext.destination); primer.onended = () => primer.disconnect(); primer.start();
     if (!this.master) {
       const context = this.context; this.master = context.createGain(); this.master.gain.value = this.isMuted ? 0 : this.volume * .48;
+      this.interfaceOutput=context.createGain();this.interfaceOutput.gain.value=this.interfaceVolume;this.interfaceOutput.connect(this.master);
       const compressor = context.createDynamicsCompressor(); compressor.threshold.value = -18; compressor.ratio.value = 5; this.master.connect(compressor);
       // Gate after the compressor: its lookahead buffer must not survive an
       // output retirement. New output enters gently after route activation.
@@ -80,7 +81,7 @@ export class PoolSound {
   }
   graphReset({fade=false}={}){
     this.refreshOutput=false;
-    const retired=this.context,closedAt=performance.now(),master=this.master,gate=this.outputGate,compressor=this.compressor,environment=this.musicEnvironment;
+    const retired=this.context,closedAt=performance.now(),master=this.master,interfaceOutput=this.interfaceOutput,gate=this.outputGate,compressor=this.compressor,environment=this.musicEnvironment;
     const voices={audioVoices:this.audioVoices,phraseVoices:this.phraseVoices,voiceCount:this.voiceCount};
     const mediaKey=this.media?.key,mediaEnv=this.media?.env;
     // Detach scheduling immediately, but let the old output finish its short
@@ -93,11 +94,11 @@ export class PoolSound {
     }
     this.media?.dispose();
     if(this.media){this.media=new PoolMedia(mediaEnv);if(mediaKey)this.media.describe(mediaKey);}
-    this.context=null;this.master=null;this.outputGate=null;this.compressor=null;this.musicEnvironment=null;this.musicInput=null;this.musicOutput=null;this.musicDuck=null;this.previewEnvelope=null;this.delay=null;
+    this.context=null;this.master=null;this.interfaceOutput=null;this.outputGate=null;this.compressor=null;this.musicEnvironment=null;this.musicInput=null;this.musicOutput=null;this.musicDuck=null;this.previewEnvelope=null;this.delay=null;
     this.audioVoices=new Set();this.phraseVoices=new Set();this.phraseClear();this.previewSelection=null;this.previewUntil=0;
     this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.uiWindLastAt=-Infinity;this.strengthAt=-Infinity;this.duckUntil=0;this.previewStarted=0;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};this.travelState=null;
     const finish=()=>{
-      gate?.disconnect();compressor?.disconnect();master?.disconnect();environment?.dispose();voicesStop(voices);
+      gate?.disconnect();compressor?.disconnect();interfaceOutput?.disconnect();master?.disconnect();environment?.dispose();voicesStop(voices);
       if(retired?.suspend&&retired.state!=='closed'){try{Promise.resolve(retired.suspend()).catch(()=>{});}catch{}}
       if(retired?.close){this.outputClosing=(this.outputClosing||0)+1;try{Promise.resolve(retired.close()).catch(()=>{}).finally(()=>{this.outputClosing--;this.outputCloseMs=performance.now()-closedAt;});}catch{this.outputClosing--;}}
     };
@@ -169,14 +170,15 @@ export class PoolSound {
   pauseSet(value,{ambient=false}={}) { this.isPaused=value; this.keepAmbient=value&&ambient; if(value){this.cosmeticStop();if(!ambient)this.phraseClear();} this.mixUpdate(); }
   notePitch(tone) { return this.harmony ? frequency(this.harmony.notes[tone % 5]) : SCALE[tone % 5]; }
   settingsSet(volume, isMuted) { this.volume = volume; this.isMuted = isMuted; if (isMuted) this.phraseClear(); if(isMuted||!volume)this.cosmeticStop(); if (this.master) this.master.gain.setTargetAtTime(isMuted ? 0 : volume * .48, this.context.currentTime, .03); this.mixUpdate(); }
-  tone(frequency, end, duration, level, pan = 0, offset = 0, type = 'sine', echo = false, phrase = false, { allowPaused = false,group,fadeOut=duration,attack=.008,envelope=null,at=null } = {}) {
+  interfaceSet(value) { this.interfaceVolume=Number.isFinite(value)?Math.max(0,Math.min(1,value)):1; if(this.interfaceOutput)this.interfaceOutput.gain.setTargetAtTime(this.interfaceVolume,this.context.currentTime,.02); }
+  tone(frequency, end, duration, level, pan = 0, offset = 0, type = 'sine', echo = false, phrase = false, { allowPaused = false,group,fadeOut=duration,attack=.008,envelope=null,at=null,output=this.master } = {}) {
     voicesReap(this);
     if (!this.context || this.context.state !== 'running' || this.isMuted || (this.isPaused && !allowPaused && !(phrase&&this.keepAmbient)) || this.voiceCount >= (group==='audition'?55:46)) return;
     const context = this.context, start = at ?? context.currentTime + offset, oscillator = context.createOscillator(), gain = context.createGain(), stereo = context.createStereoPanner();
     oscillator.type = type; oscillator.frequency.setValueAtTime(frequency, start); oscillator.frequency.exponentialRampToValueAtTime(Math.max(20, end), start + duration);
     if(envelope)gain.gain.setValueCurveAtTime(envelope.map(value=>value*level),start,duration);
     else {gain.gain.setValueAtTime(.0001, start); gain.gain.exponentialRampToValueAtTime(Math.max(.001, level), start + Math.min(attack,duration*.5)); if(fadeOut<duration)gain.gain.setValueAtTime(Math.max(.001,level),start+duration-fadeOut); gain.gain.exponentialRampToValueAtTime(.0001, start + duration);}
-    stereo.pan.value = Math.max(-.85, Math.min(.85, pan)); oscillator.connect(gain); gain.connect(stereo); stereo.connect(this.master); if (echo) stereo.connect(this.delay);
+    stereo.pan.value = Math.max(-.85, Math.min(.85, pan)); oscillator.connect(gain); gain.connect(stereo); stereo.connect(output); if (echo) stereo.connect(this.delay);
     const voice = { oscillator, gain, start,group }; if (phrase) this.phraseVoices.add(voice);
     voiceTrack(this,voice,start+duration+.02,[oscillator,gain,stereo]);
     oscillator.start(start); oscillator.stop(start + duration + .02);
@@ -253,10 +255,10 @@ export class PoolSound {
     if (event.type === 'win') { [this.notePitch(0), this.notePitch(2), this.notePitch(3), this.notePitch(0) * 2].forEach((pitch, index) => this.tone(pitch, pitch, 1.2, .12, 0, index * .22, 'sine', true)); }
     if (event.type === 'over') [523.25, 392, 329.63, 261.63].forEach((pitch, index) => this.tone(pitch, pitch, .75, .15, 0, index * .12, 'sine', true));
   }
-  uiTap(pitch,end,level,at){this.tone(pitch,end,.085,level,0,0,'sine',false,false,{allowPaused:true,envelope:uiTapEnvelope,at});}
+  uiTap(pitch,end,level,at){this.tone(pitch,end,.085,level,0,0,'sine',false,false,{allowPaused:true,envelope:uiTapEnvelope,at,output:this.interfaceOutput});}
   uiPlay(kind='select') {
     voicesReap(this);
-    if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.voiceCount>40)return false;
+    if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||!this.interfaceVolume||this.voiceCount>40)return false;
     const now=this.context.currentTime;
     const wind=kind?.type==='wind'&&Number.isFinite(kind.position);
     if(kind?.type==='wind'&&!wind)return false;
@@ -265,7 +267,7 @@ export class PoolSound {
     this[last]=now;
     const back=kind==='back'||kind==='back-complete';
     const pitch=kind==='back-start'?300:back?440:kind==='confirm'?660:560;
-    if(wind||kind==='back-start'){const note=wind?uiWindPitch(kind.tone==='low'?0:kind.position):300;this.tone(note,note*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true,at:now+.006});}
+    if(wind||kind==='back-start'){const note=wind?uiWindPitch(kind.tone==='low'?0:kind.position):300;this.tone(note,note*1.08,.085,.09*(wind&&kind.tone==='low'?.8:1),0,0,'sine',false,false,{allowPaused:true,at:now+.006,output:this.interfaceOutput});}
     else this.uiTap(pitch,back?330:pitch*1.08,.09,now+.006);
     if(kind==='confirm')this.uiTap(880,880,.055,now+.061);
     this.uiCount=(this.uiCount||0)+1;

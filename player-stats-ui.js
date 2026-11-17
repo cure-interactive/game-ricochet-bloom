@@ -1,4 +1,4 @@
-import {segmentedHTML,segmentedMount} from './segmented-control.js?v=3c91bbccf41a4bf988c90da3754a44a47a275425f7438ebadd58ef7a32da4e0d';
+import {segmentedHTML,segmentedMount} from './segmented-control.js?v=243f0a277d087d49db7886bca98385b3ae275c6584df618d00e35953745f0be9';
 import { playerStats } from './player-stats.js?v=cec76e026a4a410b1cf6a20f22539dddf0043d7ca85be5bfd465668d75f6fff9';
 import { screenHeader } from './screen-header.js?v=7db753fa19626839b08a41fd5d2583821cbc0774ad262a06dd328bb3f050c988';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';

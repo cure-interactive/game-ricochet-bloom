@@ -6,6 +6,25 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.35.0
+
+Build: 2026-11-17 01:54:01 UTC
+
+### Player Changes
+
+- Add Interface Volume under Settings → Audio, defaulting to 100%. Adjust button, slider, tab selector and Back sounds separately from music and gameplay effects.
+- Remember Interface Volume after reload. Sound mute and Master Volume still apply to all audio.
+- Make slider and selector movement taps 20% quieter while keeping their low pitch and feedback spacing.
+
+<!-- development -->
+### Developer Notes
+
+- Route UI voices through an independent smoothed gain below master; recreate it from the retained preference when audio output changes.
+- Persist Interface Volume through the existing preference-only write path, including while a trial owns gameplay saving. Missing or invalid values default to full volume.
+- Scale only slider/selector movement peaks from 0.09 to 0.072; preserve edge Back and release-click levels, music and gameplay routing.
+- Cover event-to-voice amplitude, UI-only routing, mute, graph recreation, preference round-trips and unreadable-save protection. Verify default, reload, independent mute and mobile layout in the served app.
+<!-- /development -->
+
 ## v3.34.7
 
 Build: 2026-11-17 01:42:53 UTC

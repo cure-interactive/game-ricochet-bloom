@@ -1,5 +1,5 @@
 import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
-import {gamemodeNavigation} from './gamemode-navigation.js?v=7c63097db0f44ff3db9acfa3b7cbabd3aed8fddebf123e54668e0ca8a69652c1';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=e57ff3516ce4f643af8bc681ece66ab93402d116d3d5a7e311e83b20249e3629';
 import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=58d41217ecc92bd6024091ec98467f5fcfc1a090d39fa3e09758d3248380ec68';
 import { experimentArt } from './experiment-art.js?v=4082c37f56072d049c2c358e7a73ede9400b661f42dfdea4813e3991c5f2f597';
 import { experimentRead, experimentFavourite } from './experiment-store.js?v=658b0aec41d1fe4ae79f658aa12427df10792cbf85e1ec34edda33f3b6205dd9';

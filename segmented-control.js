@@ -1,7 +1,7 @@
 import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
 import {segmentedPainter} from './segmented-paint.js?v=f3fcc78ca5b54f7fb6d7fce668b601d74b373a11d0d030833ba9c8a52c685508';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import {uiWind,uiSelect,uiWindMoved} from './ui-sound.js?v=4a2a1d353744aeef5ade6b422cecb774bf3d9a7eb3241eea60df1cf0b4cd4236';
+import {uiWind,uiSelect,uiWindMoved} from './ui-sound.js?v=d2cdaa7255e60e9d5e6d0378ae12d627e9f22d0484f04c179f6c76d6eb3529b5';
 export function segmentedHTML(buttons,{label,current,className=''}){
  return `<div class="tab-bar"><nav class="segmented-control ${escapeHTML(className)}" data-current="${escapeHTML(current)}" aria-label="${escapeHTML(label)}" style="--segment-count:${buttons.length}"><span class="segment-selection" aria-hidden="true"></span>${buttons.join('')}</nav></div>`;
 }

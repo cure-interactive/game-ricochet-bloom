@@ -1,4 +1,4 @@
-import {uiWind,uiWindMoved} from './ui-sound.js?v=4a2a1d353744aeef5ade6b422cecb774bf3d9a7eb3241eea60df1cf0b4cd4236';
+import {uiWind,uiWindMoved} from './ui-sound.js?v=d2cdaa7255e60e9d5e6d0378ae12d627e9f22d0484f04c179f6c76d6eb3529b5';
 // Native ranges retain values, labels, keyboard and assistive-technology behavior.
 // Shared DOM paints every slider; pointer mapping does not depend on host widgets.
 export function sliderValue(min,max,step,fraction){

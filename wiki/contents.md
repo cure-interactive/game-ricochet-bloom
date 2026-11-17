@@ -213,6 +213,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Change Logs
 
 - [Change Logs](changelog.md)
+- [v3.35.0](changelog.md#v3-35-0)
 - [v3.34.7](changelog.md#v3-34-7)
 - [v3.34.6](changelog.md#v3-34-6)
 - [v3.34.5](changelog.md#v3-34-5)

@@ -5,7 +5,7 @@ export {menuContactMount};
 import {freePlayCreate,freePlayBuild} from './free-play.js?v=69023a09d973df1c0b2b813e092bce7b21fc422e2e806cd3aa887100edd3a0d9';
 import {playerBuild} from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
 import {progressionCreate} from './run.js?v=49c69ba715be180502075f8d03373783a6385189ac7faa63780fbe40e8c853a8';
-import {menuMusicCreate} from './menu-music.js?v=b4deb1d646fbe0e9e7b261de951a6938fa945d6f2a9f4873f0eba0324fa6367c';
+import {menuMusicCreate} from './menu-music.js?v=4d73df58227d1018930af7f09ecb0d94eed8dab845b8917443ff24b541fa0f14';
 import {PoolVisual} from './pool-visual.js?v=3f9969e9e5d7bd90e5ef366d81add30704751f0282e5d57353215d4302d1d43e';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=adc6d69546723ce9f5131bf144815dc0a4f6fc6682ee59318309f9f62ca6bed0';
 import { bubbleHit } from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';

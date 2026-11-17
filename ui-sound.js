@@ -3,13 +3,13 @@
 export function uiSoundFeedback(sound,doc=document,clock=()=>performance.now()){
  let latest=0;
  return function play(kind){
-  if(doc.hidden||sound.isMuted||!sound.volume)return;
+  if(doc.hidden||sound.isMuted||!sound.volume||sound.interfaceVolume===0)return;
   const ticket=++latest,at=clock();
   const report=()=>{if(doc.documentElement?.dataset){doc.documentElement.dataset.uiSoundState=sound.context?.state||'locked';doc.documentElement.dataset.uiSounds=String(sound.uiCount||0);}};
   try{
    const ready=sound.context?.state==='running'?true:sound.unlockAsync();
    const context=sound.context;
-   Promise.resolve(ready).then(ok=>{if(ok&&ticket===latest&&clock()-at<150&&context===sound.context&&!doc.hidden&&!sound.isMuted&&sound.volume)sound.uiPlay(kind);report();}).catch(()=>{report();});
+   Promise.resolve(ready).then(ok=>{if(ok&&ticket===latest&&clock()-at<150&&context===sound.context&&!doc.hidden&&!sound.isMuted&&sound.volume&&sound.interfaceVolume!==0)sound.uiPlay(kind);report();}).catch(()=>{report();});
   }catch{report();}
  };
 }
