@@ -1,4 +1,4 @@
-import {audioEnvironment} from './audio-environment.js?v=5f951fd5c399f22b78c1cf60e0482d14934549e7a2fbb76fb8d3dc6751900570';
+import {audioEnvironment} from './audio-environment.js?v=894d5eb594259b6ee5988dbbb41f2b3857b9d00aad41bf4057f1b9fa6a842491';
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=774fbf1c691f54dafa415de78b2b32a6a8d7ffadc96e05d5bda4ec17db9831eb';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=7904f3fab24003c6251442f7604d5d8fc7ef9163a8a1abb32f41975690c0162d';
 import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
@@ -14,7 +14,7 @@ export const uiWindPitch=position=>[300,380,480,620][Math.min(3,Math.floor(Math.
 // A rounded attack and release avoid broadband spikes in these short taps.
 const uiTapEnvelope=Float32Array.from({length:129},(_,i)=>{const t=i/128,attack=.008/.085;return i===0||i===128?0:t<attack?Math.sin(Math.PI*t/(2*attack))**2:Math.cos(Math.PI*(t-attack)/(2*(1-attack)))**2;});
 export class PoolSound {
-  constructor({media=true}={}) { this.media = media?new PoolMedia():null; this.context = null; this.volume = 1; this.ambience = 1; this.interfaceVolume = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
+  constructor({media=true}={}) { this.media = media?new PoolMedia():null; this.context = null; this.volume = 1; this.ambience = 1; this.ambienceVolume = .5; this.interfaceVolume = 1; this.isMuted = false; this.isPaused = false; this.voiceCount = 0; this.eventCount = 0; this.strengthAt = -Infinity; this.auditionUntil = 0; this.music = musicCreate(); this.phraseVoices = new Set(); this.musicQueue = []; this.phraseEnd = 0; this.activeChord = null; this.isMusicPlaying = false; this.passage = 0; this.previousPitch = 67; this.section = 'Quiet pool'; this.stage = 0; this.flow = 0; this.duckUntil = 0; this.lastMix = -1; this.playbackQueue = []; this.playbackLights = new Map(); this.playbackCount = 0; this.lastPlayback = null; this.playbackPhrase = null; this.replyUntil = 0; }
   get isMusicPaused() { return this.isPaused&&!this.keepAmbient; }
   get bloomCount() { return this.music.blooms; }
   get harmony() { const chord = this.activeChord ?? this.music.history.at(-1)?.chord; return chord === undefined || chord === null ? null : CHORDS[chord]; }
@@ -46,7 +46,8 @@ export class PoolSound {
       const feedback = context.createGain(); feedback.gain.value = .19; const wet = context.createGain(); wet.gain.value = .24;
       this.delay.connect(feedback); feedback.connect(this.delay); this.delay.connect(wet); wet.connect(this.master);
       this.musicOutput=context.createGain();this.musicOutput.gain.value=0;this.musicDuck=context.createGain();this.musicDuck.gain.value=1;this.musicOutput.connect(this.musicDuck);this.musicDuck.connect(this.master);
-      this.musicEnvironment=audioEnvironment(context,this.musicOutput);this.musicInput=this.musicEnvironment.input;
+      this.ambienceOutput=context.createGain();this.ambienceOutput.gain.value=0;this.ambienceOutput.connect(this.musicDuck);this.lastAmbienceMix=-1;
+      this.musicEnvironment=audioEnvironment(context,this.musicOutput,this.ambienceOutput);this.musicInput=this.musicEnvironment.input;
       let seed=8128;
       this.percussionNoise = context.createBuffer(1, Math.ceil(context.sampleRate * .15), context.sampleRate);
       const noise = this.percussionNoise.getChannelData(0);
@@ -94,7 +95,7 @@ export class PoolSound {
     }
     this.media?.dispose();
     if(this.media){this.media=new PoolMedia(mediaEnv);if(mediaKey)this.media.describe(mediaKey);}
-    this.context=null;this.master=null;this.interfaceOutput=null;this.outputGate=null;this.compressor=null;this.musicEnvironment=null;this.musicInput=null;this.musicOutput=null;this.musicDuck=null;this.previewEnvelope=null;this.delay=null;
+    this.context=null;this.master=null;this.interfaceOutput=null;this.outputGate=null;this.compressor=null;this.musicEnvironment=null;this.musicInput=null;this.musicOutput=null;this.ambienceOutput=null;this.musicDuck=null;this.previewEnvelope=null;this.delay=null;
     this.audioVoices=new Set();this.phraseVoices=new Set();this.phraseClear();this.previewSelection=null;this.previewUntil=0;
     this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.uiWindLastAt=-Infinity;this.strengthAt=-Infinity;this.duckUntil=0;this.previewStarted=0;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};this.travelState=null;
     const finish=()=>{
@@ -121,14 +122,17 @@ export class PoolSound {
     }
   }
   musicStart() { this.isMusicPlaying = true; this.musicUpdate(); }
-  ambienceSet(value) { this.ambience = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 1; if (!this.ambience){this.phraseClear();this.cosmeticPreviewStop();} this.mixUpdate(); }
+  ambienceSet(value) { this.ambience = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 1; if (!this.ambience){this.phraseClear();if(this.previewSelection?.kind!=='ambience')this.cosmeticPreviewStop();} this.mixUpdate(); }
+  ambienceVolumeSet(value) { this.ambienceVolume=Number.isFinite(value)?Math.max(0,Math.min(1,value)):.5; this.mixUpdate(); }
   mixUpdate() {
     this.media?.update(!!this.context && this.context.state === 'running' && this.isMusicPlaying && !this.isMuted && !this.isMusicPaused && this.volume > 0 && this.ambience > 0);
     if (!this.musicOutput||this.outputHeld) return;
     const now = this.context.currentTime,loadout=typeof this.musicLoadout==='function'?this.musicLoadout():this.musicLoadout||{};
     if(this.previewSelection&&now>=this.previewUntil)this.previewSelection=null;
     this.musicEnvironment?.stageSet(this.previewSelection?.kind==='soundstage'?this.previewSelection.id:loadout.soundstage);
-    this.musicEnvironment?.ambienceSet(this.previewSelection?.kind==='ambience'?this.previewSelection.id:loadout.ambience,!this.isMuted&&this.volume>0&&this.ambience>0&&!this.isMusicPaused&&this.isMusicPlaying&&!globalThis.document?.hidden);
+    this.musicEnvironment?.ambienceSet(this.previewSelection?.kind==='ambience'?this.previewSelection.id:loadout.ambience,!this.isMuted&&this.volume>0&&this.ambienceVolume>0&&!this.isMusicPaused&&this.isMusicPlaying&&!globalThis.document?.hidden);
+    const ambienceLevel=this.isMuted||this.isMusicPaused||!this.isMusicPlaying?0:this.ambienceVolume;
+    if(ambienceLevel!==this.lastAmbienceMix){this.ambienceOutput?.gain.setTargetAtTime(ambienceLevel,now,.04);this.lastAmbienceMix=ambienceLevel;}
     const level = this.isMuted || this.isMusicPaused || !this.isMusicPlaying ? 0 : this.ambience * (now < this.duckUntil ? .6 : 1);
     if (level !== this.lastMix) { this.musicOutput.gain.setTargetAtTime(level, now, level ? .35 : .04); this.lastMix = level; }
   }
@@ -292,8 +296,8 @@ export class PoolSound {
   }
   cosmeticAudition(id){const item=cosmeticGet(id);if(['music','soundstage','ambience'].includes(item?.kind))return this.musicThemeAudition(id);return !!item&&this.cosmeticPlay({[item.kind]:id},{type:item.kind==='trail'?'launch':'cosmetic-hit'},{preview:true});}
   musicThemeAudition(id){
-    if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||!this.ambience||this.isMusicPaused||!this.isMusicPlaying||globalThis.document?.hidden)return false;
-    const selected=cosmeticGet(id);if(!['music','soundstage','ambience'].includes(selected?.kind))return false;
+    if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.isMusicPaused||!this.isMusicPlaying||globalThis.document?.hidden)return false;
+    const selected=cosmeticGet(id);if(!['music','soundstage','ambience'].includes(selected?.kind)||!(selected.kind==='ambience'?this.ambienceVolume:this.ambience))return false;
     // A temporary layer on the audible arrangement, never a second demo song.
     // Existing notes finish naturally; scheduled notes keep their pitches/clock.
     this.cosmeticPreviewStop({replace:true});this.previewMusicFade(0);

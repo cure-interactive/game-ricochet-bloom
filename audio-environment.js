@@ -2,7 +2,7 @@ import {soundstageGet,ambienceGet} from './music-environment.js?v=09dcc5aa06da81
 
 // One music-only acoustic graph, shared by playback, auditions and WAV export.
 // No feedback loop: all reverberation has a finite, bounded impulse response.
-export function audioEnvironment(context,output){
+export function audioEnvironment(context,output,ambienceOutput=output){
  const input=context.createGain(),low=context.createBiquadFilter(),high=context.createBiquadFilter(),dry=context.createGain();
  low.type='lowpass';low.frequency.value=2200;low.Q.value=.5;high.type='highpass';high.frequency.value=70;
  input.connect(low);low.connect(high);high.connect(dry);dry.connect(output);
@@ -36,7 +36,7 @@ export function audioEnvironment(context,output){
   if(bedId===item.id)return;
   bedStop();bedId=item.id;
   const source=context.createBufferSource(),gain=context.createGain(),buffer=ambienceBuffer(context,item.style);
-  source.buffer=buffer;source.loop=true;source.connect(gain);gain.connect(output);
+  source.buffer=buffer;source.loop=true;source.connect(gain);gain.connect(ambienceOutput);
   const now=context.currentTime;gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(.1,now+.6);
   if(Number.isFinite(duration)){gain.gain.setValueAtTime(.1,now+Math.max(.6,duration-1));gain.gain.linearRampToValueAtTime(0,now+duration);}
   const current={source,gain};bed=current;beds.add(current);source.onended=()=>{source.disconnect();gain.disconnect();beds.delete(current);if(bed===current){bed=null;bedId=null;}};source.start(now);if(Number.isFinite(duration))source.stop(now+duration+.05);

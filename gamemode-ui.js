@@ -1,5 +1,5 @@
-import {gamemodeNavigation} from './gamemode-navigation.js?v=1effbde585ba95dcad8eda17f6e37d8084ffb67f2035f360911274d1d3c111de';
-import {segmentedBarMount} from './segmented-control.js?v=908df6c6ea1d5c1c4b197a6c29c3406bf114735dddbc908cf00b030e213b0259';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=733f4fe7c93bbaa125360fe712d2158f4bc6a26bc618dbb659c2e60fef100b7f';
+import {segmentedBarMount} from './segmented-control.js?v=bfc2eb723bd5080e1ff722bcfb43b3958890bbcd7bb4f5ce1e7dbf3c3192b161';
 import { screenHeader } from './screen-header.js?v=67a25012d00131734bc7cf604e403b29da6580e9d3b12d0154df0a3e73f7a5fd';
 import { buttonHTML } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';

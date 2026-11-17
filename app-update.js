@@ -1,5 +1,5 @@
-import {GAME_VERSION} from './version.js?v=6b3bd9c141938828b8bb01b44eeb6fe09babe2fc4a182379ae13f96db68c51ed';
-import {BUILD_TIME} from './build.js?v=ea39943df9163228d58906aabab6e88bcf88d28f62f1689cb505f1088ee5c10d';
+import {GAME_VERSION} from './version.js?v=0c39399662ba7b0e0770e00fd2c372250d717b818f87ede66785bd989d8ffcd1';
+import {BUILD_TIME} from './build.js?v=018f5398c1ae84dbfc17d59eb14600d42c5557c38d1f3a5b652fb10711fd9490';
 import {buttonHTML,iconHTML} from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 export const isAppView=win=>!!win.navigator?.standalone||!!win.matchMedia?.('(display-mode: standalone)').matches||!!win.matchMedia?.('(display-mode: fullscreen)').matches;
 export function newerBuild(remote,version=GAME_VERSION,time=BUILD_TIME){
@@ -43,7 +43,8 @@ export function appUpdateMount({save,getAutomatic=()=>true,setAutomatic=()=>true
  const help=doc.querySelector('.settings-help');if(!help)return;
  const group=doc.createElement('details');group.className='settings-section settings-updates';
  group.innerHTML=`<summary>${iconHTML('reset')}<span>Updates</span></summary><div class="settings-section-body"><label class="setting-toggle"><input id="automatic-updates" type="checkbox"><span>${iconHTML('reset')}<span>Automatic Updates</span></span></label><p class="settings-hint">Check when the game opens or you return to it. When an update is ready, your progress is saved and the game restarts.</p>${buttonHTML('Check for Updates','reset',{id:'check-updates',class:'quiet'})}<p class="settings-update-status" role="status" aria-live="polite">Ready to check for updates.</p></div>`;
- help.before(group);const button=group.querySelector('button'),toggle=group.querySelector('input'),status=group.querySelector('[role=status]');
+ help.before(group);const button=group.querySelector('#check-updates'),toggle=group.querySelector('input'),status=group.querySelector('[role=status]');
+ const changelog=doc.getElementById('game-changelog');if(changelog)status.after(changelog);
  toggle.checked=getAutomatic();
  const control=updateLifecycleMount({foreground,enabled:getAutomatic,check:canRestart=>checkUpdate({save,canRestart,base:win.location.href,restart:()=>win.location.reload()}),onState:state=>{
   if('checking' in state){button.disabled=state.checking;if(state.checking)status.textContent='Checking for updates…';}

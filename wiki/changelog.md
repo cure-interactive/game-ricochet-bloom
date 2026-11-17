@@ -6,6 +6,27 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.35.3
+
+Build: 2026-11-17 05:00:25 UTC
+
+### Player Changes
+
+- Give a grabbed tab selector priority over scrollbar dragging.
+- Adjust background atmospheres and their previews with a separate Ambience Volume slider, starting at 50%.
+- Keep cosmetic detail panels the same width when previews start, stop or finish.
+- Find Change Logs in Settings > Updates. About places the game description directly beneath the title.
+- Welcome Back fades away over your ready page after Continue, without an extra pause before the fade.
+
+<!-- development -->
+### Developer Notes
+
+- Mark selector gesture ownership and cancel scrollbar capture/momentum when that higher-priority grab begins.
+- Route ambience through its own smoothed gain and persist its preference across menu/game output recovery. Give the shared cosmetic detail grid an explicit full-width column.
+- Move the existing Change Logs control into the Updates section while preserving its wiki navigation handler.
+- Animate the welcome cover exit and retain the destination beneath it. Cancel stale fades on a new return, preserve failed-audio retry and support reduced motion.
+<!-- /development -->
+
 ## v3.35.2
 
 Build: 2026-11-17 03:13:38 UTC

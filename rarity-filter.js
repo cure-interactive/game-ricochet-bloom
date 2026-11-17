@@ -1,5 +1,5 @@
 import {escapeHTML} from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
-import {segmentedHTML,segmentedMount} from './segmented-control.js?v=908df6c6ea1d5c1c4b197a6c29c3406bf114735dddbc908cf00b030e213b0259';
+import {segmentedHTML,segmentedMount} from './segmented-control.js?v=bfc2eb723bd5080e1ff722bcfb43b3958890bbcd7bb4f5ce1e7dbf3c3192b161';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {rarityIconHTML} from './skill-icon.js?v=b00dc5cb9f6d26af9cafc3967aac5aa97356d423d084995aa40bf8a94b34ef37';
 import {staticIconHTML} from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';

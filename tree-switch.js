@@ -1,5 +1,5 @@
 import {buttonHTML} from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
-import {segmentedHTML,segmentedBarMount} from './segmented-control.js?v=908df6c6ea1d5c1c4b197a6c29c3406bf114735dddbc908cf00b030e213b0259';
+import {segmentedHTML,segmentedBarMount} from './segmented-control.js?v=bfc2eb723bd5080e1ff722bcfb43b3958890bbcd7bb4f5ce1e7dbf3c3192b161';
 export function treeSwitchHTML(current){
  return segmentedHTML([['powers','Powers','powers'],['player','Player','player-skin']].map(([id,label,icon])=>buttonHTML(label,icon,{'data-tree-view':id,'aria-pressed':id===current})),{label:'Skills Views',current,className:'tree-switch'});
 }

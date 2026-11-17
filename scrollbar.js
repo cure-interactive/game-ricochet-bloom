@@ -6,7 +6,7 @@ export function scrollbarGeometry(view,total,position,visible=view){
  const length=Math.min(track,Math.max(24,track*view/total)),travel=track-length;
  return {length,travel,max,offset:travel*Math.max(0,Math.min(max,position))/max};
 }
-export function scrollbarInput(track,thumb,{geometry,position,move,active,view},win=window){
+export function scrollbarInput(track,thumb,{geometry,position,move,active,view,blocked=()=>false},win=window){
  let drag=null,momentum=0,lastTime=0,velocity=0;
  const point=e=>track.dataset.axis==='y'?e.clientY:e.clientX;
  const stop=()=>{win.cancelAnimationFrame(momentum);momentum=0;velocity=0;};
@@ -18,6 +18,7 @@ export function scrollbarInput(track,thumb,{geometry,position,move,active,view},
   if(Math.abs(velocity)>.015&&Math.abs(position()-before)>.01)momentum=win.requestAnimationFrame(coast);
  }
  const down=e=>{
+  if(blocked()){cancel();return;}
   if(e.button!==0||drag||!geometry()?.travel)return;
   stop();e.preventDefault();e.stopPropagation();track.setPointerCapture(e.pointerId);
   const g=geometry(),rect=track.getBoundingClientRect(),start=track.dataset.axis==='y'?rect.top:rect.left;
@@ -27,6 +28,7 @@ export function scrollbarInput(track,thumb,{geometry,position,move,active,view},
   drag={id:e.pointerId,start:point(e),position:position(),last:point(e),time:e.timeStamp,velocity:0,moved:false};track.dataset.held='true';active();
  };
  const moving=e=>{
+  if(blocked()){cancel();return;}
   const g=geometry();if(drag?.id!==e.pointerId||!g?.travel)return;
   e.preventDefault();e.stopPropagation();const p=point(e),dt=e.timeStamp-drag.time;
   if(dt>0){const limit=Math.max(1,view()/180);drag.velocity=Math.max(-limit,Math.min(limit,(p-drag.last)/dt/g.travel*g.max));}
@@ -42,11 +44,12 @@ export function scrollbarInput(track,thumb,{geometry,position,move,active,view},
  };
  const cancel=()=>{const id=drag?.id;drag=null;delete track.dataset.held;if(id!==undefined&&track.hasPointerCapture?.(id))track.releasePointerCapture(id);stop();};
  const interrupt=e=>{if(!track.contains(e.target))cancel();};
+ const priority=()=>{if(blocked())cancel();};
  track.addEventListener('pointerdown',down);track.addEventListener('pointermove',moving);
  for(const name of ['pointerup','pointercancel','lostpointercapture'])track.addEventListener(name,end);
  track.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();});
- const doc=track.ownerDocument;doc.addEventListener('pointerdown',interrupt,true);doc.addEventListener('touchstart',interrupt,{capture:true,passive:true});doc.addEventListener('wheel',cancel,{passive:true});doc.addEventListener('visibilitychange',cancel);win.addEventListener('blur',cancel);
- return ()=>{cancel();doc.removeEventListener('pointerdown',interrupt,true);doc.removeEventListener('touchstart',interrupt,true);doc.removeEventListener('wheel',cancel);doc.removeEventListener('visibilitychange',cancel);win.removeEventListener('blur',cancel);};
+ const doc=track.ownerDocument;doc.addEventListener('segment-grab',priority);doc.addEventListener('pointerdown',interrupt,true);doc.addEventListener('touchstart',interrupt,{capture:true,passive:true});doc.addEventListener('wheel',cancel,{passive:true});doc.addEventListener('visibilitychange',cancel);win.addEventListener('blur',cancel);
+ return ()=>{cancel();doc.removeEventListener('segment-grab',priority);doc.removeEventListener('pointerdown',interrupt,true);doc.removeEventListener('touchstart',interrupt,true);doc.removeEventListener('wheel',cancel);doc.removeEventListener('visibilitychange',cancel);win.removeEventListener('blur',cancel);};
 }
 // Overscroll is native state. Only the painted thumb is clamped; never write it
 // back to the scrolling element, and don't remeasure layout for each scroll.
@@ -67,7 +70,7 @@ export function scrollbarsMount(doc=document,win=window){
   const item={track,thumb,geometry:null,timer:0};
   const position=()=>axis==='y'?el.scrollTop:Math.abs(el.scrollLeft);
   const move=value=>{const next=Math.max(0,Math.min(item.geometry.max,value));if(axis==='y')el.scrollTop=next;else el.scrollLeft=win.getComputedStyle(el).direction==='rtl'?-next:next;active(item);schedule();};
-  item.dispose=scrollbarInput(track,thumb,{geometry:()=>item.geometry,position,move,active:()=>active(item),view:()=>axis==='y'?el.clientHeight:el.clientWidth},win);
+  item.dispose=scrollbarInput(track,thumb,{geometry:()=>item.geometry,position,move,active:()=>active(item),view:()=>axis==='y'?el.clientHeight:el.clientWidth,blocked:()=>!!doc.querySelector('.segmented-control[data-segment-grab]')},win);
   return item;
  }
  function refresh(){

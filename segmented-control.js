@@ -86,6 +86,7 @@ export function segmentedMount(root,{attribute,change,remember=true}){
   bar.scrollLeft=next;paintDrag(d,d.event);edgeFrame=win.requestAnimationFrame(edgeFollow);
  }
  function followEdge(){if(!edgeFrame)edgeFrame=win.requestAnimationFrame(edgeFollow);}
+ const releaseGrab=()=>{if(drag)delete drag.nav.dataset.segmentGrab;};
  function begin(e,point,id,touch=false){
   const nav=e.target.closest('.segmented-control')||e.target.closest('.tab-bar')?.querySelector('.segmented-control');if(!nav||!buttons(nav).length)return;stopEdge();if(followNav){stopSettle();position(nav);}suppressClick=false;
   const pill=nav.querySelector('.segment-selection'),rect=pill.getBoundingClientRect(),bar=nav.parentElement;
@@ -93,18 +94,19 @@ export function segmentedMount(root,{attribute,change,remember=true}){
   const pan=!onPill&&nav.classList?.contains('segment-scrollable')&&bar.scrollWidth>bar.clientWidth+1;
   // Only the visible selected pill owns selection dragging. Unselected touch
   // gestures remain native even when their path later crosses that pill.
-  if(!onPill&&(touch||!pan)){drag=null;return;}
+  if(!onPill&&(touch||!pan)){releaseGrab();drag=null;return;}
   stopSettle();
-  drag={id,touch,event:e,x:point.clientX,y:point.clientY,pointerX:point.clientX,nav,pill,moved:false,start:rect.left,pan,scroll:bar?.scrollLeft,cueCenter:rect.left+rect.width/2-nav.getBoundingClientRect().left,cueIndex:buttons(nav).findIndex(b=>value(b)===nav.dataset.current)};
+  releaseGrab();drag={id,touch,event:e,x:point.clientX,y:point.clientY,pointerX:point.clientX,nav,pill,moved:false,start:rect.left,pan,scroll:bar?.scrollLeft,cueCenter:rect.left+rect.width/2-nav.getBoundingClientRect().left,cueIndex:buttons(nav).findIndex(b=>value(b)===nav.dataset.current)};
+  if(!pan){nav.dataset.segmentGrab='true';doc.dispatchEvent?.(new (win.Event||Event)('segment-grab'));}
  }
  function move(e,point,id){
   if(drag?.id!==id)return;const dx=point.clientX-drag.x,dy=point.clientY-drag.y;
-  if(!drag.moved&&Math.abs(dy)>Math.abs(dx)+6){stopEdge();drag=null;return;}if(!drag.moved&&Math.abs(dx)<6)return;
+  if(!drag.moved&&Math.abs(dy)>Math.abs(dx)+6){stopEdge();releaseGrab();drag=null;return;}if(!drag.moved&&Math.abs(dx)<6)return;
   if(!drag.moved){drag.moved=true;if(!drag.touch)drag.nav.setPointerCapture(id);}
   if(drag.pan){e.preventDefault();drag.nav.parentElement.scrollLeft=drag.scroll-dx;return;}
   e.preventDefault();e.stopPropagation();drag.pointerX=point.clientX;paintDrag(drag,e);followEdge();
  }
- function finish(e,id,commit){if(drag?.id!==id)return;const d=drag;stopEdge();drag=null;if(!d.moved)return;
+ function finish(e,id,commit){if(drag?.id!==id)return;const d=drag;stopEdge();releaseGrab();drag=null;if(!d.moved)return;
   if(d.pan){suppressClick=true;if(d.nav.hasPointerCapture(id))d.nav.releasePointerCapture(id);return;}
   const geometry=measure(d.nav),old=geometry.pill,result=layout(geometry,old.left-geometry.origin,old.width);
   const next=commit&&result.index>=0?value(geometry.entries[result.index].button):d.nav.dataset.current;
@@ -120,7 +122,7 @@ export function segmentedMount(root,{attribute,change,remember=true}){
  for(const name of ['touchend','touchcancel'])root.addEventListener(name,e=>{if(!drag?.touch)return;const p=[...e.changedTouches].find(p=>p.identifier===drag.id);if(p)finish(e,p.identifier,name==='touchend');},{passive:false});
  const refresh=(revealSelection=false)=>{for(const nav of root.querySelectorAll('.segmented-control')){if(!buttons(nav).length||!nav.getClientRects().length||followNav===nav||drag?.nav===nav)continue;if(revealSelection===true||!positioned.has(nav))reveal(nav,buttons(nav).find(button=>value(button)===nav.dataset.current));positioned.add(nav);position(nav);}};
  root.addEventListener('focusin',e=>{const button=e.target.closest(selector),nav=button?.closest('.segmented-control');if(nav){if(!drag&&doc.body?.dataset?.inputModality!=='pointer')reveal(nav,button);contrast(nav);}});
- const cancelDrag=()=>{stopEdge();stopSettle();drag=null;refresh();};
+ const cancelDrag=()=>{stopEdge();stopSettle();releaseGrab();const d=drag;drag=null;if(d&&!d.touch&&d.nav.hasPointerCapture?.(d.id))d.nav.releasePointerCapture(d.id);refresh();};
  doc.addEventListener?.('visibilitychange',()=>{if(doc.hidden)cancelDrag();});win.addEventListener('blur',cancelDrag);
  root.addEventListener('close',cancelDrag);
  doc.addEventListener?.('close',event=>{if(event.target!==root&&event.target.contains?.(root))cancelDrag();},true);
