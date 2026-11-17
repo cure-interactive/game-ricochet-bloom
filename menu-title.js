@@ -1,4 +1,4 @@
-import { GAME_VERSION } from './version.js?v=c942fcca644f5697e6f70b9923cd816dd9bbeec519f7834434f64a271c094460';
+import { GAME_VERSION } from './version.js?v=1a618de63d94faa20d7ac5613377057f679f089eedee7ee647bfef658764461b';
 
 // Home and Pause share the game's identity and version presentation.
 export function menuTitleHTML(){

@@ -1,45 +1,36 @@
 import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
-import {treeViewMount} from './tree-view.js?v=9911356cb12ea2fe7d5d66804eff580c4fc34212423f288b453ecd52a4b54f09';
-import {skillNodeHTML,skillLegendHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=d91171ea80b72ed4649072bd2f1fe316190493aba55201b79df70cd6da29fa26';
+import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=53654c1032e344ccd7e36e389ea7a596fd2bd534c3d1ea057c9fda9218a0b104';
+import {skillNodeHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=d91171ea80b72ed4649072bd2f1fe316190493aba55201b79df70cd6da29fa26';
 import {playerSkillStats} from './player-skill-comparison.js?v=75decfaf5d896b3fa9b10253c26385c4360916c8de20e0a52f71bc51d9fde36b';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {playerTreeGraph} from './player-tree.js?v=b15b2a9ffb2bafb64fb904e9c81ab2a03024cc1e947689b503659df569e5746a';
-import {mapCameraMount,nearestMapNode} from './tree-map.js?v=036d0d778228999f61ece74251473ecb2f0e6eda12f39d560a593090f6f89568';
-import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=0be1ef30df08b2ad4cf1487a12fe8451014f7e3119ff7c4522541934f0e6801b';
-import {screenHeader} from './screen-header.js?v=7db753fa19626839b08a41fd5d2583821cbc0774ad262a06dd328bb3f050c988';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
+import {treeSwitchMount} from './tree-switch.js?v=0be1ef30df08b2ad4cf1487a12fe8451014f7e3119ff7c4522541934f0e6801b';
+import {iconHTML} from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
 
-const button=(action,label,icon='add',attrs={})=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action,...attrs});
 const rules='Every purchased upgrade stacks permanently. Open pools apply purchases between shots; Melody Journey applies them from the next pool. Score Attack fixes them at the start of a run. Fixed trials and shared challenges keep their authored rules.';
 
 export function playerUpgradeMount(host){
  const dialog=document.createElement('dialog');dialog.id='player-upgrade-dialog';dialog.setAttribute('aria-label','Player Skills');
- dialog.innerHTML=screenHeader({icon:'skill-tree',className:'tree-heading',title:'Skills',back:button('back','Back','arrow-left'),actions:'<div class="tree-wallet-summary"></div>'})+
-  `<p class="tree-status sr-only" role="status" aria-live="polite"></p><div class="tree-workspace"><section class="tree-map-section" aria-label="Connected player tree"><div class="tree-map-stage">${skillLegendHTML('player-legend-content')}<div class="tree-map-scroll" tabindex="0" aria-label="Player skill map. Drag to pan; pinch or scroll to zoom. Arrow keys move between skills."><div class="tree-map"></div></div><div class="tree-camera-controls" aria-label="Map controls"><button type="button" data-tree-action="zoom-out" aria-label="Zoom out"><span aria-hidden="true">−</span></button><output class="tree-zoom" aria-label="Map zoom"></output>${button('zoom-in','Zoom in','add')}${button('fit','Fit tree','fullscreen-enable')}${button('focus','Focus','reset')}</div></div>${treeSwitchHTML('player')}</section></div><footer class="tree-map-hint">Tap a skill for details · Drag to move · Pinch or scroll to zoom</footer><section id="player-skill-tooltip" class="skill-tooltip" role="dialog" aria-modal="false" aria-labelledby="player-skill-title" hidden></section>`;
+ dialog.innerHTML=skillTreeHTML('player');
  document.body.append(dialog);
- const surface=dialog.querySelector('.tree-map-scroll'),map=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage'),tip=dialog.querySelector('.skill-tooltip');
+ const map=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage'),tip=dialog.querySelector('.skill-tooltip');
  const {legend,legendContent,setLegend}=skillLegendMount(dialog);
- let graph=playerTreeGraph(host.get(),host.showHiddenContent?.()),selected='player',tipId=null,lastView=null;
+ let graph=playerTreeGraph(host.get(),host.showHiddenContent?.()),selected='player',tipId=null;
  const world={width:graph.width,height:graph.height};
  function hide(restore=false){tip.hidden=true;tipId=null;map.querySelectorAll('[aria-expanded=true]').forEach(n=>n.setAttribute('aria-expanded','false'));if(restore)map.querySelector(`[data-player-node="${selected}"]`)?.focus({preventScroll:true});}
- const projection=treeViewMount(map,surface,(view,limits)=>{
-  dialog.querySelector('.tree-zoom').textContent=Math.round(view.scale*100)+'%';
-  dialog.querySelector('[data-tree-action=zoom-out]').disabled=view.scale<=limits.minScale+1e-6;
-  dialog.querySelector('[data-tree-action=zoom-in]').disabled=view.scale>=1.799;
- });
- const camera=mapCameraMount(surface,world,(view,limits)=>{if(tipId&&lastView&&(view.x!==lastView.x||view.y!==lastView.y||view.scale!==lastView.scale))hide();lastView={...view};projection.paint(view,limits);});
+ const tree=skillTreeMount(dialog,world,{selected:()=>selected,onMove:hide}),camera=tree.camera;
  function selection(){
   const route=new Set(['player']);let n=graph.byId[selected];while(n){route.add(n.id);n=graph.byId[n.requires];}
-  map.querySelectorAll('[data-player-node]').forEach(n=>{n.setAttribute('aria-pressed',String(n.dataset.playerNode===selected));n.classList.toggle('is-route',route.has(n.dataset.playerNode));});
-  map.querySelectorAll('path').forEach(p=>p.classList.toggle('is-route',route.has(p.dataset.from)&&route.has(p.dataset.to)));
+  tree.select(selected,route);
  }
  function render(message=''){
   hide();const state=host.get(),previous=graph.byId[selected];graph=playerTreeGraph(state,host.showHiddenContent?.());
   if(!graph.byId[selected])selected='player';Object.assign(world,{width:graph.width,height:graph.height});
   dialog.querySelector('.tree-wallet-summary').innerHTML=`<strong>${iconHTML('coin')}${state.profile.wallet.seeds}<span> Points</span></strong>`;
   dialog.querySelector('.tree-status').textContent=message;
-  map.innerHTML=`<svg class="tree-world-links" viewBox="0 0 ${graph.width} ${graph.height}" aria-hidden="true">${graph.edges.map(e=>`<path data-from="${e.from}" data-to="${e.to}" class="${graph.byId[e.to].owned?'is-active':graph.byId[e.from].owned?'is-open':'is-locked'}" style="--rarity-color:${RARITIES[graph.byId[e.to].rarity].color}" d="${e.path}"/>`).join('')}</svg>`+
-   graph.nodes.map(n=>skillNodeHTML(n,{attribute:'data-player-node',tooltipId:'player-skill-tooltip',selected:n.id===selected,active:n.owned,available:n.canBuy,cost:n.owned&&!host.showPurchasedCosts?.()?null:n.cost})).join('');projection.prepare(graph.byId);selection();
+  const links=graph.edges.map(e=>`<path data-from="${e.from}" data-to="${e.to}" class="${graph.byId[e.to].owned?'is-active':graph.byId[e.from].owned?'is-open':'is-locked'}" style="--rarity-color:${RARITIES[graph.byId[e.to].rarity].color}" d="${e.path}"/>`).join('');
+  const nodes=graph.nodes.map(n=>skillNodeHTML(n,{attribute:'data-player-node',tooltipId:'player-skill-tooltip',selected:n.id===selected,active:n.owned,available:n.canBuy,cost:n.owned&&!host.showPurchasedCosts?.()?null:n.cost})).join('');
+  tree.render(graph.byId,nodes,links);selection();
   if(dialog.open){camera.refresh();const point=graph.byId[selected];if(point.x!==previous?.x||point.y!==previous?.y)camera.focus(point,camera.value.scale);}
  }
  function show(id,keyboard=false){
@@ -58,26 +49,19 @@ export function playerUpgradeMount(host){
   const node=event.target.closest('[data-player-node]');if(node){show(node.dataset.playerNode,event.detail===0);return;}
   const action=event.target.closest('[data-tree-action]')?.dataset.treeAction;
   if(action==='back')host.back();else if(action==='dismiss')hide(true);else if(action==='legend'){hide();setLegend(legendContent.hidden);}
-  else if(action==='fit')camera.fit();else if(action==='focus')camera.focus(graph.byId[selected],1);
-  else if(action==='zoom-in'||action==='zoom-out')camera.zoom(action==='zoom-in'?1.25:.8);
   else if(action==='buy'){
    const id=tipId;if(!id)return;const current=playerTreeGraph(host.get(),host.showHiddenContent?.()).byId[id];if(!current?.canBuy){render(current?.reason);return;}
    const result=host.act({type:'buy-player',id});render(result.ok?result.message:result.reason);show(id);map.querySelector(`[data-player-node="${id}"]`)?.focus({preventScroll:true});
   }else if(!tip.contains(event.target))hide();
  });
  dialog.addEventListener('pointerdown',event=>{if(!tip.contains(event.target)&&!event.target.closest('[data-player-node]'))hide();});
- surface.addEventListener('focusin',event=>{const node=event.target.closest('[data-player-node]');if(node&&node.matches(':focus-visible'))camera.ensure(graph.byId[node.dataset.playerNode]);});
  dialog.addEventListener('keydown',event=>{
   if(event.key==='Escape'&&!legendContent.hidden){event.preventDefault();event.stopPropagation();setLegend(false);legend.focus({preventScroll:true});return;}
   if(event.key==='Escape'&&!tip.hidden){event.preventDefault();event.stopPropagation();hide(true);return;}
-  const from=event.target.closest('[data-player-node]'),direction={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[event.key];
-  if(from&&direction){const next=nearestMapNode(graph.byId,from.dataset.playerNode,...direction);if(next){event.preventDefault();camera.ensure(graph.byId[next]);map.querySelector(`[data-player-node="${next}"]`).focus({preventScroll:true});}}
+
  });
  dialog.addEventListener('cancel',event=>{event.preventDefault();if(!legendContent.hidden)setLegend(false);else if(!tip.hidden)hide(true);else host.back();});
- dialog.addEventListener('close',()=>{hide();camera.cancel();projection.stop();});
- let viewport={width:window.innerWidth,height:window.innerHeight};
- window.addEventListener('resize',()=>{if(viewport.width!==window.innerWidth||viewport.height!==window.innerHeight)hide();viewport={width:window.innerWidth,height:window.innerHeight};});
- document.addEventListener('visibilitychange',()=>{if(document.hidden)hide();});
+
  rememberView(dialog,'selection',()=>selected,id=>{if(graph.byId[id]){selected=id;selection();}},20);
  return {open(){host.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());setLegend(false);render();dialog.showModal();camera.focus(graph.byId[selected],.85,.12);dialog.querySelector('[data-tree-action=back]').focus({preventScroll:true});},refresh(){if(dialog.open)render();}};
 }

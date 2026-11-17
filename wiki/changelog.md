@@ -6,6 +6,25 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.34.6
+
+Build: 2026-11-17 01:29:43 UTC
+
+### Player Changes
+
+- Restore the shadows around skill nodes when inspecting the map up close.
+- Powers and Player share the same map controls and navigation, with less repeated layout work while panning and zooming.
+- Keep simplified distant views and the fading dotted background.
+
+<!-- development -->
+### Developer Notes
+
+- Consolidate the map shell, camera lifecycle, controls, keyboard navigation and route highlighting in `skill-tree.js`; keep each domain's research and purchase rules in its adapter.
+- Move fixed node coordinates with one world-parent transform. Keep the SVG link window projected to the viewport and avoid forced full-world bitmap promotion.
+- Preserve visibility culling, frame coalescing, cached node references and bounded asynchronous artwork decoding. Restore node shadows at readable zoom while retaining compact/overview simplification.
+- Verify parent/link geometry, unchanged node positions, repeated zoom, keyboard navigation and both tree views. Physical iPhone performance and crash acceptance remain pending.
+<!-- /development -->
+
 ## v3.34.5
 
 Build: 2026-11-17 01:11:30 UTC
