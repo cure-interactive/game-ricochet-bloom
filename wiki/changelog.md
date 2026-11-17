@@ -6,6 +6,23 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.35.2
+
+Build: 2026-11-17 03:13:38 UTC
+
+### Player Changes
+
+- Keep the Skills tab highlight aligned with the tree you are viewing when switching, returning or reloading.
+- Keep tab selectors steady while changing Gamemodes pages or reopening Stats.
+
+<!-- development -->
+### Developer Notes
+
+- Give each logical tab group one persistent bar and controller. Skills moves one instance between tree hosts; Gamemodes and Stats retain their bars while replacing content.
+- Derive route-owned selections from the displayed page and ignore obsolete independent tree-selector snapshots. Preserve Stats view memory and independent music/rarity filters.
+- Cover repeated switches, interrupted settling, re-entry and stale navigation snapshots with shared-owner regressions.
+<!-- /development -->
+
 ## v3.35.1
 
 Build: 2026-11-17 02:50:54 UTC

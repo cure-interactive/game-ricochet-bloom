@@ -1,5 +1,4 @@
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import {gamemodeNavigation} from './gamemode-navigation.js?v=3f3915de3b04163dd0de435412a17655a508eaafc207a6a98663480283195c6a';
 import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 import { experimentMedal } from './experiment-store.js?v=2b8bcb7d2ba84c47f7a84d9fa4ddf7019dd2ec0371eda4efd1db31d584152f5c';
 import { medalConditionsHTML } from './medal-ui.js?v=6df228e6d2895828fc52e3634bd7cb5b98bc58ddf86a48515c6d0a1527524ed2';
@@ -43,7 +42,7 @@ export function experimentMount(host){
   function hub(){
     const l=library(),playable=Object.keys(EXPERIMENT_RECIPES).length;cardReviews=l.reviews;
     page('Saved Runs & Notes','experiment-hub',`<p class="experiment-lead">Continue a saved gamemode, revisit favourites, or keep your playtest notes here.</p><div class="experiment-toolbar"><button id="experiment-play" aria-pressed="${view==='play'}">Saved Runs</button><button id="experiment-catalogue" aria-pressed="${view==='catalogue'}">Find Notes</button><span>${playable} playable prototypes · 210 ideas · ${label(host.kind())} Profile</span></div><div id="experiment-main"></div>`);
-    content.insertAdjacentHTML('afterbegin',gamemodeNavigation('saved',library().favourites.length>0));
+    host.show({tab:'saved',favorites:library().favourites.length>0});
     $('experiment-play').onclick=()=>{view='play';hub();};$('experiment-catalogue').onclick=()=>{view='catalogue';hub();};
     const main=$('experiment-main');
     if(view==='play'){

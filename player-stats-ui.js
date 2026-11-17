@@ -1,4 +1,5 @@
-import {segmentedHTML,segmentedMount} from './segmented-control.js?v=9177239cf54f096e1a7d7b9a041d427e077baef1d5723af65b85bc1c13778763';
+import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
+import {segmentedHTML,segmentedBarMount} from './segmented-control.js?v=908df6c6ea1d5c1c4b197a6c29c3406bf114735dddbc908cf00b030e213b0259';
 import { playerStats } from './player-stats.js?v=aa7fbe50f9e3b9b156bccc42001516a9208511dee8552056f76af27f4d05e6da';
 import { screenHeader } from './screen-header.js?v=67a25012d00131734bc7cf604e403b29da6580e9d3b12d0154df0a3e73f7a5fd';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
@@ -26,17 +27,20 @@ export function playerStatsHTML(s,view='overview'){
  const medals=`<div class="stats-medals">${MEDAL_NAMES.map(name=>`<div class="${s.medals[name]?'':'is-empty'}">${medalIcon(name)}<strong aria-label="${s.medals[name]?number(s.medals[name]):'None earned'}">${s.medals[name]?number(s.medals[name]):'—'}</strong><span>${name}</span></div>`).join('')}</div>
  <section class="stats-section">${heading('Medals by Gamemode','grid')}<ul class="stats-medal-list">${s.groups.map(g=>`<li><div class="stats-mode-name">${iconHTML(g.icon||'gamepad')}<strong>${escapeHTML(g.name)}</strong></div><div class="stats-medal-counts">${MEDAL_NAMES.map(name=>`<span class="${g.counts[name]?'':'is-empty'}">${medalIcon(name)}<span class="sr-only">${name}: </span><strong aria-label="${g.counts[name]?number(g.counts[name]):'None earned'}">${g.counts[name]?number(g.counts[name]):'—'}</strong></span>`).join('')}</div>${!g.available?`<p class="stats-record-warning">${iconHTML('warning-triangle')}Some records unavailable</p>`:''}</li>`).join('')}</ul><p class="stats-note">One best medal per saved level, setup, score budget, or pool record. A Gold replaces its earlier Silver or Bronze. Counts include only readable records.</p></section>`;
  return `<div class="stats-intro"><span class="stats-emblem">${iconHTML('player-skin')}</span><div><h3>${s.kind==='development'?'Development Profile':'Normal Profile'}</h3><p>${s.kind==='development'?'Test progress, separate from your normal profile.':'Your progress in this browser.'}</p></div></div>
- ${segmentedHTML(views.map(([id,label,icon])=>viewButton(id,label,icon,view)),{label:'Stats sections',current:view,className:'stats-view-nav'})}
+
  ${s.issues.length?`<p class="stats-warning" role="status">${iconHTML('warning-triangle')}<span>Some saved records could not be read: ${escapeHTML(s.issues.join(', '))}. They have not been changed.</span></p>`:''}
  ${panel('overview',view,overview)}${panel('records',view,records)}${panel('medals',view,medals)}`;
 }
+export function playerStatsTabs(view='overview'){return segmentedHTML(views.map(([id,label,icon])=>viewButton(id,label,icon,view)),{label:'Stats sections',current:view,className:'stats-view-nav'});}
 export function playerStatsMount(host){
  let view='overview';
  const dialog=document.createElement('dialog');dialog.id='player-stats-dialog';dialog.className='standard-dialog';dialog.setAttribute('aria-labelledby','player-stats-title');
  dialog.innerHTML=screenHeader({icon:'stats',className:'dialog-heading',title:'Player Stats',titleId:'player-stats-title',back:buttonHTML('Back','arrow-left',{'data-stats-back':true})})+'<div class="dialog-body tab-panel"><div class="tab-scroll player-stats-body"></div></div>';
  document.body.append(dialog);const content=dialog.querySelector('.player-stats-body'),back=dialog.querySelector('[data-stats-back]');
  back.onclick=()=>host.back();dialog.addEventListener('cancel',e=>{e.preventDefault();host.back();});
- const segments=segmentedMount(dialog,{attribute:'data-stats-view',change(next){view=selectedView(next);for(const panel of content.querySelectorAll('.stats-panel'))panel.hidden=panel.id!=='stats-panel-'+view;content.scrollTop=0;return dialog.querySelector('.stats-view-nav');}});
+ function select(next){view=selectedView(next);for(const panel of content.querySelectorAll('.stats-panel'))panel.hidden=panel.id!=='stats-panel-'+view;content.scrollTop=0;segments.show(content.parentElement,view);}
+ const segments=segmentedBarMount(document,playerStatsTabs(),{attribute:'data-stats-view',change:select});
+ rememberView(dialog,'data-stats-view',()=>[{label:'Stats Sections',value:view}],items=>{const item=Array.isArray(items)&&items[0];if(item)select(item.value);});
  dialog.addEventListener('click',e=>{const destination=e.target.closest('[data-stats-open]')?.dataset.statsOpen;if(destination)host.open(destination);});
- return {open(){host.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());content.innerHTML=playerStatsHTML(playerStats(host.get()),view);content.parentElement.querySelector(':scope>.tab-bar')?.remove();const bar=content.querySelector('.tab-bar');if(bar)content.after(bar);dialog.showModal();segments.refresh();content.scrollTop=0;back.focus({preventScroll:true});}};
+ return {open(){host.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());content.innerHTML=playerStatsHTML(playerStats(host.get()),view);dialog.showModal();segments.show(content.parentElement,view);content.scrollTop=0;back.focus({preventScroll:true});}};
 }

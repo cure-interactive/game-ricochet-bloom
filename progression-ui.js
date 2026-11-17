@@ -1,6 +1,6 @@
 import {cosmeticSkin,cosmeticLoadout} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
 import { screenHeader } from './screen-header.js?v=67a25012d00131734bc7cf604e403b29da6580e9d3b12d0154df0a3e73f7a5fd';
-import { playerUpgradeMount } from './player-upgrade-ui.js?v=1307d1e71ea223af5408a90adbcd79e9276d044dcec61af22aed7674e3ac560b';
+import { playerUpgradeMount } from './player-upgrade-ui.js?v=7bdb2773ff5e69d0b549083b76ac2c7f0ebe2499ac612af79b541ea00009200d';
 import { saveRecoveryMount } from './save-recovery-ui.js?v=d7625784e02981594943d5c18f9fe4f8cfd717e66ad5c9756ed517d5b160908c';
 import { progressionResetUnreadable } from './progression-store.js?v=fe1e1d1749748b076114c3de42bd93dcabf19ace85e1dc8a0246f22e59269125';
 import { medalIcon } from './medal-ui.js?v=6df228e6d2895828fc52e3634bd7cb5b98bc58ddf86a48515c6d0a1527524ed2';
@@ -15,10 +15,10 @@ import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e7
 import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=9833b54af374a8b337f5b85e020f9c1f8549d4a4a2e51944787cba2936ff9ed8';
 import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=fe1e1d1749748b076114c3de42bd93dcabf19ace85e1dc8a0246f22e59269125';
 import { gameCreate } from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
-import { treeMount } from './tree-ui.js?v=0a349c74c2bf152f55f3878ed91b25109da6318ac9b44e3b991078904df74aa0';
+import { treeMount } from './tree-ui.js?v=874d538671eb5260bca0296538f6655b2c048698ccebd30c1eda3f0368f05e4b';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
-import { skinMount } from './skin-ui.js?v=2d804b5be696c307b775cca5b6a6d76a240e055c9180127c4ddf111a18578f47';
+import { skinMount } from './skin-ui.js?v=b1d1ef3c3586e21d9102710286dda8fc211c14aa0f7757df59a395ab756fb00a';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,pending=null,pendingAfter=null,suspended=null,shared=null,listenTimer=null;
@@ -107,8 +107,8 @@ export function progressionMount(host){
     if(saved.ok)suspended.state=saved.state;
     return saved.ok?{...r,state:saved.state}:saved;
   }
-  const players=playerUpgradeMount({showHiddenContent:()=>developmentSettings.showHiddenContent,powers:()=>tree.open(),showPurchasedCosts:()=>developmentSettings.showPurchasedCosts,get:()=>suspended?.state||state,act:treeAct,screen:()=>host.screen?.('player-upgrades'),back:()=>host.back?.()});
-  tree=treeMount({players:()=>players.open(),get:()=>suspended?.state||state,showHiddenContent:()=>developmentSettings.showHiddenContent,showPurchasedCosts:()=>developmentSettings.showPurchasedCosts,act:treeAct,open,screen:()=>host.screen?.('tree'),back:()=>host.back?.()});
+  const players=playerUpgradeMount({showHiddenContent:()=>developmentSettings.showHiddenContent,showPurchasedCosts:()=>developmentSettings.showPurchasedCosts,get:()=>suspended?.state||state,act:treeAct,screen:()=>host.screen?.('player-upgrades'),back:()=>host.back?.()});
+  tree=treeMount({get:()=>suspended?.state||state,showHiddenContent:()=>developmentSettings.showHiddenContent,showPurchasedCosts:()=>developmentSettings.showPurchasedCosts,act:treeAct,open,screen:()=>host.screen?.('tree'),back:()=>host.back?.()});
   const skins=skinMount({showPurchasedCosts:()=>developmentSettings.showPurchasedCosts,gentle:host.gentle,get:()=>suspended?.state||state,showHiddenContent:()=>developmentSettings.showHiddenContent,act:treeAct,screen:()=>host.screen?.('skins'),back:()=>host.back?.()});
   const listen=(record,seconds=0)=>{clearTimeout(listenTimer);host.save();context='listening';listening={campaign:seconds>0,track:record.track};close();back.hidden=false;back.lastElementChild.textContent=seconds?'Stop Preview':'Leave Listening';const listeningGame=gameCreate(record.seed,'free');listeningGame.blooms=record.music.blooms;listeningGame.launches=record.music.plucks;host.play(listeningGame,record.music);host.message('Listening to '+trackGet(record.track).name+'. Leave listening to return to your saved run.');if(seconds)listenTimer=setTimeout(()=>{if(context==='listening'&&host.currentScreen?.()==='play'){leave();campaign.open('play',record.track);}},seconds*1000);};
   campaign=campaignMount({showHiddenContent:()=>developmentSettings.showHiddenContent,screen:()=>host.screen?.('levels'),songsMount:host.songsMount,songsClose:host.songsClose,songsRefresh:host.songsRefresh,back:()=>host.back?.(),get:()=>({...state,shared:!!shared}),act,open,listen,

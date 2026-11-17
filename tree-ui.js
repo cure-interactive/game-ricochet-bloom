@@ -1,8 +1,8 @@
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=34d590ffe7ff5f8c76d3854a62d36a4080737a92fcec3682c5da8f5c0d8c7794';
+import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=bc40f3f174b96302e325e1af82edb1a6ee4ba21e729862c34027d5cf1ee3cbbe';
 import {skillNodeHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=7c7f8558b13f8038ec967a3c9ce5391a8c18dca43ea54df0fd62e6f7c63b359c';
 export {skillStatsHTML} from './skill-card.js?v=7c7f8558b13f8038ec967a3c9ce5391a8c18dca43ea54df0fd62e6f7c63b359c';
-import { treeSwitchMount } from './tree-switch.js?v=d1d4dc9266fa245530c027ce5142d5d1f541bd0ac46081b40d16d7a9e9f9e84c';
+import { treeSwitchMount } from './tree-switch.js?v=3a35fda23780184cf2c13971022a7516dc8bf1637bfae74d71aa82d7e7b63116';
 import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 import { purchaseComparison, skillStats } from './skill-comparison.js?v=750d7ba8294087d6c9efcac6dafcaa35f94c7601578ca34df112cbe12fcffe08';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
@@ -83,7 +83,7 @@ export function treeMount(controller){
  const fullLayout=treeLayout(POWER_TREES,cat.nodes),world={x:0,y:0,width:fullLayout.width,height:fullLayout.height};
  let layout=fullLayout,visiblePositions={};
  dialog.innerHTML=skillTreeHTML('powers');
- treeSwitchMount(dialog,'powers',()=>controller.players?.());
+ const tabs=treeSwitchMount(dialog,'powers',()=>open());
  const surface=dialog.querySelector('.tree-map-scroll'),mapElement=dialog.querySelector('.tree-map'),stage=dialog.querySelector('.tree-map-stage');
  const {legend,legendContent,setLegend}=skillLegendMount(dialog);
  tip=dialog.querySelector('.skill-tooltip');
@@ -156,7 +156,7 @@ export function treeMount(controller){
 
  function open(focusSkill){
    if(cat.nodes[focusSkill])selected=focusSkill;controller.screen?.();document.querySelectorAll('dialog[open]').forEach(d=>d.close());
-   state=controller.get();status('');setLegend(false);render();dialog.showModal();camera.focus(layout.nodes[selected]||{x:100,y:90},.85,.12);dialog.querySelector('[data-tree-action=back]').focus({preventScroll:true});
+   state=controller.get();status('');setLegend(false);render();dialog.showModal();tabs.show();camera.focus(layout.nodes[selected]||{x:100,y:90},.85,.12);dialog.querySelector('[data-tree-action=back]').focus({preventScroll:true});
  }
  rememberView(dialog,'selection',()=>selected,id=>{if(cat.nodes[id]){selected=id;selectionRender();}},20);
  render();if(new URL(location.href).searchParams.get('view')==='tree')open();return {open,refresh(){state=controller.get();render();}};

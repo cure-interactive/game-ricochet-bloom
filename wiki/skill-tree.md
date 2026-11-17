@@ -1,5 +1,7 @@
 # Skills
 
+Powers and Player share the bottom tab selector. The highlighted tab always identifies the tree you are viewing, including when you return or reload.
+
 ## Player Upgrades
 
 Open **Player → Skills** to go straight to player upgrades, or open **Skills** from the main menu and switch between **Powers** and **Player** using the selector at the bottom of its map panel. The Player tree connects Player to the Sight, Launch, Rebound, Glide and Steady branches. Tap or click a node to read its effects, prerequisites and Points cost, then unlock it from the detail card. Drag to pan and pinch or scroll to zoom, just like the power tree. Keyboard users can move between nodes with arrow keys and open details with Enter or Space. Hovering does not open a card.

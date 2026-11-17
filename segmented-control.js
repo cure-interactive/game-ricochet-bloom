@@ -6,7 +6,7 @@ export function segmentedHTML(buttons,{label,current,className=''}){
  return `<div class="tab-bar"><nav class="segmented-control ${escapeHTML(className)}" data-current="${escapeHTML(current)}" aria-label="${escapeHTML(titleCase(label))}" style="--segment-count:${buttons.length}"><span class="segment-selection" aria-hidden="true"></span>${buttons.join('')}</nav></div>`;
 }
 // Works within one panel or across dialogs. The caller owns destinations only.
-export function segmentedMount(root,{attribute,change}){
+export function segmentedMount(root,{attribute,change,remember=true}){
  const doc=root.ownerDocument,win=doc.defaultView,selector=`[${attribute}]`;
  const draw=segmentedPainter(doc,win),positioned=new WeakSet();
  let drag=null,suppressClick=false,frame=0,followNav=null,edgeFrame=0,edgeTime=0,edgeSpeed=0;
@@ -123,12 +123,28 @@ export function segmentedMount(root,{attribute,change}){
  const cancelDrag=()=>{stopEdge();stopSettle();drag=null;refresh();};
  doc.addEventListener?.('visibilitychange',()=>{if(doc.hidden)cancelDrag();});win.addEventListener('blur',cancelDrag);
  root.addEventListener('close',cancelDrag);
+ doc.addEventListener?.('close',event=>{if(event.target!==root&&event.target.contains?.(root))cancelDrag();},true);
  root.addEventListener('wheel',()=>{if(followNav){const nav=followNav;stopSettle();position(nav);}},{passive:true});
  root.addEventListener('focusout',()=>queueMicrotask(()=>{for(const nav of root.querySelectorAll('.segmented-control'))if(buttons(nav).length&&nav.getClientRects().length)contrast(nav);}));
  new win.MutationObserver(refresh).observe(root,{attributes:true,attributeFilter:['open']});
  new win.MutationObserver(()=>refresh(true)).observe(doc.body,{attributes:true,attributeFilter:['data-left-handed']});
- rememberView(root,attribute,()=>[...root.querySelectorAll('.segmented-control')].filter(nav=>nav.querySelector(selector)).map(nav=>({label:nav.getAttribute('aria-label'),value:nav.dataset.current})),items=>{for(const item of Array.isArray(items)?items:[]){let nav=[...root.querySelectorAll('.segmented-control')].find(nav=>titleCase(nav.getAttribute('aria-label'))===titleCase(item.label));const button=nav&&buttons(nav).find(button=>value(button)===item.value);if(!button||item.value===nav.dataset.current)continue;nav=change(item.value)||nav;nav.dataset.current=item.value;for(const b of buttons(nav))b.setAttribute('aria-pressed',String(value(b)===item.value));}refresh();},attribute==='data-rarity-filter'?10:0);
+ if(remember)rememberView(root,attribute,()=>[...root.querySelectorAll('.segmented-control')].filter(nav=>nav.querySelector(selector)).map(nav=>({label:nav.getAttribute('aria-label'),value:nav.dataset.current})),items=>{for(const item of Array.isArray(items)?items:[]){let nav=[...root.querySelectorAll('.segmented-control')].find(nav=>titleCase(nav.getAttribute('aria-label'))===titleCase(item.label));const button=nav&&buttons(nav).find(button=>value(button)===item.value);if(!button||item.value===nav.dataset.current)continue;nav=change(item.value)||nav;nav.dataset.current=item.value;for(const b of buttons(nav))b.setAttribute('aria-pressed',String(value(b)===item.value));}refresh();},attribute==='data-rarity-filter'?10:0);
  win.addEventListener('resize',()=>refresh(true));return {refresh};
+}
+
+// A tab group owns one bar and controller, even when its pages have different
+// dialog/content owners. The displayed page supplies selection; it is not a
+// second independently restored navigation choice.
+export function segmentedBarMount(doc,html,{attribute,change}){
+ const holder=doc.createElement('div');holder.innerHTML=html;
+ const bar=holder.firstElementChild,nav=bar.querySelector('.segmented-control');
+ const control=segmentedMount(bar,{attribute,remember:false,change(next){change(next);return nav;}});
+ return {bar,nav,refresh:control.refresh,show(target,current){
+  if(bar.parentElement!==target)target.append(bar);
+  bar.hidden=false;nav.dataset.current=current;
+  for(const button of nav.querySelectorAll(`[${attribute}]`))button.setAttribute('aria-pressed',String(button.getAttribute(attribute)===current));
+  control.refresh();
+ }};
 }
 
 // One snapshot defines both physical feedback and the candidate destination.

@@ -1,6 +1,6 @@
 import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
-import { renderMarkdown } from './wiki.js?v=59555308110ada4e153ef1c108e795d0c240b939558d9d33e94b55c4da4ff70a';
+import { renderMarkdown } from './wiki.js?v=ae503dba381b3485339d3a2d52a101c6b80b1b24ef049d6f26daf780a2afce7e';
 import { buttonLabel } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 import { pageHistory } from './page-history.js?v=54c1c0aaacb43da66e5503f9ea5ea7948dfd1efd2ededbc6b416434a1792e935';
 // Only shipped attribution/assets may navigate inside the viewer.

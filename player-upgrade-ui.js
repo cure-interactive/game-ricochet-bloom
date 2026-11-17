@@ -1,10 +1,10 @@
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=34d590ffe7ff5f8c76d3854a62d36a4080737a92fcec3682c5da8f5c0d8c7794';
+import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=bc40f3f174b96302e325e1af82edb1a6ee4ba21e729862c34027d5cf1ee3cbbe';
 import {skillNodeHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=7c7f8558b13f8038ec967a3c9ce5391a8c18dca43ea54df0fd62e6f7c63b359c';
 import {playerSkillStats} from './player-skill-comparison.js?v=f77d93876f25ffd7530d3de39e2b3b762afba93a19a6906ea123d7a16fbc3720';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {playerTreeGraph} from './player-tree.js?v=c80677aa6964fa22430a44f56650aec8e10a617da6e96672044bcbbbc2042027';
-import {treeSwitchMount} from './tree-switch.js?v=d1d4dc9266fa245530c027ce5142d5d1f541bd0ac46081b40d16d7a9e9f9e84c';
+import {treeSwitchMount} from './tree-switch.js?v=3a35fda23780184cf2c13971022a7516dc8bf1637bfae74d71aa82d7e7b63116';
 import {iconHTML} from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 
 const rules='Every purchased upgrade stacks permanently. Open pools apply purchases between shots; Melody Journey applies them from the next pool. Score Attack fixes them at the start of a run. Fixed trials and shared challenges keep their authored rules.';
@@ -44,7 +44,7 @@ export function playerUpgradeMount(host){
   showSkillCard({tip,source,stage,dialog,info,titleId:'player-skill-title'});tipId=id;
   if(keyboard)(tip.querySelector('.primary:not(:disabled)')||tip.querySelector('[data-tree-action=dismiss]')).focus();
  }
- treeSwitchMount(dialog,'player',()=>host.powers());
+ const tabs=treeSwitchMount(dialog,'player',()=>open());
  dialog.addEventListener('click',event=>{
   const node=event.target.closest('[data-player-node]');if(node){show(node.dataset.playerNode,event.detail===0);return;}
   const action=event.target.closest('[data-tree-action]')?.dataset.treeAction;
@@ -63,5 +63,6 @@ export function playerUpgradeMount(host){
  dialog.addEventListener('cancel',event=>{event.preventDefault();if(!legendContent.hidden)setLegend(false);else if(!tip.hidden)hide(true);else host.back();});
 
  rememberView(dialog,'selection',()=>selected,id=>{if(graph.byId[id]){selected=id;selection();}},20);
- return {open(){host.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());setLegend(false);render();dialog.showModal();camera.focus(graph.byId[selected],.85,.12);dialog.querySelector('[data-tree-action=back]').focus({preventScroll:true});},refresh(){if(dialog.open)render();}};
+ function open(){host.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());setLegend(false);render();dialog.showModal();tabs.show();camera.focus(graph.byId[selected],.85,.12);dialog.querySelector('[data-tree-action=back]').focus({preventScroll:true});}
+ return {open,refresh(){if(dialog.open)render();}};
 }
