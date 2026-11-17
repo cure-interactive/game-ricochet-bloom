@@ -1,7 +1,7 @@
 import {rememberView} from './navigation-state.js?v=8f540f6be269a8759011349f3d0983c46c7ea4c71a6728e0324dba8b0e6e72e8';
 import {segmentedPainter} from './segmented-paint.js?v=f3fcc78ca5b54f7fb6d7fce668b601d74b373a11d0d030833ba9c8a52c685508';
 import {escapeHTML} from './ui-text.js?v=02f24218cfade2c1cf218f107876f5365ad03a4287cebbb4b8e0817ce89eb0d0';
-import {uiWind,uiSelect} from './ui-sound.js?v=1b8a8570abaa76e05b9dfb824b38d1355a2c2bbbe162ed5a2918c3391a45ce8d';
+import {uiWind,uiSelect,uiWindMoved} from './ui-sound.js?v=3590d73bc8b86d549ef02d07bfbe69b1109b1c53a71d1b582d0f5af09e46db20';
 export function segmentedHTML(buttons,{label,current,className=''}){
  return `<div class="tab-bar"><nav class="segmented-control ${escapeHTML(className)}" data-current="${escapeHTML(current)}" aria-label="${escapeHTML(label)}" style="--segment-count:${buttons.length}"><span class="segment-selection" aria-hidden="true"></span>${buttons.join('')}</nav></div>`;
 }
@@ -68,6 +68,12 @@ export function segmentedMount(root,{attribute,change}){
   const base=d.nav.getBoundingClientRect().left+d.nav.clientLeft;
   paint(d.nav,Math.max(min,Math.min(max,d.start+d.pointerX-d.x))-base,width);
  }
+ function dragSound(d,event){
+  const origin=d.nav.getBoundingClientRect().left,rects=buttons(d.nav).map(b=>b.getBoundingClientRect()),centers=rects.map(r=>r.left+r.width/2-origin);
+  const rect=d.pill.getBoundingClientRect(),center=rect.left+rect.width/2-origin,min=Math.min(...centers),max=Math.max(...centers);
+  const index=centers.reduce((best,x,i)=>Math.abs(x-center)<Math.abs(centers[best]-center)?i:best,0);
+  if(uiWindMoved(d.cueCenter,center,index!==d.cueIndex)){uiWind(d.nav,center-d.cueCenter,event,(center-min)/Math.max(1,max-min));d.cueCenter=center;d.cueIndex=index;}
+ }
  function edgeFollow(time){
   edgeFrame=0;const d=drag;if(!d?.moved||d.pan||!d.nav.classList?.contains('segment-scrollable'))return stopEdge();
   const bar=d.nav.parentElement,r=bar.getBoundingClientRect(),max=Math.max(0,bar.scrollWidth-bar.clientWidth),zone=Math.min(64,bar.clientWidth*.2);
@@ -79,7 +85,7 @@ export function segmentedMount(root,{attribute,change}){
   edgeSpeed+=(side*.55*depth*depth-edgeSpeed)*(1-Math.exp(-dt/70));
   const before=bar.scrollLeft,next=Math.max(0,Math.min(max,before+edgeSpeed*dt));
   if(Math.abs(next-before)<.001)return stopEdge();
-  bar.scrollLeft=next;paintDrag(d);uiWind(d.nav,(next-before)/Math.max(1,d.pill.getBoundingClientRect().width),d.event);edgeFrame=win.requestAnimationFrame(edgeFollow);
+  bar.scrollLeft=next;paintDrag(d);dragSound(d,d.event);edgeFrame=win.requestAnimationFrame(edgeFollow);
  }
  function followEdge(){if(!edgeFrame)edgeFrame=win.requestAnimationFrame(edgeFollow);}
  function begin(e,point,id,touch=false){
@@ -91,14 +97,14 @@ export function segmentedMount(root,{attribute,change}){
   // gestures remain native even when their path later crosses that pill.
   if(!onPill&&(touch||!pan)){drag=null;return;}
   stopSettle();
-  drag={id,touch,event:e,x:point.clientX,y:point.clientY,pointerX:point.clientX,nav,pill,moved:false,start:rect.left,pan,scroll:bar?.scrollLeft};
+  drag={id,touch,event:e,x:point.clientX,y:point.clientY,pointerX:point.clientX,nav,pill,moved:false,start:rect.left,pan,scroll:bar?.scrollLeft,cueCenter:rect.left+rect.width/2-nav.getBoundingClientRect().left,cueIndex:buttons(nav).findIndex(b=>value(b)===nav.dataset.current)};
  }
  function move(e,point,id){
   if(drag?.id!==id)return;const dx=point.clientX-drag.x,dy=point.clientY-drag.y;
   if(!drag.moved&&Math.abs(dy)>Math.abs(dx)+6){stopEdge();drag=null;return;}if(!drag.moved&&Math.abs(dx)<6)return;
   if(!drag.moved){drag.moved=true;if(!drag.touch)drag.nav.setPointerCapture(id);}
   if(drag.pan){e.preventDefault();drag.nav.parentElement.scrollLeft=drag.scroll-dx;return;}
-  e.preventDefault();e.stopPropagation();const before=drag.pill.getBoundingClientRect().left;drag.pointerX=point.clientX;paintDrag(drag);uiWind(drag.nav,(drag.pill.getBoundingClientRect().left-before)/Math.max(1,drag.pill.getBoundingClientRect().width),e);followEdge();
+  e.preventDefault();e.stopPropagation();drag.pointerX=point.clientX;paintDrag(drag);dragSound(drag,e);followEdge();
  }
  function finish(e,id,commit){if(drag?.id!==id)return;const d=drag;stopEdge();drag=null;if(!d.moved)return;
   if(d.pan){suppressClick=true;if(d.nav.hasPointerCapture(id))d.nav.releasePointerCapture(id);return;}

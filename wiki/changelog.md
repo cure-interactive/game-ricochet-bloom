@@ -6,6 +6,25 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.34.5
+
+Build: 2026-11-17 01:11:30 UTC
+
+### Player Changes
+
+- Skill-tree nodes use clean borders and selection outlines without shadows on the dark map.
+- Sliders, dragged tab selectors and edge-pull Back use the original four rising and falling tones again, without the looping pitch effect.
+- A tone plays at each value increment or eight pixels of drag travel, whichever comes first. Fast drags use the latest position without a backlog of delayed clicks.
+
+<!-- development -->
+### Developer Notes
+
+- Remove node/orb box shadows from the shared Power and Player tree styles; keep tooltip/control elevation and state borders/outlines.
+- Restore the historical single sine tap: 300/380/480/620 Hz, an 8% pitch rise over 85ms, exponential gain from 0.0001 to 0.09 at 8ms and back to 0.0001. Keep the current 6ms scheduling lead and ordinary button envelope.
+- Movement owners report normalized position. Sliders emit on value changes or travel distance; selectors use their pill position relative to the full tab row, including held edge-follow. Ordinary scrolling remains silent.
+- Share the increment-or-8px movement rule and remove the 140ms movement throttle. Preserve cue expiration/coalescing, voice limits, independent release clicks and audio recovery.
+<!-- /development -->
+
 ## v3.34.4
 
 Build: 2026-11-17 00:19:01 UTC

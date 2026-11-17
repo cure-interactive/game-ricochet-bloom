@@ -9,12 +9,8 @@ import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish,
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export const SOUND_CHECK_SECONDS = 2.8;
-// Octave-spaced clicks crossfade through a fixed register, with silent ends.
-// Wrapping phase changes voice indices, never the audible spectrum.
-export function uiWindTones(phase){
- const fraction=((phase%1)+1)%1;
- return Array.from({length:2},(_,i)=>{const octave=i+fraction;return {pitch:280*2**octave,level:Math.sin(Math.PI*octave/2)**2};});
-}
+// Original edge-pull register, shared by positional drag feedback. No wrapping.
+export const uiWindPitch=position=>[300,380,480,620][Math.min(3,Math.floor(Math.max(0,Math.min(1,position))*3))];
 // A rounded attack and release avoid broadband spikes in these short taps.
 const uiTapEnvelope=Float32Array.from({length:129},(_,i)=>{const t=i/128,attack=.008/.085;return i===0||i===128?0:t<attack?Math.sin(Math.PI*t/(2*attack))**2:Math.cos(Math.PI*(t-attack)/(2*(1-attack)))**2;});
 export class PoolSound {
@@ -262,14 +258,14 @@ export class PoolSound {
     voicesReap(this);
     if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.voiceCount>40)return false;
     const now=this.context.currentTime;
-    const wind=kind?.type==='wind'&&Number.isFinite(kind.delta);
-    if(wind)this.uiWindPhase=((this.uiWindPhase||0)+Math.max(-.25,Math.min(.25,kind.delta))*2)%1;
+    const wind=kind?.type==='wind'&&Number.isFinite(kind.position);
+    if(kind?.type==='wind'&&!wind)return false;
     const last=wind?'uiWindLastAt':'uiLastAt';
-    if(kind!=='back-complete'&&now-(this[last]??-Infinity)<(wind?.14:.06))return false;
+    if(!wind&&kind!=='back-complete'&&now-(this[last]??-Infinity)<.06)return false;
     this[last]=now;
     const back=kind==='back'||kind==='back-complete';
     const pitch=kind==='back-start'?300:back?440:kind==='confirm'?660:560;
-    if(wind){for(const {pitch,level} of uiWindTones(this.uiWindPhase))if(level>.001)this.uiTap(pitch,pitch*1.08,.09*level,now+.006);}
+    if(wind||kind==='back-start'){const note=wind?uiWindPitch(kind.position):300;this.tone(note,note*1.08,.085,.09,0,0,'sine',false,false,{allowPaused:true,at:now+.006});}
     else this.uiTap(pitch,back?330:pitch*1.08,.09,now+.006);
     if(kind==='confirm')this.uiTap(880,880,.055,now+.061);
     this.uiCount=(this.uiCount||0)+1;

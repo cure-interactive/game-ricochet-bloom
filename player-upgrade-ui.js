@@ -5,7 +5,7 @@ import {playerSkillStats} from './player-skill-comparison.js?v=75decfaf5d896b3fa
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {playerTreeGraph} from './player-tree.js?v=b15b2a9ffb2bafb64fb904e9c81ab2a03024cc1e947689b503659df569e5746a';
 import {mapCameraMount,nearestMapNode} from './tree-map.js?v=036d0d778228999f61ece74251473ecb2f0e6eda12f39d560a593090f6f89568';
-import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=39711eec504429e516c1f48ee1df435f2cc0e91b6d567347c3a7f86d1f44a957';
+import {treeSwitchHTML,treeSwitchMount} from './tree-switch.js?v=0be1ef30df08b2ad4cf1487a12fe8451014f7e3119ff7c4522541934f0e6801b';
 import {screenHeader} from './screen-header.js?v=7db753fa19626839b08a41fd5d2583821cbc0774ad262a06dd328bb3f050c988';
 import {buttonHTML,iconHTML} from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
 

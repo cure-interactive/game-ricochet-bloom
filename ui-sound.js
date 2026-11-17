@@ -13,11 +13,13 @@ export function uiSoundFeedback(sound,doc=document,clock=()=>performance.now()){
   }catch{report();}
  };
 }
-// Components report signed movement; the delegated audio owner sets its sound.
-export function uiWind(target,delta,event){
- if(event?.isTrusted===false||!Number.isFinite(delta)||!delta)return;
+// Components own value/geometry; one distance rule sets feedback density.
+export const uiWindMoved=(from,to,increment=false)=>increment||Math.abs(to-from)>=8;
+// Components report position and direction; ordinary container scrolling is silent.
+export function uiWind(target,delta,event,position){
+ if(event?.isTrusted===false||!Number.isFinite(delta)||!delta||!Number.isFinite(position))return;
  const EventType=target.ownerDocument?.defaultView?.CustomEvent||globalThis.CustomEvent;
- target.dispatchEvent(new EventType('ui-wind',{bubbles:true,detail:{type:'wind',delta}}));
+ target.dispatchEvent(new EventType('ui-wind',{bubbles:true,detail:{type:'wind',delta,position:Math.max(0,Math.min(1,position))}}));
 }
 // Drag completion has no native click on touch screens. Keep its finite
 // activation cue on the same delegated route as buttons.

@@ -1,4 +1,4 @@
-import {uiWind} from './ui-sound.js?v=1b8a8570abaa76e05b9dfb824b38d1355a2c2bbbe162ed5a2918c3391a45ce8d';
+import {uiWind,uiWindMoved} from './ui-sound.js?v=3590d73bc8b86d549ef02d07bfbe69b1109b1c53a71d1b582d0f5af09e46db20';
 // Native ranges retain values, labels, keyboard and assistive-technology behavior.
 // Shared DOM paints every slider; pointer mapping does not depend on host widgets.
 export function sliderValue(min,max,step,fraction){
@@ -22,13 +22,15 @@ export function sliderMount(doc=document,win=window){
   const update=e=>{
    const r=rail.getBoundingClientRect(),{min,max,step}=limits(),rtl=win.getComputedStyle(input).direction==='rtl';
    const fraction=(e.clientX-r.left)/Math.max(1,r.width),value=String(sliderValue(min,max,step,rtl?1-fraction:fraction));
-   if(value!==input.value){const before=Number(input.value);input.value=value;input.dispatchEvent(new win.Event('input',{bubbles:true}));uiWind(input,(Number(value)-before)/Math.max(1,max-min),e);}
+   const changed=value!==input.value,x=Math.max(r.left,Math.min(r.left+r.width,e.clientX));
+   if(changed){input.value=value;input.dispatchEvent(new win.Event('input',{bubbles:true}));}
+   if(uiWindMoved(drag.cueX,x,changed)){uiWind(input,(x-drag.cueX)/Math.max(1,r.width)||Number(value)-Number(drag.start),e,(Number(value)-min)/Math.max(1,max-min));drag.cueX=x;}
   };
   const end=e=>{if(!drag||e.pointerId!==drag.id)return;const changed=input.value!==drag.start;drag=null;delete wrap.dataset.held;if(input.hasPointerCapture(e.pointerId))input.releasePointerCapture(e.pointerId);if(changed)input.dispatchEvent(new win.Event('change',{bubbles:true}));};
-  input.addEventListener('pointerdown',e=>{if(input.disabled||e.button!==0||drag)return;e.preventDefault();input.focus({preventScroll:true});drag={id:e.pointerId,start:input.value};input.setPointerCapture(e.pointerId);wrap.dataset.held='true';update(e);});
+  input.addEventListener('pointerdown',e=>{if(input.disabled||e.button!==0||drag)return;e.preventDefault();input.focus({preventScroll:true});drag={id:e.pointerId,start:input.value,cueX:e.clientX};input.setPointerCapture(e.pointerId);wrap.dataset.held='true';update(e);});
   input.addEventListener('pointermove',e=>{if(drag?.id===e.pointerId){e.preventDefault();update(e);}});
   for(const name of ['pointerup','pointercancel','lostpointercapture'])input.addEventListener(name,end);
-  input.addEventListener('input',e=>{const {min,max}=limits();if(!drag)uiWind(input,(Number(input.value)-previous)/Math.max(1,max-min),e);refresh();});input.addEventListener('change',refresh);
+  input.addEventListener('input',e=>{const {min,max}=limits();if(!drag)uiWind(input,(Number(input.value)-previous)/Math.max(1,max-min),e,(Number(input.value)-min)/Math.max(1,max-min));refresh();});input.addEventListener('change',refresh);
   const observer=new win.MutationObserver(refresh);observer.observe(input,{attributes:true,attributeFilter:['value','min','max','step','disabled']});
   entries.set(input,{refresh,observer});refresh();
  }

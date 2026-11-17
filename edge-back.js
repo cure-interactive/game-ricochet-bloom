@@ -1,3 +1,4 @@
+import {uiWindMoved} from './ui-sound.js?v=3590d73bc8b86d549ef02d07bfbe69b1109b1c53a71d1b582d0f5af09e46db20';
 import { iconHTML } from './ui-icon.js?v=35ef67d69b283afcc7c65c45f76a6dee06daf0fc829eafd4dff245d7c24940c0';
 
 export function edgeBackReady(dx,dy,width) {
@@ -20,7 +21,7 @@ export function edgeBackMount(doc=document,win=window,{feedback=()=>{}}={}) {
     if(!dialog||point.clientX>24||point.clientX<0)return false;
     const cue=doc.createElement('div');cue.className='edge-back-feedback';cue.setAttribute('aria-hidden','true');
     cue.innerHTML=iconHTML('arrow-left')+'<span>Back</span>';dialog.append(cue);
-    gesture={dialog,cue,id,x:point.clientX,y:point.clientY,dx:0,dy:0,stage:0};position(gesture);suppressClick=false;feedback('back-start');stop(event);return true;
+    gesture={dialog,cue,id,x:point.clientX,y:point.clientY,dx:0,dy:0,stage:0,cueDx:0};position(gesture);suppressClick=false;feedback('back-start');stop(event);return true;
   }
   function move(event,point){
     if(!gesture)return;
@@ -31,8 +32,9 @@ export function edgeBackMount(doc=document,win=window,{feedback=()=>{}}={}) {
     const ready=edgeBackReady(g.dx,g.dy,win.innerWidth);
     g.cue.classList.toggle('is-ready',ready);
     const threshold=Math.min(100,Math.max(60,win.innerWidth*.22));
-    const stage=Math.floor(Math.max(0,g.dx)/threshold*20);
-    if(stage!==g.stage){feedback({type:'wind',delta:(stage-g.stage)/20});g.stage=stage;}
+    const stage=Math.min(3,Math.floor(Math.max(0,g.dx)/threshold*3));
+    const distance=Math.max(0,Math.min(threshold,g.dx));
+    if(uiWindMoved(g.cueDx,distance,stage!==g.stage)){feedback({type:'wind',delta:(distance-g.cueDx)/threshold,position:distance/threshold});g.cueDx=distance;}g.stage=stage;
   }
   function finish(event,point){
     if(!gesture)return;move(event,point);if(!gesture)return;
