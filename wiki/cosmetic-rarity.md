@@ -58,7 +58,7 @@ Soundstages change music only; gameplay sound effects keep their familiar sound.
 
 - **Common:** one quiet, even background texture; Soft Rain.
 - **Rare:** a texture with recognizable slow motion; Quiet Shore's waves arrive and recede.
-- **Epic:** a setting with complementary background detail; Night Forest combines air and insect tones.
+- **Epic:** a setting with complementary background detail; Night Forest combines soft air with rhythmic insect chirps and pauses between calling bouts.
 - **Legendary:** coordinated layers and small material events; Ember Hearth combines low warmth, air and soft crackles.
 - **Mythic:** a distinct imagined atmosphere with evolving layers; Orbital Drift blends smooth, slowly changing tones.
 

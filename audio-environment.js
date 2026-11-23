@@ -78,34 +78,48 @@ export function ambienceBuffer(context,style){
     }
    }
   }
-  if(style==='forest'){
-   // Separate callers make short pulse groups, not sliding sine whistles.
-   // Each caller keeps its own register; soft pulse edges sit above the breeze.
-   for(let caller=0;caller<2;caller++){
-    const pitch=2700+random()*1100,pace=.8+random()*.8;
-    for(let at=.45+random()*1.6;at<seconds-1;at+=pace+.5+random()*2.1){
-     const pulses=3+Math.floor(random()*4),level=.035+random()*.035;
-     let onset=at,phase=random()*tau;
-     for(let pulse=0;pulse<pulses;pulse++){
-      const duration=.022+random()*.014,count=Math.round(duration*rate),offset=Math.round(onset*rate),hz=pitch*(.996+random()*.008);
-      const strength=level*(.75+.25*Math.sin(Math.PI*(pulse+1)/(pulses+1)));
-      for(let j=0;j<count&&offset+j<length;j++){
-       const envelope=Math.sin(Math.PI*j/(count-1))**2;
-       phase+=tau*hz/rate;
-       // A faint rough sideband gives texture without a harsh noise impulse.
-       samples[offset+j]+=(Math.sin(phase)+.12*Math.sin(phase*1.017))*envelope*strength;
-      }
-      onset+=duration+.018+random()*.014;
-     }
-    }
-   }
-  }
+ }
+ if(style==='forest')forestCalls(buffer);
   // Match perceived background energy: filtered hearth/forest noise is much
   // quieter than rain or sustained tones. One constant gain preserves seams
   // and envelopes; peak headroom prevents clipping without a hard limiter.
-  let peak=0,energy=0;for(const value of samples){peak=Math.max(peak,Math.abs(value));energy+=value*value;}
-  const scale=Math.min(.8/Math.max(peak,.0001),.1/Math.max(Math.sqrt(energy/length),.0001));
+ const channels=[buffer.getChannelData(0),buffer.getChannelData(1)];
+ const levels=channels.map(samples=>{let peak=0,energy=0;for(const value of samples){peak=Math.max(peak,Math.abs(value));energy+=value*value;}return {peak,rms:Math.sqrt(energy/length)};});
+ for(let channel=0;channel<2;channel++){
+  // Preserve caller positions: both forest channels use the same normalization.
+  const {peak,rms}=style==='forest'?{peak:Math.max(...levels.map(x=>x.peak)),rms:Math.sqrt(levels.reduce((sum,x)=>sum+x.rms*x.rms,0)/2)}:levels[channel];
+  const scale=Math.min(.8/Math.max(peak,.0001),.1/Math.max(rms,.0001)),samples=channels[channel];
   for(let i=0;i<length;i++)samples[i]*=scale;
  }
  cache.set(style,buffer);while(cache.size>3)cache.delete(cache.keys().next().value);return buffer;
+}
+
+function forestCalls(buffer){
+ const rate=buffer.sampleRate,seconds=buffer.length/rate,tau=Math.PI*2,channels=[buffer.getChannelData(0),buffer.getChannelData(1)];
+ let seed=6841;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+ // A caller repeats a recognizable wing-stroke rhythm during a bout, then rests.
+ // Shared stereo events keep it in one place instead of inventing a caller per ear.
+ for(let caller=0;caller<3;caller++){
+  const pitch=4200+caller*330+random()*100,period=.42+caller*.09,pulses=caller===1?3:4;
+  const pan=[-.7,.55,.15][caller],gains=[Math.cos((pan+1)*Math.PI/4),Math.sin((pan+1)*Math.PI/4)],level=[.045,.032,.022][caller];
+  let phase=random()*tau;
+  for(let at=.4+caller*.6;at<seconds-1;){
+   const chirps=5+Math.floor(random()*5),pace=period*(.97+random()*.06);
+   for(let chirp=0;chirp<chirps&&at<seconds-1;chirp++,at+=pace*(.98+random()*.04)){
+    const strength=level*(.8+.2*Math.sin(Math.PI*(chirp+1)/(chirps+1)));
+    for(let pulse=0;pulse<pulses;pulse++){
+     const duration=.019+random()*.003,count=Math.round(duration*rate),offset=Math.round((at+pulse*.042)*rate),hz=pitch*(.999+random()*.002);
+     let rough=0;
+     for(let j=0;j<count;j++){
+      const time=j/rate,attack=Math.min(1,time/.0025),release=Math.min(1,(count-1-j)/rate/.005);
+      const envelope=Math.sin(attack*Math.PI/2)**2*Math.sin(release*Math.PI/2)**2*(1-.22*j/count);
+      rough=rough*.65+(random()*2-1)*.35;phase+=tau*hz/rate;
+      const value=Math.sin(phase)*(1+.16*rough)*envelope*strength;
+      for(let channel=0;channel<2;channel++)channels[channel][offset+j]+=value*gains[channel];
+     }
+    }
+   }
+   at+=1.8+random()*3.2;
+  }
+ }
 }

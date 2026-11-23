@@ -6,6 +6,21 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.35.5
+
+Build: 2026-11-23 12:35:33 UTC
+
+### Player Changes
+
+- Refine Night Forest with rhythmic cricket-like chirps, several callers across the stereo field, and quieter rests between calling bouts.
+
+<!-- development -->
+### Developer Notes
+
+- Generate each caller once for both channels, with a stable carrier and pulse rhythm, small variations within bouts, and smooth wing-stroke envelopes. Normalize the stereo pair together to preserve caller positions.
+- Keep the shared 48-second loop, bounded cache, preview lifecycle and independent Ambience Volume. Signal, stereo and recovery checks pass; further physical listening acceptance remains open.
+<!-- /development -->
+
 ## v3.35.4
 
 Build: 2026-11-23 12:24:03 UTC
