@@ -20,7 +20,7 @@ Skin decoration stays on the bubble. Trails and Impacts are separate equipped ch
 - **Rare:** a distinct particle motif with restrained spacing and fading, such as Stardust.
 - **Epic:** coordinated colored strands or layered geometry, such as Prism's braid.
 - **Legendary:** an animated material that reacts to speed, with a brief launch accent; Ember sheds cooling particles.
-- **Mythic:** a cohesive combination of ribbons, particles and movement response, with a launch accent and continuous ambient travel sound; Aurora is the current example.
+- **Mythic:** a cohesive combination of ribbons, particles and movement response, with a launch accent and travel sound tapering over three seconds after launch and two seconds after impacts; Aurora is the current example.
 
 Travel sounds follow movement and fade as the player slows. Gallery animations and decorative icons stay silent; use Preview Sound to audition a style.
 

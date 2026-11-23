@@ -1,7 +1,7 @@
 import {gameCreate} from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import {playerSync} from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
-import { unlockedResolve } from './profile.js?v=6e2f55bc3e634f44abda0bba37ac84a494ca47497058fe0850adbf1df9ec6610';
-import { GAME_CATALOGUE } from './run.js?v=8d708df79488bac265978ba3dd61fc9cea637ce00f1a616cf64e5bac46f4b964';
+import { unlockedResolve } from './profile.js?v=c72a64433abaf66edb36113fd2f25c95686e479b491d42aacfb79965de96783b';
+import { GAME_CATALOGUE } from './run.js?v=7398bbd50f1b6ed65e88b7e5239b032097a815aa9f32fafede97e9370697f9a9';
 import { skillStateCreate } from './skill-effect.js?v=b00900f06233cdeb7ee756f7a77164fb4fce302e8b9f5fa270e5b96742ffcda8';
 
 export function freePlayBuild(progress){

@@ -1,7 +1,7 @@
 import {audioEnvironment} from './audio-environment.js?v=5725e4e590fb89b80b78f26b3ae67e1d2a1fe7d983991be1e6a63ebb4b845888';
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=774fbf1c691f54dafa415de78b2b32a6a8d7ffadc96e05d5bda4ec17db9831eb';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=7904f3fab24003c6251442f7604d5d8fc7ef9163a8a1abb32f41975690c0162d';
-import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
+import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=91c84c76f4cab70c42d98d3478ee3f1de65abb45f7542101028be9084fe96d9e';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js?v=d31acea21b543a610f696e47d50a254ce52527d06e488d6e72309535656e4d38';
@@ -97,7 +97,7 @@ export class PoolSound {
     if(this.media){this.media=new PoolMedia(mediaEnv);if(mediaKey)this.media.describe(mediaKey);}
     this.context=null;this.master=null;this.interfaceOutput=null;this.outputGate=null;this.compressor=null;this.musicEnvironment=null;this.musicInput=null;this.musicOutput=null;this.ambienceOutput=null;this.musicDuck=null;this.previewEnvelope=null;this.delay=null;
     this.audioVoices=new Set();this.phraseVoices=new Set();this.phraseClear();this.previewSelection=null;this.previewUntil=0;
-    this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.uiWindLastAt=-Infinity;this.strengthAt=-Infinity;this.duckUntil=0;this.previewStarted=0;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};this.travelState=null;
+    this.lastMix=-1;this.voiceCount=0;this.auditionUntil=0;this.uiLastAt=-Infinity;this.uiWindLastAt=-Infinity;this.strengthAt=-Infinity;this.duckUntil=0;this.previewStarted=0;this.clockSample=null;this.resumeTimedOut=false;this.cosmeticAt={};this.travelState=null;this.travelCue=null;
     const finish=()=>{
       gate?.disconnect();compressor?.disconnect();interfaceOutput?.disconnect();master?.disconnect();environment?.dispose();voicesStop(voices);
       if(retired?.suspend&&retired.state!=='closed'){try{Promise.resolve(retired.suspend()).catch(()=>{});}catch{}}
@@ -277,7 +277,7 @@ export class PoolSound {
     this.uiCount=(this.uiCount||0)+1;
     return true;
   }
-  cosmeticStop(){this.cosmeticPreviewStop();voicesStop(this,'cosmetic');voicesStop(this,'cosmetic-preview');voicesStop(this,'cosmetic-travel');this.travelState=null;}
+  cosmeticStop(){this.cosmeticPreviewStop();voicesStop(this,'cosmetic');voicesStop(this,'cosmetic-preview');voicesStop(this,'cosmetic-travel');this.travelState=null;this.travelCue=null;}
   cosmeticPreviewStop({replace=false}={}){this.previewSelection=null;this.previewUntil=0;if(!replace)this.previewMusicFade(0);voicesStop(this,'cosmetic-preview');if(this.context?.state!=='closed')this.mixUpdate();}
   cosmeticPreviewStatus(){const now=this.context?.currentTime||0,duration=Math.max(0,(this.previewUntil||0)-(this.previewStarted||0));return {active:duration>0&&now<this.previewUntil,duration,progress:duration>0?Math.max(0,Math.min(1,(now-this.previewStarted)/duration)):0};}
   previewMusicFade(duration){
@@ -307,8 +307,16 @@ export class PoolSound {
   cosmeticPlay(loadout,event,{preview=false}={}){
     const kind=event.type==='launch'?'trail':event.type==='cosmetic-hit'||event.type==='wall'&&event.id===0||event.type==='impact'&&(event.a===0||event.b===0)?'bounce':null;
     const item=cosmeticGet(loadout?.[kind]);
-    if(!kind||item?.kind!==kind||!cosmeticHasSound(item))return false;
     if(!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.isPaused&&!preview||globalThis.document?.hidden)return false;
+    // Launch/contact events own the audible window, independently of the
+    // equipped impact accent. Movement can never extend or restart it.
+    const trail=cosmeticGet(loadout?.trail);
+    if(!preview&&kind&&trail?.kind==='trail'&&trail.rarity==='mythic'){
+      const now=this.context.currentTime;
+      this.travelCue={style:trail.style,start:now,end:now+(kind==='trail'?3:2)};
+      if(this.travelState)this.travelState.at=-Infinity;
+    }
+    if(!kind||item?.kind!==kind||!cosmeticHasSound(item))return false;
     voicesReap(this);if(preview)this.cosmeticPreviewStop({replace:true});
     if(this.voiceCount>40)return false;
     const now=this.context.currentTime;this.cosmeticAt||={};
@@ -319,29 +327,40 @@ export class PoolSound {
     // No feedback delay or continuing oscillator can accumulate between hits.
     const accents={stormwake:[[220,880,.18,.035,0,'triangle'],[880,440,.35,.02,.08,'sine']],clockstream:[[392,392,.12,.04,0,'triangle'],[588,294,.25,.025,.1,'sine']],riftwake:[[220,330,.7,.03,0,'sine'],[440,660,.6,.02,.12,'sine'],[880,440,.5,.012,.24,'triangle']],livingvine:[[392,523,.5,.03,0,'sine'],[587,784,.6,.02,.1,'sine'],[784,1046,.5,.012,.2,'sine']],horizoncollapse:[[110,44,.3,.06,0,'sine'],[440,220,.5,.03,.06,'sine'],[880,440,.45,.018,.12,'sine'],[660,330,.5,.012,.16,'sine']],worldbloom:[[262,523,.3,.04,0,'sine'],[523,784,.45,.025,.04,'sine'],[659,988,.4,.02,.1,'sine'],[784,1046,.4,.012,.16,'sine']]};
     const notes=accents[item.style]||(item.style==='ember'?[[180,440,.24,.055,0,'triangle'],[360,720,.34,.025,.06,'sine']]:kind==='trail'?[[330,660,.6,.035,0,'sine'],[495,990,.55,.025,.1,'sine'],[990,1320,.45,.016,.2,'triangle']]:[[150,55,.18,.075,0,'sine'],[660,990,.42,.035,0,'sine'],[990,1320,.38,.025,.06,'triangle'],[1320,1760,.32,.016,.12,'sine']]);
-    const delay=preview?this.previewMusicFade(kind==='trail'&&item.rarity==='mythic'?3.82:Math.max(...notes.map(n=>n[2]+n[4]))+.03):0;
+    const delay=preview?this.previewMusicFade(kind==='trail'&&item.rarity==='mythic'?3.02:Math.max(...notes.map(n=>n[2]+n[4]))+.03):0;
     for(const [start,end,duration,level,offset,type] of notes)this.tone(start,end,duration,level,pan,offset+delay,type,false,false,options);
-    if(preview&&kind==='trail'&&item.rarity==='mythic')this.travelVoices(0,.2+delay,3.6,.02,{...options,style:item.style,fadeOut:1});
+    if(preview&&kind==='trail'&&item.rarity==='mythic')this.travelVoices(0,delay,3,.02,{...options,style:item.style});
     return true;
   }
+  travelFade(voice,start,end,level=1){
+    // Evaluate our linear envelope for browsers without cancelAndHoldAtTime.
+    // A contact lifts the existing voice gently without resetting its phase.
+    const old=voice.fade;
+    const from=!old||start>=old.end?0:start<old.peak?
+      old.from+(old.level-old.from)*Math.max(0,(start-old.start)/(old.peak-old.start)):
+      old.level*Math.max(0,(old.end-start)/(old.end-old.peak));
+    const peak=Math.min(start+.04,end),gain=voice.gain.gain;
+    gain.cancelScheduledValues(start);gain.setValueAtTime(from,start);
+    gain.linearRampToValueAtTime(level,peak);gain.linearRampToValueAtTime(0,end);
+    voice.fade={start,peak,end,from,level};
+  }
   travelVoices(pan,offset,duration,level,options){
-    // Aurora is a soft, slowly beating pad. Sustained oscillators keep phase
-    // across motion updates: no repeating attacks, pitch resets or loop seam.
     const context=this.context,start=context.currentTime+offset;
     const pitches=options.style==='riftwake'?[[220,1],[220.14,.65],[330,.35]]:options.style==='livingvine'?[[392,1],[392.16,.65],[587.33,.35]]:[[440,1],[440.18,.65],[660,.35]];
     return pitches.map(([pitch,weight])=>{
-      const oscillator=context.createOscillator(),gain=context.createGain(),stereo=context.createStereoPanner();
+      const oscillator=context.createOscillator(),gain=context.createGain(),motion=context.createGain(),stereo=context.createStereoPanner();
       oscillator.type='sine';oscillator.frequency.setValueAtTime(pitch,start);
-      gain.gain.setValueAtTime(.0001,start);gain.gain.linearRampToValueAtTime(level*weight,start+.45);
-      gain.gain.setValueAtTime(level*weight,start+duration-1);gain.gain.linearRampToValueAtTime(.0001,start+duration);
-      stereo.pan.value=Math.max(-.85,Math.min(.85,pan));oscillator.connect(gain);gain.connect(stereo);stereo.connect(this.master);
-      const voice=voiceTrack(this,{oscillator,gain,stereo,weight,start,group:options.group},start+duration+.02,[oscillator,gain,stereo]);
+      motion.gain.setValueAtTime(level*weight,start);
+      stereo.pan.value=Math.max(-.85,Math.min(.85,pan));oscillator.connect(gain);gain.connect(motion);motion.connect(stereo);stereo.connect(this.master);
+      const voice=voiceTrack(this,{oscillator,gain,motion,stereo,weight,start,group:options.group},start+duration+.02,[oscillator,gain,motion,stereo]);
+      const cue=options.cue,levelRemaining=cue?Math.min(1,(cue.end-start)/Math.max(.001,cue.end-cue.start-.04)):1;
+      this.travelFade(voice,start,start+duration,levelRemaining);
       oscillator.start(start);oscillator.stop(voice.end);return voice;
     });
   }
   cosmeticTravel(loadout,body,active=true){
-    const item=cosmeticGet(loadout?.trail);
-    if(!active||item?.rarity!=='mythic'||item.kind!=='trail'||!body||!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.isPaused||globalThis.document?.hidden){voicesStop(this,'cosmetic-travel');this.travelState=null;return false;}
+    const item=cosmeticGet(loadout?.trail),cue=this.travelCue;
+    if(!active||item?.rarity!=='mythic'||item.kind!=='trail'||!body||!this.context||this.context.state!=='running'||this.isMuted||!this.volume||this.isPaused||globalThis.document?.hidden||!cue||cue.style!==item.style||this.context.currentTime>=cue.end){voicesStop(this,'cosmetic-travel');this.travelState=null;this.travelCue=null;return false;}
     voicesReap(this);const now=this.context.currentTime,old=this.travelState;
     const speed=old&&now>old.time?Math.hypot(body.x-old.x,body.y-old.y)/(now-old.time):Math.hypot(body.vx||0,body.vy||0);
     this.travelState={x:body.x,y:body.y,time:now,at:old?.at??-Infinity,voices:old?.voices};
@@ -349,18 +368,21 @@ export class PoolSound {
     const state=this.travelState,level=.008+Math.min(1,speed/500)*.012,pan=poolPan(body.x,body.y,this.portrait);
     if(!state.voices?.every(v=>this.audioVoices.has(v)&&v.end>now)){
       if(this.voiceCount>40)return false;
-      state.voices=this.travelVoices(pan,0,2,level,{group:'cosmetic-travel',style:item.style});
+      state.voices=this.travelVoices(pan,0,cue.end-now,level,{group:'cosmetic-travel',style:item.style,cue});
+      for(const voice of state.voices)voice.cue=cue;
     }
     state.at=now;
     for(const voice of state.voices){
-      const gain=voice.gain.gain;
+      if(voice.cue!==cue){this.travelFade(voice,now,cue.end);voice.cue=cue;}
+      // Speed and the missing-callback lease modulate a separate gain, so
+      // neither can cancel the event's scheduled taper to exact silence.
+      const gain=voice.motion.gain;
       if(gain.cancelAndHoldAtTime)gain.cancelAndHoldAtTime(now);
       else {const current=gain.value;gain.cancelScheduledValues(now);gain.setValueAtTime(current,now);}
       gain.setTargetAtTime(level*voice.weight,now,.22);
-      // A renewable audio-clock lease fades automatically even if updates stop.
-      gain.setTargetAtTime(.0001,now+.35,.14);
+      gain.setTargetAtTime(0,now+.35,.14);
       voice.stereo.pan.setTargetAtTime(Math.max(-.85,Math.min(.85,pan)),now,.15);
-      voice.end=now+1.2;voice.oscillator.stop(voice.end);
+      voice.end=Math.min(now+1.2,cue.end+.02);voice.oscillator.stop(voice.end);
     }
     return true;
   }

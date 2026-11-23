@@ -1,6 +1,6 @@
-import {GAME_VERSION} from './version.js?v=06405fd33c539495c23698c38e2ff28dc05c9915db71de72f6cf462daa4f7af0';
-import {BUILD_TIME} from './build.js?v=0fcc2b394c01288dfede853ef756f3938916e202f1d36ec51d55a62e3d140f86';
-import {buttonHTML,iconHTML} from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
+import {GAME_VERSION} from './version.js?v=9ee4681759cfbddb216c641bc334ccd25654037c092c60e37a34414339d33033';
+import {BUILD_TIME} from './build.js?v=b8b4b3a9f4bc42228c7eb13fef97332ed25078f695716c25353fc9c487603f09';
+import {buttonHTML,iconHTML} from './ui-icon.js?v=3ec57aca06a56be722ba4758c1a5f9f22822f17f0488b0eba544ab0976429198';
 export const isAppView=win=>!!win.navigator?.standalone||!!win.matchMedia?.('(display-mode: standalone)').matches||!!win.matchMedia?.('(display-mode: fullscreen)').matches;
 export function newerBuild(remote,version=GAME_VERSION,time=BUILD_TIME){
  if(!remote||!/^\d+\.\d+\.\d+$/.test(remote.version)||!Number.isFinite(Date.parse(remote.commitTime)))throw new Error('Invalid release information');

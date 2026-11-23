@@ -1,6 +1,6 @@
-import {registerCosmeticIcon} from './cosmetic-icon.js?v=0bae431848053f79bc8b0354a66dfc6d647082122b66da9a4815e233a5353e33';
+import {registerCosmeticIcon} from './cosmetic-icon.js?v=8fb0cc69ab8b6f71a4b6c8fa46709888c337e09debf361ef22fd485f8cce8c0f';
 if(typeof window!=='undefined')registerCosmeticIcon();
-import {registerPlayerBubble} from './player-bubble.js?v=fd4c8d2e78d9f33a3a8c8fc7d1e59b66742f8ba5d5fed9d55d0ea3c029cc0168';
+import {registerPlayerBubble} from './player-bubble.js?v=6a20baa64f5d0347485d437b48f6c891b7d602c0a9f5292b14c9042c7ecf005d';
 if(typeof window!=='undefined')registerPlayerBubble();
 import { escapeHTML,titleCase } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 // Decorative icons share one renderer. player-skin uses the equipped skin

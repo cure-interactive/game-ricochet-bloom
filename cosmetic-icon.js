@@ -1,5 +1,5 @@
-import {cosmeticThumbnailMount} from './cosmetic-preview.js?v=207ff1f14dcec340050ec50e7d7765dbb5cb8eaef894efe2d0c3e9a82f18f052';
-import {cosmeticGet} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
+import {cosmeticThumbnailMount} from './cosmetic-preview.js?v=549544f1b77a212b1790c2d8d8b81927231c87900da0e77ffd3e515727bc580b';
+import {cosmeticGet} from './cosmetic.js?v=91c84c76f4cab70c42d98d3478ee3f1de65abb45f7542101028be9084fe96d9e';
 export function registerCosmeticIcon(win=window){
  if(win.customElements.get('cosmetic-icon'))return;
  class CosmeticIcon extends win.HTMLElement{

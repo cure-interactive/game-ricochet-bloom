@@ -2,12 +2,12 @@ import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9
 import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=6df228e6d2895828fc52e3634bd7cb5b98bc58ddf86a48515c6d0a1527524ed2';
 import { scoreConditions } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
-import { screenHeader } from './screen-header.js?v=67a25012d00131734bc7cf604e403b29da6580e9d3b12d0154df0a3e73f7a5fd';
+import { screenHeader } from './screen-header.js?v=c0ab32179094cd2acf42cb3223ff85a0c4c8741768d7e30b357f764d2c334f84';
 import { gameCreate, objectiveProgress } from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import { TRACKS, trackGet, LAYOUTS, trackEnvironment } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, campaignRestoration, campaignPoolAccess, POPULATIONS, POOL_NAMES, GOALS, completedTracks, unlockedTracks, progressionLoadout, GAME_CATALOGUE } from './run.js?v=8d708df79488bac265978ba3dd61fc9cea637ce00f1a616cf64e5bac46f4b964';
-import { profileSummary } from './profile.js?v=6e2f55bc3e634f44abda0bba37ac84a494ca47497058fe0850adbf1df9ec6610';
-import { buttonHTML, iconHTML } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
+import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, campaignRestoration, campaignPoolAccess, POPULATIONS, POOL_NAMES, GOALS, completedTracks, unlockedTracks, progressionLoadout, GAME_CATALOGUE } from './run.js?v=7398bbd50f1b6ed65e88b7e5239b032097a815aa9f32fafede97e9370697f9a9';
+import { profileSummary } from './profile.js?v=c72a64433abaf66edb36113fd2f25c95686e479b491d42aacfb79965de96783b';
+import { buttonHTML, iconHTML } from './ui-icon.js?v=3ec57aca06a56be722ba4758c1a5f9f22822f17f0488b0eba544ab0976429198';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
 import { SONG_STORAGE, SONG_LIMIT, songLibraryRead, songSnapshot } from './song.js?v=21b3f78884733e73b259e1dda4fa6f726d744bfa4eff7865d20dfd83e0569d03';
 const button=(action,label,icon='play',attributes={})=>buttonHTML(label,icon,{'data-campaign':action,...attributes});

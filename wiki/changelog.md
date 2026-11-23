@@ -6,6 +6,24 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.35.9
+
+Build: 2026-11-23 20:19:55 UTC
+
+### Player Changes
+
+- Mythic travel sounds taper to silence over the first three seconds after launch.
+- Player impacts and wall bounces bring travel audio back with a two-second taper, keeping long flights quieter.
+- Preview Sound uses the same three-second launch taper.
+
+<!-- development -->
+### Developer Notes
+
+- Launch and player-contact events own finite travel windows in PoolSound, independently of equipped impact sounds. Movement updates panning and a separate speed/lease gain without extending the taper.
+- Repeated contacts reuse oscillator phases and lift the current envelope smoothly. Pause, mute, hidden state, equipment changes and expiry clear playback; late callbacks retain the remaining taper.
+- Verify launch/impact deadlines, motion-only silence, repeated-contact reuse, lifecycle cleanup and preview replacement with shared audio regressions. Physical-device listening remains separate from automated timing checks.
+<!-- /development -->
+
 ## v3.35.8
 
 Build: 2026-11-23 16:56:32 UTC
