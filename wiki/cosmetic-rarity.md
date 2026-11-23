@@ -78,7 +78,7 @@ These additional items are available in Player, with the same tier prices and pe
 
 ## Pendants and Companions
 
-Pendants float on weightless elastic tethers and gently avoid the player without pushing it. Companions steer smoothly alongside your bubble at a bounded distance. Each category has two designs per rarity, plus None. Common starters Dewdrop and Sprout are free; the second Common costs 40 Points. Rare, Epic, Legendary and Mythic designs cost 120, 220, 360 and 550 Points.
+Pendants float passively on short, loose bungee tethers and gently avoid the player without pushing it. Companions wander on longer tethers, changing direction on their own and occasionally perking up toward nearby bubbles. Both cords pull only when stretched; neither changes player physics. Each category has two designs per rarity, plus None. Common starters Dewdrop and Sprout are free; the second Common costs 40 Points. Rare, Epic, Legendary and Mythic designs cost 120, 220, 360 and 550 Points.
 
 - **Common:** Pendants — Dewdrop, River Pebble. Companions — Sprout, Puff. Simple shapes and bounce reactions.
 - **Rare:** Pendants — Silverleaf, Pearl Shell. Companions — Firefly, Dew Beetle. More detailed silhouettes and materials.

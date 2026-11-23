@@ -1,4 +1,4 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=0893257d976fa7940a18b771c7de38402192eb2a8c7ca1d24836f43d5b46f9af';
+import {CosmeticVisual} from './cosmetic-visual.js?v=9b7afa516204b6fe37148ca057e2dc05141a1379cadf99610f6f3d4731dcd390';
 import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
@@ -61,7 +61,7 @@ export class PoolVisual {
  }
  before(context,game,time,visualDelta,isLowQuality=false){
   const seed=game.bodies[0];
-  this.cosmetics.step(seed,visualDelta);this.cosmetics.render(context,isLowQuality,true);
+  this.cosmetics.step(seed,visualDelta,true,game.bodies.filter(body=>body.id>0&&!body.popped));this.cosmetics.render(context,isLowQuality,true);
   if(isLowQuality){this.trails=[];this.particles=[];}
   this.powerVisual.update(visualDelta,game);
   this.powerVisual.render(context, game, time, isLowQuality);

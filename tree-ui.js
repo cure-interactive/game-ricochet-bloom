@@ -1,8 +1,8 @@
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=a7b6394350d55e36b51c7bcf150c52a9088be43ad1ec65388837b3748d43a7f7';
-import {skillNodeHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=243c3132527f5726fa5db49a3058df429ac5f55bb17d449b11fe29d685a3a735';
-export {skillStatsHTML} from './skill-card.js?v=243c3132527f5726fa5db49a3058df429ac5f55bb17d449b11fe29d685a3a735';
-import { treeSwitchMount } from './tree-switch.js?v=18c95cea33aeb8fba057a4ab01a65b700eed299b7a4deab9c613e30b29a8ec0a';
+import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=7f29152eed0ed7b6835b8497bc673517300a5e2022b57eafd148c5fe6d0e004f';
+import {skillNodeHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=c5f20a90cdf6f2355cc3327787f4bb2288c6c42c0e2f40f6d927998b4c0f608f';
+export {skillStatsHTML} from './skill-card.js?v=c5f20a90cdf6f2355cc3327787f4bb2288c6c42c0e2f40f6d927998b4c0f608f';
+import { treeSwitchMount } from './tree-switch.js?v=ff604da43346af7700e058e672a5a65c125ac15d05eac1c92f217a6795810ccc';
 import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 import { purchaseComparison, skillStats } from './skill-comparison.js?v=50ab9f368f6d72361a9afb24f944ee8274b0b15ff3554f8f6ed26ac2616e0bf5';
 import { RARITIES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
@@ -10,7 +10,7 @@ import { treeLayout, researchRoute, researchBounds, researchLayout } from './tre
 import { POWER_TREES } from './power-tree.js?v=2a64a8c4a0ad6dc1f93d8385f13952b46869143cbf7dc606ecd40164a825481b';
 import { profilePurchase, profileSummary } from './profile.js?v=6ae3e8ed9c37fbcaa242590984de898190bb78ee535ff9a1ae0374fd9ff188bf';
 import { progressionBudget, GAME_CATALOGUE as cat } from './run.js?v=da55154f29119180994fa42fffb0519eb40ddbf8abf9811a904032fce5de8861';
-import { iconHTML } from './ui-icon.js?v=f3f8658260fb99cd64b77f5221ce198d475a00038dab248c8a5fcc7cf074badc';
+import { iconHTML } from './ui-icon.js?v=8c06dc6cfead8fb7f911c3f4f5d15ca9cae08f5df389037de10e703f88542d83';
 const reasonText={'family-gate':'Earn this power through successful play.','insufficient-seeds':'Earn Points in any game mode.','mastery':'Activate this power on 3 shots that hit at least 3 bubbles. Melody Journey clears also count.','prerequisite':'Unlock this power first.','over-budget':'Not enough tuning. Unequip an upgrade first.','invalid-equipment':'Add this power to your loadout first.'};
 
 // Explain the same gate used by purchases, beside the affected power.

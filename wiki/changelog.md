@@ -6,6 +6,22 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.37.3
+
+Build: 2026-11-23 22:50:52 UTC
+
+### Player Changes
+
+- Companions now meander on longer, loose bungee tethers, exploring even while you rest. They occasionally perk up and surge toward a nearby bubble, with their existing success emotes intact.
+- Pendants remain passive on shorter tethers: slack cords float freely and pull back only when stretched. Neither accessory pushes or collides with the player.
+
+<!-- development -->
+### Developer Notes
+
+- Share slack-tether dynamics and cord drawing; keep companion intent, curiosity and random state separate from passive motion, rarity presentation and gameplay.
+- Supply live non-player interest points through the shared pool/cosmetic boundary. Verify slack rest, independent idle wander, curiosity, traversal, frame-rate stability and unchanged engine state.
+<!-- /development -->
+
 ## v3.37.2
 
 Build: 2026-11-23 22:20:17 UTC
