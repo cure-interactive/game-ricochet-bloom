@@ -1,12 +1,12 @@
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=6132c3dac12cbfd9ad3f6ac6b8bddb72abd824f5b008a8c1079bb799c2beec8e';
+import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=4cad7787fd8c7f4bdd4923e28968a1ad88606546be728e5bd5c1f0742c856e30';
 import {segmentedHTML,segmentedMount} from './segmented-control.js?v=bfc2eb723bd5080e1ff722bcfb43b3958890bbcd7bb4f5ce1e7dbf3c3192b161';
-import {cosmeticPriceHTML} from './cosmetic-price.js?v=71d992701799c91634f10b5ce370ab3e7cb790a7abc5a59eb310918fbbedd4ba';
-import {COSMETICS,cosmeticOrder,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=91c84c76f4cab70c42d98d3478ee3f1de65abb45f7542101028be9084fe96d9e';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=549544f1b77a212b1790c2d8d8b81927231c87900da0e77ffd3e515727bc580b';
-import {screenHeader} from './screen-header.js?v=c0ab32179094cd2acf42cb3223ff85a0c4c8741768d7e30b357f764d2c334f84';
-import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=3ec57aca06a56be722ba4758c1a5f9f22822f17f0488b0eba544ab0976429198';
-import {rarityIconHTML} from './skill-icon.js?v=04fae5f45432d66b6819c6ee3df7881b66997cbc98dcbc14d129088d74e4b84f';
+import {cosmeticPriceHTML} from './cosmetic-price.js?v=49e9bac55eee552a481d9464061b61c906c93bfb279728efaae24330de8185a4';
+import {COSMETICS,cosmeticOrder,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=ceab45e8d91f7bc0277fcd57d0ba195cbeba296978e36bbc935740f4ee047132';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=5095c397245a5124a5ab5fc002707868b01bd293ce993da9213f15917e2682c3';
+import {screenHeader} from './screen-header.js?v=40f83a316fc03e9c7b929e4bcc6d72985a9282ce65cbe0168932a2a78ba8370d';
+import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=57d497c3e28ba2bc4614da76b67513b6fc21610631aa38d19553cec3a515840e';
+import {rarityIconHTML} from './skill-icon.js?v=59e1466b547958817763950390a470a120257e606fad2550983ad798dcbb2d93';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 export function cosmeticMount(host){
@@ -17,9 +17,9 @@ export function cosmeticMount(host){
  const back=dialog.querySelector('[data-cosmetic-back]'),detail=dialog.querySelector('.cosmetic-detail'),status=dialog.querySelector('.skin-status'),scroll=dialog.querySelector('.skin-scroll'),large=dialog.querySelector('.cosmetic-preview-large canvas');
  let heading=dialog.querySelector('.screen-heading-title>.ui-icon');
  const isAudio=()=>['music','soundstage','ambience'].includes(kind);
- const title=()=>isAudio()?'Music':kind==='trail'?'Trails':'Impacts';
- const label=()=>({music:'Instrument',soundstage:'Soundstage',ambience:'Ambience'}[kind])||(kind==='trail'?'Trail':'Impact');
- const glyph=()=>isAudio()?'music-note':kind==='trail'?'trails':'bounce-effects';
+ const title=()=>isAudio()?'Music':({trail:'Trails',bounce:'Impacts',pendant:'Pendants',companion:'Companions'}[kind]);
+ const label=()=>({music:'Instrument',soundstage:'Soundstage',ambience:'Ambience',pendant:'Pendant',companion:'Companion'}[kind])||(kind==='trail'?'Trail':'Impact');
+ const glyph=()=>isAudio()?'music-note':({trail:'trails',bounce:'bounce-effects',pendant:'pendants',companion:'companions'}[kind]);
  const musicArt=item=>`<div class="music-theme-art" style="--theme-color:${item.color}" aria-hidden="true">${iconHTML(item.kind==='soundstage'?'sound':item.kind==='ambience'?'wave':'music-note')}<span>${[.4,.7,1,.6,.85].map(h=>`<i style="--bar-height:${h}"></i>`).join('')}</span></div>`;
  const win=dialog.ownerDocument.defaultView;
  function soundButton(active,progress=0){const button=detail.querySelector('[data-cosmetic-sound]');if(!button)return;button.setAttribute('aria-pressed',String(active));button.querySelector('[data-preview-label]').textContent=active?'Stop Preview':'Preview Sound';button.style.setProperty('--preview-progress',String(progress));}
@@ -37,7 +37,7 @@ export function cosmeticMount(host){
   dialog.querySelector('.skin-library').hidden=!!item;dialog.querySelector('.skin-detail').hidden=!item;scroll.classList.toggle('is-detail',!!item);
   dialog.querySelector('#cosmetic-title').textContent=item?.name||title();back.setAttribute('aria-label',item?'Back to '+title():'Back');
   const tabs=dialog.querySelector('.music-category');tabs.closest('.tab-bar').hidden=!isAudio()||!!item;tabs.dataset.current=kind;for(const button of tabs.querySelectorAll('button'))button.setAttribute('aria-pressed',button.dataset.musicCategory===kind);categories.refresh();
-  dialog.querySelector('.skin-intro').textContent=isAudio()?({music:'Choose the instruments that voice your melody.',soundstage:'Choose the acoustic space around your instruments.',ambience:'Choose a quiet background atmosphere to accompany your music.'}[kind])+' Preview before purchasing. Each Music category equips independently.':`Choose ${kind==='trail'?'a trail':'an impact'} from Common to Mythic. Open a style to see it in motion before unlocking it with Points.`;
+  dialog.querySelector('.skin-intro').textContent=isAudio()?({music:'Choose the instruments that voice your melody.',soundstage:'Choose the acoustic space around your instruments.',ambience:'Choose a quiet background atmosphere to accompany your music.'}[kind])+' Preview before purchasing. Each Music category equips independently.':['pendant','companion'].includes(kind)?`Choose ${kind==='pendant'?'a pendant':'a companion'} to make your player your own. Try the free starter, preview unlockable designs, or choose None. Purely cosmetic: no change to powers, collisions or Score.`:`Choose ${kind==='trail'?'a trail':'an impact'} from Common to Mythic. Open a style to see it in motion before unlocking it with Points.`;
 
   heading.style.setProperty('--cosmetic-id',selected||loadout[kind]);heading.style.setProperty('--skin-color',host.color?.()||'#f1f9d7');heading.style.setProperty('--skin-style',host.style?.()||'original');
   if(renderedKind!==kind){
@@ -85,5 +85,5 @@ export function cosmeticMount(host){
   else if(e.target.closest('[data-cosmetic-equip]')){stop();const item=cosmeticGet(selected),result=host.act({type:cosmeticOwned(host.profile(),item)?'equip-cosmetic':'buy-cosmetic',id:selected});render();status.textContent=result.ok?item.name+' equipped.':result.reason;const equip=detail.querySelector('[data-cosmetic-equip]');(equip.disabled?back:equip).focus({preventScroll:true});}
  });
  rememberView(dialog,'detail',()=>({selected,libraryScroll}),state=>{const item=cosmeticGet(state?.selected);if(item?.kind===kind){selected=item.id;libraryScroll=Number.isFinite(state.libraryScroll)?state.libraryScroll:0;render();}},20);
- return {open(destination='trails'){stop();kind=destination==='music-themes'?'music':destination==='bounce-effects'?'bounce':'trail';selected=null;libraryScroll=0;host.screen(destination);document.querySelectorAll('dialog[open]').forEach(d=>d.close());render();status.textContent='';dialog.showModal();scroll.scrollTop=0;back.focus({preventScroll:true});}};
+ return {open(destination='trails'){stop();kind=destination==='music-themes'?'music':destination==='bounce-effects'?'bounce':destination==='pendants'?'pendant':destination==='companions'?'companion':'trail';selected=null;libraryScroll=0;host.screen(destination);document.querySelectorAll('dialog[open]').forEach(d=>d.close());render();status.textContent='';dialog.showModal();scroll.scrollTop=0;back.focus({preventScroll:true});}};
 }

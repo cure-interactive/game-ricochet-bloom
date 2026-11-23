@@ -1,19 +1,19 @@
-import {registerCosmeticIcon} from './cosmetic-icon.js?v=8fb0cc69ab8b6f71a4b6c8fa46709888c337e09debf361ef22fd485f8cce8c0f';
+import {registerCosmeticIcon} from './cosmetic-icon.js?v=b179f2e7002cbb98c8e9e60ed0f49a81c349325f3dc3b836f325f04fdf264f5c';
 if(typeof window!=='undefined')registerCosmeticIcon();
-import {registerPlayerBubble} from './player-bubble.js?v=6a20baa64f5d0347485d437b48f6c891b7d602c0a9f5292b14c9042c7ecf005d';
+import {registerPlayerBubble} from './player-bubble.js?v=4175f97a526f0beb67530e0bd86733cf0d5342f5d1deb9ce520a2abb44d3114b';
 if(typeof window!=='undefined')registerPlayerBubble();
 import { escapeHTML,titleCase } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 // Decorative icons share one renderer. player-skin uses the equipped skin
 // renderer, never an SVG mask or a duck/player glyph.
 export function iconHTML(name) {
-  return `<span class="ui-icon" data-icon="${escapeHTML(name)}" aria-hidden="true">${name==='player-skin'?'<player-bubble></player-bubble>':['trails','bounce-effects'].includes(name)?`<cosmetic-icon kind="${name==='trails'?'trail':'bounce'}"></cosmetic-icon>`:''}</span>`;
+  return `<span class="ui-icon" data-icon="${escapeHTML(name)}" aria-hidden="true">${name==='player-skin'?'<player-bubble></player-bubble>':['trails','bounce-effects','pendants','companions'].includes(name)?`<cosmetic-icon kind="${({trails:'trail','bounce-effects':'bounce',pendants:'pendant',companions:'companion'}[name])}"></cosmetic-icon>`:''}</span>`;
 }
-export function staticIconHTML(name){return iconHTML({'player-skin':'player-static',trails:'trails-static','bounce-effects':'impact-static'}[name]||name);}
+export function staticIconHTML(name){return iconHTML({'player-skin':'player-static',trails:'trails-static','bounce-effects':'impact-static',pendants:'star',companions:'player-static'}[name]||name);}
 export function iconNode(name) {
   const icon=document.createElement('span');
   icon.className='ui-icon';icon.dataset.icon=name;icon.setAttribute('aria-hidden','true');
   if(name==='player-skin')icon.append(document.createElement('player-bubble'));
-  if(['trails','bounce-effects'].includes(name)){const effect=document.createElement('cosmetic-icon');effect.setAttribute('kind',name==='trails'?'trail':'bounce');icon.append(effect);}
+  if(['trails','bounce-effects','pendants','companions'].includes(name)){const effect=document.createElement('cosmetic-icon');effect.setAttribute('kind',({trails:'trail','bounce-effects':'bounce',pendants:'pendant',companions:'companion'}[name]));icon.append(effect);}
   return icon;
 }
 export function buttonLabel(button,text,name,{preserveCase=false}={}) {

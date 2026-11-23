@@ -1,4 +1,4 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=5967b78c1a91403b7f74fbaf05770fe594cdc01446314455f9c6357c1f2809cb';
+import {CosmeticVisual} from './cosmetic-visual.js?v=dd6ac47f2c68b84f599d6f18bf320ced66ddd903826a7649f059fa5e4359be65';
 import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
@@ -10,7 +10,7 @@ import {PowerVisual} from './power-visual.js?v=868715dca5734f325719d703bc71ce643
 export class PoolVisual {
  constructor(){this.cosmetics=new CosmeticVisual();this.membranes=new Map();this.powerVisual=new PowerVisual();this.clear();}
  configure(loadout){this.cosmetics.configure(loadout);}
- clear(){const loadout={trail:this.cosmetics.trail,bounce:this.cosmetics.bounce};this.cosmetics.clear();this.cosmetics.configure(loadout);this.membranes.clear();this.powerVisual.clear();this.trails=[];this.particles=[];this.rings=[];this.connections=[];this.reunions=[];}
+ clear(){const loadout={trail:this.cosmetics.trail,bounce:this.cosmetics.bounce,pendant:this.cosmetics.accessories.pendant,companion:this.cosmetics.accessories.companion};this.cosmetics.clear();this.cosmetics.configure(loadout);this.membranes.clear();this.powerVisual.clear();this.trails=[];this.particles=[];this.rings=[];this.connections=[];this.reunions=[];}
  membrane(body){if(!this.membranes.has(body.id))this.membranes.set(body.id,bubbleCreate());return this.membranes.get(body.id);}
  hit(game,id,nx,ny,strength){const body=id<0?seedBodies(game).find(b=>b.id===id):game.bodies[id];if(!body)return; bubbleHit(this.membrane(body),body.radius,nx,ny,strength,!!effectGet(game,'stasis')?.targets.includes(id));}
  burst(x,y,color,count,low){
@@ -22,6 +22,8 @@ export class PoolVisual {
   if(event.type==='wave'){this.clear();return;}
   if(event.type==='impact'&&(event.a===0||event.b===0)||event.type==='wall'&&event.id===0)this.cosmetics.hit(event.x,event.y);
   if(['wrap','portal'].includes(event.type)||event.type==='power'&&['swap','split'].includes(event.kind))this.cosmetics.breakTrail();
+  if(event.type==='bloom')this.cosmetics.accessories.react(true);
+  if(['wrap','portal'].includes(event.type)||event.type==='power'&&event.kind==='swap')this.cosmetics.accessories.resetMotion();
   this.powerVisual.event(event,game);poolBubbleEvent(event,game,body=>this.membrane(body));
   const hit=(id,nx,ny,speed)=>this.hit(game,id,nx,ny,speed),burst=(x,y,color,n)=>this.burst(x,y,color,n,low);
   if(event.type==='impact'){hit(event.a,event.nx,event.ny,event.speed);hit(event.b,-event.nx,-event.ny,event.speed);}
@@ -91,6 +93,7 @@ export class PoolVisual {
   }
  }
  after(context,game,visualDelta,isLowQuality=false){
+  this.cosmetics.renderAccessories(context,isLowQuality);
   const membraneHit=(...args)=>this.hit(game,...args);
   this.rings = this.rings.filter(ring => {
     ring.previousRadius = ring.radius; ring.life -= visualDelta; ring.radius = Math.max(8, ring.radius + visualDelta * (ring.kind ? (ring.kind === 'stasis' ? 0 : ring.kind === 'attract' ? -1 : 1) * ((['swap', 'comet', 'magnet', 'lightning', 'impact', 'tether', 'split', 'bubble', 'portal', 'echo', 'slingshot', 'drunk', 'wrap', 'homing'].includes(ring.kind) ? 150 : RULE.powerRadius) - 8) / 1.6 : ring.bloom ? 220 : 75));

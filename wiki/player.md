@@ -1,6 +1,6 @@
 # Player
 
-Open **Player** from the main menu to view your equipped skin, personalize Skins, Trails, Impacts and Music, or open Skills and Stats.
+Open **Player** from the main menu to view your equipped skin, personalize Skins, Trails, Impacts, Pendants, Companions and Music, or open Skills and Stats.
 
 ## Player Viewer
 
@@ -68,6 +68,16 @@ Night Forest, Ember Hearth and Orbital Drift use long, seamless atmospheres. For
 Selections affect gameplay music, Casual, menu music and newly prepared song highlights. Prepare an existing highlight again to hear your new selections. Your saved composition, score, rewards and gameplay build are unchanged.
 
 See [Cosmetic Rarity](cosmetic-rarity.md) for the tier rules for each asset type and current prices.
+
+## Pendants
+
+Open **Player → Pendants** for a small charm attached to your bubble. Dewdrop is free; Silverleaf, Moonstone, Sundial and Prism Heart cost 120, 220, 360 and 550 Points. Preview any pendant before purchasing. Pendants sway with movement and remain purely cosmetic.
+
+## Companions
+
+Open **Player → Companions** for a little creature that follows your bubble. Sprout is free; Firefly, Moon Jelly, Star Moth and Bloom Dragon cost 120, 220, 360 and 550 Points. They react to bounces and celebrate 5-Chains. They never collide, collect powers, add contacts or change Score.
+
+Equip one pendant and one companion independently, or choose **None** in either gallery. Inspecting a design does not equip it. Both categories support the existing rarity filter, Favorites, saved selections and progress backups, separately for Normal and Development. Existing saves start with None. The Player viewer, live pools, menu and Casual show your choices; Gentle visuals reduces their decorative motion. Fixed trial renderers do not display accessories.
 
 ## Skills
 

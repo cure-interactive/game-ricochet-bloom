@@ -2,7 +2,7 @@
 
 Rarity describes the richness of a cosmetic's presentation, never stronger physics, easier goals, extra Points or better rewards. Higher tiers offer more layered looks and sounds, with a recognizable theme. All tiers preserve the same readable player size and important gameplay cues.
 
-The current paid catalogue uses **Common: 60 Points**, **Rare: 120**, **Epic: 220**, **Legendary: 360**, and **Mythic: 550**. Original defaults are free; campaign skins are earned by completing tracks. Rarity is not a random drop chance. Preview an item before choosing **Unlock & Equip**. Owned items can be equipped freely, including during a saved run.
+The current paid catalogue uses **Common: 60 Points**, **Rare: 120**, **Epic: 220**, **Legendary: 360**, and **Mythic: 550**. Original defaults, Dewdrop and Sprout are free; campaign skins are earned by completing tracks. Rarity is not a random drop chance. Preview an item before choosing **Unlock & Equip**. Owned items can be equipped freely, including during a saved run.
 
 ## Skins
 
@@ -75,3 +75,7 @@ These additional items are available in Player, with the same tier prices and pe
 - **Epic:** Skins — Circuit, Ink Swirl; Trails — Lattice, Inkbrush; Impacts — Circuit Bloom, Ink Splash; Instrument — Neon Ensemble.
 - **Legendary:** Skins — Stormheart, Clockwork; Trails — Stormwake, Clockstream; Impacts — Thunder Seal, Clockburst; Instrument — Brass Halo.
 - **Mythic:** Skins — Event Horizon, Worldseed; Trails — Riftwake, Living Vine; Impacts — Horizon Collapse, Worldbloom; Instrument — Glass Harmonica.
+
+## Pendants and Companions
+
+Pendants attach to your bubble; companions follow at a bounded distance. Each has a free Common starter and Rare through Mythic designs at the standard prices above, plus a free None option. Higher tiers add distinctive silhouettes and motion, not gameplay advantages. These categories stay silent. All companions react to bounces and 5-Chains; Gentle visuals removes extra flutter, bobbing and celebration motion.

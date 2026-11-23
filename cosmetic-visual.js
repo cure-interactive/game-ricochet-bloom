@@ -1,16 +1,17 @@
+import {AccessoryVisual} from './accessory-visual.js?v=7dffc1ed749f55ccce3bf762d4174e594d7b1f4df12bf6d5c227a013eefcfca6';
 import {trailDesign,impactDesign} from './cosmetic-design.js?v=5b25db6c70e995cb17ec5124f92bdb3e6e662cbc3b11373d85739d1868ee2b67';
-import {cosmeticGet} from './cosmetic.js?v=91c84c76f4cab70c42d98d3478ee3f1de65abb45f7542101028be9084fe96d9e';
+import {cosmeticGet} from './cosmetic.js?v=ceab45e8d91f7bc0277fcd57d0ba195cbeba296978e36bbc935740f4ee047132';
 const tau=Math.PI*2;
 const line=(c,x,y,r,a)=>{c.moveTo(x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.55);c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);};
 // Cosmetics draw only: no collisions, random engine state, audio or rewards.
 export class CosmeticVisual{
  constructor(){this.clear();}
- clear(){this.points=[];this.bounces=[];this.last=null;this.elapsed=0;this.trail='trail.original';this.bounce='bounce.none';}
- configure(loadout={}){const trail=cosmeticGet(loadout.trail)?.kind==='trail'?loadout.trail:'trail.original',bounce=cosmeticGet(loadout.bounce)?.kind==='bounce'?loadout.bounce:'bounce.none';if(trail!==this.trail){this.points=[];this.last=null;}this.trail=trail;this.bounce=bounce;}
- hit(x,y){if(this.bounce==='bounce.none'||!Number.isFinite(x)||!Number.isFinite(y))return;this.bounces.push({x,y,age:0,id:this.bounce});if(this.bounces.length>24)this.bounces.shift();}
+ clear(){this.accessories=new AccessoryVisual();this.points=[];this.bounces=[];this.last=null;this.elapsed=0;this.trail='trail.original';this.bounce='bounce.none';}
+ configure(loadout={}){this.accessories.configure(loadout);const trail=cosmeticGet(loadout.trail)?.kind==='trail'?loadout.trail:'trail.original',bounce=cosmeticGet(loadout.bounce)?.kind==='bounce'?loadout.bounce:'bounce.none';if(trail!==this.trail){this.points=[];this.last=null;}this.trail=trail;this.bounce=bounce;}
+ hit(x,y){if(Number.isFinite(x)&&Number.isFinite(y))this.accessories.react();if(this.bounce==='bounce.none'||!Number.isFinite(x)||!Number.isFinite(y))return;this.bounces.push({x,y,age:0,id:this.bounce});if(this.bounces.length>24)this.bounces.shift();}
  breakTrail(){this.last=null;this.points=[];}
  step(body,dt,moving=true){
-  dt=Math.min(.05,Math.max(0,dt));this.elapsed+=dt;
+  dt=Math.min(.05,Math.max(0,dt));this.elapsed+=dt;this.accessories.step(body,dt);
   for(const p of this.points)p.age+=dt;for(const b of this.bounces)b.age+=dt;
   this.points=this.points.filter(p=>p.age<.85);this.bounces=this.bounces.filter(b=>b.age<.7);
   if(!body||!moving||!dt){this.last=null;return;}
@@ -19,6 +20,7 @@ export class CosmeticVisual{
   if(!this.last||distance>.05){this.points.push({x:body.x,y:body.y,age:0,t:this.elapsed,energy:Math.min(1,Math.max(Math.hypot(body.vx||0,body.vy||0),distance/dt)/500),break:!this.last});this.last={x:body.x,y:body.y};}
   if(this.points.length>100)this.points.splice(0,this.points.length-100);
  }
+ renderAccessories(c,gentle=false){this.accessories.render(c,gentle);}
  render(c,low=false,showOriginal=false){
   c.save();c.lineCap='round';const item=cosmeticGet(this.trail),style=item?.style;
   if(style&&(style!=='original'||showOriginal))for(let i=1;i<this.points.length;i++){

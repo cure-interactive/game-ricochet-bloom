@@ -21,6 +21,8 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 - [Trails and Impacts](player.md#trails-and-impacts)
 - [Music](player.md#music)
 - [Stats](player.md#stats)
+- [Pendants](player.md#pendants)
+- [Companions](player.md#companions)
 - [Skills](player.md#skills)
 
 ## Cosmetic Rarity
@@ -33,6 +35,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 - [Soundstages](cosmetic-rarity.md#soundstages)
 - [Ambience](cosmetic-rarity.md#ambience)
 - [Expanded Collection](cosmetic-rarity.md#expanded-collection)
+- [Pendants and Companions](cosmetic-rarity.md#pendants-and-companions)
 
 ## Skills
 
@@ -213,6 +216,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Change Logs
 
 - [Change Logs](changelog.md)
+- [v3.36.0](changelog.md#v3-36-0)
 - [v3.35.9](changelog.md#v3-35-9)
 - [v3.35.8](changelog.md#v3-35-8)
 - [v3.35.7](changelog.md#v3-35-7)

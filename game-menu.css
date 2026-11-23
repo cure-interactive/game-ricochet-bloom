@@ -241,3 +241,7 @@ body:is([data-screen=drift],[data-screen=drift-pause]) .home-pool{opacity:1}
 #audio-welcome-dialog [data-audio-skip]{background:transparent;color:#b7cbd2}
 #audio-welcome-dialog [hidden]{display:none}
 #audio-welcome-dialog [data-audio-status]{margin-top:16px}
+
+/* Fit the whole player/pendant/companion group inside the interactive viewer. */
+#player-menu-dialog.has-accessories .player-viewer{--player-preview-size:clamp(72px,12dvh,110px)}
+#player-menu-dialog.has-accessories .player-viewer-preview{height:clamp(240px,30dvh,320px);min-height:240px}

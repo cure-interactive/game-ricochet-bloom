@@ -1,6 +1,6 @@
 import {bubbleInteractionMount} from './bubble-interaction.js?v=3479767760180a37f4151682533ae16ec5f0a6f22f41d7a4c788a576855eb899';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
-import {CosmeticVisual} from './cosmetic-visual.js?v=5967b78c1a91403b7f74fbaf05770fe594cdc01446314455f9c6357c1f2809cb';
+import {CosmeticVisual} from './cosmetic-visual.js?v=dd6ac47f2c68b84f599d6f18bf320ced66ddd903826a7649f059fa5e4359be65';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender,bubblePath} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';
@@ -110,10 +110,11 @@ export function registerPlayerBubble(win=window){
    const parentScale=rect.width/(this.offsetWidth||rect.width),x=(rect.left+rect.width/2)/unit,y=(rect.top+rect.height/2)/unit;
    if(this.trailUnit!==unit){this.trail.breakTrail();this.trailUnit=unit;}
    const trails=this.getAttribute('trail')!=='none',tox=this.body.x-motion.offset.x,toy=this.body.y-motion.offset.y;
-   if(trails)this.trail.configure({trail:style.getPropertyValue('--player-trail').trim()});else this.trail.breakTrail();
+   const accessories=this.getAttribute('accessories')!==null;
+   this.trail.configure({trail:style.getPropertyValue('--player-trail').trim(),pendant:accessories?style.getPropertyValue('--player-pendant').trim():undefined,companion:accessories?style.getPropertyValue('--player-companion').trim():undefined});if(!trails)this.trail.breakTrail();
    // Style observers repaint during a grabbed parent's transform. A repaint
    // has no elapsed simulation time and must not break the continuous trail.
-   if(trails&&dt>0)this.trail.step({x:motion.x,y:motion.y},dt);
+   if(dt>0)this.trail.step({x:motion.x,y:motion.y,radius:14,vx:motion.vx,vy:motion.vy},dt,trails);
    // The tail belongs to movement, not the icon's hit box. Extend this same
    // canvas around its live history, keeping the allocation viewport-bounded.
    // Quantized edges avoid reallocating the backing bitmap for every pixel.
@@ -126,6 +127,7 @@ export function registerPlayerBubble(win=window){
     left=Math.min(left,point.x+tox-pad);right=Math.max(right,point.x+tox+pad);
     top=Math.min(top,point.y+toy-pad);bottom=Math.max(bottom,point.y+toy+pad);
    }
+   for(const point of this.trail.accessories.bounds()){left=Math.min(left,point.x+tox-point.r);right=Math.max(right,point.x+tox+point.r);top=Math.min(top,point.y+toy-point.r);bottom=Math.max(bottom,point.y+toy+point.r);}
    const clipped=this.activity?.clip({left:(left-ox)*unit,top:(top-oy)*unit,right:(right-ox)*unit,bottom:(bottom-oy)*unit});
    if(this.canvas.hidden===!!clipped)this.canvas.hidden=!clipped;if(!clipped)return;
    left=clipped.left/unit+ox;top=clipped.top/unit+oy;right=clipped.right/unit+ox;bottom=clipped.bottom/unit+oy;
@@ -149,6 +151,7 @@ export function registerPlayerBubble(win=window){
     c.fillStyle=style.color;c.fill(bubblePath(outside));c.restore();
    }
    bubbleRender(c,body,points,color,{glowExtent:1.3,skinTime:this.age,skinStyle:style.getPropertyValue('--skin-style').trim()||style.getPropertyValue('--player-skin-style').trim(),lowQuality:this.ownerDocument.body.dataset?.quality==='low'});
+   c.save();c.translate(tox,toy);this.trail.renderAccessories(c,this.ownerDocument.body.dataset?.quality==='low'||this.ownerDocument.body.classList.contains('motion-reduced'));c.restore();
   }
   disconnectedCallback(){
    this.visible=false;this.halt();this.activity?.destroy();this.activity=null;this.resize.disconnect();this.resize=null;this.intersection.disconnect();this.preferences.disconnect();

@@ -6,6 +6,24 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.36.0
+
+Build: 2026-11-23 20:27:48 UTC
+
+### Player Changes
+
+- Personalize your player with five pendants and five companions from the Player menu, each with live previews and Favorites.
+- Try Dewdrop and Sprout for free. Unlock four more designs in each category with Points, and choose None whenever you want.
+- Pendants sway as you move; companions follow, react to bounces and celebrate 5-Chains. Both are cosmetic and leave powers, collisions and Score unchanged.
+
+<!-- development -->
+### Developer Notes
+
+- Extend the existing cosmetic slots, transactions, rarity gallery and navigation. Preserve missing slots in older saves while resolving None at presentation time.
+- Share bounded accessory presentation across live pools, menu/Casual, gallery previews and the large Player viewer. Keep physics and reward state independent; reset following across teleports and retain equipped choices across pool resets.
+- Cover legacy saves, separate equipment, affordability, receipts, leashed movement, quiet paused frames, finite rendering and preview bounds. Physical-device acceptance remains separate.
+<!-- /development -->
+
 ## v3.35.9
 
 Build: 2026-11-23 20:19:55 UTC

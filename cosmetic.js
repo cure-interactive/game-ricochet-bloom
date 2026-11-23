@@ -1,10 +1,11 @@
+import {ACCESSORIES} from './accessory.js?v=76dcdd82c019c82272c108925c9a9143f930fe5c56ce738f72d209033b3102b7';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {COSMETIC_COLLECTION} from './cosmetic-collection.js?v=5fffc248bcec63bc94d641fd08adb36b591a815fa2cd26ed62801ef5a1ea9cca';
 import {SOUNDSTAGES,AMBIENCES} from './music-environment.js?v=09dcc5aa06da815b08ac721d6fe505e7c6abd27d237928af2e681a09764eb1a4';
 import {MUSIC_THEMES} from './music-theme.js?v=88ea7b370c0695e982b380622f15db38e58496f3cd4335b7104b62ec49d0ad79';
 // Stable cosmetic identities and historical paid prices belong to the profile.
 export const COSMETICS=Object.freeze([
- ...MUSIC_THEMES,...SOUNDSTAGES,...AMBIENCES,
+ ...MUSIC_THEMES,...SOUNDSTAGES,...AMBIENCES,...ACCESSORIES,
  {id:'trail.original',kind:'trail',name:'Original',rarity:'common',cost:0,color:'#bff6e2',style:'original',description:'Your familiar soft wake.'},
  {id:'trail.silk',kind:'trail',name:'Silk',rarity:'common',cost:60,color:'#a9f1df',style:'silk',description:'A clean, flowing ribbon of mint light.'},
  {id:'trail.stardust',kind:'trail',name:'Stardust',rarity:'rare',cost:120,color:'#8ddcff',style:'stardust',description:'A trail of drifting blue-white stars.'},
@@ -31,7 +32,7 @@ export function cosmeticOrder(items){
  return items.map((item,index)=>({item,index})).sort((a,b)=>ranks.indexOf(a.item.rarity)-ranks.indexOf(b.item.rarity)||a.index-b.index).map(x=>x.item);
 }
 export const cosmeticGet=id=>COSMETICS.find(item=>item.id===id);
-export const cosmeticDefault=()=>({owned:{},trail:'trail.original',bounce:'bounce.none',skin:'campaign',music:'music.original',soundstage:'soundstage.original',ambience:'ambience.none'});
+export const cosmeticDefault=()=>({owned:{},trail:'trail.original',bounce:'bounce.none',skin:'campaign',music:'music.original',soundstage:'soundstage.original',ambience:'ambience.none',pendant:'pendant.none',companion:'companion.none'});
 export function cosmeticValidate(value){
  if(value===undefined)return undefined;
  if(!value||typeof value!=='object'||Array.isArray(value)||!value.owned||typeof value.owned!=='object'||Array.isArray(value.owned))return null;
@@ -40,8 +41,8 @@ export function cosmeticValidate(value){
   if(!cosmeticGet(id)||!receipt||!Number.isSafeInteger(receipt.paid)||receipt.paid<0)return null;
   result.owned[id]={paid:receipt.paid};
  }
- for(const kind of ['trail','bounce','skin','music','soundstage','ambience']){
-  const id=value[kind];if(['music','soundstage','ambience'].includes(kind)&&id===undefined){delete result[kind];continue;}if(kind==='skin'&&id==='campaign')continue;
+ for(const kind of ['trail','bounce','skin','music','soundstage','ambience','pendant','companion']){
+  const id=value[kind];if(['music','soundstage','ambience','pendant','companion'].includes(kind)&&id===undefined){delete result[kind];continue;}if(kind==='skin'&&id==='campaign')continue;
   const item=cosmeticGet(id);if(!item||item.kind!==kind||item.cost>0&&!Object.hasOwn(result.owned,id))return null;
   result[kind]=id;
  }

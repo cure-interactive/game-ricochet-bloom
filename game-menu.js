@@ -1,12 +1,12 @@
-import {menuView,menuDismiss,menuRestorePath} from './menu-state.js?v=0ac50ae5758d0c7e70f669aa366f6b6a16c5613629af35c4c1d1b5a4b7be3b54';
+import {menuView,menuDismiss,menuRestorePath} from './menu-state.js?v=02fa1f9b80023373e21e3843591631d5872ae8f0e8bdc373a5db0b70f77133d4';
 import {menuSummaryRender} from './menu-summary.js?v=88be0a3d0eefb7d6ff84518fc4e186dec329935a2399efe6f97308f69ae578e1';
-import {cosmeticLoadout} from './cosmetic.js?v=91c84c76f4cab70c42d98d3478ee3f1de65abb45f7542101028be9084fe96d9e';
-import { menuLayoutMount } from './menu-title.js?v=50a219215962514f8cd3c31d41cc0bc710a3b02f6b15178915a0f3d87e7c7c7b';
+import {cosmeticLoadout} from './cosmetic.js?v=ceab45e8d91f7bc0277fcd57d0ba195cbeba296978e36bbc935740f4ee047132';
+import { menuLayoutMount } from './menu-title.js?v=4a025b091b4bb4018ddae1c770a0f661a5a94684c29654c0ac86e8d2cf1fb602';
 import { pageHistory } from './page-history.js?v=54c1c0aaacb43da66e5503f9ea5ea7948dfd1efd2ededbc6b416434a1792e935';
-import { buttonHTML } from './ui-icon.js?v=3ec57aca06a56be722ba4758c1a5f9f22822f17f0488b0eba544ab0976429198';
-import { menuBackgroundMount } from './menu-background.js?v=02d206d3f07a53ba1464b5d2cbd9b52c9fdf44d635e832741506aeffb6388ef2';
+import { buttonHTML } from './ui-icon.js?v=57d497c3e28ba2bc4614da76b67513b6fc21610631aa38d19553cec3a515840e';
+import { menuBackgroundMount } from './menu-background.js?v=b8d78628d681a1b5d4e6b3aba713cbe604184d7fe96bf0a76111d268f1a4a7fb';
 
-import { driftMount } from './drift-ui.js?v=66bfbcbbcb4ee85c3031fd46c78ca5926df5cae7557c9fc4ad2b288a0b6c14d4';
+import { driftMount } from './drift-ui.js?v=b288b2e582da984beb531c83df06eb2ef27ef35dacf51910c9d29a5992a81aad';
 
 // Screen history belongs here; campaign progress and unlocks stay in run.js.
 export function gameMenuMount(host) {
@@ -24,7 +24,7 @@ export function gameMenuMount(host) {
   const drift=driftMount({pause:pauseOpen,resume});
   const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true,{profile:host.profile,skin:host.skin,skinStyle:host.skinStyle,audioSettings:host.audioSettings,powerMarkings:()=>view().casual});
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
-  function refresh(){background.refresh();document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');document.body.style.setProperty('--player-skin-style',host.skinStyle?.()||'original');document.body.style.setProperty('--player-trail',cosmeticLoadout(host.profile?.()?.profile).trail);document.body.style.setProperty('--player-impact',cosmeticLoadout(host.profile?.()?.profile).bounce);const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){menuSummaryRender(resume,{...info.resume,title:'Continue'});}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
+  function refresh(){background.refresh();document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');document.body.style.setProperty('--player-skin-style',host.skinStyle?.()||'original');document.body.style.setProperty('--player-trail',cosmeticLoadout(host.profile?.()?.profile).trail);document.body.style.setProperty('--player-impact',cosmeticLoadout(host.profile?.()?.profile).bounce);for(const kind of ['pendant','companion'])document.body.style.setProperty('--player-'+kind,cosmeticLoadout(host.profile?.()?.profile)[kind]);const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){menuSummaryRender(resume,{...info.resume,title:'Continue'});}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
   function present(name){
     route.visit(name);
     const current=view();

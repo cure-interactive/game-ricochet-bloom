@@ -3,6 +3,7 @@ export function cosmeticBounds(body,outline,visual,unit=1){
  const glow=Math.max(body.radius*1.3,18/unit);
  let left=body.x-glow,top=body.y-glow,right=body.x+glow,bottom=body.y+glow;
  const include=(x,y,r)=>{left=Math.min(left,x-r);top=Math.min(top,y-r);right=Math.max(right,x+r);bottom=Math.max(bottom,y+r);};
+ for(const p of visual.accessories?.bounds()||[])include(p.x,p.y,p.r);
  for(const p of outline)include(p.x,p.y,glow+2);
  for(const p of visual.points)include(p.x,p.y,34);
  for(const b of visual.bounces)include(b.x,b.y,70);

@@ -1,6 +1,6 @@
 import {bubbleInteractionMount} from './bubble-interaction.js?v=3479767760180a37f4151682533ae16ec5f0a6f22f41d7a4c788a576855eb899';
-import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=7529ca05961ee4ba37e91a835b4a4ee3215cfbd74837da808dca52460df3993e';
-import {CosmeticVisual} from './cosmetic-visual.js?v=5967b78c1a91403b7f74fbaf05770fe594cdc01446314455f9c6357c1f2809cb';
+import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e134db80a925d08cbddcd187c3980d3332c8e1e0b8b22ce988aa293cd01944d5';
+import {CosmeticVisual} from './cosmetic-visual.js?v=dd6ac47f2c68b84f599d6f18bf320ced66ddd903826a7649f059fa5e4359be65';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
@@ -15,7 +15,7 @@ export function cosmeticThumbnail(canvas,item,{color='#f1f9d7',style=''}={}){
  else {body.x=90;body.y=45;visual.hit(body.x,body.y);for(let i=0;i<5;i++)visual.step(null,.04,false);}
  if(item.kind==='trail'){body.x=visual.points.at(-1).x;body.y=visual.points.at(-1).y;}
  visual.render(c,false,true);
- bubbleRender(c,body,bubbleOutline(bubbleCreate(),body),color||'#f1f9d7',{skinStyle:style,skinTime:1,glowExtent:1.8});
+ bubbleRender(c,body,bubbleOutline(bubbleCreate(),body),color||'#f1f9d7',{skinStyle:style,skinTime:1,glowExtent:1.8});visual.accessories.step(body,0);visual.renderAccessories(c);
 }
 // Small previews stay silent and use the same visibility/quality lifecycle as
 // the selected viewer. The caller owns destruction when replacing its cards.
@@ -60,7 +60,7 @@ export function cosmeticPreviewMount(canvas,host){
    const t=visual.elapsed,padding=host.icon?body.radius:host.motionArea<1?body.radius+4:host.compact?54:host.thumbnail==='trail'?body.radius+(42-body.radius)/2:72,area=host.motionArea||1,rx=Math.max(0,worldWidth*area/2-padding)+(host.icon&&host.thumbnail==='trail'?4:0),ry=Math.max(host.icon&&host.thumbnail==='trail'?body.radius:0,worldHeight*area/2-padding);
    body.x=worldWidth/2+(host.thumbnail==='trail'?Math.sin(t*2)*rx:0);body.y=worldHeight/2+(host.thumbnail==='trail'?Math.sin(t*4)*ry:0);
    body.vx=Math.cos(t*2)*rx*2;body.vy=Math.cos(t*4)*ry*4;
-   if(host.thumbnail==='bounce'&&t>=nextRipple){
+   if(['bounce','pendant','companion'].includes(host.thumbnail)&&t>=nextRipple){
     // Match the regular player current: changing phase, direction and spacing.
     const angle=phase+t*1.7,nx=Math.cos(angle),ny=Math.sin(angle);
     visual.hit(body.x+nx*body.radius,body.y+ny*body.radius);bubbleHit(membrane,body.radius,nx,ny,150);
@@ -79,6 +79,7 @@ export function cosmeticPreviewMount(canvas,host){
   const outline=bubbleOutline(membrane,body),paint=context=>{
    visual.render(context,doc.body.dataset.quality==='low',true);
    bubbleRender(context,body,outline,host.color?.()||'#f1f9d7',{skinTime:visual.elapsed,skinStyle:host.style?.(),lowQuality:doc.body.dataset.quality==='low',glowExtent:host.icon?1.3:2});
+   visual.renderAccessories(context,doc.body.dataset.quality==='low'||doc.body.classList?.contains('motion-reduced'));
   };
   if(host.surface){cosmeticPaint(canvas,host.surface,activity,cosmeticBounds(body,outline,visual,1/scale),1/scale,ratio,paint);return;}
   if(!activity.clip(canvas.getBoundingClientRect()))return;

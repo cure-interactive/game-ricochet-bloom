@@ -1,5 +1,5 @@
-import {cosmeticThumbnailMount} from './cosmetic-preview.js?v=549544f1b77a212b1790c2d8d8b81927231c87900da0e77ffd3e515727bc580b';
-import {cosmeticGet} from './cosmetic.js?v=91c84c76f4cab70c42d98d3478ee3f1de65abb45f7542101028be9084fe96d9e';
+import {cosmeticThumbnailMount} from './cosmetic-preview.js?v=5095c397245a5124a5ab5fc002707868b01bd293ce993da9213f15917e2682c3';
+import {cosmeticGet} from './cosmetic.js?v=ceab45e8d91f7bc0277fcd57d0ba195cbeba296978e36bbc935740f4ee047132';
 export function registerCosmeticIcon(win=window){
  if(win.customElements.get('cosmetic-icon'))return;
  class CosmeticIcon extends win.HTMLElement{
@@ -7,15 +7,15 @@ export function registerCosmeticIcon(win=window){
   attributeChangedCallback(name,before,after){if(before!==after&&this.isConnected){this.disconnectedCallback();this.connectedCallback();}}
   connectedCallback(){
    if(this.preview)return;this.canvas ||=this.ownerDocument.createElement('canvas');this.canvas.setAttribute('aria-hidden','true');if(!this.canvas.parentElement)this.append(this.canvas);
-   const style=()=>win.getComputedStyle(this),kind=this.getAttribute('kind')==='bounce'?'bounce':'trail';
+   const style=()=>win.getComputedStyle(this),kind=['bounce','pendant','companion'].includes(this.getAttribute('kind'))?this.getAttribute('kind'):'trail';
    const diameter=()=>{
     const parent=this.parentElement,d=Math.max(1,parseFloat(style().getPropertyValue('--player-icon-size'))||parent.clientHeight);
-    const minimum=kind==='trail'?d*2:d;
+    const minimum=['trail','companion'].includes(kind)?d*2:d;
     if(parent.style.minWidth!==minimum+'px')parent.style.minWidth=minimum+'px';
     const wiki=parent.closest('.wiki-icon');if(wiki&&wiki.style.minWidth!==minimum+'px')wiki.style.minWidth=minimum+'px';
     return d;
    };
-   this.preview=cosmeticThumbnailMount(this.canvas,()=>cosmeticGet(style().getPropertyValue('--cosmetic-id').trim()||style().getPropertyValue(kind==='trail'?'--player-trail':'--player-impact').trim())||cosmeticGet(kind==='trail'?'trail.original':'bounce.none'),{icon:true,surface:this,diameter,loadout:()=>({trail:style().getPropertyValue('--player-trail').trim()}),color:()=>style().getPropertyValue('--skin-color').trim()||style().getPropertyValue('--player-skin-color').trim(),style:()=>style().getPropertyValue('--skin-style').trim()||style().getPropertyValue('--player-skin-style').trim()});
+   this.preview=cosmeticThumbnailMount(this.canvas,()=>cosmeticGet(style().getPropertyValue('--cosmetic-id').trim()||style().getPropertyValue(kind==='bounce'?'--player-impact':'--player-'+kind).trim())||cosmeticGet(kind==='trail'?'trail.original':kind+'.none'),{icon:true,surface:this,diameter,loadout:()=>({trail:style().getPropertyValue('--player-trail').trim()}),color:()=>style().getPropertyValue('--skin-color').trim()||style().getPropertyValue('--player-skin-color').trim(),style:()=>style().getPropertyValue('--skin-style').trim()||style().getPropertyValue('--player-skin-style').trim()});
   }
   disconnectedCallback(){this.preview?.destroy();this.preview=null;}
  }

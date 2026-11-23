@@ -1,14 +1,14 @@
-import { iconHTML, staticIconHTML } from './ui-icon.js?v=3ec57aca06a56be722ba4758c1a5f9f22822f17f0488b0eba544ab0976429198';
+import { iconHTML, staticIconHTML } from './ui-icon.js?v=57d497c3e28ba2bc4614da76b67513b6fc21610631aa38d19553cec3a515840e';
 import { CATALOGUE } from './catalogue.js?v=c1d42ecf5ab5eb7f0a369fdccd0d8696079d69ac29f9676f4f854e39de9671ac';
 import { RARITIES, SKILL_TYPES } from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=04fae5f45432d66b6819c6ee3df7881b66997cbc98dcbc14d129088d74e4b84f';
+import { skillIconHTML, rarityIconHTML, typeIconHTML } from './skill-icon.js?v=59e1466b547958817763950390a470a120257e606fad2550983ad798dcbb2d93';
 import { medalIcon } from './medal-ui.js?v=6df228e6d2895828fc52e3634bd7cb5b98bc58ddf86a48515c6d0a1527524ed2';
 
 // Only known topics and catalogue identities produce decoration. Markdown never
 // supplies an image URL, raw SVG or icon name to the renderer.
 const pages={'cosmetic-rarity':'epic',changelog:'list',developer:'flask','development-concept':'flask','game-modes':'flask',wiki:'book',contents:'list','how-to-play':'gamepad',waves:'wave',campaign:'campaign','skill-tree':'skill-tree','power-ups':'powers',settings:'gear',medals:'medal',experiments:'flask','score-attack':'speedometer',player:'player-skin'};
 const topics={
- 'cosmetic-rarity':'epic',trails:'trails',impacts:'bounce-effects',instruments:'music-note',soundstages:'sound',ambience:'wave',
+ pendants:'pendants',companions:'companions','pendants-and-companions':'companions','cosmetic-rarity':'epic',trails:'trails',impacts:'bounce-effects',instruments:'music-note',soundstages:'sound',ambience:'wave',
  'release-notes':'list','direction-and-boundaries':'shield','mind-map':'skill-tree','bubble-actions':'player-static','independent-properties':'switches','elements-and-status-effects':'powers','chain-reactions':'pulse','environment-and-layout':'grid','bubble-sources':'add','enemies':'warning-triangle','cellular-campaign':'campaign','objectives-and-loss':'check','research-inspired-branches':'skill-tree','research-and-sources':'book','decisions-still-open':'about',
  'current-baseline':'check','mind-map-and-research-connections':'skill-tree','experiment-catalogue':'list','precision-and-shot-planning':'control-gun','reactions-and-logic':'pulse','cargo-and-rescue':'shield','containment-and-defense':'shield','survival-and-time-pressure':'clock','terrain-and-navigation':'grid','score-and-risk':'coin','builds-and-power-choices':'powers','music-and-composition':'music-note','memory-and-hidden-information':'eye','growth-and-material-systems':'player-static','journeys-and-campaign-formats':'campaign','competition-and-party-play':'gamepad','cooperation':'gamepad','sandboxes-and-gentle-play':'wave','direct-mind-map-experiments':'flask','capture-carry-and-release':'lock','division-fusion-and-payload-accounting':'pulse','elements-status-and-chain-interruption':'powers','sources-as-resources':'add','anchors-connections-and-changing-routes':'grid','fictional-cellular-missions':'campaign','first-experiments-to-compare':'flask','experiment-guardrails':'shield','recommended-order':'list','pressure-survival':'clock','reaction-lab-and-playtest-method':'flask','scope-and-implementation-decision':'check',
  'glide-and-steady-shell':'player-glide','getting-help':'about',
