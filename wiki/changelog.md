@@ -6,6 +6,21 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.38.1
+
+Build: 2026-11-23 23:53:53 UTC
+
+### Player Changes
+
+- Reduce unnecessary work while scrolling animated cosmetic galleries, including Companions. Scrolling and edge bounce remain controlled by your browser.
+
+<!-- development -->
+### Developer Notes
+
+- Publish preview and scrollbar visibility only when it changes, and skip unchanged preview canvas geometry writes. Repeated hidden-attribute writes previously woke all visual-activity observers and the scrollbar layout pass on each animation frame, including for offscreen previews.
+- Verify steady/offscreen frames produce no redundant observed DOM mutations while animation, re-entry and real geometry changes still work. Native overscroll offsets remain unchanged; physical iOS spring-back requires device confirmation.
+<!-- /development -->
+
 ## v3.38.0
 
 Build: 2026-11-23 23:49:13 UTC

@@ -11,10 +11,12 @@ export function cosmeticBounds(body,outline,visual,unit=1){
 }
 export function cosmeticPaint(canvas,surface,activity,bounds,unit,ratio,paint){
  const rect=surface.getBoundingClientRect(),clipped=activity.clip({left:rect.left+bounds.left*unit,top:rect.top+bounds.top*unit,right:rect.left+bounds.right*unit,bottom:rect.top+bounds.bottom*unit});
- canvas.hidden=!clipped;if(!clipped)return;
+ // Visibility is a transition, not a paint tick: setting hidden repeatedly
+ // wakes every visibility observer and the shared scrollbar layout pass.
+ const hidden=!clipped;if(canvas.hidden!==hidden)canvas.hidden=hidden;if(hidden)return;
  const floor=x=>Math.floor(x/16)*16,ceil=x=>Math.ceil(x/16)*16;
  const left=floor(clipped.left-rect.left),top=floor(clipped.top-rect.top),width=ceil(clipped.right-rect.left)-left,height=ceil(clipped.bottom-rect.top)-top;
- Object.assign(canvas.style,{left:left+'px',top:top+'px',width:width+'px',height:height+'px'});
+ for(const [name,value] of Object.entries({left:left+'px',top:top+'px',width:width+'px',height:height+'px'}))if(canvas.style[name]!==value)canvas.style[name]=value;
  const pw=Math.ceil(width*ratio),ph=Math.ceil(height*ratio);
  if(canvas.width!==pw)canvas.width=pw;if(canvas.height!==ph)canvas.height=ph;
  const c=canvas.getContext('2d');c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pw,ph);

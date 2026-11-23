@@ -120,7 +120,8 @@ export function scrollbarsMount(doc=document,win=window){
    for(const [index,axis] of ['y','x'].entries()){
     const item=r.items[index],vertical=axis==='y',view=vertical?el.clientHeight:el.clientWidth,total=vertical?el.scrollHeight:el.scrollWidth;
     const geometry=scrollbarGeometry(view,total,vertical?el.scrollTop:Math.abs(el.scrollLeft),vertical?clip.bottom-clip.top:clip.right-clip.left);item.geometry=geometry;
-    item.track.hidden=!visible||!/auto|scroll/.test(vertical?style.overflowY:style.overflowX)||!geometry||clip.right<=clip.left||clip.bottom<=clip.top;
+    const hidden=!visible||!/auto|scroll/.test(vertical?style.overflowY:style.overflowX)||!geometry||clip.right<=clip.left||clip.bottom<=clip.top;
+    if(item.track.hidden!==hidden)item.track.hidden=hidden;
     if(item.track.hidden){item.motion.refresh();continue;}
     // Dialog children stay in the same top layer as their scroll surface.
     // Use existing blank padding. Some cards put padding on the parent shell,

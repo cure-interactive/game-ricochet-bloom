@@ -1,5 +1,5 @@
 import {bubbleInteractionMount} from './bubble-interaction.js?v=6c2d620f96364e97799c42d7a6b4682f26775fbae76fa3e10a38f90adfa588dc';
-import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e134db80a925d08cbddcd187c3980d3332c8e1e0b8b22ce988aa293cd01944d5';
+import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=6d5eadc2a75261d5bdcdffcd29733f84c085e9c5d1caa89aabcc4f8deffc03c2';
 import {CosmeticVisual} from './cosmetic-visual.js?v=a4305c49deda1d67b2544bbcf11d53a83eba90d88f78b402efc0e6db6939a43c';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';
