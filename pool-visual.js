@@ -1,4 +1,4 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=9b7afa516204b6fe37148ca057e2dc05141a1379cadf99610f6f3d4731dcd390';
+import {CosmeticVisual} from './cosmetic-visual.js?v=8a224db5f2e9e43f19acda4e6823bed9d2dfc1cae2214a092f5755e0729ed474';
 import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
@@ -12,7 +12,7 @@ import {accessoryCelebration} from './accessory.js?v=4d13cc3b9bb353e9a5ba36bbea6
 export class PoolVisual {
  constructor(){this.cosmetics=new CosmeticVisual();this.membranes=new Map();this.powerVisual=new PowerVisual();this.clear();}
  configure(loadout){this.cosmetics.configure(loadout);}
- clear(){const loadout={trail:this.cosmetics.trail,bounce:this.cosmetics.bounce,pendant:this.cosmetics.accessories.pendant,companion:this.cosmetics.accessories.companion};this.cosmetics.clear();this.cosmetics.configure(loadout);this.membranes.clear();this.powerVisual.clear();this.trails=[];this.particles=[];this.rings=[];this.connections=[];this.reunions=[];}
+ clear(){this.rotation=0;const loadout={trail:this.cosmetics.trail,bounce:this.cosmetics.bounce,pendant:this.cosmetics.accessories.pendant,companion:this.cosmetics.accessories.companion};this.cosmetics.clear();this.cosmetics.configure(loadout);this.membranes.clear();this.powerVisual.clear();this.trails=[];this.particles=[];this.rings=[];this.connections=[];this.reunions=[];}
  membrane(body){if(!this.membranes.has(body.id))this.membranes.set(body.id,bubbleCreate());return this.membranes.get(body.id);}
  hit(game,id,nx,ny,strength){const body=id<0?seedBodies(game).find(b=>b.id===id):game.bodies[id];if(!body)return; bubbleHit(this.membrane(body),body.radius,nx,ny,strength,!!effectGet(game,'stasis')?.targets.includes(id));}
  burst(x,y,color,count,low){
@@ -60,8 +60,9 @@ export class PoolVisual {
   if(this.connections.length>96)this.connections.splice(0,this.connections.length-96);
  }
  before(context,game,time,visualDelta,isLowQuality=false){
-  const seed=game.bodies[0];
-  this.cosmetics.step(seed,visualDelta,true,game.bodies.filter(body=>body.id>0&&!body.popped));this.cosmetics.render(context,isLowQuality,true);
+  const seed=game.bodies[0],matrix=context.getTransform?.();
+  this.rotation=matrix&&Number.isFinite(matrix.a)&&Number.isFinite(matrix.b)?Math.atan2(matrix.b,matrix.a):0;
+  this.cosmetics.step(seed,visualDelta,true,{interests:game.bodies.filter(body=>body.id>0&&!body.popped),rotation:this.rotation});this.cosmetics.render(context,isLowQuality,true);
   if(isLowQuality){this.trails=[];this.particles=[];}
   this.powerVisual.update(visualDelta,game);
   this.powerVisual.render(context, game, time, isLowQuality);
@@ -95,7 +96,7 @@ export class PoolVisual {
   }
  }
  after(context,game,visualDelta,isLowQuality=false){
-  this.cosmetics.renderAccessories(context,isLowQuality);
+  this.cosmetics.renderAccessories(context,isLowQuality,this.rotation);
   const membraneHit=(...args)=>this.hit(game,...args);
   this.rings = this.rings.filter(ring => {
     ring.previousRadius = ring.radius; ring.life -= visualDelta; ring.radius = Math.max(8, ring.radius + visualDelta * (ring.kind ? (ring.kind === 'stasis' ? 0 : ring.kind === 'attract' ? -1 : 1) * ((['swap', 'comet', 'magnet', 'lightning', 'impact', 'tether', 'split', 'bubble', 'portal', 'echo', 'slingshot', 'drunk', 'wrap', 'homing'].includes(ring.kind) ? 150 : RULE.powerRadius) - 8) / 1.6 : ring.bloom ? 220 : 75));

@@ -1,5 +1,7 @@
+import {angleApproach} from './angle.js?v=a877fbe89e9f287f68b69f52d76679cbf59de4428f5c6f8931471c8e40003750';
+import {pendantCord} from './pendant-cord.js?v=90231f7de9492cb5b19a75e52152af4e810d5d80f7f578b6962358eeb1ba69f3';
 import {tetherStep} from './tether-motion.js?v=5eb2c8730294259f82de709ceffe5968fa5af61b58075778cd5ca4bfa0f855af';
-import {CompanionWander} from './companion-wander.js?v=1ee91ac5fd947b6eb7ad3fb748c30985c5c9ec41747330ff3eea7ca9fd7dd4d3';
+import {CompanionWander} from './companion-wander.js?v=e421f8f2852895febda0d83e9622241fd55fab492beb29127554a87a0234590a';
 import {cosmeticGet} from './cosmetic.js?v=5fce426acea1cc7e8321f13619eaedbf2850895e457e202e7acc7843946b35d9';
 import {accessoryTier,accessoryPulse} from './accessory.js?v=4d13cc3b9bb353e9a5ba36bbea63f73cf346bf99b33ef7eba5bde79cf60c9e30';
 const tau=Math.PI*2,clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
@@ -31,22 +33,14 @@ function flourish(c,item,t,celebration,low,pendant=false){
 const pendantTether={length:2.3,clearance:1.85,stiffness:58,damping:5,drag:5,limit:7};
 const companionTether={length:4,clearance:2.2,stiffness:48,damping:6,drag:3,limit:8};
 
-// Same slack-cord artwork for both tether lengths; no simulated rope segments.
-function tetherRender(c,body,point,length,opacity){
- const r=body.radius,dx=point.x-body.x,dy=point.y-body.y,d=Math.hypot(dx,dy)||1,nx=dx/d,ny=dy/d;
- const slack=Math.max(0,r*length-d)*.3;
- c.save();c.lineWidth=r/14*clamp(2-d/(r*length)*.7,.65,1.4);c.strokeStyle='#d7ebe9';c.globalAlpha=opacity;
- c.beginPath();c.moveTo(body.x+nx*r*.92,body.y+ny*r*.92);c.quadraticCurveTo((body.x+point.x)/2-ny*slack,(body.y+point.y)/2+nx*slack,point.x,point.y);c.stroke();c.restore();
-}
-
 // Independent, bounded presentation state. Never retains or mutates an engine body.
 export class AccessoryVisual{
  constructor(seed){this.wander=new CompanionWander(seed);this.clear();}
  clear(){this.resetMotion();this.elapsed=0;this.reaction=0;this.celebration=0;this.pendant='pendant.none';this.companion='companion.none';}
- configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion'){this.follower=null;this.wander.reset();}else this.charm=null;this.celebration=0;}this[kind]=id;}}
+ configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion'){this.follower=null;this.companionAngle=0;this.wander.reset();}else this.charm=null;this.celebration=0;}this[kind]=id;}}
  react(celebrate=false){this.reaction=1;if(celebrate)this.celebration=1;}
- resetMotion(){this.body=null;this.follower=null;this.charm=null;this.heading=0;this.wander.reset();}
- step(body,seconds,interests=[]){
+ resetMotion(){this.body=null;this.follower=null;this.charm=null;this.heading=0;this.companionAngle=0;this.wander.reset();}
+ step(body,seconds,{interests=[],rotation=0}={}){
   const dt=clamp(Number.isFinite(seconds)?seconds:0,0,.05);
   if(!body||!Number.isFinite(body.x)||!Number.isFinite(body.y)){this.resetMotion();return;}
   if(this.body&&!dt)return; // Observer repaints and paused frames cannot inject motion.
@@ -54,7 +48,7 @@ export class AccessoryVisual{
   const teleport=previous&&Math.hypot(body.x-previous.x,body.y-previous.y)>r*12;
   if(!previous||teleport){
    const speed=Math.hypot(body.vx||0,body.vy||0);this.heading=speed>1?Math.atan2(body.vy||0,body.vx||0):0;
-   this.follower=null;this.charm=null;this.wander.reset();
+   this.follower=null;this.charm=null;this.companionAngle=0;this.wander.reset();
   }
   const vx=previous&&!teleport&&dt?(body.x-previous.x)/dt:0,vy=previous&&!teleport&&dt?(body.y-previous.y)/dt:0;
   this.body={x:body.x,y:body.y,radius:r,vx,vy};
@@ -70,6 +64,8 @@ export class AccessoryVisual{
    const anchor={x:previous.x+(body.x-previous.x)*i/steps,y:previous.y+(body.y-previous.y)*i/steps,radius:r,vx,vy};
    const drive=this.wander.step(h,this.follower,anchor,interests);
    tetherStep(this.follower,anchor,h,companionTether,drive);
+   const lateral=(this.follower.vx-vx)*Math.cos(rotation)-(this.follower.vy-vy)*Math.sin(rotation);
+   this.companionAngle=angleApproach(this.companionAngle,clamp(lateral/(r*12),-.25,.25),5,h);
    tetherStep(this.charm,anchor,h,pendantTether);
   }
  }
@@ -80,12 +76,12 @@ export class AccessoryVisual{
   if(this.companion!=='companion.none'&&this.follower)points.push({...this.follower,r:b.radius*4.4});
   return points;
  }
- render(c,gentle=false){
+ render(c,gentle=false,rotation=0){
   if(!this.body)return;const b=this.body,r=b.radius,t=this.elapsed;
   const pendant=cosmeticGet(this.pendant),companion=cosmeticGet(this.companion);
   if(pendant&&pendant.style!=='none'&&this.charm){
    const p=this.charm,dx=p.x-b.x,dy=p.y-b.y;
-   tetherRender(c,b,p,pendantTether.length,.8);c.save();c.translate(p.x,p.y);c.rotate(Math.atan2(dy,dx)-Math.PI/2);c.scale(r/14,r/14);
+   pendantCord(c,b,p,pendantTether.length,pendant,t,gentle);c.save();c.translate(p.x,p.y);c.rotate(Math.atan2(dy,dx)-Math.PI/2);c.scale(r/14,r/14);
    const pendantPulse=accessoryTier(pendant)>=2?accessoryPulse(this.celebration):0;c.scale(1+pendantPulse*.16,1+pendantPulse*.16);flourish(c,pendant,t,this.celebration,gentle,true);
    c.fillStyle='#081b2a';ellipse(c,0,0,6.3,7.3);c.fillStyle=pendant.color;c.strokeStyle='#f1fff2';c.lineWidth=.7;
    if(pendant.style==='drop'){c.beginPath();c.moveTo(0,-6);c.bezierCurveTo(1,-3,6,0,4,4);c.bezierCurveTo(1,8,-5,5,-4,1);c.closePath();c.fill();c.stroke();}
@@ -102,8 +98,7 @@ export class AccessoryVisual{
   }
   if(companion&&companion.style!=='none'&&this.follower){
    const f=this.follower,bob=gentle?0:Math.sin(t*2)*r*.06,lift=gentle?0:Math.sin(this.celebration*Math.PI)*r*.45;
-   tetherRender(c,b,{x:f.x,y:f.y+bob-lift},companionTether.length,.28);
-   c.save();c.translate(f.x,f.y+bob-lift);c.scale(r/14*1.2,r/14*1.2);c.lineCap='round';c.lineJoin='round';c.lineWidth=1.3;c.strokeStyle='#263c4e';c.fillStyle=companion.color;
+   c.save();c.translate(f.x+Math.sin(rotation)*(bob-lift),f.y+Math.cos(rotation)*(bob-lift));c.rotate(this.companionAngle-rotation);c.scale(r/14*1.2,r/14*1.2);c.lineCap='round';c.lineJoin='round';c.lineWidth=1.3;c.strokeStyle='#263c4e';c.fillStyle=companion.color;
    const curiosity=Math.sin(this.wander.pulse*Math.PI);c.scale(1+curiosity*.07,1+curiosity*.07);
    const tier=accessoryTier(companion),pulse=tier>=2?accessoryPulse(this.celebration):0,size=1+pulse*(tier===4?.28:tier===3?.22:.18);c.scale(size,size);flourish(c,companion,t,this.celebration,gentle);
    const flutter=gentle?.6:.55+.35*Math.sin(t*9),happy=this.reaction*.7+this.celebration+curiosity*.45;

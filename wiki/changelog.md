@@ -6,6 +6,22 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.37.4
+
+Build: 2026-11-23 22:59:01 UTC
+
+### Player Changes
+
+- Companions have no visible tether cord. They stay upright in portrait and landscape, gently leaning with movement and smoothly righting themselves.
+- Epic pendant cords now have static braided filigree and clasps. Mythic cords carry animated flowing lights. Pendants remain silent and physically independent of the player.
+
+<!-- development -->
+### Developer Notes
+
+- Share shortest-arc interpolation between wander steering and companion pose. Pass actual pool camera rotation through the shared visual boundary; keep companion art and lift screen-oriented.
+- Separate pendant cord artwork from shared invisible tether dynamics. Check static Epic versus animated Mythic traces, short-arc/frame-rate interpolation and portrait rendering without companion cords.
+<!-- /development -->
+
 ## v3.37.3
 
 Build: 2026-11-23 22:50:52 UTC

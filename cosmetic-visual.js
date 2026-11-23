@@ -1,4 +1,4 @@
-import {AccessoryVisual} from './accessory-visual.js?v=b4afa7b69a6d2ffbece4f28d98716d7f5ab00a755954a7bcc16789e0b9c7a7fb';
+import {AccessoryVisual} from './accessory-visual.js?v=2205f69ce01018b6afe505174e5c6f4a0a5cbc0c00cdab1ad67242332c6edc00';
 import {trailDesign,impactDesign} from './cosmetic-design.js?v=5b25db6c70e995cb17ec5124f92bdb3e6e662cbc3b11373d85739d1868ee2b67';
 import {cosmeticGet} from './cosmetic.js?v=5fce426acea1cc7e8321f13619eaedbf2850895e457e202e7acc7843946b35d9';
 const tau=Math.PI*2;
@@ -10,8 +10,8 @@ export class CosmeticVisual{
  configure(loadout={}){this.accessories.configure(loadout);const trail=cosmeticGet(loadout.trail)?.kind==='trail'?loadout.trail:'trail.original',bounce=cosmeticGet(loadout.bounce)?.kind==='bounce'?loadout.bounce:'bounce.none';if(trail!==this.trail){this.points=[];this.last=null;}this.trail=trail;this.bounce=bounce;}
  hit(x,y){if(Number.isFinite(x)&&Number.isFinite(y))this.accessories.react();if(this.bounce==='bounce.none'||!Number.isFinite(x)||!Number.isFinite(y))return;this.bounces.push({x,y,age:0,id:this.bounce});if(this.bounces.length>24)this.bounces.shift();}
  breakTrail(){this.last=null;this.points=[];}
- step(body,dt,moving=true,interests=[]){
-  dt=Math.min(.05,Math.max(0,dt));this.elapsed+=dt;this.accessories.step(body,dt,interests);
+ step(body,dt,moving=true,environment={}){
+  dt=Math.min(.05,Math.max(0,dt));this.elapsed+=dt;this.accessories.step(body,dt,environment);
   for(const p of this.points)p.age+=dt;for(const b of this.bounces)b.age+=dt;
   this.points=this.points.filter(p=>p.age<.85);this.bounces=this.bounces.filter(b=>b.age<.7);
   if(!body||!moving||!dt){this.last=null;return;}
@@ -20,7 +20,7 @@ export class CosmeticVisual{
   if(!this.last||distance>.05){this.points.push({x:body.x,y:body.y,age:0,t:this.elapsed,energy:Math.min(1,Math.max(Math.hypot(body.vx||0,body.vy||0),distance/dt)/500),break:!this.last});this.last={x:body.x,y:body.y};}
   if(this.points.length>100)this.points.splice(0,this.points.length-100);
  }
- renderAccessories(c,gentle=false){this.accessories.render(c,gentle);}
+ renderAccessories(c,gentle=false,rotation=0){this.accessories.render(c,gentle,rotation);}
  render(c,low=false,showOriginal=false){
   c.save();c.lineCap='round';const item=cosmeticGet(this.trail),style=item?.style;
   if(style&&(style!=='original'||showOriginal))for(let i=1;i<this.points.length;i++){

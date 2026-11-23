@@ -1,3 +1,4 @@
+import {angleApproach} from './angle.js?v=a877fbe89e9f287f68b69f52d76679cbf59de4428f5c6f8931471c8e40003750';
 // Intent only: smoothly changing curiosity supplies acceleration, not position.
 // A private random stream keeps presentation independent of gameplay randomness.
 export class CompanionWander{
@@ -20,8 +21,7 @@ export class CompanionWander{
   }
   if(this.pulse<=0)this.interest=null;
   const target=this.interest?Math.atan2(this.interest.y-point.y,this.interest.x-point.x):this.aim;
-  const turn=Math.atan2(Math.sin(target-this.angle),Math.cos(target-this.angle));
-  this.angle+=turn*(1-Math.exp(-dt*(this.interest?7:2.2)));
+  this.angle=angleApproach(this.angle,target,this.interest?7:2.2,dt);
   const perk=Math.sin(this.pulse*Math.PI),force=anchor.radius*(7+perk*22);
   return {x:Math.cos(this.angle)*force,y:Math.sin(this.angle)*force};
  }
