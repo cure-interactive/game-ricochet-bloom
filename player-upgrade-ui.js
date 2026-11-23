@@ -1,5 +1,5 @@
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=bc40f3f174b96302e325e1af82edb1a6ee4ba21e729862c34027d5cf1ee3cbbe';
+import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=c420b1c0e6375c2499a4caa7b3efb489197bac1425fc2ad9644e9855b31b18ea';
 import {skillNodeHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=7c7f8558b13f8038ec967a3c9ce5391a8c18dca43ea54df0fd62e6f7c63b359c';
 import {playerSkillStats} from './player-skill-comparison.js?v=f77d93876f25ffd7530d3de39e2b3b762afba93a19a6906ea123d7a16fbc3720';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';

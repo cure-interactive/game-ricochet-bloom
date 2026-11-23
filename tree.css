@@ -302,22 +302,14 @@ body:not(.assisted-controls) .tree-camera-controls{display:none}
 .connection-legend{display:grid;gap:10px}.legend-connection{display:flex;align-items:center;gap:10px;font-size:12px;color:#bcd2dd}.legend-connection:before{content:"";width:26px;border-top:2px solid currentColor}.legend-connection.is-unpurchased:before{border-top-style:dashed}
 
 
-/* Distant nodes retain shape, rarity and ownership; readable detail returns on zoom. */
+/* Cache complete node appearances at distant zoom. Native controls and live
+   close-up/focused detail remain authoritative, including on cache failure. */
 :is(#tree-dialog,#player-upgrade-dialog) .skill-node.is-culled{visibility:hidden;pointer-events:none}
-:is(#tree-dialog,#player-upgrade-dialog) .tree-map:is([data-detail=overview],[data-detail=compact]) .skill-node{filter:none}
-:is(#tree-dialog,#player-upgrade-dialog) .tree-map:is([data-detail=overview],[data-detail=compact]) .skill-orb{box-shadow:none;background:#132334}
-/* Label bands follow projected type size independently of artwork/shadows.
-   Only a band change animates; camera frames never restyle each label. */
-:is(#tree-dialog,#player-upgrade-dialog) .skill-node>:is(strong,small){opacity:1;visibility:visible;transition:opacity 120ms ease,visibility 0s}
-:is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-labels=none] .skill-node>strong,
-:is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-labels=primary] .skill-node:not(.is-base)>strong,
-:is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-costs=hidden] .skill-node>small{opacity:0;visibility:hidden;transition:opacity 120ms ease,visibility 0s 120ms}
-:is(#tree-dialog,#player-upgrade-dialog) .tree-map .skill-node:is([aria-pressed=true],:focus-visible):not(.is-culled)>:is(strong,small){opacity:1;visibility:visible;transition:none}
-:is(#tree-dialog,#player-upgrade-dialog) .tree-map .skill-node.is-culled>:is(strong,small){visibility:hidden;transition:none}
-@media(prefers-reduced-motion:reduce){:is(#tree-dialog,#player-upgrade-dialog) .tree-map .skill-node>:is(strong,small){transition:none}}
+.tree-node-raster{position:absolute;pointer-events:none;display:none;max-width:none;max-height:none;min-height:0;aspect-ratio:auto;background:transparent}
+.tree-map[data-raster=cached] .skill-node[data-raster]:not(:hover):not(:focus):not([aria-pressed=true])>.tree-node-raster{display:block}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-raster=cached] .skill-node[data-raster]:not(:hover):not(:focus):not([aria-pressed=true]){height:var(--tree-raster-height)}
+:is(#tree-dialog,#player-upgrade-dialog) .tree-map[data-raster=cached] .skill-node[data-raster]:not(:hover):not(:focus):not([aria-pressed=true])>:not(.tree-node-raster){display:none}
 
 /* One tiny SVG tile, clipped to the viewport. No background paint at overview. */
 .tree-map::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:url('./tree-grid.svg?v=e100da656982052284e2dc5002c05b0d47bf794c3400a393de97cbcd4dd1e143');background-repeat:repeat;background-position:inherit;background-size:inherit;opacity:var(--map-grid-opacity,1)}
 .tree-map[data-grid=hidden]::before{display:none}
-
-.tree-map[data-detail=overview] .skill-orb>:is(img,.ui-icon){visibility:hidden}

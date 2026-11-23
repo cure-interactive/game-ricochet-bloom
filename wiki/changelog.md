@@ -6,6 +6,23 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.35.4
+
+Build: 2026-11-23 12:24:03 UTC
+
+### Player Changes
+
+- Keep skill names, costs, icons, rarity shapes and shadows visible while zooming out.
+- Reuse distant skill artwork to make large trees smoother to pan and zoom, with sharp live detail when you move closer or select a skill.
+
+<!-- development -->
+### Developer Notes
+
+- Cache visible node appearances incrementally under the existing shared parent transform. Keep native buttons, keyboard focus and selection; never allocate a full-world canvas.
+- Bound node backing pixels to 16 MiB per mounted tree and shared embedded sources to 8 MiB. Choose resolution from zoom bands and display density, invalidate changed states/fonts/DPR, and release node canvases on close.
+- Preserve live rendering during preparation or unsupported snapshots. Cover stale async results, cache reuse, budget pressure, density changes and close/reopen behavior with focused regressions and browser checks. Physical mobile-device performance remains unverified.
+<!-- /development -->
+
 ## v3.35.3
 
 Build: 2026-11-17 05:00:25 UTC
