@@ -21,7 +21,13 @@ export const ACCESSORIES=Object.freeze([
  {id:'companion.ladybug',kind:'companion',name:'Dew Beetle',rarity:'rare',cost:120,color:'#ffaaa5',style:'ladybug',description:'A spotted garden beetle with tiny antennae and polished coral wings.'},
  {id:'companion.fox',kind:'companion',name:'Cloud Fox',rarity:'epic',cost:220,color:'#ffd0a8',style:'fox',description:'A little fox with a cloud-soft tail. Success gives it an excited pulse and a brief rising chirp.'},
  {id:'companion.bird',kind:'companion',name:'Sunbird',rarity:'legendary',cost:360,color:'#ffe196',style:'bird',description:'A golden bird with a radiant crest and orbiting sunbeam. It answers success with a swelling trill.'},
- {id:'companion.whale',kind:'companion',name:'Comet Whale',rarity:'mythic',cost:550,color:'#a9e8ff',style:'whale',description:'A tiny sky whale with a comet tail. Success lifts it into a pulse, a star spray and a warm, airy whale song.'}
+ {id:'companion.whale',kind:'companion',name:'Comet Whale',rarity:'mythic',cost:550,color:'#a9e8ff',style:'whale',description:'A tiny sky whale with a comet tail. Success lifts it into a pulse, a star spray and a warm, airy whale song.'},
+ {id:'companion.bunny',kind:'companion',name:'Button Bunny',rarity:'common',cost:40,color:'#e4c4b0',style:'bunny',description:'A stitched toy bunny with floppy ears, a button eye and tiny patchwork paws. Quiet company with a handmade heart.'},
+ {id:'companion.crab',kind:'companion',name:'Shell Scout',rarity:'rare',cost:120,color:'#78dfd0',style:'crab',description:'A curious hermit crab in a striped spiral shell. It paddles through the pool and waves its little claws.'},
+ {id:'companion.ghost',kind:'companion',name:'Lantern Ghost',rarity:'epic',cost:220,color:'#bcebe1',style:'ghost',description:'A friendly lantern spirit with a trailing hem and warm amber light. Success brings a soft swell and two hollow bell notes.'},
+ {id:'companion.owl',kind:'companion',name:'Clockwork Owl',rarity:'legendary',cost:360,color:'#dca969',style:'owl',description:'A brass owl with lens eyes, articulated wings and a turning clockwork heart. Success winds up a bright three-note music-box reply.'},
+ {id:'companion.robot',kind:'companion',name:'Nova Bot',rarity:'mythic',cost:550,color:'#a7d6e8',style:'robot',description:'A friendly little robot with a luminous visor, twin antennae and a pulsing hover engine. Success sparks a happy swell, a digital arpeggio and a burst of light pixels.'}
+
 ]);
 
 // A celebration is an earned milestone, never an ordinary collision or idle tick.

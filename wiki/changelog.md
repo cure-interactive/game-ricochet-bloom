@@ -6,6 +6,23 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.38.0
+
+Build: 2026-11-23 23:49:13 UTC
+
+### Player Changes
+
+- Five new companions add a third choice at every rarity: Button Bunny (Common), Shell Scout (Rare), Lantern Ghost (Epic), Clockwork Owl (Legendary), and Nova Bot (Mythic).
+- Explore plush-toy, ocean, folklore, clockwork and science-fiction themes. Nova Bot has a glowing visor, antennae and a hover engine, plus a digital celebration voice and light-pixel bursts.
+- Lantern Ghost and Clockwork Owl have their own delayed celebration voices. Preview every design and its reactions before unlocking it.
+
+<!-- development -->
+### Developer Notes
+
+- Separate companion artwork from motion and rarity presentation; all preview, icon and live-pool consumers retain the shared renderer and expression model.
+- Extend the existing cosmetic catalogue and finite sound motifs without changing legacy IDs, save shape, prices or movement. Verify three companions/two pendants per tier, purchase persistence, distinct geometry, emotes and voice lifetimes.
+<!-- /development -->
+
 ## v3.37.5
 
 Build: 2026-11-23 23:31:08 UTC

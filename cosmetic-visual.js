@@ -1,6 +1,6 @@
-import {AccessoryVisual} from './accessory-visual.js?v=5b7eff69ace10d0f65249b6b37ad734e34fad1e3f2e599b2e72a43d9ed12d0a1';
+import {AccessoryVisual} from './accessory-visual.js?v=34767c6849bbecfc0633749a08e9c5ba7416f71e7b450b2a241154b9edf0a2ed';
 import {trailDesign,impactDesign} from './cosmetic-design.js?v=5b25db6c70e995cb17ec5124f92bdb3e6e662cbc3b11373d85739d1868ee2b67';
-import {cosmeticGet} from './cosmetic.js?v=5fce426acea1cc7e8321f13619eaedbf2850895e457e202e7acc7843946b35d9';
+import {cosmeticGet} from './cosmetic.js?v=36e7348418dff5ee2bd86e9b6d031f48e9fed9ce1ae911f25e16edd70d5de8e5';
 const tau=Math.PI*2;
 const line=(c,x,y,r,a)=>{c.moveTo(x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.55);c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);};
 // Cosmetics draw only: no collisions, random engine state, audio or rewards.

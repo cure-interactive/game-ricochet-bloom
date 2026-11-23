@@ -1,8 +1,8 @@
 import {audioEnvironment} from './audio-environment.js?v=5725e4e590fb89b80b78f26b3ae67e1d2a1fe7d983991be1e6a63ebb4b845888';
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=774fbf1c691f54dafa415de78b2b32a6a8d7ffadc96e05d5bda4ec17db9831eb';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=7904f3fab24003c6251442f7604d5d8fc7ef9163a8a1abb32f41975690c0162d';
-import {accessoryCelebration} from './accessory.js?v=4d13cc3b9bb353e9a5ba36bbea63f73cf346bf99b33ef7eba5bde79cf60c9e30';
-import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=5fce426acea1cc7e8321f13619eaedbf2850895e457e202e7acc7843946b35d9';
+import {accessoryCelebration} from './accessory.js?v=91a2f322a8bbdc6a7838e7084cd7ebcc2fa4ecd86c974e585c13ea9f79a7b33c';
+import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=36e7348418dff5ee2bd86e9b6d031f48e9fed9ce1ae911f25e16edd70d5de8e5';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js?v=d31acea21b543a610f696e47d50a254ce52527d06e488d6e72309535656e4d38';
@@ -328,10 +328,10 @@ export class PoolSound {
     if(kind==='companion'){
       // A finite answer to the achievement, scheduled on the audio clock. The
       // existing voice group cancels even not-yet-started notes on pause/hide.
-      const motifs={jelly:[523,784],fox:[659,988],moth:[784,988,1175],bird:[880,1175,1320],dragon:[262,392,523,784],whale:[196,294,392,588]};
+      const motifs={jelly:[523,784],fox:[659,988],moth:[784,988,1175],bird:[880,1175,1320],dragon:[262,392,523,784],whale:[196,294,392,588],ghost:[392,587],owl:[330,494,660],robot:[440,660,880,1320]};
       const notes=motifs[item.style]||[523,784],mythic=item.rarity==='mythic',duration=mythic?.42:.23;
       const delay=.18+(preview?this.previewMusicFade(.18+(notes.length-1)*.1+duration):0);
-      notes.forEach((pitch,i)=>this.tone(pitch*.85,pitch,duration,(mythic?.025:.022)/(1+i*.3),pan,delay+i*.1,item.style==='fox'||item.style==='dragon'?'triangle':'sine',false,false,options));
+      notes.forEach((pitch,i)=>this.tone(pitch*.85,pitch,duration,(item.style==='robot'?.014:mythic?.025:.022)/(1+i*.3),pan,delay+i*.1,item.style==='robot'?'square':['fox','dragon','owl'].includes(item.style)?'triangle':'sine',false,false,options));
       return true;
     }
     // Original finite accents: a rising airy wake and a low crystalline impact.

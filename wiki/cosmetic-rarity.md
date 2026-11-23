@@ -78,12 +78,12 @@ These additional items are available in Player, with the same tier prices and pe
 
 ## Pendants and Companions
 
-Pendants meander slowly on short, loose leashes and gently avoid the player without pushing it. Companions wander on longer invisible tethers, changing direction on their own and occasionally perking up toward nearby bubbles. Both float freely within their maximum leash distance, without a fixed orbit or resting direction; neither changes player physics. Companions have no visible cord and smoothly recover their upright screen orientation. Each category has two designs per rarity, plus None. Common starters Dewdrop and Sprout are free; the second Common costs 40 Points. Rare, Epic, Legendary and Mythic designs cost 120, 220, 360 and 550 Points.
+Pendants meander slowly on short, loose leashes and gently avoid the player without pushing it. Companions wander on longer invisible tethers, changing direction on their own and occasionally perking up toward nearby bubbles. Both float freely within their maximum leash distance, without a fixed orbit or resting direction; neither changes player physics. Companions have no visible cord and smoothly recover their upright screen orientation. Pendants have two designs per rarity and companions have three, plus None in each category. Common starters Dewdrop and Sprout are free; other Common designs cost 40 Points. Rare, Epic, Legendary and Mythic designs cost 120, 220, 360 and 550 Points.
 
-- **Common:** Pendants — Dewdrop, River Pebble. Companions — Sprout, Puff. Simple shapes and bounce reactions.
-- **Rare:** Pendants — Silverleaf, Pearl Shell. Companions — Firefly, Dew Beetle. More detailed silhouettes and materials.
-- **Epic:** Pendants — Moonstone, Astral Key. Companions — Moon Jelly, Cloud Fox. Pendants have static braided cords. Halos and a brief success pulse; companions add a delayed two-note voice.
-- **Legendary:** Pendants — Sundial, Orbit Compass. Companions — Star Moth, Sunbird. Moving orbital detail, brighter pulses and three-note companion calls.
-- **Mythic:** Pendants — Prism Heart, Worldseed. Companions — Bloom Dragon, Comet Whale. Pendants have animated lights flowing along their cords. Larger celebration pulses, finite star or petal bursts and layered companion voices.
+- **Common:** Pendants — Dewdrop, River Pebble. Companions — Sprout, Puff, Button Bunny. Simple shapes and bounce reactions.
+- **Rare:** Pendants — Silverleaf, Pearl Shell. Companions — Firefly, Dew Beetle, Shell Scout. More detailed silhouettes and materials.
+- **Epic:** Pendants — Moonstone, Astral Key. Companions — Moon Jelly, Cloud Fox, Lantern Ghost. Pendants have static braided cords. Halos and a brief success pulse; companions add a delayed two-note voice.
+- **Legendary:** Pendants — Sundial, Orbit Compass. Companions — Star Moth, Sunbird, Clockwork Owl. Moving orbital detail, brighter pulses and three-note companion calls.
+- **Mythic:** Pendants — Prism Heart, Worldseed. Companions — Bloom Dragon, Comet Whale, Nova Bot. Pendants have animated lights flowing along their cords. Larger celebration pulses, finite star, petal or light-pixel bursts and layered companion voices.
 
 5-Chains, bonus objectives, wave clears and victories trigger celebrations. Companions answer about a fifth of a second later, with a cooldown to keep nearby successes from piling up. Their short voices respect master volume, mute and pause. Pendants remain silent. Preview Celebration demonstrates the visual reaction; Preview Sound explicitly auditions eligible companions. Gallery animation and menu autoplay never play companion calls. Low quality uses fewer particles. None of these effects changes gameplay.
