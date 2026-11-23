@@ -1,6 +1,6 @@
-import {bubbleInteractionMount} from './bubble-interaction.js?v=3479767760180a37f4151682533ae16ec5f0a6f22f41d7a4c788a576855eb899';
+import {bubbleInteractionMount} from './bubble-interaction.js?v=6c2d620f96364e97799c42d7a6b4682f26775fbae76fa3e10a38f90adfa588dc';
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e134db80a925d08cbddcd187c3980d3332c8e1e0b8b22ce988aa293cd01944d5';
-import {CosmeticVisual} from './cosmetic-visual.js?v=8a224db5f2e9e43f19acda4e6823bed9d2dfc1cae2214a092f5755e0729ed474';
+import {CosmeticVisual} from './cosmetic-visual.js?v=c276921c5eb8949e9b7aa3f5e83f007f64d747de46afe7a6f1ccecd76bec5946';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
@@ -59,7 +59,7 @@ export function cosmeticPreviewMount(canvas,host){
   if(host.thumbnail){
    const t=visual.elapsed,padding=host.icon?body.radius:host.motionArea<1?body.radius+4:host.compact?54:host.thumbnail==='trail'?body.radius+(42-body.radius)/2:72,area=host.motionArea||1,rx=Math.max(0,worldWidth*area/2-padding)+(host.icon&&host.thumbnail==='trail'?4:0),ry=Math.max(host.icon&&host.thumbnail==='trail'?body.radius:0,worldHeight*area/2-padding);
    body.x=worldWidth/2+(host.thumbnail==='trail'?Math.sin(t*2)*rx:0);body.y=worldHeight/2+(host.thumbnail==='trail'?Math.sin(t*4)*ry:0);
-   body.vx=Math.cos(t*2)*rx*2;body.vy=Math.cos(t*4)*ry*4;
+   body.vx=host.thumbnail==='trail'?Math.cos(t*2)*rx*2:0;body.vy=host.thumbnail==='trail'?Math.cos(t*4)*ry*4:0;
    if(['bounce','pendant','companion'].includes(host.thumbnail)&&t>=nextRipple){
     // Match the regular player current: changing phase, direction and spacing.
     const angle=phase+t*1.7,nx=Math.cos(angle),ny=Math.sin(angle);
@@ -75,7 +75,7 @@ export function cosmeticPreviewMount(canvas,host){
   offset={x:motion.x*factor,y:motion.y*factor,vx:motion.vx*factor,vy:motion.vy*factor};body.x+=offset.x;body.y+=offset.y;body.vx+=offset.vx;body.vy+=offset.vy;
   const trails=host.trailEnabled?.()!==false;
   if(!trails&&visual.points.length)visual.breakTrail();
-  bubbleStep(membrane,body,dt,false,{vx:sensor.x,vy:sensor.y});if(dt>0)visual.step(body,dt,trails);
+  bubbleStep(membrane,body,dt,false,{vx:sensor.x,vy:sensor.y});if(dt>0)visual.step(body,dt,trails,{impulse:sensor.impulse,acceleration:sensor.acceleration});
   const outline=bubbleOutline(membrane,body),paint=context=>{
    visual.render(context,doc.body.dataset.quality==='low',true);
    bubbleRender(context,body,outline,host.color?.()||'#f1f9d7',{skinTime:visual.elapsed,skinStyle:host.style?.(),lowQuality:doc.body.dataset.quality==='low',glowExtent:host.icon?1.3:2});

@@ -1,8 +1,8 @@
 import {treeViewMount} from './tree-view.js?v=cf4a83d5e9bfee5a1cc6f7cbe3396039f6bd5b3e6236e3b7698e083f46dd7400';
 import {mapCameraMount,nearestMapNode} from './tree-map.js?v=7ec02d1e9cd146b9e061b453c9b7b2376be706aed2d2d0ad8b925ca88451890f';
-import {skillLegendHTML} from './skill-card.js?v=91a0eb096f86283fdddf59074690b1c3edc18e3ddf1c1a5460cfb49d535b95f9';
-import {screenHeader} from './screen-header.js?v=d2d9e718968f9e0818bd55ea79a06044736b5b22e901d86b8031521d8556b67b';
-import {buttonHTML} from './ui-icon.js?v=cbf022ce3248160b361afed81589ae1a2f56bdd61274c5ee3f96e1462e192dff';
+import {skillLegendHTML} from './skill-card.js?v=5224edb3b9391112279e65d31afbd18c7cd23855459166ec7d181b9bd0a8ac1e';
+import {screenHeader} from './screen-header.js?v=d3f4bfe2111b136d20ab1297bcf740fe06e9204ec4841a8234d60759690e685b';
+import {buttonHTML} from './ui-icon.js?v=a8687dfc4f41d1f1622833ba0806834d1fe804668a7fe6b669c542f2b235b9a2';
 
 const button=(action,label,icon)=>buttonHTML(label,icon,{'aria-label':label,'data-tree-action':action});
 // Both skill domains provide graph/state/actions; this owner supplies the map UI.

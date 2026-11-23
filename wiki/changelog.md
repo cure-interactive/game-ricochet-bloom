@@ -6,6 +6,23 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.37.5
+
+Build: 2026-11-23 23:31:08 UTC
+
+### Player Changes
+
+- Pendants now meander slowly, while companions explore more actively. Both float freely within their leash distance and gently avoid the player, with no preferred resting direction or rigid orbit.
+- Scrolling and moving previews on screen nudges their player and accessories with brief inertia and squish. Stationary previews no longer suggest movement that is not happening.
+
+<!-- development -->
+### Developer Notes
+
+- Share seeded roaming intent and a maximum-distance leash, separating ambient drag from one-way player avoidance. Preserve companion curiosity, upright interpolation, rarity effects and pendant-only cords.
+- Share bounded viewport impulses across decorative players and cosmetic previews, exclude their own simulated transforms, deduplicate scroll observations and rebase resize/visibility changes. Keep raw DOM displacement out of trail coordinates and gameplay state.
+- Verify all-direction slow pendant wandering, slack interior positions, fast reversals, frame-rate agreement, one-shot viewport input and zero velocity in stationary non-trail thumbnails.
+<!-- /development -->
+
 ## v3.37.4
 
 Build: 2026-11-23 22:59:01 UTC

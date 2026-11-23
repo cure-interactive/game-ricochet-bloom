@@ -1,7 +1,8 @@
+import {WanderMotion} from './wander-motion.js?v=9828bf3538efbf59246439899737e5d16c23542544d6dc0a1058bd39f3000335';
 import {angleApproach} from './angle.js?v=a877fbe89e9f287f68b69f52d76679cbf59de4428f5c6f8931471c8e40003750';
 import {pendantCord} from './pendant-cord.js?v=90231f7de9492cb5b19a75e52152af4e810d5d80f7f578b6962358eeb1ba69f3';
-import {tetherStep} from './tether-motion.js?v=5eb2c8730294259f82de709ceffe5968fa5af61b58075778cd5ca4bfa0f855af';
-import {CompanionWander} from './companion-wander.js?v=e421f8f2852895febda0d83e9622241fd55fab492beb29127554a87a0234590a';
+import {tetherStep} from './tether-motion.js?v=60b6771a2aa51d30373259dc7d66820b07d226e6af4f232870c6bc88a61e1dbe';
+import {CompanionWander} from './companion-wander.js?v=1b58a1d1c39662eca6ef433f02dcf08b3fa32a40898d7924bcea334633f6e656';
 import {cosmeticGet} from './cosmetic.js?v=5fce426acea1cc7e8321f13619eaedbf2850895e457e202e7acc7843946b35d9';
 import {accessoryTier,accessoryPulse} from './accessory.js?v=4d13cc3b9bb353e9a5ba36bbea63f73cf346bf99b33ef7eba5bde79cf60c9e30';
 const tau=Math.PI*2,clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
@@ -30,17 +31,17 @@ function flourish(c,item,t,celebration,low,pendant=false){
  c.restore();
 }
 
-const pendantTether={length:2.3,clearance:1.85,stiffness:58,damping:5,drag:5,limit:7};
-const companionTether={length:4,clearance:2.2,stiffness:48,damping:6,drag:3,limit:8};
+const pendantTether={length:2.6,clearance:1.55,drag:3};
+const companionTether={length:4.8,clearance:1.8,drag:3};
 
 // Independent, bounded presentation state. Never retains or mutates an engine body.
 export class AccessoryVisual{
- constructor(seed){this.wander=new CompanionWander(seed);this.clear();}
+ constructor(seed){this.wander=new CompanionWander(seed);this.pendantWander=new WanderMotion(seed===undefined?undefined:seed^0x9e3779b9,{speed:.3,interval:8});this.clear();}
  clear(){this.resetMotion();this.elapsed=0;this.reaction=0;this.celebration=0;this.pendant='pendant.none';this.companion='companion.none';}
- configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion'){this.follower=null;this.companionAngle=0;this.wander.reset();}else this.charm=null;this.celebration=0;}this[kind]=id;}}
+ configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion'){this.follower=null;this.companionAngle=0;this.wander.reset();}else {this.charm=null;this.pendantWander.reset();}this.celebration=0;}this[kind]=id;}}
  react(celebrate=false){this.reaction=1;if(celebrate)this.celebration=1;}
- resetMotion(){this.body=null;this.follower=null;this.charm=null;this.heading=0;this.companionAngle=0;this.wander.reset();}
- step(body,seconds,{interests=[],rotation=0}={}){
+ resetMotion(){this.body=null;this.follower=null;this.charm=null;this.heading=0;this.companionAngle=0;this.wander.reset();this.pendantWander.reset();}
+ step(body,seconds,{interests=[],rotation=0,impulse={x:0,y:0},acceleration={x:0,y:0}}={}){
   const dt=clamp(Number.isFinite(seconds)?seconds:0,0,.05);
   if(!body||!Number.isFinite(body.x)||!Number.isFinite(body.y)){this.resetMotion();return;}
   if(this.body&&!dt)return; // Observer repaints and paused frames cannot inject motion.
@@ -48,7 +49,7 @@ export class AccessoryVisual{
   const teleport=previous&&Math.hypot(body.x-previous.x,body.y-previous.y)>r*12;
   if(!previous||teleport){
    const speed=Math.hypot(body.vx||0,body.vy||0);this.heading=speed>1?Math.atan2(body.vy||0,body.vx||0):0;
-   this.follower=null;this.charm=null;this.companionAngle=0;this.wander.reset();
+   this.follower=null;this.charm=null;this.companionAngle=0;this.wander.reset();this.pendantWander.reset();
   }
   const vx=previous&&!teleport&&dt?(body.x-previous.x)/dt:0,vy=previous&&!teleport&&dt?(body.y-previous.y)/dt:0;
   this.body={x:body.x,y:body.y,radius:r,vx,vy};
@@ -56,17 +57,21 @@ export class AccessoryVisual{
   this.follower||=seed(this.heading-Math.PI/2,3.2);
   this.charm||=seed(this.heading+2.35,2.15);
   if(!dt||!previous||teleport)return;
+  for(const point of [this.follower,this.charm]){point.vx+=impulse.x*r/14;point.vy+=impulse.y*r/14;}
   this.elapsed+=dt;this.reaction=Math.max(0,this.reaction-dt*2.5);this.celebration=Math.max(0,this.celebration-dt/1.5);
   // Interpolate the anchor across bounded substeps. Motion comes from actual
   // displacement, so stationary/held previews cannot invent velocity or gravity.
   const steps=Math.ceil(dt/(1/120)),h=dt/steps;
   for(let i=1;i<=steps;i++){
    const anchor={x:previous.x+(body.x-previous.x)*i/steps,y:previous.y+(body.y-previous.y)*i/steps,radius:r,vx,vy};
-   const drive=this.wander.step(h,this.follower,anchor,interests);
+   const drive=this.wander.step(h,this.follower,anchor,interests,companionTether.length);
+   drive.x+=acceleration.x*r/14;drive.y+=acceleration.y*r/14;
    tetherStep(this.follower,anchor,h,companionTether,drive);
    const lateral=(this.follower.vx-vx)*Math.cos(rotation)-(this.follower.vy-vy)*Math.sin(rotation);
    this.companionAngle=angleApproach(this.companionAngle,clamp(lateral/(r*12),-.25,.25),5,h);
-   tetherStep(this.charm,anchor,h,pendantTether);
+   const drift=this.pendantWander.step(h,this.charm,anchor,pendantTether.length);
+   drift.x+=acceleration.x*r/14;drift.y+=acceleration.y*r/14;
+   tetherStep(this.charm,anchor,h,pendantTether,drift);
   }
  }
  bounds(){
