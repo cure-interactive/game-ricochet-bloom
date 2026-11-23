@@ -12,7 +12,10 @@ export const GAME_CATALOGUE=catalogueCreate(Object.entries(POWER_TREES).flatMap(
 export const CAMPAIGN_NAME='Melody Journey';
 export const POOL_NAMES=['Intro','Verse','Build','Bridge','Finale'];
 export const POPULATIONS=[12,14,16,14,18];
-export const GOALS=['Make one 5-Chain','5-Chain + all three musical roles','Make two 5-Chains','5-Chain after banking off a wall','Two 5-Chains + all three roles'];
+export const POOL_GOALS=Object.freeze([
+  {chains:1}, {chains:1,roles:true}, {chains:2}, {chains:1,bank:true}, {chains:2,roles:true}
+].map(Object.freeze));
+export const GOALS=POOL_GOALS.map(goal=>goal.bank?'5-Chain after banking off a wall':goal.roles?(goal.chains===1?'5-Chain + all three musical roles':'Two 5-Chains + all three roles'):`Make ${goal.chains===1?'one 5-Chain':'two 5-Chains'}`);
 export const MEDALS={silverBonuses:3,goldBonuses:5,goldLaunches:20};
 // All five tracks use the same targets for the same goal. Environmental
 // difficulty changes the shot, not the meaning of its score or medal.
@@ -167,8 +170,23 @@ export function progressionAct(input,action){
   if(s.phase==='interlude'){s.run.game.build=progressionLoadout(s).powers;delete s.run.buildBeforeResearch;}
   return {ok:true,state:s,message};
 }
-export function poolGoalMet(s){const r=s.run;if(!r)return false;const blooms=r.game.blooms,roles=r.roles.length===3;return s.pool===0?blooms>=1:s.pool===1?blooms>=1&&roles:s.pool===2?blooms>=2:s.pool===3?r.bankBloom:blooms>=2&&roles;}
-export function goalRemaining(s){if(!s.run)return '';const r=s.run,need=[1,1,2,1,2][s.pool],parts=[];if(r.game.blooms<need)parts.push(`${need-r.game.blooms} more 5-Chain${need-r.game.blooms>1?'s':''}`);if([1,4].includes(s.pool)&&r.roles.length<3)parts.push('contact '+['melody','bass','rhythm'].filter(x=>!r.roles.includes(x)).join(' & '));if(s.pool===3&&!r.bankBloom)parts.push('a wall bank before the fifth contact of a 5-Chain');return parts.join(' · ')||'Goal met · let this pluck finish';}
+export function poolGoalProgress(s){
+  const r=s.run,goal=POOL_GOALS[s.pool];if(!r||!goal)return null;
+  // A banked chain is historical evidence of a chain, never inferred from the
+  // current position or a bank made after that chain completed.
+  const chains=Math.max(r.game.blooms,goal.bank&&r.bankBloom?1:0);
+  const missingChains=Math.max(0,goal.chains-chains),missingRoles=goal.roles?['melody','bass','rhythm'].filter(role=>!r.roles.includes(role)):[],missingBank=!!goal.bank&&!r.bankBloom;
+  return {missingChains,missingRoles,missingBank,met:missingChains===0&&missingRoles.length===0&&!missingBank};
+}
+export const poolGoalMet=s=>poolGoalProgress(s)?.met??false;
+export function goalRemaining(s){
+  const progress=poolGoalProgress(s);if(!progress)return '';
+  const {missingChains,missingRoles,missingBank}=progress,parts=[];
+  if(missingChains)parts.push(`${missingChains} more 5-Chain${missingChains>1?'s':''}`);
+  if(missingRoles.length)parts.push('contact '+missingRoles.join(' & '));
+  if(missingBank)parts.push('a wall bank before the fifth contact of a 5-Chain');
+  return parts.join(' · ')||'Goal met · let this pluck finish';
+}
 function resultRecord(s,outcome){
   const r=s.run,music=r.music;if(music&&outcome==='victory')musicRunSection(music,5,s.track);
   const record={id:r.id,kind:s.profile.kind,track:s.track,seed:r.seed,relaxed:s.relaxed,rules:RULE.version,build:structuredClone(r.game.build),routes:[...r.routes],outcome,launches:r.launches,score:r.score,bonuses:r.bonuses,music:structuredClone(music),medal:outcome==='failure'?null:r.bonuses>=MEDALS.goldBonuses&&r.launches<=MEDALS.goldLaunches?'Gold':r.bonuses>=MEDALS.silverBonuses?'Silver':'Bronze'};

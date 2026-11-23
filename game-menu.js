@@ -1,9 +1,10 @@
+import {menuView,menuDismiss,menuRestorePath} from './menu-state.js?v=0ac50ae5758d0c7e70f669aa366f6b6a16c5613629af35c4c1d1b5a4b7be3b54';
 import {menuSummaryRender} from './menu-summary.js?v=88be0a3d0eefb7d6ff84518fc4e186dec329935a2399efe6f97308f69ae578e1';
 import {cosmeticLoadout} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
-import { menuLayoutMount } from './menu-title.js?v=5f4b3eaf39c06f3839c89c20045d2d2e81ac2a8cfe0959a897e2915f083a4000';
+import { menuLayoutMount } from './menu-title.js?v=fa64e8c76dfc2e7a7b06fdaf25482580f4d4ce6d422eb6967bb7e1fd8d8074d6';
 import { pageHistory } from './page-history.js?v=54c1c0aaacb43da66e5503f9ea5ea7948dfd1efd2ededbc6b416434a1792e935';
 import { buttonHTML } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
-import { menuBackgroundMount } from './menu-background.js?v=9f3b5b4df039af3e89cbfb9605b42ebbd802b433043d9177d9b05241c5401a69';
+import { menuBackgroundMount } from './menu-background.js?v=0c3df026c6d7f1f7bc7bef3293585786f398d4d655c57568321d7235e1e4f97e';
 
 import { driftMount } from './drift-ui.js?v=ee3716ba1e8ad6aa7801616b2416e5c897894126a44b3a489ad6ee0711836e1a';
 
@@ -18,36 +19,36 @@ export function gameMenuMount(host) {
   backdrop.innerHTML='<canvas class="home-pool"></canvas>';
   document.body.append(backdrop,home);
   if(host.recoveryNotice)home.querySelector('.home-actions').prepend(host.recoveryNotice);
-  const route=pageHistory('home');let homeMode=true,casual=false;
+  const route=pageHistory('home');
+  const view=()=>menuView(route.snapshot);
   const drift=driftMount({pause:pauseOpen,resume});
-  const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true,{profile:host.profile,skin:host.skin,skinStyle:host.skinStyle,audioSettings:host.audioSettings,powerMarkings:()=>casual});
+  const background=menuBackgroundMount(backdrop.querySelector('.home-pool'),()=>host.gentle?.()===true,{profile:host.profile,skin:host.skin,skinStyle:host.skinStyle,audioSettings:host.audioSettings,powerMarkings:()=>view().casual});
   const close=()=>document.querySelectorAll('dialog[open]').forEach(d=>d.close());
   function refresh(){background.refresh();document.body.style.setProperty('--player-skin-color',host.skin?.()||'#f1f9d7');document.body.style.setProperty('--player-skin-style',host.skinStyle?.()||'original');document.body.style.setProperty('--player-trail',cosmeticLoadout(host.profile?.()?.profile).trail);document.body.style.setProperty('--player-impact',cosmeticLoadout(host.profile?.()?.profile).bounce);const info=host.info();const resume=home.querySelector('#home-continue');resume.hidden=!info.resume;if(info.resume){menuSummaryRender(resume,{...info.resume,title:'Continue'});}home.querySelector('#home-gamemodes').classList.toggle('primary',!info.resume);}
   function present(name){
     route.visit(name);
-    if((name.startsWith('gamemodes:')||name.startsWith('pool-setup:'))||['drift','drift-pause','home','gamemodes','trial-setup','score-setup','experiment-hub','experiment-family','experiment-detail'].includes(name))homeMode=true;else if(['play','pause','trial'].includes(name))homeMode=false;
-    document.body.dataset.screen=name;document.body.dataset.menuMode=name==='drift'?'drift':casual?'play':homeMode?'home':'play';home.hidden=name!=='home';backdrop.hidden=!homeMode&&name!=='pause';background.show(homeMode&&(!casual||name==='drift'),{ambient:homeMode});drift.show(name);
-    document.querySelector('body>main').inert=name!=='play';
-    if(name!=='play')host.suspend({ambient:!homeMode&&!casual});refresh();
+    const current=view();
+    document.body.dataset.screen=current.screen;document.body.dataset.menuMode=current.menuMode;home.hidden=!current.homeVisible;backdrop.hidden=!current.backdropVisible;
+    background.show(current.backgroundActive,{ambient:current.backgroundAmbient});drift.show(current.screen);
+    document.querySelector('body>main').inert=!current.playInput;
+    if(current.suspend)host.suspend({ambient:current.suspendAmbient});refresh();
     queueMicrotask(recoverDestination);
   }
   function recoverDestination(){
     if(document.querySelector('dialog[open]'))return;
-    if(casual&&route.current!=='drift')resume();
-    else if(homeMode&&!casual&&home.hidden)homeOpen();
+    const destination=menuDismiss(route.snapshot);
+    if(destination==='home')homeOpen();
+    else if(destination){present(destination);host.open(destination);}
   }
-  function homeOpen(){close();casual=false;route.reset('home');present('home');home.querySelector(host.info().resume?'#home-continue':'#home-gamemodes').focus({preventScroll:true});}
-  function pauseOpen(){close();const name=casual?'drift-pause':'pause';present(name);host.open(name);}
-  function resume(){if(casual){close();present('drift');}else host.resume();}
+  function homeOpen(){close();route.reset('home');present('home');home.querySelector(host.info().resume?'#home-continue':'#home-gamemodes').focus({preventScroll:true});}
+  function pauseOpen(){close();const name=view().casual?'drift-pause':'pause';present(name);host.open(name);}
+  function resume(){if(view().casual){close();present('drift');}else host.resume();}
   function restore(pages,play){
-    const allowed=name=>['home','play','pause','drift','drift-pause','gamemodes','score-setup','trial-setup','experiment-family','experiment-detail','experiment-hub','levels','player','stats','trails','bounce-effects','music-themes','tree','skins','player-upgrades','wiki','help','settings'].includes(name)||/^gamemodes:/.test(name)||/^pool-setup:(free|waves|challenge)$/.test(name);
-    const path=pages.filter(allowed);if(!path.length)return;
-    let target=path.at(-1);close();
-    if(path.includes('play')||path.includes('pause')){if(host.restorePlay){if(host.restorePlay(play)===false){homeOpen();return;}}else host.continue();pauseOpen();}
-    if(target==='play')target='pause';
-    if(target==='drift'||target==='drift-pause'){casual=true;target='drift-pause';}
+    const path=menuRestorePath(pages);if(!path.length)return;
+    const target=path.at(-1);close();
+    if(path.includes('play')||path.includes('pause')){if(host.restorePlay){if(host.restorePlay(play)===false){homeOpen();return;}}else host.continue();}
+    route.restore(path);
     if(target==='home')homeOpen();else{present(target);host.open(target);}
-    route.restore([...path.slice(0,-1),route.current]);
   }
   function back(){const target=route.back();if(target===null)return;close();if(target==='play')host.resume();else if(target==='home')homeOpen();else {present(target);host.open(target);}}
   home.querySelector('#home-continue').onclick=()=>host.continue();
@@ -59,11 +60,11 @@ export function gameMenuMount(host) {
   home.querySelector('#home-settings').onclick=()=>host.open('settings');
   // Settings can switch profiles without a page-history transition.
   document.addEventListener('close',()=>{
-    if(homeMode)refresh();
+    if(view().homeMode)refresh();
     // Native Close/Escape and nested dialog exits must always leave a destination.
     // Check after synchronous navigation has opened its replacement dialog.
     queueMicrotask(recoverDestination);
   },true);
   refresh();present('home');
-  return {restore,get playIdentity(){return host.playIdentity?.();},get snapshot(){return route.snapshot;},refresh,home:homeOpen,back,show:present,get musicAudio(){return background.audio;},drift(){close();casual=true;present('drift');},pause:pauseOpen,resume,play(){close();casual=false;route.reset('play');present('play');},get current(){return route.current;}};
+  return {restore,get playIdentity(){return host.playIdentity?.();},get snapshot(){return route.snapshot;},refresh,home:homeOpen,back,show:present,get musicAudio(){return background.audio;},drift(){close();present('drift');},pause:pauseOpen,resume,play(){close();route.reset('play');present('play');},get current(){return route.current;}};
 }

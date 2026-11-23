@@ -6,6 +6,28 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.35.6
+
+Build: 2026-11-23 12:39:45 UTC
+
+### Player Changes
+
+- Return from Settings to the correct Home or paused-game screen, including Casual and restored sessions.
+- Keep a failed purchase or player-name save attached to its original profile until Retry Save succeeds.
+- Keep campaign goal descriptions and remaining progress aligned with the same requirements.
+- Save completed pool steps after their effects and progress have been processed together.
+
+<!-- development -->
+### Developer Notes
+
+- Coordinate ordered effects, progression reconciliation and checkpoint/UI work through `pool-step.js`; retain explicit launch, departure and periodic saves.
+- Resolve current, suspended and stored profile ownership through `profile-session.js`. Pending writes retain their destination; shared-build saves remain separate from originating-wallet rewards and receipt generations.
+- Derive goal labels, completion and missing progress from `POOL_GOALS`, retaining banked-chain history and settlement boundaries.
+- Derive menu layers and suspension from page history through `menu-state.js`; route Settings and native dismissal through the same owner. Restore active sessions paused.
+- Preserve the 3.35.4 bounded skill-tree raster cache. Validate the integrated build with 898 automated checks and browser navigation, pause and reload checks; physical-device acceptance is separate.
+<!-- /development -->
+
+
 ## v3.35.5
 
 Build: 2026-11-23 12:35:33 UTC

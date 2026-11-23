@@ -1,5 +1,5 @@
-import {GAME_VERSION} from './version.js?v=61b2a63bf2712593e55d5ab0e9a117f3104a7fc207e8ece9a5aee4e51d9bb4c2';
-import {BUILD_TIME} from './build.js?v=4e51ea0f1ca773364cebe7ffbfe6f0a75cafff75c1a39d26102436ef672a8018';
+import {GAME_VERSION} from './version.js?v=69c73da2b50052111f63b029a819c9bfed95b15415a38b3922f69a41ab6398de';
+import {BUILD_TIME} from './build.js?v=4df97d6ae941ed3c5775f535e188f874c40d9bba481edefd7d72f39a561a944d';
 import {buttonHTML,iconHTML} from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 export const isAppView=win=>!!win.navigator?.standalone||!!win.matchMedia?.('(display-mode: standalone)').matches||!!win.matchMedia?.('(display-mode: fullscreen)').matches;
 export function newerBuild(remote,version=GAME_VERSION,time=BUILD_TIME){
@@ -47,8 +47,8 @@ export function appUpdateMount({save,getAutomatic=()=>true,setAutomatic=()=>true
  const changelog=doc.getElementById('game-changelog');if(changelog)status.after(changelog);
  toggle.checked=getAutomatic();
  const control=updateLifecycleMount({foreground,enabled:getAutomatic,check:canRestart=>checkUpdate({save,canRestart,base:win.location.href,restart:()=>win.location.reload()}),onState:state=>{
-  if('checking' in state){button.disabled=state.checking;if(state.checking)status.textContent='Checking for updates…';}
-  if(state.result)status.textContent=state.result.updated?'Update ready. Restarting…':state.result.deferred?'Update ready. It will be checked when you return.':'You have the latest version.';
+  if('checking' in state){button.disabled=state.checking;if(state.checking)status.textContent='Checking for updatesâ€¦';}
+  if(state.result)status.textContent=state.result.updated?'Update ready. Restartingâ€¦':state.result.deferred?'Update ready. It will be checked when you return.':'You have the latest version.';
   if(state.error)status.textContent=win.navigator.onLine===false?'You are offline. Updates will be checked when you return.':state.error.message||'Could not check for updates. Try again.';
  }},doc,win);
  toggle.onchange=()=>{const saved=setAutomatic(toggle.checked);control.changed();if(saved===false)status.textContent='Changed for this session. This browser could not save the preference.';};
