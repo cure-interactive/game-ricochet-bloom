@@ -1,7 +1,7 @@
 import {menuView,menuDismiss,menuRestorePath} from './menu-state.js?v=0ac50ae5758d0c7e70f669aa366f6b6a16c5613629af35c4c1d1b5a4b7be3b54';
 import {menuSummaryRender} from './menu-summary.js?v=88be0a3d0eefb7d6ff84518fc4e186dec329935a2399efe6f97308f69ae578e1';
 import {cosmeticLoadout} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
-import { menuLayoutMount } from './menu-title.js?v=e55c9a18ef10ea2d404818383aadbe8b2699f616b4c44981027fbbfb567c3dab';
+import { menuLayoutMount } from './menu-title.js?v=eb87cad594f617b4a5b00fa8993f1dc4d3e274a088c9d06987a58eb55bc802b5';
 import { pageHistory } from './page-history.js?v=54c1c0aaacb43da66e5503f9ea5ea7948dfd1efd2ededbc6b416434a1792e935';
 import { buttonHTML } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 import { menuBackgroundMount } from './menu-background.js?v=0c3df026c6d7f1f7bc7bef3293585786f398d4d655c57568321d7235e1e4f97e';

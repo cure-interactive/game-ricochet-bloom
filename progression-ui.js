@@ -1,7 +1,7 @@
 import {profileSession} from './profile-session.js?v=be340d1c7cfc6f6927c6717f7379226c43484b011621086348cf0f44a9a18aae';
 import {cosmeticSkin,cosmeticLoadout} from './cosmetic.js?v=61a0093e32ea698e1cd5c0a834a10234875ae75bb6ff4247be147a3b78edee0b';
 import { screenHeader } from './screen-header.js?v=67a25012d00131734bc7cf604e403b29da6580e9d3b12d0154df0a3e73f7a5fd';
-import { playerUpgradeMount } from './player-upgrade-ui.js?v=2569edde4ed9081382ebb8aa47e69ea6218ed4545258cd00e3f3b8878938c833';
+import { playerUpgradeMount } from './player-upgrade-ui.js?v=b430b941a7ea327250e5b368553242a543e3fb1797c790fdc49f0a2aa452e4e0';
 import { saveRecoveryMount } from './save-recovery-ui.js?v=d7625784e02981594943d5c18f9fe4f8cfd717e66ad5c9756ed517d5b160908c';
 import { progressionResetUnreadable } from './progression-store.js?v=c6c6560709aebba8ae91cde1df9a3ebeb243ef61bc257f2ed04b5a17d07fe57b';
 import { medalIcon } from './medal-ui.js?v=6df228e6d2895828fc52e3634bd7cb5b98bc58ddf86a48515c6d0a1527524ed2';
@@ -16,7 +16,7 @@ import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e7
 import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=8d708df79488bac265978ba3dd61fc9cea637ce00f1a616cf64e5bac46f4b964';
 import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=c6c6560709aebba8ae91cde1df9a3ebeb243ef61bc257f2ed04b5a17d07fe57b';
 import { gameCreate } from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
-import { treeMount } from './tree-ui.js?v=de3ed057cf1945d75552e4511fee1ff1238c52bf38bdcb844cb8016ddcbf8880';
+import { treeMount } from './tree-ui.js?v=103fbcb11e5ee2a5ec96c1deb31a1601f75653a70abbac8d6532025564f4f0fc';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=c034fd245b2540631902989670ffc7b2e11942d4f3456fce74a63c3ecaf6710f';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
 import { skinMount } from './skin-ui.js?v=9c2d3d0dadcf5baa8b4ef92c229a1ab1ccc81bf95faa25cb8b58a194b6583293';

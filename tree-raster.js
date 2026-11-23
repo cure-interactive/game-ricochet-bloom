@@ -44,6 +44,17 @@ function rasterSources(win){
 // Copy only properties used by a skill node. This keeps serialization bounded
 // and avoids embedding hundreds of unrelated computed properties per child.
 const properties=('display position left right top bottom width height min-width min-height max-width max-height box-sizing margin-top margin-right margin-bottom margin-left padding-top padding-right padding-bottom padding-left flex-direction flex-wrap flex-grow flex-shrink flex-basis align-items align-self justify-content justify-self gap grid-column grid-row place-items border-top border-right border-bottom border-left border-radius outline outline-offset background color box-shadow opacity overflow font-family font-size font-style font-weight font-stretch line-height letter-spacing text-align text-transform white-space word-break overflow-wrap vertical-align object-fit filter mask-image mask-size mask-position mask-repeat -webkit-mask-image -webkit-mask-size -webkit-mask-position -webkit-mask-repeat').split(' ');
+// Successful SVG decode does not prove that foreignObject respected its viewBox.
+// Verify two opposite padding corners through the same positioned HTML layer as
+// the node before hiding any live content. Some engines shrink/offset that layer.
+const marks=(width,height)=>[[8,8,[17,231,83]],[width-12,height-12,[239,37,197]]];
+export function treeRasterGeometry(pixels,width,height,density){
+ return marks(width,height).every(([x,y,color])=>{
+  const px=Math.floor((x+2)*density),py=Math.floor((y+2)*density),i=(py*pixels.width+px)*4;
+  return px>=0&&py>=0&&px<pixels.width&&py<pixels.height&&pixels.data[i+3]===255&&color.every((v,c)=>Math.abs(pixels.data[i+c]-v)<=8);
+ });
+}
+class RasterGeometryError extends Error{}
 async function snapshot(button,density,win,sources){
  const doc=button.ownerDocument,pad=32,width=button.offsetWidth+pad*2,height=button.offsetHeight+pad*2;
  const inline=async value=>{for(const match of [...value.matchAll(/url\(["']?([^"')]+)["']?\)/g)])if(!match[1].startsWith('data:'))value=value.replace(match[0],`url("${await sources(new URL(match[1],doc.baseURI).href)}")`);return value;};
@@ -59,13 +70,20 @@ async function snapshot(button,density,win,sources){
  await doc.fonts.ready;
  const font=await sources(new URL(assetURL('font/fredoka/Fredoka.ttf'),import.meta.url).href),clone=await copy(button);
  Object.assign(clone.style,{position:'absolute',left:pad+'px',top:pad+'px',right:'auto',bottom:'auto',transform:'none',margin:'0',visibility:'visible',opacity:'1',filter:'none',outline:'none'});
+ for(const [x,y,color] of marks(width,height)){
+  const mark=doc.createElement('span');mark.style.cssText=`all:initial;position:absolute;left:${x-pad}px;top:${y-pad}px;width:4px;height:4px;background:rgb(${color.join(',')});z-index:2147483647`;
+  clone.append(mark);
+ }
  const xml=new win.XMLSerializer().serializeToString(clone);
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${Math.ceil(width*density)}" height="${Math.ceil(height*density)}" viewBox="0 0 ${width} ${height}"><foreignObject width="${width}" height="${height}"><div xmlns="http://www.w3.org/1999/xhtml" style="position:relative;width:${width}px;height:${height}px"><style>@font-face{font-family:Fredoka;src:url('${font}');font-weight:300 700;font-stretch:75% 125%}</style>${xml}</div></foreignObject></svg>`;
  const image=new win.Image();image.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);await image.decode();
  const canvas=doc.createElement('canvas');canvas.width=Math.ceil(width*density);canvas.height=Math.ceil(height*density);
  const context=canvas.getContext('2d',{willReadFrequently:true});if(!context)throw Error('Tree canvas unavailable');context.drawImage(image,0,0,canvas.width,canvas.height);
  // Materialize pixels once: do not retain SVG/font display lists in each canvas.
- const pixels=context.getImageData(0,0,canvas.width,canvas.height);canvas.width=canvas.width;context.putImageData(pixels,0,0);image.src='';
+ const pixels=context.getImageData(0,0,canvas.width,canvas.height);image.src='';
+ if(!treeRasterGeometry(pixels,width,height,density)){canvas.width=canvas.height=0;throw new RasterGeometryError('Tree snapshot geometry mismatch');}
+ canvas.width=canvas.width;context.putImageData(pixels,0,0);
+ for(const [x,y] of marks(width,height))context.clearRect(Math.floor(x*density)-1,Math.floor(y*density)-1,Math.ceil(4*density)+2,Math.ceil(4*density)+2);
  canvas.className='tree-node-raster';canvas.setAttribute('aria-hidden','true');
  canvas.style.cssText=`left:${-pad}px;top:${-pad}px;width:${width}px;height:${height}px`;
  return {canvas,height:height-pad*2,bytes:canvas.width*canvas.height*4};
@@ -75,7 +93,7 @@ export function treeRasterMount(map,requestPaint){
  const doc=map.ownerDocument,win=doc.defaultView;
  if(!doc.createElement||!doc.fonts||!win.MutationObserver||!win.Image?.prototype.decode)return {prepare(){},paint(){},stop(){}};
  const budget=treeRasterBudget(),sources=rasterSources(win),records=new Map();
- let nodes=[],generation=0,idle=0,timer=0,running=false,active=false,density=0,lastPaint=0,observer=null,densityQuery=null,dpr=win.devicePixelRatio||1;
+ let nodes=[],generation=0,idle=0,timer=0,running=false,active=false,compatible=true,density=0,lastPaint=0,observer=null,densityQuery=null,dpr=win.devicePixelRatio||1;
  const key=button=>button.className.split(/\s+/).filter(name=>name&&name!=='is-culled').join(' ')+'|'+button.getAttribute('style')+'|'+button.getAttribute('aria-pressed');
  // Animated custom artwork (notably the equipped Player bubble) owns live pixels.
  const live=button=>button.matches(':hover,:focus,[aria-pressed=true]')||!!button.querySelector('player-bubble,cosmetic-icon,canvas:not(.tree-node-raster)');
@@ -85,7 +103,7 @@ export function treeRasterMount(map,requestPaint){
  function watchDensity(){densityQuery?.removeEventListener('change',densityChanged);densityQuery=win.matchMedia?.(`(resolution: ${dpr}dppx)`);densityQuery?.addEventListener('change',densityChanged,{once:true});}
  function densityChanged(){dpr=win.devicePixelRatio||1;watchDensity();invalidate();}
  function schedule(){
-  if(!active||!density||idle||timer||running||doc.hidden)return;
+  if(!active||!compatible||!density||idle||timer||running||doc.hidden)return;
   timer=win.setTimeout(()=>{timer=0;if(active&&density&&!doc.hidden)idle=(win.requestIdleCallback||((fn)=>win.setTimeout(()=>fn({timeRemaining:()=>8}),32))).call(win,work);},Math.max(16,100-(win.performance.now()-lastPaint)));
  }
  async function work(deadline){
@@ -106,7 +124,10 @@ export function treeRasterMount(map,requestPaint){
    const release=()=>{button.removeAttribute('data-raster');button.style.removeProperty('--tree-raster-height');item.canvas.remove();item.canvas.width=item.canvas.height=0;};
    if(budget.put(button,{bytes:item.bytes,release},protectedKeys)){record.density=resolution;button.style.setProperty('--tree-raster-height',item.height+'px');record.state=key(button);button.append(item.canvas);button.setAttribute('data-raster','');}
    else item.canvas.width=item.canvas.height=0;
-  }catch{if(generation===stamp)record.failed=true;} // Keep the original visible on unsupported renderers/assets.
+  }catch(error){
+   if(error instanceof RasterGeometryError){compatible=false;invalidate();density=0;map.dataset.raster='live';}
+   else if(generation===stamp)record.failed=true;
+  } // Failed geometry disables this mount's cache, including after reopen.
   finally{running=false;schedule();}
  }
  function prepare(next){
@@ -123,7 +144,7 @@ export function treeRasterMount(map,requestPaint){
   if(!active)prepare(next);
   lastPaint=win.performance.now();
   const nextDpr=win.devicePixelRatio||1;if(nextDpr!==dpr)densityChanged();
-  const nextDensity=treeRasterDensity(camera.scale,dpr,!!density);
+  const nextDensity=compatible?treeRasterDensity(camera.scale,dpr,!!density):0;
   if(nextDensity!==density){density=nextDensity;generation++;cancel();map.dataset.raster=density?'cached':'live';for(const {button} of nodes)if(density&&records.get(button).density<density)discard(button);}
   // The cache stays attached to the native button; only the parent moves.
   schedule();

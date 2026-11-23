@@ -1,4 +1,4 @@
-import {treeRasterMount} from './tree-raster.js?v=aa916ccdaeb3dad4ceaedfb984cf575cb1a67f17b6cc14de79b4b91ee3acc969';
+import {treeRasterMount} from './tree-raster.js?v=98154004b1f134d95f095aa83fda50c6c0782e37fd3cadc10fa8f26681bf7a6c';
 // One parent transform moves fixed world coordinates. The SVG is a clipped window,
 // never a world-sized surface; neither it nor the world is force-promoted to a bitmap.
 export function treeViewFrame(camera,viewport){

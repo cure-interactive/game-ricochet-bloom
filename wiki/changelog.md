@@ -6,6 +6,22 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.35.8
+
+Build: 2026-11-23 16:56:32 UTC
+
+### Player Changes
+
+- Keep full live skill artwork when a browser produces an incorrectly sized or positioned cached image, preventing mixed tiny and normal-sized nodes.
+
+<!-- development -->
+### Developer Notes
+
+- Verify two known padding coordinates in each node snapshot before hiding live children. Reject blank, shifted or incorrectly scaled foreignObject output; clear retained snapshots and keep the affected mounted tree live, including after reopening.
+- Remove verification pixels before displaying a valid snapshot. Preserve density-aware caching on renderers that pass; successful SVG decoding alone is not a geometry check.
+- Add pixel geometry and persistent live-fallback regressions. Desktop high-density rendering is checked separately from the reported physical iPhone behavior; iPhone confirmation remains pending.
+<!-- /development -->
+
 ## v3.35.7
 
 Build: 2026-11-23 16:54:11 UTC

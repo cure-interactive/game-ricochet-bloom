@@ -1,5 +1,5 @@
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=d0039d50cd2433d2af07b80d6c27333e8b6883bd5f0041d2e08658c1f7061930';
+import {skillTreeHTML,skillTreeMount} from './skill-tree.js?v=8836ead72b615bf93a4ff8bffb82039620661cc36d5ecb749fb94a0c3b365473';
 import {skillNodeHTML,skillLegendMount,showSkillCard} from './skill-card.js?v=349bd691df4ba6a060d58584bde122142b203e3af84e80e250018fe1c5f57555';
 export {skillStatsHTML} from './skill-card.js?v=349bd691df4ba6a060d58584bde122142b203e3af84e80e250018fe1c5f57555';
 import { treeSwitchMount } from './tree-switch.js?v=0bf0b45e97ea758d62aa893fbf4a028664f9ef2dd6585970f6ef19df9744a029';
