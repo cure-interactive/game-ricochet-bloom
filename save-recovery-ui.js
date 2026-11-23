@@ -1,5 +1,5 @@
-import { screenHeader } from './screen-header.js?v=98033dc5aff15dbef10e56b978b23644d2d05bfd33a2131caaa81f6f0696f095';
-import { buttonHTML, iconHTML } from './ui-icon.js?v=39eb050cf76d9779d76850df47e75b90e6ea768ba6efccbabc5ce0590715fe46';
+import { screenHeader } from './screen-header.js?v=3841edd7630d4b0fa1300304edb548efdc68000b99659afa544d9ec607e7b008';
+import { buttonHTML, iconHTML } from './ui-icon.js?v=f3f8658260fb99cd64b77f5221ce198d475a00038dab248c8a5fcc7cf074badc';
 
 const supportActions=(showHelpTitle=false)=>`<section data-diagnostics class="support-actions reading-card" aria-label="Send a Problem Report">${showHelpTitle?'<h3 class="section-title"><span class="ui-icon" data-icon="about" aria-hidden="true"></span><span>Contact Support</span></h3>':''}<p>For help with playing, purchases or saving, send a Support Report. It includes your player name, game progress, save status, device and screen details, audio state and recent errors.</p><p>Email opens a draft for you to review and send. Share and Copy use the same report.</p><p class="support-recipient">To: main@cureinteractive.com</p><div class="save-actions">${buttonHTML('Email Report','upload',{'data-support-email':''})}${buttonHTML('Share Report','upload',{'data-support-share':''})}${buttonHTML('Copy Report','copy',{'data-support-copy':''})}</div><p data-diagnostics-status role="status" aria-live="polite"></p><textarea data-diagnostics-report aria-label="Support Report" readonly hidden></textarea></section>`;
 

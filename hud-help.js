@@ -1,5 +1,5 @@
-import {iconHTML} from './ui-icon.js?v=39eb050cf76d9779d76850df47e75b90e6ea768ba6efccbabc5ce0590715fe46';
-import {screenHeader} from './screen-header.js?v=98033dc5aff15dbef10e56b978b23644d2d05bfd33a2131caaa81f6f0696f095';
+import {iconHTML} from './ui-icon.js?v=f3f8658260fb99cd64b77f5221ce198d475a00038dab248c8a5fcc7cf074badc';
+import {screenHeader} from './screen-header.js?v=3841edd7630d4b0fa1300304edb548efdc68000b99659afa544d9ec607e7b008';
 
 const number=value=>value.toLocaleString('en-US');
 export function hudHelpView(kind,{score=0,points=0,shots=0,mode='free',contacts=0}={}){

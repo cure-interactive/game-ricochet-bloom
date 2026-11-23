@@ -1,5 +1,5 @@
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=2b52f829a33a8ce008182fb811b990f717dbc6872c6334495e22ef2b3daf9341';
+import { GAMEMODE_CARDS, GAMEMODE_CATEGORIES, GAMEMODE_GROUPS, gamemodePage } from './gamemode-catalogue.js?v=ea6f7e17dad5c8fac0f0bd48b1cc0833534b945fe6831b8f58d7e6ff5fd91d06';
 import { experimentArt } from './experiment-art.js?v=09dd5f9461863df45496d0c0bba3eadf656be9d31e956f761ddfe93c6d39d6d9';
 import { experimentRead, experimentFavourite } from './experiment-store.js?v=2b8bcb7d2ba84c47f7a84d9fa4ddf7019dd2ec0371eda4efd1db31d584152f5c';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';

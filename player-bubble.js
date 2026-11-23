@@ -1,6 +1,6 @@
 import {bubbleInteractionMount} from './bubble-interaction.js?v=3479767760180a37f4151682533ae16ec5f0a6f22f41d7a4c788a576855eb899';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
-import {CosmeticVisual} from './cosmetic-visual.js?v=33418682bcb422f12aa8517044c390a7e3a81aabfd875b8212b8930f41bd70a5';
+import {CosmeticVisual} from './cosmetic-visual.js?v=0893257d976fa7940a18b771c7de38402192eb2a8c7ca1d24836f43d5b46f9af';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender,bubblePath} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';

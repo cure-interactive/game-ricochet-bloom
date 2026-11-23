@@ -1,11 +1,11 @@
-import {gamemodeNavigation} from './gamemode-navigation.js?v=3128b99dfcac2a4aa4732382aad2d4b97f02c8041d4b1743b3d8154b09a00106';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=6243551eda9359571101bb5b8aa6ab57d41e295a32d879b972e12c699dd7576f';
 import {segmentedBarMount} from './segmented-control.js?v=bfc2eb723bd5080e1ff722bcfb43b3958890bbcd7bb4f5ce1e7dbf3c3192b161';
-import { screenHeader } from './screen-header.js?v=98033dc5aff15dbef10e56b978b23644d2d05bfd33a2131caaa81f6f0696f095';
-import { buttonHTML } from './ui-icon.js?v=39eb050cf76d9779d76850df47e75b90e6ea768ba6efccbabc5ce0590715fe46';
+import { screenHeader } from './screen-header.js?v=3841edd7630d4b0fa1300304edb548efdc68000b99659afa544d9ec607e7b008';
+import { buttonHTML } from './ui-icon.js?v=f3f8658260fb99cd64b77f5221ce198d475a00038dab248c8a5fcc7cf074badc';
 import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
-import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=2b52f829a33a8ce008182fb811b990f717dbc6872c6334495e22ef2b3daf9341';
-import { gamemodeGalleryMount } from './gamemode-gallery.js?v=deb23731347c29f35188807c40efe386b5c05e311408fface5c7fc773d4a0054';
+import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=ea6f7e17dad5c8fac0f0bd48b1cc0833534b945fe6831b8f58d7e6ff5fd91d06';
+import { gamemodeGalleryMount } from './gamemode-gallery.js?v=52c33a499c996c5c19316dd1c921e280c8aec91c7a48bd74407ea54f50a80582';
 import { scoreAttackMount } from './score-attack-ui.js?v=168f446cb008181b33210a0ee529d3e1935e845fbeff14b82207e19c5b7b3b42';
 import { experimentMount } from './experiment-ui.js?v=ee9446cc67fdf218f0a7a9c34bb881277032e7e50def2709447a11c5f3ae4999';
 import { poolConditions } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';

@@ -11,7 +11,7 @@ export const COSMETICS=Object.freeze([
  {id:'trail.stardust',kind:'trail',name:'Stardust',rarity:'rare',cost:120,color:'#8ddcff',style:'stardust',description:'A trail of drifting blue-white stars.'},
  {id:'trail.prism',kind:'trail',name:'Prism',rarity:'epic',cost:220,color:'#c4a4ff',style:'prism',description:'Three colored ribbons braid through your wake.'},
  {id:'trail.ember',kind:'trail',name:'Ember',rarity:'legendary',cost:360,color:'#ffc477',style:'ember',description:'Twin fire ribbons brighten with speed and shed cooling embers, with a warm launch accent.'},
- {id:'trail.aurora',kind:'trail',name:'Aurora',rarity:'mythic',cost:550,color:'#aaf5df',style:'aurora',description:'Aurora ribbons unfurl with speed, leaving drifting stars. A rising chime accompanies each launch, with a travel shimmer that tapers for three seconds after launch and two seconds after impacts.'},
+ {id:'trail.aurora',kind:'trail',name:'Aurora',rarity:'mythic',cost:550,color:'#aaf5df',style:'aurora',description:'Aurora ribbons unfurl with speed, leaving drifting stars. A rising chime accompanies each launch, with a travel shimmer that tapers for 2.5 seconds after launch and 1.5 seconds after impacts.'},
  {id:'bounce.none',kind:'bounce',name:'Original',rarity:'common',cost:0,color:'#bff6e2',style:'none',description:'Keep the normal bubble and power feedback.'},
  {id:'bounce.rings',kind:'bounce',name:'Ripple Rings',rarity:'common',cost:60,color:'#a9f1df',style:'rings',description:'Soft rings spread from every player bounce.'},
  {id:'bounce.spark',kind:'bounce',name:'Spark',rarity:'rare',cost:120,color:'#8ddcff',style:'spark',description:'Tiny stars burst from each contact and fade.'},

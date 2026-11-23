@@ -2,7 +2,7 @@ import {audioEnvironment} from './audio-environment.js?v=5725e4e590fb89b80b78f26
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=774fbf1c691f54dafa415de78b2b32a6a8d7ffadc96e05d5bda4ec17db9831eb';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=7904f3fab24003c6251442f7604d5d8fc7ef9163a8a1abb32f41975690c0162d';
 import {accessoryCelebration} from './accessory.js?v=4d13cc3b9bb353e9a5ba36bbea63f73cf346bf99b33ef7eba5bde79cf60c9e30';
-import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=0f3773b2cf5bc74f725d5a10540d04dc0815e8e0392d1307bf93db7c1f5e1805';
+import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=5fce426acea1cc7e8321f13619eaedbf2850895e457e202e7acc7843946b35d9';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js?v=d31acea21b543a610f696e47d50a254ce52527d06e488d6e72309535656e4d38';
@@ -10,6 +10,7 @@ import { CHORDS, musicCreate, musicStrike, musicBloom, musicLaunch, musicFinish,
 const SCALE = [261.63, 293.66, 329.63, 392, 440];
 const frequency = midi => 440 * 2 ** ((midi - 69) / 12);
 export const SOUND_CHECK_SECONDS = 2.8;
+const TRAVEL_LAUNCH_SECONDS=2.5,TRAVEL_IMPACT_SECONDS=1.5;
 // Original edge-pull register, shared by positional drag feedback. No wrapping.
 export const uiWindPitch=position=>[300,380,480,620][Math.min(3,Math.floor(Math.max(0,Math.min(1,position))*3))];
 // A rounded attack and release avoid broadband spikes in these short taps.
@@ -314,7 +315,7 @@ export class PoolSound {
     const trail=cosmeticGet(loadout?.trail);
     if(!preview&&['trail','bounce'].includes(kind)&&trail?.kind==='trail'&&trail.rarity==='mythic'){
       const now=this.context.currentTime;
-      this.travelCue={style:trail.style,start:now,end:now+(kind==='trail'?3:2)};
+      this.travelCue={style:trail.style,start:now,end:now+(kind==='trail'?TRAVEL_LAUNCH_SECONDS:TRAVEL_IMPACT_SECONDS)};
       if(this.travelState)this.travelState.at=-Infinity;
     }
     if(!kind||item?.kind!==kind||!cosmeticHasSound(item))return false;
@@ -337,9 +338,9 @@ export class PoolSound {
     // No feedback delay or continuing oscillator can accumulate between hits.
     const accents={stormwake:[[220,880,.18,.035,0,'triangle'],[880,440,.35,.02,.08,'sine']],clockstream:[[392,392,.12,.04,0,'triangle'],[588,294,.25,.025,.1,'sine']],riftwake:[[220,330,.7,.03,0,'sine'],[440,660,.6,.02,.12,'sine'],[880,440,.5,.012,.24,'triangle']],livingvine:[[392,523,.5,.03,0,'sine'],[587,784,.6,.02,.1,'sine'],[784,1046,.5,.012,.2,'sine']],horizoncollapse:[[110,44,.3,.06,0,'sine'],[440,220,.5,.03,.06,'sine'],[880,440,.45,.018,.12,'sine'],[660,330,.5,.012,.16,'sine']],worldbloom:[[262,523,.3,.04,0,'sine'],[523,784,.45,.025,.04,'sine'],[659,988,.4,.02,.1,'sine'],[784,1046,.4,.012,.16,'sine']]};
     const notes=accents[item.style]||(item.style==='ember'?[[180,440,.24,.055,0,'triangle'],[360,720,.34,.025,.06,'sine']]:kind==='trail'?[[330,660,.6,.035,0,'sine'],[495,990,.55,.025,.1,'sine'],[990,1320,.45,.016,.2,'triangle']]:[[150,55,.18,.075,0,'sine'],[660,990,.42,.035,0,'sine'],[990,1320,.38,.025,.06,'triangle'],[1320,1760,.32,.016,.12,'sine']]);
-    const delay=preview?this.previewMusicFade(kind==='trail'&&item.rarity==='mythic'?3.02:Math.max(...notes.map(n=>n[2]+n[4]))+.03):0;
+    const delay=preview?this.previewMusicFade(kind==='trail'&&item.rarity==='mythic'?TRAVEL_LAUNCH_SECONDS+.02:Math.max(...notes.map(n=>n[2]+n[4]))+.03):0;
     for(const [start,end,duration,level,offset,type] of notes)this.tone(start,end,duration,level,pan,offset+delay,type,false,false,options);
-    if(preview&&kind==='trail'&&item.rarity==='mythic')this.travelVoices(0,delay,3,.02,{...options,style:item.style});
+    if(preview&&kind==='trail'&&item.rarity==='mythic')this.travelVoices(0,delay,TRAVEL_LAUNCH_SECONDS,.02,{...options,style:item.style});
     return true;
   }
   travelFade(voice,start,end,level=1){

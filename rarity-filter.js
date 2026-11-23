@@ -1,8 +1,8 @@
 import {escapeHTML} from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 import {segmentedHTML,segmentedMount} from './segmented-control.js?v=bfc2eb723bd5080e1ff722bcfb43b3958890bbcd7bb4f5ce1e7dbf3c3192b161';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import {rarityIconHTML} from './skill-icon.js?v=2b6b08bf3354254a8a96cf0f1de363bf75dfc7763e99eb2eed3e289b30541f61';
-import {staticIconHTML} from './ui-icon.js?v=39eb050cf76d9779d76850df47e75b90e6ea768ba6efccbabc5ce0590715fe46';
+import {rarityIconHTML} from './skill-icon.js?v=563d0c1f02fa3bf82fa24efa82384f5adafa4759cb844ee1d85a26b8eb06f4ba';
+import {staticIconHTML} from './ui-icon.js?v=f3f8658260fb99cd64b77f5221ce198d475a00038dab248c8a5fcc7cf074badc';
 
 export const rarityPreviewHTML=(rarity,art)=>`<span class="rarity-preview">${art}<span class="rarity-preview-badge" aria-hidden="true">${rarityIconHTML(rarity)}</span></span>`;
 

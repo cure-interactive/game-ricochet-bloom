@@ -6,6 +6,22 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.37.2
+
+Build: 2026-11-23 22:20:17 UTC
+
+### Player Changes
+
+- Travel sound now tapers to silence over 2.5 seconds after launch and 1.5 seconds after player impacts or wall bounces.
+- Trail sound previews use the same 2.5-second launch taper.
+
+<!-- development -->
+### Developer Notes
+
+- Share the launch duration between event windows, audition voices and music ducking; preserve phase continuity, bounded motion leases and lifecycle cleanup.
+- Update deadline and preview regression checks for the shorter timings. The developer accepted the travel-sound behavior as validated all around; this records human acceptance, not additional agent-run physical-device testing.
+<!-- /development -->
+
 ## v3.37.1
 
 Build: 2026-11-23 22:16:03 UTC
