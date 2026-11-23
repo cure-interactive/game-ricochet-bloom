@@ -1,6 +1,6 @@
 import {bubbleInteractionMount} from './bubble-interaction.js?v=3479767760180a37f4151682533ae16ec5f0a6f22f41d7a4c788a576855eb899';
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e134db80a925d08cbddcd187c3980d3332c8e1e0b8b22ce988aa293cd01944d5';
-import {CosmeticVisual} from './cosmetic-visual.js?v=94ab3d719f65d566e3805a5b8be4aa821fd26cfb4edbfe39b960402374ffaaf0';
+import {CosmeticVisual} from './cosmetic-visual.js?v=33418682bcb422f12aa8517044c390a7e3a81aabfd875b8212b8930f41bd70a5';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';

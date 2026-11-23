@@ -6,6 +6,22 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.37.1
+
+Build: 2026-11-23 22:16:03 UTC
+
+### Player Changes
+
+- Companions are slightly larger and accompany you from the side, with smooth steering and momentum through turns instead of lingering directly behind.
+- Pendants now float on stretchy, weightless tethers. They drift and rebound as you move, gently avoiding your bubble without colliding with it or changing its movement.
+
+<!-- development -->
+### Developer Notes
+
+- AccessoryVisual integrates independent companion and pendant velocity states in bounded substeps. The companion matches observed player travel while steering its side offset; the pendant uses a radial damped spring and anticipatory one-way avoidance, with no gravity.
+- Displacement owns presentation motion; paused/zero-time paints retain state, traversal resets remove long teleports and bounds follow the actual charm/follower. Frame-rate, reversal, no-gravity and engine-isolation regressions cover the new laws.
+<!-- /development -->
+
 ## v3.37.0
 
 Build: 2026-11-23 20:46:41 UTC

@@ -1,11 +1,11 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=94ab3d719f65d566e3805a5b8be4aa821fd26cfb4edbfe39b960402374ffaaf0';
+import {CosmeticVisual} from './cosmetic-visual.js?v=33418682bcb422f12aa8517044c390a7e3a81aabfd875b8212b8930f41bd70a5';
 import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=2d02ce928f8ce020103e28fc233c5098c66d8b19b727f89e6d3285e141d592da';
 import {PowerVisual} from './power-visual.js?v=868715dca5734f325719d703bc71ce64306fe60f2ab94205dac290009f8cb832';
 
-import {accessoryCelebration} from './accessory.js?v=20f84860be93fa4c89cc4c864708c963f18343202c2d25dc331354d3cf2abbb3';
+import {accessoryCelebration} from './accessory.js?v=4d13cc3b9bb353e9a5ba36bbea63f73cf346bf99b33ef7eba5bde79cf60c9e30';
 
 // One presentation owner for every physics pool: play, Casual and menu autoplay.
 // Scores, aiming, audio and persistence belong to the caller, never this component.

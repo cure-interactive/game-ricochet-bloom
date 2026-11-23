@@ -1,5 +1,5 @@
-import {cosmeticGet} from './cosmetic.js?v=a73655c8802cef0c1c79b07d9c40ff47bd9b47012a33b9fe8885655b15ea070e';
-import {accessoryTier,accessoryPulse} from './accessory.js?v=20f84860be93fa4c89cc4c864708c963f18343202c2d25dc331354d3cf2abbb3';
+import {cosmeticGet} from './cosmetic.js?v=0f3773b2cf5bc74f725d5a10540d04dc0815e8e0392d1307bf93db7c1f5e1805';
+import {accessoryTier,accessoryPulse} from './accessory.js?v=4d13cc3b9bb353e9a5ba36bbea63f73cf346bf99b33ef7eba5bde79cf60c9e30';
 const tau=Math.PI*2,clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const circle=(c,x,y,r)=>{c.beginPath();c.arc(x,y,r,0,tau);c.fill();};
 const ellipse=(c,x,y,rx,ry,a=0)=>{c.beginPath();c.ellipse(x,y,rx,ry,a,0,tau);c.fill();};
@@ -26,39 +26,83 @@ function flourish(c,item,t,celebration,low,pendant=false){
  c.restore();
 }
 
+// Soft exclusion is one-way steering, never a collision with the engine body.
+function avoid(point,anchor,radius,dt,stiffness){
+ const dx=point.x-anchor.x,dy=point.y-anchor.y,d=Math.hypot(dx,dy);
+ const nx=d>1e-6?dx/d:1,ny=d>1e-6?dy/d:0,approach=(point.vx-anchor.vx)*nx+(point.vy-anchor.vy)*ny;
+ const reach=radius+Math.max(0,-approach)*.12;if(d>=reach)return;
+ const force=(reach-d)*stiffness;
+ point.vx+=nx*force*dt;point.vy+=ny*force*dt;
+}
+// Emergency leash only for extreme motion; ordinary following uses the springs.
+function limit(point,anchor,radius){
+ const dx=point.x-anchor.x,dy=point.y-anchor.y,d=Math.hypot(dx,dy);if(d<=radius)return;
+ const nx=dx/d,ny=dy/d,outward=Math.max(0,(point.vx-anchor.vx)*nx+(point.vy-anchor.vy)*ny);
+ point.x=anchor.x+nx*radius;point.y=anchor.y+ny*radius;point.vx-=nx*outward;point.vy-=ny*outward;
+}
+
 // Independent, bounded presentation state. Never retains or mutates an engine body.
 export class AccessoryVisual{
  constructor(){this.clear();}
- clear(){this.body=null;this.follower=null;this.elapsed=0;this.reaction=0;this.celebration=0;this.swing=0;this.pendant='pendant.none';this.companion='companion.none';}
- configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion')this.follower=null;this.celebration=0;}this[kind]=id;}}
+ clear(){this.resetMotion();this.elapsed=0;this.reaction=0;this.celebration=0;this.pendant='pendant.none';this.companion='companion.none';}
+ configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion')this.follower=null;else this.charm=null;this.celebration=0;}this[kind]=id;}}
  react(celebrate=false){this.reaction=1;if(celebrate)this.celebration=1;}
- resetMotion(){this.body=null;this.follower=null;this.swing=0;}
+ resetMotion(){this.body=null;this.follower=null;this.charm=null;this.heading=0;}
  step(body,seconds){
-  const dt=clamp(Number.isFinite(seconds)?seconds:0,0,.05);this.elapsed+=dt;this.reaction=Math.max(0,this.reaction-dt*2.5);this.celebration=Math.max(0,this.celebration-dt/1.5);
-  if(!body||!Number.isFinite(body.x)||!Number.isFinite(body.y)){this.body=null;this.follower=null;return;}
-  const r=body.radius||14,vx=body.vx||0,vy=body.vy||0,speed=Math.hypot(vx,vy),previous=this.body;
+  const dt=clamp(Number.isFinite(seconds)?seconds:0,0,.05);
+  if(!body||!Number.isFinite(body.x)||!Number.isFinite(body.y)){this.resetMotion();return;}
+  if(this.body&&!dt)return; // Observer repaints and paused frames cannot inject motion.
+  const r=Number.isFinite(body.radius)&&body.radius>0?body.radius:14,previous=this.body;
+  const teleport=previous&&Math.hypot(body.x-previous.x,body.y-previous.y)>r*12;
+  if(!previous||teleport){
+   const speed=Math.hypot(body.vx||0,body.vy||0);this.heading=speed>1?Math.atan2(body.vy||0,body.vx||0):0;
+   this.follower=null;this.charm=null;
+  }
+  const vx=previous&&!teleport&&dt?(body.x-previous.x)/dt:0,vy=previous&&!teleport&&dt?(body.y-previous.y)/dt:0;
   this.body={x:body.x,y:body.y,radius:r,vx,vy};
-  this.swing+=(clamp(-vx/650,-.65,.65)-this.swing)*(1-Math.exp(-dt*8));
-  const moving=speed>30,dx=moving?-vx/speed:.82,dy=moving?-vy/speed:-.57;
-  const target={x:body.x+dx*r*2.8,y:body.y+dy*r*2.8};
-  if(!this.follower||!previous||Math.hypot(body.x-previous.x,body.y-previous.y)>r*10)this.follower=target;
-  else{const blend=1-Math.exp(-dt*9);this.follower.x+=(target.x-this.follower.x)*blend;this.follower.y+=(target.y-this.follower.y)*blend;}
-  const fx=this.follower.x-body.x,fy=this.follower.y-body.y,d=Math.hypot(fx,fy),limit=r*4.5;
-  if(d>limit){this.follower.x=body.x+fx/d*limit;this.follower.y=body.y+fy/d*limit;}
+  const seed=(angle,distance)=>({x:body.x+Math.cos(angle)*r*distance,y:body.y+Math.sin(angle)*r*distance,vx,vy});
+  this.follower||=seed(this.heading-Math.PI/2,3.4);
+  this.charm||=seed(this.heading+2.35,2);
+  if(!dt||!previous||teleport)return;
+  this.elapsed+=dt;this.reaction=Math.max(0,this.reaction-dt*2.5);this.celebration=Math.max(0,this.celebration-dt/1.5);
+  // Interpolate the anchor across bounded substeps. Motion comes from actual
+  // displacement, so stationary/held previews cannot invent velocity or gravity.
+  const steps=Math.ceil(dt/(1/120)),h=dt/steps,speed=Math.hypot(vx,vy);
+  for(let i=1;i<=steps;i++){
+   const anchor={x:previous.x+(body.x-previous.x)*i/steps,y:previous.y+(body.y-previous.y)*i/steps,vx,vy};
+   const turn=Math.atan2(Math.sin(Math.atan2(vy,vx)-this.heading),Math.cos(Math.atan2(vy,vx)-this.heading));
+   this.heading+=turn*(1-Math.exp(-h*4.5*speed/(speed+40)));
+   const forward={x:Math.cos(this.heading),y:Math.sin(this.heading)},side=3.4+Math.sin(this.elapsed*.8)*.16;
+   const target={x:anchor.x+(forward.y*side-forward.x*.3)*r,y:anchor.y+(-forward.x*side-forward.y*.3)*r};
+   const f=this.follower;
+   f.vx+=((target.x-f.x)*64+(vx-f.vx)*16)*h;
+   f.vy+=((target.y-f.y)*64+(vy-f.vy)*16)*h;
+   avoid(f,anchor,r*2.2,h,180);
+   f.x+=f.vx*h;f.y+=f.vy*h;limit(f,anchor,r*8);
+   // A radial, underdamped spring: no preferred down direction, no force on
+   // the player, and no contact impulse. Soft exclusion keeps the charm clear.
+   const p=this.charm,dx=p.x-anchor.x,dy=p.y-anchor.y,d=Math.hypot(dx,dy),nx=d?dx/d:Math.cos(this.heading+2.35),ny=d?dy/d:Math.sin(this.heading+2.35);
+   const force=(r*2-d)*58;
+   p.vx+=(nx*force+(vx-p.vx)*5)*h;p.vy+=(ny*force+(vy-p.vy)*5)*h;
+   avoid(p,anchor,r*2.25,h,450);
+   p.x+=p.vx*h;p.y+=p.vy*h;limit(p,anchor,r*7);
+  }
  }
  bounds(){
   if(!this.body)return [];
   const b=this.body,points=[];
-  if(this.pendant!=='pendant.none')points.push({x:b.x,y:b.y+b.radius,r:b.radius*3});
-  if(this.companion!=='companion.none'&&this.follower)points.push({...this.follower,r:b.radius*3.6});
+  if(this.pendant!=='pendant.none'&&this.charm)points.push({...this.charm,r:b.radius*2.8});
+  if(this.companion!=='companion.none'&&this.follower)points.push({...this.follower,r:b.radius*4.4});
   return points;
  }
  render(c,gentle=false){
   if(!this.body)return;const b=this.body,r=b.radius,t=this.elapsed;
   const pendant=cosmeticGet(this.pendant),companion=cosmeticGet(this.companion);
-  if(pendant&&pendant.style!=='none'){
-   c.save();c.translate(b.x,b.y+r*.6);c.rotate(this.swing+(gentle?0:Math.sin(t*2.2)*.07));c.scale(r/14,r/14);
-   c.lineWidth=1.1;c.strokeStyle='#d7ebe9';c.globalAlpha=.85;c.beginPath();c.moveTo(0,0);c.quadraticCurveTo(-1,6,0,13);c.stroke();c.globalAlpha=1;c.translate(0,16);
+  if(pendant&&pendant.style!=='none'&&this.charm){
+   const p=this.charm,dx=p.x-b.x,dy=p.y-b.y,d=Math.hypot(dx,dy)||1,nx=dx/d,ny=dy/d;
+   c.save();c.lineWidth=r/14*clamp(2-d/r*.3,.65,1.4);c.strokeStyle='#d7ebe9';c.globalAlpha=.8;
+   const slack=Math.max(0,r*2-d)*.3;c.beginPath();c.moveTo(b.x+nx*r*.92,b.y+ny*r*.92);c.quadraticCurveTo((b.x+p.x)/2-ny*slack,(b.y+p.y)/2+nx*slack,p.x,p.y);c.stroke();
+   c.globalAlpha=1;c.translate(p.x,p.y);c.rotate(Math.atan2(dy,dx)-Math.PI/2);c.scale(r/14,r/14);
    const pendantPulse=accessoryTier(pendant)>=2?accessoryPulse(this.celebration):0;c.scale(1+pendantPulse*.16,1+pendantPulse*.16);flourish(c,pendant,t,this.celebration,gentle,true);
    c.fillStyle='#081b2a';ellipse(c,0,0,6.3,7.3);c.fillStyle=pendant.color;c.strokeStyle='#f1fff2';c.lineWidth=.7;
    if(pendant.style==='drop'){c.beginPath();c.moveTo(0,-6);c.bezierCurveTo(1,-3,6,0,4,4);c.bezierCurveTo(1,8,-5,5,-4,1);c.closePath();c.fill();c.stroke();}
@@ -74,8 +118,8 @@ export class AccessoryVisual{
    c.fillStyle='#ffffff';c.globalAlpha=.6+this.reaction*.35;ellipse(c,-1.5,-2,1,1.8);c.restore();
   }
   if(companion&&companion.style!=='none'&&this.follower){
-   const f=this.follower,bob=gentle?0:Math.sin(t*3)*r*.12,lift=gentle?0:Math.sin(this.celebration*Math.PI)*r*.45;
-   c.save();c.translate(f.x,f.y+bob-lift);c.scale(r/14,r/14);c.lineCap='round';c.lineJoin='round';c.lineWidth=1.3;c.strokeStyle='#263c4e';c.fillStyle=companion.color;
+   const f=this.follower,bob=gentle?0:Math.sin(t*2)*r*.06,lift=gentle?0:Math.sin(this.celebration*Math.PI)*r*.45;
+   c.save();c.translate(f.x,f.y+bob-lift);c.scale(r/14*1.2,r/14*1.2);c.lineCap='round';c.lineJoin='round';c.lineWidth=1.3;c.strokeStyle='#263c4e';c.fillStyle=companion.color;
    const tier=accessoryTier(companion),pulse=tier>=2?accessoryPulse(this.celebration):0,size=1+pulse*(tier===4?.28:tier===3?.22:.18);c.scale(size,size);flourish(c,companion,t,this.celebration,gentle);
    const flutter=gentle?.6:.55+.35*Math.sin(t*9),happy=this.reaction*.7+this.celebration;
    if(companion.style==='firefly'||companion.style==='moth'){
