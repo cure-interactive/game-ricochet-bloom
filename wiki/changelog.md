@@ -6,6 +6,23 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.35.7
+
+Build: 2026-11-23 16:54:11 UTC
+
+### Player Changes
+
+- Keep scrollbar thumbs moving with the page during native scrolling, including horizontal tab bars, on browsers with native scroll-animation support.
+- Preserve the natural iOS page bounce, scrollbar dragging and smooth thickness changes.
+
+<!-- development -->
+### Developer Notes
+
+- Drive thumb transforms with ScrollTimeline instead of waiting for scroll events and a subsequent animation frame. Reuse the animation across geometry changes and cancel it when hidden or disposed.
+- Project cached geometry immediately on older browsers. Read the current native scroll position for thumb hit testing; retain selector priority and avoid scroll-position writes during native overscroll.
+- Verify both axes, panel teardown, drag interaction and fallback behavior. Physical iPhone thumb smoothness remains a separate acceptance check.
+<!-- /development -->
+
 ## v3.35.6
 
 Build: 2026-11-23 12:39:45 UTC

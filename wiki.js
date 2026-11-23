@@ -7,7 +7,7 @@ import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=b32bb97d33160ef0
 
 export const WIKI_PAGES = Object.freeze({
   'cosmetic-rarity':{title:'Cosmetic Rarity',url:'./wiki/cosmetic-rarity.md?v=296d26eb632175ec188bda4217cf8e1f469b85b5a3606fab1480f09e681fbe95'},
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=85bb7a31583f9fe5307a9ee516385f2293feb8666fafe143bce592b3b21d59d2' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=538346deb41ace9e4964e920a00c86419f937280c044d21816c9b45b16b08c15' },
   player: { title: 'Player', url: './wiki/player.md?v=0c38f46b581192d96145cd1c1a85569ccc571ae4dc94401b6546a67af077b787' },
   developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=e7cdfb724aba5b6dc5e487742b7ca785d6d2f90ff84ac67cad21c79d8623612d' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=f43259f3d42301b05c30588b2e1335e8ec1ca9d0f2f1a3a7a2287bbd4e709eca' },
@@ -16,7 +16,7 @@ export const WIKI_PAGES = Object.freeze({
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=76d41fb0cd2c9a17bde4187f69e4b31570e5d49a5c33b4e2a32053553185f457' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=941b0fdf11b0e94d22e69c8e45dc214c953cc790f3ba805d876bf03443103c12' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=bf4d28ba60b43a130e09372d0bdff54fbe321187082c6d54e9430134b1305505' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=1cd3c66e3408ce941bcd00b42ba1b4d40dba341f422f71e490f643389d80c756' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=c7d2965c7a1c36d0a7891df9b8ca49e03594d78e63c17a06e1c41cfecead07a9' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=fbafb2ebd78535c7099df4a3718ab3b076135a8f859ad896d5d79f1b44a1eb80' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=3226c8202c5ec9c396c1c4abe0e5e00d931094617edf98ea6ff8945e8feff623' },

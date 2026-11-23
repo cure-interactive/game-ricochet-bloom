@@ -23,7 +23,9 @@ export function scrollbarInput(track,thumb,{geometry,position,move,active,view,b
   stop();e.preventDefault();e.stopPropagation();track.setPointerCapture(e.pointerId);
   const g=geometry(),rect=track.getBoundingClientRect(),start=track.dataset.axis==='y'?rect.top:rect.left;
   const local=point(e)-start-4;
-  const onThumb=local>=g.offset&&local<=g.offset+g.length;
+  // Native timeline paint can advance without a JavaScript scroll callback.
+  const offset=g.travel*Math.max(0,Math.min(g.max,position()))/g.max;
+  const onThumb=local>=offset&&local<=offset+g.length;
   if(!onThumb)move((local-g.length/2)/g.travel*g.max);
   drag={id:e.pointerId,start:point(e),position:position(),last:point(e),time:e.timeStamp,velocity:0,moved:false};track.dataset.held='true';active();
  };
@@ -60,8 +62,32 @@ export function scrollbarPaintPosition(item,position,axis){
  if(item.thumb.style.transform!==transform)item.thumb.style.transform=transform;
  g.offset=offset;
 }
+// Let the browser project its own scroll clock. Event delivery can lag behind
+// compositor scrolling on iOS; adding a timed easing would only add more lag.
+export function scrollbarMotion(item,source,axis,win=window){
+ let animation=null,travel=null,unsupported=typeof win.ScrollTimeline!=='function'||!item.thumb.animate;
+ const position=()=>axis==='y'?source.scrollTop:Math.abs(source.scrollLeft);
+ const cancel=()=>{animation?.cancel();animation=null;travel=null;delete item.track.dataset.motion;};
+ function paint(){if(!animation)scrollbarPaintPosition(item,position(),axis);}
+ function refresh(){
+  const g=item.geometry;
+  if(!g||item.track.hidden){cancel();return;}
+  if(!unsupported){
+   try{
+    const frames=[{transform:`translate${axis==='y'?'Y':'X'}(0px)`},{transform:`translate${axis==='y'?'Y':'X'}(${g.travel}px)`}];
+    if(!animation){
+     animation=item.thumb.animate(frames,{timeline:new win.ScrollTimeline({source,axis}),duration:'auto',fill:'both',easing:'linear'});
+     item.track.dataset.motion='native';
+    }else if(travel!==g.travel)animation.effect.setKeyframes(frames);
+    travel=g.travel;
+   }catch{cancel();unsupported=true;}
+  }
+  paint();
+ }
+ return {refresh,paint,dispose:cancel};
+}
 export function scrollbarsMount(doc=document,win=window){
- const records=new Map(),scrolled=new Set();let frame=0,scrollFrame=0,disposed=false;
+ const records=new Map();let frame=0,disposed=false;
  const schedule=()=>{if(!disposed&&!frame)frame=win.requestAnimationFrame(refresh);};
  const resize=new win.ResizeObserver(schedule);
  function active(item){win.clearTimeout(item.timer);item.track.dataset.active='true';item.timer=win.setTimeout(()=>{delete item.track.dataset.active;},750);}
@@ -69,8 +95,10 @@ export function scrollbarsMount(doc=document,win=window){
   const track=doc.createElement('div'),thumb=doc.createElement('span');track.className='scroll-indicator';track.dataset.axis=axis;track.setAttribute('aria-hidden','true');track.append(thumb);layer.append(track);
   const item={track,thumb,geometry:null,timer:0};
   const position=()=>axis==='y'?el.scrollTop:Math.abs(el.scrollLeft);
-  const move=value=>{const next=Math.max(0,Math.min(item.geometry.max,value));if(axis==='y')el.scrollTop=next;else el.scrollLeft=win.getComputedStyle(el).direction==='rtl'?-next:next;active(item);schedule();};
-  item.dispose=scrollbarInput(track,thumb,{geometry:()=>item.geometry,position,move,active:()=>active(item),view:()=>axis==='y'?el.clientHeight:el.clientWidth,blocked:()=>!!doc.querySelector('.segmented-control[data-segment-grab]')},win);
+  item.motion=scrollbarMotion(item,el,axis,win);
+  const move=value=>{const next=Math.max(0,Math.min(item.geometry.max,value));if(axis==='y')el.scrollTop=next;else el.scrollLeft=win.getComputedStyle(el).direction==='rtl'?-next:next;active(item);item.motion.paint();};
+  const inputDispose=scrollbarInput(track,thumb,{geometry:()=>item.geometry,position,move,active:()=>active(item),view:()=>axis==='y'?el.clientHeight:el.clientWidth,blocked:()=>!!doc.querySelector('.segmented-control[data-segment-grab]')},win);
+  item.dispose=()=>{inputDispose();item.motion.dispose();};
   return item;
  }
  function refresh(){
@@ -93,7 +121,7 @@ export function scrollbarsMount(doc=document,win=window){
     const item=r.items[index],vertical=axis==='y',view=vertical?el.clientHeight:el.clientWidth,total=vertical?el.scrollHeight:el.scrollWidth;
     const geometry=scrollbarGeometry(view,total,vertical?el.scrollTop:Math.abs(el.scrollLeft),vertical?clip.bottom-clip.top:clip.right-clip.left);item.geometry=geometry;
     item.track.hidden=!visible||!/auto|scroll/.test(vertical?style.overflowY:style.overflowX)||!geometry||clip.right<=clip.left||clip.bottom<=clip.top;
-    if(item.track.hidden)continue;
+    if(item.track.hidden){item.motion.refresh();continue;}
     // Dialog children stay in the same top layer as their scroll surface.
     // Use existing blank padding. Some cards put padding on the parent shell,
     // while their scrolling body has none: paint outside that body's content.
@@ -107,23 +135,18 @@ export function scrollbarsMount(doc=document,win=window){
     // Reserve both the doubled 6px thumb and its constant 3px edge inset.
     lane=Math.max(9,lane);
     Object.assign(item.track.style,{left:`${vertical?edge-lane:clip.left}px`,top:`${vertical?clip.top:edge-lane}px`,width:`${vertical?lane:clip.right-clip.left}px`,height:`${vertical?clip.bottom-clip.top:lane}px`});
-    item.thumb.style[vertical?'height':'width']=`${geometry.length}px`;scrollbarPaintPosition(item,vertical?el.scrollTop:Math.abs(el.scrollLeft),axis);
+    item.thumb.style[vertical?'height':'width']=`${geometry.length}px`;item.motion.refresh();
    }
   }
  }
  const observer=new win.MutationObserver(changes=>{if(changes.some(r=>!r.target.closest?.('.scroll-indicator')&&(r.type==='attributes'||[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1))))schedule();});
  observer.observe(doc.body,{childList:true,subtree:true,attributes:true,attributeFilter:['open','hidden','data-screen']});
- function paintScroll(){
-  scrollFrame=0;
-  for(const el of scrolled){const r=records.get(el);if(r){scrollbarPaintPosition(r.items[0],el.scrollTop,'y');scrollbarPaintPosition(r.items[1],Math.abs(el.scrollLeft),'x');}}
-  scrolled.clear();
- }
  const scroll=e=>{
   const el=e.target,r=records.get(el);
-  if(r){for(const item of r.items)if(!item.track.hidden)active(item);scrolled.add(el);if(!scrollFrame)scrollFrame=win.requestAnimationFrame(paintScroll);}
+  if(r)for(const item of r.items)if(!item.track.hidden){active(item);item.motion.paint();}
   // Only scrolling ancestors can move another indicator's screen geometry.
   if(el===doc||[...records].some(([child,r])=>child!==el&&el.contains?.(child)&&r.items.some(i=>!i.track.hidden)))schedule();
  };
  doc.addEventListener('scroll',scroll,true);win.addEventListener('resize',schedule);win.visualViewport?.addEventListener('resize',schedule);win.visualViewport?.addEventListener('scroll',schedule);doc.fonts?.addEventListener('loadingdone',schedule);schedule();
- return ()=>{disposed=true;win.cancelAnimationFrame(frame);win.cancelAnimationFrame(scrollFrame);scrolled.clear();observer.disconnect();resize.disconnect();doc.removeEventListener('scroll',scroll,true);win.removeEventListener('resize',schedule);win.visualViewport?.removeEventListener('resize',schedule);win.visualViewport?.removeEventListener('scroll',schedule);doc.fonts?.removeEventListener('loadingdone',schedule);for(const [el,r] of records){delete el.dataset.scrollbar;for(const item of r.items){item.dispose();win.clearTimeout(item.timer);item.track.remove();}}records.clear();};
+ return ()=>{disposed=true;win.cancelAnimationFrame(frame);observer.disconnect();resize.disconnect();doc.removeEventListener('scroll',scroll,true);win.removeEventListener('resize',schedule);win.visualViewport?.removeEventListener('resize',schedule);win.visualViewport?.removeEventListener('scroll',schedule);doc.fonts?.removeEventListener('loadingdone',schedule);for(const [el,r] of records){delete el.dataset.scrollbar;for(const item of r.items){item.dispose();win.clearTimeout(item.timer);item.track.remove();}}records.clear();};
 }
