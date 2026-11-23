@@ -3,13 +3,28 @@ export const ACCESSORIES=Object.freeze([
  {id:'pendant.none',kind:'pendant',name:'None',rarity:'common',cost:0,color:'#bff6e2',style:'none',description:'Keep your player bubble free of a pendant.'},
  {id:'pendant.dewdrop',kind:'pendant',name:'Dewdrop',rarity:'common',cost:0,color:'#91e5dd',style:'drop',description:'A tiny glass drop on a silver thread. Your free first pendant sways with every ricochet.'},
  {id:'pendant.leaf',kind:'pendant',name:'Silverleaf',rarity:'rare',cost:120,color:'#b2edb1',style:'leaf',description:'A silver-edged leaf that catches the light as your bubble moves.'},
- {id:'pendant.moon',kind:'pendant',name:'Moonstone',rarity:'epic',cost:220,color:'#c9baff',style:'moon',description:'A crescent of pale moonstone, suspended from a silver thread.'},
+ {id:'pendant.moon',kind:'pendant',name:'Moonstone',rarity:'epic',cost:220,color:'#c9baff',style:'moon',description:'A crescent with a circling moonbeam. Success sends a silent halo through its stone.'},
  {id:'pendant.sun',kind:'pendant',name:'Sundial',rarity:'legendary',cost:360,color:'#ffcf7b',style:'sun',description:'A golden sun with a slowly turning corona.'},
- {id:'pendant.prism',kind:'pendant',name:'Prism Heart',rarity:'mythic',cost:550,color:'#e5b6f6',style:'prism',description:'A faceted jewel in two pastel hues. Its highlight brightens when you bounce.'},
+ {id:'pendant.prism',kind:'pendant',name:'Prism Heart',rarity:'mythic',cost:550,color:'#e5b6f6',style:'prism',description:'A faceted jewel with orbiting light. Success releases a silent shower of prismatic stars.'},
+ {id:'pendant.pebble',kind:'pendant',name:'River Pebble',rarity:'common',cost:40,color:'#b8d2e2',style:'pebble',description:'A smooth blue pebble wrapped in a tiny silver band.'},
+ {id:'pendant.shell',kind:'pendant',name:'Pearl Shell',rarity:'rare',cost:120,color:'#ffcbb5',style:'shell',description:'A scalloped shell with pearly ribs and a warm coral sheen.'},
+ {id:'pendant.key',kind:'pendant',name:'Astral Key',rarity:'epic',cost:220,color:'#a9e6ff',style:'key',description:'A star-shaped key traced by a wandering beam. Success opens a brief, silent halo.'},
+ {id:'pendant.compass',kind:'pendant',name:'Orbit Compass',rarity:'legendary',cost:360,color:'#ffdf91',style:'compass',description:'A tiny compass with turning rings and a floating north star. It shines brighter when you succeed.'},
+ {id:'pendant.seed',kind:'pendant',name:'Worldseed',rarity:'mythic',cost:550,color:'#aff0c7',style:'seed',description:'A living seed inside a luminous orbit. Success unfurls a silent burst of glowing petals.'},
  {id:'companion.none',kind:'companion',name:'None',rarity:'common',cost:0,color:'#bff6e2',style:'none',description:'Enjoy the pool without a companion.'},
  {id:'companion.sprout',kind:'companion',name:'Sprout',rarity:'common',cost:0,color:'#b2edb1',style:'sprout',description:'A curious little seedling. Your free first companion follows you and perks up at each bounce.'},
  {id:'companion.firefly',kind:'companion',name:'Firefly',rarity:'rare',cost:120,color:'#ffe294',style:'firefly',description:'A warm little lantern with fluttering wings and a curious face.'},
- {id:'companion.jelly',kind:'companion',name:'Moon Jelly',rarity:'epic',cost:220,color:'#bcb6ff',style:'jelly',description:'A tiny floating jelly with trailing ribbons and a soft, sleepy smile.'},
- {id:'companion.moth',kind:'companion',name:'Star Moth',rarity:'legendary',cost:360,color:'#9cdfff',style:'moth',description:'A blue moth with broad wings and a bright 5-Chain celebration.'},
- {id:'companion.dragon',kind:'companion',name:'Bloom Dragon',rarity:'mythic',cost:550,color:'#f4b2d9',style:'dragon',description:'A pocket-sized blossom dragon with petal fins and a curling tail. It celebrates your 5-Chains.'}
+ {id:'companion.jelly',kind:'companion',name:'Moon Jelly',rarity:'epic',cost:220,color:'#bcb6ff',style:'jelly',description:'A sleepy jelly with trailing ribbons. Success wakes a gentle pulse and a delayed, watery chime.'},
+ {id:'companion.moth',kind:'companion',name:'Star Moth',rarity:'legendary',cost:360,color:'#9cdfff',style:'moth',description:'A blue moth with broad wings and a starry orbit. It celebrates with a luminous pulse and three chiming notes.'},
+ {id:'companion.dragon',kind:'companion',name:'Bloom Dragon',rarity:'mythic',cost:550,color:'#f4b2d9',style:'dragon',description:'A blossom dragon with petal fins and a curling tail. Success brings a happy swell, a soft dragon call and a burst of petals.'},
+ {id:'companion.puff',kind:'companion',name:'Puff',rarity:'common',cost:40,color:'#e6efff',style:'puff',description:'A round little cloud with rosy cheeks. It bobs along quietly at your side.'},
+ {id:'companion.ladybug',kind:'companion',name:'Dew Beetle',rarity:'rare',cost:120,color:'#ffaaa5',style:'ladybug',description:'A spotted garden beetle with tiny antennae and polished coral wings.'},
+ {id:'companion.fox',kind:'companion',name:'Cloud Fox',rarity:'epic',cost:220,color:'#ffd0a8',style:'fox',description:'A little fox with a cloud-soft tail. Success gives it an excited pulse and a brief rising chirp.'},
+ {id:'companion.bird',kind:'companion',name:'Sunbird',rarity:'legendary',cost:360,color:'#ffe196',style:'bird',description:'A golden bird with a radiant crest and orbiting sunbeam. It answers success with a swelling trill.'},
+ {id:'companion.whale',kind:'companion',name:'Comet Whale',rarity:'mythic',cost:550,color:'#a9e8ff',style:'whale',description:'A tiny sky whale with a comet tail. Success lifts it into a pulse, a star spray and a warm, airy whale song.'}
 ]);
+
+// A celebration is an earned milestone, never an ordinary collision or idle tick.
+export const accessoryCelebration=event=>['bloom','win','wave-clear','objective'].includes(event?.type);
+export const accessoryTier=item=>Math.max(0,['common','rare','epic','legendary','mythic'].indexOf(item?.rarity));
+export const accessoryPulse=celebration=>Math.sin(Math.PI*Math.max(0,Math.min(1,((1-celebration)*1.5-.18)/.95)));

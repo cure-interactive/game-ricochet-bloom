@@ -1,6 +1,6 @@
 import { playerBuild, playerConfig, PLAYER_UPGRADES } from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
-import { profileSummary } from './profile.js?v=ed2e26571676cd85c78bb8aa89864b270869a6477d0aafb2c6423cb24f0aa6ea';
-import { GAME_CATALOGUE, poolMedal } from './run.js?v=b162fb3bc3f07f67fd5fbc6f4d553cc429980cd35c32f4a075219705233afbce';
+import { profileSummary } from './profile.js?v=b5262dec930eed9ba24019356a37cb6042cf1e0a55cd327aaa0957b5924351c8';
+import { GAME_CATALOGUE, poolMedal } from './run.js?v=b513aedd9e3d63214f9e08f762d1d1648a5d28559b99a626c9d1ca1b8633a38c';
 import { TRACKS } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { SCORE_BUDGETS, scoreMedal } from './score-attack.js?v=0f35b25842dfb9cfe110fc14f07cae2cd19505b3deda3b7e67833a9a8f1a9c1e';
 import { scoreRead } from './score-attack-store.js?v=321793f0e600cebfe0859b0e5e4c1048ef5442fca47f6da529b6528a22cf8809';

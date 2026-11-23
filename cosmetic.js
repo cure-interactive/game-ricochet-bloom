@@ -1,4 +1,4 @@
-import {ACCESSORIES} from './accessory.js?v=76dcdd82c019c82272c108925c9a9143f930fe5c56ce738f72d209033b3102b7';
+import {ACCESSORIES} from './accessory.js?v=20f84860be93fa4c89cc4c864708c963f18343202c2d25dc331354d3cf2abbb3';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {COSMETIC_COLLECTION} from './cosmetic-collection.js?v=5fffc248bcec63bc94d641fd08adb36b591a815fa2cd26ed62801ef5a1ea9cca';
 import {SOUNDSTAGES,AMBIENCES} from './music-environment.js?v=09dcc5aa06da815b08ac721d6fe505e7c6abd27d237928af2e681a09764eb1a4';
@@ -52,4 +52,4 @@ export const cosmeticLoadout=profile=>({...cosmeticDefault(),...profile?.cosmeti
 export const cosmeticOwned=(profile,item)=>item.cost===0||Object.hasOwn(cosmeticLoadout(profile).owned,item.id);
 export const cosmeticSkin=profile=>cosmeticGet(cosmeticLoadout(profile).skin);
 
-export const cosmeticHasSound=item=>!!item&&(['music','soundstage','ambience'].includes(item.kind)||item.kind==='trail'&&['legendary','mythic'].includes(item.rarity)||item.kind==='bounce'&&item.rarity==='mythic');
+export const cosmeticHasSound=item=>!!item&&(['music','soundstage','ambience'].includes(item.kind)||item.kind==='trail'&&['legendary','mythic'].includes(item.rarity)||item.kind==='bounce'&&item.rarity==='mythic'||item.kind==='companion'&&['epic','legendary','mythic'].includes(item.rarity));

@@ -78,4 +78,12 @@ These additional items are available in Player, with the same tier prices and pe
 
 ## Pendants and Companions
 
-Pendants attach to your bubble; companions follow at a bounded distance. Each has a free Common starter and Rare through Mythic designs at the standard prices above, plus a free None option. Higher tiers add distinctive silhouettes and motion, not gameplay advantages. These categories stay silent. All companions react to bounces and 5-Chains; Gentle visuals removes extra flutter, bobbing and celebration motion.
+Pendants attach to your bubble; companions follow at a bounded distance. Each category has two designs per rarity, plus None. Common starters Dewdrop and Sprout are free; the second Common costs 40 Points. Rare, Epic, Legendary and Mythic designs cost 120, 220, 360 and 550 Points.
+
+- **Common:** Pendants — Dewdrop, River Pebble. Companions — Sprout, Puff. Simple shapes and bounce reactions.
+- **Rare:** Pendants — Silverleaf, Pearl Shell. Companions — Firefly, Dew Beetle. More detailed silhouettes and materials.
+- **Epic:** Pendants — Moonstone, Astral Key. Companions — Moon Jelly, Cloud Fox. Halos and a brief success pulse; companions add a delayed two-note voice.
+- **Legendary:** Pendants — Sundial, Orbit Compass. Companions — Star Moth, Sunbird. Moving orbital detail, brighter pulses and three-note companion calls.
+- **Mythic:** Pendants — Prism Heart, Worldseed. Companions — Bloom Dragon, Comet Whale. Larger celebration pulses, finite star or petal bursts and layered companion voices.
+
+5-Chains, bonus objectives, wave clears and victories trigger celebrations. Companions answer about a fifth of a second later, with a cooldown to keep nearby successes from piling up. Their short voices respect master volume, mute and pause. Pendants remain silent. Preview Celebration demonstrates the visual reaction; Preview Sound explicitly auditions eligible companions. Gallery animation and menu autoplay never play companion calls. Low quality uses fewer particles. None of these effects changes gameplay.

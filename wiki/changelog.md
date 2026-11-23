@@ -6,6 +6,24 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.37.0
+
+Build: 2026-11-23 20:46:41 UTC
+
+### Player Changes
+
+- Pendants and companions now offer two designs at every rarity: ten choices in each category, plus None.
+- Epic and higher companions celebrate 5-Chains and success with a brief pulse and delayed voice. Mythics add petal or star bursts.
+- Epic and higher pendants gain silent halos and pulses; Mythics release decorative particles.
+- Try Preview Celebration on accessories and Preview Sound on Epic, Legendary and Mythic companions before unlocking them.
+
+<!-- development -->
+### Developer Notes
+
+- Shared milestone classification drives visual and audio reactions; campaign clears use the committed result boundary. Audio-clock scheduling, cooldowns and existing finite voice groups preserve mute/pause/hidden cancellation and musical memory.
+- Deterministic burst geometry expires with the celebration and uses bounded preview allocation; Low quality reduces particle counts. Existing accessory IDs, receipts and free starters remain compatible.
+<!-- /development -->
+
 ## v3.36.0
 
 Build: 2026-11-23 20:27:48 UTC

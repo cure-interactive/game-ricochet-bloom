@@ -1,6 +1,6 @@
 import {bubbleInteractionMount} from './bubble-interaction.js?v=3479767760180a37f4151682533ae16ec5f0a6f22f41d7a4c788a576855eb899';
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e134db80a925d08cbddcd187c3980d3332c8e1e0b8b22ce988aa293cd01944d5';
-import {CosmeticVisual} from './cosmetic-visual.js?v=dd6ac47f2c68b84f599d6f18bf320ced66ddd903826a7649f059fa5e4359be65';
+import {CosmeticVisual} from './cosmetic-visual.js?v=94ab3d719f65d566e3805a5b8be4aa821fd26cfb4edbfe39b960402374ffaaf0';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
@@ -67,7 +67,7 @@ export function cosmeticPreviewMount(canvas,host){
     nextRipple=t+1.35+.35*(1+Math.sin(angle));
    }
   }else{
-   cosmeticPreviewStep(body,dt,worldWidth,worldHeight,(x,y,nx,ny)=>{
+   cosmeticPreviewStep(body,visual.accessories.celebration>0?0:dt,worldWidth,worldHeight,(x,y,nx,ny)=>{
     visual.hit(x,y);bubbleHit(membrane,body.radius,nx,ny,210);
    });
   }
@@ -88,5 +88,5 @@ export function cosmeticPreviewMount(canvas,host){
  }
  function sync(){if(doc.hidden||activity?.isActive()===false)interaction.clear();win.cancelAnimationFrame(frame);frame=0;last=0;if(active&&!doc.hidden&&activity?.isActive()!==false)frame=win.requestAnimationFrame(draw);}
  activity=visualActivityMount(host.surface||canvas,sync,{intersection:false});sync();
- return {destroy(){active=false;interaction.destroy();activity.destroy();win.cancelAnimationFrame(frame);}};
+ return {celebrate(){if(geometry){body.x=geometry.width/2;body.y=geometry.height/2;offset={x:0,y:0,vx:0,vy:0};visual.breakTrail();visual.accessories.resetMotion();}visual.accessories.react(true);},destroy(){active=false;interaction.destroy();activity.destroy();win.cancelAnimationFrame(frame);}};
 }

@@ -1,9 +1,11 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=dd6ac47f2c68b84f599d6f18bf320ced66ddd903826a7649f059fa5e4359be65';
+import {CosmeticVisual} from './cosmetic-visual.js?v=94ab3d719f65d566e3805a5b8be4aa821fd26cfb4edbfe39b960402374ffaaf0';
 import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=2d02ce928f8ce020103e28fc233c5098c66d8b19b727f89e6d3285e141d592da';
 import {PowerVisual} from './power-visual.js?v=868715dca5734f325719d703bc71ce64306fe60f2ab94205dac290009f8cb832';
+
+import {accessoryCelebration} from './accessory.js?v=20f84860be93fa4c89cc4c864708c963f18343202c2d25dc331354d3cf2abbb3';
 
 // One presentation owner for every physics pool: play, Casual and menu autoplay.
 // Scores, aiming, audio and persistence belong to the caller, never this component.
@@ -22,7 +24,7 @@ export class PoolVisual {
   if(event.type==='wave'){this.clear();return;}
   if(event.type==='impact'&&(event.a===0||event.b===0)||event.type==='wall'&&event.id===0)this.cosmetics.hit(event.x,event.y);
   if(['wrap','portal'].includes(event.type)||event.type==='power'&&['swap','split'].includes(event.kind))this.cosmetics.breakTrail();
-  if(event.type==='bloom')this.cosmetics.accessories.react(true);
+  if(accessoryCelebration(event))this.cosmetics.accessories.react(true);
   if(['wrap','portal'].includes(event.type)||event.type==='power'&&event.kind==='swap')this.cosmetics.accessories.resetMotion();
   this.powerVisual.event(event,game);poolBubbleEvent(event,game,body=>this.membrane(body));
   const hit=(id,nx,ny,speed)=>this.hit(game,id,nx,ny,speed),burst=(x,y,color,n)=>this.burst(x,y,color,n,low);

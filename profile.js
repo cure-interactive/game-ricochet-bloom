@@ -2,7 +2,7 @@ import { PLAYER_UPGRADES, playerResearchValid, playerUpgradeReason } from './pla
 import { earningValid, earningAmount, earningSnapshot } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 import { CATALOGUE, CURRENCIES, STARTERS, TRACKS, REWARD, nodePrerequisitesMet, nodeActivationMet, FAMILIES, legacyFamilyAccess, catalogueNode } from './catalogue.js?v=c1d42ecf5ab5eb7f0a369fdccd0d8696079d69ac29f9676f4f854e39de9671ac';
 
-import {cosmeticGet,cosmeticValidate,cosmeticDefault,cosmeticOwned} from './cosmetic.js?v=ceab45e8d91f7bc0277fcd57d0ba195cbeba296978e36bbc935740f4ee047132';
+import {cosmeticGet,cosmeticValidate,cosmeticDefault,cosmeticOwned} from './cosmetic.js?v=a73655c8802cef0c1c79b07d9c40ff47bd9b47012a33b9fe8885655b15ea070e';
 
 export const PROFILE_VERSION = 1;
 const integer = value => Number.isSafeInteger(value) && value >= 0;
