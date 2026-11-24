@@ -1,8 +1,8 @@
 import {audioEnvironment} from './audio-environment.js?v=7bde9aefbf33f30cc13c41f2fce0a699e2af5b347668f35f6ffc261bc1c34eaf';
 import {instrumentNote,instrumentPercussion} from './instrument.js?v=9d930541faca4a51dc876cad0095d18622a6e9fb2d71454eb1b57cceb88380b3';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=7904f3fab24003c6251442f7604d5d8fc7ef9163a8a1abb32f41975690c0162d';
-import {accessoryCelebration} from './accessory.js?v=36e0b1d7f9877e5301b225524a87160ca48e5e617f00d5d7fa21c76e0150481e';
-import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=ddc203acc7e92b1a16f24947665f4dbf857da6e9dea64f178d61d81305382532';
+import {accessoryCelebration} from './accessory.js?v=6030928639a0cbae9599108e2df3144478e91ffbcdcf3da53bf8bc1884b79fc0';
+import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=50f26a8ecaed06f42769edbf9c8dd50c2a0fa896dce11e53d36ad78d1830d695';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js?v=d31acea21b543a610f696e47d50a254ce52527d06e488d6e72309535656e4d38';

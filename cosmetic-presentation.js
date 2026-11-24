@@ -12,6 +12,11 @@ export function cosmeticShowcaseFrame(body,accessories,kind,width,height){
   const p=accessories.follower,zoom=Math.min(6,width/(body.radius*3.4+24),height/(body.radius*3.4+24));
   return {zoom,x:width/2-p.x*zoom,y:height/2-p.y*zoom};
  }
+ if(kind==='pendant'&&accessories.anchor==='point'){
+  // Stable framing makes taps and dragging visible; roaming must not move the camera.
+  const span=accessories.pendantReach*2+24,zoom=Math.min(8,width/span,height/span);
+  return {zoom,x:width/2*(1-zoom),y:height/2*(1-zoom)};
+ }
  if(kind==='pendant'&&accessories.charm){
   const p=accessories.charm,a=accessories.attachment(body,p),r=body.radius*.95;
   const left=Math.min(a.x,p.x-r),right=Math.max(a.x,p.x+r),top=Math.min(a.y,p.y-r),bottom=Math.max(a.y,p.y+r);

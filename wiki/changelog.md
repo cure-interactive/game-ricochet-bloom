@@ -6,6 +6,24 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.40.3
+
+Build: 2026-11-24 09:01:43 UTC
+
+### Player Changes
+
+- Pendants no longer celebrate or offer Preview Celebration. Their ambient rarity effects and cords remain.
+- Pendants float farther from the player with a larger inner repulsion area. Showcase uses the same soft repulsion around its loose point anchor.
+- Pendant Showcase responds to taps and dragging on the pendant itself. Its opposite cord endpoint roams, and the camera stays stable.
+- Companion celebrations retain their animations, sound and playback control.
+
+<!-- development -->
+### Developer Notes
+
+- Pendant rendering is independent of reaction and celebration state; celebration playback is companion-only.
+- Point and shell anchors share one pendant leash configuration: clearance 2.075 and maximum reach 2.6 in artwork-radius units.
+<!-- /development -->
+
 ## v3.40.2
 
 Build: 2026-11-24 08:41:50 UTC
@@ -16,10 +34,12 @@ Build: 2026-11-24 08:41:50 UTC
 - Pendants in Showcase gently lean with movement and ease upright instead of rotating with the tether.
 - The visible cord now attaches to a loose point anchor that responds to taps and dragging, with no hidden player shell or avoidance area. In Motion retains the normal player attachment.
 
-### Developer Changes
+<!-- development -->
+### Developer Notes
 
 - Accessory simulation explicitly distinguishes point anchors from player-shell attachment. Point mode keeps the shared leash, mass, friction and cord artwork while removing shell clearance and membrane simulation.
 - A separate eased pendant angle controls artwork and its cord eyelet. The Showcase anchor uses a softer shared interaction spring.
+<!-- /development -->
 
 ## v3.40.1
 
@@ -30,10 +50,12 @@ Build: 2026-11-24 02:23:48 UTC
 - Companion and pendant Showcase views now display only that cosmetic, enlarged. In Motion keeps the full equipped ensemble.
 - Pendant cords attach to an invisible body that reacts to taps and can be dragged around the preview. The hidden anchor gently yields away from a nearby pendant, and releasing lets both settle naturally.
 
-### Developer Changes
+<!-- development -->
+### Developer Notes
 
 - Shared preview composition isolates accessory Showcase loadouts and hides player/effect drawing while retaining membrane and tether simulation.
 - Optional bounded pointer dragging uses the shared interaction state, pointer capture, cancellation and cleanup. The Showcase camera stays still while dragging.
+<!-- /development -->
 
 ## v3.40.0
 

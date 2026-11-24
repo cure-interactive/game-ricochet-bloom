@@ -1,4 +1,4 @@
-import {ACCESSORIES} from './accessory.js?v=36e0b1d7f9877e5301b225524a87160ca48e5e617f00d5d7fa21c76e0150481e';
+import {ACCESSORIES} from './accessory.js?v=6030928639a0cbae9599108e2df3144478e91ffbcdcf3da53bf8bc1884b79fc0';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {COSMETIC_COLLECTION} from './cosmetic-collection.js?v=8b9c9d9c42ac8b46235b47296859df773d83c0fb2abaf3c348329cac0db6cbc8';
 import {SOUNDSTAGES,AMBIENCES} from './music-environment.js?v=73e91e18fb9ebfe27e84a2bee40dc752fd44e6131750e7e288608909b1875e04';

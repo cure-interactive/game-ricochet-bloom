@@ -1,5 +1,5 @@
 import {uiWindMoved} from './ui-sound.js?v=d2cdaa7255e60e9d5e6d0378ae12d627e9f22d0484f04c179f6c76d6eb3529b5';
-import { iconHTML } from './ui-icon.js?v=982f9454c09cc864e801fe77c736c293672bd5de6e1347de5acff33ca4492647';
+import { iconHTML } from './ui-icon.js?v=651851d37e4b6c0baf7ace97e9b872c2946987c9106bb31c885aa3814763f420';
 
 export function edgeBackReady(dx,dy,width) {
   return dx>=Math.min(100,Math.max(60,width*.22))&&dx>Math.abs(dy)*1.5;

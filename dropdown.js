@@ -1,4 +1,4 @@
-import { iconNode } from './ui-icon.js?v=982f9454c09cc864e801fe77c736c293672bd5de6e1347de5acff33ca4492647';
+import { iconNode } from './ui-icon.js?v=651851d37e4b6c0baf7ace97e9b872c2946987c9106bb31c885aa3814763f420';
 // Native selects remain the value/change owner; one themed popup presents them.
 export function dropdownMount(doc=document,win=window){
  const entries=new Map();let opened=null,serial=0,queued=false,type='',typedAt=0;

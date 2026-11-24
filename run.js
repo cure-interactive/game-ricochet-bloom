@@ -2,7 +2,7 @@ import { PLAYER_UPGRADES, playerBuild } from './player-upgrade.js?v=205999fde590
 import { buildValidate } from './skill-effect.js?v=b00900f06233cdeb7ee756f7a77164fb4fce302e8b9f5fa270e5b96742ffcda8';
 import { catalogueCreate, catalogueNode, STARTERS } from './catalogue.js?v=c1d42ecf5ab5eb7f0a369fdccd0d8696079d69ac29f9676f4f854e39de9671ac';
 import { POWER_TREES } from './power-tree.js?v=2a64a8c4a0ad6dc1f93d8385f13952b46869143cbf7dc606ecd40164a825481b';
-import { profileCosmeticFavorite, profileCosmetic, profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=76f201777bca3653e4fb1b48cbd269075089c9046328ae00b610045ffd2e1683';
+import { profileCosmeticFavorite, profileCosmetic, profileCreate, profileValidate, profilePurchase, profilePlayerPurchase, profileReward, profileCurrencyGrant, profileSummary, loadoutResolve, unlockedResolve } from './profile.js?v=c192410727d8e5933b09661146a0fac9abdafa7425c3f801b75128ef20add4f6';
 import { gameCreate, saveValidate, RULE } from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import { bubbleRole, musicCreate, musicRunSection } from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
 

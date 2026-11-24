@@ -1,4 +1,4 @@
-import {PoolSound} from './sound.js?v=dbfba6f3b34f69fe46813f7afaba4b8cc28173c847539b67efade5ed99e7e128';
+import {PoolSound} from './sound.js?v=7712f8652667dfae088928695eadd06cae176dba8b58c92da49c9b085df042cb';
 import {audioRecoveryMount} from './audio-recovery.js?v=331a520d868a95d215b7b468c29e1fa0f7aab53824ecc5332618f3aac4cafe98';
 
 // Detached composition uses the game's finished arrangement/scheduler only.

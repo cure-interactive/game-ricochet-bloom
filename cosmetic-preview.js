@@ -1,7 +1,7 @@
-import {cosmeticCardLoadout,cosmeticShowcaseFrame,cosmeticSoloKind,cosmeticPreviewLoadout} from './cosmetic-presentation.js?v=6d11ce15b071d6dcd2999acea867b4292d076785f76d44d3b69b9685df5e5581';
+import {cosmeticCardLoadout,cosmeticShowcaseFrame,cosmeticSoloKind,cosmeticPreviewLoadout} from './cosmetic-presentation.js?v=d65010e620ce52421ce1c9001b9dac66f27e058432d5f0e318164430410729e5';
 import {bubbleInteractionMount} from './bubble-interaction.js?v=7b223dd6a9f694a68b3b6c221a72da4a8ec38887b595f058b522affae6723c69';
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e5d682d54726c402cbba21b5c0dd0415557d7ed9f44a5f144c7dba8c36cb5a58';
-import {CosmeticVisual} from './cosmetic-visual.js?v=053e2906ef4e94c73473a946af70ed5ad841223eeb25cfcd054585c79eaf81b9';
+import {CosmeticVisual} from './cosmetic-visual.js?v=58005fcb52a47eb47c5e87215047399e7fcf076566df529ff0d5c0f2409eb846';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender} from './bubble-render.js?v=9b2f2b87f161370be645295a8959febcc9a37c1e4aa39bed2a0fb875973c3b4f';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
@@ -46,7 +46,7 @@ export function cosmeticPreviewMount(canvas,host){
  const solo=()=>host.thumbnail?null:cosmeticSoloKind(view,host.kind?.());
  const touchAction=surface.style.touchAction;
  const syncInput=()=>{surface.style.touchAction=solo()==='pendant'?'none':touchAction;};syncInput();
- const interaction=bubbleInteractionMount(surface,{drag:()=>solo()==='pendant',spring:()=>solo()==='pendant'?{stiffness:5,damping:4}:null,contact:(...args)=>visual.accessories.contact(...args),active:()=>active&&!doc.hidden&&activity?.isActive()!==false,geometry:()=>{if(!geometry)return null;const r=surface.getBoundingClientRect(),unit=(r.width||r.right-r.left)/geometry.width;return {x:r.left+(body.x*camera.zoom+camera.x)*unit,y:r.top+(body.y*camera.zoom+camera.y)*unit,unit:unit*camera.zoom*body.radius/14,visible:!!activity.clip(r)};},hit:(x,y,speed)=>{if(solo()!=='pendant')bubbleHit(membrane,body.radius,x,y,speed*body.radius/14);}});
+ const interaction=bubbleInteractionMount(surface,{drag:()=>solo()==='pendant',contact:(...args)=>{if(solo()!=='pendant')visual.accessories.contact(...args);},active:()=>active&&!doc.hidden&&activity?.isActive()!==false,geometry:()=>{if(!geometry)return null;const r=surface.getBoundingClientRect(),unit=(r.width||r.right-r.left)/geometry.width;return {x:r.left+(body.x*camera.zoom+camera.x)*unit,y:r.top+(body.y*camera.zoom+camera.y)*unit,unit:unit*camera.zoom*body.radius/14,visible:!!activity.clip(r)};},hit:(x,y,speed)=>{if(solo()!=='pendant')bubbleHit(membrane,body.radius,x,y,speed*body.radius/14);}});
  function key(event){
   if(host.thumbnail)return;const direction={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],Enter:[0,-1],' ':[0,-1]}[event.key];if(!direction)return;
   event.preventDefault();interaction.state.vx+=direction[0]*60;interaction.state.vy+=direction[1]*60;if(solo()!=='pendant')bubbleHit(membrane,body.radius,-direction[0],-direction[1],140);
@@ -100,8 +100,8 @@ export function cosmeticPreviewMount(canvas,host){
   offset={x:motion.x*factor,y:motion.y*factor,vx:motion.vx*factor,vy:motion.vy*factor};body.x+=offset.x;body.y+=offset.y;body.vx+=offset.vx;body.vy+=offset.vy;
   const trails=!isolated&&host.trailEnabled?.()!==false;
   if(!trails&&visual.points.length)visual.breakTrail();
-  // In pendant Showcase, body is a loose point anchor. Radius is artwork scale,
-  // not a hidden player's collision shell or exclusion zone.
+  // In pendant Showcase, body is the interactive charm; its other endpoint
+  // roams with standard pendant repulsion, without any hidden player shell.
   if(isolated!=='pendant')bubbleStep(membrane,body,dt,false,{vx:sensor.x,vy:sensor.y});
   const environment={impulse:sensor.impulse,acceleration:sensor.acceleration,anchor:isolated==='pendant'?'point':'shell',shell:isolated==='pendant'?null:bubbleOutline(membrane,body)};
   if(dt>0)visual.step(body,dt,trails,environment);else if(!visual.accessories.body)visual.accessories.step(body,0,environment);
