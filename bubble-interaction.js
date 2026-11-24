@@ -68,10 +68,9 @@ export function bubbleInteractionMount(surface,host){
    previousFrame=current;
    for(const point of hub.contacts.values())control.pressure(point,'hold',dt);
    for(const point of control.pulses){control.pressure(point,'pulse',dt,point.age);point.age+=dt;}control.pulses=control.pulses.filter(p=>p.age<1.25);
-   const force=host.force?.();if(force)entityImpulse(control.state,force.x*dt,force.y*dt);
    const vector=sensor.sample();control.state.vx+=vector.x*dt;control.state.vy+=vector.y*dt;
    if(drag){control.state={x:drag.x,y:drag.y,vx:0,vy:0};return {x:vector.x,y:vector.y,impulse:{x:0,y:0},acceleration:vector};}
-   control.state=skinSpringStep(control.state,dt,{stiffness:24,damping:10});const s=control.state,distance=Math.hypot(s.x,s.y);
+   control.state=skinSpringStep(control.state,dt,host.spring?.()||{stiffness:24,damping:10});const s=control.state,distance=Math.hypot(s.x,s.y);
    const limit=host.drag?.()?28:10;
    if(distance>limit){const nx=s.x/distance,ny=s.y/distance;s.x=nx*limit;s.y=ny*limit;const outward=s.vx*nx+s.vy*ny;if(outward>0){s.vx-=nx*outward;s.vy-=ny*outward;}}
    const impulse=dt>0?pending:{x:0,y:0};if(dt>0)pending={x:0,y:0};

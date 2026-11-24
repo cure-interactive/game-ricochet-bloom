@@ -1,7 +1,7 @@
-import {gamemodeNavigation} from './gamemode-navigation.js?v=55a580726787ae675c63184c0a6d2a070c5cd11c8c7c06410a44ed717769f387';
+import {gamemodeNavigation} from './gamemode-navigation.js?v=dd1cece1eaffa2e64e60a1a96f5c83c90f7350e0ed582187d54423a7c3d2cb9e';
 import {segmentedBarMount} from './segmented-control.js?v=bfc2eb723bd5080e1ff722bcfb43b3958890bbcd7bb4f5ce1e7dbf3c3192b161';
-import { screenHeader } from './screen-header.js?v=9ab6b3cf5602ced6dc6e13b81276dce489e8ed34d63861ef887524042f9c5327';
-import { buttonHTML } from './ui-icon.js?v=6714d1bebfde0855f289ae2396849587b277c74e191bc1ae84a5fdd1b44bd11c';
+import { screenHeader } from './screen-header.js?v=22cdd7237f9886a35b4827c06a0cedde129e69b71b571ae67171c7586a9f32c9';
+import { buttonHTML } from './ui-icon.js?v=982f9454c09cc864e801fe77c736c293672bd5de6e1347de5acff33ca4492647';
 import { escapeHTML as escape } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
 import { GAMEMODE_CARDS } from './gamemode-catalogue.js?v=4a77aef872946701ceb303f36baf9bdb3a5ee3c85b0df90fc3879ab94ffceff8';

@@ -5,7 +5,7 @@ import {bubbleShellPoint} from './bubble-render.js?v=9b2f2b87f161370be645295a895
 import {companionArt} from './companion-art.js?v=f9f8456faee7b4b466548f9fe2c3e0dcba123aeb64ffa0e955b9fcd8808c0715';
 import {WanderMotion} from './wander-motion.js?v=9828bf3538efbf59246439899737e5d16c23542544d6dc0a1058bd39f3000335';
 import {angleApproach} from './angle.js?v=a877fbe89e9f287f68b69f52d76679cbf59de4428f5c6f8931471c8e40003750';
-import {pendantCord} from './pendant-cord.js?v=c2cf63ffc76d047316fad7741f741b326499b6aef4d4198a0dc2f53ad7b45d43';
+import {pendantCord} from './pendant-cord.js?v=a2652c10d5fc08863e4f660fbbb61d6f2619315b830413dc30e4feb67cbba0ff';
 import {tetherStep} from './tether-motion.js?v=befaaaaa72aea69adbf2f8d7d061eb749b82581af3775ba1daa008ec80bc7f1a';
 import {CompanionWander} from './companion-wander.js?v=1b58a1d1c39662eca6ef433f02dcf08b3fa32a40898d7924bcea334633f6e656';
 import {cosmeticGet} from './cosmetic.js?v=ddc203acc7e92b1a16f24947665f4dbf857da6e9dea64f178d61d81305382532';
@@ -37,6 +37,7 @@ function flourish(c,item,t,celebration,low,pendant=false){
 }
 
 const pendantTether={length:2.6,clearance:1.55,drag:3,mass:.65};
+const pointTether={...pendantTether,clearance:0};
 const companionTether={length:4.8,clearance:1.8,drag:3,mass:.9};
 
 // Independent, bounded presentation state. Never retains or mutates an engine body.
@@ -52,7 +53,7 @@ export class AccessoryVisual{
  clear(){this.resetMotion();this.elapsed=0;this.reaction=0;this.celebration=0;this.pendant='pendant.none';this.companion='companion.none';}
  configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion'){this.trail.clear();this.follower=null;this.companionAngle=0;this.wander.reset();}else {this.charm=null;this.pendantWander.reset();}this.celebration=0;}this[kind]=id;}}
  react(celebrate=false){this.reaction=1;if(celebrate)this.celebration=1;}
- resetMotion(){this.trail.clear();this.body=null;this.shell=null;this.follower=null;this.charm=null;this.heading=0;this.companionAngle=0;this.wander.reset();this.pendantWander.reset();}
+ resetMotion(){this.trail.clear();this.body=null;this.shell=null;this.follower=null;this.charm=null;this.heading=0;this.companionAngle=0;this.pendantAngle=0;this.anchor='shell';this.wander.reset();this.pendantWander.reset();}
  // UI contact positions are relative to the player's center in radius-14 units.
  contact(point,kind,seconds=1,age=0,scale=1){
   if(!this.body)return;const unit=this.body.radius/14;
@@ -67,25 +68,28 @@ export class AccessoryVisual{
   }
  }
  attachment(body,charm,shell=this.shell){
+  if(this.anchor==='point')return {x:body.x,y:body.y};
   const angle=Math.atan2(charm.y-body.y,charm.x-body.x);
   return shell?.length?bubbleShellPoint(shell,angle):{x:body.x+Math.cos(angle)*body.radius,y:body.y+Math.sin(angle)*body.radius};
  }
- step(body,seconds,{interests=[],rotation=0,shell=null,impulse={x:0,y:0},acceleration={x:0,y:0}}={}){
+ step(body,seconds,{interests=[],rotation=0,shell=null,anchor='shell',impulse={x:0,y:0},acceleration={x:0,y:0}}={}){
   const dt=clamp(Number.isFinite(seconds)?seconds:0,0,.05);
   if(!body||!Number.isFinite(body.x)||!Number.isFinite(body.y)){this.resetMotion();return;}
+  if(anchor!==this.anchor){this.resetMotion();this.anchor=anchor;}
   if(this.body&&!dt)return; // Observer repaints and paused frames cannot inject motion.
   const r=Number.isFinite(body.radius)&&body.radius>0?body.radius:14,previous=this.body,previousShell=this.shell;
   const teleport=previous&&Math.hypot(body.x-previous.x,body.y-previous.y)>r*12;
   if(!previous||teleport){
    this.trail.clear();
    const speed=Math.hypot(body.vx||0,body.vy||0);this.heading=speed>1?Math.atan2(body.vy||0,body.vx||0):0;
-   this.follower=null;this.charm=null;this.companionAngle=0;this.wander.reset();this.pendantWander.reset();
+   this.follower=null;this.charm=null;this.companionAngle=0;this.pendantAngle=0;this.wander.reset();this.pendantWander.reset();
   }
   const vx=previous&&!teleport&&dt?(body.x-previous.x)/dt:0,vy=previous&&!teleport&&dt?(body.y-previous.y)/dt:0;
   this.body={x:body.x,y:body.y,radius:r,vx,vy};
-  this.shell=shell?.map(p=>({x:p.x,y:p.y}))||null;
+  const pointAnchor=this.anchor==='point';
+  this.shell=pointAnchor?null:shell?.map(p=>({x:p.x,y:p.y}))||null;
   this.follower||=this.spawn(this.body,companionTether);
-  this.charm||=this.spawn(this.body,pendantTether);
+  this.charm||=this.spawn(this.body,pointAnchor?pointTether:pendantTether);
   if(!dt||!previous||teleport)return;
   for(const point of [this.follower,this.charm]){point.vx+=impulse.x*r/14;point.vy+=impulse.y*r/14;}
   this.elapsed+=dt;this.reaction=Math.max(0,this.reaction-dt*2.5);this.celebration=Math.max(0,this.celebration-dt/1.5);
@@ -103,7 +107,8 @@ export class AccessoryVisual{
    drift.x+=acceleration.x*r/14;drift.y+=acceleration.y*r/14;
    const end=this.attachment(this.body,this.charm),start=this.attachment(previous,this.charm,previousShell);
    const attachment={x:start.x+(end.x-start.x)*i/steps,y:start.y+(end.y-start.y)*i/steps,vx:(end.x-start.x)/dt,vy:(end.y-start.y)/dt};
-   tetherStep(this.charm,anchor,h,pendantTether,drift,attachment);
+   tetherStep(this.charm,anchor,h,pointAnchor?pointTether:pendantTether,drift,pointAnchor?null:attachment);
+   if(pointAnchor)this.pendantAngle=angleApproach(this.pendantAngle,clamp(this.charm.vx/(r*10),-.4,.4),5,h);
   }
   this.trail.step(this.follower,r,dt,cosmeticGet(this.companion));
  }
@@ -120,7 +125,9 @@ export class AccessoryVisual{
   const pendant=cosmeticGet(this.pendant),companion=cosmeticGet(this.companion);
   if(pendant&&pendant.style!=='none'&&this.charm){
    const p=this.charm,dx=p.x-b.x,dy=p.y-b.y;
-   pendantCord(c,b,p,pendantTether.length,pendant,t,gentle,this.attachment(b,p,shell));c.save();c.translate(p.x,p.y);c.rotate(Math.atan2(dy,dx)-Math.PI/2);c.scale(r/14,r/14);
+   const pointAnchor=this.anchor==='point',angle=pointAnchor?this.pendantAngle:Math.atan2(dy,dx)-Math.PI/2;
+   const tip=pointAnchor?{x:p.x+Math.sin(angle)*6*r/14,y:p.y-Math.cos(angle)*6*r/14}:p;
+   pendantCord(c,b,tip,pendantTether.length,pendant,t,gentle,this.attachment(b,p,shell),pointAnchor?0:1);c.save();c.translate(p.x,p.y);c.rotate(angle);c.scale(r/14,r/14);
    const pendantPulse=accessoryTier(pendant)>=2?accessoryPulse(this.celebration):0;c.scale(1+pendantPulse*.16,1+pendantPulse*.16);flourish(c,pendant,t,this.celebration,gentle,true);
    c.fillStyle='#081b2a';ellipse(c,0,0,6.3,7.3);c.fillStyle=pendant.color;c.strokeStyle='#f1fff2';c.lineWidth=.7;
    if(pendant.style==='drop'){c.beginPath();c.moveTo(0,-6);c.bezierCurveTo(1,-3,6,0,4,4);c.bezierCurveTo(1,8,-5,5,-4,1);c.closePath();c.fill();c.stroke();}

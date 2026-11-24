@@ -6,6 +6,21 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.40.2
+
+Build: 2026-11-24 08:41:50 UTC
+
+### Player Changes
+
+- Preview Celebration sits directly below the Showcase/In Motion selector.
+- Pendants in Showcase gently lean with movement and ease upright instead of rotating with the tether.
+- The visible cord now attaches to a loose point anchor that responds to taps and dragging, with no hidden player shell or avoidance area. In Motion retains the normal player attachment.
+
+### Developer Changes
+
+- Accessory simulation explicitly distinguishes point anchors from player-shell attachment. Point mode keeps the shared leash, mass, friction and cord artwork while removing shell clearance and membrane simulation.
+- A separate eased pendant angle controls artwork and its cord eyelet. The Showcase anchor uses a softer shared interaction spring.
+
 ## v3.40.1
 
 Build: 2026-11-24 02:23:48 UTC

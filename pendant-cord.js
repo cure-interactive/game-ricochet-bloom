@@ -1,9 +1,9 @@
 import {accessoryTier} from './accessory.js?v=36e0b1d7f9877e5301b225524a87160ca48e5e617f00d5d7fa21c76e0150481e';
 
 // Pendant artwork only. The invisible physical tether lives in tether-motion.
-export function pendantCord(c,body,charm,length,item,time=0,low=false,attachment=null){
+export function pendantCord(c,body,charm,length,item,time=0,low=false,attachment=null,inset=1){
  const r=body.radius,unit=r/14,dx=charm.x-body.x,dy=charm.y-body.y,d=Math.hypot(dx,dy)||1,nx=dx/d,ny=dy/d;
- const start=attachment||{x:body.x+nx*r,y:body.y+ny*r},slack=Math.max(0,r*(length-1)-Math.hypot(charm.x-start.x,charm.y-start.y))*.3;
+ const start=attachment||{x:body.x+nx*r,y:body.y+ny*r},slack=Math.max(0,r*(length-inset)-Math.hypot(charm.x-start.x,charm.y-start.y))*.3;
  const control={x:(body.x+charm.x)/2-ny*slack,y:(body.y+charm.y)/2+nx*slack};
  const at=t=>({x:(1-t)**2*start.x+2*(1-t)*t*control.x+t*t*charm.x,y:(1-t)**2*start.y+2*(1-t)*t*control.y+t*t*charm.y});
  const tier=accessoryTier(item);

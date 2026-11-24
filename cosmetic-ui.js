@@ -1,22 +1,22 @@
-import {cosmeticViewMount} from './cosmetic-view.js?v=ba8f8ec95a95b5b8caaa61a679c009b8f18d7406b000c3ca5cf4fed02b38afcb';
+import {cosmeticViewMount} from './cosmetic-view.js?v=0ef2a856b47b288bdcb4ca543fe50bff164766914225c30b7241919d7a802f84';
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=49b509cc7abd57a15a9a8ede92966e22362b27a849f3d37f8ebf8c78dc65cd17';
+import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=0b14fa5680ebb9cc9c6ef6ca047861b9642752f2d2a474f2a560d92de8da5868';
 import {segmentedHTML,segmentedMount} from './segmented-control.js?v=bfc2eb723bd5080e1ff722bcfb43b3958890bbcd7bb4f5ce1e7dbf3c3192b161';
-import {cosmeticPriceHTML} from './cosmetic-price.js?v=c6045ef3522d643402f1c5ff6529bcfd1fb9193b8f974485bd65c1c9441d262c';
+import {cosmeticPriceHTML} from './cosmetic-price.js?v=503fc7d4c374fc8d2fc9f1b7a7fecb9433c75b25af5dfbe12021d08c1333eafb';
 import {COSMETICS,cosmeticOrder,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=ddc203acc7e92b1a16f24947665f4dbf857da6e9dea64f178d61d81305382532';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=b3e9a7f4c7bdf908064a3195d2386bdd0146c80ddf6052b084fff03b64ee53b1';
-import {screenHeader} from './screen-header.js?v=9ab6b3cf5602ced6dc6e13b81276dce489e8ed34d63861ef887524042f9c5327';
-import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=6714d1bebfde0855f289ae2396849587b277c74e191bc1ae84a5fdd1b44bd11c';
-import {rarityIconHTML} from './skill-icon.js?v=02904255d1cccc861729bb9437324ef61ba438ddbb65e46a3382f94fbc10d9ab';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=be30cb6662566017f6fcdfc302f7731fa4a889de1938bd96e97af27f31f47f89';
+import {screenHeader} from './screen-header.js?v=22cdd7237f9886a35b4827c06a0cedde129e69b71b571ae67171c7586a9f32c9';
+import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=982f9454c09cc864e801fe77c736c293672bd5de6e1347de5acff33ca4492647';
+import {rarityIconHTML} from './skill-icon.js?v=4b9833fc1b065e0073a99862c6c9119d619870b3b7f6857bd98a78125335c0cf';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 const playbackButtonHTML=(label,attribute)=>`<button type="button" class="quiet cosmetic-sound-button" ${attribute} data-preview-title="${label}" aria-pressed="false">${iconHTML('play')}<span data-preview-label>${label}</span><span class="cosmetic-sound-progress" aria-hidden="true"><i></i></span></button>`;
 export function cosmeticMount(host){
  let kind='trail',selected=null,preview=null,renderedKind='',audition=0,libraryScroll=0,soundFrame=0,soundActive=false;const thumbnails=[];
  const dialog=document.createElement('dialog');dialog.id='cosmetic-dialog';dialog.setAttribute('aria-labelledby','cosmetic-title');
- dialog.innerHTML=screenHeader({icon:'trails',title:'Trail',titleId:'cosmetic-title',className:'skin-heading',back:buttonHTML('Back','arrow-left',{'data-cosmetic-back':true})})+`<div class="skin-content"><div class="skin-scroll"><section class="skin-library">${segmentedHTML([['music','Instruments','music-note'],['soundstage','Soundstages','sound'],['ambience','Ambience','wave']].map(([id,label,icon])=>buttonHTML(label,icon,{'data-music-category':id,'aria-pressed':id==='music'})),{label:'Music categories',current:'music',className:'music-category'})}<p class="skin-intro"></p><div class="skin-grid"></div></section><section class="skin-detail" hidden><div class="cosmetic-viewer"><div class="cosmetic-preview-large" role="button" tabindex="0" aria-label="Cosmetic Preview. Tap or use arrow keys to nudge."><canvas aria-label="Animated Cosmetic Preview"></canvas></div></div><section class="skin-selection cosmetic-detail"></section></section><p class="skin-status" role="status"></p></div></div>`;
+ dialog.innerHTML=screenHeader({icon:'trails',title:'Trail',titleId:'cosmetic-title',className:'skin-heading',back:buttonHTML('Back','arrow-left',{'data-cosmetic-back':true})})+`<div class="skin-content"><div class="skin-scroll"><section class="skin-library">${segmentedHTML([['music','Instruments','music-note'],['soundstage','Soundstages','sound'],['ambience','Ambience','wave']].map(([id,label,icon])=>buttonHTML(label,icon,{'data-music-category':id,'aria-pressed':id==='music'})),{label:'Music categories',current:'music',className:'music-category'})}<p class="skin-intro"></p><div class="skin-grid"></div></section><section class="skin-detail" hidden><div class="cosmetic-viewer"><div class="cosmetic-preview-large" role="button" tabindex="0" aria-label="Cosmetic Preview. Tap or use arrow keys to nudge."><canvas aria-label="Animated Cosmetic Preview"></canvas></div><div class="cosmetic-playback" hidden></div></div><section class="skin-selection cosmetic-detail"></section></section><p class="skin-status" role="status"></p></div></div>`;
  document.body.append(dialog);
- const back=dialog.querySelector('[data-cosmetic-back]'),detail=dialog.querySelector('.cosmetic-detail'),status=dialog.querySelector('.skin-status'),scroll=dialog.querySelector('.skin-scroll'),large=dialog.querySelector('.cosmetic-preview-large canvas');
+ const back=dialog.querySelector('[data-cosmetic-back]'),detail=dialog.querySelector('.cosmetic-detail'),status=dialog.querySelector('.skin-status'),scroll=dialog.querySelector('.skin-scroll'),large=dialog.querySelector('.cosmetic-preview-large canvas'),playback=dialog.querySelector('.cosmetic-playback');
  let heading=dialog.querySelector('.screen-heading-title>.ui-icon');
  const isAudio=()=>['music','soundstage','ambience'].includes(kind);
  const title=()=>isAudio()?'Music':({trail:'Trail',bounce:'Impact',pendant:'Pendant',companion:'Companion'}[kind]);
@@ -24,11 +24,11 @@ export function cosmeticMount(host){
  const glyph=()=>isAudio()?'music-note':({trail:'trails',bounce:'bounce-effects',pendant:'pendants',companion:'companions'}[kind]);
  const musicArt=item=>`<div class="music-theme-art" style="--theme-color:${item.color}" aria-hidden="true">${iconHTML(item.kind==='soundstage'?'sound':item.kind==='ambience'?'wave':'music-note')}<span>${[.4,.7,1,.6,.85].map(h=>`<i style="--bar-height:${h}"></i>`).join('')}</span></div>`;
  const win=dialog.ownerDocument.defaultView;
- function soundButton(active,progress=0){const button=detail.querySelector('.cosmetic-sound-button');if(!button)return;button.setAttribute('aria-pressed',String(active));button.querySelector('[data-preview-label]').textContent=active?'Stop Preview':button.dataset.previewTitle;button.style.setProperty('--preview-progress',String(progress));}
+ function soundButton(active,progress=0){const button=dialog.querySelector('.cosmetic-sound-button');if(!button)return;button.setAttribute('aria-pressed',String(active));button.querySelector('[data-preview-label]').textContent=active?'Stop Preview':button.dataset.previewTitle;button.style.setProperty('--preview-progress',String(progress));}
  const stop=()=>{audition++;soundActive=false;win.cancelAnimationFrame(soundFrame);soundFrame=0;host.stopSound?.();preview?.cancelCelebration();soundButton(false);};
  function followSound(){
-  const state=detail.querySelector('[data-accessory-celebrate]')?preview?.celebrationStatus():host.previewStatus?.();if(!soundActive)return;
-  if(!state?.active){stop();detail.querySelector('.cosmetic-sound-hint').textContent='Preview finished.';return;}
+  const state=dialog.querySelector('[data-accessory-celebrate]')?preview?.celebrationStatus():host.previewStatus?.();if(!soundActive)return;
+  if(!state?.active){stop();dialog.querySelector('.cosmetic-sound-hint').textContent='Preview finished.';return;}
   soundButton(true,state.progress);soundFrame=win.requestAnimationFrame(followSound);
  }
  const filter=rarityFilterMount(dialog,{scroll,cards:()=>[...dialog.querySelectorAll('.cosmetic-card')],profile:host.profile,act:host.act,status});
@@ -55,19 +55,20 @@ export function cosmeticMount(host){
    button.querySelector('.skin-choice-state').innerHTML=iconHTML(equipped?'check':owned?'lock-open':'lock')+(equipped?'Equipped':owned?'Unlocked':x.cost+' Points');
   }
   filter.show(!item);views.show(!!item&&!isAudio());
+  playback.replaceChildren();playback.hidden=!item||!['pendant','companion'].includes(item.kind)||item.style==='none';
   if(!item)return;
   const owned=cosmeticOwned(profile,item),equipped=loadout[kind]===selected,points=profile.wallet.seeds;
   detail.classList.toggle('is-equipped',equipped);detail.style.setProperty('--skin-color',item.color);
   detail.innerHTML=`<div class="skin-selection-title">${iconHTML(equipped?'check':owned?'lock-open':'lock')}<div><small class="cosmetic-rarity">${rarityIconHTML(item.rarity)}${RARITIES[item.rarity].name} · ${label()}</small><h3>${escapeHTML(item.name)}</h3></div></div><p class="skin-unlock">${escapeHTML(item.description)}</p>${cosmeticPriceHTML(item,owned,host.showPurchasedCosts?.())}<button type="button" data-cosmetic-equip ${equipped||!owned&&points<item.cost?'disabled':''} class="skin-equip ${equipped?'is-equipped':''}">${staticIconHTML(equipped?'check':owned?glyph():'lock')}<span>${equipped?'Equipped':owned?'Equip '+label():'Unlock &amp; Equip · '+item.cost+' Points'}</span></button>${!owned?`<p class="cosmetic-wallet">${iconHTML('coin')}${points} Points${points<item.cost?' · '+(item.cost-points)+' more needed':''}</p>`:''}`;
-  if(['pendant','companion'].includes(item.kind)&&item.style!=='none')detail.insertAdjacentHTML('beforeend',playbackButtonHTML('Preview Celebration','data-accessory-celebrate')+`<small class="cosmetic-sound-hint" role="status">Play the celebration${cosmeticHasSound(item)?' with sound':''}. Tap again to stop.</small>`);
+  if(!playback.hidden)playback.insertAdjacentHTML('beforeend',playbackButtonHTML('Preview Celebration','data-accessory-celebrate')+`<small class="cosmetic-sound-hint" role="status">Play the celebration${cosmeticHasSound(item)?' with sound':''}. Tap again to stop.</small>`);
   if(cosmeticHasSound(item)&&item.kind!=='companion')detail.insertAdjacentHTML('beforeend',playbackButtonHTML('Preview Sound','data-cosmetic-sound')+`<small class="cosmetic-sound-hint" role="status">${isAudio()?'Try this '+label().toLowerCase()+' with the current music for up to ten seconds. Tap again to restore your equipped choice.'+(kind==='ambience'?' Follows Ambience Volume, Master Volume and Sound.':' Follows Music Volume, Master Volume and Sound.'):(item.kind==='trail'&&item.rarity==='mythic'?'Launch and travel · tapers to silence over 2.5 seconds.':item.kind==='companion'?'Celebration voice · a short answer after a 5-Chain or success.':'Launch or impact accent.')+' Follows master volume and mute.'}</small>`);
   large.hidden=isAudio();
-  const stage=large.parentElement;if(isAudio()){stage.removeAttribute('role');stage.removeAttribute('tabindex');stage.removeAttribute('aria-label');}else{stage.setAttribute('role','button');stage.setAttribute('tabindex','0');stage.setAttribute('aria-label',item.name+' Preview. Tap or use arrow keys to nudge.'+(item.kind==='pendant'?' In Showcase, drag to move the invisible cord anchor.':''));}
+  const stage=large.parentElement;if(isAudio()){stage.removeAttribute('role');stage.removeAttribute('tabindex');stage.removeAttribute('aria-label');}else{stage.setAttribute('role','button');stage.setAttribute('tabindex','0');stage.setAttribute('aria-label',item.name+' Preview. Tap or use arrow keys to nudge.'+(item.kind==='pendant'?' In Showcase, drag to move the loose cord anchor.':''));}
   large.parentElement.querySelector('.music-theme-art')?.remove();
   if(isAudio()){preview?.destroy();preview=null;large.insertAdjacentHTML('afterend',musicArt(item));return;}
   preview ||=cosmeticPreviewMount(large,{surface:large.parentElement,view:views.value(),kind:()=>kind,loadout:()=>({...cosmeticLoadout(host.profile()),...(selected?{[kind]:selected}:{})}),color:host.color,style:host.style});
  }
- const views=cosmeticViewMount(dialog,next=>{stop();preview?.viewSet(next);});views.attach(large.parentElement.parentElement);
+ const views=cosmeticViewMount(dialog,next=>{stop();preview?.viewSet(next);});views.attach(large.parentElement.parentElement);large.parentElement.parentElement.append(playback);
  const categories=segmentedMount(dialog,{attribute:'data-music-category',change(next){stop();kind=next;selected=null;libraryScroll=0;render();scroll.scrollTop=0;return dialog.querySelector('.music-category');}});
  function goBack(){
   stop();if(!selected){host.back();return;}
@@ -79,20 +80,20 @@ export function cosmeticMount(host){
  dialog.addEventListener('click',async e=>{
   const celebrate=e.target.closest('[data-accessory-celebrate]');
   if(celebrate){
-   if(soundActive){stop();detail.querySelector('.cosmetic-sound-hint').textContent='Preview stopped.';return;}
+   if(soundActive){stop();dialog.querySelector('.cosmetic-sound-hint').textContent='Preview stopped.';return;}
    stop();const id=selected,item=cosmeticGet(id),token=++audition;soundActive=true;soundButton(true);
    const ready=cosmeticHasSound(item)?await host.unlock?.():true;
    if(token!==audition||!dialog.open||selected!==id)return;
    preview?.celebrate({start:()=>{if(ready!==false&&cosmeticHasSound(item))host.sound?.(id);},soundDone:()=>!host.previewStatus?.()?.active,soundStatus:()=>host.previewStatus?.()});
-   detail.querySelector('.cosmetic-sound-hint').textContent='Preview playing. Tap again to stop.';followSound();
+   dialog.querySelector('.cosmetic-sound-hint').textContent='Preview playing. Tap again to stop.';followSound();
    return;
   }
   if(!e.target.closest('[data-cosmetic-sound]'))return;
-  if(soundActive){stop();detail.querySelector('.cosmetic-sound-hint').textContent='Preview stopped.';return;}
+  if(soundActive){stop();dialog.querySelector('.cosmetic-sound-hint').textContent='Preview stopped.';return;}
   const id=selected,token=++audition;soundActive=true;soundButton(true);
   const ready=await host.unlock?.();if(token!==audition||!dialog.open||selected!==id)return;
-  if(ready!==false&&host.sound?.(id)){detail.querySelector('.cosmetic-sound-hint').textContent=isAudio()?'Previewing this '+label().toLowerCase()+' with the current music. Tap again to restore your equipped choice.':'Preview playing. Tap again to stop.';followSound();}
-  else{stop();detail.querySelector('.cosmetic-sound-hint').textContent='Sound is muted or unavailable. Check Audio settings.';}
+  if(ready!==false&&host.sound?.(id)){dialog.querySelector('.cosmetic-sound-hint').textContent=isAudio()?'Previewing this '+label().toLowerCase()+' with the current music. Tap again to restore your equipped choice.':'Preview playing. Tap again to stop.';followSound();}
+  else{stop();dialog.querySelector('.cosmetic-sound-hint').textContent='Sound is muted or unavailable. Check Audio settings.';}
  });
  dialog.addEventListener('click',e=>{
   const choice=e.target.closest('[data-cosmetic]');

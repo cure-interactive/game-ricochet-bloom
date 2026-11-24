@@ -6,15 +6,6 @@ export const cosmeticCardLoadout=(item,loadout={})=>({trail:loadout.trail||'trai
 export const cosmeticSoloKind=(view,kind)=>view==='showcase'&&['pendant','companion'].includes(kind)?kind:null;
 export const cosmeticPreviewLoadout=(loadout,solo)=>solo?{[solo]:loadout[solo]}:loadout;
 
-// A hidden Showcase anchor can yield without introducing feedback into gameplay.
-// Force uses the shared interaction owner's radius-14 coordinate system.
-export function cosmeticAnchorForce(body,charm){
- if(!charm)return {x:0,y:0};
- const dx=(body.x-charm.x)*14/body.radius,dy=(body.y-charm.y)*14/body.radius,d=Math.hypot(dx,dy);
- const force=Math.max(0,28-d)*5;
- return force>0&&d>.001?{x:dx/d*force,y:dy/d*force}:{x:0,y:0};
-}
-
 // Frame the visible subject, including a pendant's cord endpoint but no hidden shell.
 export function cosmeticShowcaseFrame(body,accessories,kind,width,height){
  if(kind==='companion'&&accessories.follower){
