@@ -1,6 +1,6 @@
 import {bubbleInteractionMount} from './bubble-interaction.js?v=6c2d620f96364e97799c42d7a6b4682f26775fbae76fa3e10a38f90adfa588dc';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
-import {CosmeticVisual} from './cosmetic-visual.js?v=a4305c49deda1d67b2544bbcf11d53a83eba90d88f78b402efc0e6db6939a43c';
+import {CosmeticVisual} from './cosmetic-visual.js?v=417c866b74ba322d1d5c72eb2bb21e224ed7fedf0a1941b32d375ed1e74edfe4';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender,bubblePath} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';
@@ -128,18 +128,20 @@ export function registerPlayerBubble(win=window){
     top=Math.min(top,point.y+toy-pad);bottom=Math.max(bottom,point.y+toy+pad);
    }
    for(const point of this.trail.accessories.bounds()){left=Math.min(left,point.x+tox-point.r);right=Math.max(right,point.x+tox+point.r);top=Math.min(top,point.y+toy-point.r);bottom=Math.max(bottom,point.y+toy+point.r);}
+   // Snap allocation before clipping, never beyond the native scroll viewport.
+   const edge=value=>Math.floor(value*unit/32)*32/unit;
+   left=edge(left);top=edge(top);right=-edge(-right);bottom=-edge(-bottom);
    const clipped=this.activity?.clip({left:(left-ox)*unit,top:(top-oy)*unit,right:(right-ox)*unit,bottom:(bottom-oy)*unit});
    if(this.canvas.hidden===!!clipped)this.canvas.hidden=!clipped;if(!clipped)return;
    left=clipped.left/unit+ox;top=clipped.top/unit+oy;right=clipped.right/unit+ox;bottom=clipped.bottom/unit+oy;
-   const edge=value=>Math.floor(value*unit/32)*32/unit;
-   left=edge(left);top=edge(top);right=-edge(-right);bottom=-edge(-bottom);
    const width=(right-left)*unit,height=(bottom-top)*unit,ratio=qualityPixelRatio(this.ownerDocument.body.dataset?.quality,win.devicePixelRatio||1);
    const pixelWidth=Math.ceil(width*ratio),pixelHeight=Math.ceil(height*ratio);
    if(this.canvas.width!==pixelWidth)this.canvas.width=pixelWidth;
    if(this.canvas.height!==pixelHeight)this.canvas.height=pixelHeight;
    Object.assign(this.canvas.style,{width:`${width/parentScale}px`,height:`${height/parentScale}px`,left:`${((left-this.body.x)*unit+this.size/2)/parentScale}px`,top:`${((top-this.body.y)*unit+this.size/2)/parentScale}px`});
    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,pixelWidth,pixelHeight);
-   c.setTransform(unit*ratio,0,0,unit*ratio,-left*unit*ratio,-top*unit*ratio);
+   const sx=pixelWidth/width,sy=pixelHeight/height;
+   c.setTransform(unit*sx,0,0,unit*sy,-left*unit*sx,-top*unit*sy);
    c.save();c.translate(tox,toy);if(trails)this.trail.render(c,this.ownerDocument.body.dataset?.quality==='low',true);c.restore();
 
    if(style.getPropertyValue('--player-bubble-backing').trim()==='1'){

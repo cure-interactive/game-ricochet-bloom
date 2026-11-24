@@ -6,6 +6,23 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.38.2
+
+Build: 2026-11-24 00:20:42 UTC
+
+### Player Changes
+
+- Pendants and companions now appear at random positions within their roaming area when they spawn.
+- Keep animated preview canvases inside menu scroll boundaries so their transparent edges cannot extend the browser's scroll range.
+
+<!-- development -->
+### Developer Notes
+
+- Sample independent, area-uniform accessory positions between player clearance and leash reach. A separate seeded sequence advances across re-equipping, resets and teleports without changing paused state or gameplay.
+- Quantize cosmetic and Player canvas bounds before viewport clipping. Outward rounding after clipping introduced transparent overflow into scrolling menus. Derive drawing scales from final pixel dimensions to preserve alignment at fractional viewport and zoom boundaries.
+- Regression checks cover spawn distribution/lifecycle, exact clipping edges, zoom, animation and native scrollbar ownership. Desktop geometry verification is separate from physical iOS spring-back acceptance, which remains pending.
+<!-- /development -->
+
 ## v3.38.1
 
 Build: 2026-11-23 23:53:53 UTC

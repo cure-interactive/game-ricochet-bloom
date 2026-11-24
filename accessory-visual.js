@@ -37,7 +37,14 @@ const companionTether={length:4.8,clearance:1.8,drag:3};
 
 // Independent, bounded presentation state. Never retains or mutates an engine body.
 export class AccessoryVisual{
- constructor(seed){this.wander=new CompanionWander(seed);this.pendantWander=new WanderMotion(seed===undefined?undefined:seed^0x9e3779b9,{speed:.3,interval:8});this.clear();}
+ constructor(seed){this.spawnState=(seed??Math.floor(Math.random()*0xffffffff))>>>0||1;this.wander=new CompanionWander(seed);this.pendantWander=new WanderMotion(seed===undefined?undefined:seed^0x9e3779b9,{speed:.3,interval:8});this.clear();}
+ spawn(body,{clearance,length}){
+  // Separate from wander clocks: every respawn consumes fresh samples, while
+  // a supplied seed still reproduces the complete presentation sequence.
+  const random=()=>{let x=this.spawnState;x^=x<<13;x^=x>>>17;x^=x<<5;this.spawnState=x>>>0;return this.spawnState/4294967296;};
+  const angle=random()*tau,distance=body.radius*Math.sqrt(clearance**2+random()*(length**2-clearance**2));
+  return {x:body.x+Math.cos(angle)*distance,y:body.y+Math.sin(angle)*distance,vx:body.vx,vy:body.vy};
+ }
  clear(){this.resetMotion();this.elapsed=0;this.reaction=0;this.celebration=0;this.pendant='pendant.none';this.companion='companion.none';}
  configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion'){this.follower=null;this.companionAngle=0;this.wander.reset();}else {this.charm=null;this.pendantWander.reset();}this.celebration=0;}this[kind]=id;}}
  react(celebrate=false){this.reaction=1;if(celebrate)this.celebration=1;}
@@ -54,9 +61,8 @@ export class AccessoryVisual{
   }
   const vx=previous&&!teleport&&dt?(body.x-previous.x)/dt:0,vy=previous&&!teleport&&dt?(body.y-previous.y)/dt:0;
   this.body={x:body.x,y:body.y,radius:r,vx,vy};
-  const seed=(angle,distance)=>({x:body.x+Math.cos(angle)*r*distance,y:body.y+Math.sin(angle)*r*distance,vx,vy});
-  this.follower||=seed(this.heading-Math.PI/2,3.2);
-  this.charm||=seed(this.heading+2.35,2.15);
+  this.follower||=this.spawn(this.body,companionTether);
+  this.charm||=this.spawn(this.body,pendantTether);
   if(!dt||!previous||teleport)return;
   for(const point of [this.follower,this.charm]){point.vx+=impulse.x*r/14;point.vy+=impulse.y*r/14;}
   this.elapsed+=dt;this.reaction=Math.max(0,this.reaction-dt*2.5);this.celebration=Math.max(0,this.celebration-dt/1.5);
