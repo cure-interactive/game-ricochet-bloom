@@ -1,4 +1,4 @@
-import { buttonLabel } from './ui-icon.js?v=141b73ae9912576ea262053e37bd74607d256a5049e1845326c31654e92fc915';
+import { buttonLabel } from './ui-icon.js?v=44ea63eff6eacd4cad173283015795275bfc00f891809cd37ea89694c51bd05d';
 import { assetURL } from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
 import { escapeHTML } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 

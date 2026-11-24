@@ -1,5 +1,5 @@
 import {bubbleCurrent} from './bubble-current.js?v=76ca86b0c821ae31d911e894866bcca026dd0efaa73164053f72f1d70d8207cd';
-import {cosmeticTrailOrbit,cosmeticCardLoadout,cosmeticShowcaseFrame,cosmeticSoloKind,cosmeticPreviewLoadout} from './cosmetic-presentation.js?v=7bd32d11853b73cfb14f6ecc979d004f69e9d70c1708a2091737fad44d826a07';
+import {cosmeticTrailShowcase,cosmeticTrailOrbit,cosmeticCardLoadout,cosmeticShowcaseFrame,cosmeticSoloKind,cosmeticPreviewLoadout} from './cosmetic-presentation.js?v=b32f319d53941d567a86e5aa404aec8f9c0cd3fd7f4b3e5cb7b91567b7b0c228';
 import {bubbleInteractionMount} from './bubble-interaction.js?v=f93c99730054bbc2f5c3715863fc2759d8a6eb662a5b0fb784ff95cda0725591';
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e5d682d54726c402cbba21b5c0dd0415557d7ed9f44a5f144c7dba8c36cb5a58';
 import {CosmeticVisual} from './cosmetic-visual.js?v=a60ccf395c9317a69cc85338b327ecc5b54b53ae103faf946368acc632c30cc5';
@@ -83,7 +83,7 @@ export function cosmeticPreviewMount(canvas,host){
   if(host.thumbnail||view==='showcase'){
    const subject=host.thumbnail||host.kind?.();
    const t=visual.elapsed,padding=host.icon?body.radius:host.motionArea<1?body.radius+4:host.compact?54:subject==='trail'?body.radius+(42-body.radius)/2:72,area=host.motionArea||1,rx=Math.max(0,worldWidth*area/2-padding)+(host.icon&&subject==='trail'?4:0),ry=Math.max(host.icon&&subject==='trail'?body.radius:0,worldHeight*area/2-padding);
-   const orbit=subject==='trail'&&(host.icon||showcaseKind==='trail')?cosmeticTrailOrbit(body.radius,...(host.icon?[worldWidth,worldHeight]:[])):{rx,ry};
+   const orbit=showcaseKind==='trail'?cosmeticTrailShowcase(body.radius,worldWidth,worldHeight):subject==='trail'&&host.icon?cosmeticTrailOrbit(body.radius,worldWidth,worldHeight):{rx,ry};
    body.x=worldWidth/2+(subject==='trail'?Math.sin(t*2)*orbit.rx:0);body.y=worldHeight/2+(subject==='trail'?Math.sin(t*4)*orbit.ry:0);
    body.vx=subject==='trail'?Math.cos(t*2)*orbit.rx*2:0;body.vy=subject==='trail'?Math.cos(t*4)*orbit.ry*4:0;
    if((['bounce','pendant','companion'].includes(subject)||showcaseKind==='skin')&&t>=nextRipple&&!celebration){

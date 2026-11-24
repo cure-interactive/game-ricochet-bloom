@@ -7,14 +7,20 @@ export const cosmeticSoloKind=(view,kind)=>view==='showcase'&&['pendant','compan
 export const cosmeticPreviewLoadout=(loadout,solo,showcaseKind=null)=>solo?{[solo]:loadout[solo]}:['skin','trail','bounce'].includes(showcaseKind)?cosmeticCardLoadout({kind:showcaseKind,id:loadout[showcaseKind]},loadout):loadout;
 
 // The page-button Trail icon uses a two-diameter-wide, one-diameter-high stage.
-// Showcase enlarges that same orbit; other icon layouts retain their own extent.
+// Icon layouts retain their own extent; Showcase uses its available framed area.
 export const cosmeticTrailOrbit=(radius,width=radius*4,height=radius*2)=>({rx:Math.max(0,width/2-radius)+radius*2/7,ry:Math.max(radius,height/2-radius)});
+
+// Keep the bubble readable while letting the path fill both viewport dimensions.
+export function cosmeticTrailShowcase(radius,width,height){
+ const zoom=Math.min(2.8,width/(radius*10),height/(radius*10)),padding=radius*2+8/zoom;
+ return {zoom,rx:Math.max(0,width/(2*zoom)-padding),ry:Math.max(0,height/(2*zoom)-padding)};
+}
 
 // Frame the visible subject, including a pendant's cord endpoint but no hidden shell.
 export function cosmeticShowcaseFrame(body,accessories,kind,width,height){
  if(['skin','trail','bounce'].includes(kind)){
-  const orbit=kind==='trail'?cosmeticTrailOrbit(body.radius):{rx:0,ry:0},padding=kind==='bounce'?72:body.radius*2.2;
-  const zoom=Math.min(2.8,width/(2*(orbit.rx+padding)+24),height/(2*(orbit.ry+padding)+24));
+  const padding=kind==='bounce'?72:body.radius*2.2;
+  const zoom=kind==='trail'?cosmeticTrailShowcase(body.radius,width,height).zoom:Math.min(2.8,width/(2*padding+24),height/(2*padding+24));
   return {zoom,x:width/2*(1-zoom),y:height/2*(1-zoom)};
  }
  if(kind==='companion'&&accessories.follower){

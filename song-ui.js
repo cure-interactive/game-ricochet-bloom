@@ -1,4 +1,4 @@
-import {buttonLabel} from './ui-icon.js?v=141b73ae9912576ea262053e37bd74607d256a5049e1845326c31654e92fc915';
+import {buttonLabel} from './ui-icon.js?v=44ea63eff6eacd4cad173283015795275bfc00f891809cd37ea89694c51bd05d';
 import {SONG_STORAGE,SONG_LIMIT,songLibraryRead,songSnapshot,songRender} from './song.js?v=504d204df8b3c82ea19a922348d90ec14b80f5a35325aa3e30c733b64afea70c';
 export function songLibrarySetup(current,open,musicTheme=()=> 'music.original',musicLoadout=()=>({})) {
   const panel=document.getElementById('library-panel'),$=id=>panel.querySelector('#'+id)||document.getElementById(id);let library={version:1,songs:[]},selected=null,url=null,file=null,job=0;

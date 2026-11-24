@@ -6,6 +6,21 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.40.7
+
+Build: 2026-11-24 17:24:15 UTC
+
+### Player Changes
+
+- Trail Showcase now sweeps through more of the preview area, adapting its figure-eight path to the panel's width and height.
+
+<!-- development -->
+### Developer Notes
+
+- Derive Trail Showcase orbit bounds and camera scale from shared viewport geometry, retaining glow margins and existing thumbnail timing.
+
+<!-- /development -->
+
 ## v3.40.6
 
 Build: 2026-11-24 17:13:54 UTC
