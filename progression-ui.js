@@ -1,8 +1,8 @@
 import {profileSession} from './profile-session.js?v=be340d1c7cfc6f6927c6717f7379226c43484b011621086348cf0f44a9a18aae';
 import {cosmeticSkin,cosmeticLoadout} from './cosmetic.js?v=386c865d18f3ecc56ec0e8d96181350a8f83899d2fde7de3cc434c8f8f3685c5';
-import { screenHeader } from './screen-header.js?v=abcc78a6c612c4c5ac8c4e691d179c32746953041b93b8561505eaa6ba65b0b9';
-import { playerUpgradeMount } from './player-upgrade-ui.js?v=ae9ed199e3199752aa4fce8ad85b54ffd333bde8c2d1b8c489fa5c7f5f4e7110';
-import { saveRecoveryMount } from './save-recovery-ui.js?v=935f43c312788ba12629f0c2a3799f3e9b0cfd14699bf038cd7049f5762a1162';
+import { screenHeader } from './screen-header.js?v=8ba40d32995eb33b79b5954ffcf2215d6b859e128bf56fd7afe99509916cf979';
+import { playerUpgradeMount } from './player-upgrade-ui.js?v=703c474dadaa811b047c6bcd9a6f1c105147e9cfb59ab660d7a0f4f4dd77b47b';
+import { saveRecoveryMount } from './save-recovery-ui.js?v=64f504e0c50b66db2a2bbcdbd5bd0ffd042b7f3ef27ef588d2d7612a9ce2243d';
 import { progressionResetUnreadable } from './progression-store.js?v=d10ef67e303cc1e50f5d707a4579aacb3eeccf30f91e718e92951cb2c9bc93df';
 import { medalIcon } from './medal-ui.js?v=6df228e6d2895828fc52e3634bd7cb5b98bc58ddf86a48515c6d0a1527524ed2';
 
@@ -10,16 +10,16 @@ import { earningPrepare, earningId } from './earning.js?v=6e78b642b40a8b5067bb53
 import { profilePlayReward, profileDevelopmentCopy, profileRename, profileName } from './profile.js?v=323b87dca113c3a6222e478726719457b1fd3effa7d60635d25ba7ffdbf90794';
 import { developmentBarMount } from './development-bar.js?v=0b71d362f1a5c406c6eb36aad31483846558bb98b33e4104fe1e950e5e969940';
 import { titleCase } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
-import { campaignMount } from './campaign-ui.js?v=da7c5abdf9f28f54071ce8bd50eb5e65b70f3514a10da5302fcecc848b2ca6c9';
+import { campaignMount } from './campaign-ui.js?v=0ffd802483650ec03c711ec1b389bf10084ced6234b53008dc3633a9d5b554b0';
 import { challengeEncode, challengeDecode } from './challenge.js?v=b378f260a777d34bed53778624e02aa7eab7b27bd7da652f968754892ea7fff1';
 import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
 import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=c97beccbdfdb16a544a4faf019c6209aa1bacacd493729f535527cd13ecfc475';
 import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=d10ef67e303cc1e50f5d707a4579aacb3eeccf30f91e718e92951cb2c9bc93df';
 import { gameCreate } from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
-import { treeMount } from './tree-ui.js?v=5eefc1f07dc3f38dac70daa0207e97c291c4d1e723b93db08cb999ee0b6ea9a2';
-import { buttonHTML, iconHTML } from './ui-icon.js?v=9eb1f65342ffa97596ec1e0ab247623baf53b2164005b7b5fad851e4fce7dc44';
+import { treeMount } from './tree-ui.js?v=4e6142572aac4e6f5d6148cc455dc8956c9696981e7eb9bf48b5f0aa2b0b9e77';
+import { buttonHTML, iconHTML } from './ui-icon.js?v=141b73ae9912576ea262053e37bd74607d256a5049e1845326c31654e92fc915';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
-import { skinMount } from './skin-ui.js?v=17e4158dda46d345f427f95b3dccd128bc2e3d6efd0bc904ea130c4363aaa735';
+import { skinMount } from './skin-ui.js?v=b7374607694f9c520e0d6666c63def0cd88f03e76038ccecda57ee69a3655e4f';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,suspended=null,shared=null,listenTimer=null;

@@ -1,3 +1,4 @@
+import {bubbleCurrent} from './bubble-current.js?v=76ca86b0c821ae31d911e894866bcca026dd0efaa73164053f72f1d70d8207cd';
 import {bubbleInteractionMount} from './bubble-interaction.js?v=f93c99730054bbc2f5c3715863fc2759d8a6eb662a5b0fb784ff95cda0725591';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 import {CosmeticVisual} from './cosmetic-visual.js?v=a60ccf395c9317a69cc85338b327ecc5b54b53ae103faf946368acc632c30cc5';
@@ -83,11 +84,11 @@ export function registerPlayerBubble(win=window){
    // In the pool, nearby motion and contacts keep the membrane alive. UI
    // bubbles have no physical neighbours, so give that same spring model a
    // bounded current and occasional small impacts instead of freezing it.
-   const angle=this.phase+this.age*1.7;
-   const flow={vx:34*Math.cos(angle)+sensor.x,vy:28*Math.sin(angle*.83)+sensor.y};
+   const current=bubbleCurrent(this.phase,this.age);
+   const flow={vx:current.vx+sensor.x,vy:current.vy+sensor.y};
    if(this.age>=this.nextRipple){
-    bubbleHit(this.membrane,14,Math.cos(angle),Math.sin(angle),60);
-    this.nextRipple=this.age+1.35+.35*(1+Math.sin(angle));
+    bubbleHit(this.membrane,14,current.x,current.y,60);
+    this.nextRipple=current.next;
    }
    this.bounce*=Math.exp(-dt*5);
    // A small tethered hop for decorative icons; the large viewer owns its drag tether.

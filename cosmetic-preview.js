@@ -1,4 +1,5 @@
-import {cosmeticCardLoadout,cosmeticShowcaseFrame,cosmeticSoloKind,cosmeticPreviewLoadout} from './cosmetic-presentation.js?v=d65010e620ce52421ce1c9001b9dac66f27e058432d5f0e318164430410729e5';
+import {bubbleCurrent} from './bubble-current.js?v=76ca86b0c821ae31d911e894866bcca026dd0efaa73164053f72f1d70d8207cd';
+import {cosmeticTrailOrbit,cosmeticCardLoadout,cosmeticShowcaseFrame,cosmeticSoloKind,cosmeticPreviewLoadout} from './cosmetic-presentation.js?v=7bd32d11853b73cfb14f6ecc979d004f69e9d70c1708a2091737fad44d826a07';
 import {bubbleInteractionMount} from './bubble-interaction.js?v=f93c99730054bbc2f5c3715863fc2759d8a6eb662a5b0fb784ff95cda0725591';
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e5d682d54726c402cbba21b5c0dd0415557d7ed9f44a5f144c7dba8c36cb5a58';
 import {CosmeticVisual} from './cosmetic-visual.js?v=a60ccf395c9317a69cc85338b327ecc5b54b53ae103faf946368acc632c30cc5';
@@ -60,7 +61,7 @@ export function cosmeticPreviewMount(canvas,host){
   // Keep gallery artwork at its enlarged scale independently of stage height.
   // Trail stages can be shorter without shrinking their bubble or trail.
   const scale=host.icon?28/Math.max(1,host.diameter()):host.thumbnail&&!host.compact?180/192:Math.max((host.compact?160:180)/height,(host.compact?160:400)/width),worldHeight=height*scale,worldWidth=width*scale;
-  const isolated=solo();visual.configure(cosmeticPreviewLoadout(host.loadout(),isolated));
+  const isolated=solo(),showcaseKind=!host.thumbnail&&view==='showcase'?host.kind?.():null;visual.configure(cosmeticPreviewLoadout(host.loadout(),isolated,showcaseKind));
   // Trail history belongs to local simulation, never scrolling or layout offsets.
   if(origin&&(Math.abs(origin.scale-scale)>.001||origin.width!==width||origin.height!==height))visual.breakTrail();
   origin={scale,width,height};geometry={width:worldWidth,height:worldHeight};
@@ -82,13 +83,14 @@ export function cosmeticPreviewMount(canvas,host){
   if(host.thumbnail||view==='showcase'){
    const subject=host.thumbnail||host.kind?.();
    const t=visual.elapsed,padding=host.icon?body.radius:host.motionArea<1?body.radius+4:host.compact?54:subject==='trail'?body.radius+(42-body.radius)/2:72,area=host.motionArea||1,rx=Math.max(0,worldWidth*area/2-padding)+(host.icon&&subject==='trail'?4:0),ry=Math.max(host.icon&&subject==='trail'?body.radius:0,worldHeight*area/2-padding);
-   body.x=worldWidth/2+(subject==='trail'?Math.sin(t*2)*rx:0);body.y=worldHeight/2+(subject==='trail'?Math.sin(t*4)*ry:0);
-   body.vx=subject==='trail'?Math.cos(t*2)*rx*2:0;body.vy=subject==='trail'?Math.cos(t*4)*ry*4:0;
-   if(['bounce','pendant','companion'].includes(subject)&&t>=nextRipple&&!celebration){
+   const orbit=subject==='trail'&&(host.icon||showcaseKind==='trail')?cosmeticTrailOrbit(body.radius,...(host.icon?[worldWidth,worldHeight]:[])):{rx,ry};
+   body.x=worldWidth/2+(subject==='trail'?Math.sin(t*2)*orbit.rx:0);body.y=worldHeight/2+(subject==='trail'?Math.sin(t*4)*orbit.ry:0);
+   body.vx=subject==='trail'?Math.cos(t*2)*orbit.rx*2:0;body.vy=subject==='trail'?Math.cos(t*4)*orbit.ry*4:0;
+   if((['bounce','pendant','companion'].includes(subject)||showcaseKind==='skin')&&t>=nextRipple&&!celebration){
     // Match the regular player current: changing phase, direction and spacing.
-    const angle=phase+t*1.7,nx=Math.cos(angle),ny=Math.sin(angle);
-    visual.hit(body.x+nx*body.radius,body.y+ny*body.radius);if(isolated!=='pendant')bubbleHit(membrane,body.radius,nx,ny,150);
-    nextRipple=t+1.35+.35*(1+Math.sin(angle));
+    const current=bubbleCurrent(phase,t),nx=current.x,ny=current.y;
+    if(showcaseKind!=='skin')visual.hit(body.x+nx*body.radius,body.y+ny*body.radius);if(isolated!=='pendant')bubbleHit(membrane,body.radius,nx,ny,showcaseKind==='skin'?60*body.radius/14:150);
+    nextRipple=current.next;
    }
   }else{
    cosmeticPreviewStep(body,dt,worldWidth,worldHeight,(x,y,nx,ny)=>{
@@ -102,7 +104,8 @@ export function cosmeticPreviewMount(canvas,host){
   if(!trails&&visual.points.length)visual.breakTrail();
   // Pendant Showcase uses two moving bodies. This body supplies the stage
   // center and scale only; input reaches the actual charm and loose endpoint.
-  if(isolated!=='pendant')bubbleStep(membrane,body,dt,false,{vx:sensor.x,vy:sensor.y});
+  const current=showcaseKind==='skin'?bubbleCurrent(phase,visual.elapsed):{vx:0,vy:0};
+  if(isolated!=='pendant')bubbleStep(membrane,body,dt,false,{vx:sensor.x+current.vx*factor,vy:sensor.y+current.vy*factor});
   const environment={grab:isolated==='pendant'&&interaction.dragging?{x:body.x+motion.x*factor,y:body.y+motion.y*factor}:null,impulse:sensor.impulse,acceleration:sensor.acceleration,anchor:isolated==='pendant'?'point':'shell',shell:isolated==='pendant'?null:bubbleOutline(membrane,body)};
   if(dt>0)visual.step(body,dt,trails,environment);else if(!visual.accessories.body)visual.accessories.step(body,0,environment);
   const nextCamera=view==='showcase'&&!host.thumbnail?cosmeticShowcaseFrame(body,visual.accessories,host.kind?.(),worldWidth,worldHeight):{x:0,y:0,zoom:1};

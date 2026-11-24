@@ -6,6 +6,22 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.40.6
+
+Build: 2026-11-24 17:13:54 UTC
+
+### Player Changes
+
+- Skin, Trail and Impact Showcase now match their Player page button thumbnails, enlarged and framed steadily.
+- Trails keep the same compact figure-eight loop; skins retain their gentle living motion, and impacts repeat their thumbnail animation.
+- Showcase features the selected skin or effect without unrelated accessories. In Motion keeps the full equipped ensemble.
+
+<!-- development -->
+### Developer Notes
+
+- Share thumbnail orbit geometry and membrane-current calculations with Showcase. Reuse card loadout composition and keep its camera independent of player or accessory movement.
+<!-- /development -->
+
 ## v3.40.5
 
 Build: 2026-11-24 14:51:06 UTC

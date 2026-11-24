@@ -2,12 +2,21 @@
 // the same equipped trail, and no unrelated accessories or impact effects.
 export const cosmeticCardLoadout=(item,loadout={})=>({trail:loadout.trail||'trail.original',[item.kind]:item.id});
 
-// Showcase isolates accessories; In Motion and other detail views retain the ensemble.
+// Showcase isolates its subject; In Motion retains the complete ensemble.
 export const cosmeticSoloKind=(view,kind)=>view==='showcase'&&['pendant','companion'].includes(kind)?kind:null;
-export const cosmeticPreviewLoadout=(loadout,solo)=>solo?{[solo]:loadout[solo]}:loadout;
+export const cosmeticPreviewLoadout=(loadout,solo,showcaseKind=null)=>solo?{[solo]:loadout[solo]}:['skin','trail','bounce'].includes(showcaseKind)?cosmeticCardLoadout({kind:showcaseKind,id:loadout[showcaseKind]},loadout):loadout;
+
+// The page-button Trail icon uses a two-diameter-wide, one-diameter-high stage.
+// Showcase enlarges that same orbit; other icon layouts retain their own extent.
+export const cosmeticTrailOrbit=(radius,width=radius*4,height=radius*2)=>({rx:Math.max(0,width/2-radius)+radius*2/7,ry:Math.max(radius,height/2-radius)});
 
 // Frame the visible subject, including a pendant's cord endpoint but no hidden shell.
 export function cosmeticShowcaseFrame(body,accessories,kind,width,height){
+ if(['skin','trail','bounce'].includes(kind)){
+  const orbit=kind==='trail'?cosmeticTrailOrbit(body.radius):{rx:0,ry:0},padding=kind==='bounce'?72:body.radius*2.2;
+  const zoom=Math.min(2.8,width/(2*(orbit.rx+padding)+24),height/(2*(orbit.ry+padding)+24));
+  return {zoom,x:width/2*(1-zoom),y:height/2*(1-zoom)};
+ }
  if(kind==='companion'&&accessories.follower){
   const p=accessories.follower,zoom=Math.min(6,width/(body.radius*3.4+24),height/(body.radius*3.4+24));
   return {zoom,x:width/2-p.x*zoom,y:height/2-p.y*zoom};
