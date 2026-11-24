@@ -27,8 +27,9 @@ export function bubbleInteractionMount(surface,host){
  };
  const continuous=(a,b)=>a&&b&&a.layout===b.layout&&Math.abs(a.unit-b.unit)<.001&&a.width===b.width&&a.height===b.height;
  const rebaseScroll=()=>{for(const node of positions.keys())positions.set(node,{x:node.scrollLeft||0,y:node.scrollTop||0});};
+ let drag=null;
  let previousFrame=frame(),pending={x:0,y:0},flow={x:0,y:0};
- const control={state:{x:0,y:0,vx:0,vy:0},pulses:[],positions,
+ const control={get dragging(){return !!drag;},state:{x:0,y:0,vx:0,vy:0},pulses:[],positions,
   viewportShift(dx,dy,unit){
    const distance=Math.hypot(dx,dy);if(distance<.001||!unit)return;
    const impulse=Math.min(18,distance/unit*1.2),x=-dx/distance*impulse,y=-dy/distance*impulse,s=control.state;
@@ -45,7 +46,7 @@ export function bubbleInteractionMount(surface,host){
    host.hit(hit.nx,hit.ny,hit.speed*convert,kind==='tap');host.request?.();
   },
   press(point){if(!host.active())return;control.pressure(point,'tap');control.pulses.push({...point,age:0});if(control.pulses.length>8)control.pulses.shift();},
-  clear(){control.pulses=[];previousFrame=null;rebaseScroll();pending={x:0,y:0};flow={x:0,y:0};},
+  clear(){endDrag();control.pulses=[];previousFrame=null;rebaseScroll();pending={x:0,y:0};flow={x:0,y:0};},
   reset(){control.state={x:0,y:0,vx:0,vy:0};control.clear();previousFrame=frame();},
   scroll(event){
    const previous=positions.get(event.target);if(!previous)return;const next={x:event.target.scrollLeft||0,y:event.target.scrollTop||0};positions.set(event.target,next);if(!host.active())return;
@@ -67,16 +68,34 @@ export function bubbleInteractionMount(surface,host){
    previousFrame=current;
    for(const point of hub.contacts.values())control.pressure(point,'hold',dt);
    for(const point of control.pulses){control.pressure(point,'pulse',dt,point.age);point.age+=dt;}control.pulses=control.pulses.filter(p=>p.age<1.25);
+   const force=host.force?.();if(force)entityImpulse(control.state,force.x*dt,force.y*dt);
    const vector=sensor.sample();control.state.vx+=vector.x*dt;control.state.vy+=vector.y*dt;
+   if(drag){control.state={x:drag.x,y:drag.y,vx:0,vy:0};return {x:vector.x,y:vector.y,impulse:{x:0,y:0},acceleration:vector};}
    control.state=skinSpringStep(control.state,dt,{stiffness:24,damping:10});const s=control.state,distance=Math.hypot(s.x,s.y);
-   if(distance>10){const nx=s.x/distance,ny=s.y/distance;s.x=nx*10;s.y=ny*10;const outward=s.vx*nx+s.vy*ny;if(outward>0){s.vx-=nx*outward;s.vy-=ny*outward;}}
+   const limit=host.drag?.()?28:10;
+   if(distance>limit){const nx=s.x/distance,ny=s.y/distance;s.x=nx*limit;s.y=ny*limit;const outward=s.vx*nx+s.vy*ny;if(outward>0){s.vx-=nx*outward;s.vy-=ny*outward;}}
    const impulse=dt>0?pending:{x:0,y:0};if(dt>0)pending={x:0,y:0};
    const result={x:vector.x+flow.x,y:vector.y+flow.y,impulse,acceleration:vector};
    flow.x*=Math.exp(-dt*12);flow.y*=Math.exp(-dt*12);
    return result;
   },
-  destroy(){doc.removeEventListener('scroll',control.scroll,true);doc.removeEventListener('visibilitychange',visibility);target.removeEventListener?.('focusin',control.focus);positions.clear();hub.instances.delete(control);if(!hub.instances.size){hub.unmount();hubs.delete(doc);}}
+  destroy(){endDrag();surface.removeEventListener('pointerdown',startDrag);surface.removeEventListener('pointermove',moveDrag);for(const name of ['pointerup','pointercancel','lostpointercapture'])surface.removeEventListener(name,endDrag);win.removeEventListener('blur',endDrag);doc.removeEventListener('scroll',control.scroll,true);doc.removeEventListener('visibilitychange',visibility);target.removeEventListener?.('focusin',control.focus);positions.clear();hub.instances.delete(control);if(!hub.instances.size){hub.unmount();hubs.delete(doc);}}
  };
+ function startDrag(e){
+  if(!host.drag?.()||!host.active()||e.button!==0||drag)return;
+  const g=host.geometry();if(!g?.unit||g.visible===false)return;
+  drag={id:e.pointerId,clientX:e.clientX,clientY:e.clientY,unit:g.unit,startX:control.state.x,startY:control.state.y,x:control.state.x,y:control.state.y};
+  surface.setPointerCapture?.(e.pointerId);e.preventDefault();
+ }
+ function moveDrag(e){
+  if(!drag||drag.id!==e.pointerId)return;
+  const x=drag.startX+(e.clientX-drag.clientX)/drag.unit,y=drag.startY+(e.clientY-drag.clientY)/drag.unit,d=Math.hypot(x,y),scale=d>28?28/d:1;
+  drag.x=x*scale;drag.y=y*scale;e.preventDefault();host.request?.();
+ }
+ function endDrag(e){if(!drag||(e?.pointerId!==undefined&&e.pointerId!==drag.id))return;const id=drag.id;drag=null;if(surface.hasPointerCapture?.(id))surface.releasePointerCapture(id);}
+ surface.addEventListener('pointerdown',startDrag);surface.addEventListener('pointermove',moveDrag);
+ for(const name of ['pointerup','pointercancel','lostpointercapture'])surface.addEventListener(name,endDrag);
+ win.addEventListener('blur',endDrag);
  function visibility(){if(doc.hidden){hub.input.clear();control.clear();}}
  doc.addEventListener('scroll',control.scroll,true);doc.addEventListener('visibilitychange',visibility);target.addEventListener?.('focusin',control.focus);hub.instances.add(control);return control;
 }

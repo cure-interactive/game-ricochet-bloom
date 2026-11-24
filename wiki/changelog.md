@@ -6,6 +6,20 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.40.1
+
+Build: 2026-11-24 02:23:48 UTC
+
+### Player Changes
+
+- Companion and pendant Showcase views now display only that cosmetic, enlarged. In Motion keeps the full equipped ensemble.
+- Pendant cords attach to an invisible body that reacts to taps and can be dragged around the preview. The hidden anchor gently yields away from a nearby pendant, and releasing lets both settle naturally.
+
+### Developer Changes
+
+- Shared preview composition isolates accessory Showcase loadouts and hides player/effect drawing while retaining membrane and tether simulation.
+- Optional bounded pointer dragging uses the shared interaction state, pointer capture, cancellation and cleanup. The Showcase camera stays still while dragging.
+
 ## v3.40.0
 
 Build: 2026-11-24 01:59:08 UTC

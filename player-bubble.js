@@ -1,4 +1,4 @@
-import {bubbleInteractionMount} from './bubble-interaction.js?v=6e496baf63684650a5c5e46f8c1ecc9358c9f4a5ce33f9bac61381b48fd1dfa7';
+import {bubbleInteractionMount} from './bubble-interaction.js?v=ce6cb4248759436787e223e6502b908048f99e365ff50521cb381ecaee1b0469';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 import {CosmeticVisual} from './cosmetic-visual.js?v=176d9e8da9d712f70f5824ec68f0baa50fe08ba00e379e9b37132359ce1ef6b9';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';

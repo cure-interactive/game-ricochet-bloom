@@ -1,5 +1,5 @@
-import {cosmeticCardLoadout,cosmeticShowcaseFrame} from './cosmetic-presentation.js?v=cbc806981b09ec8ca7900d9c16ace3aa1e6cb0266be1c00fed35a0229e9ed89c';
-import {bubbleInteractionMount} from './bubble-interaction.js?v=6e496baf63684650a5c5e46f8c1ecc9358c9f4a5ce33f9bac61381b48fd1dfa7';
+import {cosmeticCardLoadout,cosmeticShowcaseFrame,cosmeticSoloKind,cosmeticPreviewLoadout,cosmeticAnchorForce} from './cosmetic-presentation.js?v=8c75c2b30a9796a75d020b0ebbde063b4039010b3e5ec538ac5f53d6e8e5efca';
+import {bubbleInteractionMount} from './bubble-interaction.js?v=ce6cb4248759436787e223e6502b908048f99e365ff50521cb381ecaee1b0469';
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e5d682d54726c402cbba21b5c0dd0415557d7ed9f44a5f144c7dba8c36cb5a58';
 import {CosmeticVisual} from './cosmetic-visual.js?v=176d9e8da9d712f70f5824ec68f0baa50fe08ba00e379e9b37132359ce1ef6b9';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
@@ -43,7 +43,10 @@ export function cosmeticPreviewMount(canvas,host){
  const doc=canvas.ownerDocument,win=doc.defaultView;
  let frame=0,last=0,active=true,activity,nextRipple=0,origin=null,geometry=null,celebration=null,view=host.view||'motion',camera={x:0,y:0,zoom:1},offset={x:0,y:0,vx:0,vy:0};
  const surface=host.surface||canvas,phase=++previewSequence*2.4;
- const interaction=bubbleInteractionMount(surface,{contact:(...args)=>visual.accessories.contact(...args),active:()=>active&&!doc.hidden&&activity?.isActive()!==false,geometry:()=>{if(!geometry)return null;const r=surface.getBoundingClientRect(),unit=(r.width||r.right-r.left)/geometry.width;return {x:r.left+(body.x*camera.zoom+camera.x)*unit,y:r.top+(body.y*camera.zoom+camera.y)*unit,unit:unit*camera.zoom*body.radius/14,visible:!!activity.clip(r)};},hit:(x,y,speed)=>bubbleHit(membrane,body.radius,x,y,speed*body.radius/14)});
+ const solo=()=>host.thumbnail?null:cosmeticSoloKind(view,host.kind?.());
+ const touchAction=surface.style.touchAction;
+ const syncInput=()=>{surface.style.touchAction=solo()==='pendant'?'none':touchAction;};syncInput();
+ const interaction=bubbleInteractionMount(surface,{drag:()=>solo()==='pendant',force:()=>solo()==='pendant'?cosmeticAnchorForce(body,visual.accessories.charm):null,contact:(...args)=>visual.accessories.contact(...args),active:()=>active&&!doc.hidden&&activity?.isActive()!==false,geometry:()=>{if(!geometry)return null;const r=surface.getBoundingClientRect(),unit=(r.width||r.right-r.left)/geometry.width;return {x:r.left+(body.x*camera.zoom+camera.x)*unit,y:r.top+(body.y*camera.zoom+camera.y)*unit,unit:unit*camera.zoom*body.radius/14,visible:!!activity.clip(r)};},hit:(x,y,speed)=>bubbleHit(membrane,body.radius,x,y,speed*body.radius/14)});
  function key(event){
   if(host.thumbnail)return;const direction={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],Enter:[0,-1],' ':[0,-1]}[event.key];if(!direction)return;
   event.preventDefault();interaction.state.vx+=direction[0]*60;interaction.state.vy+=direction[1]*60;bubbleHit(membrane,body.radius,-direction[0],-direction[1],140);
@@ -57,7 +60,7 @@ export function cosmeticPreviewMount(canvas,host){
   // Keep gallery artwork at its enlarged scale independently of stage height.
   // Trail stages can be shorter without shrinking their bubble or trail.
   const scale=host.icon?28/Math.max(1,host.diameter()):host.thumbnail&&!host.compact?180/192:Math.max((host.compact?160:180)/height,(host.compact?160:400)/width),worldHeight=height*scale,worldWidth=width*scale;
-  visual.configure(host.loadout());
+  const isolated=solo();visual.configure(cosmeticPreviewLoadout(host.loadout(),isolated));
   // Trail history belongs to local simulation, never scrolling or layout offsets.
   if(origin&&(Math.abs(origin.scale-scale)>.001||origin.width!==width||origin.height!==height))visual.breakTrail();
   origin={scale,width,height};geometry={width:worldWidth,height:worldHeight};
@@ -95,14 +98,15 @@ export function cosmeticPreviewMount(canvas,host){
   }
   const sensor=interaction.step(dt),motion=interaction.state,factor=body.radius/14;
   offset={x:motion.x*factor,y:motion.y*factor,vx:motion.vx*factor,vy:motion.vy*factor};body.x+=offset.x;body.y+=offset.y;body.vx+=offset.vx;body.vy+=offset.vy;
-  const trails=host.trailEnabled?.()!==false;
+  const trails=!isolated&&host.trailEnabled?.()!==false;
   if(!trails&&visual.points.length)visual.breakTrail();
   bubbleStep(membrane,body,dt,false,{vx:sensor.x,vy:sensor.y});if(dt>0)visual.step(body,dt,trails,{impulse:sensor.impulse,acceleration:sensor.acceleration,shell:bubbleOutline(membrane,body)});else if(!visual.accessories.body)visual.accessories.step(body,0,{shell:bubbleOutline(membrane,body)});
-  camera=view==='showcase'&&!host.thumbnail?cosmeticShowcaseFrame(body,visual.accessories,host.kind?.(),worldWidth,worldHeight):{x:0,y:0,zoom:1};
+  const nextCamera=view==='showcase'&&!host.thumbnail?cosmeticShowcaseFrame(body,visual.accessories,host.kind?.(),worldWidth,worldHeight):{x:0,y:0,zoom:1};
+  if(!interaction.dragging){const blend=isolated&&dt>0?1-Math.exp(-dt*6):1;for(const key of ['x','y','zoom'])camera[key]+=(nextCamera[key]-camera[key])*blend;}
   const outline=bubbleOutline(membrane,body),paint=context=>{
    context.save();context.translate(camera.x,camera.y);context.scale(camera.zoom,camera.zoom);
-   visual.render(context,doc.body.dataset.quality==='low',true);
-   bubbleRender(context,body,outline,host.color?.()||'#f1f9d7',{skinTime:visual.elapsed,skinStyle:host.style?.(),lowQuality:doc.body.dataset.quality==='low',glowExtent:host.icon?1.3:2});
+   if(!isolated)visual.render(context,doc.body.dataset.quality==='low',true);
+   if(!isolated)bubbleRender(context,body,outline,host.color?.()||'#f1f9d7',{skinTime:visual.elapsed,skinStyle:host.style?.(),lowQuality:doc.body.dataset.quality==='low',glowExtent:host.icon?1.3:2});
    visual.renderAccessories(context,doc.body.dataset.quality==='low'||doc.body.classList?.contains('motion-reduced'));context.restore();
   };
   if(host.surface){cosmeticPaint(canvas,host.surface,activity,(()=>{const b=cosmeticBounds(body,outline,visual,1/scale);return {left:b.left*camera.zoom+camera.x,right:b.right*camera.zoom+camera.x,top:b.top*camera.zoom+camera.y,bottom:b.bottom*camera.zoom+camera.y};})(),1/scale,ratio,paint);return;}
@@ -120,5 +124,5 @@ export function cosmeticPreviewMount(canvas,host){
   return {active:true,progress};
  }
  function cancelCelebration(){if(!celebration)return;const state=celebration;celebration=null;body.vx=state.vx+offset.vx;body.vy=state.vy+offset.vy;visual.accessories.celebration=0;state.finish?.();}
- return {viewSet(next){if(next===view)return;cancelCelebration();view=next;visual.breakTrail();visual.accessories.resetMotion();interaction.clear();offset={x:0,y:0,vx:0,vy:0};body.vx=130;body.vy=85;if(geometry){body.x=geometry.width/2;body.y=geometry.height/2;}camera={x:0,y:0,zoom:1};},celebrate(callbacks={}){if(!celebration)celebration={phase:'brake',age:0,vx:body.vx-offset.vx,vy:body.vy-offset.vy,...callbacks};},celebrationStatus,cancelCelebration,destroy(){cancelCelebration();active=false;surface.removeEventListener('keydown',key);interaction.destroy();activity.destroy();win.cancelAnimationFrame(frame);}};
+ return {viewSet(next){if(next===view)return;cancelCelebration();view=next;syncInput();visual.breakTrail();visual.accessories.resetMotion();interaction.reset();offset={x:0,y:0,vx:0,vy:0};body.vx=130;body.vy=85;if(geometry){body.x=geometry.width/2;body.y=geometry.height/2;}camera={x:0,y:0,zoom:1};},celebrate(callbacks={}){if(!celebration)celebration={phase:'brake',age:0,vx:body.vx-offset.vx,vy:body.vy-offset.vy,...callbacks};},celebrationStatus,cancelCelebration,destroy(){cancelCelebration();active=false;surface.style.touchAction=touchAction;surface.removeEventListener('keydown',key);interaction.destroy();activity.destroy();win.cancelAnimationFrame(frame);}};
 }

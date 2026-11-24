@@ -1,13 +1,13 @@
-import {cosmeticViewMount} from './cosmetic-view.js?v=790a68d4b406480cba56a001dccf62d9364189fa7049ba6720ba4f21e605e641';
+import {cosmeticViewMount} from './cosmetic-view.js?v=ba8f8ec95a95b5b8caaa61a679c009b8f18d7406b000c3ca5cf4fed02b38afcb';
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=29d180d0bbc7d95e88c462b3fcfb173870937b4c26f751a13e07bfae82600b9e';
+import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=49b509cc7abd57a15a9a8ede92966e22362b27a849f3d37f8ebf8c78dc65cd17';
 import {segmentedHTML,segmentedMount} from './segmented-control.js?v=bfc2eb723bd5080e1ff722bcfb43b3958890bbcd7bb4f5ce1e7dbf3c3192b161';
-import {cosmeticPriceHTML} from './cosmetic-price.js?v=ec983aefb8adbe01fa73d8942a54383442ba3601c7d4ce9c8fa4bcadbaaa3399';
+import {cosmeticPriceHTML} from './cosmetic-price.js?v=c6045ef3522d643402f1c5ff6529bcfd1fb9193b8f974485bd65c1c9441d262c';
 import {COSMETICS,cosmeticOrder,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=ddc203acc7e92b1a16f24947665f4dbf857da6e9dea64f178d61d81305382532';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=6bbe3e568eeb95ce0f9efbf69fa3c821117aa7f298fd841a3796fd4d8baecce4';
-import {screenHeader} from './screen-header.js?v=963502fddbb9497c9f18d3cd2f4e7c6a949828321e7e3462ef6239ded74f158a';
-import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=d4fea4405eb39f2c1e48fbfcfda4373b774e722520c081785b0454d911012cb6';
-import {rarityIconHTML} from './skill-icon.js?v=f83032d90fdd5c904371741019aeb3c7c841073421d4b6d95491931ff0df1934';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=b3e9a7f4c7bdf908064a3195d2386bdd0146c80ddf6052b084fff03b64ee53b1';
+import {screenHeader} from './screen-header.js?v=9ab6b3cf5602ced6dc6e13b81276dce489e8ed34d63861ef887524042f9c5327';
+import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=6714d1bebfde0855f289ae2396849587b277c74e191bc1ae84a5fdd1b44bd11c';
+import {rarityIconHTML} from './skill-icon.js?v=02904255d1cccc861729bb9437324ef61ba438ddbb65e46a3382f94fbc10d9ab';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 const playbackButtonHTML=(label,attribute)=>`<button type="button" class="quiet cosmetic-sound-button" ${attribute} data-preview-title="${label}" aria-pressed="false">${iconHTML('play')}<span data-preview-label>${label}</span><span class="cosmetic-sound-progress" aria-hidden="true"><i></i></span></button>`;
@@ -62,7 +62,7 @@ export function cosmeticMount(host){
   if(['pendant','companion'].includes(item.kind)&&item.style!=='none')detail.insertAdjacentHTML('beforeend',playbackButtonHTML('Preview Celebration','data-accessory-celebrate')+`<small class="cosmetic-sound-hint" role="status">Play the celebration${cosmeticHasSound(item)?' with sound':''}. Tap again to stop.</small>`);
   if(cosmeticHasSound(item)&&item.kind!=='companion')detail.insertAdjacentHTML('beforeend',playbackButtonHTML('Preview Sound','data-cosmetic-sound')+`<small class="cosmetic-sound-hint" role="status">${isAudio()?'Try this '+label().toLowerCase()+' with the current music for up to ten seconds. Tap again to restore your equipped choice.'+(kind==='ambience'?' Follows Ambience Volume, Master Volume and Sound.':' Follows Music Volume, Master Volume and Sound.'):(item.kind==='trail'&&item.rarity==='mythic'?'Launch and travel · tapers to silence over 2.5 seconds.':item.kind==='companion'?'Celebration voice · a short answer after a 5-Chain or success.':'Launch or impact accent.')+' Follows master volume and mute.'}</small>`);
   large.hidden=isAudio();
-  const stage=large.parentElement;if(isAudio()){stage.removeAttribute('role');stage.removeAttribute('tabindex');stage.removeAttribute('aria-label');}else{stage.setAttribute('role','button');stage.setAttribute('tabindex','0');stage.setAttribute('aria-label',item.name+' Preview. Tap or use arrow keys to nudge.');}
+  const stage=large.parentElement;if(isAudio()){stage.removeAttribute('role');stage.removeAttribute('tabindex');stage.removeAttribute('aria-label');}else{stage.setAttribute('role','button');stage.setAttribute('tabindex','0');stage.setAttribute('aria-label',item.name+' Preview. Tap or use arrow keys to nudge.'+(item.kind==='pendant'?' In Showcase, drag to move the invisible cord anchor.':''));}
   large.parentElement.querySelector('.music-theme-art')?.remove();
   if(isAudio()){preview?.destroy();preview=null;large.insertAdjacentHTML('afterend',musicArt(item));return;}
   preview ||=cosmeticPreviewMount(large,{surface:large.parentElement,view:views.value(),kind:()=>kind,loadout:()=>({...cosmeticLoadout(host.profile()),...(selected?{[kind]:selected}:{})}),color:host.color,style:host.style});
