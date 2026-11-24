@@ -41,6 +41,7 @@ export function bubbleInteractionMount(surface,host){
    if(!host.active())return;const g=host.geometry();if(!g||g.visible===false||!g.unit)return;
    const scale=menuPoolView(win.innerWidth,win.innerHeight).scale,convert=scale/g.unit;
    host.contact?.({x:(point.x-g.x)/g.unit,y:(point.y-g.y)/g.unit},kind,dt,age,convert);
+   if(host.bodyPressure?.()===false)return;
    const hit=bubblePressure({id:host.id||0,x:g.x/scale,y:g.y/scale,radius:14*g.unit/scale},{x:point.x/scale,y:point.y/scale},kind,dt,age);if(!hit)return;
    entityImpulse(control.state,hit.vx*convert,hit.vy*convert,{limit:1100*convert});
    host.hit(hit.nx,hit.ny,hit.speed*convert,kind==='tap');host.request?.();
@@ -83,6 +84,7 @@ export function bubbleInteractionMount(surface,host){
  function startDrag(e){
   if(!host.drag?.()||!host.active()||e.button!==0||drag)return;
   const g=host.geometry();if(!g?.unit||g.visible===false)return;
+  const origin=host.dragPosition?.();if(origin)control.state={x:origin.x,y:origin.y,vx:0,vy:0};
   drag={id:e.pointerId,clientX:e.clientX,clientY:e.clientY,unit:g.unit,startX:control.state.x,startY:control.state.y,x:control.state.x,y:control.state.y};
   surface.setPointerCapture?.(e.pointerId);e.preventDefault();
  }

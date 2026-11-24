@@ -1,15 +1,16 @@
+import {ChainMotion} from './chain-motion.js?v=22d661769bffa69322df3ca345f45511fcc7a16b326a06058f89bd3af12996be';
 import {CompanionTrail} from './companion-trail.js?v=2b2a4606b404ae7e1713cadc24b7d2dd797d4ddf72f8a78a1c5d529f2bd718ae';
-import {entityImpulse} from './entity-motion.js?v=16ce17b5f60cb8d9e28697080edf32fb0049099a55fad2c27982aeec54cf66a8';
+import {entityImpulse,entityStep} from './entity-motion.js?v=16ce17b5f60cb8d9e28697080edf32fb0049099a55fad2c27982aeec54cf66a8';
 import {bubblePressure} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
 import {bubbleShellPoint} from './bubble-render.js?v=9b2f2b87f161370be645295a8959febcc9a37c1e4aa39bed2a0fb875973c3b4f';
 import {companionArt} from './companion-art.js?v=f9f8456faee7b4b466548f9fe2c3e0dcba123aeb64ffa0e955b9fcd8808c0715';
 import {WanderMotion} from './wander-motion.js?v=9828bf3538efbf59246439899737e5d16c23542544d6dc0a1058bd39f3000335';
 import {angleApproach} from './angle.js?v=a877fbe89e9f287f68b69f52d76679cbf59de4428f5c6f8931471c8e40003750';
-import {pendantCord} from './pendant-cord.js?v=c2c38420aba1568c337329c9f17a339108738014ac93b7588149fd022c30ac97';
+import {pendantCord} from './pendant-cord.js?v=5c4e54b53949372fc4628a9fd8c2a044df9e523b5997d5056f273afbe85cec3f';
 import {tetherStep} from './tether-motion.js?v=befaaaaa72aea69adbf2f8d7d061eb749b82581af3775ba1daa008ec80bc7f1a';
 import {CompanionWander} from './companion-wander.js?v=1b58a1d1c39662eca6ef433f02dcf08b3fa32a40898d7924bcea334633f6e656';
-import {cosmeticGet} from './cosmetic.js?v=50f26a8ecaed06f42769edbf9c8dd50c2a0fa896dce11e53d36ad78d1830d695';
-import {accessoryTier,accessoryPulse} from './accessory.js?v=6030928639a0cbae9599108e2df3144478e91ffbcdcf3da53bf8bc1884b79fc0';
+import {cosmeticGet} from './cosmetic.js?v=386c865d18f3ecc56ec0e8d96181350a8f83899d2fde7de3cc434c8f8f3685c5';
+import {accessoryTier,accessoryPulse} from './accessory.js?v=1a0c89daf9413e22b2da886efaa548450b52cc8b9950c576acd7e305c272ac53';
 const tau=Math.PI*2,clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const circle=(c,x,y,r)=>{c.beginPath();c.arc(x,y,r,0,tau);c.fill();};
 const ellipse=(c,x,y,rx,ry,a=0)=>{c.beginPath();c.ellipse(x,y,rx,ry,a,0,tau);c.fill();};
@@ -41,7 +42,7 @@ const companionTether={length:4.8,clearance:1.8,drag:3,mass:.9};
 
 // Independent, bounded presentation state. Never retains or mutates an engine body.
 export class AccessoryVisual{
- constructor(seed){this.trail=new CompanionTrail();this.spawnState=(seed??Math.floor(Math.random()*0xffffffff))>>>0||1;this.wander=new CompanionWander(seed);this.pendantWander=new WanderMotion(seed===undefined?undefined:seed^0x9e3779b9,{speed:.3,interval:8});this.clear();}
+ constructor(seed){this.chain=new ChainMotion();this.showcaseWander=new WanderMotion(seed,{speed:.85,interval:4.5});this.anchorWander=new WanderMotion(seed===undefined?undefined:seed^0x85ebca6b,{speed:.85,interval:4.5});this.trail=new CompanionTrail();this.spawnState=(seed??Math.floor(Math.random()*0xffffffff))>>>0||1;this.wander=new CompanionWander(seed);this.pendantWander=new WanderMotion(seed===undefined?undefined:seed^0x9e3779b9,{speed:.3,interval:8});this.clear();}
  spawn(body,{clearance,length}){
   // Separate from wander clocks: every respawn consumes fresh samples, while
   // a supplied seed still reproduces the complete presentation sequence.
@@ -50,17 +51,19 @@ export class AccessoryVisual{
   return {x:body.x+Math.cos(angle)*distance,y:body.y+Math.sin(angle)*distance,vx:body.vx,vy:body.vy};
  }
  clear(){this.resetMotion();this.elapsed=0;this.reaction=0;this.celebration=0;this.pendant='pendant.none';this.companion='companion.none';}
- configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion'){this.trail.clear();this.follower=null;this.companionAngle=0;this.wander.reset();}else {this.charm=null;this.pendantWander.reset();}this.celebration=0;}this[kind]=id;}}
+ configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion'){this.trail.clear();this.follower=null;this.companionAngle=0;this.wander.reset();}else {this.charm=null;this.anchorPoint=null;this.chain.clear();this.showcaseWander.reset();this.anchorWander.reset();this.pendantWander.reset();}this.celebration=0;}this[kind]=id;}}
  react(celebrate=false){this.reaction=1;if(celebrate)this.celebration=1;}
- resetMotion(){this.trail.clear();this.body=null;this.shell=null;this.follower=null;this.charm=null;this.anchorPoint=null;this.heading=0;this.companionAngle=0;this.pendantAngle=0;this.anchor='shell';this.wander.reset();this.pendantWander.reset();}
- // UI contact positions are relative to the player's center in radius-14 units.
+ resetMotion(){this.chain.clear();this.showcaseWander.reset();this.anchorWander.reset();this.trail.clear();this.body=null;this.shell=null;this.follower=null;this.charm=null;this.anchorPoint=null;this.heading=0;this.companionAngle=0;this.pendantAngle=0;this.anchor='shell';this.wander.reset();this.pendantWander.reset();}
+ nudgePendant(x,y){if(this.charm&&this.body)entityImpulse(this.charm,x*this.body.radius/14,y*this.body.radius/14,{mass:pendantTether.mass,limit:this.body.radius*18});}
+ // UI contact positions are relative to the visible subject in radius-14 units.
  contact(point,kind,seconds=1,age=0,scale=1){
   if(!this.body)return;const unit=this.body.radius/14;
-  this.pressure({x:this.body.x+point.x*unit,y:this.body.y+point.y*unit},kind,seconds,age,scale*unit);
+  const origin=this.anchor==='point'?(this.charm||this.body):this.body;
+  this.pressure({x:origin.x+point.x*unit,y:origin.y+point.y*unit},kind,seconds,age,scale*unit);
  }
  pressure(point,kind,seconds=1,age=0,scale=1){
   if(!this.body||!(scale>0))return;
-  for(const [name,slot,radius,config] of [['charm','pendant',.48,pendantTether],['follower','companion',.85,companionTether]]){
+  for(const [name,slot,radius,config] of [['charm','pendant',.48,pendantTether],...(this.anchor==='point'?[['anchorPoint','pendant',.48,pendantTether]]:[]),['follower','companion',.85,companionTether]]){
    const body=this[name];if(!body||this[slot]===slot+'.none')continue;
    const hit=bubblePressure({id:slot==='pendant'?1:2,x:body.x/scale,y:body.y/scale,radius:this.body.radius*radius/scale},{x:point.x/scale,y:point.y/scale},kind,seconds,age);
    if(hit)entityImpulse(body,hit.vx*scale,hit.vy*scale,{mass:config.mass,limit:this.body.radius*18});
@@ -71,7 +74,7 @@ export class AccessoryVisual{
   const angle=Math.atan2(charm.y-body.y,charm.x-body.x);
   return shell?.length?bubbleShellPoint(shell,angle):{x:body.x+Math.cos(angle)*body.radius,y:body.y+Math.sin(angle)*body.radius};
  }
- step(body,seconds,{interests=[],rotation=0,shell=null,anchor='shell',impulse={x:0,y:0},acceleration={x:0,y:0}}={}){
+ step(body,seconds,{interests=[],rotation=0,shell=null,anchor='shell',impulse={x:0,y:0},acceleration={x:0,y:0},grab=null}={}){
   const dt=clamp(Number.isFinite(seconds)?seconds:0,0,.05);
   if(!body||!Number.isFinite(body.x)||!Number.isFinite(body.y)){this.resetMotion();return;}
   if(anchor!==this.anchor){this.resetMotion();this.anchor=anchor;}
@@ -79,7 +82,7 @@ export class AccessoryVisual{
   const r=Number.isFinite(body.radius)&&body.radius>0?body.radius:14,previous=this.body,previousShell=this.shell;
   const teleport=previous&&Math.hypot(body.x-previous.x,body.y-previous.y)>r*12;
   if(!previous||teleport){
-   this.trail.clear();
+   this.chain.clear();this.showcaseWander.reset();this.anchorWander.reset();this.trail.clear();
    const speed=Math.hypot(body.vx||0,body.vy||0);this.heading=speed>1?Math.atan2(body.vy||0,body.vx||0):0;
    this.follower=null;this.charm=null;this.anchorPoint=null;this.companionAngle=0;this.pendantAngle=0;this.wander.reset();this.pendantWander.reset();
   }
@@ -88,14 +91,14 @@ export class AccessoryVisual{
   const pointAnchor=this.anchor==='point';
   this.shell=pointAnchor?null:shell?.map(p=>({x:p.x,y:p.y}))||null;
   this.follower||=this.spawn(this.body,companionTether);
-  if(pointAnchor){this.charm={...this.body};this.anchorPoint||=this.spawn(this.body,pendantTether);}
+  if(pointAnchor){this.charm||={...this.body};this.anchorPoint||=this.spawn(this.body,pendantTether);}
   else this.charm||=this.spawn(this.body,pendantTether);
   if(!dt||!previous||teleport)return;
-  for(const point of [this.follower,pointAnchor?this.anchorPoint:this.charm]){point.vx+=impulse.x*r/14;point.vy+=impulse.y*r/14;}
+  for(const point of [this.follower,this.charm,...(pointAnchor?[this.anchorPoint]:[])]){point.vx+=impulse.x*r/14;point.vy+=impulse.y*r/14;}
   this.elapsed+=dt;this.reaction=Math.max(0,this.reaction-dt*2.5);this.celebration=Math.max(0,this.celebration-dt/1.5);
   // Interpolate the anchor across bounded substeps. Motion comes from actual
   // displacement, so stationary/held previews cannot invent velocity or gravity.
-  const steps=Math.ceil(dt/(1/120)),h=dt/steps;
+  const steps=Math.ceil(dt/(1/120)),h=dt/steps,grabStart=pointAnchor&&grab?{...this.charm}:null;
   for(let i=1;i<=steps;i++){
    const anchor={x:previous.x+(body.x-previous.x)*i/steps,y:previous.y+(body.y-previous.y)*i/steps,radius:r,vx,vy};
    const drive=this.wander.step(h,this.follower,anchor,interests,companionTether.length);
@@ -103,18 +106,29 @@ export class AccessoryVisual{
    tetherStep(this.follower,anchor,h,companionTether,drive);
    const lateral=(this.follower.vx-vx)*Math.cos(rotation)-(this.follower.vy-vy)*Math.sin(rotation);
    this.companionAngle=angleApproach(this.companionAngle,clamp(lateral/(r*12),-.25,.25),5,h);
-   // The interactive subject owns position. In Showcase the opposite endpoint
-   // roams on the same leash; ordinary play keeps the charm as the roaming end.
-   const roaming=pointAnchor?this.anchorPoint:this.charm;
-   const drift=this.pendantWander.step(h,roaming,anchor,pendantTether.length);
-   drift.x+=acceleration.x*r/14;drift.y+=acceleration.y*r/14;
-   let attachment=null;
-   if(!pointAnchor){
+   if(pointAnchor){
+    // Two equal-mass bodies. The stage center is only a soft framing force,
+    // never a hidden player or a pinned chain endpoint.
+    const a=this.anchorPoint,p=this.charm,dx=a.x-p.x,dy=a.y-p.y,d=Math.hypot(dx,dy)||1;
+    const separation=Math.max(0,pendantTether.clearance*r-d)*45;
+    for(const [point,wander,side] of [[p,this.showcaseWander,-1],[a,this.anchorWander,1]]){
+     const drift=wander.step(h,point,anchor,pendantTether.length);
+     const outside=Math.max(0,Math.hypot(point.x-anchor.x,point.y-anchor.y)-r*1.6);
+     const distance=Math.hypot(point.x-anchor.x,point.y-anchor.y)||1;
+     const force={x:drift.x+side*dx/d*separation-(point.x-anchor.x)/distance*outside*12+acceleration.x*r/14,y:drift.y+side*dy/d*separation-(point.y-anchor.y)/distance*outside*12+acceleration.y*r/14};
+     entityStep(point,h,{mass:pendantTether.mass,friction:pendantTether.drag*pendantTether.mass},{x:force.x*pendantTether.mass,y:force.y*pendantTether.mass});
+    }
+    if(grab){p.x=grabStart.x+(grab.x-grabStart.x)*i/steps;p.y=grabStart.y+(grab.y-grabStart.y)*i/steps;p.vx=(grab.x-grabStart.x)/dt;p.vy=(grab.y-grabStart.y)/dt;}
+    this.pendantAngle=angleApproach(this.pendantAngle,clamp(p.vx/(r*10),-.4,.4),5,h);
+    this.chain.step(a,p,h,r*pendantTether.length,{startMass:pendantTether.mass,endMass:grab?0:pendantTether.mass,endRadius:r*.58,endOffset:{x:Math.sin(this.pendantAngle)*6*r/14,y:-Math.cos(this.pendantAngle)*6*r/14}});
+   }else{
+    const drift=this.pendantWander.step(h,this.charm,anchor,pendantTether.length);
+    drift.x+=acceleration.x*r/14;drift.y+=acceleration.y*r/14;
     const end=this.attachment(this.body,this.charm),start=this.attachment(previous,this.charm,previousShell);
-    attachment={x:start.x+(end.x-start.x)*i/steps,y:start.y+(end.y-start.y)*i/steps,vx:(end.x-start.x)/dt,vy:(end.y-start.y)/dt};
+    const attachment={x:start.x+(end.x-start.x)*i/steps,y:start.y+(end.y-start.y)*i/steps,vx:(end.x-start.x)/dt,vy:(end.y-start.y)/dt};
+    tetherStep(this.charm,anchor,h,pendantTether,drift,attachment);
+    if(this.pendant!=='pendant.none')this.chain.step(attachment,this.charm,h,r*(pendantTether.length-1));
    }
-   tetherStep(roaming,anchor,h,pendantTether,drift,attachment);
-   if(pointAnchor)this.pendantAngle=angleApproach(this.pendantAngle,clamp(vx/(r*10),-.4,.4),5,h);
   }
   this.trail.step(this.follower,r,dt,cosmeticGet(this.companion));
  }
@@ -124,6 +138,7 @@ export class AccessoryVisual{
   const b=this.body,points=[];
   if(this.pendant!=='pendant.none'&&this.charm){points.push({...this.charm,r:b.radius*2.8});if(this.anchorPoint)points.push({...this.anchorPoint,r:b.radius*.3});}
   if(this.companion!=='companion.none'&&this.follower)points.push({...this.follower,r:b.radius*4.4});
+  points.push(...this.chain.points.map(p=>({x:p.x,y:p.y,r:b.radius*.2})));
   points.push(...this.trail.points.map(p=>({x:p.x,y:p.y,r:p.r*2})));
   return points;
  }
@@ -134,10 +149,10 @@ export class AccessoryVisual{
    const p=this.charm,dx=p.x-b.x,dy=p.y-b.y;
    const pointAnchor=this.anchor==='point',angle=pointAnchor?this.pendantAngle:Math.atan2(dy,dx)-Math.PI/2;
    const tip=pointAnchor?{x:p.x+Math.sin(angle)*6*r/14,y:p.y-Math.cos(angle)*6*r/14}:p;
-   // Cord geometry belongs to its remote attachment, even when the interactive
-   // body is the pendant itself. Keep shell-mode drawing unchanged.
+   // Static cord geometry uses the actual attachment; live bends come from
+   // the simulated joint path, independently of the interactive subject.
    const attachment=this.attachment(b,p,shell),cordBody=pointAnchor?{...attachment,radius:r}:b;
-   pendantCord(c,cordBody,tip,pendantTether.length,pendant,t,gentle,attachment,pointAnchor?0:1);c.save();c.translate(p.x,p.y);c.rotate(angle);c.scale(r/14,r/14);
+   pendantCord(c,cordBody,tip,pendantTether.length,pendant,t,gentle,attachment,pointAnchor?0:1,this.chain.points);c.save();c.translate(p.x,p.y);c.rotate(angle);c.scale(r/14,r/14);
    flourish(c,pendant,t,0,gentle,true);
    c.fillStyle='#081b2a';ellipse(c,0,0,6.3,7.3);c.fillStyle=pendant.color;c.strokeStyle='#f1fff2';c.lineWidth=.7;
    if(pendant.style==='drop'){c.beginPath();c.moveTo(0,-6);c.bezierCurveTo(1,-3,6,0,4,4);c.bezierCurveTo(1,8,-5,5,-4,1);c.closePath();c.fill();c.stroke();}

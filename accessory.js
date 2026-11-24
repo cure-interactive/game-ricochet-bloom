@@ -1,7 +1,7 @@
 // Accessories use the same ownership, prices and equipment slots as other cosmetics.
 export const ACCESSORIES=Object.freeze([
  {id:'pendant.none',kind:'pendant',name:'None',rarity:'common',cost:0,color:'#bff6e2',style:'none',description:'Keep your player bubble free of a pendant.'},
- {id:'pendant.dewdrop',kind:'pendant',name:'Dewdrop',rarity:'common',cost:0,color:'#91e5dd',style:'drop',description:'A tiny glass drop on a silver thread. Your free first pendant floats and rebounds on a weightless elastic thread.'},
+ {id:'pendant.dewdrop',kind:'pendant',name:'Dewdrop',rarity:'common',cost:0,color:'#91e5dd',style:'drop',description:'A tiny glass drop on a silver chain. Your free first pendant floats on weightless links that bend and sway.'},
  {id:'pendant.leaf',kind:'pendant',name:'Silverleaf',rarity:'rare',cost:120,color:'#b2edb1',style:'leaf',description:'A silver-edged leaf that catches the light as your bubble moves.'},
  {id:'pendant.moon',kind:'pendant',name:'Moonstone',rarity:'epic',cost:220,color:'#c9baff',style:'moon',description:'A crescent with a circling moonbeam.'},
  {id:'pendant.sun',kind:'pendant',name:'Sundial',rarity:'legendary',cost:360,color:'#ffcf7b',style:'sun',description:'A golden sun with a slowly turning corona.'},

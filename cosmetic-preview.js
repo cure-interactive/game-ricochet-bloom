@@ -1,7 +1,7 @@
 import {cosmeticCardLoadout,cosmeticShowcaseFrame,cosmeticSoloKind,cosmeticPreviewLoadout} from './cosmetic-presentation.js?v=d65010e620ce52421ce1c9001b9dac66f27e058432d5f0e318164430410729e5';
-import {bubbleInteractionMount} from './bubble-interaction.js?v=7b223dd6a9f694a68b3b6c221a72da4a8ec38887b595f058b522affae6723c69';
+import {bubbleInteractionMount} from './bubble-interaction.js?v=f93c99730054bbc2f5c3715863fc2759d8a6eb662a5b0fb784ff95cda0725591';
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e5d682d54726c402cbba21b5c0dd0415557d7ed9f44a5f144c7dba8c36cb5a58';
-import {CosmeticVisual} from './cosmetic-visual.js?v=1f6f60750f98ed5b646fc3998ef72692bb217e3aaee9bbcf2405e880f7f75310';
+import {CosmeticVisual} from './cosmetic-visual.js?v=a60ccf395c9317a69cc85338b327ecc5b54b53ae103faf946368acc632c30cc5';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender} from './bubble-render.js?v=9b2f2b87f161370be645295a8959febcc9a37c1e4aa39bed2a0fb875973c3b4f';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
@@ -46,10 +46,10 @@ export function cosmeticPreviewMount(canvas,host){
  const solo=()=>host.thumbnail?null:cosmeticSoloKind(view,host.kind?.());
  const touchAction=surface.style.touchAction;
  const syncInput=()=>{surface.style.touchAction=solo()==='pendant'?'none':touchAction;};syncInput();
- const interaction=bubbleInteractionMount(surface,{drag:()=>solo()==='pendant',contact:(...args)=>{if(solo()!=='pendant')visual.accessories.contact(...args);},active:()=>active&&!doc.hidden&&activity?.isActive()!==false,geometry:()=>{if(!geometry)return null;const r=surface.getBoundingClientRect(),unit=(r.width||r.right-r.left)/geometry.width;return {x:r.left+(body.x*camera.zoom+camera.x)*unit,y:r.top+(body.y*camera.zoom+camera.y)*unit,unit:unit*camera.zoom*body.radius/14,visible:!!activity.clip(r)};},hit:(x,y,speed)=>{if(solo()!=='pendant')bubbleHit(membrane,body.radius,x,y,speed*body.radius/14);}});
+ const interaction=bubbleInteractionMount(surface,{drag:()=>solo()==='pendant',bodyPressure:()=>solo()!=='pendant',dragPosition:()=>{const p=visual.accessories.charm||body,f=body.radius/14;return {x:(p.x-body.x)/f,y:(p.y-body.y)/f};},contact:(...args)=>visual.accessories.contact(...args),active:()=>active&&!doc.hidden&&activity?.isActive()!==false,geometry:()=>{if(!geometry)return null;const p=solo()==='pendant'?(visual.accessories.charm||body):body,r=surface.getBoundingClientRect(),unit=(r.width||r.right-r.left)/geometry.width;return {x:r.left+(p.x*camera.zoom+camera.x)*unit,y:r.top+(p.y*camera.zoom+camera.y)*unit,unit:unit*camera.zoom*body.radius/14,visible:!!activity.clip(r)};},hit:(x,y,speed)=>{if(solo()!=='pendant')bubbleHit(membrane,body.radius,x,y,speed*body.radius/14);}});
  function key(event){
   if(host.thumbnail)return;const direction={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],Enter:[0,-1],' ':[0,-1]}[event.key];if(!direction)return;
-  event.preventDefault();interaction.state.vx+=direction[0]*60;interaction.state.vy+=direction[1]*60;if(solo()!=='pendant')bubbleHit(membrane,body.radius,-direction[0],-direction[1],140);
+  event.preventDefault();if(solo()==='pendant'&&visual.accessories.charm){visual.accessories.nudgePendant(direction[0]*60,direction[1]*60);return;}interaction.state.vx+=direction[0]*60;interaction.state.vy+=direction[1]*60;if(solo()!=='pendant')bubbleHit(membrane,body.radius,-direction[0],-direction[1],140);
  }
  surface.addEventListener('keydown',key);
  function draw(now){
@@ -97,13 +97,13 @@ export function cosmeticPreviewMount(canvas,host){
    if(celebration){if(body.vx)celebration.vx=Math.sign(body.vx)*Math.abs(celebration.vx);if(body.vy)celebration.vy=Math.sign(body.vy)*Math.abs(celebration.vy);}
   }
   const sensor=interaction.step(dt),motion=interaction.state,factor=body.radius/14;
-  offset={x:motion.x*factor,y:motion.y*factor,vx:motion.vx*factor,vy:motion.vy*factor};body.x+=offset.x;body.y+=offset.y;body.vx+=offset.vx;body.vy+=offset.vy;
+  offset=isolated==='pendant'?{x:0,y:0,vx:0,vy:0}:{x:motion.x*factor,y:motion.y*factor,vx:motion.vx*factor,vy:motion.vy*factor};body.x+=offset.x;body.y+=offset.y;body.vx+=offset.vx;body.vy+=offset.vy;
   const trails=!isolated&&host.trailEnabled?.()!==false;
   if(!trails&&visual.points.length)visual.breakTrail();
-  // In pendant Showcase, body is the interactive charm; its other endpoint
-  // roams with standard pendant repulsion, without any hidden player shell.
+  // Pendant Showcase uses two moving bodies. This body supplies the stage
+  // center and scale only; input reaches the actual charm and loose endpoint.
   if(isolated!=='pendant')bubbleStep(membrane,body,dt,false,{vx:sensor.x,vy:sensor.y});
-  const environment={impulse:sensor.impulse,acceleration:sensor.acceleration,anchor:isolated==='pendant'?'point':'shell',shell:isolated==='pendant'?null:bubbleOutline(membrane,body)};
+  const environment={grab:isolated==='pendant'&&interaction.dragging?{x:body.x+motion.x*factor,y:body.y+motion.y*factor}:null,impulse:sensor.impulse,acceleration:sensor.acceleration,anchor:isolated==='pendant'?'point':'shell',shell:isolated==='pendant'?null:bubbleOutline(membrane,body)};
   if(dt>0)visual.step(body,dt,trails,environment);else if(!visual.accessories.body)visual.accessories.step(body,0,environment);
   const nextCamera=view==='showcase'&&!host.thumbnail?cosmeticShowcaseFrame(body,visual.accessories,host.kind?.(),worldWidth,worldHeight):{x:0,y:0,zoom:1};
   if(!interaction.dragging){const blend=isolated&&dt>0?1-Math.exp(-dt*6):1;for(const key of ['x','y','zoom'])camera[key]+=(nextCamera[key]-camera[key])*blend;}

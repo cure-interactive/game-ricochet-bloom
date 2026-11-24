@@ -6,6 +6,23 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.40.5
+
+Build: 2026-11-24 14:51:06 UTC
+
+### Player Changes
+
+- Pendant chains now bend through linked joints with their own momentum instead of using a fixed decorative curve.
+- Showcase lets both the pendant and its loose chain endpoint drift, respond to taps and pull on each other. Their wandering sits between normal pendant and companion activity.
+- Dragging keeps control of the pendant; release lets the chain and both ends settle naturally. Upright easing, gentle separation and rarity decorations remain.
+
+<!-- development -->
+### Developer Notes
+
+- Share a gravity-free, mass-weighted chain constraint solver across pendant rendering. Gameplay attachments remain kinematic, preserving one-way cosmetic forces.
+- Route Showcase input to the actual free bodies and preserve joint history through repaints; reset it at view/configuration/teleport boundaries.
+<!-- /development -->
+
 ## v3.40.4
 
 Build: 2026-11-24 10:58:48 UTC
