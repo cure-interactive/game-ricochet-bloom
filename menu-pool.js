@@ -1,3 +1,4 @@
+import {entityImpulse} from './entity-motion.js?v=16ce17b5f60cb8d9e28697080edf32fb0049099a55fad2c27982aeec54cf66a8';
 import {bubblePressure} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
 import {gameCreate,launch,physicsStep,powerMarkers,seedBodies,RULE} from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 
@@ -27,8 +28,7 @@ export function menuPoolPoint(x,y,width,height){
 }
 function repel(body,point,kind,seconds=1,age=0){
   const hit=bubblePressure(body,point,kind,seconds,age);if(!hit)return null;
-  body.vx+=hit.vx;body.vy+=hit.vy;
-  const speed=Math.hypot(body.vx,body.vy);if(speed>1100){body.vx*=1100/speed;body.vy*=1100/speed;}
+  entityImpulse(body,hit.vx,hit.vy,{limit:1100});
   return {id:body.id,nx:hit.nx,ny:hit.ny,speed:hit.speed};
 }
 export function menuPoolTap(pool,point){

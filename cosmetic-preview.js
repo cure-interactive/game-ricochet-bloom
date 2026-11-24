@@ -1,8 +1,8 @@
-import {bubbleInteractionMount} from './bubble-interaction.js?v=6c2d620f96364e97799c42d7a6b4682f26775fbae76fa3e10a38f90adfa588dc';
+import {bubbleInteractionMount} from './bubble-interaction.js?v=6e496baf63684650a5c5e46f8c1ecc9358c9f4a5ce33f9bac61381b48fd1dfa7';
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e5d682d54726c402cbba21b5c0dd0415557d7ed9f44a5f144c7dba8c36cb5a58';
-import {CosmeticVisual} from './cosmetic-visual.js?v=417c866b74ba322d1d5c72eb2bb21e224ed7fedf0a1941b32d375ed1e74edfe4';
+import {CosmeticVisual} from './cosmetic-visual.js?v=7b45a77dfd9a97006806f4955e4e15544efe65db621fd587f4cec2174c50b62d';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
-import {bubbleRender} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';
+import {bubbleRender} from './bubble-render.js?v=9b8e3c455a0794128139a4435b903daae6dbb8b7ce74ca8610f59c0d4af7ded8';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
@@ -40,9 +40,9 @@ let previewSequence=0;
 export function cosmeticPreviewMount(canvas,host){
  const c=canvas.getContext('2d'),visual=new CosmeticVisual(),membrane=bubbleCreate(),body={id:0,x:90,y:100,radius:host.icon?14:host.compact?26:17,vx:130,vy:85},ready=frameGate();
  const doc=canvas.ownerDocument,win=doc.defaultView;
- let frame=0,last=0,active=true,activity,nextRipple=0,origin=null,geometry=null,offset={x:0,y:0,vx:0,vy:0};
+ let frame=0,last=0,active=true,activity,nextRipple=0,origin=null,geometry=null,celebration=null,offset={x:0,y:0,vx:0,vy:0};
  const surface=host.surface||canvas,phase=++previewSequence*2.4;
- const interaction=bubbleInteractionMount(surface,{active:()=>active&&!doc.hidden&&activity?.isActive()!==false,geometry:()=>{if(!geometry)return null;const r=surface.getBoundingClientRect(),unit=(r.width||r.right-r.left)/geometry.width;return {x:r.left+body.x*unit,y:r.top+body.y*unit,unit:unit*body.radius/14,visible:!!activity.clip(r)};},hit:(x,y,speed)=>bubbleHit(membrane,body.radius,x,y,speed*body.radius/14)});
+ const interaction=bubbleInteractionMount(surface,{contact:(...args)=>visual.accessories.contact(...args),active:()=>active&&!doc.hidden&&activity?.isActive()!==false,geometry:()=>{if(!geometry)return null;const r=surface.getBoundingClientRect(),unit=(r.width||r.right-r.left)/geometry.width;return {x:r.left+body.x*unit,y:r.top+body.y*unit,unit:unit*body.radius/14,visible:!!activity.clip(r)};},hit:(x,y,speed)=>bubbleHit(membrane,body.radius,x,y,speed*body.radius/14)});
  function draw(now){
   frame=0;if(!active||doc.hidden||activity?.isActive()===false)return;
   frame=win.requestAnimationFrame(draw);if(!ready(now))return;
@@ -67,15 +67,30 @@ export function cosmeticPreviewMount(canvas,host){
     nextRipple=t+1.35+.35*(1+Math.sin(angle));
    }
   }else{
-   cosmeticPreviewStep(body,visual.accessories.celebration>0?0:dt,worldWidth,worldHeight,(x,y,nx,ny)=>{
+   if(celebration){
+    const state=celebration;state.age+=dt;let speed=0;
+    const ease=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);};
+    if(state.phase==='brake'){
+     speed=1-ease(state.age/.35);
+     if(state.age>=.35){state.phase='hold';state.age=0;visual.accessories.react(true);state.start?.();}
+    }else if(state.phase==='hold'){
+     if(state.age>=1.5&&state.soundDone?.()!==false){state.phase='resume';state.age=0;}
+    }else{
+     speed=ease(state.age/.45);
+     if(state.age>=.45){celebration=null;state.finish?.();}
+    }
+    body.vx=state.vx*speed;body.vy=state.vy*speed;
+   }
+   cosmeticPreviewStep(body,dt,worldWidth,worldHeight,(x,y,nx,ny)=>{
     visual.hit(x,y);bubbleHit(membrane,body.radius,nx,ny,210);
    });
+   if(celebration){if(body.vx)celebration.vx=Math.sign(body.vx)*Math.abs(celebration.vx);if(body.vy)celebration.vy=Math.sign(body.vy)*Math.abs(celebration.vy);}
   }
   const sensor=interaction.step(dt),motion=interaction.state,factor=body.radius/14;
   offset={x:motion.x*factor,y:motion.y*factor,vx:motion.vx*factor,vy:motion.vy*factor};body.x+=offset.x;body.y+=offset.y;body.vx+=offset.vx;body.vy+=offset.vy;
   const trails=host.trailEnabled?.()!==false;
   if(!trails&&visual.points.length)visual.breakTrail();
-  bubbleStep(membrane,body,dt,false,{vx:sensor.x,vy:sensor.y});if(dt>0)visual.step(body,dt,trails,{impulse:sensor.impulse,acceleration:sensor.acceleration});
+  bubbleStep(membrane,body,dt,false,{vx:sensor.x,vy:sensor.y});if(dt>0)visual.step(body,dt,trails,{impulse:sensor.impulse,acceleration:sensor.acceleration,shell:bubbleOutline(membrane,body)});
   const outline=bubbleOutline(membrane,body),paint=context=>{
    visual.render(context,doc.body.dataset.quality==='low',true);
    bubbleRender(context,body,outline,host.color?.()||'#f1f9d7',{skinTime:visual.elapsed,skinStyle:host.style?.(),lowQuality:doc.body.dataset.quality==='low',glowExtent:host.icon?1.3:2});
@@ -88,5 +103,6 @@ export function cosmeticPreviewMount(canvas,host){
  }
  function sync(){if(doc.hidden||activity?.isActive()===false)interaction.clear();win.cancelAnimationFrame(frame);frame=0;last=0;if(active&&!doc.hidden&&activity?.isActive()!==false)frame=win.requestAnimationFrame(draw);}
  activity=visualActivityMount(host.surface||canvas,sync,{intersection:false});sync();
- return {celebrate(){if(geometry){body.x=geometry.width/2;body.y=geometry.height/2;offset={x:0,y:0,vx:0,vy:0};visual.breakTrail();visual.accessories.resetMotion();}visual.accessories.react(true);},destroy(){active=false;interaction.destroy();activity.destroy();win.cancelAnimationFrame(frame);}};
+ function cancelCelebration(){if(!celebration)return;const state=celebration;celebration=null;body.vx=state.vx+offset.vx;body.vy=state.vy+offset.vy;visual.accessories.celebration=0;state.finish?.();}
+ return {celebrate(callbacks={}){if(!celebration)celebration={phase:'brake',age:0,vx:body.vx-offset.vx,vy:body.vy-offset.vy,...callbacks};},cancelCelebration,destroy(){cancelCelebration();active=false;interaction.destroy();activity.destroy();win.cancelAnimationFrame(frame);}};
 }

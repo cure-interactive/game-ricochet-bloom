@@ -1,6 +1,7 @@
+import {entityImpulse} from './entity-motion.js?v=16ce17b5f60cb8d9e28697080edf32fb0049099a55fad2c27982aeec54cf66a8';
 import {bubblePressure,bubbleContactMount} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
-import {skinSpringStep} from './skin-preview.js?v=b46bca5bc442cdd7344540ae811a729c603404d562061865b86a0a763f14c141';
-import {menuPoolView} from './menu-pool.js?v=12b1ea36e45149e4c2229016ccdf23eba2431f6707f637c564ca7422762115d3';
+import {skinSpringStep} from './skin-preview.js?v=208b099e60570883bba34fe5e670ffca5c81f12a01a2ef6b663936fd7ce70c0b';
+import {menuPoolView} from './menu-pool.js?v=0e866a1660a7acc65182329803c6c4a50453e64b601a9916e3858326a1d2d90f';
 import {playerMotion} from './player-motion.js?v=577160ddcb2e76940b04bf9ae7ff772b6ea10e077ac294aaa5ce572fbd733ce7';
 
 // One input/response model for decorative players and cosmetic previews.
@@ -18,9 +19,15 @@ export function bubbleInteractionMount(surface,host){
  const target=surface.closest?.('button')||surface.closest?.('[role="button"]')||surface;
  const frame=()=>{
   const g=host.geometry(),r=host.frame?.()||surface.getBoundingClientRect();
-  return g?.unit?{x:r.x??r.left,y:r.y??r.top,unit:g.unit,width:win.innerWidth,height:win.innerHeight}:null;
+  // Layout is a reference frame, not physical travel. Offsets exclude scrolling
+  // and transforms; scroll extents also catch filter-induced scroll resets.
+  let layout='';for(let node=surface;node;node=node.offsetParent)layout+=`${node.offsetLeft||0},${node.offsetTop||0};`;
+  for(const node of positions.keys())layout+=`${node.scrollWidth||0},${node.scrollHeight||0};`;
+  return g?.unit?{x:r.x??r.left,y:r.y??r.top,unit:g.unit,width:win.innerWidth,height:win.innerHeight,layout}:null;
  };
- let previousFrame=null,pending={x:0,y:0},flow={x:0,y:0};
+ const continuous=(a,b)=>a&&b&&a.layout===b.layout&&Math.abs(a.unit-b.unit)<.001&&a.width===b.width&&a.height===b.height;
+ const rebaseScroll=()=>{for(const node of positions.keys())positions.set(node,{x:node.scrollLeft||0,y:node.scrollTop||0});};
+ let previousFrame=frame(),pending={x:0,y:0},flow={x:0,y:0};
  const control={state:{x:0,y:0,vx:0,vy:0},pulses:[],positions,
   viewportShift(dx,dy,unit){
    const distance=Math.hypot(dx,dy);if(distance<.001||!unit)return;
@@ -31,27 +38,31 @@ export function bubbleInteractionMount(surface,host){
   },
   pressure(point,kind,dt=1,age=0){
    if(!host.active())return;const g=host.geometry();if(!g||g.visible===false||!g.unit)return;
-   const scale=menuPoolView(win.innerWidth,win.innerHeight).scale,hit=bubblePressure({id:host.id||0,x:g.x/scale,y:g.y/scale,radius:14*g.unit/scale},{x:point.x/scale,y:point.y/scale},kind,dt,age);if(!hit)return;
-   const convert=scale/g.unit,s=control.state;s.vx+=hit.vx*convert;s.vy+=hit.vy*convert;const speed=Math.hypot(s.vx,s.vy),limit=1100*convert;if(speed>limit){s.vx*=limit/speed;s.vy*=limit/speed;}
+   const scale=menuPoolView(win.innerWidth,win.innerHeight).scale,convert=scale/g.unit;
+   host.contact?.({x:(point.x-g.x)/g.unit,y:(point.y-g.y)/g.unit},kind,dt,age,convert);
+   const hit=bubblePressure({id:host.id||0,x:g.x/scale,y:g.y/scale,radius:14*g.unit/scale},{x:point.x/scale,y:point.y/scale},kind,dt,age);if(!hit)return;
+   entityImpulse(control.state,hit.vx*convert,hit.vy*convert,{limit:1100*convert});
    host.hit(hit.nx,hit.ny,hit.speed*convert,kind==='tap');host.request?.();
   },
   press(point){if(!host.active())return;control.pressure(point,'tap');control.pulses.push({...point,age:0});if(control.pulses.length>8)control.pulses.shift();},
-  clear(){control.pulses=[];previousFrame=null;pending={x:0,y:0};flow={x:0,y:0};},
-  reset(){control.state={x:0,y:0,vx:0,vy:0};control.clear();},
+  clear(){control.pulses=[];previousFrame=null;rebaseScroll();pending={x:0,y:0};flow={x:0,y:0};},
+  reset(){control.state={x:0,y:0,vx:0,vy:0};control.clear();previousFrame=frame();},
   scroll(event){
    const previous=positions.get(event.target);if(!previous)return;const next={x:event.target.scrollLeft||0,y:event.target.scrollTop||0};positions.set(event.target,next);if(!host.active())return;
-   const g=host.geometry();if(!g?.unit)return;
+   const current=frame();if(!current)return;
+   if(!continuous(current,previousFrame)){previousFrame=current;rebaseScroll();return;}
    // Scroll is one observed frame displacement, never an impact. Remember the
    // new frame so its next sample cannot count the same movement twice.
-   control.viewportShift(previous.x-next.x,previous.y-next.y,g.unit);previousFrame=frame();
+   control.viewportShift(previous.x-next.x,previous.y-next.y,current.unit);previousFrame=current;
   },
   focus(){if(!host.active()||hub.contacts.size)return;control.state.vy-=60;host.hit(0,1,140,true);host.request?.();},
   step(dt){
    const current=frame();
-   if(current&&previousFrame&&dt>0&&host.active()){
-    const sameScale=Math.abs(current.unit-previousFrame.unit)<.001&&current.width===previousFrame.width&&current.height===previousFrame.height;
+   if(!continuous(current,previousFrame))rebaseScroll();
+   else if(dt>0&&host.active()){
     const dx=current.x-previousFrame.x,dy=current.y-previousFrame.y;
-    if(sameScale&&Math.hypot(dx,dy)<current.unit*100)control.viewportShift(dx,dy,current.unit);
+    if(continuous(current,previousFrame)&&Math.hypot(dx,dy)<current.unit*100)control.viewportShift(dx,dy,current.unit);
+    else rebaseScroll();
    }
    previousFrame=current;
    for(const point of hub.contacts.values())control.pressure(point,'hold',dt);

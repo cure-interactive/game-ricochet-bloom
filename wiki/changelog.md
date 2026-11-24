@@ -6,6 +6,24 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.38.3
+
+Build: 2026-11-24 00:41:45 UTC
+
+### Player Changes
+
+- Switching All, Favorites or rarity filters no longer launches pendants and companions around their previews.
+- Taps and held touches push accessories directly. Their mass and friction govern the response, and pendant cords follow the moving, squishy player shell.
+- Preview Celebration now includes the companion's sound. The player slows to a stop, celebrates in place, then resumes naturally. Pendants keep their silent celebration.
+
+<!-- development -->
+### Developer Notes
+
+- Rebase viewport inertia when layout offsets or ancestor scroll extents change, including filter-triggered scroll resets. Preserve real scrolling, transforms and existing one-shot deduplication.
+- Share impulse/mass and friction integration across player springs and accessory leashes. Route pressure in local coordinates; accessory forces never mutate gameplay bodies. Sample the exact quadratic shell for the pendant endpoint and taut-leash response.
+- Replace duplicate companion sound/animation controls with one brake/hold/resume sequence. Start sound at the celebration boundary, wait for audio completion and cancel pending playback on navigation/visibility changes without teleporting or respawning.
+<!-- /development -->
+
 ## v3.38.2
 
 Build: 2026-11-24 00:20:42 UTC

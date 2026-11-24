@@ -1,9 +1,9 @@
-import {bubbleInteractionMount} from './bubble-interaction.js?v=6c2d620f96364e97799c42d7a6b4682f26775fbae76fa3e10a38f90adfa588dc';
+import {bubbleInteractionMount} from './bubble-interaction.js?v=6e496baf63684650a5c5e46f8c1ecc9358c9f4a5ce33f9bac61381b48fd1dfa7';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
-import {CosmeticVisual} from './cosmetic-visual.js?v=417c866b74ba322d1d5c72eb2bb21e224ed7fedf0a1941b32d375ed1e74edfe4';
+import {CosmeticVisual} from './cosmetic-visual.js?v=7b45a77dfd9a97006806f4955e4e15544efe65db621fd587f4cec2174c50b62d';
 import {qualityPixelRatio} from './quality.js?v=33c4a6dbcda13ded7499caa9a3563afa6903c4346850134bc5bd467cbac4ad4e';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
-import {bubbleRender,bubblePath} from './bubble-render.js?v=352a85f75d04cfd6df233c288dd962bc7b50d9634e6c22640ae8d09903a0276b';
+import {bubbleRender,bubblePath} from './bubble-render.js?v=9b8e3c455a0794128139a4435b903daae6dbb8b7ce74ca8610f59c0d4af7ded8';
 import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
 
 // Local movement is independent of DOM placement and the decorative current.
@@ -36,7 +36,7 @@ export function registerPlayerBubble(win=window){
    this.target=this.closest('button')||this;
    this.change=()=>{this.activity?.refresh();if(this.canAnimate())this.paint();this.request();};
    this.visibility=()=>{if(this.ownerDocument.hidden){this.interaction?.clear();this.halt();}else this.request();};
-   this.interaction=bubbleInteractionMount(this,{id:this.phase,active:()=>this.canAnimate(),request:()=>this.request(),frame:()=>{const r=this.getBoundingClientRect(),unit=r.width/28,offset=this.motionSample().offset;return {x:r.left-offset.x*unit,y:r.top-offset.y*unit};},geometry:()=>{const r=this.getBoundingClientRect(),unit=r.width/28;return {x:r.left+r.width/2+this.pressure.x*unit,y:r.top+r.height/2+this.pressure.y*unit,unit,visible:this.visible};},hit:(x,y,speed)=>bubbleHit(this.membrane,14,x,y,speed)});
+   this.interaction=bubbleInteractionMount(this,{contact:(...args)=>this.trail.accessories.contact(...args),id:this.phase,active:()=>this.canAnimate(),request:()=>this.request(),frame:()=>{const r=this.getBoundingClientRect(),unit=r.width/28,offset=this.motionSample().offset;return {x:r.left-offset.x*unit,y:r.top-offset.y*unit};},geometry:()=>{const r=this.getBoundingClientRect(),unit=r.width/28;return {x:r.left+r.width/2+this.pressure.x*unit,y:r.top+r.height/2+this.pressure.y*unit,unit,visible:this.visible};},hit:(x,y,speed)=>bubbleHit(this.membrane,14,x,y,speed)});
    this.interaction.state=this.savedPressure;this.scrolled=this.interaction.scroll;this.scrollPositions=this.interaction.positions;
    this.ownerDocument.addEventListener('visibilitychange',this.visibility);
    this.resize=new win.ResizeObserver(()=>{this.size=this.getBoundingClientRect().width;if(this.visible)this.paint();this.request();});this.resize.observe(this);
@@ -114,7 +114,8 @@ export function registerPlayerBubble(win=window){
    this.trail.configure({trail:style.getPropertyValue('--player-trail').trim(),pendant:accessories?style.getPropertyValue('--player-pendant').trim():undefined,companion:accessories?style.getPropertyValue('--player-companion').trim():undefined});if(!trails)this.trail.breakTrail();
    // Style observers repaint during a grabbed parent's transform. A repaint
    // has no elapsed simulation time and must not break the continuous trail.
-   if(dt>0)this.trail.step({x:motion.x,y:motion.y,radius:14,vx:motion.vx,vy:motion.vy},dt,trails,environment);
+   const accessoryBody={x:motion.x,y:motion.y,radius:14,vx:motion.vx,vy:motion.vy};
+   if(dt>0)this.trail.step(accessoryBody,dt,trails,{...environment,shell:bubbleOutline(this.membrane,accessoryBody)});
    // The tail belongs to movement, not the icon's hit box. Extend this same
    // canvas around its live history, keeping the allocation viewport-bounded.
    // Quantized edges avoid reallocating the backing bitmap for every pixel.

@@ -1,3 +1,4 @@
+import {entityStep} from './entity-motion.js?v=16ce17b5f60cb8d9e28697080edf32fb0049099a55fad2c27982aeec54cf66a8';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 import {escapeHTML} from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 import {visualActivityMount} from './visual-activity.js?v=6f020d19b42eb883c5a1bd52e3b1fd9c9ce47af8512d72b2945fee1753764cba';
@@ -10,7 +11,7 @@ export function skinSpringStep(state,seconds,{stiffness=150,damping=25}={}){
  const next={...state};
  for(let remaining=Math.min(.05,Math.max(0,seconds));remaining>0;){
   const dt=Math.min(remaining,1/120);remaining-=dt;
-  for(const axis of ['x','y']){const v=axis==='x'?'vx':'vy';next[v]+=(-stiffness*next[axis]-damping*next[v])*dt;next[axis]+=next[v]*dt;}
+  entityStep(next,dt,{friction:damping},{x:-stiffness*next.x,y:-stiffness*next.y});
  }
  if(Math.hypot(next.x,next.y)<.08&&Math.hypot(next.vx,next.vy)<.4)return {x:0,y:0,vx:0,vy:0};
  return next;

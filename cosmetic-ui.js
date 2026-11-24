@@ -1,12 +1,12 @@
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=4251ecf0a48be61340e86e6deb6d1db5a75fd389a30b95c16a565ebaa60a995e';
+import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=fba8ade50f1ca065bdd76eedc462369dbd8c3be4773851e382f584ce23bf2ae8';
 import {segmentedHTML,segmentedMount} from './segmented-control.js?v=bfc2eb723bd5080e1ff722bcfb43b3958890bbcd7bb4f5ce1e7dbf3c3192b161';
-import {cosmeticPriceHTML} from './cosmetic-price.js?v=980b863db8db41d73ad3de89a3018398f6e05922f39dce8024b716fde72b3c65';
+import {cosmeticPriceHTML} from './cosmetic-price.js?v=c3b4c5294166adcb419f79d24e1f8075dbdbeb15b5dd7a0e585de4149fdc3ee5';
 import {COSMETICS,cosmeticOrder,cosmeticHasSound,cosmeticGet,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=36e7348418dff5ee2bd86e9b6d031f48e9fed9ce1ae911f25e16edd70d5de8e5';
-import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=3998335642cf4f98355c7ee85a366f430850ff72db92bba8d9d873059d76af2b';
-import {screenHeader} from './screen-header.js?v=3d8195bab82c46447953d26055dab77b27d3181b17681af50ce10efc7bfe3569';
-import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=7c511ffceed13bc60b7242d23fee0e6741c53961d883e627df95ecf7e89da303';
-import {rarityIconHTML} from './skill-icon.js?v=95d7d4290b996dc989ba3ec27e845c982f4113db07c91c44e2280e8670f9915f';
+import {cosmeticPreviewMount,cosmeticThumbnailMount} from './cosmetic-preview.js?v=ec70c0c4982ebacc688a4c54667336e0605ba79a425922e28e0bc2665982273a';
+import {screenHeader} from './screen-header.js?v=09d65c68f5e665dde5af957d87f97c88e0d1f37f4c5e2ab39898cae1ffc9e14c';
+import {buttonHTML,iconHTML,staticIconHTML} from './ui-icon.js?v=fadb7aef991484dc9cb5ef25c3ee3ac0b493397ae011313552240e2310c6e308';
+import {rarityIconHTML} from './skill-icon.js?v=82e58d3b184d3805dfa818368e31a571ee3e2ea66cd48562187ef44d54d0b0b1';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import {escapeHTML} from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 export function cosmeticMount(host){
@@ -23,7 +23,7 @@ export function cosmeticMount(host){
  const musicArt=item=>`<div class="music-theme-art" style="--theme-color:${item.color}" aria-hidden="true">${iconHTML(item.kind==='soundstage'?'sound':item.kind==='ambience'?'wave':'music-note')}<span>${[.4,.7,1,.6,.85].map(h=>`<i style="--bar-height:${h}"></i>`).join('')}</span></div>`;
  const win=dialog.ownerDocument.defaultView;
  function soundButton(active,progress=0){const button=detail.querySelector('[data-cosmetic-sound]');if(!button)return;button.setAttribute('aria-pressed',String(active));button.querySelector('[data-preview-label]').textContent=active?'Stop Preview':'Preview Sound';button.style.setProperty('--preview-progress',String(progress));}
- const stop=()=>{audition++;soundActive=false;win.cancelAnimationFrame(soundFrame);soundFrame=0;host.stopSound?.();soundButton(false);};
+ const stop=()=>{audition++;soundActive=false;win.cancelAnimationFrame(soundFrame);soundFrame=0;host.stopSound?.();preview?.cancelCelebration();soundButton(false);};
  function followSound(){
   const state=host.previewStatus?.();if(!soundActive)return;
   if(!state?.active){stop();detail.querySelector('.cosmetic-sound-hint').textContent='Preview finished.';return;}
@@ -58,7 +58,7 @@ export function cosmeticMount(host){
   detail.classList.toggle('is-equipped',equipped);detail.style.setProperty('--skin-color',item.color);
   detail.innerHTML=`<div class="skin-selection-title">${iconHTML(equipped?'check':owned?'lock-open':'lock')}<div><small class="cosmetic-rarity">${rarityIconHTML(item.rarity)}${RARITIES[item.rarity].name} · ${label()}</small><h3>${escapeHTML(item.name)}</h3></div></div><p class="skin-unlock">${escapeHTML(item.description)}</p>${cosmeticPriceHTML(item,owned,host.showPurchasedCosts?.())}<button type="button" data-cosmetic-equip ${equipped||!owned&&points<item.cost?'disabled':''} class="skin-equip ${equipped?'is-equipped':''}">${staticIconHTML(equipped?'check':owned?glyph():'lock')}<span>${equipped?'Equipped':owned?'Equip '+label():'Unlock &amp; Equip · '+item.cost+' Points'}</span></button>${!owned?`<p class="cosmetic-wallet">${iconHTML('coin')}${points} Points${points<item.cost?' · '+(item.cost-points)+' more needed':''}</p>`:''}`;
   if(['pendant','companion'].includes(item.kind)&&item.style!=='none')detail.insertAdjacentHTML('beforeend',`<button type="button" class="quiet" data-accessory-celebrate>Preview Celebration</button>`);
-  if(cosmeticHasSound(item))detail.insertAdjacentHTML('beforeend',`<button type="button" class="quiet cosmetic-sound-button" data-cosmetic-sound aria-pressed="false">${iconHTML('play')}<span data-preview-label>Preview Sound</span><span class="cosmetic-sound-progress" aria-hidden="true"><i></i></span></button><small class="cosmetic-sound-hint" role="status">${isAudio()?'Try this '+label().toLowerCase()+' with the current music for up to ten seconds. Tap again to restore your equipped choice.'+(kind==='ambience'?' Follows Ambience Volume, Master Volume and Sound.':' Follows Music Volume, Master Volume and Sound.'):(item.kind==='trail'&&item.rarity==='mythic'?'Launch and travel · tapers to silence over 2.5 seconds.':item.kind==='companion'?'Celebration voice · a short answer after a 5-Chain or success.':'Launch or impact accent.')+' Follows master volume and mute.'}</small>`);
+  if(cosmeticHasSound(item)&&item.kind!=='companion')detail.insertAdjacentHTML('beforeend',`<button type="button" class="quiet cosmetic-sound-button" data-cosmetic-sound aria-pressed="false">${iconHTML('play')}<span data-preview-label>Preview Sound</span><span class="cosmetic-sound-progress" aria-hidden="true"><i></i></span></button><small class="cosmetic-sound-hint" role="status">${isAudio()?'Try this '+label().toLowerCase()+' with the current music for up to ten seconds. Tap again to restore your equipped choice.'+(kind==='ambience'?' Follows Ambience Volume, Master Volume and Sound.':' Follows Music Volume, Master Volume and Sound.'):(item.kind==='trail'&&item.rarity==='mythic'?'Launch and travel · tapers to silence over 2.5 seconds.':item.kind==='companion'?'Celebration voice · a short answer after a 5-Chain or success.':'Launch or impact accent.')+' Follows master volume and mute.'}</small>`);
   large.hidden=isAudio();
   large.parentElement.querySelector('.music-theme-art')?.remove();
   if(isAudio()){preview?.destroy();preview=null;large.insertAdjacentHTML('afterend',musicArt(item));return;}
@@ -73,15 +73,22 @@ export function cosmeticMount(host){
  dialog.addEventListener('close',()=>{stop();preview?.destroy();preview=null;});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
  dialog.addEventListener('click',async e=>{
+  const celebrate=e.target.closest('[data-accessory-celebrate]');
+  if(celebrate){
+   stop();const id=selected,item=cosmeticGet(id),token=++audition;celebrate.disabled=true;
+   const ready=cosmeticHasSound(item)?await host.unlock?.():true;
+   if(token!==audition||!dialog.open||selected!==id){celebrate.disabled=false;return;}
+   preview?.celebrate({start:()=>{if(ready!==false&&cosmeticHasSound(item))host.sound?.(id);},soundDone:()=>!host.previewStatus?.()?.active,finish:()=>{celebrate.disabled=false;}});
+   return;
+  }
   if(!e.target.closest('[data-cosmetic-sound]'))return;
   if(soundActive){stop();detail.querySelector('.cosmetic-sound-hint').textContent='Preview stopped.';return;}
   const id=selected,token=++audition;soundActive=true;soundButton(true);
   const ready=await host.unlock?.();if(token!==audition||!dialog.open||selected!==id)return;
-  if(ready!==false&&host.sound?.(id)){if(kind==='companion')preview?.celebrate();detail.querySelector('.cosmetic-sound-hint').textContent=isAudio()?'Previewing this '+label().toLowerCase()+' with the current music. Tap again to restore your equipped choice.':'Preview playing. Tap again to stop.';followSound();}
+  if(ready!==false&&host.sound?.(id)){detail.querySelector('.cosmetic-sound-hint').textContent=isAudio()?'Previewing this '+label().toLowerCase()+' with the current music. Tap again to restore your equipped choice.':'Preview playing. Tap again to stop.';followSound();}
   else{stop();detail.querySelector('.cosmetic-sound-hint').textContent='Sound is muted or unavailable. Check Audio settings.';}
  });
  dialog.addEventListener('click',e=>{
-  if(e.target.closest('[data-accessory-celebrate]')){preview?.celebrate();return;}
   const choice=e.target.closest('[data-cosmetic]');
   if(choice){stop();libraryScroll=scroll.scrollTop;selected=choice.dataset.cosmetic;render();status.textContent='';scroll.scrollTop=0;back.focus({preventScroll:true});}
   else if(e.target.closest('[data-cosmetic-equip]')){stop();const item=cosmeticGet(selected),result=host.act({type:cosmeticOwned(host.profile(),item)?'equip-cosmetic':'buy-cosmetic',id:selected});render();status.textContent=result.ok?item.name+' equipped.':result.reason;const equip=detail.querySelector('[data-cosmetic-equip]');(equip.disabled?back:equip).focus({preventScroll:true});}

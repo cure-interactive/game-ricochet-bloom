@@ -1,8 +1,11 @@
+import {entityImpulse} from './entity-motion.js?v=16ce17b5f60cb8d9e28697080edf32fb0049099a55fad2c27982aeec54cf66a8';
+import {bubblePressure} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
+import {bubbleShellPoint} from './bubble-render.js?v=9b8e3c455a0794128139a4435b903daae6dbb8b7ce74ca8610f59c0d4af7ded8';
 import {companionArt} from './companion-art.js?v=1dd8d9daa95066af2c9f9c882fcb47d94d590ceca2ef5fa217134fcf191be758';
 import {WanderMotion} from './wander-motion.js?v=9828bf3538efbf59246439899737e5d16c23542544d6dc0a1058bd39f3000335';
 import {angleApproach} from './angle.js?v=a877fbe89e9f287f68b69f52d76679cbf59de4428f5c6f8931471c8e40003750';
-import {pendantCord} from './pendant-cord.js?v=a18fe7b97b98f1cec672f4f8175cb214c75dfa35036596e530a7b173669bf949';
-import {tetherStep} from './tether-motion.js?v=60b6771a2aa51d30373259dc7d66820b07d226e6af4f232870c6bc88a61e1dbe';
+import {pendantCord} from './pendant-cord.js?v=cd455ff78836587be5ad1b485e46b481b589a217d28bfbc832e3e2726fadce86';
+import {tetherStep} from './tether-motion.js?v=befaaaaa72aea69adbf2f8d7d061eb749b82581af3775ba1daa008ec80bc7f1a';
 import {CompanionWander} from './companion-wander.js?v=1b58a1d1c39662eca6ef433f02dcf08b3fa32a40898d7924bcea334633f6e656';
 import {cosmeticGet} from './cosmetic.js?v=36e7348418dff5ee2bd86e9b6d031f48e9fed9ce1ae911f25e16edd70d5de8e5';
 import {accessoryTier,accessoryPulse} from './accessory.js?v=91a2f322a8bbdc6a7838e7084cd7ebcc2fa4ecd86c974e585c13ea9f79a7b33c';
@@ -32,8 +35,8 @@ function flourish(c,item,t,celebration,low,pendant=false){
  c.restore();
 }
 
-const pendantTether={length:2.6,clearance:1.55,drag:3};
-const companionTether={length:4.8,clearance:1.8,drag:3};
+const pendantTether={length:2.6,clearance:1.55,drag:3,mass:.65};
+const companionTether={length:4.8,clearance:1.8,drag:3,mass:.9};
 
 // Independent, bounded presentation state. Never retains or mutates an engine body.
 export class AccessoryVisual{
@@ -48,12 +51,29 @@ export class AccessoryVisual{
  clear(){this.resetMotion();this.elapsed=0;this.reaction=0;this.celebration=0;this.pendant='pendant.none';this.companion='companion.none';}
  configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion'){this.follower=null;this.companionAngle=0;this.wander.reset();}else {this.charm=null;this.pendantWander.reset();}this.celebration=0;}this[kind]=id;}}
  react(celebrate=false){this.reaction=1;if(celebrate)this.celebration=1;}
- resetMotion(){this.body=null;this.follower=null;this.charm=null;this.heading=0;this.companionAngle=0;this.wander.reset();this.pendantWander.reset();}
- step(body,seconds,{interests=[],rotation=0,impulse={x:0,y:0},acceleration={x:0,y:0}}={}){
+ resetMotion(){this.body=null;this.shell=null;this.follower=null;this.charm=null;this.heading=0;this.companionAngle=0;this.wander.reset();this.pendantWander.reset();}
+ // UI contact positions are relative to the player's center in radius-14 units.
+ contact(point,kind,seconds=1,age=0,scale=1){
+  if(!this.body)return;const unit=this.body.radius/14;
+  this.pressure({x:this.body.x+point.x*unit,y:this.body.y+point.y*unit},kind,seconds,age,scale*unit);
+ }
+ pressure(point,kind,seconds=1,age=0,scale=1){
+  if(!this.body||!(scale>0))return;
+  for(const [name,slot,radius,config] of [['charm','pendant',.48,pendantTether],['follower','companion',.85,companionTether]]){
+   const body=this[name];if(!body||this[slot]===slot+'.none')continue;
+   const hit=bubblePressure({id:slot==='pendant'?1:2,x:body.x/scale,y:body.y/scale,radius:this.body.radius*radius/scale},{x:point.x/scale,y:point.y/scale},kind,seconds,age);
+   if(hit)entityImpulse(body,hit.vx*scale,hit.vy*scale,{mass:config.mass,limit:this.body.radius*18});
+  }
+ }
+ attachment(body,charm,shell=this.shell){
+  const angle=Math.atan2(charm.y-body.y,charm.x-body.x);
+  return shell?.length?bubbleShellPoint(shell,angle):{x:body.x+Math.cos(angle)*body.radius,y:body.y+Math.sin(angle)*body.radius};
+ }
+ step(body,seconds,{interests=[],rotation=0,shell=null,impulse={x:0,y:0},acceleration={x:0,y:0}}={}){
   const dt=clamp(Number.isFinite(seconds)?seconds:0,0,.05);
   if(!body||!Number.isFinite(body.x)||!Number.isFinite(body.y)){this.resetMotion();return;}
   if(this.body&&!dt)return; // Observer repaints and paused frames cannot inject motion.
-  const r=Number.isFinite(body.radius)&&body.radius>0?body.radius:14,previous=this.body;
+  const r=Number.isFinite(body.radius)&&body.radius>0?body.radius:14,previous=this.body,previousShell=this.shell;
   const teleport=previous&&Math.hypot(body.x-previous.x,body.y-previous.y)>r*12;
   if(!previous||teleport){
    const speed=Math.hypot(body.vx||0,body.vy||0);this.heading=speed>1?Math.atan2(body.vy||0,body.vx||0):0;
@@ -61,6 +81,7 @@ export class AccessoryVisual{
   }
   const vx=previous&&!teleport&&dt?(body.x-previous.x)/dt:0,vy=previous&&!teleport&&dt?(body.y-previous.y)/dt:0;
   this.body={x:body.x,y:body.y,radius:r,vx,vy};
+  this.shell=shell?.map(p=>({x:p.x,y:p.y}))||null;
   this.follower||=this.spawn(this.body,companionTether);
   this.charm||=this.spawn(this.body,pendantTether);
   if(!dt||!previous||teleport)return;
@@ -78,7 +99,9 @@ export class AccessoryVisual{
    this.companionAngle=angleApproach(this.companionAngle,clamp(lateral/(r*12),-.25,.25),5,h);
    const drift=this.pendantWander.step(h,this.charm,anchor,pendantTether.length);
    drift.x+=acceleration.x*r/14;drift.y+=acceleration.y*r/14;
-   tetherStep(this.charm,anchor,h,pendantTether,drift);
+   const end=this.attachment(this.body,this.charm),start=this.attachment(previous,this.charm,previousShell);
+   const attachment={x:start.x+(end.x-start.x)*i/steps,y:start.y+(end.y-start.y)*i/steps,vx:(end.x-start.x)/dt,vy:(end.y-start.y)/dt};
+   tetherStep(this.charm,anchor,h,pendantTether,drift,attachment);
   }
  }
  bounds(){
@@ -88,12 +111,12 @@ export class AccessoryVisual{
   if(this.companion!=='companion.none'&&this.follower)points.push({...this.follower,r:b.radius*4.4});
   return points;
  }
- render(c,gentle=false,rotation=0){
+ render(c,gentle=false,rotation=0,shell=this.shell){
   if(!this.body)return;const b=this.body,r=b.radius,t=this.elapsed;
   const pendant=cosmeticGet(this.pendant),companion=cosmeticGet(this.companion);
   if(pendant&&pendant.style!=='none'&&this.charm){
    const p=this.charm,dx=p.x-b.x,dy=p.y-b.y;
-   pendantCord(c,b,p,pendantTether.length,pendant,t,gentle);c.save();c.translate(p.x,p.y);c.rotate(Math.atan2(dy,dx)-Math.PI/2);c.scale(r/14,r/14);
+   pendantCord(c,b,p,pendantTether.length,pendant,t,gentle,this.attachment(b,p,shell));c.save();c.translate(p.x,p.y);c.rotate(Math.atan2(dy,dx)-Math.PI/2);c.scale(r/14,r/14);
    const pendantPulse=accessoryTier(pendant)>=2?accessoryPulse(this.celebration):0;c.scale(1+pendantPulse*.16,1+pendantPulse*.16);flourish(c,pendant,t,this.celebration,gentle,true);
    c.fillStyle='#081b2a';ellipse(c,0,0,6.3,7.3);c.fillStyle=pendant.color;c.strokeStyle='#f1fff2';c.lineWidth=.7;
    if(pendant.style==='drop'){c.beginPath();c.moveTo(0,-6);c.bezierCurveTo(1,-3,6,0,4,4);c.bezierCurveTo(1,8,-5,5,-4,1);c.closePath();c.fill();c.stroke();}

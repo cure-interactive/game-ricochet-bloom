@@ -5,6 +5,13 @@ export function bubblePath(points){
  for(let index=0;index<points.length;index++){const a=points[index],b=points[(index+1)%points.length];path.quadraticCurveTo(a.x,a.y,(a.x+b.x)/2,(a.y+b.y)/2);}
  path.closePath();return path;
 }
+// A material point on the exact quadratic shell drawn by bubblePath.
+export function bubbleShellPoint(points,angle){
+ const n=points.length,q=((angle/(Math.PI*2)*n)%n+n)%n,index=Math.round(q),t=q-index+.5;
+ const a=points[(index+n-1)%n],b=points[index%n],c=points[(index+1)%n];
+ const sample=axis=>(1-t)**2*(a[axis]+b[axis])/2+2*(1-t)*t*b[axis]+t*t*(b[axis]+c[axis])/2;
+ return {x:sample('x'),y:sample('y')};
+}
 export function bubbleColor(from,to,amount){
   const t=Math.max(0,Math.min(1,amount)),a=from.slice(1).padEnd(8,'f'),b=to.slice(1).padEnd(8,'f');
   return '#'+[0,2,4,6].map(i=>Math.round(parseInt(a.slice(i,i+2),16)*(1-t)+parseInt(b.slice(i,i+2),16)*t).toString(16).padStart(2,'0')).join('');

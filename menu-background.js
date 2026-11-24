@@ -6,10 +6,10 @@ import {freePlayCreate,freePlayBuild} from './free-play.js?v=c6d59cd0f9f945570e4
 import {playerBuild} from './player-upgrade.js?v=205999fde590d7ae1935c6f5a99938cc353989c1dae9cfab7129b62c0b60b55b';
 import {progressionCreate} from './run.js?v=4e1e18dd8085597ea2a7c41b925ed60d074e14bb4bbf225227fd708681d25cfc';
 import {menuMusicCreate} from './menu-music.js?v=3307aebed309bb98758968fedb643a3bda9ad22b9ae042859653d00e6ee5c197';
-import {PoolVisual} from './pool-visual.js?v=c97fca9872edc498a73091e94dd0558f8dfa5e5e1172d9b6f6dddeff72ad63bc';
+import {PoolVisual} from './pool-visual.js?v=1faa46fb1737769e40032b6eb32571f54124dd7839d353c09e8138bd120fef76';
 import { RULE, seedBodies, effectGet, frozenHit } from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import { bubbleHit } from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
-import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView, menuPoolResize } from './menu-pool.js?v=12b1ea36e45149e4c2229016ccdf23eba2431f6707f637c564ca7422762115d3';
+import { menuPoolCreate, menuPoolStep, menuPoolTap, menuPoolHold, menuPoolRelease, menuPoolPoint, menuPoolView, menuPoolResize } from './menu-pool.js?v=0e866a1660a7acc65182329803c6c4a50453e64b601a9916e3858326a1d2d90f';
 
 export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profile=()=>progressionCreate(),skin=()=>'#f1f9d7',skinStyle=()=>'original',audioSettings=()=>({volume:1,ambience:1,muted:false}),music=menuMusicCreate(audioSettings)}={}){
   const ctx=canvas.getContext('2d'),pool=menuPoolCreate(freePlayCreate('MENU BLOOM',profile())),visual=new PoolVisual();
@@ -38,6 +38,8 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
       const glow=ctx.createRadialGradient(pulse.x,pulse.y,0,pulse.x,pulse.y,100);
       glow.addColorStop(0,`rgba(177,244,219,${fade*.12})`);glow.addColorStop(1,'rgba(177,244,219,0)');ctx.fillStyle=glow;ctx.fillRect(pulse.x-100,pulse.y-100,200,200);
     }
+    for(const point of pool.contacts.values())visual.cosmetics.accessories.pressure(point,'hold',dt);
+    for(const point of pool.pressure)visual.cosmetics.accessories.pressure(point,'pulse',dt,point.age);
     visual.before(ctx,pool.game,pool.game.tick*RULE.step,dt,gentle());
     visual.bodies(ctx,pool.game,dt,pool.game.tick*RULE.step,{gentle:gentle(),skinColor:skin(),skinStyle:skinStyle(),portrait,markings:false,powerMarkings:powerMarkings()});
     visual.after(ctx,pool.game,dt,gentle());
@@ -92,6 +94,7 @@ export function menuBackgroundMount(canvas,gentle,{powerMarkings=()=>false,profi
     },release(id){menuPoolRelease(pool,id);canvas.dataset.contacts=String(pool.contacts.size);},tap(clientX,clientY){
     if(!active||document.hidden||covered())return;const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;
     const point=menuPoolPoint(clientX-r.left,clientY-r.top,r.width,r.height);
+    visual.cosmetics.accessories.pressure(point,'tap');
     for(const hit of menuPoolTap(pool,point)){bubbleHit(skinFor(pool.game.bodies[hit.id]),pool.game.bodies[hit.id].radius,hit.nx,hit.ny,hit.speed);skinFor(pool.game.bodies[hit.id]).glow=.8;}
     canvas.dataset.pulses=String(pool.pressure.length);draw(0);if(!frame)sync();
   }};

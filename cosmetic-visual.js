@@ -1,4 +1,4 @@
-import {AccessoryVisual} from './accessory-visual.js?v=99cc63a08435b585a6b8013db8a729063de283eb51c236b118b81654f3785dbb';
+import {AccessoryVisual} from './accessory-visual.js?v=d51a904ac6607213a68fd51e9ca28b13e1e966868189b9e505214bb604a5481a';
 import {trailDesign,impactDesign} from './cosmetic-design.js?v=5b25db6c70e995cb17ec5124f92bdb3e6e662cbc3b11373d85739d1868ee2b67';
 import {cosmeticGet} from './cosmetic.js?v=36e7348418dff5ee2bd86e9b6d031f48e9fed9ce1ae911f25e16edd70d5de8e5';
 const tau=Math.PI*2;
@@ -20,7 +20,7 @@ export class CosmeticVisual{
   if(!this.last||distance>.05){this.points.push({x:body.x,y:body.y,age:0,t:this.elapsed,energy:Math.min(1,Math.max(Math.hypot(body.vx||0,body.vy||0),distance/dt)/500),break:!this.last});this.last={x:body.x,y:body.y};}
   if(this.points.length>100)this.points.splice(0,this.points.length-100);
  }
- renderAccessories(c,gentle=false,rotation=0){this.accessories.render(c,gentle,rotation);}
+ renderAccessories(c,gentle=false,rotation=0,shell){this.accessories.render(c,gentle,rotation,shell);}
  render(c,low=false,showOriginal=false){
   c.save();c.lineCap='round';const item=cosmeticGet(this.trail),style=item?.style;
   if(style&&(style!=='original'||showOriginal))for(let i=1;i<this.points.length;i++){

@@ -1,8 +1,8 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=417c866b74ba322d1d5c72eb2bb21e224ed7fedf0a1941b32d375ed1e74edfe4';
+import {CosmeticVisual} from './cosmetic-visual.js?v=7b45a77dfd9a97006806f4955e4e15544efe65db621fd587f4cec2174c50b62d';
 import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
-import {bubbleCreate,bubbleHit,bubbleRipple} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
-import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=2d02ce928f8ce020103e28fc233c5098c66d8b19b727f89e6d3285e141d592da';
+import {bubbleCreate,bubbleHit,bubbleRipple,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
+import {poolBubbleRender,poolBubbleEvent} from './pool-bubble.js?v=32dbd1d73ca16f3384a276df86cb24b8876f1897857e0619701baa8b34c5e5f5';
 import {PowerVisual} from './power-visual.js?v=868715dca5734f325719d703bc71ce64306fe60f2ab94205dac290009f8cb832';
 
 import {accessoryCelebration} from './accessory.js?v=91a2f322a8bbdc6a7838e7084cd7ebcc2fa4ecd86c974e585c13ea9f79a7b33c';
@@ -62,7 +62,7 @@ export class PoolVisual {
  before(context,game,time,visualDelta,isLowQuality=false){
   const seed=game.bodies[0],matrix=context.getTransform?.();
   this.rotation=matrix&&Number.isFinite(matrix.a)&&Number.isFinite(matrix.b)?Math.atan2(matrix.b,matrix.a):0;
-  this.cosmetics.step(seed,visualDelta,true,{interests:game.bodies.filter(body=>body.id>0&&!body.popped),rotation:this.rotation});this.cosmetics.render(context,isLowQuality,true);
+  this.cosmetics.step(seed,visualDelta,true,{interests:game.bodies.filter(body=>body.id>0&&!body.popped),rotation:this.rotation,shell:bubbleOutline(this.membrane(seed),seed)});this.cosmetics.render(context,isLowQuality,true);
   if(isLowQuality){this.trails=[];this.particles=[];}
   this.powerVisual.update(visualDelta,game);
   this.powerVisual.render(context, game, time, isLowQuality);
@@ -96,7 +96,7 @@ export class PoolVisual {
   }
  }
  after(context,game,visualDelta,isLowQuality=false){
-  this.cosmetics.renderAccessories(context,isLowQuality,this.rotation);
+  this.cosmetics.renderAccessories(context,isLowQuality,this.rotation,bubbleOutline(this.membrane(game.bodies[0]),game.bodies[0]));
   const membraneHit=(...args)=>this.hit(game,...args);
   this.rings = this.rings.filter(ring => {
     ring.previousRadius = ring.radius; ring.life -= visualDelta; ring.radius = Math.max(8, ring.radius + visualDelta * (ring.kind ? (ring.kind === 'stasis' ? 0 : ring.kind === 'attract' ? -1 : 1) * ((['swap', 'comet', 'magnet', 'lightning', 'impact', 'tether', 'split', 'bubble', 'portal', 'echo', 'slingshot', 'drunk', 'wrap', 'homing'].includes(ring.kind) ? 150 : RULE.powerRadius) - 8) / 1.6 : ring.bloom ? 220 : 75));
