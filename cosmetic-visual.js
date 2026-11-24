@@ -1,4 +1,4 @@
-import {AccessoryVisual} from './accessory-visual.js?v=2aeb6035de00d7cf64d690346935522f5ac8340d0633818f2dbf034126453ffe';
+import {AccessoryVisual} from './accessory-visual.js?v=8f630cc962364373905e85e4ee739096a035b9e805c550a01aa05945c677e194';
 import {trailDesign,impactDesign} from './cosmetic-design.js?v=f1b09ede40303e5265346656174101b36cd14c09205de772ad1a4c0ae4183af6';
 import {cosmeticGet} from './cosmetic.js?v=50f26a8ecaed06f42769edbf9c8dd50c2a0fa896dce11e53d36ad78d1830d695';
 const tau=Math.PI*2;

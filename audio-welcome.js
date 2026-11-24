@@ -1,4 +1,4 @@
-import {buttonHTML} from './ui-icon.js?v=651851d37e4b6c0baf7ace97e9b872c2946987c9106bb31c885aa3814763f420';
+import {buttonHTML} from './ui-icon.js?v=d474ef06c45d7ef2761594a09b8c5b635d07a809b7079341c6eff82cc037544a';
 
 // One return screen collects the menu and gameplay outputs. Each unlock starts
 // synchronously inside Continue's trusted activation, never after an await.

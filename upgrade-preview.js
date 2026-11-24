@@ -1,9 +1,9 @@
-import { screenTitle } from './screen-header.js?v=d7a5a3b137f14e8c5bd30187b7013d6d11c7e73fee0450a0dc52c7d97b2770ef';
+import { screenTitle } from './screen-header.js?v=d1513f31ab835f2c43467db0e97fef3d67705455d468cb953f3922cb68111868';
 import { gameCreate, launch, physicsStep, powerMarkers, seedBodies, RULE, COLORS, POWERS } from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import { GAME_CATALOGUE as cat } from './run.js?v=cef8a8ffd846102b956c1f71bd50ba2d04ffd73dca9195a4f39350e8eb5dd11b';
 import { POWER_TREES } from './power-tree.js?v=2a64a8c4a0ad6dc1f93d8385f13952b46869143cbf7dc606ecd40164a825481b';
 import { PowerVisual } from './power-visual.js?v=868715dca5734f325719d703bc71ce64306fe60f2ab94205dac290009f8cb832';
-import { buttonHTML } from './ui-icon.js?v=651851d37e4b6c0baf7ace97e9b872c2946987c9106bb31c885aa3814763f420';
+import { buttonHTML } from './ui-icon.js?v=d474ef06c45d7ef2761594a09b8c5b635d07a809b7079341c6eff82cc037544a';
 
 export const BUILD_EXAMPLES=Object.freeze([
   {id:'bank',name:'Bank & Reply',powers:['comet','spring','echo'],nodes:['comet.foundation','spring.b','echo.a'],description:'Keep momentum, turn a rebound, then let Echo seek a missed bubble.'},

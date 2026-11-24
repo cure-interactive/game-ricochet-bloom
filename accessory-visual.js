@@ -134,7 +134,10 @@ export class AccessoryVisual{
    const p=this.charm,dx=p.x-b.x,dy=p.y-b.y;
    const pointAnchor=this.anchor==='point',angle=pointAnchor?this.pendantAngle:Math.atan2(dy,dx)-Math.PI/2;
    const tip=pointAnchor?{x:p.x+Math.sin(angle)*6*r/14,y:p.y-Math.cos(angle)*6*r/14}:p;
-   pendantCord(c,b,tip,pendantTether.length,pendant,t,gentle,this.attachment(b,p,shell),pointAnchor?0:1);c.save();c.translate(p.x,p.y);c.rotate(angle);c.scale(r/14,r/14);
+   // Cord geometry belongs to its remote attachment, even when the interactive
+   // body is the pendant itself. Keep shell-mode drawing unchanged.
+   const attachment=this.attachment(b,p,shell),cordBody=pointAnchor?{...attachment,radius:r}:b;
+   pendantCord(c,cordBody,tip,pendantTether.length,pendant,t,gentle,attachment,pointAnchor?0:1);c.save();c.translate(p.x,p.y);c.rotate(angle);c.scale(r/14,r/14);
    flourish(c,pendant,t,0,gentle,true);
    c.fillStyle='#081b2a';ellipse(c,0,0,6.3,7.3);c.fillStyle=pendant.color;c.strokeStyle='#f1fff2';c.lineWidth=.7;
    if(pendant.style==='drop'){c.beginPath();c.moveTo(0,-6);c.bezierCurveTo(1,-3,6,0,4,4);c.bezierCurveTo(1,8,-5,5,-4,1);c.closePath();c.fill();c.stroke();}

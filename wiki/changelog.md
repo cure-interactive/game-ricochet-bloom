@@ -6,6 +6,21 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.40.4
+
+Build: 2026-11-24 10:58:48 UTC
+
+### Player Changes
+
+- Restored the earlier pendant Showcase cord shape: its curve, braid and flowing lights follow the loose attachment naturally as it roams.
+- The pendant stays interactive, with the current repulsion area and no celebration effect.
+
+<!-- development -->
+### Developer Notes
+
+- Supply the actual remote endpoint as the Showcase cord geometry origin. The interactive pendant center is no longer mistaken for the cord anchor; ordinary shell attachment is unchanged.
+<!-- /development -->
+
 ## v3.40.3
 
 Build: 2026-11-24 09:01:43 UTC

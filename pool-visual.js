@@ -1,4 +1,4 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=58005fcb52a47eb47c5e87215047399e7fcf076566df529ff0d5c0f2409eb846';
+import {CosmeticVisual} from './cosmetic-visual.js?v=1f6f60750f98ed5b646fc3998ef72692bb217e3aaee9bbcf2405e880f7f75310';
 import {RULE,COLORS,POWERS,effectGet,seedBodies} from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
 import {liveBubbles} from './wave.js?v=3a330797f014cf08578ea70085a2b36387b02f2893aaa7fb87cdbb78ea7469ea';
 import {bubbleCreate,bubbleHit,bubbleRipple,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
