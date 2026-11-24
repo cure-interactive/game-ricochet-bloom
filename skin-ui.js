@@ -1,14 +1,15 @@
+import {cosmeticViewMount} from './cosmetic-view.js?v=790a68d4b406480cba56a001dccf62d9364189fa7049ba6720ba4f21e605e641';
+import {cosmeticPreviewMount} from './cosmetic-preview.js?v=6bbe3e568eeb95ce0f9efbf69fa3c821117aa7f298fd841a3796fd4d8baecce4';
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
-import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=5a96cdda399bf3cc12ba2e745a7556edc1940a73612db4434d77aceb6a8e1274';
-import {cosmeticPriceHTML} from './cosmetic-price.js?v=cb6b0d1c45e8860ddfa07155e5b2b1790fa2a535e48e1dd3b57dd4f1992d4433';
-import {COSMETICS,cosmeticOrder,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=069cb0e99be3f5e5e64218116b94bfb3813f7b3b7a423da0136bb726d68057de';
-import {rarityIconHTML} from './skill-icon.js?v=757be98bd9029175e1c9e7765ae9435ffd189f51e7d51f52dec47536adcbbc45';
+import {rarityFilterMount,rarityPreviewHTML,cosmeticCardHTML} from './rarity-filter.js?v=29d180d0bbc7d95e88c462b3fcfb173870937b4c26f751a13e07bfae82600b9e';
+import {cosmeticPriceHTML} from './cosmetic-price.js?v=ec983aefb8adbe01fa73d8942a54383442ba3601c7d4ce9c8fa4bcadbaaa3399';
+import {COSMETICS,cosmeticOrder,cosmeticLoadout,cosmeticOwned} from './cosmetic.js?v=ddc203acc7e92b1a16f24947665f4dbf857da6e9dea64f178d61d81305382532';
+import {rarityIconHTML} from './skill-icon.js?v=f83032d90fdd5c904371741019aeb3c7c841073421d4b6d95491931ff0df1934';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import {skinPreviewHTML,skinPreviewMount} from './skin-preview.js?v=208b099e60570883bba34fe5e670ffca5c81f12a01a2ef6b663936fd7ce70c0b';
-import { screenHeader } from './screen-header.js?v=99cfd402003799b85eaeb2a5afd90ecc1eb626d4b6e0806dd786051e8bc42dae';
+import { screenHeader } from './screen-header.js?v=963502fddbb9497c9f18d3cd2f4e7c6a949828321e7e3462ef6239ded74f158a';
 import { TRACKS } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { completedTracks, unlockedTracks } from './run.js?v=f480bdc4d5c53dedcb155f60dbfc1e706c1bf2868bf72035e466ec2516a7db04';
-import { iconHTML, staticIconHTML } from './ui-icon.js?v=324dce74106ed866c8abbd0837e0785412b1fc777eeca643ac6a1aa351f837c4';
+import { completedTracks, unlockedTracks } from './run.js?v=66e6f59170a34e6f7ed80846663341286e9d6f98a310d0ca9fc155c9ab63a5ba';
+import { iconHTML, staticIconHTML } from './ui-icon.js?v=d4fea4405eb39f2c1e48fbfcfda4373b774e722520c081785b0454d911012cb6';
 
 import {escapeHTML} from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
 
@@ -29,10 +30,11 @@ export function skinMount(controller){
   const optionsName=id=>skinOptions(controller.get(),true).find(s=>s.id===id)?.name||'Skin';
   let selected=null,libraryScroll=0,preview=null;
   const dialog=document.createElement('dialog');dialog.id='skin-dialog';dialog.setAttribute('aria-labelledby','skin-title');
-  dialog.innerHTML=`${screenHeader({icon:'player-skin',className:'skin-heading',title:'Player Skins',titleId:'skin-title',back:`<button type="button" data-skin-back>${iconHTML('arrow-left')}<span>Back</span></button>`})}<div class="skin-content"><div class="skin-scroll"><section class="skin-library"><p class="skin-intro">Choose a look from Common to Mythic with Points, or earn skins by completing campaign tracks.</p><div class="skin-grid"></div></section><section class="skin-detail" hidden></section><p class="skin-status" role="status"></p></div></div>`;
+  dialog.innerHTML=`${screenHeader({icon:'player-skin',className:'skin-heading',title:'Player Skin',titleId:'skin-title',back:`<button type="button" data-skin-back>${iconHTML('arrow-left')}<span>Back</span></button>`})}<div class="skin-content"><div class="skin-scroll"><section class="skin-library"><p class="skin-intro">Choose a look from Common to Mythic with Points, or earn skins by completing campaign tracks.</p><div class="skin-grid"></div></section><section class="skin-detail" hidden></section><p class="skin-status" role="status"></p></div></div>`;
   document.body.append(dialog);
   const scroll=dialog.querySelector('.skin-scroll'),detail=dialog.querySelector('.skin-detail'),status=dialog.querySelector('.skin-status'),back=dialog.querySelector('[data-skin-back]');
   const filter=rarityFilterMount(dialog,{scroll,cards:()=>[...dialog.querySelectorAll('.cosmetic-card')],profile:()=>controller.get().profile,act:controller.act,status});
+  const views=cosmeticViewMount(dialog,next=>preview?.viewSet(next));
   function render(){
     preview?.destroy();preview=null;
     const options=skinOptions(controller.get(),controller.showHiddenContent?.()),skin=options.find(s=>s.id===selected);
@@ -41,14 +43,14 @@ export function skinMount(controller){
     // live bubble; the library title returns to the currently equipped skin.
     const titleSkin=skin||options.find(s=>s.equipped),titleIcon=dialog.querySelector('.screen-heading-title .ui-icon');
     titleIcon.style.setProperty('--skin-color',titleSkin?.color||'#f1f9d7');titleIcon.style.setProperty('--skin-style',titleSkin?.style||'original');
-    dialog.querySelector('.skin-grid').innerHTML=options.map(skin=>cosmeticCardHTML(skin,`<button type="button" class="skin-choice ${skin.equipped?'is-equipped':''} ${skin.owned?'':'is-locked'}" data-player-skin="${skin.id}" data-rarity="${skin.rarity}" style="--skin-color:${skin.color};--skin-style:${skin.style}" aria-label="View ${skin.name}, ${RARITIES[skin.rarity].name}, ${skin.equipped?'Equipped':skin.owned?'Unlocked':'Locked'}">${rarityPreviewHTML(skin.rarity,`<span class="skin-preview" aria-hidden="true"><i><player-bubble trail="${skin.equipped?'equipped':'none'}"></player-bubble></i></span>`)}<strong>${skin.name}</strong><span class="skin-choice-state">${iconHTML(skin.equipped?'check':skin.owned?'lock-open':'lock')}${skin.equipped?'Equipped':skin.owned?'Unlocked':skin.kind==='skin'?skin.cost+' Points':'Campaign Reward'}</span>${cosmeticPriceHTML(skin,skin.owned,controller.showPurchasedCosts?.())}</button>`)).join('');
-    dialog.querySelector('.skin-library').hidden=!!skin;detail.hidden=!skin;scroll.classList.toggle('is-detail',!!skin);filter.show(!skin);
-    dialog.querySelector('#skin-title').textContent=skin?skin.name:'Player Skins';back.setAttribute('aria-label',skin?'Back to Player Skins':'Back');
+    dialog.querySelector('.skin-grid').innerHTML=options.map(skin=>cosmeticCardHTML(skin,`<button type="button" class="skin-choice ${skin.equipped?'is-equipped':''} ${skin.owned?'':'is-locked'}" data-player-skin="${skin.id}" data-rarity="${skin.rarity}" style="--skin-color:${skin.color};--skin-style:${skin.style}" aria-label="View ${skin.name}, ${RARITIES[skin.rarity].name}, ${skin.equipped?'Equipped':skin.owned?'Unlocked':'Locked'}">${rarityPreviewHTML(skin.rarity,`<span class="skin-preview" aria-hidden="true"><i><player-bubble trail="equipped"></player-bubble></i></span>`)}<strong>${skin.name}</strong><span class="skin-choice-state">${iconHTML(skin.equipped?'check':skin.owned?'lock-open':'lock')}${skin.equipped?'Equipped':skin.owned?'Unlocked':skin.kind==='skin'?skin.cost+' Points':'Campaign Reward'}</span>${cosmeticPriceHTML(skin,skin.owned,controller.showPurchasedCosts?.())}</button>`)).join('');
+    dialog.querySelector('.skin-library').hidden=!!skin;detail.hidden=!skin;scroll.classList.toggle('is-detail',!!skin);filter.show(!skin);views.show(!!skin);
+    dialog.querySelector('#skin-title').textContent=skin?skin.name:'Player Skin';back.setAttribute('aria-label',skin?'Back to Player Skin':'Back');
     if(!skin){detail.replaceChildren();return;}
     detail.style.setProperty('--skin-color',skin.color);detail.style.setProperty('--skin-style',skin.style);
     const points=controller.get().profile.wallet.seeds,canBuy=skin.kind==='skin'&&points>=skin.cost;
-    detail.innerHTML=`${skinPreviewHTML(skin.name)}<section class="skin-selection ${skin.equipped?'is-equipped':''}" aria-label="${escapeHTML(skin.name)} Skin"><div class="skin-selection-title">${iconHTML(skin.equipped?'check':skin.owned?'lock-open':'lock')}<div><small class="cosmetic-rarity">${rarityIconHTML(skin.rarity)}${RARITIES[skin.rarity].name} · Player Skin</small><h3>${escapeHTML(skin.name)}</h3></div></div><p class="skin-unlock">${skin.kind==='skin'?escapeHTML(skin.description):!skin.owned?'Complete '+escapeHTML(skin.name)+' to unlock this skin.':skin.id==='original'?'Your original glow.':skin.equipped?'Your player is wearing this skin.':'Unlocked by completing '+escapeHTML(skin.name)+'.'}</p>${cosmeticPriceHTML(skin,skin.owned,controller.showPurchasedCosts?.())}<button type="button" id="skin-use" class="skin-equip ${skin.equipped?'is-equipped':''}" ${(!skin.owned&&!canBuy)||skin.equipped?'disabled':''}>${staticIconHTML(skin.equipped?'check':skin.owned?'player-skin':'lock')}<span>${skin.equipped?'Equipped':skin.owned?'Equip Skin':skin.kind==='skin'?'Unlock &amp; Equip · '+skin.cost+' Points':'Campaign Reward'}</span>${cosmeticPriceHTML(skin,skin.owned,controller.showPurchasedCosts?.())}</button>${skin.kind==='skin'&&!skin.owned?`<p class="cosmetic-wallet">${iconHTML('coin')}${points} Points${!skin.owned&&!canBuy?` · ${skin.cost-points} more needed`:""}</p>`:""}</section>`;
-    preview=skinPreviewMount(detail.querySelector('.skin-preview-large'),{gentle:controller.gentle});
+    detail.innerHTML=`<div class="cosmetic-viewer"><div class="cosmetic-preview-large" role="button" tabindex="0" aria-label="Skin Preview. Tap or use arrow keys to nudge."><canvas aria-label="Animated Skin Preview"></canvas></div></div><section class="skin-selection ${skin.equipped?'is-equipped':''}" aria-label="${escapeHTML(skin.name)} Skin"><div class="skin-selection-title">${iconHTML(skin.equipped?'check':skin.owned?'lock-open':'lock')}<div><small class="cosmetic-rarity">${rarityIconHTML(skin.rarity)}${RARITIES[skin.rarity].name} · Player Skin</small><h3>${escapeHTML(skin.name)}</h3></div></div><p class="skin-unlock">${skin.kind==='skin'?escapeHTML(skin.description):!skin.owned?'Complete '+escapeHTML(skin.name)+' to unlock this skin.':skin.id==='original'?'Your original glow.':skin.equipped?'Your player is wearing this skin.':'Unlocked by completing '+escapeHTML(skin.name)+'.'}</p>${cosmeticPriceHTML(skin,skin.owned,controller.showPurchasedCosts?.())}<button type="button" id="skin-use" class="skin-equip ${skin.equipped?'is-equipped':''}" ${(!skin.owned&&!canBuy)||skin.equipped?'disabled':''}>${staticIconHTML(skin.equipped?'check':skin.owned?'player-skin':'lock')}<span>${skin.equipped?'Equipped':skin.owned?'Equip Skin':skin.kind==='skin'?'Unlock &amp; Equip · '+skin.cost+' Points':'Campaign Reward'}</span>${cosmeticPriceHTML(skin,skin.owned,controller.showPurchasedCosts?.())}</button>${skin.kind==='skin'&&!skin.owned?`<p class="cosmetic-wallet">${iconHTML('coin')}${points} Points${!skin.owned&&!canBuy?` · ${skin.cost-points} more needed`:""}</p>`:""}</section>`;
+    views.attach(detail.querySelector('.cosmetic-viewer'));const canvas=detail.querySelector('canvas');preview=cosmeticPreviewMount(canvas,{surface:canvas.parentElement,view:views.value(),kind:()=> 'skin',loadout:()=>cosmeticLoadout(controller.get().profile),color:()=>skin.color,style:()=>skin.style});
   }
   dialog.addEventListener('close',()=>{if(!dialog.open){preview?.destroy();preview=null;}});
   function goBack(){
@@ -68,6 +70,6 @@ export function skinMount(controller){
     status.textContent=result.ok?`${optionsName(selected)} equipped.`:result.reason;
     const toggle=dialog.querySelector('#skin-use');(toggle.disabled?back:toggle).focus({preventScroll:true});
   });
-  rememberView(dialog,'detail',()=>({selected,libraryScroll}),state=>{if(state?.selected&&(skins.some(x=>x.id===state.selected)||COSMETICS.some(x=>x.kind==='skin'&&x.id===state.selected))){selected=state.selected;libraryScroll=Number.isFinite(state.libraryScroll)?state.libraryScroll:0;render();}},20);
+  rememberView(dialog,'detail',()=>({selected,libraryScroll,view:views.value()}),state=>{if(state?.selected&&(skins.some(x=>x.id===state.selected)||COSMETICS.some(x=>x.kind==='skin'&&x.id===state.selected))){selected=state.selected;libraryScroll=Number.isFinite(state.libraryScroll)?state.libraryScroll:0;views.set(state.view);render();}},20);
   return {refresh(){if(dialog.open)render();},open(){selected=null;libraryScroll=0;controller.screen();document.querySelectorAll('dialog[open]').forEach(d=>d.close());render();status.textContent='';dialog.showModal();scroll.scrollTop=0;back.focus({preventScroll:true});}};
 }

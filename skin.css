@@ -73,3 +73,6 @@ player-bubble canvas{position:absolute;display:block;width:360%;height:360%;left
 .cosmetic-sound-button{position:relative;padding-bottom:16px!important;overflow:hidden}
 .cosmetic-sound-progress{position:absolute;left:12px;right:12px;bottom:5px;height:3px;background:#759aa340;border-radius:2px;overflow:hidden}
 .cosmetic-sound-progress>i{display:block;width:100%;height:100%;background:#b4f2d8;transform-origin:left;transform:scaleX(var(--preview-progress,0))}
+
+/* Native touch feedback must not darken the live, draggable artwork. */
+.skin-preview-interactive,.skin-preview-interactive i{-webkit-tap-highlight-color:transparent}

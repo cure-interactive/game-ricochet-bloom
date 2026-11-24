@@ -31,7 +31,17 @@ export const ACCESSORIES=Object.freeze([
  {id:'companion.snail',kind:'companion',name:'Tide Snail',rarity:'rare',cost:120,color:'#a7dbc7',style:'snail',description:'A seafoam snail with a pearly spiral shell and curious eye stalks.'},
  {id:'companion.crane',kind:'companion',name:'Paper Crane',rarity:'rare',cost:120,color:'#f5d9b6',style:'crane',description:'A folded paper bird with crisp wings, an inked beak and a bobbing tail.'},
  {id:'companion.axolotl',kind:'companion',name:'Dream Axolotl',rarity:'epic',cost:220,color:'#f5b7de',style:'axolotl',description:'A rosy water sprite with feathery gills. Success brings a happy pulse and a bubbling two-note reply.'},
- {id:'companion.lion',kind:'companion',name:'Astral Lion',rarity:'legendary',cost:360,color:'#e9c78d',style:'lion',description:'A tiny celestial lion framed by a radiant mane. Success wakes a golden pulse and a warm three-note call.'}
+ {id:'companion.lion',kind:'companion',name:'Astral Lion',rarity:'legendary',cost:360,color:'#e9c78d',style:'lion',description:'A tiny celestial lion framed by a radiant mane. Success wakes a golden pulse and a warm three-note call.'},
+ {"id":"pendant.acorn","kind":"pendant","name":"Acorn","rarity":"common","cost":40,"color":"#cda477","style":"acorn","description":"A tiny acorn with a textured cap and a silver thread."},
+ {"id":"pendant.kite","kind":"pendant","name":"Ribbon Kite","rarity":"rare","cost":120,"color":"#b7dce9","style":"kite","description":"A little diamond kite with a folded face and two ribbon bows."},
+ {"id":"pendant.bell","kind":"pendant","name":"Crystal Bell","rarity":"epic","cost":220,"color":"#cbbff5","style":"bell","description":"A faceted bell hangs from a braided cord. Success sends a silent halo through its glass."},
+ {"id":"pendant.hourglass","kind":"pendant","name":"Hourglass","rarity":"legendary","cost":360,"color":"#efcf8e","style":"hourglass","description":"Golden sand flows inside a miniature hourglass with polished brass edges."},
+ {"id":"pendant.pearl","kind":"pendant","name":"Black Pearl","rarity":"mythic","cost":550,"color":"#baa8e7","style":"pearl","description":"A dark pearl holds a moving constellation. Flowing cord lights and silent star bursts frame it."},
+ {"id":"companion.dumpling","kind":"companion","name":"Dumpling","rarity":"common","cost":40,"color":"#f0ddba","style":"dumpling","description":"A smiling steamed bun with folded pleats and tiny waving feet."},
+ {"id":"companion.gecko","kind":"companion","name":"Mint Gecko","rarity":"rare","cost":120,"color":"#a5dfad","style":"gecko","description":"A little green gecko with toe pads, a curled tail and bright curious eyes."},
+ {"id":"companion.ray","kind":"companion","name":"Wisp Ray","rarity":"epic","cost":220,"color":"#b7d7f5","style":"ray","description":"A translucent sky ray with flowing fins. Success lifts it into a soft pulse and a two-note whistle."},
+ {"id":"companion.seahorse","kind":"companion","name":"Regal Seahorse","rarity":"legendary","cost":360,"color":"#e9be8a","style":"seahorse","description":"A crowned seahorse with a curled tail and fan-shaped fins. Success brings a warm three-note fanfare."},
+ {"id":"companion.octopus","kind":"companion","name":"Void Octopus","rarity":"mythic","cost":550,"color":"#c7a6ed","style":"octopus","description":"A curious cosmic octopus with waving arms and a trail of tiny star rings. Success releases a layered call and a sparkling burst."}
 
 ]);
 

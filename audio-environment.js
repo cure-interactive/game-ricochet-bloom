@@ -1,4 +1,4 @@
-import {soundstageGet,ambienceGet} from './music-environment.js?v=09dcc5aa06da815b08ac721d6fe505e7c6abd27d237928af2e681a09764eb1a4';
+import {soundstageGet,ambienceGet} from './music-environment.js?v=73e91e18fb9ebfe27e84a2bee40dc752fd44e6131750e7e288608909b1875e04';
 
 // One music-only acoustic graph, shared by playback, auditions and WAV export.
 // No feedback loop: all reverberation has a finite, bounded impulse response.
@@ -55,7 +55,8 @@ export function ambienceBuffer(context,style){
   const samples=buffer.getChannelData(channel);let seed=991+channel*71;
   const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
   const overlap=Math.round(rate),raw=new Float32Array(length+overlap);let smooth=0;
-  const damping=style==='rain'?.35:style==='hearth'?.995:style==='forest'?.975:.85;
+  const atmosphere={breeze:.94,meadow:.98,watergarden:.97,mountain:.997,stellar:.96};
+  const damping=atmosphere[style]??(style==='rain'?.35:style==='hearth'?.995:style==='forest'?.975:.85);
   if(style!=='orbit')for(let i=0;i<raw.length;i++){smooth=smooth*damping+(random()*2-1)*(1-damping);raw[i]=smooth;}
   for(let i=0;i<length;i++){
    const t=i/length,time=i/rate,mix=i<overlap?Math.sin(Math.PI*.5*i/overlap)**2:1;
@@ -63,6 +64,11 @@ export function ambienceBuffer(context,style){
    let value=noise*(style==='rain'?.7:style==='shore'?breath:style==='hearth'?.5:.22);
    if(style==='orbit')value=(Math.sin(tau*110*time)+.4*Math.sin(tau*165*time)+.12*Math.sin(tau*66*time))*(.32+.16*Math.sin(tau*t*2+channel*.35)**2);
    if(style==='hearth')value+=.035*Math.sin(tau*50*time)*(.6+.4*Math.sin(tau*t*7)**2);
+   if(style==='breeze')value=noise*(.35+.3*Math.sin(tau*t*3+channel*.2)**2);
+   if(style==='meadow')value=noise*.3+Math.sin(tau*(900*time+15*Math.sin(tau*t*13)))*Math.pow(.5+.5*Math.sin(tau*t*7+channel*2),36)*.025;
+   if(style==='watergarden')value=noise*.22+Math.sin(tau*(240*time+12*Math.sin(tau*t*16)))*Math.pow(.5+.5*Math.sin(tau*t*11+channel),24)*.07;
+   if(style==='mountain')value=noise*(.5+.5*Math.sin(tau*t*2+channel*.4)**2)+.015*Math.sin(tau*55*time)*Math.sin(tau*t*3)**2;
+   if(style==='stellar')value=noise*.1+(Math.sin(tau*82.5*time)*.4+Math.sin(tau*123.75*time)*.2+Math.sin(tau*220*time)*.06)*(.4+.2*Math.sin(tau*t+channel*.3)**2);
    samples[i]=value;
   }
   // Sparse, varied phrases with smooth attacks and releases, never a rapid

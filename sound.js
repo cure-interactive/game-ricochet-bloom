@@ -1,8 +1,8 @@
-import {audioEnvironment} from './audio-environment.js?v=5725e4e590fb89b80b78f26b3ae67e1d2a1fe7d983991be1e6a63ebb4b845888';
-import {instrumentNote,instrumentPercussion} from './instrument.js?v=774fbf1c691f54dafa415de78b2b32a6a8d7ffadc96e05d5bda4ec17db9831eb';
+import {audioEnvironment} from './audio-environment.js?v=7bde9aefbf33f30cc13c41f2fce0a699e2af5b347668f35f6ffc261bc1c34eaf';
+import {instrumentNote,instrumentPercussion} from './instrument.js?v=9d930541faca4a51dc876cad0095d18622a6e9fb2d71454eb1b57cceb88380b3';
 import {voiceTrack,voicesReap,voicesStop} from './audio-voice.js?v=7904f3fab24003c6251442f7604d5d8fc7ef9163a8a1abb32f41975690c0162d';
-import {accessoryCelebration} from './accessory.js?v=21e3abbf0bcc50a32e2de108052b193f9a3bf450c5f4b7a2233b678a4ec4478e';
-import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=069cb0e99be3f5e5e64218116b94bfb3813f7b3b7a423da0136bb726d68057de';
+import {accessoryCelebration} from './accessory.js?v=36e0b1d7f9877e5301b225524a87160ca48e5e617f00d5d7fa21c76e0150481e';
+import {cosmeticGet,cosmeticHasSound} from './cosmetic.js?v=ddc203acc7e92b1a16f24947665f4dbf857da6e9dea64f178d61d81305382532';
 import {poolPan} from './view.js?v=26cab1c9efeb1cecf6a36401d7839290091b4296d5bc450e29d6f50e884e2bea';
 // Original procedural effects. No recordings or external audio requests.
 import { PoolMedia } from './media.js?v=d31acea21b543a610f696e47d50a254ce52527d06e488d6e72309535656e4d38';
@@ -328,7 +328,7 @@ export class PoolSound {
     if(kind==='companion'){
       // A finite answer to the achievement, scheduled on the audio clock. The
       // existing voice group cancels even not-yet-started notes on pause/hide.
-      const motifs={firefly:[784,1047,1319,1568],axolotl:[587,880],lion:[294,440,587],jelly:[523,784],fox:[659,988],moth:[784,988,1175],bird:[880,1175,1320],dragon:[262,392,523,784],whale:[196,294,392,588],ghost:[392,587],owl:[330,494,660],robot:[440,660,880,1320]};
+      const motifs={ray:[440,698],seahorse:[349,523,698],octopus:[220,330,494,659],firefly:[784,1047,1319,1568],axolotl:[587,880],lion:[294,440,587],jelly:[523,784],fox:[659,988],moth:[784,988,1175],bird:[880,1175,1320],dragon:[262,392,523,784],whale:[196,294,392,588],ghost:[392,587],owl:[330,494,660],robot:[440,660,880,1320]};
       const notes=motifs[item.style]||[523,784],mythic=item.rarity==='mythic',duration=mythic?.42:.23;
       const delay=.18+(preview?this.previewMusicFade(.18+(notes.length-1)*.1+duration):0);
       notes.forEach((pitch,i)=>this.tone(pitch*.85,pitch,duration,(item.style==='robot'?.014:mythic?.025:.022)/(1+i*.3),pan,delay+i*.1,item.style==='robot'?'square':['fox','dragon','owl'].includes(item.style)?'triangle':'sine',false,false,options));
@@ -336,7 +336,7 @@ export class PoolSound {
     }
     // Original finite accents: a rising airy wake and a low crystalline impact.
     // No feedback delay or continuing oscillator can accumulate between hits.
-    const accents={stormwake:[[220,880,.18,.035,0,'triangle'],[880,440,.35,.02,.08,'sine']],clockstream:[[392,392,.12,.04,0,'triangle'],[588,294,.25,.025,.1,'sine']],riftwake:[[220,330,.7,.03,0,'sine'],[440,660,.6,.02,.12,'sine'],[880,440,.5,.012,.24,'triangle']],livingvine:[[392,523,.5,.03,0,'sine'],[587,784,.6,.02,.1,'sine'],[784,1046,.5,.012,.2,'sine']],horizoncollapse:[[110,44,.3,.06,0,'sine'],[440,220,.5,.03,.06,'sine'],[880,440,.45,.018,.12,'sine'],[660,330,.5,.012,.16,'sine']],worldbloom:[[262,523,.3,.04,0,'sine'],[523,784,.45,.025,.04,'sine'],[659,988,.4,.02,.1,'sine'],[784,1046,.4,.012,.16,'sine']]};
+    const accents={brassribbon:[[330,660,.25,.035,0,'triangle'],[990,495,.4,.02,.08,'sine']],galaxystream:[[220,440,.6,.025,0,'sine'],[330,660,.5,.018,.12,'sine'],[880,1320,.35,.012,.2,'triangle']],galaxybloom:[[110,55,.3,.04,0,'sine'],[440,880,.5,.02,.06,'sine'],[659,1318,.45,.016,.13,'sine']],stormwake:[[220,880,.18,.035,0,'triangle'],[880,440,.35,.02,.08,'sine']],clockstream:[[392,392,.12,.04,0,'triangle'],[588,294,.25,.025,.1,'sine']],riftwake:[[220,330,.7,.03,0,'sine'],[440,660,.6,.02,.12,'sine'],[880,440,.5,.012,.24,'triangle']],livingvine:[[392,523,.5,.03,0,'sine'],[587,784,.6,.02,.1,'sine'],[784,1046,.5,.012,.2,'sine']],horizoncollapse:[[110,44,.3,.06,0,'sine'],[440,220,.5,.03,.06,'sine'],[880,440,.45,.018,.12,'sine'],[660,330,.5,.012,.16,'sine']],worldbloom:[[262,523,.3,.04,0,'sine'],[523,784,.45,.025,.04,'sine'],[659,988,.4,.02,.1,'sine'],[784,1046,.4,.012,.16,'sine']]};
     const notes=accents[item.style]||(item.style==='ember'?[[180,440,.24,.055,0,'triangle'],[360,720,.34,.025,.06,'sine']]:kind==='trail'?[[330,660,.6,.035,0,'sine'],[495,990,.55,.025,.1,'sine'],[990,1320,.45,.016,.2,'triangle']]:[[150,55,.18,.075,0,'sine'],[660,990,.42,.035,0,'sine'],[990,1320,.38,.025,.06,'triangle'],[1320,1760,.32,.016,.12,'sine']]);
     const delay=preview?this.previewMusicFade(kind==='trail'&&item.rarity==='mythic'?TRAVEL_LAUNCH_SECONDS+.02:Math.max(...notes.map(n=>n[2]+n[4]))+.03):0;
     for(const [start,end,duration,level,offset,type] of notes)this.tone(start,end,duration,level,pan,offset+delay,type,false,false,options);
@@ -357,7 +357,7 @@ export class PoolSound {
   }
   travelVoices(pan,offset,duration,level,options){
     const context=this.context,start=context.currentTime+offset;
-    const pitches=options.style==='riftwake'?[[220,1],[220.14,.65],[330,.35]]:options.style==='livingvine'?[[392,1],[392.16,.65],[587.33,.35]]:[[440,1],[440.18,.65],[660,.35]];
+    const pitches=options.style==='galaxystream'?[[261.63,1],[392.4,.55],[523.4,.3]]:options.style==='riftwake'?[[220,1],[220.14,.65],[330,.35]]:options.style==='livingvine'?[[392,1],[392.16,.65],[587.33,.35]]:[[440,1],[440.18,.65],[660,.35]];
     return pitches.map(([pitch,weight])=>{
       const oscillator=context.createOscillator(),gain=context.createGain(),motion=context.createGain(),stereo=context.createStereoPanner();
       oscillator.type='sine';oscillator.frequency.setValueAtTime(pitch,start);

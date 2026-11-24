@@ -28,3 +28,5 @@
 .segment-canvas>.segment-selection{visibility:hidden}
 .segmented-control>button>.ui-icon[data-icon="player-skin"]{position:relative;z-index:2}
 @media(forced-colors:active){.segment-paint{display:none}.segment-canvas>.segment-selection{visibility:visible}}
+
+.segmented-control,.segmented-control>button{-webkit-tap-highlight-color:transparent}

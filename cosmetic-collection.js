@@ -30,6 +30,21 @@ const entries=[
  ['bounce','thunderseal','Thunder Seal','legendary','#b3d5ff','A central flash releases a branching seal and a fading outer ring.'],
  ['bounce','clockburst','Clockburst','legendary','#edc98f','A radial brass iris opens, turns and fades in layers.'],
  ['bounce','horizoncollapse','Horizon Collapse','mythic','#c4a4f2','Light contracts, releases a lensed ring and dissolves into dust with a deep accent.'],
- ['bounce','worldbloom','Worldbloom','mythic','#a8edbd','Luminous petals unfold into a canopy, then dissolve into seeds with a bright accent.']
+ ['bounce','worldbloom','Worldbloom','mythic','#a8edbd','Luminous petals unfold into a canopy, then dissolve into seeds with a bright accent.'],
+ ['skin','linen','Linen','common','#d9cfb5','Soft woven threads cross a warm ivory surface.'],
+ ['skin','malachite','Malachite','rare','#72c6a1','Nested mineral bands flow around a polished green core.'],
+ ['skin','koipond','Koi Pond','epic','#a9dcd9','Two little koi circle through rippling turquoise glass.'],
+ ['skin','orrery','Orrery','legendary','#eccb91','A golden sun holds three moving planets in tilted orbital rings.'],
+ ['skin','chronosphere','Chronosphere','mythic','#c1c5ff','Counter-rotating clock arcs open with speed around a shifting hourglass of light.'],
+ ['trail','chalk','Chalk','common','#e8dfc5','A soft broken chalk line follows your path.'],
+ ['trail','mapledrift','Maple Drift','rare','#e7ab75','Small five-point leaves tumble away from a warm autumn wake.'],
+ ['trail','spectralbraid','Spectral Braid','epic','#b8d9ef','Two contrasting strands weave through diamond-shaped knots.'],
+ ['trail','brassribbon','Brass Ribbon','legendary','#e5c98d','A curling gold ribbon sheds tiny rotating rivets and answers launch with a metallic chime.'],
+ ['trail','galaxystream','Galaxy Stream','mythic','#d4b6f1','A violet spiral wake scatters orbiting stars; its layered launch and travel shimmer fade gently.'],
+ ['bounce','chalkdust','Chalk Dust','common','#ede2cc','A small puff of pale chalk flecks spreads from contact.'],
+ ['bounce','mapleburst','Maple Burst','rare','#edb078','A ring of tiny autumn leaves opens and tumbles outward.'],
+ ['bounce','spectralbloom','Spectral Bloom','epic','#b9d9f7','Two diamond rings turn in opposite directions as they expand.'],
+ ['bounce','brasschime','Brass Chime','legendary','#e9cf8e','A golden bell-shaped wave releases layered rings and polished rivets.'],
+ ['bounce','galaxybloom','Galaxy Bloom','mythic','#dabdf3','A bright core opens into spiral arms and scattered stars with a layered celestial accent.']
 ];
 export const COSMETIC_COLLECTION=Object.freeze(entries.map(([kind,style,name,rarity,color,description])=>Object.freeze({id:`${kind}.${style}`,kind,style,name,rarity,color,description,cost:prices[rarity]})));

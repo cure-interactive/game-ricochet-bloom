@@ -1,4 +1,4 @@
-import {skinDesign,SKIN_DESIGNS} from './skin-design.js?v=6597baed6f0b10b9b0c9000a359d18dd101b8e339a6cc78a961107e0f9eb101c';
+import {skinDesign,SKIN_DESIGNS} from './skin-design.js?v=cf1ee65600c0cf01ebd19bde0bfd3a831669517302846fd5e88b8fed9cf9a2d5';
 import {assetURL} from './asset.js?v=637716717d2250f0d96d961614bfe2ace0e7a403d7f201f26f134e685de2062c';
 let cure;
 export function skinMaterial(c,body,points,style,rotation=0,time=0,low=false){

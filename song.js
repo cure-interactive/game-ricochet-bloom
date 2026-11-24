@@ -1,6 +1,6 @@
-import {audioEnvironment} from './audio-environment.js?v=5725e4e590fb89b80b78f26b3ae67e1d2a1fe7d983991be1e6a63ebb4b845888';
+import {audioEnvironment} from './audio-environment.js?v=7bde9aefbf33f30cc13c41f2fce0a699e2af5b347668f35f6ffc261bc1c34eaf';
 import {musicCreate,musicFinish,musicNextBar,BAR_SECONDS} from './music.js?v=e7a5a17eb66e892fcfde7da0cd1da25876f188e8fdc235a3b66388f997dda0f3';
-import {instrumentNote} from './instrument.js?v=774fbf1c691f54dafa415de78b2b32a6a8d7ffadc96e05d5bda4ec17db9831eb';
+import {instrumentNote} from './instrument.js?v=9d930541faca4a51dc876cad0095d18622a6e9fb2d71454eb1b57cceb88380b3';
 export const SONG_STORAGE='ricochet-bloom-songs-v1', SONG_LIMIT=24;
 export function songLibraryRead(value) {
   if(!value||value.version!==1||!Array.isArray(value.songs))return {version:1,songs:[]};

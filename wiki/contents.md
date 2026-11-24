@@ -17,6 +17,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 
 - [Player](player.md)
 - [Player Viewer](player.md#player-viewer)
+- [Cosmetic Previews](player.md#cosmetic-previews)
 - [Skins](player.md#skins)
 - [Trails and Impacts](player.md#trails-and-impacts)
 - [Music](player.md#music)
@@ -28,6 +29,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Cosmetic Rarity
 
 - [Cosmetic Rarity](cosmetic-rarity.md)
+- [New Designs Across Every Category](cosmetic-rarity.md#new-designs-across-every-category)
 - [Skins](cosmetic-rarity.md#skins)
 - [Trails](cosmetic-rarity.md#trails)
 - [Impacts](cosmetic-rarity.md#impacts)
@@ -216,6 +218,7 @@ Open a topic to find its guide and section links. [Wiki Overview](wiki.md) group
 ## Change Logs
 
 - [Change Logs](changelog.md)
+- [v3.40.0](changelog.md#v3-40-0)
 - [v3.39.0](changelog.md#v3-39-0)
 - [v3.38.3](changelog.md#v3-38-3)
 - [v3.38.2](changelog.md#v3-38-2)

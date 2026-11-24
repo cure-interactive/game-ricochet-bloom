@@ -1,8 +1,8 @@
-import {ACCESSORIES} from './accessory.js?v=21e3abbf0bcc50a32e2de108052b193f9a3bf450c5f4b7a2233b678a4ec4478e';
+import {ACCESSORIES} from './accessory.js?v=36e0b1d7f9877e5301b225524a87160ca48e5e617f00d5d7fa21c76e0150481e';
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
-import {COSMETIC_COLLECTION} from './cosmetic-collection.js?v=5fffc248bcec63bc94d641fd08adb36b591a815fa2cd26ed62801ef5a1ea9cca';
-import {SOUNDSTAGES,AMBIENCES} from './music-environment.js?v=09dcc5aa06da815b08ac721d6fe505e7c6abd27d237928af2e681a09764eb1a4';
-import {MUSIC_THEMES} from './music-theme.js?v=88ea7b370c0695e982b380622f15db38e58496f3cd4335b7104b62ec49d0ad79';
+import {COSMETIC_COLLECTION} from './cosmetic-collection.js?v=8b9c9d9c42ac8b46235b47296859df773d83c0fb2abaf3c348329cac0db6cbc8';
+import {SOUNDSTAGES,AMBIENCES} from './music-environment.js?v=73e91e18fb9ebfe27e84a2bee40dc752fd44e6131750e7e288608909b1875e04';
+import {MUSIC_THEMES} from './music-theme.js?v=16afeb3788a4f957b8346f8115c0f2e181331c16ef0335e7cb1ff18b529431a8';
 // Stable cosmetic identities and historical paid prices belong to the profile.
 export const COSMETICS=Object.freeze([
  ...MUSIC_THEMES,...SOUNDSTAGES,...AMBIENCES,...ACCESSORIES,

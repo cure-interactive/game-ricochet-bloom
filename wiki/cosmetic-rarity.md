@@ -78,12 +78,27 @@ These additional items are available in Player, with the same tier prices and pe
 
 ## Pendants and Companions
 
-Pendants meander slowly on short, loose leashes and gently avoid the player without pushing it. Companions wander on longer invisible tethers, changing direction on their own and occasionally perking up toward nearby bubbles. Both float freely within their maximum leash distance, without a fixed orbit or resting direction; neither changes player physics. Companions have no visible cord and smoothly recover their upright screen orientation. Pendants have two designs per rarity and companions have four, plus None in each category. Common starters Dewdrop and Sprout are free; other Common designs cost 40 Points. Rare, Epic, Legendary and Mythic designs cost 120, 220, 360 and 550 Points.
+Pendants meander slowly on short, loose leashes and gently avoid the player without pushing it. Companions wander on longer invisible tethers, changing direction on their own and occasionally perking up toward nearby bubbles. Both float freely within their maximum leash distance, without a fixed orbit or resting direction; neither changes player physics. Companions have no visible cord and smoothly recover their upright screen orientation. Pendants have three designs per rarity and companions have five, plus None in each category. Common starters Dewdrop and Sprout are free; other Common designs cost 40 Points. Rare, Epic, Legendary and Mythic designs cost 120, 220, 360 and 550 Points.
 
-- **Common:** Pendants — Dewdrop, River Pebble. Companions — Sprout, Puff, Button Bunny, Moss Cap. Simple shapes and bounce reactions.
-- **Rare:** Pendants — Silverleaf, Pearl Shell. Companions — Dew Beetle, Shell Scout, Tide Snail, Paper Crane. More detailed silhouettes and materials.
-- **Epic:** Pendants — Moonstone, Astral Key. Companions — Moon Jelly, Cloud Fox, Lantern Ghost, Dream Axolotl. Pendants have static braided cords. Halos and a brief success pulse; companions add a delayed two-note voice.
-- **Legendary:** Pendants — Sundial, Orbit Compass. Companions — Star Moth, Sunbird, Clockwork Owl, Astral Lion. Moving orbital detail, brighter pulses and three-note companion calls.
-- **Mythic:** Pendants — Prism Heart, Worldseed. Companions — Bloom Dragon, Comet Whale, Nova Bot, Firefly. Pendants have animated lights flowing along their cords. Larger celebration pulses, finite star, petal or light-pixel bursts and layered companion voices. Mythic companions leave fading trails: dragon petals, whale starlight, robot pixels and blinking Firefly lights.
+- **Common:** Pendants — Dewdrop, River Pebble, Acorn. Companions — Sprout, Puff, Button Bunny, Moss Cap, Dumpling. Simple shapes and bounce reactions.
+- **Rare:** Pendants — Silverleaf, Pearl Shell, Ribbon Kite. Companions — Dew Beetle, Shell Scout, Tide Snail, Paper Crane, Mint Gecko. More detailed silhouettes and materials.
+- **Epic:** Pendants — Moonstone, Astral Key, Crystal Bell. Companions — Moon Jelly, Cloud Fox, Lantern Ghost, Dream Axolotl, Wisp Ray. Pendants have static braided cords. Halos and a brief success pulse; companions add a delayed two-note voice.
+- **Legendary:** Pendants — Sundial, Orbit Compass, Hourglass. Companions — Star Moth, Sunbird, Clockwork Owl, Astral Lion, Regal Seahorse. Moving orbital detail, brighter pulses and three-note companion calls.
+- **Mythic:** Pendants — Prism Heart, Worldseed, Black Pearl. Companions — Bloom Dragon, Comet Whale, Nova Bot, Firefly, Void Octopus. Pendants have animated lights flowing along their cords. Larger celebration pulses, finite star, petal or light-pixel bursts and layered companion voices. Mythic companions leave fading trails: dragon petals, whale starlight, robot pixels, blinking Firefly lights and tiny Void Octopus star rings.
 
 5-Chains, bonus objectives, wave clears and victories trigger celebrations. Companions answer about a fifth of a second later, with a cooldown to keep nearby successes from piling up. Their short voices respect master volume, mute and pause. Pendants remain silent. Preview Celebration slows the player, demonstrates the visual reaction with its voice, then resumes from that position. Its playback button shows progress and can be tapped again to stop. Gallery animation and menu autoplay never play companion calls. Low quality uses fewer particles. None of these effects changes gameplay.
+
+## New Designs Across Every Category
+
+Each row adds one design in every existing rarity. Prices and permanent ownership follow the usual category rules.
+
+| Category | Common | Rare | Epic | Legendary | Mythic |
+| --- | --- | --- | --- | --- | --- |
+| Skins | Linen | Malachite | Koi Pond | Orrery | Chronosphere |
+| Trails | Chalk | Maple Drift | Spectral Braid | Brass Ribbon | Galaxy Stream |
+| Impacts | Chalk Dust | Maple Burst | Spectral Bloom | Brass Chime | Galaxy Bloom |
+| Pendants | Acorn | Ribbon Kite | Crystal Bell | Hourglass | Black Pearl |
+| Companions | Dumpling | Mint Gecko | Wisp Ray | Regal Seahorse | Void Octopus |
+| Instruments | Thumb Piano | Bamboo Pipes | Music Box Duo | Celestial Harp | Deep Space Choir |
+| Soundstages | Felt Booth | Bamboo Pavilion | Crystal Grotto | Amphitheater | Infinity Chamber |
+| Ambience | Airy Breeze | Meadow | Water Garden | Mountain Wind | Stellar Tide |

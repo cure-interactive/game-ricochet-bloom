@@ -7,6 +7,22 @@ const panel=(c,x,y,w,h,r=2)=>{c.beginPath();c.roundRect(x,y,w,h,r);c.fill();c.st
 // effects and lifecycle belong to AccessoryVisual; every surface uses this art.
 export function companionArt(c,companion,{t,gentle,happy,look}){
  const flutter=gentle?.6:.55+.35*Math.sin(t*9);
+   if(companion.style==='dumpling'){ellipse(c,-5,6,2,3,-.6);ellipse(c,5,6,2,3,.6);}
+   if(companion.style==='gecko'){
+    c.strokeStyle=companion.color;c.lineWidth=3;c.beginPath();c.moveTo(4,3);c.bezierCurveTo(18,15,19,-2,11,2);c.stroke();
+    for(const side of [-1,1])for(const y of [-3,4]){c.beginPath();c.moveTo(side*4,y);c.lineTo(side*9,y+2);c.stroke();for(let i=-1;i<=1;i++)circle(c,side*10+i,y+3+i*.5,.8);}
+   }
+   if(companion.style==='ray'){
+    for(const side of [-1,1]){c.beginPath();c.moveTo(0,-5);c.quadraticCurveTo(side*9,-3-flutter*5,side*16,2+flutter*3);c.quadraticCurveTo(side*8,9,0,5);c.fill();c.stroke();}
+    c.beginPath();c.moveTo(0,5);c.quadraticCurveTo(5,13,-2,18);c.stroke();
+   }
+   if(companion.style==='seahorse'){
+    c.lineWidth=3;c.strokeStyle=companion.color;c.beginPath();c.moveTo(1,4);c.bezierCurveTo(12,17,-8,18,-4,10);c.bezierCurveTo(-2,5,3,8,0,11);c.stroke();c.lineWidth=1.3;c.strokeStyle='#263c4e';ellipse(c,-7,2,4,6,.6);ellipse(c,7,0,5,2);
+    c.fillStyle='#ffe5a0';c.beginPath();c.moveTo(-5,-5);c.lineTo(-6,-11);c.lineTo(-2,-8);c.lineTo(0,-13);c.lineTo(2,-8);c.lineTo(6,-11);c.lineTo(5,-5);c.closePath();c.fill();c.fillStyle=companion.color;
+   }
+   if(companion.style==='octopus'){
+    c.strokeStyle=companion.color;c.lineWidth=2.6;for(let i=0;i<8;i++){const x=(i-3.5)*1.8;c.beginPath();c.moveTo(x*.7,3);c.bezierCurveTo(x,9,x+Math.sin(t*2+i)*4,14,x*1.5,10+Math.sin(t*2+i)*2);c.stroke();}c.strokeStyle='#263c4e';c.lineWidth=1.3;
+   }
    if(companion.style==='snail'){
     c.fillStyle='#f5dfc1';ellipse(c,6,1,8,7);c.strokeStyle='#b79aaf';c.beginPath();c.arc(6,1,4,0,Math.PI*1.8);c.arc(6,1,1.7,Math.PI*1.8,Math.PI*3.4,true);c.stroke();c.fillStyle=companion.color;ellipse(c,1,6,11,2.5);
     c.strokeStyle=companion.color;c.lineWidth=2;for(const x of [-4,3]){c.beginPath();c.moveTo(x,-3);c.lineTo(x*1.5,-10-happy);c.stroke();circle(c,x*1.5,-10-happy,2);}
@@ -69,6 +85,9 @@ export function companionArt(c,companion,{t,gentle,happy,look}){
     c.fillStyle='#ab6d79';c.beginPath();c.moveTo(-11,-3);c.bezierCurveTo(-10,-17,10,-17,11,-3);c.quadraticCurveTo(0,0,-11,-3);c.fill();c.stroke();c.fillStyle='#ffe6cc';for(const [x,y,r] of [[-5,-7,2],[2,-10,2.5],[7,-5,1.5]])circle(c,x,y,r);c.fillStyle='#8fbfa4';ellipse(c,-4,6,3,2);ellipse(c,4,6,3,2);
    }
    if(companion.style==='lion'){c.fillStyle='#fff0cf';ellipse(c,0,3,4,2.5);}
+   if(companion.style==='dumpling'){c.strokeStyle='#b79b7d';c.lineWidth=.7;for(let i=-2;i<=2;i++){c.beginPath();c.moveTo(i*2,-4);c.quadraticCurveTo(i,-7,0,-5);c.stroke();}}
+   if(companion.style==='gecko'){c.fillStyle='#6fae87';for(let i=0;i<3;i++)circle(c,-4+i*4,4,1);}
+   if(companion.style==='octopus'){c.fillStyle='#f6d6ff';for(let i=0;i<3;i++){const a=t*.4+i*2;c.globalAlpha=.5+.4*Math.sin(t*2+i)**2;circle(c,Math.cos(a)*4,-3+Math.sin(a)*2,.7);}c.globalAlpha=1;}
    if(companion.style==='dragon'){c.fillStyle='#fff0cf';ellipse(c,-4,-6,1.8,3,-.4);ellipse(c,4,-6,1.8,3,.4);}
    if(companion.style==='ladybug'){c.strokeStyle='#34414e';c.beginPath();c.moveTo(0,-5);c.lineTo(0,6);c.moveTo(-3,-5);c.lineTo(-5,-10);c.moveTo(3,-5);c.lineTo(5,-10);c.stroke();c.fillStyle='#574b68';for(const x of [-4,4])for(const y of [-3,3])circle(c,x,y,1.3);}
    if(['fox','whale'].includes(companion.style)){c.fillStyle='#f2fff5';ellipse(c,0,3,4.5,2.5);}

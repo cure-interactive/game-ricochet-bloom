@@ -1,15 +1,15 @@
-import {CompanionTrail} from './companion-trail.js?v=7c242a4ab71e98f8e519fd85a521376cb476604140de2bcc5473996966b7f644';
+import {CompanionTrail} from './companion-trail.js?v=2b2a4606b404ae7e1713cadc24b7d2dd797d4ddf72f8a78a1c5d529f2bd718ae';
 import {entityImpulse} from './entity-motion.js?v=16ce17b5f60cb8d9e28697080edf32fb0049099a55fad2c27982aeec54cf66a8';
 import {bubblePressure} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
-import {bubbleShellPoint} from './bubble-render.js?v=9b8e3c455a0794128139a4435b903daae6dbb8b7ce74ca8610f59c0d4af7ded8';
-import {companionArt} from './companion-art.js?v=adc1284c9708b06c219beae983605ecee1048dd7d220e32b39a2e79885c0cfcd';
+import {bubbleShellPoint} from './bubble-render.js?v=9b2f2b87f161370be645295a8959febcc9a37c1e4aa39bed2a0fb875973c3b4f';
+import {companionArt} from './companion-art.js?v=f9f8456faee7b4b466548f9fe2c3e0dcba123aeb64ffa0e955b9fcd8808c0715';
 import {WanderMotion} from './wander-motion.js?v=9828bf3538efbf59246439899737e5d16c23542544d6dc0a1058bd39f3000335';
 import {angleApproach} from './angle.js?v=a877fbe89e9f287f68b69f52d76679cbf59de4428f5c6f8931471c8e40003750';
-import {pendantCord} from './pendant-cord.js?v=53932ab76be0126947644c097af04ea6e6e3498d184e7dea943a548752ca7862';
+import {pendantCord} from './pendant-cord.js?v=c2cf63ffc76d047316fad7741f741b326499b6aef4d4198a0dc2f53ad7b45d43';
 import {tetherStep} from './tether-motion.js?v=befaaaaa72aea69adbf2f8d7d061eb749b82581af3775ba1daa008ec80bc7f1a';
 import {CompanionWander} from './companion-wander.js?v=1b58a1d1c39662eca6ef433f02dcf08b3fa32a40898d7924bcea334633f6e656';
-import {cosmeticGet} from './cosmetic.js?v=069cb0e99be3f5e5e64218116b94bfb3813f7b3b7a423da0136bb726d68057de';
-import {accessoryTier,accessoryPulse} from './accessory.js?v=21e3abbf0bcc50a32e2de108052b193f9a3bf450c5f4b7a2233b678a4ec4478e';
+import {cosmeticGet} from './cosmetic.js?v=ddc203acc7e92b1a16f24947665f4dbf857da6e9dea64f178d61d81305382532';
+import {accessoryTier,accessoryPulse} from './accessory.js?v=36e0b1d7f9877e5301b225524a87160ca48e5e617f00d5d7fa21c76e0150481e';
 const tau=Math.PI*2,clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const circle=(c,x,y,r)=>{c.beginPath();c.arc(x,y,r,0,tau);c.fill();};
 const ellipse=(c,x,y,rx,ry,a=0)=>{c.beginPath();c.ellipse(x,y,rx,ry,a,0,tau);c.fill();};
@@ -133,6 +133,11 @@ export class AccessoryVisual{
    if(pendant.style==='key'){c.save();c.translate(0,-4);star(c,4);c.restore();c.lineWidth=2;c.strokeStyle=pendant.color;c.beginPath();c.moveTo(0,-1);c.lineTo(0,7);c.lineTo(3,7);c.moveTo(0,4);c.lineTo(2,4);c.stroke();}
    if(pendant.style==='compass'){circle(c,0,0,6);c.fillStyle='#234a62';c.save();c.rotate(t*.35);star(c,5,4);c.restore();c.fillStyle='#fff7cb';circle(c,0,0,1.3);}
    if(pendant.style==='seed'){ellipse(c,0,1,4,6,-.2);c.fillStyle='#edffe1';ellipse(c,-2,-3,3.5,1.8,.5);ellipse(c,2,-4,3.5,1.8,-.5);}
+   if(pendant.style==='acorn'){ellipse(c,0,2,4,5);c.fillStyle='#78634e';ellipse(c,0,-2,5,2.6);c.strokeStyle='#dbc297';for(let x=-3;x<=3;x+=2){c.beginPath();c.moveTo(x,-4);c.lineTo(x+1,-1);c.stroke();}c.fillStyle='#78634e';ellipse(c,0,-5,1,2);}
+   if(pendant.style==='kite'){c.beginPath();c.moveTo(0,-7);c.lineTo(5,-1);c.lineTo(0,5);c.lineTo(-5,-1);c.closePath();c.fill();c.stroke();c.beginPath();c.moveTo(0,-7);c.lineTo(0,9);c.moveTo(-5,-1);c.lineTo(5,-1);c.stroke();c.fillStyle='#f1c69c';for(let y=5;y<10;y+=3){c.beginPath();c.moveTo(-2,y-1);c.lineTo(2,y+1);c.lineTo(2,y-1);c.lineTo(-2,y+1);c.fill();}}
+   if(pendant.style==='bell'){c.beginPath();c.moveTo(-5,4);c.quadraticCurveTo(-3,1,-3,-3);c.quadraticCurveTo(0,-8,3,-3);c.quadraticCurveTo(3,1,5,4);c.closePath();c.fill();c.stroke();c.fillStyle='#fff2c8';circle(c,0,5,1.4);c.strokeStyle='#f5f0ff';c.beginPath();c.moveTo(-1,-3);c.lineTo(-2,2);c.stroke();}
+   if(pendant.style==='hourglass'){c.strokeStyle=pendant.color;c.lineWidth=1.5;c.beginPath();c.moveTo(-4,-6);c.lineTo(4,-6);c.moveTo(-4,6);c.lineTo(4,6);c.moveTo(-3,-5);c.lineTo(3,5);c.moveTo(3,-5);c.lineTo(-3,5);c.stroke();c.fillStyle='#fff0ba';const sand=gentle?.5:.5+.2*Math.sin(t*.7);c.beginPath();c.moveTo(-3,-5);c.lineTo(3,-5);c.lineTo(0,-1-sand);c.fill();c.beginPath();c.moveTo(-3,5);c.lineTo(3,5);c.lineTo(0,2-sand);c.fill();circle(c,0,Math.sin(t*4)*2,.5);}
+   if(pendant.style==='pearl'){c.fillStyle='#292343';circle(c,0,0,5.5);c.strokeStyle='#ccb9f3';c.lineWidth=.8;for(let i=0;i<4;i++){const a=t*.4+i*tau/4;c.save();c.translate(Math.cos(a)*3.8,Math.sin(a)*3.8);c.fillStyle='#f5dffa';star(c,1.2,4);c.restore();}c.beginPath();c.ellipse(0,0,6.6,2.4,-.5,0,tau);c.stroke();}
    c.fillStyle='#ffffff';c.globalAlpha=.6+this.reaction*.35;ellipse(c,-1.5,-2,1,1.8);c.restore();
   }
   if(companion&&companion.style!=='none'&&this.follower){

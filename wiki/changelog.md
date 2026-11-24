@@ -6,6 +6,26 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.40.0
+
+Build: 2026-11-24 01:59:08 UTC
+
+### Player Changes
+
+- Cosmetic gallery titles are singular: Player Skin, Trail, Impact, Pendant and Companion.
+- Cosmetic gallery cards now match the restrained Player page thumbnails: your player and consistent trail, with only the cosmetic being demonstrated. Full equipped ensembles remain in the Player viewer and detail previews.
+- Choose Showcase for a large view of the selected cosmetic, or In Motion to see it travel. The tabs sit directly below the preview. Both use the full ensemble, and the view choice survives reloads. Celebration playback works in either view.
+- Holding the Player preview or a tab no longer adds a dark native touch highlight; dragging and keyboard focus feedback remain.
+- Discover 40 new designs: one in every existing rarity across Skins, Trails, Impacts, Pendants, Companions, Instruments, Soundstages and Ambience. Companions now have five designs per rarity and pendants have three.
+
+<!-- development -->
+### Developer Notes
+
+- Separate card loadout projection and Showcase framing in cosmetic-presentation; reuse one persistent view selector and the existing preview lifecycle for skins and other visual cosmetics. Clear travel history and contact offsets across view changes without changing saved equipment.
+- Extend the existing artwork and synthesis owners with distinct per-design geometry, harmonic envelopes, acoustic parameters and seamless ambience. Preserve stable IDs, historical receipts, quality bounds and gameplay isolation.
+- Scope transparent native tap highlights to draggable preview surfaces and segmented controls; keep focus-visible outlines.
+<!-- /development -->
+
 ## v3.39.0
 
 Build: 2026-11-24 01:26:51 UTC
