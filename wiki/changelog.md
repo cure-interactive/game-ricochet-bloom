@@ -6,6 +6,24 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.39.0
+
+Build: 2026-11-24 01:26:51 UTC
+
+### Player Changes
+
+- Firefly is now Mythic and leaves blinking golden lights. Bloom Dragon, Comet Whale and Nova Bot leave fading petal, starlight and pixel trails. Existing Firefly owners keep their companion.
+- Meet Moss Cap, Tide Snail, Paper Crane, Dream Axolotl and Astral Lion: four companions in every rarity.
+- Preview Celebration now uses the same playback button and progress bar as Preview Sound. Tap Stop Preview to end a celebration early.
+
+<!-- development -->
+### Developer Notes
+
+- Keep companion trail sampling, aging, bounds and lifecycle reset in one presentation owner. Preserve stable Firefly IDs and historical paid receipts.
+- Reuse one playback-button renderer and state updater for audio and accessory celebrations. Sequence progress covers braking, animation/audio hold and resumption, including silent designs and longer voices.
+- Preserve cancellation during audio unlock, navigation and visibility changes; reset the button and progress on completion or stop.
+<!-- /development -->
+
 ## v3.38.3
 
 Build: 2026-11-24 00:41:45 UTC

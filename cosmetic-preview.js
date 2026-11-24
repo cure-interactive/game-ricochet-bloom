@@ -1,6 +1,6 @@
 import {bubbleInteractionMount} from './bubble-interaction.js?v=6e496baf63684650a5c5e46f8c1ecc9358c9f4a5ce33f9bac61381b48fd1dfa7';
 import {cosmeticBounds,cosmeticPaint} from './cosmetic-paint.js?v=e5d682d54726c402cbba21b5c0dd0415557d7ed9f44a5f144c7dba8c36cb5a58';
-import {CosmeticVisual} from './cosmetic-visual.js?v=7b45a77dfd9a97006806f4955e4e15544efe65db621fd587f4cec2174c50b62d';
+import {CosmeticVisual} from './cosmetic-visual.js?v=1fa80b97717a10678ad745b05162b61e2c273f0467e1a90bc60e6d8611f53a97';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender} from './bubble-render.js?v=9b8e3c455a0794128139a4435b903daae6dbb8b7ce74ca8610f59c0d4af7ded8';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
@@ -72,7 +72,7 @@ export function cosmeticPreviewMount(canvas,host){
     const ease=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);};
     if(state.phase==='brake'){
      speed=1-ease(state.age/.35);
-     if(state.age>=.35){state.phase='hold';state.age=0;visual.accessories.react(true);state.start?.();}
+     if(state.age>=.35){state.phase='hold';state.age=0;visual.accessories.react(true);state.start?.();state.soundDuration=state.soundStatus?.()?.duration||0;}
     }else if(state.phase==='hold'){
      if(state.age>=1.5&&state.soundDone?.()!==false){state.phase='resume';state.age=0;}
     }else{
@@ -103,6 +103,13 @@ export function cosmeticPreviewMount(canvas,host){
  }
  function sync(){if(doc.hidden||activity?.isActive()===false)interaction.clear();win.cancelAnimationFrame(frame);frame=0;last=0;if(active&&!doc.hidden&&activity?.isActive()!==false)frame=win.requestAnimationFrame(draw);}
  activity=visualActivityMount(host.surface||canvas,sync,{intersection:false});sync();
+ function celebrationStatus(){
+  if(!celebration)return {active:false,progress:0};
+  const state=celebration,clamp=value=>Math.max(0,Math.min(1,value));
+  // Keep phase boundaries stable when the voice duration becomes known at rest.
+  const progress=state.phase==='brake'?.15*clamp(state.age/.35):state.phase==='hold'?.15+.65*clamp(state.age/Math.max(1.5,state.soundDuration||0)):.8+.2*clamp(state.age/.45);
+  return {active:true,progress};
+ }
  function cancelCelebration(){if(!celebration)return;const state=celebration;celebration=null;body.vx=state.vx+offset.vx;body.vy=state.vy+offset.vy;visual.accessories.celebration=0;state.finish?.();}
- return {celebrate(callbacks={}){if(!celebration)celebration={phase:'brake',age:0,vx:body.vx-offset.vx,vy:body.vy-offset.vy,...callbacks};},cancelCelebration,destroy(){cancelCelebration();active=false;interaction.destroy();activity.destroy();win.cancelAnimationFrame(frame);}};
+ return {celebrate(callbacks={}){if(!celebration)celebration={phase:'brake',age:0,vx:body.vx-offset.vx,vy:body.vy-offset.vy,...callbacks};},celebrationStatus,cancelCelebration,destroy(){cancelCelebration();active=false;interaction.destroy();activity.destroy();win.cancelAnimationFrame(frame);}};
 }

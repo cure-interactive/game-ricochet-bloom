@@ -1,13 +1,13 @@
-import {CosmeticVisual} from './cosmetic-visual.js?v=7b45a77dfd9a97006806f4955e4e15544efe65db621fd587f4cec2174c50b62d';
+import {CosmeticVisual} from './cosmetic-visual.js?v=1fa80b97717a10678ad745b05162b61e2c273f0467e1a90bc60e6d8611f53a97';
 import {bubbleCreate,bubbleHit,bubbleStep,bubbleOutline} from './bubble.js?v=596f6e9b83b23b8703b38f1cca7caed5fa89f73e8ec111bf6dbbe8b1c7761300';
 import {bubbleRender} from './bubble-render.js?v=9b8e3c455a0794128139a4435b903daae6dbb8b7ce74ca8610f59c0d4af7ded8';
 import {frameGate} from './performance.js?v=98f53fc38e408a68f5e1beee87a7d0e0066fe8a1093aa41acc5b7134cdaac489';
 const renderReady=frameGate();
-import { gamemodeMount } from './gamemode-ui.js?v=eb667bb596e6c42e3192988aa9ac08222ea3628d641c9940b0b8add6d91988f8';
+import { gamemodeMount } from './gamemode-ui.js?v=48cc49d568b4d573165415ece6b5bed6ebbf21e266e0cb475532adeca860b6bf';
 import { experimentSetup } from './experiment.js?v=8ea8233f2a63ec7914c38d27cef2dda06f00ef2e61a346f83b06d3d19f285958';
 import { medalBadge, medalConditionsHTML } from './medal-ui.js?v=6df228e6d2895828fc52e3634bd7cb5b98bc58ddf86a48515c6d0a1527524ed2';
 import { trialConditions, trialEvidence, trialMedal } from './medal.js?v=97f2ce6ed69f5c8834ecd381128c29d366fdfc9390080f59a05049d77db5f006';
-import { screenHeader } from './screen-header.js?v=09d65c68f5e665dde5af957d87f97c88e0d1f37f4c5e2ab39898cae1ffc9e14c';
+import { screenHeader } from './screen-header.js?v=99cfd402003799b85eaeb2a5afd90ecc1eb626d4b6e0806dd786051e8bc42dae';
 import { songKeep } from './song.js?v=21b3f78884733e73b259e1dda4fa6f726d744bfa4eff7865d20dfd83e0569d03';
 import { melodyDraw } from './melody-trial.js?v=5e546567b46445c986bbf1d941f8e10f4a9a07413c2822cd9af4cfda8fe0b363';
 import { experimentRewarded, experimentGoal, EXPERIMENT_RECIPES } from './experiment.js?v=8ea8233f2a63ec7914c38d27cef2dda06f00ef2e61a346f83b06d3d19f285958';
@@ -15,7 +15,7 @@ import { experimentMedal, experimentRead, experimentSave, experimentWrite, exper
 import { TRIAL_MODES,TRIAL_SIZE,trialCreate,trialForGeneration,trialLaunch,trialStep,trialStatus,trialShots,trialRelease,trialAction,trialPlayer } from './trial.js?v=dccd712876b5817b12007709d04f7edb679f22aca70910e82e86097c9b6a2888';
 import { trialRead,trialWrite } from './trial-store.js?v=b1a125e43b324e25c16ddc88eabaafc475a43347ac9d2806bd53d5c1b4695ae2';
 import { earningAmount } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
-import { buttonHTML } from './ui-icon.js?v=fadb7aef991484dc9cb5ef25c3ee3ac0b493397ae011313552240e2310c6e308';
+import { buttonHTML } from './ui-icon.js?v=324dce74106ed866c8abbd0837e0785412b1fc777eeca643ac6a1aa351f837c4';
 const button=(id,label,icon='arrow-left')=>buttonHTML(label,icon,{id});
 const color={'music-note':'#a4f4cf','beat-gate':'#eb9bcd','sound-hazard':'#ff8b91',instrument:'#f2d279',keeper:'#ff8b91',gate:'#9ce6cf',power:'#c4a7ff',payload:'#ffb56e',player:'#f6f5cf',target:'#ed82bd',blast:'#ffb56e',fire:'#ff765f',gas:'#cadb78',cell:'#a4f4cf',cargo:'#8edbff',plug:'#c6b4ff',vent:'#bf89e8',mote:'#ec8ed7',mud:'#bba18c',spike:'#fa8c91'};
 export function trialMount(host){

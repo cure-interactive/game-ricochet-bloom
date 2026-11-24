@@ -1,4 +1,4 @@
-import {accessoryTier} from './accessory.js?v=91a2f322a8bbdc6a7838e7084cd7ebcc2fa4ecd86c974e585c13ea9f79a7b33c';
+import {accessoryTier} from './accessory.js?v=21e3abbf0bcc50a32e2de108052b193f9a3bf450c5f4b7a2233b678a4ec4478e';
 
 // Pendant artwork only. The invisible physical tether lives in tether-motion.
 export function pendantCord(c,body,charm,length,item,time=0,low=false,attachment=null){

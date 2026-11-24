@@ -1,14 +1,15 @@
+import {CompanionTrail} from './companion-trail.js?v=7c242a4ab71e98f8e519fd85a521376cb476604140de2bcc5473996966b7f644';
 import {entityImpulse} from './entity-motion.js?v=16ce17b5f60cb8d9e28697080edf32fb0049099a55fad2c27982aeec54cf66a8';
 import {bubblePressure} from './bubble-pressure.js?v=b5bc5af7a6c96099ebff8ebb3bdb5e8bd38cd0780e699102086111db5779588b';
 import {bubbleShellPoint} from './bubble-render.js?v=9b8e3c455a0794128139a4435b903daae6dbb8b7ce74ca8610f59c0d4af7ded8';
-import {companionArt} from './companion-art.js?v=1dd8d9daa95066af2c9f9c882fcb47d94d590ceca2ef5fa217134fcf191be758';
+import {companionArt} from './companion-art.js?v=adc1284c9708b06c219beae983605ecee1048dd7d220e32b39a2e79885c0cfcd';
 import {WanderMotion} from './wander-motion.js?v=9828bf3538efbf59246439899737e5d16c23542544d6dc0a1058bd39f3000335';
 import {angleApproach} from './angle.js?v=a877fbe89e9f287f68b69f52d76679cbf59de4428f5c6f8931471c8e40003750';
-import {pendantCord} from './pendant-cord.js?v=cd455ff78836587be5ad1b485e46b481b589a217d28bfbc832e3e2726fadce86';
+import {pendantCord} from './pendant-cord.js?v=53932ab76be0126947644c097af04ea6e6e3498d184e7dea943a548752ca7862';
 import {tetherStep} from './tether-motion.js?v=befaaaaa72aea69adbf2f8d7d061eb749b82581af3775ba1daa008ec80bc7f1a';
 import {CompanionWander} from './companion-wander.js?v=1b58a1d1c39662eca6ef433f02dcf08b3fa32a40898d7924bcea334633f6e656';
-import {cosmeticGet} from './cosmetic.js?v=36e7348418dff5ee2bd86e9b6d031f48e9fed9ce1ae911f25e16edd70d5de8e5';
-import {accessoryTier,accessoryPulse} from './accessory.js?v=91a2f322a8bbdc6a7838e7084cd7ebcc2fa4ecd86c974e585c13ea9f79a7b33c';
+import {cosmeticGet} from './cosmetic.js?v=069cb0e99be3f5e5e64218116b94bfb3813f7b3b7a423da0136bb726d68057de';
+import {accessoryTier,accessoryPulse} from './accessory.js?v=21e3abbf0bcc50a32e2de108052b193f9a3bf450c5f4b7a2233b678a4ec4478e';
 const tau=Math.PI*2,clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const circle=(c,x,y,r)=>{c.beginPath();c.arc(x,y,r,0,tau);c.fill();};
 const ellipse=(c,x,y,rx,ry,a=0)=>{c.beginPath();c.ellipse(x,y,rx,ry,a,0,tau);c.fill();};
@@ -40,7 +41,7 @@ const companionTether={length:4.8,clearance:1.8,drag:3,mass:.9};
 
 // Independent, bounded presentation state. Never retains or mutates an engine body.
 export class AccessoryVisual{
- constructor(seed){this.spawnState=(seed??Math.floor(Math.random()*0xffffffff))>>>0||1;this.wander=new CompanionWander(seed);this.pendantWander=new WanderMotion(seed===undefined?undefined:seed^0x9e3779b9,{speed:.3,interval:8});this.clear();}
+ constructor(seed){this.trail=new CompanionTrail();this.spawnState=(seed??Math.floor(Math.random()*0xffffffff))>>>0||1;this.wander=new CompanionWander(seed);this.pendantWander=new WanderMotion(seed===undefined?undefined:seed^0x9e3779b9,{speed:.3,interval:8});this.clear();}
  spawn(body,{clearance,length}){
   // Separate from wander clocks: every respawn consumes fresh samples, while
   // a supplied seed still reproduces the complete presentation sequence.
@@ -49,9 +50,9 @@ export class AccessoryVisual{
   return {x:body.x+Math.cos(angle)*distance,y:body.y+Math.sin(angle)*distance,vx:body.vx,vy:body.vy};
  }
  clear(){this.resetMotion();this.elapsed=0;this.reaction=0;this.celebration=0;this.pendant='pendant.none';this.companion='companion.none';}
- configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion'){this.follower=null;this.companionAngle=0;this.wander.reset();}else {this.charm=null;this.pendantWander.reset();}this.celebration=0;}this[kind]=id;}}
+ configure(loadout={}){for(const kind of ['pendant','companion']){const id=cosmeticGet(loadout[kind])?.kind===kind?loadout[kind]:kind+'.none';if(id!==this[kind]){if(kind==='companion'){this.trail.clear();this.follower=null;this.companionAngle=0;this.wander.reset();}else {this.charm=null;this.pendantWander.reset();}this.celebration=0;}this[kind]=id;}}
  react(celebrate=false){this.reaction=1;if(celebrate)this.celebration=1;}
- resetMotion(){this.body=null;this.shell=null;this.follower=null;this.charm=null;this.heading=0;this.companionAngle=0;this.wander.reset();this.pendantWander.reset();}
+ resetMotion(){this.trail.clear();this.body=null;this.shell=null;this.follower=null;this.charm=null;this.heading=0;this.companionAngle=0;this.wander.reset();this.pendantWander.reset();}
  // UI contact positions are relative to the player's center in radius-14 units.
  contact(point,kind,seconds=1,age=0,scale=1){
   if(!this.body)return;const unit=this.body.radius/14;
@@ -76,6 +77,7 @@ export class AccessoryVisual{
   const r=Number.isFinite(body.radius)&&body.radius>0?body.radius:14,previous=this.body,previousShell=this.shell;
   const teleport=previous&&Math.hypot(body.x-previous.x,body.y-previous.y)>r*12;
   if(!previous||teleport){
+   this.trail.clear();
    const speed=Math.hypot(body.vx||0,body.vy||0);this.heading=speed>1?Math.atan2(body.vy||0,body.vx||0):0;
    this.follower=null;this.charm=null;this.companionAngle=0;this.wander.reset();this.pendantWander.reset();
   }
@@ -103,12 +105,14 @@ export class AccessoryVisual{
    const attachment={x:start.x+(end.x-start.x)*i/steps,y:start.y+(end.y-start.y)*i/steps,vx:(end.x-start.x)/dt,vy:(end.y-start.y)/dt};
    tetherStep(this.charm,anchor,h,pendantTether,drift,attachment);
   }
+  this.trail.step(this.follower,r,dt,cosmeticGet(this.companion));
  }
  bounds(){
   if(!this.body)return [];
   const b=this.body,points=[];
   if(this.pendant!=='pendant.none'&&this.charm)points.push({...this.charm,r:b.radius*2.8});
   if(this.companion!=='companion.none'&&this.follower)points.push({...this.follower,r:b.radius*4.4});
+  points.push(...this.trail.points.map(p=>({x:p.x,y:p.y,r:p.r*2})));
   return points;
  }
  render(c,gentle=false,rotation=0,shell=this.shell){
@@ -132,6 +136,7 @@ export class AccessoryVisual{
    c.fillStyle='#ffffff';c.globalAlpha=.6+this.reaction*.35;ellipse(c,-1.5,-2,1,1.8);c.restore();
   }
   if(companion&&companion.style!=='none'&&this.follower){
+   this.trail.render(c,companion,gentle);
    const f=this.follower,bob=gentle?0:Math.sin(t*2)*r*.06,lift=gentle?0:Math.sin(this.celebration*Math.PI)*r*.45;
    c.save();c.translate(f.x+Math.sin(rotation)*(bob-lift),f.y+Math.cos(rotation)*(bob-lift));c.rotate(this.companionAngle-rotation);c.scale(r/14*1.2,r/14*1.2);c.lineCap='round';c.lineJoin='round';c.lineWidth=1.3;c.strokeStyle='#263c4e';c.fillStyle=companion.color;
    const curiosity=Math.sin(this.wander.pulse*Math.PI);c.scale(1+curiosity*.07,1+curiosity*.07);

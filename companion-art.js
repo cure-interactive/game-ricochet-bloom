@@ -7,6 +7,22 @@ const panel=(c,x,y,w,h,r=2)=>{c.beginPath();c.roundRect(x,y,w,h,r);c.fill();c.st
 // effects and lifecycle belong to AccessoryVisual; every surface uses this art.
 export function companionArt(c,companion,{t,gentle,happy,look}){
  const flutter=gentle?.6:.55+.35*Math.sin(t*9);
+   if(companion.style==='snail'){
+    c.fillStyle='#f5dfc1';ellipse(c,6,1,8,7);c.strokeStyle='#b79aaf';c.beginPath();c.arc(6,1,4,0,Math.PI*1.8);c.arc(6,1,1.7,Math.PI*1.8,Math.PI*3.4,true);c.stroke();c.fillStyle=companion.color;ellipse(c,1,6,11,2.5);
+    c.strokeStyle=companion.color;c.lineWidth=2;for(const x of [-4,3]){c.beginPath();c.moveTo(x,-3);c.lineTo(x*1.5,-10-happy);c.stroke();circle(c,x*1.5,-10-happy,2);}
+   }
+   if(companion.style==='crane'){
+    for(const side of [-1,1]){c.beginPath();c.moveTo(side*2,4);c.lineTo(side*15,-9-flutter*4);c.lineTo(side*10,4);c.closePath();c.fill();c.stroke();c.beginPath();c.moveTo(side*3,3);c.lineTo(side*12,-6);c.stroke();}
+    c.fillStyle='#c28272';c.beginPath();c.moveTo(5,-3);c.lineTo(12,-1);c.lineTo(5,1);c.fill();c.fillStyle=companion.color;
+   }
+   if(companion.style==='axolotl'){
+    c.strokeStyle='#d78ac6';c.lineWidth=2;for(const side of [-1,1])for(let j=-1;j<=1;j++){c.beginPath();c.moveTo(side*5,j*2);c.lineTo(side*11,j*6+flutter);c.stroke();c.fillStyle='#ffcde9';ellipse(c,side*11,j*6+flutter,2,3,side*.5);}
+    c.fillStyle=companion.color;ellipse(c,9,5,7,3,-.4);ellipse(c,-5,7,2,3,-.6);ellipse(c,4,7,2,3,.6);
+   }
+   if(companion.style==='lion'){
+    c.fillStyle='#b68bd7';for(let i=0;i<10;i++){const a=i*tau/10;ellipse(c,Math.cos(a)*7,Math.sin(a)*7,3,4,a);}
+    c.fillStyle=companion.color;circle(c,-5,-6,3);circle(c,5,-6,3);
+   }
    if(companion.style==='firefly'||companion.style==='moth'){
     c.globalAlpha=.75;c.fillStyle=companion.style==='moth'?'#9cdfff':'#d6f6ef';
     ellipse(c,-6,-2,companion.style==='moth'?7:5,3+flutter*3,-.5);ellipse(c,6,-2,companion.style==='moth'?7:5,3+flutter*3,.5);
@@ -49,6 +65,10 @@ export function companionArt(c,companion,{t,gentle,happy,look}){
    if(companion.style==='owl'){c.fillStyle='#f7df9b';circle(c,-2.7,-.5,2.6);circle(c,2.7,-.5,2.6);c.strokeStyle='#866247';c.lineWidth=.7;c.beginPath();c.arc(0,4.3,1.4,0,tau);c.moveTo(0,4.3);c.lineTo(Math.sin(t)*1.2,4.3-Math.cos(t)*1.2);c.stroke();}
 
    if(companion.style==='sprout'){c.strokeStyle='#7dc79d';c.beginPath();c.moveTo(0,-5);c.lineTo(0,-10-happy);c.stroke();c.fillStyle='#d6f6aa';ellipse(c,-3,-10-happy,4.5,2.4,.4);ellipse(c,3,-11-happy,4.5,2.4,-.5);}
+   if(companion.style==='mushroom'){
+    c.fillStyle='#ab6d79';c.beginPath();c.moveTo(-11,-3);c.bezierCurveTo(-10,-17,10,-17,11,-3);c.quadraticCurveTo(0,0,-11,-3);c.fill();c.stroke();c.fillStyle='#ffe6cc';for(const [x,y,r] of [[-5,-7,2],[2,-10,2.5],[7,-5,1.5]])circle(c,x,y,r);c.fillStyle='#8fbfa4';ellipse(c,-4,6,3,2);ellipse(c,4,6,3,2);
+   }
+   if(companion.style==='lion'){c.fillStyle='#fff0cf';ellipse(c,0,3,4,2.5);}
    if(companion.style==='dragon'){c.fillStyle='#fff0cf';ellipse(c,-4,-6,1.8,3,-.4);ellipse(c,4,-6,1.8,3,.4);}
    if(companion.style==='ladybug'){c.strokeStyle='#34414e';c.beginPath();c.moveTo(0,-5);c.lineTo(0,6);c.moveTo(-3,-5);c.lineTo(-5,-10);c.moveTo(3,-5);c.lineTo(5,-10);c.stroke();c.fillStyle='#574b68';for(const x of [-4,4])for(const y of [-3,3])circle(c,x,y,1.3);}
    if(['fox','whale'].includes(companion.style)){c.fillStyle='#f2fff5';ellipse(c,0,3,4.5,2.5);}
