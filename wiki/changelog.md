@@ -6,6 +6,22 @@ See what changed in each version. These are historical release notes; use the gu
 Open Developer Notes inside a version for its technical changes.
 <!-- /development -->
 
+## v3.40.8
+
+Build: 2026-11-24 17:37:23 UTC
+
+### Player Changes
+
+- Returning after a reload or update now restores saved campaign results, including the completed pool, score and available next actions.
+- The Use Earned Skin button shows the earned campaign skin without artwork inherited from your equipped skin.
+
+<!-- development -->
+### Developer Notes
+
+- Persist a validated result checkpoint alongside campaign progress and restore it through an explicit suspended result route, without replaying rewards or celebration.
+- Set the campaign preview's complete appearance and derive its equipped label from the current loadout.
+<!-- /development -->
+
 ## v3.40.7
 
 Build: 2026-11-24 17:24:15 UTC

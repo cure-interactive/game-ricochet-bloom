@@ -7,7 +7,7 @@ import { wikiTopicIcon, wikiStrongHTML } from './wiki-icon.js?v=ee273e712891d6d8
 
 export const WIKI_PAGES = Object.freeze({
   'cosmetic-rarity':{title:'Cosmetic Rarity',url:'./wiki/cosmetic-rarity.md?v=b1632b30abbf3f66af32b69a150edf87e46af7c59f1e5a5b2405bb7cc1d212c3'},
-  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=3cfa695a195fa027e2619b443512bb3c4a82efeda0648b600bf63f033a7329c0' },
+  changelog: { title: 'Change Logs', url: './wiki/changelog.md?v=638245ea947092d08c3974d850e64679a6f1e9da2d99216e6f2ceb8f0c6ed85f' },
   player: { title: 'Player', url: './wiki/player.md?v=8382ad45267b5aee0162c5b65a92054c5fb80375bb79925a603caa98a6602de3' },
   developer: { title: 'Developer', development: true, url: './wiki/developer.md?v=e7cdfb724aba5b6dc5e487742b7ca785d6d2f90ff84ac67cad21c79d8623612d' },
   medals: { title: 'Medals', url: './wiki/medals.md?v=f43259f3d42301b05c30588b2e1335e8ec1ca9d0f2f1a3a7a2287bbd4e709eca' },
@@ -16,13 +16,13 @@ export const WIKI_PAGES = Object.freeze({
   'development-concept': { development: true, title: 'Development Concept', url: './wiki/development-concept.md?v=2135a1f9773ebeb036c23a038d08786f3f8947e16dce43863a67af0ab790dc36' },
   'game-modes': { development: true, title: 'Game Modes to Try', url: './wiki/game-modes.md?v=76d41fb0cd2c9a17bde4187f69e4b31570e5d49a5c33b4e2a32053553185f457' },
   waves: { title: 'Endless Waves', url: './wiki/waves.md?v=941b0fdf11b0e94d22e69c8e45dc214c953cc790f3ba805d876bf03443103c12' },
-  contents: { title: 'Contents', url: './wiki/contents.md?v=9bdad6b06af0319901eb84b28fa15eb601b5a99e7bc313cc3ba5855005efe99d' },
+  contents: { title: 'Contents', url: './wiki/contents.md?v=5861a3e3c72390271c411c19e957fe5b1d167b7302d5735a9cd99d3b9da605b4' },
   wiki: { title: 'Wiki', url: './wiki/wiki.md?v=c7d2965c7a1c36d0a7891df9b8ca49e03594d78e63c17a06e1c41cfecead07a9' },
   'how-to-play': { title: 'How to Play', url: './wiki/how-to-play.md?v=fbafb2ebd78535c7099df4a3718ab3b076135a8f859ad896d5d79f1b44a1eb80' },
   campaign: { title: 'Melody Journey', url: './wiki/campaign.md?v=3226c8202c5ec9c396c1c4abe0e5e00d931094617edf98ea6ff8945e8feff623' },
   'skill-tree': { title: 'Skills', url: './wiki/skill-tree.md?v=ac557cdca266d83ba6337dd07ebada02028c73602f8f68692853d7d7545cfa77' },
   'power-ups': { title: 'Power-Ups', url: './wiki/power-ups.md?v=85f25a8d2896fbb481d837d5b7bb3995f7aa330e30fcb681bd61f3c366732e51' },
-  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=760ba0464ef10554df44f780c1a2ab4a857f3a0ba74a55d5e176fef685838142' }
+  settings: { title: 'Sound, Settings & Saves', url: './wiki/settings.md?v=3ce26249bd7ac94796327380722b27be96e517368be88566949accedd0c807f8' }
 });
 // Research citations are exact reviewed destinations, not arbitrary Markdown URLs.
 export const WIKI_SOURCES = Object.freeze([

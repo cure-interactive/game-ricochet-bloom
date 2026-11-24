@@ -1,25 +1,25 @@
 import {profileSession} from './profile-session.js?v=be340d1c7cfc6f6927c6717f7379226c43484b011621086348cf0f44a9a18aae';
 import {cosmeticSkin,cosmeticLoadout} from './cosmetic.js?v=386c865d18f3ecc56ec0e8d96181350a8f83899d2fde7de3cc434c8f8f3685c5';
 import { screenHeader } from './screen-header.js?v=dc9c49c3de9dba6c62156c5183b3aaa7f74f68b35a1e805937f596b9990e8af1';
-import { playerUpgradeMount } from './player-upgrade-ui.js?v=3206442608745e875777199a14ef78d9c85341da3d33d7d5c482734c03414005';
+import { playerUpgradeMount } from './player-upgrade-ui.js?v=a0acd28b48eb8fbbd3495a524369e1e564a7d3daee9f11070a40a36a3385dab5';
 import { saveRecoveryMount } from './save-recovery-ui.js?v=6b42eff064aaeaf0bc7d4afa6405f6681eeef6b92b132dde946b3e701f8f0895';
-import { progressionResetUnreadable } from './progression-store.js?v=d10ef67e303cc1e50f5d707a4579aacb3eeccf30f91e718e92951cb2c9bc93df';
+import { progressionResetUnreadable } from './progression-store.js?v=29f5a331eab8ca7e2f6e775570dea001ab32d3a3b5abbe09c4fadfaf8ab3bde0';
 import { medalIcon } from './medal-ui.js?v=6df228e6d2895828fc52e3634bd7cb5b98bc58ddf86a48515c6d0a1527524ed2';
 
 import { earningPrepare, earningId } from './earning.js?v=6e78b642b40a8b5067bb53b7a8694613a999b1c158bcef5909c8bb927ddad43f';
 import { profilePlayReward, profileDevelopmentCopy, profileRename, profileName } from './profile.js?v=323b87dca113c3a6222e478726719457b1fd3effa7d60635d25ba7ffdbf90794';
 import { developmentBarMount } from './development-bar.js?v=0b71d362f1a5c406c6eb36aad31483846558bb98b33e4104fe1e950e5e969940';
 import { titleCase } from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';
-import { campaignMount } from './campaign-ui.js?v=05db0a4705889cff0ff41680c40bc4f10d6ddabc1f12be45eb18a9de33cbe679';
-import { challengeEncode, challengeDecode } from './challenge.js?v=b378f260a777d34bed53778624e02aa7eab7b27bd7da652f968754892ea7fff1';
+import { campaignMount } from './campaign-ui.js?v=fd3f3b487c4317367b29aa970bd9b46444872605c983161c016eb8834d98d976';
+import { challengeEncode, challengeDecode } from './challenge.js?v=b33453c3b5439db6de6ac841931e895e16f419d0126085492c99906c1a96b95d';
 import { trackGet } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=c97beccbdfdb16a544a4faf019c6209aa1bacacd493729f535527cd13ecfc475';
-import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=d10ef67e303cc1e50f5d707a4579aacb3eeccf30f91e718e92951cb2c9bc93df';
+import { CAMPAIGN_NAME, POOL_MEDALS, poolMedal, campaignPoolBest, unlockedTracks, researchTarget, progressionAct, progressionObserve, progressionResult, progressionLoadout, GAME_CATALOGUE, GOALS, POOL_NAMES, progressionCreate, progressionValidate, goalRemaining } from './run.js?v=795057cada8dafcc7cc5aea6aff6ab73e3e640b0127abc4ab18c91aae6c4b1e0';
+import { progressionRead, progressionWrite, progressionImport, developmentSettingsRead, developmentSettingsWrite } from './progression-store.js?v=29f5a331eab8ca7e2f6e775570dea001ab32d3a3b5abbe09c4fadfaf8ab3bde0';
 import { gameCreate } from './engine.js?v=7a7d88b5db94d46009aaeff65ec846efcbab72afa22735088b3758b3b0962fe5';
-import { treeMount } from './tree-ui.js?v=e73582e967380952820a86fd94aa6c87004877df536b394dae8cc74d48d24591';
+import { treeMount } from './tree-ui.js?v=eea66c7d0ef671a4b7a8e17b509289e12f70f32678593cba4718b7ca043ab0e3';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=44ea63eff6eacd4cad173283015795275bfc00f891809cd37ea89694c51bd05d';
 const button=(id,label,icon='play')=>buttonHTML(label,icon,{id});
-import { skinMount } from './skin-ui.js?v=44688c3237af7000466ea901fed8938b87213c883aef5297d79ae7ea127d7e2a';
+import { skinMount } from './skin-ui.js?v=c51edaf085b7d4a1edfccd0514879b9820f6fd28405abe2ec4fba92add39242c';
 export function progressionMount(host){
   let developmentSettings=developmentSettingsRead(localStorage);
   let kind=developmentSettings.enabled?'development':'normal',loaded=progressionRead(localStorage,kind),state=loaded.state,context='legacy',listening=null,tree,campaign,suspended=null,shared=null,listenTimer=null;
@@ -83,6 +83,31 @@ export function progressionMount(host){
   function leave(){clearTimeout(listenTimer);const fromMenu=host.currentScreen?.()!=='play';if(host.save()===false){host.message('Your result could not be saved. Keep this tab open and try Main Menu again.');return false;}if(suspended){state=suspended.state;kind=suspended.kind;suspended=null;shared=null;}context='legacy';listening=null;back.hidden=true;close();host.restoreLegacy();if(fromMenu)host.home?.();}
   back.onclick=()=>{const fromCampaign=listening?.campaign,track=listening?.track;leave();campaign.open(fromCampaign?'play':'songs',track);};
   function enterRun(){if(host.save()===false||session.blocked){recovery.open();return {ok:false,reason:'Saving needs attention before this level can start.'};}if(state.phase==='shop'){const r=act({type:'start'});if(!r.ok)return r;}else if(state.phase==='interlude'){const r=act({type:'continue'});if(!r.ok)return r;}context=shared?'challenge':'run';listening=null;back.hidden=true;close();host.play(state.run.game,state.run.music);return {ok:true};}
+  function resultOpen(r=progressionResult(state)){
+    if(!r)return false;
+    $('run-result-title').textContent=titleCase(shared?'Shared Challenge · '+r.message:r.message);
+    $('run-result-copy').textContent=r.outcome==='clear'?`Next: ${POOL_NAMES[r.pool+1]}. Your song continues with the powers and upgrades already active.`:r.outcome==='victory'?`Track award: ${r.record.medal} · ${r.record.launches} plucks · ${r.record.bonuses}/5 bonuses. Song saved in ${CAMPAIGN_NAME}.`:'Your unfinished song is saved. Retry the track or unlock more powers before your next attempt.';
+    $('run-result-title').querySelector('.medal-icon')?.remove();
+    if(r.poolResult){const p=r.poolResult,medal=poolMedal(p.pool,p.score);$('run-result-title').insertAdjacentHTML('afterbegin',medalIcon(medal));$('run-result-copy').textContent=`${POOL_NAMES[p.pool]} · ${medal||'Completed'} · ${p.score.toLocaleString('en-US')} Score · ${p.shots} ${p.shots===1?'shot':'shots'}. `+$('run-result-copy').textContent;}
+    $('run-listen').hidden=!r.record?.music;$('run-retry').hidden=r.outcome!=='failure'||!!shared;
+    $('run-next').lastElementChild.textContent='Continue to '+POOL_NAMES[r.pool+1];
+    const won=r.outcome==='victory'&&!shared;$('run-next').hidden=r.outcome!=='clear';$('run-destination').classList.add('primary');$('run-next').classList.add('primary');$('run-skin').hidden=!won;$('run-destination').hidden=!won;
+    const destination=won?unlockedTracks(state).find(t=>!state.profile.rewards.some(r=>r.event.type==='victory'&&r.event.trackId===t.id)):null;
+    $('run-destination').hidden=!destination;$('run-destination').lastElementChild.textContent=destination?'Next: '+destination.name:'Next Track';
+    $('run-skin').style.setProperty('--player-skin-color',trackGet(r.track).color);
+    $('run-skin').style.setProperty('--skin-style','original');
+    $('run-skin').lastElementChild.textContent=cosmeticLoadout(state.profile).skin==='campaign'&&state.skin===r.track?'Skin Equipped':'Use Earned Skin';
+    $('run-restoration').innerHTML=won?`<div class="earned-skin" style="--track-color:${trackGet(r.track).color}"><i></i><span>${trackGet(r.track).name} restored<br>Player skin earned · your song saved</span></div>`:'';
+    host.screen?.('run-result');targetRender($('run-target'));result.showModal();tree.refresh();campaign.refresh();
+    return true;
+  }
+  function restorePlay(){
+    if(session.blocked)return false;
+    if(state.phase==='run')return enterRun().ok;
+    const saved=progressionResult(state);if(!saved)return false;
+    context=shared?'challenge':'run';listening=null;back.hidden=true;
+    host.play(saved.game,saved.music);return true;
+  }
   function devRender(){const development=kind==='development',restricted=!development||!!shared||session.blocked;$('dev-switch').checked=development;$('dev-show-hidden-content').checked=developmentSettings.showHiddenContent;$('dev-show-purchased-costs').checked=developmentSettings.showPurchasedCosts;$('dev-seed').disabled=restricted;profileBar.set(kind,!!shared,['run','challenge','listening'].includes(context));$('dev-status').textContent=`${development?'Development':'Normal'} profile · ${state.profile.wallet.seeds} Points`;for(const id of ['dev-max-progress','dev-max','dev-grant',...['10','100','1000'].map(n=>'dev-add-'+n)])$(id).disabled=restricted;$('dev-amount').disabled=!development;$('dev-reset').disabled=restricted;$('dev-reset-confirmation').hidden=true;if(shared)$('dev-status').textContent+=' · Leave the shared challenge to edit your Development profile.';else if(session.blocked)$('dev-status').textContent+=' · Resolve Progress Recovery before editing.';else if(!development)$('dev-status').textContent+=' · Enable Development Mode to use test controls.';else if(state.phase==='run')$('dev-status').textContent+=' · Changes keep the current pool build; new skills apply from the next pool.';}
   function open(type,id){
     if(type==='campaign'){campaign.open();return {ok:true};}
@@ -170,7 +195,7 @@ export function progressionMount(host){
       if(session.blocked){recovery.open();return {ok:false,reason:'Saving needs attention. Use Retry Save in Progress Recovery.'};}
       return transactionResult(session.transact(owner=>{const renamed=profileRename(owner.profile,name);return renamed.ok?{ok:true,state:{...owner,profile:renamed.profile}}:renamed;}));
     },
-    skins:()=>skins.open(),players:()=>players.open(),tree:()=>tree.open(),campaign:view=>campaign.open(view),play:enterRun,leave,
+    skins:()=>skins.open(),players:()=>players.open(),tree:()=>tree.open(),campaign:view=>campaign.open(view),play:enterRun,restorePlay,result:resultOpen,leave,
     cosmeticAct:treeAct,
     get cosmetics(){return cosmeticLoadout((session.origin.state).profile);},
     get skinStyle(){return cosmeticSkin((session.origin.state).profile)?.style||'original';},
@@ -186,18 +211,7 @@ export function progressionMount(host){
       commit(r.state,()=>{if(r.outcome){
         if(['clear','victory'].includes(r.outcome))host.celebrate?.();
         if(r.record?.music)host.runMusic?.(r.record.music);
-        $('run-result-title').textContent=titleCase(shared?'Shared Challenge · '+r.message:r.message);
-        $('run-result-copy').textContent=r.outcome==='clear'?`Next: ${POOL_NAMES[state.pool+1]}. Your song continues with the powers and upgrades already active.`:r.outcome==='victory'?`Track award: ${r.record.medal} · ${r.record.launches} plucks · ${r.record.bonuses}/5 bonuses. Song saved in ${CAMPAIGN_NAME}.`:'Your unfinished song is saved. Retry the track or unlock more powers before your next attempt.';
-        $('run-result-title').querySelector('.medal-icon')?.remove();
-        if(r.poolResult){const p=r.poolResult,medal=poolMedal(p.pool,p.score);$('run-result-title').insertAdjacentHTML('afterbegin',medalIcon(medal));$('run-result-copy').textContent=`${POOL_NAMES[p.pool]} · ${medal||'Completed'} · ${p.score.toLocaleString('en-US')} Score · ${p.shots} ${p.shots===1?'shot':'shots'}. `+$('run-result-copy').textContent;}
-        $('run-listen').hidden=!r.record?.music;$('run-retry').hidden=r.outcome!=='failure'||!!shared;
-        $('run-next').lastElementChild.textContent='Continue to '+POOL_NAMES[state.pool+1];
-        const won=r.outcome==='victory'&&!shared;$('run-next').hidden=r.outcome!=='clear';$('run-destination').classList.add('primary');$('run-next').classList.add('primary');$('run-skin').hidden=!won;$('run-destination').hidden=!won;
-        const destination=won?unlockedTracks(state).find(t=>!state.profile.rewards.some(r=>r.event.type==='victory'&&r.event.trackId===t.id)):null;
-        $('run-destination').hidden=!destination;$('run-destination').lastElementChild.textContent=destination?'Next: '+destination.name:'Next Track';
-        $('run-skin').style.setProperty('--player-skin-color',trackGet(state.track).color);
-        $('run-restoration').innerHTML=won?`<div class="earned-skin" style="--track-color:${trackGet(state.track).color}"><i></i><span>${trackGet(state.track).name} restored<br>Player skin earned · your song saved</span></div>`:'';
-        targetRender($('run-target'));result.showModal();tree.refresh();campaign.refresh();
+        resultOpen(progressionResult(state));
       }});
       return true; // This step already owns its campaign checkpoint.
     },

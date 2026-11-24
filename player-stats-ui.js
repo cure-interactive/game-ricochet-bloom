@@ -1,6 +1,6 @@
 import {rememberView} from './navigation-state.js?v=d7ae9a905aacccc9eaf9bbac7fc9b56f9cb442d4e202334ea0b1d7b5f2e82f2a';
 import {segmentedHTML,segmentedBarMount} from './segmented-control.js?v=bfc2eb723bd5080e1ff722bcfb43b3958890bbcd7bb4f5ce1e7dbf3c3192b161';
-import { playerStats } from './player-stats.js?v=ffbcd856cc76602a24d3b6e73d7336509a703148bbbf75e9cf5a8b3bcbe857ac';
+import { playerStats } from './player-stats.js?v=aefe59a623c8b0102cc8084997a8e01568ee44e1f982c48cd664b147b281f449';
 import { screenHeader } from './screen-header.js?v=dc9c49c3de9dba6c62156c5183b3aaa7f74f68b35a1e805937f596b9990e8af1';
 import { buttonHTML, iconHTML } from './ui-icon.js?v=44ea63eff6eacd4cad173283015795275bfc00f891809cd37ea89694c51bd05d';
 import { medalIcon } from './medal-ui.js?v=6df228e6d2895828fc52e3634bd7cb5b98bc58ddf86a48515c6d0a1527524ed2';

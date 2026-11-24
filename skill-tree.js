@@ -1,6 +1,6 @@
 import {treeViewMount} from './tree-view.js?v=cf4a83d5e9bfee5a1cc6f7cbe3396039f6bd5b3e6236e3b7698e083f46dd7400';
 import {mapCameraMount,nearestMapNode} from './tree-map.js?v=7ec02d1e9cd146b9e061b453c9b7b2376be706aed2d2d0ad8b925ca88451890f';
-import {skillLegendHTML} from './skill-card.js?v=3de64013814f0762438af3fc3b0aea1b3b119105b0cfc1c62d859a885a15b903';
+import {skillLegendHTML} from './skill-card.js?v=2371ce1dc2870d88abbea02db6381f6039245bdbe46e6d40f4a85131736331e1';
 import {screenHeader} from './screen-header.js?v=dc9c49c3de9dba6c62156c5183b3aaa7f74f68b35a1e805937f596b9990e8af1';
 import {buttonHTML} from './ui-icon.js?v=44ea63eff6eacd4cad173283015795275bfc00f891809cd37ea89694c51bd05d';
 

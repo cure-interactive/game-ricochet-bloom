@@ -8,7 +8,7 @@ import {rarityIconHTML} from './skill-icon.js?v=1e5fb74555308add256ae8e53708298f
 import {RARITIES} from './skill-trait.js?v=e149e64c177320afd3c752be9033b394aef97e73f55b5752d3400d5b2928eee9';
 import { screenHeader } from './screen-header.js?v=dc9c49c3de9dba6c62156c5183b3aaa7f74f68b35a1e805937f596b9990e8af1';
 import { TRACKS } from './track.js?v=36bf3603425adc5532331daf4647dba23a3d467e754a0405a1e7738fe443f03b';
-import { completedTracks, unlockedTracks } from './run.js?v=c97beccbdfdb16a544a4faf019c6209aa1bacacd493729f535527cd13ecfc475';
+import { completedTracks, unlockedTracks } from './run.js?v=795057cada8dafcc7cc5aea6aff6ab73e3e640b0127abc4ab18c91aae6c4b1e0';
 import { iconHTML, staticIconHTML } from './ui-icon.js?v=44ea63eff6eacd4cad173283015795275bfc00f891809cd37ea89694c51bd05d';
 
 import {escapeHTML} from './ui-text.js?v=00a346103c56a4d5af4ab71da4939d78074cf899c52e742eaaa1d86760183751';

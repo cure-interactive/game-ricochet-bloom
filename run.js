@@ -98,9 +98,11 @@ export function progressionValidate(input,kind='normal') {
   }
   if(s.powerMode==='unlocked'&&s.run)s.run.offers=s.run.offers.filter(id=>!GAME_CATALOGUE.legacyNodes[id]);
   if(s.phase==='shop'&&!s.powerMode)syncUnlocked(s);
+  if(s.result&&!progressionResult(s))delete s.result;
   return s;
 }
 function poolCreate(s,music=null){
+  delete s.result;
   const previous=s.run,build=progressionLoadout(s).powers,seed=previous?.seed||s.seed;
   const environment=trackEnvironment(s.track,s.pool,s.route);
   const game=gameCreate(`${seed}-${s.pool}-${s.route}`,'song-run',{build,randomPowers:s.powerMode==='unlocked'||s.powerMode==='shared'&&s.sharedVersion===2,population:POPULATIONS[s.pool],relaxed:s.relaxed,environment,...(s.powerMode==='shared'||!s.powerMode&&!s.profile.playerResearch?{}:{playerBuild:playerBuild(s.profile)})});
@@ -148,7 +150,7 @@ export function progressionAct(input,action){
       if(s.equipped.includes(action.id))s.equipped=s.equipped.filter(x=>x!==action.id);
       else {if(['a','b'].includes(node.kind)&&!POWER_TREES[node.power].compatible)s.equipped=s.equipped.filter(id=>id!==node.power+'.'+(node.kind==='a'?'b':'a'));s.equipped.push(action.id);}
       r=progressionLoadout(s);if(!r.ok)return r;break;
-    case 'track':if(s.phase!=='shop'||!unlockedTracks(s).some(t=>t.id===action.track))return fail('Complete the preceding track to unlock this one.');if(!trackGet(action.track))return fail('Unknown track.');s.track=action.track;break;
+    case 'track':if(s.phase!=='shop'||!unlockedTracks(s).some(t=>t.id===action.track))return fail('Complete the preceding track to unlock this one.');if(!trackGet(action.track))return fail('Unknown track.');s.track=action.track;delete s.result;break;
     case 'seed':if(s.phase!=='shop'||!seedValid(action.seed))return fail('Use 1–24 letters, numbers, underscores or hyphens.');s.seed=action.seed;break;
     case 'route':if(s.phase!=='interlude'||![0,2].includes(s.pool)||![0,1].includes(action.route))return fail('Route choice opens before Verse and Bridge.');s.route=action.route;break;
     case 'relaxed':if(s.phase!=='shop')return fail('Choose pace before a run.');s.relaxed=!s.relaxed;break;
@@ -217,7 +219,18 @@ export function progressionObserve(input,game,events,music=null){
       else{s.phase='interlude';r.offers=[];r.discovered=false;s.route=0;outcome='clear';message=`${POOL_NAMES[s.pool]} complete · +${earned} Points`;}
     }else if(game.isOver){r.launches+=game.launches;r.score+=game.score;const missing=goalRemaining(s),earned=reward(s,{type:'failure',poolIndex:s.pool,blooms:game.blooms,abandoned:false});record=resultRecord(s,'failure');finish(s);outcome='failure';message=`${missing} · +${earned} Points`;}
   }
+  if(outcome)s.result={outcome,message,track:input.track,pool:input.pool,game:structuredClone(game),music:structuredClone(music),poolResult};
   return {state:s,message,outcome,record,poolResult};
+}
+
+// A result is a saved presentation checkpoint, never another reward operation.
+export function progressionResult(state){
+ const r=state.result;if(!r||state.phase==='run'||r.track!==state.track||!Number.isInteger(r.pool)||r.pool<0||r.pool>4||typeof r.message!=='string'||r.message.length>500||!['clear','victory','failure'].includes(r.outcome)||((r.outcome==='clear')!==(state.phase==='interlude')))return null;
+ const game=saveValidate(r.game);if(!game||game.mode!=='song-run'||game.bodies.length!==POPULATIONS[r.pool]+1||!musicValid(r.music))return null;
+ const record=r.outcome==='clear'?null:state.latest;
+ if(r.outcome!=='clear'&&(!recordValid(record)||record.track!==r.track||record.outcome!==r.outcome))return null;
+ const p=r.poolResult;if(p&&(!integer(p.score)||!integer(p.shots)||p.pool!==r.pool||p.track!==r.track))return null;
+ return {...r,game,record};
 }
 
 // A saved pool keeps its exact configuration when new research is purchased.

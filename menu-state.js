@@ -1,5 +1,5 @@
 const homeScreens=new Set(['home','gamemodes','trial-setup','score-setup','experiment-hub','experiment-family','experiment-detail']);
-const overlayScreens=new Set(['levels','player','stats','trails','bounce-effects','music-themes','pendants','companions','tree','skins','player-upgrades','wiki','help','settings']);
+const overlayScreens=new Set(['run-result','levels','player','stats','trails','bounce-effects','music-themes','pendants','companions','tree','skins','player-upgrades','wiki','help','settings']);
 function activityAt(name){
   if(name==='drift'||name==='drift-pause')return 'casual';
   if(name==='play'||name==='pause')return 'play';
